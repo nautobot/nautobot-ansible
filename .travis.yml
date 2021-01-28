@@ -27,6 +27,7 @@ jobs:
         - sed -i 's/SKIP_STARTUP_SCRIPTS=false/SKIP_STARTUP_SCRIPTS=true/' env/netbox.env
         - docker-compose pull
         - docker-compose up -d
+        - docker image ls
         - docker container ls
         - cd ..
         - pip install -U pip
