@@ -18,7 +18,7 @@ jobs:
     - name: "Python 3.6 - Netbox 2.10 - Latest PyPi Ansible"
       python: 3.6
       env:
-        - PYTHON_VER=3.6 INTEGRATION_TESTS=latest
+        - PYTHON_VER=3.6 VERSION=latest INTEGRATION_TESTS=latest
       install:
         - cd ..
         # Setup netbox container for integration testing
@@ -27,6 +27,7 @@ jobs:
         - sed -i 's/SKIP_STARTUP_SCRIPTS=false/SKIP_STARTUP_SCRIPTS=true/' env/netbox.env
         - docker-compose pull
         - docker-compose up -d
+        - docker container ls
         - cd ..
         - pip install -U pip
         - pip install -U pytest
