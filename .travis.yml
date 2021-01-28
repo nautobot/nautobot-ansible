@@ -36,7 +36,7 @@ jobs:
 
 before_script:
   - mkdir -p ~/ansible_collections/$COLLECTION_NAMESPACE
-  - cp -R ansible_modules ~/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+  - cp -R networktocode-llc/grimlock-ansible ~/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
   - cd ~/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
   - ansible-galaxy collection build .
   - ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz -p /home/travis/.ansible/collections
