@@ -116,6 +116,7 @@
     data:
       model: "WS Test 3850"
       manufacturer: Test Manufacturer
+      subdevice_role: "parent"
     state: present
   register: test_six
 
