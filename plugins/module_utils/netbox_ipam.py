@@ -23,6 +23,7 @@ NB_IP_ADDRESSES = "ip_addresses"
 NB_PREFIXES = "prefixes"
 NB_IPAM_ROLES = "roles"
 NB_RIRS = "rirs"
+NB_ROUTE_TARGETS = "route_targets"
 NB_VLANS = "vlans"
 NB_VLAN_GROUPS = "vlan_groups"
 NB_VRFS = "vrfs"
@@ -57,7 +58,7 @@ class NetboxIpamModule(NetboxModule):
             "parent": data["prefix"],
         }
 
-        if self.version < 2.9:
+        if not self._version_check_greater(self.version, "2.9", greater_or_equal=True):
             if not data.get("interface") or not data.get("prefix"):
                 self._handle_errors("A prefix and interface is required")
             data_intf_key = "interface"
@@ -148,6 +149,7 @@ class NetboxIpamModule(NetboxModule):
         - ip_addresses
         - prefixes
         - rirs
+        - route_targets
         - vlans
         - vlan_groups
         - vrfs
@@ -185,15 +187,15 @@ class NetboxIpamModule(NetboxModule):
         else:
             first_available = False
 
-        object_query_params = self._build_query_params(
-            endpoint_name, data, user_query_params
-        )
         if data.get("prefix") and self.endpoint == "ip_addresses":
             object_query_params = self._build_query_params("prefix", data)
             self.nb_object = self._nb_endpoint_get(
                 nb_app.prefixes, object_query_params, name
             )
         else:
+            object_query_params = self._build_query_params(
+                endpoint_name, data, user_query_params
+            )
             self.nb_object = self._nb_endpoint_get(
                 nb_endpoint, object_query_params, name
             )

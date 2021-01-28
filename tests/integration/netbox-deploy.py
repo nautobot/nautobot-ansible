@@ -7,6 +7,7 @@ __metaclass__ = type
 import os
 import sys
 import pynetbox
+from packaging import version
 
 # NOTE: If anything depends on specific versions of NetBox, can check INTEGRATION_TESTS in env
 # os.environ["INTEGRATION_TESTS"]
@@ -16,7 +17,7 @@ import pynetbox
 nb_host = os.getenv("NETBOX_HOST", "http://localhost:32768")
 nb_token = os.getenv("NETBOX_TOKEN", "0123456789abcdef0123456789abcdef01234567")
 nb = pynetbox.api(nb_host, nb_token)
-version = float(nb.version)
+nb_version = version.parse(nb.version)
 
 ERRORS = False
 
@@ -39,8 +40,9 @@ def make_netbox_calls(endpoint, payload):
 
 
 # Create tags used in future tests
-if version >= 2.9:
-    create_tags = nb.extras.tags.create(
+if nb_version >= version.parse("2.9"):
+    create_tags = make_netbox_calls(
+        nb.extras.tags,
         [
             {"name": "First", "slug": "first"},
             {"name": "Second", "slug": "second"},
@@ -52,7 +54,7 @@ if version >= 2.9:
             {"name": "tagB", "slug": "tagb"},
             {"name": "tagC", "slug": "tagc"},
             {"name": "Updated", "slug": "updated"},
-        ]
+        ],
     )
 
 # ORDER OF OPERATIONS FOR THE MOST PART
@@ -187,7 +189,7 @@ device_types = [
     },
     {"model": "1841", "slug": "1841", "manufacturer": cisco_manu.id,},
 ]
-if version > 2.8:
+if nb_version > version.parse("2.8"):
     temp_dt = []
     for dt_type in device_types:
         if dt_type.get("subdevice_role") is not None and not dt_type["subdevice_role"]:
@@ -322,10 +324,14 @@ ip_addresses = [
     {"address": "172.16.180.1/24", "interface": test100_gi1.id},
     {"address": "2001::1:1/64", "interface": test100_gi2.id},
     {"address": "172.16.180.11/24", "interface": created_nexus_interfaces[0].id},
-    {"address": "172.16.180.12/24", "interface": created_nexus_interfaces[1].id},
+    {
+        "address": "172.16.180.12/24",
+        "interface": created_nexus_interfaces[1].id,
+        "dns_name": "nexus.example.com",
+    },
     {"address": "172.16.180.254/24"},
 ]
-if version > 2.8:
+if nb_version > version.parse("2.8"):
     temp_ips = []
     for ip in ip_addresses:
         if ip.get("interface"):
@@ -335,6 +341,8 @@ if version > 2.8:
 
 created_ip_addresses = make_netbox_calls(nb.ipam.ip_addresses, ip_addresses)
 
+# Assign Primary IP
+nexus.update({"primary_ip4": 4})
 
 ## Create RIRs
 rirs = [{"name": "Example RIR", "slug": "example-rir"}]
@@ -425,6 +433,12 @@ services = [
         "protocol": "tcp",
     },
 ]
+# 2.10+ requires the port attribute to be 'ports' and a list instead of an integer
+for service in services:
+    if nb_version >= version.parse("2.10"):
+        service["ports"] = [service["port"]]
+        del service["port"]
+
 created_services = make_netbox_calls(nb.ipam.services, services)
 
 
@@ -462,6 +476,13 @@ circuit_terms = [
 created_circuit_terms = make_netbox_calls(
     nb.circuits.circuit_terminations, circuit_terms
 )
+
+route_targets = [
+    {"name": "4000:4000"},
+    {"name": "5000:5000"},
+    {"name": "6000:6000"},
+]
+created_route_targets = make_netbox_calls(nb.ipam.route_targets, route_targets)
 
 if ERRORS:
     sys.exit(

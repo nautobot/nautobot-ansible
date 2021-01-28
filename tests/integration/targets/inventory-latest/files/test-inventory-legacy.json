@@ -33,6 +33,7 @@
                 "tags": []
             },
             "Test Nexus One": {
+                "ansible_host": "172.16.180.12",
                 "custom_fields": {},
                 "device_roles": [
                     "core-switch"
@@ -47,6 +48,7 @@
                 "manufacturers": [
                     "cisco"
                 ],
+                "primary_ip4": "172.16.180.12",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -63,7 +65,9 @@
                         "id": 3,
                         "ipaddresses": [],
                         "name": "telnet",
-                        "port": 23,
+                        "ports": [
+                            23
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -98,7 +102,9 @@
                         "id": 4,
                         "ipaddresses": [],
                         "name": "ssh",
-                        "port": 22,
+                        "ports": [
+                            22
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -187,7 +193,9 @@
                         "id": 1,
                         "ipaddresses": [],
                         "name": "ssh",
-                        "port": 22,
+                        "ports": [
+                            22
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -217,7 +225,9 @@
                             }
                         ],
                         "name": "http",
-                        "port": 80,
+                        "ports": [
+                            80
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"

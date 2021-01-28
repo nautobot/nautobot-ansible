@@ -44,13 +44,17 @@
                 "tags": []
             },
             "Test Nexus One": {
+                "ansible_host": "172.16.180.12",
                 "device_type": "nexus-parent",
+                "dns_name": "nexus.example.com",
                 "interfaces": [
                     {
                         "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
                         "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "connection_status": null,
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
@@ -100,9 +104,11 @@
                     },
                     {
                         "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
                         "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "connection_status": null,
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
@@ -117,7 +123,7 @@
                                 "address": "172.16.180.12/24",
                                 "custom_fields": {},
                                 "description": "",
-                                "dns_name": "",
+                                "dns_name": "nexus.example.com",
                                 "family": {
                                     "label": "IPv4",
                                     "value": 4
@@ -153,6 +159,7 @@
                 ],
                 "is_virtual": false,
                 "manufacturer": "cisco",
+                "primary_ip4": "172.16.180.12",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -170,7 +177,9 @@
                         "id": 3,
                         "ipaddresses": [],
                         "name": "telnet",
-                        "port": 23,
+                        "ports": [
+                            23
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -235,7 +244,9 @@
                         "id": 4,
                         "ipaddresses": [],
                         "name": "ssh",
-                        "port": 22,
+                        "ports": [
+                            22
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -281,9 +292,11 @@
                 "interfaces": [
                     {
                         "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
                         "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "connection_status": null,
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
@@ -333,9 +346,11 @@
                     },
                     {
                         "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
                         "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "connection_status": null,
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
@@ -406,7 +421,9 @@
                         "id": 1,
                         "ipaddresses": [],
                         "name": "ssh",
-                        "port": 22,
+                        "ports": [
+                            22
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -436,7 +453,9 @@
                             }
                         ],
                         "name": "http",
-                        "port": 80,
+                        "ports": [
+                            80
+                        ],
                         "protocol": {
                             "label": "TCP",
                             "value": "tcp"
@@ -717,6 +736,7 @@
             "Test_Cluster_2",
             "Test_Rack",
             "Test_Rack_Site_2",
+            "active",
             "cisco",
             "cisco_test",
             "core_switch",
@@ -779,6 +799,20 @@
     "parent_region": {
         "children": [
             "test_region"
+        ]
+    },
+    "active": {
+        "hosts": [
+            "R1-Device",
+            "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
         ]
     },
     "test_cluster_group": {

@@ -81,11 +81,14 @@
                 "tags": []
             },
             "VC1": {
+                "ansible_host": "172.16.180.12",
                 "custom_fields": {},
                 "device_type": "nexus-parent",
                 "display": "Test Nexus One",
+                "dns_name": "nexus.example.com",
                 "is_virtual": false,
                 "manufacturer": "cisco",
+                "primary_ip4": "172.16.180.12",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -209,6 +212,7 @@
             "Test_Cluster_2",
             "Test_Rack",
             "Test_Rack_Site_2",
+            "active",
             "cisco",
             "cisco_test",
             "core_switch",
@@ -278,6 +282,20 @@
     "parent_region": {
         "children": [
             "test_region"
+        ]
+    },
+    "active": {
+        "hosts": [
+            "R1-Device",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "VC1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
         ]
     },
     "test_cluster_group": {

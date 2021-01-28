@@ -33,7 +33,7 @@ jobs:
         run: ansible-test sanity -v --requirements --python ${{ matrix.python-version }} --skip-test pep8 plugins/
         working-directory: /home/runner/.ansible/collections/ansible_collections/netbox/netbox
       - name: Run Ansible Unit tests
-        run: ansible-test units -v --coverage --python ${{ matrix.python-version }}
+        run: ansible-test units -vvv --coverage --python ${{ matrix.python-version }}
         working-directory: /home/runner/.ansible/collections/ansible_collections/netbox/netbox
       - name: Run Ansible Coverage
         run: ansible-test coverage report --all --omit "tests/*,hacking/*,docs/*" --show-missing
@@ -46,13 +46,10 @@ jobs:
       matrix:
         include:
           - python-version: 3.6
-            VERSION: "v2.8"
-            INTEGRATION_TESTS: "v2.8"
+            VERSION: "v2.9"
+            INTEGRATION_TESTS: "v2.9"
           - python-version: 3.6
-            VERSION: "v2.9"
-            INTEGRATION_TESTS: "latest"
-          - python-version: 3.7
-            VERSION: "v2.9"
+            VERSION: "latest"
             INTEGRATION_TESTS: "latest"
     steps:
       - name: Checkout repo
@@ -62,7 +59,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Clone & Start netbox-docker containers
-        if: matrix.VERSION != 'v2.8'
+        env:
+          VERSION: ${{ matrix.VERSION }}
         run: |
           cd ..
           git clone https://github.com/netbox-community/netbox-docker.git
@@ -70,18 +68,12 @@ jobs:
           docker-compose up -d --quiet-pull
           docker container ls
           cd ..
-      - name: Clone & Start netbox-docker containers - NetBox v2.8
-        if: matrix.VERSION == 'v2.8'
-        run: |
-          cd ..
-          git clone https://github.com/netbox-community/netbox-docker.git
-          cd netbox-docker
-          git checkout 0.24.1
-          sed -i 's/SKIP_STARTUP_SCRIPTS=false/SKIP_STARTUP_SCRIPTS=true/' env/netbox.env
-          export VERSION=${{ matrix.VERSION }}
-          docker-compose up -d --quiet-pull
-          docker container ls
-          cd ..
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1.1.1
+        with:
+          virtualenvs-create: false
+      - name: Install Python packages
+        run: poetry install
       - name: Build and install collection
         run: |
           ansible-galaxy collection build .
@@ -92,12 +84,6 @@ jobs:
           docker logs netbox-docker_netbox_1
           timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:32768)" != "200" ]]; do echo "waiting for Netbox"; sleep 5; done' || false
         working-directory: /home/runner/.ansible/collections/ansible_collections/netbox/netbox
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1.1.1
-        with:
-          virtualenvs-create: false
-      - name: Install Python packages
-        run: poetry install
       - name: Pre-populate NetBox
         run: ./tests/integration/netbox-deploy.py
         working-directory: /home/runner/.ansible/collections/ansible_collections/netbox/netbox

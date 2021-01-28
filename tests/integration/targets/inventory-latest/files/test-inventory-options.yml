@@ -16,6 +16,7 @@ interfaces: False
 services: False
 group_names_raw: True
 virtual_chassis_name: True
+dns_name: True
 
 group_by:
   - site
@@ -33,6 +34,7 @@ group_by:
   - cluster_group
   - cluster_type
   - is_virtual
+  - status
 
 query_filters:
 

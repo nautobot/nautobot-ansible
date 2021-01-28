@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/netbox-community/ansible_modules.svg?branch=devel)](https://travis-ci.com/netbox-community/ansible_modules)
+![Devel CI Status](https://github.com/netbox-community/ansible_modules/workflows/All%20CI%20related%20tasks/badge.svg?branch=devel)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 ![Release](https://img.shields.io/github/v/release/netbox-community/ansible_modules)
 
@@ -16,8 +16,4 @@ To keep the code simple, we only officially support the two latest releases of N
 - Ansible 2.9+
 - NetBox write-enabled token when using modules or read-only token for `nb_lookup/nb_inventory`
 
-We have a new docs site live that can be found [here](https://netbox-ansible-collection.readthedocs.io/en/latest/)
-
-## How to Contribute
-
-Please read ![Contributing](CONTRIBUTING.md)
+We have a new docs site live that can be found [here](https://netbox-ansible-collection.readthedocs.io/en/latest/).

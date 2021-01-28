@@ -63,6 +63,20 @@ options:
           - Prevent duplicate prefixes/IP addresses within this VRF
         required: false
         type: bool
+      import_targets:
+        description:
+          - Import targets tied to VRF
+        required: false
+        type: list
+        elements: str
+        version_added: 2.0.0
+      export_targets:
+        description:
+          - Export targets tied to VRF
+        required: false
+        type: list
+        elements: str
+        version_added: 2.0.0
       description:
         description:
           - The description of the vrf
@@ -132,6 +146,10 @@ EXAMPLES = r"""
           rd: "65000:1"
           tenant: Test Tenant
           enforce_unique: true
+          import_targets:
+            - "65000:65001"
+          export_targets:
+            - "65000:65001"
           description: VRF description
           tags:
             - Schnozzberry
@@ -175,6 +193,8 @@ def main():
                     rd=dict(required=False, type="str"),
                     tenant=dict(required=False, type="raw"),
                     enforce_unique=dict(required=False, type="bool"),
+                    import_targets=dict(required=False, type="list", elements="str"),
+                    export_targets=dict(required=False, type="list", elements="str"),
                     description=dict(required=False, type="str"),
                     tags=dict(required=False, type="list"),
                     custom_fields=dict(required=False, type="dict"),

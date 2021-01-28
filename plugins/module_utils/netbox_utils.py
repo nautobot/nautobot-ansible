@@ -12,6 +12,7 @@ __metaclass__ = type
 import traceback
 import re
 import json
+
 from itertools import chain
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.compat import ipaddress
@@ -76,6 +77,7 @@ API_APPS_ENDPOINTS = dict(
         "prefixes",
         "rirs",
         "roles",
+        "route_targets",
         "vlans",
         "vlan_groups",
         "vrfs",
@@ -97,8 +99,10 @@ QUERY_TYPES = dict(
     device="name",
     device_role="slug",
     device_type="slug",
+    export_targets="name",
     group="slug",
     installed_device="name",
+    import_targets="name",
     manufacturer="slug",
     nat_inside="address",
     nat_outside="address",
@@ -118,6 +122,7 @@ QUERY_TYPES = dict(
     rear_port_template="name",
     region="slug",
     rir="slug",
+    route_targets="name",
     slug="slug",
     site="slug",
     tenant="slug",
@@ -152,7 +157,9 @@ CONVERT_TO_ID = {
     "device": "devices",
     "device_role": "device_roles",
     "device_type": "device_types",
+    "export_targets": "route_targets",
     "group": "tenant_groups",
+    "import_targets": "route_targets",
     "installed_device": "devices",
     "interface": "interfaces",
     "interface_template": "interface_templates",
@@ -179,6 +186,7 @@ CONVERT_TO_ID = {
     "rear_port": "rear_ports",
     "rear_port_template": "rear_port_templates",
     "rir": "rirs",
+    "route_targets": "route_targets",
     "services": "services",
     "site": "sites",
     "tags": "tags",
@@ -239,6 +247,7 @@ ENDPOINT_NAME_MAPPING = {
     "regions": "region",
     "rirs": "rir",
     "roles": "role",
+    "route_targets": "route_target",
     "services": "services",
     "sites": "site",
     "tags": "tags",
@@ -284,7 +293,7 @@ ALLOWED_QUERY_PARAMS = {
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "vrf", "interface"]),
+    "ip_address": set(["address", "vrf", "device", "interface"]),
     "ip_addresses": set(["address", "vrf", "device", "interface"]),
     "ipaddresses": set(["address", "vrf", "device", "interface"]),
     "lag": set(["name"]),
@@ -311,6 +320,7 @@ ALLOWED_QUERY_PARAMS = {
     "rear_port_template": set(["name", "device_type"]),
     "rir": set(["slug"]),
     "role": set(["slug"]),
+    "route_target": set(["name"]),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
     "site": set(["slug"]),
     "tags": set(["slug"]),
@@ -392,7 +402,7 @@ CONVERT_KEYS = {
     "vlan_group": "group",
 }
 
-# This is used to dynamically conver name to slug on endpoints requiring a slug
+# This is used to dynamically convert name to slug on endpoints requiring a slug
 SLUG_REQUIRED = {
     "circuit_types",
     "cluster_groups",
@@ -438,7 +448,6 @@ class NetboxModule(object):
         self.state = self.module.params["state"]
         self.check_mode = self.module.check_mode
         self.endpoint = endpoint
-        self.version = None
         query_params = self.module.params.get("query_params")
 
         if not HAS_PYNETBOX:
@@ -455,6 +464,10 @@ class NetboxModule(object):
             self.nb = self._connect_netbox_api(url, token, ssl_verify)
         else:
             self.nb = nb_client
+            try:
+                self.version = self.nb.version
+            except AttributeError:
+                self.module.fail_json(msg="Must have pynetbox >=4.1.0")
 
         # if self.module.params.get("query_params"):
         #    self._validate_query_params(self.module.params["query_params"])
@@ -466,6 +479,31 @@ class NetboxModule(object):
         data = self._find_ids(choices_data, query_params)
         self.data = self._convert_identical_keys(data)
 
+    def _version_check_greater(self, greater, lesser, greater_or_equal=False):
+        """Determine if first argument is greater than second argument.
+
+        Args:
+            greater (str): decimal string
+            lesser (str): decimal string
+        """
+        g_major, g_minor = greater.split(".")
+        l_major, l_minor = lesser.split(".")
+
+        # convert to ints
+        g_major = int(g_major)
+        g_minor = int(g_minor)
+        l_major = int(l_major)
+        l_minor = int(l_minor)
+
+        # If major version is higher then return true right off the bat
+        if g_major > l_major:
+            return True
+        elif greater_or_equal and g_major == l_major and g_minor >= l_minor:
+            return True
+        # If major versions are equal, and minor version is higher, return True
+        elif g_major == l_major and g_minor > l_minor:
+            return True
+
     def _connect_netbox_api(self, url, token, ssl_verify):
         try:
             session = requests.Session()
@@ -473,7 +511,7 @@ class NetboxModule(object):
             nb = pynetbox.api(url, token=token)
             nb.http_session = session
             try:
-                self.version = float(nb.version)
+                self.version = nb.version
             except AttributeError:
                 self.module.fail_json(msg="Must have pynetbox >=4.1.0")
             except Exception:
@@ -557,9 +595,9 @@ class NetboxModule(object):
         :params data (dict): Data dictionary after _find_ids method ran
         """
         temp_dict = dict()
-        if self.version and self.version >= 2.7:
+        if self._version_check_greater(self.version, "2.7", greater_or_equal=True):
             if data.get("form_factor"):
-                temp_dict["type"] = data["form_factor"]
+                temp_dict["type"] = data.pop("form_factor")
         for key in data:
             if self.endpoint == "power_panels" and key == "rack_group":
                 temp_dict[key] = data[key]
@@ -672,8 +710,17 @@ class NetboxModule(object):
         elif parent == "prefix" and module_data.get("parent"):
             query_dict.update({"prefix": module_data["parent"]})
 
-        # This is for netbox_ipam and netbox_ip_address module
-        elif parent == "ip_address" and module_data.get("assigned_object_type"):
+        elif parent == "ip_addresses":
+            if isinstance(module_data["device"], int):
+                query_dict.update({"device_id": module_data["device"]})
+            else:
+                query_dict.update({"device": module_data["device"]})
+
+        elif (
+            parent == "ip_address"
+            and "assigned_object" in matches
+            and module_data.get("assigned_object_type")
+        ):
             if module_data["assigned_object_type"] == "virtualization.vminterface":
                 query_dict.update(
                     {"vminterface_id": module_data.get("assigned_object_id")}
@@ -682,12 +729,6 @@ class NetboxModule(object):
                 query_dict.update(
                     {"interface_id": module_data.get("assigned_object_id")}
                 )
-
-        elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int):
-                query_dict.update({"device_id": module_data["device"]})
-            else:
-                query_dict.update({"device": module_data["device"]})
 
         elif parent == "virtual_chassis":
             query_dict = {"q": self.module.params["data"].get("master")}
@@ -711,6 +752,15 @@ class NetboxModule(object):
         elif "_template" in parent:
             if query_dict.get("device_type"):
                 query_dict["devicetype_id"] = query_dict.pop("device_type")
+
+        if not query_dict:
+            provided_kwargs = child.keys() if child else module_data.keys()
+            acceptable_query_params = (
+                user_query_params if user_query_params else query_params
+            )
+            self._handle_errors(
+                f"One or more of the kwargs provided are invalid for {parent}, provided kwargs: {', '.join(sorted(provided_kwargs))}. Acceptable kwargs: {', '.join(sorted(acceptable_query_params))}"
+            )
 
         query_dict = self._convert_identical_keys(query_dict)
         return query_dict
@@ -773,7 +823,12 @@ class NetboxModule(object):
         """
         for k, v in data.items():
             if k in CONVERT_TO_ID:
-                if self.version < 2.9 and k == "tags":
+                if (
+                    not self._version_check_greater(
+                        self.version, "2.9", greater_or_equal=True
+                    )
+                    and k == "tags"
+                ):
                     continue
                 if k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
@@ -806,6 +861,14 @@ class NetboxModule(object):
                             temp_dict = self._build_query_params(
                                 k, data, child=norm_data
                             )
+                        # If user passes in an integer, add to ID list to id_list as user
+                        # should have passed in a tag ID
+                        elif isinstance(list_item, int):
+                            id_list.append(list_item)
+                            continue
+                        else:
+                            temp_dict = {QUERY_TYPES.get(k, "q"): search}
+
                         query_id = self._nb_endpoint_get(nb_endpoint, temp_dict, k)
                         if query_id:
                             id_list.append(query_id.id)
