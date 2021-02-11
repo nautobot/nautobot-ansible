@@ -12,6 +12,7 @@ from ansible_collections.netbox.netbox.plugins.module_utils.netbox_utils import 
 )
 
 NB_TAGS = "tags"
+NB_STATUS = "statusus"
 
 
 class NetboxExtrasModule(NetboxModule):
@@ -24,6 +25,7 @@ class NetboxExtrasModule(NetboxModule):
         to create/update/delete the endpoint objects
         Supported endpoints:
         - tags
+        - statuses
         """
         # Used to dynamically set key when returning results
         endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]
