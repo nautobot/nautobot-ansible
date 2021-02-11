@@ -12,7 +12,7 @@ from ansible_collections.netbox.netbox.plugins.module_utils.netbox_utils import 
 )
 
 NB_TAGS = "tags"
-NB_STATUS = "statusus"
+NB_STATUS = "statuses"
 
 
 class NetboxExtrasModule(NetboxModule):

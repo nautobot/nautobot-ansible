@@ -70,7 +70,7 @@ API_APPS_ENDPOINTS = dict(
         "sites",
         "virtual_chassis",
     ],
-    extras=["tags"],
+    extras=["tags", "statuses"],
     ipam=[
         "aggregates",
         "ip_addresses",
@@ -250,6 +250,7 @@ ENDPOINT_NAME_MAPPING = {
     "route_targets": "route_target",
     "services": "services",
     "sites": "site",
+    "statuses": "statuses",
     "tags": "tags",
     "tenants": "tenant",
     "tenant_groups": "tenant_group",
@@ -260,6 +261,7 @@ ENDPOINT_NAME_MAPPING = {
     "vrfs": "vrf",
 }
 
+# What makes the search unique
 ALLOWED_QUERY_PARAMS = {
     "aggregate": set(["prefix", "rir"]),
     "assigned_object": set(["name", "device", "virtual_machine"]),
@@ -323,6 +325,7 @@ ALLOWED_QUERY_PARAMS = {
     "route_target": set(["name"]),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
     "site": set(["slug"]),
+    "statuses": set(["name"]),
     "tags": set(["slug"]),
     "tagged_vlans": set(["group", "name", "site", "vid", "vlan_group", "tenant"]),
     "tenant": set(["slug"]),

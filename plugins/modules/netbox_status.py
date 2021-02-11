@@ -60,12 +60,15 @@ options:
           - Status color
         required: false
         type: str
-      content_type:
+      content_types:
         description:
           - Status content type(s)
         required: true
         type: list
+        elements: str
         choices:
+          - dcim.device
+        default:
           - dcim.device
     required: true
   state:
@@ -146,8 +149,8 @@ def main():
                 required=True,
                 options=dict(
                     name=dict(required=True, type="str"),
+                    content_types=dict(required=True, type="list", elements="str"),
                     color=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
                 ),
             ),
