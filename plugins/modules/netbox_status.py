@@ -87,32 +87,31 @@ options:
 """
 
 EXAMPLES = r"""
-- name: "Test tags creation/deletion"
+- name: "Test status creation/deletion"
   connection: local
   hosts: localhost
   gather_facts: False
   tasks:
     - name: Create status
-      netbox_tag:
+      netbox_status:
         netbox_url: http://netbox.local
         netbox_token: thisIsMyToken
         data:
           name: "{{ item.name }}"
-          description: "{{ item.description }}"
-      loop:
-        - { name: Planned, description: "management" }
-        - { name: tun, description: "tunnel" }
+          content_types:
+            - dcim.device
+          color: 01bea3
 
     - name: Delete status
-      netbox_tag:
+      netbox_status:
         netbox_url: http://netbox.local
         netbox_token: thisIsMyToken
         data:
-          name: "{{ item }}"
+          name: "ansible_status"
+          content_types:
+            - dcim.device
+          color: 01bea3
         state: absent
-      loop:
-        - mgmt
-        - tun
 """
 
 RETURN = r"""
