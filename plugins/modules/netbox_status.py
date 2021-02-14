@@ -161,6 +161,7 @@ def main():
                         type="list",
                         choices=["dcim.device"],
                         elements="str",
+                        default=["dcim.device"],
                     ),
                     color=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
