@@ -157,7 +157,10 @@ def main():
                 options=dict(
                     name=dict(required=True, type="str"),
                     content_types=dict(
-                        required=True, type="list", choices=["dcim.device"]
+                        required=True,
+                        type="list",
+                        choices=["dcim.device"],
+                        elements="str",
                     ),
                     color=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
@@ -165,8 +168,6 @@ def main():
             ),
         )
     )
-
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
 
     module = NetboxAnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
