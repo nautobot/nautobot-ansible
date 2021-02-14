@@ -62,8 +62,8 @@ options:
         type: str
       content_types:
         description:
-          - Status content type(s)
-        required: true
+          - Status content type(s), required if state=present
+        required: false
         type: list
         elements: str
         choices:
