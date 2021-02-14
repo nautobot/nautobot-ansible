@@ -22,7 +22,7 @@ description:
 notes:
   - Status should be defined as a YAML list
 author:
-  - Network to Code, LLC (networktocode)
+  - Network to Code, LLC (@networktocode)
   - Mikhail Yohman (@fragmentedpacket)
   - Josh VanDeraa (@jvanaderaa)
 requirements:
@@ -32,12 +32,12 @@ options:
   netbox_url:
     description:
       - URL of the Netbox instance resolvable by Ansible control host
-    required: false
+    required: true
     type: str
   netbox_token:
     description:
       - The token created within Netbox to authorize API access
-    required: false
+    required: true
     type: str
   data:
     type: dict
@@ -71,6 +71,14 @@ options:
         default:
           - dcim.device
     required: true
+  query_params:
+    description:
+      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
+      - in plugins/module_utils/netbox_utils.py and provides control to users on what may make
+      - an object unique in their environment.
+    required: false
+    type: list
+    elements: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -148,7 +156,9 @@ def main():
                 required=True,
                 options=dict(
                     name=dict(required=True, type="str"),
-                    content_types=dict(required=True, type="list", elements="str"),
+                    content_types=dict(
+                        required=True, type="list", choices=["dcim.device"]
+                    ),
                     color=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
                 ),
