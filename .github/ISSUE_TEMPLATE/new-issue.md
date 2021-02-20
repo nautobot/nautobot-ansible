@@ -8,8 +8,9 @@ assignees: ''
 ---
 
 <!---
-Verify first that your issue/request is not already reported on GitHub.
-Also test if the latest release, and master branch are affected too.
+- [ ] Verify first that your issue/request is not already reported on GitHub.
+- [ ] Also test if the latest release, and master branch are affected too.
+- [ ] Verify that the latest pynautobot has been installed
 -->
 
 ##### ISSUE TYPE
@@ -22,14 +23,17 @@ Also test if the latest release, and master branch are affected too.
 
 ##### SOFTWARE VERSIONS
 
+###### pynautobot
+<!-- pynautobot veresion -->
+
 ###### Ansible:
 <!--- Ansible Version ansible --version -->
 
-###### Netbox:
-<!--- Netbox Version -->
+###### Nautobot:
+<!--- Nautobot Version  -->
 
 ###### Collection:
-<!--- Netbox Ansible Module Collection Version -->
+<!--- Nautobot Ansible Module Collection Version: with Ansible > 2.10, execute `ansible-galaxy collection list` -->
 
 ##### SUMMARY
 <!--- Explain the problem briefly -->
