@@ -3,13 +3,13 @@
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
 # content lives. May only contain alphanumeric characters and underscores. Additionally namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
-namespace: netbox
+namespace: networktocode
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: netbox
+name: nautobot
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 2.1.0
+version: 1.0.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -17,12 +17,12 @@ readme: README.md
 # A list of the collection's content authors. Can be just the name or in the format 'Full Name <email> (url)
 # @nicks:irc/im.site#channel'
 authors:
-  - Mikhail Yohman <mikhail.yohman@gmail.com>
+  - Network to Code <info@networktocode.com>
 
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
-description: This is a collection of NetBox Ansible modules
+description: This is a collection of Nautobot Ansible modules
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'

@@ -12,10 +12,12 @@ from functools import partial
 from unittest.mock import patch, MagicMock, Mock, call
 
 try:
-    from ansible_collections.netbox.netbox.plugins.inventory.nb_inventory import (
+    from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import (
         InventoryModule,
     )
-    from ansible_collections.netbox.netbox.tests.test_data import load_test_data
+    from ansible_collections.networktocode.nautobot.tests.test_data import (
+        load_test_data,
+    )
 
 except ImportError:
     import sys

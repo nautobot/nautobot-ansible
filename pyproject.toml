@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "netbox_ansible_modules"
-version = "2.1.0"
-description = "Ansible collection to interact with NetBox's API"
-authors = ["Mikhail Yohman <mikhail.yohman@gmail.com>"]
-license = "GPLv3"
+name = "nautobot_ansible_modules"
+version = "1.0.0"
+description = "Ansible collection to interact with Nautobot's API"
+authors = ["Network to Code <info@networktocode.com"]
+license = "Apache 2.0"
 
 [tool.poetry.dependencies]
 python = "^3.6"

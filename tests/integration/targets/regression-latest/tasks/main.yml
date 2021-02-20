@@ -8,9 +8,9 @@
   connection: local
   block:
     - name: "1 - Device with required information"
-      netbox.netbox.netbox_device:
-        netbox_url: "http://some-random-invalid-URL"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device:
+        url: "http://some-random-invalid-URL"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "R1"
           device_type: "Cisco Test"
@@ -25,12 +25,12 @@
       assert:
         that:
           - test_one is failed
-          - test_one['msg'] == "Failed to establish connection to Netbox API"
+          - test_one['msg'] == "Failed to establish connection to Nautobot API"
 
-    - name: "2 - Check to see if netbox_prefix with parent defined will pass via check-mode"
-      netbox.netbox.netbox_prefix:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+    - name: "2 - Check to see if prefix with parent defined will pass via check-mode"
+      networktocode.nautobot.prefix:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           parent: "10.10.0.0/16"
           prefix_length: 24
@@ -46,9 +46,9 @@
           - test_two['msg'] == "New prefix created within 10.10.0.0/16"
 
     - name: "3 - Add device with tags - Setup device to test #242"
-      netbox.netbox.netbox_device:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "issue-242"
           device_type: "Cisco Test"
@@ -60,9 +60,9 @@
             - slug: second
 
     - name: "4 - Add device with tags out of order - shouldn't change - Tests #242 is fixed"
-      netbox.netbox.netbox_device:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "issue-242"
           device_type: "Cisco Test"
@@ -81,9 +81,9 @@
           - not test_four["changed"]
 
     - name: "5 - Add device with extra tag - Tests #242 is fixed"
-      netbox.netbox.netbox_device:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "issue-242"
           device_type: "Cisco Test"
@@ -106,9 +106,9 @@
           - test_five["device"]["tags"] is defined
 
     - name: "6 - Loop through and add interface templates to different device interface templates - Fixes #282"
-      netbox.netbox.netbox_device_interface_template:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device_interface_template:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "SFP+ (10GE)"
           type: "SFP+ (10GE)"
@@ -137,9 +137,9 @@
           - test_six.results[3]["interface_template"]["device_type"] == 3
 
     - name: "7 - Don't prevent updates to other params if tags are specified"
-      netbox.netbox.netbox_device:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.device:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           name: "issue-242"
           device_type: "Cisco Test"
@@ -162,9 +162,9 @@
           - test_seven["device"]["asset_tag"] == "Null"
 
     - name: Add ip address to netbox and don't assign it to a device (Issue 372)
-      netbox.netbox.netbox_ip_address:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.ip_address:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           address: 10.255.255.1/24
         query_params:
@@ -173,9 +173,9 @@
         state: present
 
     - name: Update same ip address to attach to a device interface (Issue 372)
-      netbox.netbox.netbox_ip_address:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.ip_address:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           address: 10.255.255.1/24
           assigned_object:
@@ -197,9 +197,9 @@
           - query_params_372['diff']['after']['assigned_object_type'] == 'dcim.interface'
 
     - name: "Validate failure due to invalid child params provided by user"
-      netbox.netbox.netbox_cable:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.cable:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data:
           termination_a_type: "dcim.interface"
           termination_a:
@@ -218,9 +218,9 @@
           - 'test_results["msg"] == "One or more of the kwargs provided are invalid for circuits.circuittermination, provided kwargs: name. Acceptable kwargs: circuit, term_side"'
 
     - name: "Issue #432 - Make sure same IPs get assigned to different device interfaces"
-      netbox.netbox.netbox_ip_address:
-        netbox_url: "http://localhost:32768"
-        netbox_token: "0123456789abcdef0123456789abcdef01234567"
+      networktocode.nautobot.ip_address:
+        url: "http://localhost:32768"
+        token: "0123456789abcdef0123456789abcdef01234567"
         data: "{{ item }}"
       loop: "{{ data }}"
       register: "test_results"
