@@ -17,3 +17,5 @@ To keep the code simple, we only officially support the two latest releases of N
 - NetBox write-enabled token when using modules or read-only token for `nb_lookup/nb_inventory`
 
 We have a new docs site live that can be found [here](https://netbox-ansible-collection.readthedocs.io/en/latest/).
+
+> This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021

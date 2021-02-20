@@ -19,3 +19,7 @@ Contents
    Plugins <plugins/index>
    Module Utils (Python) Docs <module_utils/index>
    Changelog <changelog/index>
+
+.. note::
+   This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021
+   
