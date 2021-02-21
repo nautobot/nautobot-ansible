@@ -173,6 +173,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         data:
           name: Test - Colorado
+          status: active
         state: present
 
     - name: Delete site within nautobot
@@ -265,7 +266,10 @@ def main():
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
+    required_if = [
+        ("state", "present", ["name", "status"]),
+        ("state", "absent", ["name"]),
+    ]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if

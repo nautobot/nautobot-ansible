@@ -157,6 +157,7 @@ EXAMPLES = r"""
         data:
           name: Test Virtual Machine
           cluster: test cluster
+          status: active
         state: present
 
     - name: Delete virtual machine within nautobot
@@ -175,6 +176,7 @@ EXAMPLES = r"""
           name: Another Test Virtual Machine
           cluster: test cluster
           site: Test Site
+          status: active
           tags:
             - Schnozzberry
         state: present
@@ -246,7 +248,10 @@ def main():
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
+    required_if = [
+        ("state", "present", ["name", "status"]),
+        ("state", "absent", ["name"]),
+    ]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if

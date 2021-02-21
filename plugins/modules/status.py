@@ -21,7 +21,6 @@ description:
 notes:
   - Status should be defined as a YAML list
 author:
-  - Network to Code, LLC (@networktocode)
   - Network to Code (@networktocode)
   - Josh VanDeraa (@jvanaderaa)
 requirements:
@@ -61,12 +60,11 @@ options:
         type: str
       content_types:
         description:
-          - Status content type(s), required if state=present
+          - Status content type(s). These match app.endpoint and the endpoint is singular.
+          - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
         required: false
         type: list
         elements: str
-        choices:
-          - dcim.device
     required: true
   query_params:
     description:
@@ -102,9 +100,18 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         data:
-          name: "{{ item.name }}"
+          name: "ansible_status"
           content_types:
             - dcim.device
+            - dcim.cable
+            - dcim.powerfeed
+            - dcim.rack
+            - dcim.site
+            - circuits.circuit
+            - virtualization.virtualmachine
+            - ipam.prefix
+            - ipam.ipaddress
+            - ipam.vlan
           color: 01bea3
 
     - name: Delete status
@@ -115,6 +122,15 @@ EXAMPLES = r"""
           name: "ansible_status"
           content_types:
             - dcim.device
+            - dcim.cable
+            - dcim.powerfeed
+            - dcim.rack
+            - dcim.site
+            - circuits.circuit
+            - virtualization.virtualmachine
+            - ipam.prefix
+            - ipam.ipaddress
+            - ipam.vlan
           color: 01bea3
         state: absent
 """
@@ -153,12 +169,7 @@ def main():
                 required=True,
                 options=dict(
                     name=dict(required=True, type="str"),
-                    content_types=dict(
-                        required=False,
-                        type="list",
-                        choices=["dcim.device"],
-                        elements="str",
-                    ),
+                    content_types=dict(required=False, type="list", elements="str",),
                     color=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
                 ),

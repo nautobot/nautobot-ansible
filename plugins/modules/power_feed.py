@@ -60,11 +60,6 @@ options:
       status:
         description:
           - The status of the power feed
-        choices:
-          - offline
-          - active
-          - planned
-          - failed
         required: false
         type: str
       type:
@@ -156,6 +151,7 @@ EXAMPLES = r"""
         data:
           name: Test Power Feed
           power_panel: Test Power Panel
+          status: active
         state: present
 
     - name: Update power feed with other fields
@@ -221,11 +217,7 @@ def main():
                     power_panel=dict(required=True, type="raw"),
                     rack=dict(required=False, type="raw"),
                     name=dict(required=True, type="str"),
-                    status=dict(
-                        required=False,
-                        choices=["offline", "active", "planned", "failed"],
-                        type="str",
-                    ),
+                    status=dict(required=False, type="str",),
                     type=dict(
                         required=False, choices=["primary", "redundant"], type="str"
                     ),
@@ -247,7 +239,7 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["power_panel", "name"]),
+        ("state", "present", ["power_panel", "name", "status"]),
         ("state", "absent", ["power_panel", "name"]),
     ]
 

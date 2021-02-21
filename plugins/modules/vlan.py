@@ -128,6 +128,7 @@ EXAMPLES = r"""
         data:
           name: Test VLAN
           vid: 400
+          status: active
         state: present
 
     - name: Delete vlan within nautobot
@@ -137,6 +138,7 @@ EXAMPLES = r"""
         data:
           name: Test VLAN
           vid: 400
+          status: active
         state: absent
 
     - name: Create vlan with all information
@@ -205,7 +207,7 @@ def main():
         )
     )
     required_if = [
-        ("state", "present", ["name"]),
+        ("state", "present", ["name", "status"]),
         ("state", "absent", ["name"]),
     ]
 

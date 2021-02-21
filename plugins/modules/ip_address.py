@@ -192,6 +192,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         data:
           address: 192.168.1.10
+          status: active
         state: present
     - name: Force to create (even if it already exists) the IP
       networktocode.nautobot.ip_address:
@@ -361,7 +362,7 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["address", "prefix"], True),
+        ("state", "present", ["address", "prefix", "status"], True),
         ("state", "absent", ["address"]),
         ("state", "new", ["address", "prefix"], True),
     ]

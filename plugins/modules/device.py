@@ -196,6 +196,7 @@ EXAMPLES = r"""
           device_type: C9410R
           device_role: Core Switch
           site: Main
+          status: active
         state: present
 
     - name: Create device within Nautobot with empty string name to generate UUID
@@ -207,6 +208,7 @@ EXAMPLES = r"""
           device_type: C9410R
           device_role: Core Switch
           site: Main
+          status: active
         state: present
 
     - name: Delete device within nautobot
@@ -226,6 +228,7 @@ EXAMPLES = r"""
           device_type: C9410R
           device_role: Core Switch
           site: Main
+          status: active
           local_context_data:
             bgp: "65000"
           tags:
@@ -309,7 +312,10 @@ def main():
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
+    required_if = [
+        ("state", "present", ["name", "status"]),
+        ("state", "absent", ["name"]),
+    ]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if

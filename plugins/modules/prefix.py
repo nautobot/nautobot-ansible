@@ -158,6 +158,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         data:
           prefix: 10.156.0.0/19
+          status: active
         state: present
 
     - name: Delete prefix within nautobot
@@ -287,7 +288,7 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["prefix", "parent"], True),
+        ("state", "present", ["prefix", "parent", "status"], True),
         ("state", "absent", ["prefix"]),
         ("first_available", "yes", ["parent"]),
     ]

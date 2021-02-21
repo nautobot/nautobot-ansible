@@ -134,6 +134,7 @@ EXAMPLES = r"""
           cid: Test Circuit
           provider: Test Provider
           circuit_type: Test Circuit Type
+          status: active
         state: present
 
     - name: Update circuit with other fields
@@ -210,7 +211,10 @@ def main():
         )
     )
 
-    required_if = [("state", "present", ["cid"]), ("state", "absent", ["cid"])]
+    required_if = [
+        ("state", "present", ["cid", "status"]),
+        ("state", "absent", ["cid"]),
+    ]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if

@@ -111,10 +111,6 @@ options:
       status:
         description:
           - The status of the cable
-        choices:
-          - connected
-          - planned
-          - decommissioning
         required: false
         type: str
       label:
@@ -183,6 +179,7 @@ EXAMPLES = r"""
           termination_b:
             device: Test Nexus Child One
             name: Ethernet2/1
+          status: active
         state: present
 
     - name: Update cable with other fields
@@ -313,11 +310,7 @@ def main():
                         ],
                         type="str",
                     ),
-                    status=dict(
-                        required=False,
-                        choices=["connected", "planned", "decommissioning"],
-                        type="str",
-                    ),
+                    status=dict(required=False, type="str",),
                     label=dict(required=False, type="str"),
                     color=dict(required=False, type="str"),
                     length=dict(required=False, type="int"),
@@ -338,6 +331,7 @@ def main():
                 "termination_a",
                 "termination_b_type",
                 "termination_b",
+                "status",
             ],
         ),
         (
