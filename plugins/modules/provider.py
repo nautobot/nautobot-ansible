@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -24,10 +22,10 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
+  - Network to Code (@networktocode)
 requirements:
   - pynautobot
-version_added: '0.1.0'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -119,16 +117,16 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create provider within Nautobot with only required information
-      provider:
-        url: http://netbox.local
+      networktocode.nautobot.provider:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Provider
         state: present
 
     - name: Update provider with other fields
-      provider:
-        url: http://netbox.local
+      networktocode.nautobot.provider:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Provider
@@ -140,9 +138,9 @@ EXAMPLES = r"""
           comments: "BAD PROVIDER"
         state: present
 
-    - name: Delete provider within netbox
-      provider:
-        url: http://netbox.local
+    - name: Delete provider within nautobot
+      networktocode.nautobot.provider:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Provider
@@ -162,7 +160,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
     NautobotCircuitsModule,
@@ -175,7 +173,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

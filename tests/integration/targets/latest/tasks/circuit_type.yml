@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_CIRCUIT_TYPE
+### PYNAUTOBOT_CIRCUIT_TYPE
 ##
 ##
 - name: "CIRCUIT_TYPE 1: Necessary info creation"

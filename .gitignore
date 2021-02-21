@@ -1,4 +1,4 @@
-*.tar.gz
+networktocode-nautobot*.tar.gz
 __pycache__/
 *.pyc
 tests/output/*

@@ -14,32 +14,19 @@ from jsondiff import diff
 from typing import Iterable
 from operator import itemgetter
 
-# Netbox includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Netbox API.
+# Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port
 # Remove these from files saved in git as test data
 KEYS_REMOVE = frozenset(["created", "last_updated", "url"])
 
 # Ignore these when performing diffs as they will be different for each test run
-# (Was previously keys specific to NetBox 2.6)
 KEYS_IGNORE = frozenset()
 
-# Rack Groups became hierarchical in NetBox 2.8. Don't bother comparing against test data in NetBox 2.7
-KEYS_IGNORE_27 = frozenset(
-    [
-        "rack_groups",  # host var
-        "rack_group_parent_rack_group",  # group, group_names_raw = False
-        "parent_rack_group",  # group, group_names_raw = True
-    ]
-)
 
-
-def all_keys_to_ignore(netbox_version):
+def all_keys_to_ignore(nautobot_version):
     keys = KEYS_REMOVE.union(KEYS_IGNORE)
 
-    if netbox_version == "v2.7":
-        return keys.union(KEYS_IGNORE_27)
-    else:
-        return keys
+    return keys
 
 
 # Assume the object will not be recursive, as it originally came from JSON
@@ -117,11 +104,11 @@ def main():
         ),
     )
     parser.add_argument(
-        "--netbox-version",
+        "--nautobot-version",
         metavar="VERSION",
         type=str,
         help=(
-            "Apply comparison specific to NetBox version. "
+            "Apply comparison specific to Nautobot version. "
             "For example, rack_groups arrays will only contain a single item in v2.7, so are ignored in the comparison."
         ),
     )
@@ -141,7 +128,7 @@ def main():
         data_b = read_json(args.filename_b)
 
         # Ignore keys that we don't want to diff, in addition to the ones removed that change on every commit
-        keys = all_keys_to_ignore(args.netbox_version)
+        keys = all_keys_to_ignore(args.nautobot_version)
         remove_keys(data_a, keys)
         remove_keys(data_b, keys)
 

@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Benjamin Vergnaud (@bvergnaud)
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -26,7 +25,7 @@ author:
   - Benjamin Vergnaud (@bvergnaud)
 requirements:
   - pynautobot
-version_added: "0.1.0"
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -124,17 +123,17 @@ EXAMPLES = r"""
   gather_facts: False
   tasks:
     - name: Create interface within Nautobot with only required information
-      vm_interface:
-        url: http://netbox.local
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           virtual_machine: test100
           name: GigabitEthernet1
         state: present
 
-    - name: Delete interface within netbox
-      vm_interface:
-        url: http://netbox.local
+    - name: Delete interface within nautobot
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           virtual_machine: test100
@@ -142,8 +141,8 @@ EXAMPLES = r"""
         state: absent
 
     - name: Create interface as a trunk port
-      vm_interface:
-        url: http://netbox.local
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           virtual_machine: test100
@@ -175,7 +174,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
@@ -188,7 +187,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

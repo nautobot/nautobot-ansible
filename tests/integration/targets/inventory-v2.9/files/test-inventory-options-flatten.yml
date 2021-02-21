@@ -7,7 +7,7 @@ validate_certs: False
 cache: True
 cache_timeout: 3600
 cache_plugin: jsonfile
-cache_connection: /tmp/inventory_netbox
+cache_connection: /tmp/inventory_nautobot
 
 
 config_context: True

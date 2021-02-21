@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_REAR_PORT
+### PYNAUTOBOT_REAR_PORT
 ##
 ##
 - name: "REAR_PORT 1: Necessary info creation"

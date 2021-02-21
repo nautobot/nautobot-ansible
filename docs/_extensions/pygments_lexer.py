@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=no-self-argument
 #
-# Copyright 2006-2017 by the Pygments team, see AUTHORS at
+
 # https://bitbucket.org/birkenfeld/pygments-main/raw/7941677dc77d4f2bf0bbd6140ade85a9454b8b80/AUTHORS
-# Copyright by Norman Richards (original author of JSON lexer).
+
 #
 # Licensed under BSD license:
 #
-# Copyright (c) 2006-2017 by the respective authors (see AUTHORS file).
+
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without

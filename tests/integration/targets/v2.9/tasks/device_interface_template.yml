@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_DEVICE_INTERFACE_TEMPLATE
+### PYNAUTOBOT_DEVICE_INTERFACE_TEMPLATE
 ##
 ##
 - name: "1 - Interface with required information"

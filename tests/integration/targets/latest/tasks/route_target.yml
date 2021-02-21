@@ -1,7 +1,7 @@
 ---
 #
 # ADD (CHECK MODE)
-- name: "NETBOX_ROUTE_TARGET_ADD: Check Mode - Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Check Mode - Add all fields except description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -14,7 +14,7 @@
   check_mode: yes
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_ADD: (ASSERT) Check Mode - Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD: (ASSERT) Check Mode - Add all fields except description"
   assert:
     that:
       - test_results is changed
@@ -26,7 +26,7 @@
       - test_results['msg'] == "route_target 65000:65001 created"
 
 # ADD
-- name: "NETBOX_ROUTE_TARGET_ADD: Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Add all fields except description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -38,7 +38,7 @@
         - second
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_ADD: (ASSERT) Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD: (ASSERT) Add all fields except description"
   assert:
     that:
       - test_results is changed
@@ -50,7 +50,7 @@
       - test_results['msg'] == "route_target 65000:65001 created"
 
 # ADD (IDEMPOTENT)
-- name: "NETBOX_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -62,7 +62,7 @@
         - second
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
   assert:
     that:
       - test_results is not changed
@@ -73,7 +73,7 @@
 
 #
 # UPDATE (CHECK MODE)
-- name: "NETBOX_ROUTE_TARGET_UPDATE: Check Mode - Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: Check Mode - Update description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -87,7 +87,7 @@
   check_mode: yes
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_UPDATE: (ASSERT) Check Mode - Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: (ASSERT) Check Mode - Update description"
   assert:
     that:
       - test_results is changed
@@ -100,7 +100,7 @@
       - test_results['msg'] == "route_target 65000:65001 updated"
 
 # UPDATE
-- name: "NETBOX_ROUTE_TARGET_UPDATE: Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: Update description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -113,7 +113,7 @@
         - second
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_UPDATE: (ASSERT) Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: (ASSERT) Update description"
   assert:
     that:
       - test_results is changed
@@ -126,7 +126,7 @@
       - test_results['msg'] == "route_target 65000:65001 updated"
 
 # UPDATE (IDEMPOTENT)
-- name: "NETBOX_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -139,7 +139,7 @@
         - second
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
+- name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
   assert:
     that:
       - test_results is not changed
@@ -151,7 +151,7 @@
 
 #
 # DELETE (CHECK MODE)
-- name: "NETBOX_ROUTE_TARGET_DELETE: Check Mode - Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: Check Mode - Delete route target"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -161,7 +161,7 @@
   check_mode: yes
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_DELETE: (ASSERT) Check Mode - Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: (ASSERT) Check Mode - Delete route target"
   assert:
     that:
       - test_results is changed
@@ -170,7 +170,7 @@
       - test_results['msg'] == "route_target 65000:65001 deleted"
 
 # DELETE
-- name: "NETBOX_ROUTE_TARGET_DELETE: Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: Delete route target"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -179,7 +179,7 @@
     state: absent
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_DELETE: (ASSERT) Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: (ASSERT) Delete route target"
   assert:
     that:
       - test_results is changed
@@ -188,7 +188,7 @@
       - test_results['msg'] == "route_target 65000:65001 deleted"
 
 # DELETE (IDEMPOTENT)
-- name: "NETBOX_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
   networktocode.nautobot.route_target:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -197,7 +197,7 @@
     state: absent
   register: test_results
 
-- name: "NETBOX_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
+- name: "PYNAUTOBOT_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
   assert:
     that:
       - test_results is not changed

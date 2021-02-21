@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_CONSOLE_SERVER_PORT
+### PYNAUTOBOT_CONSOLE_SERVER_PORT
 ##
 ##
 - name: "CONSOLE_SERVER_PORT 1: Necessary info creation"

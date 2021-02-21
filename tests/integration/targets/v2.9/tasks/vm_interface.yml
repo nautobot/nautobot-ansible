@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### NETBOX_VM_INTERFACE
+### PYNAUTOBOT_VM_INTERFACE
 ##
 ##
-- name: "NETBOX_VM_INTERFACE 1: Necessary info creation"
+- name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -14,7 +14,7 @@
     state: present
   register: test_one
 
-- name: "NETBOX_VM_INTERFACE 1: ASSERT - Necessary info creation"
+- name: "PYNAUTOBOT_VM_INTERFACE 1: ASSERT - Necessary info creation"
   assert:
     that:
       - test_one is changed
@@ -24,7 +24,7 @@
       - test_one['interface']['virtual_machine'] == 1
       - test_one['msg'] == "interface Eth10 created"
 
-- name: "NETBOX_VM_INTERFACE 2: Create duplicate"
+- name: "PYNAUTOBOT_VM_INTERFACE 2: Create duplicate"
   networktocode.nautobot.vm_interface:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -34,7 +34,7 @@
     state: present
   register: test_two
 
-- name: "NETBOX_VM_INTERFACE 2: ASSERT - Create duplicate"
+- name: "PYNAUTOBOT_VM_INTERFACE 2: ASSERT - Create duplicate"
   assert:
     that:
       - not test_two['changed']
@@ -42,7 +42,7 @@
       - test_two['interface']['virtual_machine'] == 1
       - test_two['msg'] == "interface Eth10 already exists"
 
-- name: "NETBOX_VM_INTERFACE 3: Updated"
+- name: "PYNAUTOBOT_VM_INTERFACE 3: Updated"
   networktocode.nautobot.vm_interface:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -67,7 +67,7 @@
     state: present
   register: test_three
 
-- name: "NETBOX_VM_INTERFACE 4: ASSERT - Updated"
+- name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Updated"
   assert:
     that:
       - test_three is changed
@@ -91,7 +91,7 @@
       - test_three['interface']['tags'][0] == 4
       - test_three['msg'] == "interface Eth10 updated"
 
-- name: "NETBOX_VM_INTERFACE 4: ASSERT - Delete"
+- name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Delete"
   networktocode.nautobot.vm_interface:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -101,7 +101,7 @@
     state: absent
   register: test_four
 
-- name: "NETBOX_VM_INTERFACE 4: ASSERT - Delete"
+- name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Delete"
   assert:
     that:
       - test_four is changed
@@ -109,7 +109,7 @@
       - test_four['interface']['virtual_machine'] == 1
       - test_four['msg'] == "interface Eth10 deleted"
 
-- name: "NETBOX_VM_INTERFACE 5: Attempt to update interface with same name on other VMs"
+- name: "PYNAUTOBOT_VM_INTERFACE 5: Attempt to update interface with same name on other VMs"
   networktocode.nautobot.vm_interface:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -134,7 +134,7 @@
     state: present
   register: test_five
 
-- name: "NETBOX_VM_INTERFACE 5: ASSERT - Updated"
+- name: "PYNAUTOBOT_VM_INTERFACE 5: ASSERT - Updated"
   assert:
     that:
       - test_five is changed

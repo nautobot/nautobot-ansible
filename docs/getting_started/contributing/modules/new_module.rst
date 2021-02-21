@@ -2,7 +2,7 @@
 Contributing a New Module
 ==========================
 
-We'll go through the build a module for NetBox's new **route-targets** endpoint under the **IPAM** app.
+We'll go through the build a module for Nautobot's new **route-targets** endpoint under the **IPAM** app.
 
 Research API Spec to find necessary module arguments
 -------------------------------------------------------
@@ -12,7 +12,7 @@ We'll need to look at the API spec for **route-target** to understand what argum
 .. image:: ./media/post_rt.png
 
 This module is light, but we can will cover most of the changes required for any module to function properly. We can see that the only required argument is going to be **name**. The next
-argument will be **tenant** that which is another object within NetBox, but fortunately we have already implemented the necessary changes to find a **tenant**. **Description** is only text field
+argument will be **tenant** that which is another object within Nautobot, but fortunately we have already implemented the necessary changes to find a **tenant**. **Description** is only text field
 so there won't be any changes necessary for this argument. **Tags** is handled the same way as **tenant** and no additional code will be required for that. **Custom fields** is similar, but doesn't
 require any necessary search for an object, but the custom field must exist on the endpoint.
 
@@ -25,7 +25,7 @@ require any necessary search for an object, but the custom field must exist on t
 Update App Module Util
 ----------------------------------
 
-Open ``plugins/module_utils/netbox_ipam.py`` file and update the following.
+Open ``plugins/module_utils/ipam.py`` file and update the following.
 
 .. code-block:: python
 
@@ -33,7 +33,7 @@ Open ``plugins/module_utils/netbox_ipam.py`` file and update the following.
   NB_ROUTE_TARGETS = "route_targets"
   ...
   
-  class NetboxIpamModule(NetboxModule):
+  class NautobotIpamModule(NautobotModule):
       ...
       def run(self):
       """
@@ -44,10 +44,10 @@ Open ``plugins/module_utils/netbox_ipam.py`` file and update the following.
 
 These should be all the changes we need within this file for the time being.
 
-Update Netbox Utils
+Update Nautobot Utils
 -------------------------------
 
-Open ``plugins/module_utils/netbox_utils.py`` and update the following.
+Open ``plugins/module_utils/utils.py`` and update the following.
 
 .. code-block:: python
 
@@ -104,25 +104,25 @@ Copy an existing module file from ``plugins/modules`` and name it ``versa_route_
 Now we need to update the ``DOCUMENTATION`` variable to match the module we're creating.
 
 .. note::
-  There are builtin options that you shouldn't have to change such as ``netbox_url``, ``netbox_token``, ``state``,
+  There are builtin options that you shouldn't have to change such as ``url``, ``token``, ``state``,
   ``query_params``, and ``validate_certs``.
 
 .. code-block:: python
 
   DOCUMENTATION = r"""
   ---
-  module: netbox_route_target
-  short_description: Creates or removes route targets from Netbox
+  module: route_target
+  short_description: Creates or removes route targets from Nautobot
   description:
-    - Creates or removes route targets from Netbox
+    - Creates or removes route targets from Nautobot
   notes:
     - Tags should be defined as a YAML list
     - This should be ran with connection C(local) and hosts C(localhost)
   author:
-    - Mikhail Yohman (@fragmentedpacket)
+    - Network to Code <info@networktocode.com>
   requirements:
-    - pynetbox
-  version_added: "2.0.0"
+    - pynautobot
+  version_added: "1.0.0"
   options:
     ...
     data:
@@ -152,7 +152,7 @@ Now we need to update the ``DOCUMENTATION`` variable to match the module we're c
           type: list
         custom_fields:
           description:
-            - must exist in Netbox
+            - must exist in Nautobot
           required: false
           type: dict
       required: true
@@ -169,7 +169,7 @@ Update the following:
   - options -> data (All the necessary information from what we found from the API docs)
 
 Just a few things to note here are the types that are defined for the documentation. The should mostly follow the API such as a string, integer, list, etc.
-In the case of arguments that resolve to objects within NetBox, typically **raw** is used so the user can specify either a string or a dictionary with other
+In the case of arguments that resolve to objects within Nautobot, typically **raw** is used so the user can specify either a string or a dictionary with other
 fields that will help search for the object within the API.
 
 The next step is to update the ``EXAMPLES`` variable.
@@ -183,9 +183,9 @@ The next step is to update the ``EXAMPLES`` variable.
     gather_facts: False
     tasks:
       - name: Create Route Targets
-        netbox.netbox.netbox_route_target:
-          netbox_url: http://netbox.local
-          netbox_token: thisIsMyToken
+        networktocode.nautobot.route_target:
+          url: http://nautobot.local
+          token: thisIsMyToken
           data:
             name: "{{ item.name }}"
             tenant: "Test Tenant"
@@ -196,9 +196,9 @@ The next step is to update the ``EXAMPLES`` variable.
           - { name: "65000:65002", description: "tunnel" }
   
       - name: Update Description on Route Targets
-        netbox.netbox.netbox_route_target:
-          netbox_url: http://netbox.local
-          netbox_token: thisIsMyToken
+        networktocode.nautobot.route_target:
+          url: http://nautobot.local
+          token: thisIsMyToken
           data:
             name: "{{ item.name }}"
             tenant: "Test Tenant"
@@ -210,9 +210,9 @@ The next step is to update the ``EXAMPLES`` variable.
           - { name: "65000:65002", description: "tunnel" }
   
       - name: Delete Route Targets
-        netbox.netbox.netbox_route_target:
-          netbox_url: http://netbox.local
-          netbox_token: thisIsMyToken
+        networktocode.nautobot.route_target:
+          url: http://nautobot.local
+          token: thisIsMyToken
           data:
             name: "{{ item }}"
           state: absent
@@ -229,7 +229,7 @@ The only update to the ``RETURN`` variable should be the name of the object retu
 
     RETURN = r"""
     route_targets:
-      description: Serialized object as created/existent/updated/deleted within Netbox
+      description: Serialized object as created/existent/updated/deleted within Nautobot
       returned: always
       type: dict
     msg:
@@ -242,23 +242,23 @@ Now we import the necessary components from the collection that make up the meat
 
 .. code-block:: python
 
-  from ansible_collections.netbox.netbox.plugins.module_utils.netbox_utils import (
-      NetboxAnsibleModule,
-      NETBOX_ARG_SPEC,
+  from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+      NautobotAnsibleModule,
+      NAUTOBOT_ARG_SPEC,
   )
-  from ansible_collections.netbox.netbox.plugins.module_utils.netbox_ipam import (
-      NetboxIpamModule,
+  from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+      NautobotIpamModule,
       NB_ROUTE_TARGETS,
   )
   from copy import deepcopy
 
-We import our custom ``NetboxAnsibleModule`` to properly validate our data and our base argument spec (``NETBOX_ARG_SPEC``) that all modules should implement.
+We import our custom ``NautobotAnsibleModule`` to properly validate our data and our base argument spec (``NAUTOBOT_ARG_SPEC``) that all modules should implement.
 
 .. code-block:: python
 
-  NETBOX_ARG_SPEC = dict(
-      netbox_url=dict(type="str", required=True),
-      netbox_token=dict(type="str", required=True, no_log=True),
+  NAUTOBOT_ARG_SPEC = dict(
+      url=dict(type="str", required=True),
+      token=dict(type="str", required=True, no_log=True),
       state=dict(required=False, default="present", choices=["present", "absent"]),
       query_params=dict(required=False, type="list", elements="str"),
       validate_certs=dict(type="raw", default=True),
@@ -272,7 +272,7 @@ Let's move onto the ``main()`` function in the module and take a look at the req
       """
       Main entry point for module execution
       """
-      argument_spec = deepcopy(NETBOX_ARG_SPEC)
+      argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
       argument_spec.update(
           dict(
               data=dict(
@@ -296,26 +296,26 @@ the sanity tests that will run when a PR is submitted to the project and both th
 
   def main():
       ...
-      module = NetboxAnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+      module = NautobotAnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-      netbox_route_target = NetboxIpamModule(module, NB_ROUTE_TARGETS)
-      netbox_route_target.run()
+      route_target = NautobotIpamModule(module, NB_ROUTE_TARGETS)
+      route_target.run()
 
-We then initialize our custom ``NetboxAnsibleModule`` that will be passed into our custom ``NetboxIpamModule`` and then execute the ``run`` method.
+We then initialize our custom ``NautobotAnsibleModule`` that will be passed into our custom ``NautobotIpamModule`` and then execute the ``run`` method.
 That is all that our module needs to implement at this point. We can test this locally by installing the collection locally and testing this within a playbook by following the directions :ref:`here<Build From Source>`.
 
-Here is the output of the a playbook I created using the examples we documented with the only changes being the ``netbox_url`` and ``netbox_token``.
+Here is the output of the a playbook I created using the examples we documented with the only changes being the ``url`` and ``token``.
 
 .. code-block:: bash
 
   ❯ ansible-playbook pb.test-rt.yml -vv
   ansible-playbook 2.10.4
-    config file = /Users/myohman/cloned-repos/ansible_modules/ansible.cfg
+    config file = /Users/myohman/cloned-repos/nautobot-ansible/ansible.cfg
     configured module search path = ['/Users/myohman/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
     ansible python module location = /Users/myohman/.virtualenvs/main3.8/lib/python3.8/site-packages/ansible
     executable location = /Users/myohman/.virtualenvs/main3.8/bin/ansible-playbook
     python version = 3.8.6 (default, Nov 17 2020, 18:43:06) [Clang 12.0.0 (clang-1200.0.32.27)]
-  Using /Users/myohman/cloned-repos/ansible_modules/ansible.cfg as config file
+  Using /Users/myohman/cloned-repos/nautobot-ansible/ansible.cfg as config file
   [WARNING]: No inventory was parsed, only implicit localhost is available
   [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
   Skipping callback 'default', as we already have a stdout callback.
@@ -329,17 +329,17 @@ Here is the output of the a playbook I created using the examples we documented 
   META: ran handlers
   
   TASK [Create Route Targets] ******************************************************************************************************************************************************************************************************************************************************************************************
-  task path: /Users/myohman/cloned-repos/ansible_modules/pb.test-rt.yml:7
+  task path: /Users/myohman/cloned-repos/nautobot-ansible/pb.test-rt.yml:7
   changed: [localhost] => (item={'name': '65000:65001', 'description': 'management'}) => {"ansible_loop_var": "item", "changed": true, "item": {"description": "management", "name": "65000:65001"}, "msg": "route_target 65000:65001 updated", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "", "id": 1, "last_updated": "2021-01-13T23:06:40.211082Z", "name": "65000:65001", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/1/"}}
   changed: [localhost] => (item={'name': '65000:65002', 'description': 'tunnel'}) => {"ansible_loop_var": "item", "changed": true, "item": {"description": "tunnel", "name": "65000:65002"}, "msg": "route_target 65000:65002 created", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "", "id": 2, "last_updated": "2021-01-13T23:59:29.946943Z", "name": "65000:65002", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/2/"}}
   
   TASK [Update Description on Route Targets] ***************************************************************************************************************************************************************************************************************************************************************************
-  task path: /Users/myohman/cloned-repos/ansible_modules/pb.test-rt.yml:20
+  task path: /Users/myohman/cloned-repos/nautobot-ansible/pb.test-rt.yml:20
   changed: [localhost] => (item={'name': '65000:65001', 'description': 'management'}) => {"ansible_loop_var": "item", "changed": true, "item": {"description": "management", "name": "65000:65001"}, "msg": "route_target 65000:65001 updated", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "management", "id": 1, "last_updated": "2021-01-13T23:59:29.146435Z", "name": "65000:65001", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/1/"}}
   changed: [localhost] => (item={'name': '65000:65002', 'description': 'tunnel'}) => {"ansible_loop_var": "item", "changed": true, "item": {"description": "tunnel", "name": "65000:65002"}, "msg": "route_target 65000:65002 updated", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "tunnel", "id": 2, "last_updated": "2021-01-13T23:59:29.946943Z", "name": "65000:65002", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/2/"}}
   
   TASK [Delete Route Targets] ******************************************************************************************************************************************************************************************************************************************************************************************
-  task path: /Users/myohman/cloned-repos/ansible_modules/pb.test-rt.yml:34
+  task path: /Users/myohman/cloned-repos/nautobot-ansible/pb.test-rt.yml:34
   changed: [localhost] => (item=65000:65001) => {"ansible_loop_var": "item", "changed": true, "item": "65000:65001", "msg": "route_target 65000:65001 deleted", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "management", "id": 1, "last_updated": "2021-01-13T23:59:30.829004Z", "name": "65000:65001", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/1/"}}
   changed: [localhost] => (item=65000:65002) => {"ansible_loop_var": "item", "changed": true, "item": "65000:65002", "msg": "route_target 65000:65002 deleted", "route_target": {"created": "2021-01-13", "custom_fields": {}, "description": "tunnel", "id": 2, "last_updated": "2021-01-13T23:59:31.748181Z", "name": "65000:65002", "tags": [4], "tenant": 1, "url": "http://192.168.50.10:8000/api/ipam/route-targets/2/"}}
   META: ran handlers
@@ -371,14 +371,14 @@ They're stored in ``tests/integration/targets`` and each target corresponds with
   ❯ tree tests/integration
   tests/integration
   ├── integration.cfg
-  ├── netbox-deploy.py
+  ├── nautobot-deploy.py
   ├── render_config.sh
   └── targets
       ├── latest
       │   └── tasks
       │       ├── main.yml
-      │       ├── netbox_aggregate.yml
-      │       ├── netbox_cable.yml
+      │       ├── aggregate.yml
+      │       ├── cable.yml
       ├── regression-latest
       │   └── tasks
       │       └── main.yml
@@ -388,11 +388,11 @@ They're stored in ``tests/integration/targets`` and each target corresponds with
       └── v2.9
           └── tasks
               ├── main.yml
-              ├── netbox_aggregate.yml
-              ├── netbox_cable.yml
+              ├── aggregate.yml
+              ├── cable.yml
 
-This isn't all the directories or files, but since we only support the two latest NetBox releases, we have a folder for the  **latest** and the second latest version of NetBox, in this case v2.9.
-We also have a **regression** targets for tests that cover found bugs. With the ``netbox_route_target`` module, since it's a **2.10** feature, we only have to worry about adding integration tests to the
+This isn't all the directories or files, but since we only support the two latest Nautobot releases, we have a folder for the  **latest** and the second latest version of Nautobot, in this case v2.9.
+We also have a **regression** targets for tests that cover found bugs. With the ``route_target`` module, since it's a **2.10** feature, we only have to worry about adding integration tests to the
 **latest** target folder.
 
 .. note:: If functionality exists in both supported versions, you can complete the steps below and then just copy over the tasks file we create below.
@@ -406,10 +406,10 @@ Let's start by adding to ``tests/integration/targets/latest/main.yml``.
 
   ---
   ...
-  - name: "NETBOX_ROUTE_TARGET_TESTS"
-    include_tasks: "netbox_route_target.yml"
+  - name: "NAUTOBOT_ROUTE_TARGET_TESTS"
+    include_tasks: "route_target.yml"
 
-Next we'll create a new file named ``tests/integration/targets/latest/netbox_route_target.yml`` that will include our integration tests. Below is the pattern we'll follow.
+Next we'll create a new file named ``tests/integration/targets/latest/route_target.yml`` that will include our integration tests. Below is the pattern we'll follow.
 
 - **Add** (check mode)
 - **Add**
@@ -432,30 +432,30 @@ After all tests pass, let's generate our new documents. From the root of the col
   ❯ ./hacking/make-docs.sh
   rm: tests/output: No such file or directory
   rm: .pytest_cache: No such file or directory
-  Using /Users/myohman/cloned-repos/ansible_modules/ansible.cfg as config file
-  Created collection for netbox.netbox at /Users/myohman/cloned-repos/ansible_modules/netbox-netbox-2.0.0.tar.gz
+  Using /Users/myohman/cloned-repos/nautobot-ansible/ansible.cfg as config file
+  Created collection for networktocode.nautobot at /Users/myohman/cloned-repos/nautobot-ansible/networktocode.nautobot-1.1.0.tar.gz
   Starting galaxy collection install process
-  [WARNING]: The specified collections path '/Users/myohman/cloned-repos/ansible_modules' is not part of the configured Ansible collections paths
+  [WARNING]: The specified collections path '/Users/myohman/cloned-repos/nautobot-ansible' is not part of the configured Ansible collections paths
   '/Users/myohman/.ansible/collections:/usr/share/ansible/collections'. The installed collection won't be picked up in an Ansible run.
   Process install dependency map
   Starting collection install process
-  Installing 'netbox.netbox:2.0.0' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/netbox/netbox'
-  netbox.netbox (2.0.0) was installed successfully
-  Installing 'ansible.netcommon:1.4.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/ansible/netcommon'
+  Installing 'networktocode.nautobot:1.1.0' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/networktocode.nautobot'
+  networktocode.nautobot (1.1.0) was installed successfully
+  Installing 'ansible.netcommon:1.4.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/ansible/netcommon'
   Downloading https://galaxy.ansible.com/download/ansible-netcommon-1.4.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   ansible.netcommon (1.4.1) was installed successfully
-  Installing 'community.general:1.3.4' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/community/general'
+  Installing 'community.general:1.3.4' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/community/general'
   Downloading https://galaxy.ansible.com/download/community-general-1.3.4.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   community.general (1.3.4) was installed successfully
-  Installing 'google.cloud:1.0.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/google/cloud'
+  Installing 'google.cloud:1.0.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/google/cloud'
   Downloading https://galaxy.ansible.com/download/google-cloud-1.0.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   google.cloud (1.0.1) was installed successfully
-  Installing 'community.kubernetes:1.1.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/community/kubernetes'
+  Installing 'community.kubernetes:1.1.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/community/kubernetes'
   Downloading https://galaxy.ansible.com/download/community-kubernetes-1.1.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   community.kubernetes (1.1.1) was installed successfully
-  ERROR:antsibull:error=Cannot find plugin:func=get_ansible_plugin_info:mod=antsibull.docs_parsing.ansible_internal:plugin_name=netbox.netbox.netbox_interface:plugin_type=module|Error while extracting documentation. Will not document this plugin.
+  ERROR:antsibull:error=Cannot find plugin:func=get_ansible_plugin_info:mod=antsibull.docs_parsing.ansible_internal:plugin_name=networktocode.nautobot.interface:plugin_type=module|Error while extracting documentation. Will not document this plugin.
 
-Let's move onto updating ``netbox_vrf`` module. This new model within NetBox is also tied to VRFs as ``import_targets`` and ``export_targets``. Here is a screenshot of the new options we will need to add to the :ref:`netbox_vrf module<ansible_collections.netbox.netbox.netbox_vrf>`.
+Let's move onto updating ``vrf`` module. This new model within Nautobot is also tied to VRFs as ``import_targets`` and ``export_targets``. Here is a screenshot of the new options we will need to add to the :ref:`vrf module<ansible_collections.networktocode.nautobot.vrf>`.
 
 .. image:: ./media/vrf_options.png
 

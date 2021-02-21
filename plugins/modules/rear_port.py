@@ -1,8 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -27,7 +24,7 @@ author:
   - Tobias Groß (@toerb)
 requirements:
   - pynautobot
-version_added: '0.2.3'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -119,8 +116,8 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create rear port within Nautobot with only required information
-      rear_port:
-        url: http://netbox.local
+      networktocode.nautobot.rear_port:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Rear Port
@@ -129,8 +126,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update rear port with other fields
-      rear_port:
-        url: http://netbox.local
+      networktocode.nautobot.rear_port:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Rear Port
@@ -140,9 +137,9 @@ EXAMPLES = r"""
           description: rear port description
         state: present
 
-    - name: Delete rear port within netbox
-      rear_port:
-        url: http://netbox.local
+    - name: Delete rear port within nautobot
+      networktocode.nautobot.rear_port:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Rear Port
@@ -164,7 +161,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
@@ -177,7 +174,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

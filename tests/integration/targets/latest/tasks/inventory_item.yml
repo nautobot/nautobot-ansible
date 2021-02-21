@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_INVENTORY_ITEM
+### PYNAUTOBOT_INVENTORY_ITEM
 ##
 ##
 - name: "INVENTORY_ITEM 1: Necessary info creation"

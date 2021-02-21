@@ -4,7 +4,7 @@ Inventory
 
 This page will just have quick examples that people may have had questions about, but the normal plugin documentation should be referenced for normal usage.
 
-The inventory plugin documentation can be found :ref:`here<ansible_collections.netbox.netbox.nb_inventory_inventory>`.
+The inventory plugin documentation can be found :ref:`here<ansible_collections.networktocode.nautobot.inventory_inventory>`.
 
 Using Compose to Set ansible_network_os to Platform Slug
 ------------------------------------------------------------------
@@ -12,7 +12,7 @@ Using Compose to Set ansible_network_os to Platform Slug
 .. code-block:: yaml
 
   ---
-  plugin: netbox.netbox.nb_inventory
+  plugin: networktocode.nautobot.inventory
   compose:
     ansible_network_os: platform.slug
 
@@ -23,7 +23,7 @@ Using Keyed Groups to set ansible_network_os to Platform Slug
 .. code-block:: yaml
 
   ---
-  plugin: netbox.netbox.nb_inventory
+  plugin: networktocode.nautobot.inventory
   keyed_groups:
     - key: platform
       prefix: "network_os"
@@ -36,7 +36,7 @@ Using Keyed Groups to set ansible_network_os to Platform Slug
 Using Inventory Plugin Within AWX/Tower
 ----------------------------------------
 
-This will cover the basic usage of the NetBox inventory plugin within this collection.
+This will cover the basic usage of the Nautobot inventory plugin within this collection.
 
 1. Define ``collections/requirements.yml`` within a Git project.
 2. AWX/Tower will download the collection on each run. This can be handled differently or excluded if storing Ansible Collections on the AWX/Tower box.

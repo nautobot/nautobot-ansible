@@ -1,162 +1,162 @@
 ---
-- name: "NETBOX_DEVICE TESTS"
+- name: "PYNAUTOBOT_DEVICE TESTS"
   include_tasks: "device.yml"
 
-- name: "NETBOX_DEVICE_INTERFACE TESTS"
+- name: "PYNAUTOBOT_DEVICE_INTERFACE TESTS"
   include_tasks: "device_interface.yml"
 
-- name: "NETBOX_DEVICE_INTERFACE_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_DEVICE_INTERFACE_TEMPLATE TESTS"
   include_tasks: "device_interface_template.yml"
 
-- name: "NETBOX_IP_ADDRESS TESTS"
+- name: "PYNAUTOBOT_IP_ADDRESS TESTS"
   include_tasks: "ip_address.yml"
 
-- name: "NETBOX_PREFIX TESTS"
+- name: "PYNAUTOBOT_PREFIX TESTS"
   include_tasks: "prefix.yml"
 
-- name: "NETBOX_SITE TESTS"
+- name: "PYNAUTOBOT_SITE TESTS"
   include_tasks: "site.yml"
 
-- name: "NETBOX_TENTANT TESTS"
+- name: "PYNAUTOBOT_TENTANT TESTS"
   include_tasks: "tenant.yml"
 
-- name: "NETBOX_TENTANT_GROUP TESTS"
+- name: "PYNAUTOBOT_TENTANT_GROUP TESTS"
   include_tasks: "tenant_group.yml"
 
-- name: "NETBOX_RACK TESTS"
+- name: "PYNAUTOBOT_RACK TESTS"
   include_tasks: "rack.yml"
 
-- name: "NETBOX_RACK_ROLE TESTS"
+- name: "PYNAUTOBOT_RACK_ROLE TESTS"
   include_tasks: "rack_role.yml"
 
-- name: "NETBOX_RACK_GROUP TESTS"
+- name: "PYNAUTOBOT_RACK_GROUP TESTS"
   include_tasks: "rack_group.yml"
 
-- name: "NETBOX_MANUFACTURER TESTS"
+- name: "PYNAUTOBOT_MANUFACTURER TESTS"
   include_tasks: "manufacturer.yml"
 
-- name: "NETBOX_PLATFORM TESTS"
+- name: "PYNAUTOBOT_PLATFORM TESTS"
   include_tasks: "platform.yml"
 
-- name: "NETBOX_DEVICE_TYPE TESTS"
+- name: "PYNAUTOBOT_DEVICE_TYPE TESTS"
   include_tasks: "device_type.yml"
 
-- name: "NETBOX_DEVICE_ROLE TESTS"
+- name: "PYNAUTOBOT_DEVICE_ROLE TESTS"
   include_tasks: "device_role.yml"
 
-- name: "NETBOX_IPAM_ROLE TESTS"
+- name: "PYNAUTOBOT_IPAM_ROLE TESTS"
   include_tasks: "ipam_role.yml"
 
-- name: "NETBOX_VLAN_GROUP TESTS"
+- name: "PYNAUTOBOT_VLAN_GROUP TESTS"
   include_tasks: "vlan_group.yml"
 
-- name: "NETBOX_VLAN TESTS"
+- name: "PYNAUTOBOT_VLAN TESTS"
   include_tasks: "vlan.yml"
 
-- name: "NETBOX_VRF TESTS"
+- name: "PYNAUTOBOT_VRF TESTS"
   include_tasks: "vrf.yml"
 
-- name: "NETBOX_RIR TESTS"
+- name: "PYNAUTOBOT_RIR TESTS"
   include_tasks: "rir.yml"
 
-- name: "NETBOX_AGGREGATE TESTS"
+- name: "PYNAUTOBOT_AGGREGATE TESTS"
   include_tasks: "aggregate.yml"
 
-- name: "NETBOX_REGION TESTS"
+- name: "PYNAUTOBOT_REGION TESTS"
   include_tasks: "region.yml"
 
-- name: "NETBOX_DEVICE_BAY TESTS"
+- name: "PYNAUTOBOT_DEVICE_BAY TESTS"
   include_tasks: "device_bay.yml"
 
-- name: "NETBOX_DEVICE_BAY_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_DEVICE_BAY_TEMPLATE TESTS"
   include_tasks: "device_bay_template.yml"
 
-- name: "NETBOX_INVENTORY_ITEM TESTS"
+- name: "PYNAUTOBOT_INVENTORY_ITEM TESTS"
   include_tasks: "inventory_item.yml"
 
-- name: "NETBOX_VIRTUAL_MACHINE TESTS"
+- name: "PYNAUTOBOT_VIRTUAL_MACHINE TESTS"
   include_tasks: "virtual_machine.yml"
 
-- name: "NETBOX_CLUSTER TESTS"
+- name: "PYNAUTOBOT_CLUSTER TESTS"
   include_tasks: "cluster.yml"
 
-- name: "NETBOX_CLUSTER_GROUP TESTS"
+- name: "PYNAUTOBOT_CLUSTER_GROUP TESTS"
   include_tasks: "cluster_group.yml"
 
-- name: "NETBOX_CLUSTER_TYPE TESTS"
+- name: "PYNAUTOBOT_CLUSTER_TYPE TESTS"
   include_tasks: "cluster_type.yml"
 
-- name: "NETBOX_VM_INTERFACE TESTS"
+- name: "PYNAUTOBOT_VM_INTERFACE TESTS"
   include_tasks: "vm_interface.yml"
 
-- name: "NETBOX_PROVIDER TESTS"
+- name: "PYNAUTOBOT_PROVIDER TESTS"
   include_tasks: "provider.yml"
 
-- name: "NETBOX_CIRCUIT_TYPE TESTS"
+- name: "PYNAUTOBOT_CIRCUIT_TYPE TESTS"
   include_tasks: "circuit_type.yml"
 
-- name: "NETBOX_CIRCUIT TESTS"
+- name: "PYNAUTOBOT_CIRCUIT TESTS"
   include_tasks: "circuit.yml"
 
-- name: "NETBOX_CIRCUIT_TERMINATION TESTS"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION TESTS"
   include_tasks: "circuit_termination.yml"
 
-- name: "NETBOX_REAR_PORT TESTS"
+- name: "PYNAUTOBOT_REAR_PORT TESTS"
   include_tasks: "rear_port.yml"
 
-- name: "NETBOX_REAR_PORT_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_REAR_PORT_TEMPLATE TESTS"
   include_tasks: "rear_port_template.yml"
 
-- name: "NETBOX_FRONT_PORT TESTS"
+- name: "PYNAUTOBOT_FRONT_PORT TESTS"
   include_tasks: "front_port.yml"
 
-- name: "NETBOX_FRONT_PORT_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_FRONT_PORT_TEMPLATE TESTS"
   include_tasks: "front_port_template.yml"
 
-- name: "NETBOX_CONSOLE_PORT TESTS"
+- name: "PYNAUTOBOT_CONSOLE_PORT TESTS"
   include_tasks: "console_port.yml"
 
-- name: "NETBOX_CONSOLE_PORT_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_CONSOLE_PORT_TEMPLATE TESTS"
   include_tasks: "console_port_template.yml"
 
-- name: "NETBOX_CONSOLE_SERVER_PORT TESTS"
+- name: "PYNAUTOBOT_CONSOLE_SERVER_PORT TESTS"
   include_tasks: "console_server_port.yml"
 
-- name: "NETBOX_CONSOLE_SERVER_PORT_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_CONSOLE_SERVER_PORT_TEMPLATE TESTS"
   include_tasks: "console_server_port_template.yml"
 
-- name: "NETBOX_POWER_PANEL TESTS"
+- name: "PYNAUTOBOT_POWER_PANEL TESTS"
   include_tasks: "power_panel.yml"
 
-- name: "NETBOX_POWER_FEED TESTS"
+- name: "PYNAUTOBOT_POWER_FEED TESTS"
   include_tasks: "power_feed.yml"
 
-- name: "NETBOX_POWER_PORT TESTS"
+- name: "PYNAUTOBOT_POWER_PORT TESTS"
   include_tasks: "power_port.yml"
 
-- name: "NETBOX_POWER_PORT_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_POWER_PORT_TEMPLATE TESTS"
   include_tasks: "power_port_template.yml"
 
-- name: "NETBOX_POWER_OUTLET TESTS"
+- name: "PYNAUTOBOT_POWER_OUTLET TESTS"
   include_tasks: "power_outlet.yml"
 
-- name: "NETBOX_POWER_OUTLET_TEMPLATE TESTS"
+- name: "PYNAUTOBOT_POWER_OUTLET_TEMPLATE TESTS"
   include_tasks: "power_outlet_template.yml"
 
-- name: "NETBOX_VIRTUAL_CHASSIS TESTS"
+- name: "PYNAUTOBOT_VIRTUAL_CHASSIS TESTS"
   include_tasks: "virtual_chassis.yml"
 
-- name: "NETBOX_CABLE TESTS"
+- name: "PYNAUTOBOT_CABLE TESTS"
   include_tasks: "cable.yml"
 
-- name: "NETBOX_SERVICE TESTS"
+- name: "PYNAUTOBOT_SERVICE TESTS"
   include_tasks: "service.yml"
 
-- name: "NETBOX_LOOKUP TESTS"
+- name: "PYNAUTOBOT_LOOKUP TESTS"
   include_tasks: "lookup.yml"
 
-- name: "NETBOX_TAG_TESTS"
+- name: "PYNAUTOBOT_TAG_TESTS"
   include_tasks: "tag.yml"
 
-- name: "NETBOX_ROUTE_TARGET_TESTS"
+- name: "PYNAUTOBOT_ROUTE_TARGET_TESTS"
   include_tasks: "route_target.yml"

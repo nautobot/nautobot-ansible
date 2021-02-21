@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_TENANT
+### PYNAUTOBOT_TENANT
 ##
 ##
 - name: "1 - Test tenant creation"

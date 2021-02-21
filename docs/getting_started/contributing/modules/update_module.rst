@@ -5,10 +5,10 @@ Updating an Existing Module
 The main reason for updating an existing module is to either deprecate an option or add new options. We'll discuss the different methods for these options.
 
 
-New Option - Doesn't correlate to different NetBox models
+New Option - Doesn't correlate to different Nautobot models
 --------------------------------------------------------------
 
-There are times when you need to add a new option to a module that doesn't require resolving to other models within NetBox. An example is adding a new interface type to ``netbox_device_interface`` module and only requires a documentation and argument spec update.
+There are times when you need to add a new option to a module that doesn't require resolving to other models within Nautobot. An example is adding a new interface type to ``device_interface`` module and only requires a documentation and argument spec update.
 
 Another example is adding a ``dns_name`` field that is just a text field. The only updates that need to be made are to the ``DOCUMENTATION``, ``EXAMPLES`` and ``argument_spec`` within the module.
 
@@ -21,14 +21,14 @@ Steps:
 New Option - Must be resolved to a different model
 --------------------------------------------------------------
 
-When we add a new option that may point to a different model then we must make a few additional changes to both the module and the ``netbox_utils``. Let's stick with our previous example in :ref:`Contributing a New Module` for **route-targets**.
-It turns out that this was implemented as a separate model, but has a relationship to VRFs to track both **import** and **export** targets. This means we will need to add those additional options to :ref:`netbox_vrf module<ansible_collections.netbox.netbox.netbox_vrf_module>`.
+When we add a new option that may point to a different model then we must make a few additional changes to both the module and the ``utils``. Let's stick with our previous example in :ref:`Contributing a New Module` for **route-targets**.
+It turns out that this was implemented as a separate model, but has a relationship to VRFs to track both **import** and **export** targets. This means we will need to add those additional options to :ref:`vrf module<ansible_collections.networktocode.nautobot.vrf_module>`.
 
 Here is a refresher for what we're looking to implement.
 
 .. image:: ./media/vrf_options.png
 
-Let's start by updating :ref:`netbox_vrf<ansible_collections.netbox.netbox.netbox_vrf_module>` to specify both **import_targets** and **export_targets** as **lists** of **strings**.
+Let's start by updating :ref:`vrf<ansible_collections.networktocode.nautobot.vrf_module>` to specify both **import_targets** and **export_targets** as **lists** of **strings**.
 
 We'll update the ``DOCUMENTATION`` first.
 
@@ -41,14 +41,14 @@ We'll update the ``DOCUMENTATION`` first.
     required: false
     type: list
     elements: str
-    version_added: 2.0.0
+    version_added: "1.0.0"
   export_targets:
     description:
       - Export targets tied to VRF
     required: false
     type: list
     elements: str
-    version_added: 2.0.0
+    version_added: "1.0.0"
   ...
 
 Now that the ``DOCUMENTATION`` is updated, let's move onto updating the ``EXAMPLES``.
@@ -56,9 +56,9 @@ Now that the ``DOCUMENTATION`` is updated, let's move onto updating the ``EXAMPL
 .. code-block:: yaml
 
     - name: Create vrf with all information
-      netbox_vrf:
-        netbox_url: http://netbox.local
-        netbox_token: thisIsMyToken
+      vrf:
+        url: http://nautobot.local
+        token: thisIsMyToken
         data:
           name: Test VRF
           rd: "65000:1"
@@ -91,7 +91,7 @@ The final update we have to make to the module is updating the ``argument_spec``
                       ...
       ...
 
-Now that we have that taken care of, let's move onto the ``netbox_utils``.
+Now that we have that taken care of, let's move onto the ``utils``.
 
 .. code-block:: python
 
@@ -115,10 +115,10 @@ Now that we have that taken care of, let's move onto the ``netbox_utils``.
 Overall the changes are minimal as you just want to make sure to add it to ``CONVERT_TO_ID`` to flag the values to be converted to an ID by resolving to the **route-targets** model.
 This variable is just telling the collection what endpoint to use to search. The ``QUERY_TYPE`` then specifies the query type to use when attempting to resolve the ID.
 
-Now we need to make sure we test these new options within the integration tests. Since these require resolving to an existing model, we need to update our ``netbox-deploy.py`` script that bootstraps
-NetBox and make sure we add **route targets** we will use within our integration testing.
+Now we need to make sure we test these new options within the integration tests. Since these require resolving to an existing model, we need to update our ``nautobot-deploy.py`` script that bootstraps
+Nautobot and make sure we add **route targets** we will use within our integration testing.
 
-Edit ``tests/integration/netbox-deploy.py``.
+Edit ``tests/integration/nautobot-deploy.py``.
 
 .. code-block:: python
 
@@ -128,14 +128,14 @@ Edit ``tests/integration/netbox-deploy.py``.
       {"name": "5000:5000"},
       {"name": "6000:6000"},
   ]
-  created_route_targets = make_netbox_calls(nb.ipam.route_targets, route_targets)
+  created_route_targets = make_calls(nb.ipam.route_targets, route_targets)
   
   if ERRORS:
       sys.exit(
           "Errors have occurred when creating objects, and should have been printed out. Check previous output."
       )
 
-Next we'll update ``netbox_vrf.yml`` for the **latest** integration target.
+Next we'll update ``vrf.yml`` for the **latest** integration target.
 
 .. code-block:: bash
 
@@ -145,17 +145,17 @@ Next we'll update ``netbox_vrf.yml`` for the **latest** integration target.
   │   └── tasks
   │       ├── main.yml
   │       ├── ...
-  │       ├── netbox_vm_interface.yml
-  │       └── netbox_vrf.yml
+  │       ├── vm_interface.yml
+  │       └── vrf.yml
   
   12 directories, 143 files
 
 .. code-block:: yaml
 
   - name: "VRF 4: ASSERT - Update"
-    netbox.netbox.netbox_vrf:
-      netbox_url: http://localhost:32768
-      netbox_token: 0123456789abcdef0123456789abcdef01234567
+    networktocode.nautobot.vrf:
+      url: http://localhost:32768
+      token: 0123456789abcdef0123456789abcdef01234567
       data:
         name: "Test VRF One"
         rd: "65001:1"
@@ -201,27 +201,27 @@ Let's generate our new documents. From the root of the collection, run the follo
   ❯ ./hacking/make-docs.sh
   rm: tests/output: No such file or directory
   rm: .pytest_cache: No such file or directory
-  Using /Users/myohman/cloned-repos/ansible_modules/ansible.cfg as config file
-  Created collection for netbox.netbox at /Users/myohman/cloned-repos/ansible_modules/netbox-netbox-2.0.0.tar.gz
+  Using /Users/myohman/cloned-repos/nautobot-ansible/ansible.cfg as config file
+  Created collection for networktocode.nautobot at /Users/myohman/cloned-repos/nautobot-ansible/networktocode.nautobot-1.1.0.tar.gz
   Starting galaxy collection install process
-  [WARNING]: The specified collections path '/Users/myohman/cloned-repos/ansible_modules' is not part of the configured Ansible collections paths
+  [WARNING]: The specified collections path '/Users/myohman/cloned-repos/nautobot-ansible' is not part of the configured Ansible collections paths
   '/Users/myohman/.ansible/collections:/usr/share/ansible/collections'. The installed collection won't be picked up in an Ansible run.
   Process install dependency map
   Starting collection install process
-  Installing 'netbox.netbox:2.0.0' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/netbox/netbox'
-  netbox.netbox (2.0.0) was installed successfully
-  Installing 'ansible.netcommon:1.4.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/ansible/netcommon'
+  Installing 'networktocode.nautobot:1.1.0' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/networktocode.nautobot'
+  networktocode.nautobot (1.1.0) was installed successfully
+  Installing 'ansible.netcommon:1.4.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/ansible/netcommon'
   Downloading https://galaxy.ansible.com/download/ansible-netcommon-1.4.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   ansible.netcommon (1.4.1) was installed successfully
-  Installing 'community.general:1.3.4' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/community/general'
+  Installing 'community.general:1.3.4' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/community/general'
   Downloading https://galaxy.ansible.com/download/community-general-1.3.4.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   community.general (1.3.4) was installed successfully
-  Installing 'google.cloud:1.0.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/google/cloud'
+  Installing 'google.cloud:1.0.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/google/cloud'
   Downloading https://galaxy.ansible.com/download/google-cloud-1.0.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   google.cloud (1.0.1) was installed successfully
-  Installing 'community.kubernetes:1.1.1' to '/Users/myohman/cloned-repos/ansible_modules/ansible_collections/community/kubernetes'
+  Installing 'community.kubernetes:1.1.1' to '/Users/myohman/cloned-repos/nautobot-ansible/ansible_collections/community/kubernetes'
   Downloading https://galaxy.ansible.com/download/community-kubernetes-1.1.1.tar.gz to /Users/myohman/.ansible/tmp/ansible-local-4390k59zwzli/tmp5871aum5
   community.kubernetes (1.1.1) was installed successfully
-  ERROR:antsibull:error=Cannot find plugin:func=get_ansible_plugin_info:mod=antsibull.docs_parsing.ansible_internal:plugin_name=netbox.netbox.netbox_interface:plugin_type=module|Error while extracting documentation. Will not document this plugin.
+  ERROR:antsibull:error=Cannot find plugin:func=get_ansible_plugin_info:mod=antsibull.docs_parsing.ansible_internal:plugin_name=networktocode.nautobot.interface:plugin_type=module|Error while extracting documentation. Will not document this plugin.
 
 We'll push these up and let the CI/CD run and then these tests should pass and then we're good to submit a PR.

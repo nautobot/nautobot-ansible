@@ -1,8 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -27,7 +24,7 @@ author:
   - Tobias Groß (@toerb)
 requirements:
   - pynautobot
-version_added: '0.2.3'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -154,8 +151,8 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create power port within Nautobot with only required information
-      power_port_template:
-        url: http://netbox.local
+      networktocode.nautobot.power_port_template:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Power Port Template
@@ -163,8 +160,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update power port with other fields
-      power_port_template:
-        url: http://netbox.local
+      networktocode.nautobot.power_port_template:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Power Port Template
@@ -174,9 +171,9 @@ EXAMPLES = r"""
           maximum_draw: 80
         state: present
 
-    - name: Delete power port within netbox
-      power_port_template:
-        url: http://netbox.local
+    - name: Delete power port within nautobot
+      networktocode.nautobot.power_port_template:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Power Port Template
@@ -197,7 +194,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
@@ -210,7 +207,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

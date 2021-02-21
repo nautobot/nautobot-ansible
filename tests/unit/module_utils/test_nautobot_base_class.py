@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Bruno Inec (@sweenu) <bruno@inec.fr>
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -47,7 +45,7 @@ load_relative_test_data = partial(
 @pytest.fixture
 def fixture_arg_spec():
     return {
-        "url": "http://netbox.local/",
+        "url": "http://nautobot.local/",
         "token": "0123456789",
         "data": {
             "name": "Test Device1",
@@ -132,11 +130,11 @@ def on_deletion_diff(mock_module):
 def mock_module(mocker, mock_ansible_module, find_ids_return):
     find_ids = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._find_ids"))
     find_ids.return_value = find_ids_return
-    client = mocker.Mock(name="pynetbox.api")
+    client = mocker.Mock(name="pynautobot.api")
     client.version = "2.10"
-    netbox = NautobotModule(mock_ansible_module, NB_DEVICES, client=client)
+    nautobot = NautobotModule(mock_ansible_module, NB_DEVICES, client=client)
 
-    return netbox
+    return nautobot
 
 
 @pytest.fixture
@@ -233,7 +231,6 @@ def test_build_query_params_child(
     fetch_choice_value.return_value = 200
 
     query_params = mock_module._build_query_params(parent, module_data, child=child)
-    print(query_params)
     assert query_params == expected
 
 
@@ -289,7 +286,7 @@ def test_create_object_check_mode_true(
 
 
 def test_delete_object_check_mode_false(mock_module, obj_mock, on_deletion_diff):
-    mock_module.object = obj_mock
+    mock_module.nb_object = obj_mock
     diff = mock_module._delete_object()
     assert obj_mock.delete.called_once()
     assert diff == on_deletion_diff
@@ -304,7 +301,7 @@ def test_delete_object_check_mode_true(mock_module, obj_mock, on_deletion_diff):
 
 
 def test_update_object_no_changes(mock_module, obj_mock):
-    mock_module.object = obj_mock
+    mock_module.nb_object = obj_mock
     unchanged_data = obj_mock.serialize()
     serialized_object, diff = mock_module._update_object(unchanged_data)
     assert obj_mock.update.not_called()

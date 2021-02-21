@@ -1,11 +1,11 @@
-netbox.netbox Ansible Collection's documentation!
+networktocode.nautobot Ansible Collection's documentation!
 ================================================================
 
 
 Overview
 ========
 
-This is the documentation home of the **netbox.netbox** Ansible Collection. We will provide some examples of using all the different plugins included with this collection.
+This is the documentation home of the **networktocode.nautobot** Ansible Collection. We will provide some examples of using all the different plugins included with this collection.
 
 Contents
 ========
@@ -15,11 +15,10 @@ Contents
 
    Home <self>
    Getting Started <getting_started/index>
-   Advanced Usage <advanced/index>
    Plugins <plugins/index>
    Module Utils (Python) Docs <module_utils/index>
    Changelog <changelog/index>
 
 .. note::
-   This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021
+   This is a fork of the networktocode.nautobot Ansible Galaxy collection found at [https://github.com/nautobot/nautobot-ansible](https://github.com/nautobot/nautobot-ansible) in February, 2021
    

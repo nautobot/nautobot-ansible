@@ -6,7 +6,7 @@
 ./hacking/build.sh
 
 # Install new built version
-ansible-galaxy collection install netbox-netbox-*.tar.gz -f
+ansible-galaxy collection install networktocode-nautobot-*.tar.gz -f
 
 # Run antisbull-docs now
-antsibull-docs collection --use-current --squash-hierarchy --dest-dir docs/plugins/ netbox.netbox
+antsibull-docs collection --use-current --squash-hierarchy --dest-dir docs/plugins/ networktocode.nautobot

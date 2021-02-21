@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_VIRTUAL_MACHINES
+### PYNAUTOBOT_VIRTUAL_MACHINES
 ##
 ##
 - name: "VIRTUAL_MACHINE 1: Necessary info creation"

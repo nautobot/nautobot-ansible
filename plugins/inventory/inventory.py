@@ -1,6 +1,3 @@
-# Copyright (c) 2018 Remy Leone
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -22,14 +19,14 @@ DOCUMENTATION = """
         - inventory_cache
     options:
         plugin:
-            description: token that ensures this is a source file for the 'netbox' plugin.
+            description: token that ensures this is a source file for the 'nautobot' plugin.
             required: True
             choices: ['networktocode.nautobot.inventory']
         api_endpoint:
             description: Endpoint of the Nautobot API
             required: True
             env:
-                - name: NETBOX_API
+                - name: NAUTOBOT_API
         validate_certs:
             description:
                 - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
@@ -45,7 +42,7 @@ DOCUMENTATION = """
             description:
                 - If True, it adds config_context in host vars.
                 - Config-context enables the association of arbitrary data to devices and virtual machines grouped by
-                  region, site, role, platform, and/or tenant. Please check official netbox docs for more info.
+                  region, site, role, platform, and/or tenant. Please check official nautobot docs for more info.
             default: False
             type: boolean
         flatten_config_context:
@@ -54,21 +51,21 @@ DOCUMENTATION = """
                 - If flatten_config_context is set to True, the config context variables will be added directly to the host instead.
             default: False
             type: boolean
-            version_added: "0.2.1"
+            version_added: "1.0.0"
         flatten_local_context_data:
             description:
                 - If I(local_context_data) is enabled, by default it's added as a host var named local_context_data.
                 - If flatten_local_context_data is set to True, the config context variables will be added directly to the host instead.
             default: False
             type: boolean
-            version_added: "0.3.0"
+            version_added: "1.0.0"
         flatten_custom_fields:
             description:
                 - By default, host custom fields are added as a dictionary host var named custom_fields.
                 - If flatten_custom_fields is set to True, the fields will be added directly to the host instead.
             default: False
             type: boolean
-            version_added: "0.2.1"
+            version_added: "1.0.0"
         token:
             required: False
             description:
@@ -76,8 +73,8 @@ DOCUMENTATION = """
               - This may not be required depending on the Nautobot setup.
             env:
                 # in order of precedence
-                - name: NETBOX_TOKEN
-                - name: NETBOX_API_KEY
+                - name: NAUTOBOT_TOKEN
+                - name: NAUTOBOT_API_KEY
         plurals:
             description:
                 - If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
@@ -85,19 +82,19 @@ DOCUMENTATION = """
                 - The choices of I(group_by) will be changed by this option.
             default: True
             type: boolean
-            version_added: "0.2.1"
+            version_added: "1.0.0"
         interfaces:
             description:
                 - If True, it adds the device or virtual machine interface information in host vars.
             default: False
             type: boolean
-            version_added: "0.1.7"
+            version_added: "1.0.0"
         services:
             description:
                 - If True, it adds the device or virtual machine services information in host vars.
             default: True
             type: boolean
-            version_added: "0.2.0"
+            version_added: "1.0.0"
         fetch_all:
             description:
                 - By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.
@@ -107,7 +104,7 @@ DOCUMENTATION = """
                 - These GET request URIs can become quite large for a large number of devices. If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.
             default: True
             type: boolean
-            version_added: "0.2.1"
+            version_added: "1.0.0"
         group_by:
             description: Keys used to create groups. The I(plurals) option controls which of these are valid.
             type: list
@@ -142,7 +139,7 @@ DOCUMENTATION = """
             description: Will not add the group_by choice name to the group names
             default: False
             type: boolean
-            version_added: "0.2.0"
+            version_added: "1.0.0"
         query_filters:
             description: List of parameters passed to the query string for both devices and VMs (Multiple values may be separated by commas)
             type: list
@@ -165,7 +162,7 @@ DOCUMENTATION = """
                 - You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.
             type: int
             default: 4000
-            version_added: "0.2.1"
+            version_added: "1.0.0"
         virtual_chassis_name:
             description:
                 - When a device is part of a virtual chassis, use the virtual chassis name as the Ansible inventory hostname.
@@ -214,7 +211,7 @@ query_filters:
   - tag: web
   - tag: production
 
-# See the Nautobot documentation at https://netbox.readthedocs.io/en/latest/api/overview/
+# See the Nautobot documentation at https://nautobot.readthedocs.io/en/latest/api/overview/
 # the query_filters work as a logical **OR**
 #
 # Prefix any custom fields with cf_ and pass the field value with the regular Nautobot query string
@@ -334,9 +331,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return results
 
     def get_resource_list(self, api_url):
-        """Retrieves resource list from netbox API.
+        """Retrieves resource list from nautobot API.
         Returns:
-           A list of all resource from netbox API.
+           A list of all resource from nautobot API.
         """
         if not api_url:
             raise AnsibleError("Please check API URL in script configuration file.")
@@ -369,13 +366,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         # Sanity check, for case where max_uri_length < (api_url + length_per_value)
         if chunk_size < 1:
-            chunk_size = 1
-
-        if self.api_version == "2.6":
-            # Issue netbox-community/netbox#3507 was fixed in v2.7.5
-            # If using Nautobot v2.7.0-v2.7.4 will have to manually set max_uri_length to 0,
-            # but it's probably faster to keep fetch_all: True
-            # (You should really just upgrade your Nautobot install)
             chunk_size = 1
 
         resources = []

@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_PLATFORM
+### PYNAUTOBOT_PLATFORM
 ##
 ##
 - name: "PLATFORM 1: Necessary info creation"

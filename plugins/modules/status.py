@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -23,7 +22,7 @@ notes:
   - Status should be defined as a YAML list
 author:
   - Network to Code, LLC (@networktocode)
-  - Mikhail Yohman (@fragmentedpacket)
+  - Network to Code (@networktocode)
   - Josh VanDeraa (@jvanaderaa)
 requirements:
   - pynautobot
@@ -99,8 +98,8 @@ EXAMPLES = r"""
   gather_facts: False
   tasks:
     - name: Create status
-      status:
-        url: http://netbox.local
+      networktocode.nautobot.status:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: "{{ item.name }}"
@@ -109,8 +108,8 @@ EXAMPLES = r"""
           color: 01bea3
 
     - name: Delete status
-      status:
-        url: http://netbox.local
+      networktocode.nautobot.status:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: "ansible_status"
@@ -133,7 +132,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
     NautobotExtrasModule,
@@ -146,7 +145,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### TEST NETBOX CONNECTION FAILURE
+### TEST PYNAUTOBOT CONNECTION FAILURE
 ##
 ##
-- name: "TEST NETBOX CONNECTION FAILURE"
+- name: "TEST PYNAUTOBOT CONNECTION FAILURE"
   connection: local
   block:
     - name: "1 - Device with required information"
@@ -161,7 +161,7 @@
           - test_seven["diff"]["after"]["asset_tag"] == "Null"
           - test_seven["device"]["asset_tag"] == "Null"
 
-    - name: Add ip address to netbox and don't assign it to a device (Issue 372)
+    - name: Add ip address to nautobot and don't assign it to a device (Issue 372)
       networktocode.nautobot.ip_address:
         url: "http://localhost:32768"
         token: "0123456789abcdef0123456789abcdef01234567"

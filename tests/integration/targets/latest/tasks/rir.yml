@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_RIR
+### PYNAUTOBOT_RIR
 ##
 ##
 - name: "RIR 1: Necessary info creation"

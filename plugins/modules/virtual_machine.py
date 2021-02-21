@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Gaelle Mangin (@gmangin)
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -26,7 +25,7 @@ author:
   - Gaelle MANGIN (@gmangin)
 requirements:
   - pynautobot
-version_added: '0.1.0'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -152,25 +151,25 @@ EXAMPLES = r"""
   gather_facts: False
   tasks:
     - name: Create virtual machine within Nautobot with only required information
-      virtual_machine:
-        url: http://netbox.local
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Virtual Machine
           cluster: test cluster
         state: present
 
-    - name: Delete virtual machine within netbox
-      virtual_machine:
-        url: http://netbox.local
+    - name: Delete virtual machine within nautobot
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Virtual Machine
         state: absent
 
     - name: Create virtual machine with tags
-      virtual_machine:
-        url: http://netbox.local
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Another Test Virtual Machine
@@ -181,8 +180,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update vcpus, memory and disk of an existing virtual machine
-      virtual_machine:
-        url: http://netbox.local
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Virtual Machine
@@ -206,7 +205,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
@@ -219,7 +218,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

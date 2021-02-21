@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_POWER_OUTLET_TEMPLATE
+### PYNAUTOBOT_POWER_OUTLET_TEMPLATE
 ##
 ##
 - name: "POWER_OUTLET_TEMPLATE 1: Necessary info creation"

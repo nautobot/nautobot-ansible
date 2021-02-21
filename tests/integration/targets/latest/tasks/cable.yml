@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_CABLE
+### PYNAUTOBOT_CABLE
 ##
 ##
 - name: "CABLE 1: Necessary info creation"

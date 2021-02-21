@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_IPAM_ROLE
+### PYNAUTOBOT_IPAM_ROLE
 ##
 ##
 - name: "IPAM_ROLE 1: Necessary info creation"

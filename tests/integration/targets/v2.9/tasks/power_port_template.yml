@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_POWER_PORT_TEMPLATE
+### PYNAUTOBOT_POWER_PORT_TEMPLATE
 ##
 ##
 - name: "POWER_PORT_TEMPLATE 0: Create device type for testing power ports"

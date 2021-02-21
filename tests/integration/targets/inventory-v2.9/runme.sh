@@ -18,12 +18,6 @@ fi
 
 declare -a COMPARE_OPTIONS # empty array
 
-# Check if NETBOX_VERSION has been set by runme_config, and if so, pass to compare_inventory_json.py
-if [[ "${NETBOX_VERSION:-}" == "v2.7" ]]
-then
-    COMPARE_OPTIONS+=(--netbox-version "${NETBOX_VERSION}")
-fi
-
 # OUTPUT_DIR is set by ansible-test
 # OUTPUT_INVENTORY_JSON is only set if running hacking/update_test_inventories.sh to update the test diff data
 if [[ -n "${OUTPUT_INVENTORY_JSON:-}" ]]

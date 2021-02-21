@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -23,10 +22,10 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
+  - Network to Code (@networktocode)
 requirements:
   - pynautobot
-version_added: '0.1.0'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -116,8 +115,8 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create circuit termination within Nautobot with only required information
-      circuit_termination:
-        url: http://netbox.local
+      networktocode.nautobot.circuit_termination:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           circuit: Test Circuit
@@ -127,8 +126,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update circuit termination with other fields
-      circuit_termination:
-        url: http://netbox.local
+      networktocode.nautobot.circuit_termination:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           circuit: Test Circuit
@@ -139,9 +138,9 @@ EXAMPLES = r"""
           description: "Test description"
         state: present
 
-    - name: Delete circuit termination within netbox
-      circuit_termination:
-        url: http://netbox.local
+    - name: Delete circuit termination within nautobot
+      networktocode.nautobot.circuit_termination:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           circuit: Test Circuit
@@ -162,7 +161,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
     NautobotCircuitsModule,
@@ -175,7 +174,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_DEVICE
+### PYNAUTOBOT_DEVICE
 ##
 ##
 - name: "1 - Device with required information"

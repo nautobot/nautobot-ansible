@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Gaelle Mangin (@gmangin)
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -26,7 +25,7 @@ author:
   - Gaelle MANGIN (@gmangin)
 requirements:
   - pynautobot
-version_added: '0.1.0'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -113,25 +112,25 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create cluster within Nautobot with only required information
-      cluster:
-        url: http://netbox.local
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Cluster
           cluster_type: libvirt
         state: present
 
-    - name: Delete cluster within netbox
-      cluster:
-        url: http://netbox.local
+    - name: Delete cluster within nautobot
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Cluster
         state: absent
 
     - name: Create cluster with tags
-      cluster:
-        url: http://netbox.local
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Another Test Cluster
@@ -141,8 +140,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update the group and site of an existing cluster
-      cluster:
-        url: http://netbox.local
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Cluster
@@ -165,7 +164,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
@@ -178,7 +177,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

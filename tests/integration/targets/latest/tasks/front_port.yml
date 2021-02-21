@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_FRONT_PORT
+### PYNAUTOBOT_FRONT_PORT
 ##
 ##
 - name: "FRONT_PORT 1: Necessary info creation"

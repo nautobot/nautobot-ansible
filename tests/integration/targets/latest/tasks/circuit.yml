@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### NETBOX_CIRCUIT
+### PYNAUTOBOT_CIRCUIT
 ##
 ##
-- name: "NETBOX_CIRCUIT 1: Create provider within Netbox with only required information"
+- name: "PYNAUTOBOT_CIRCUIT 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -15,7 +15,7 @@
     state: present
   register: test_one
 
-- name: "NETBOX_CIRCUIT 1: ASSERT - Necessary info creation"
+- name: "PYNAUTOBOT_CIRCUIT 1: ASSERT - Necessary info creation"
   assert:
     that:
       - test_one is changed
@@ -26,7 +26,7 @@
       - test_one['circuit']['type'] == 1
       - test_one['msg'] == "circuit Test Circuit One created"
 
-- name: "NETBOX_CIRCUIT 2: Duplicate"
+- name: "PYNAUTOBOT_CIRCUIT 2: Duplicate"
   networktocode.nautobot.circuit:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -37,7 +37,7 @@
     state: present
   register: test_two
 
-- name: "NETBOX_CIRCUIT 2: ASSERT - Create duplicate"
+- name: "PYNAUTOBOT_CIRCUIT 2: ASSERT - Create duplicate"
   assert:
     that:
       - not test_two['changed']
@@ -46,7 +46,7 @@
       - test_two['circuit']['type'] == 1
       - test_two['msg'] == "circuit Test Circuit One already exists"
 
-- name: "NETBOX_CIRCUIT 3: Update provider with other fields"
+- name: "PYNAUTOBOT_CIRCUIT 3: Update provider with other fields"
   networktocode.nautobot.circuit:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -63,7 +63,7 @@
     state: present
   register: test_three
 
-- name: "NETBOX_CIRCUIT 3: ASSERT - Updated"
+- name: "PYNAUTOBOT_CIRCUIT 3: ASSERT - Updated"
   assert:
     that:
       - test_three is changed
@@ -84,7 +84,7 @@
       - test_three['circuit']['comments'] == "FAST CIRCUIT"
       - test_three['msg'] == "circuit Test Circuit One updated"
 
-- name: "NETBOX_CIRCUIT 4: Delete provider within netbox"
+- name: "PYNAUTOBOT_CIRCUIT 4: Delete provider within nautobot"
   networktocode.nautobot.circuit:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -93,7 +93,7 @@
     state: absent
   register: test_four
 
-- name: "NETBOX_CIRCUIT 4 : ASSERT - Delete"
+- name: "PYNAUTOBOT_CIRCUIT 4 : ASSERT - Delete"
   assert:
     that:
       - test_four is changed

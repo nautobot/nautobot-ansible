@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -58,15 +58,9 @@ class NautobotIpamModule(NautobotModule):
             "parent": data["prefix"],
         }
 
-        if not self._version_check_greater(self.version, "2.9", greater_or_equal=True):
-            if not data.get("interface") or not data.get("prefix"):
-                self._handle_errors("A prefix and interface is required")
-            data_intf_key = "interface"
-
-        else:
-            if not data.get("assigned_object_id") or not data.get("prefix"):
-                self._handle_errors("A prefix and assigned_object is required")
-            data_intf_key = "assigned_object_id"
+        if not data.get("assigned_object_id") or not data.get("prefix"):
+            self._handle_errors("A prefix and assigned_object is required")
+        data_intf_key = "assigned_object_id"
 
         intf_obj_type = data.get("assigned_object_type", "dcim.interface")
         if intf_obj_type == "virtualization.vminterface":

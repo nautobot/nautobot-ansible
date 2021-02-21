@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_REGION
+### PYNAUTOBOT_REGION
 ##
 ##
 - name: "REGION 1: Necessary info creation"

@@ -1,6 +1,6 @@
 ##
 ##
-### NETBOX_CLUSTER_TYPE
+### PYNAUTOBOT_CLUSTER_TYPE
 ##
 ##
 - name: "CLUSTER_TYPE 1: Necessary info creation"

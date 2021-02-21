@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_VLAN
+### PYNAUTOBOT_VLAN
 ##
 ##
 - name: "VLAN 1: Necessary info creation"

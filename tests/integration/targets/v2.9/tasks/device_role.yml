@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_DEVICE_ROLE
+### PYNAUTOBOT_DEVICE_ROLE
 ##
 ##
 - name: "DEVICE_ROLE 1: Necessary info creation"

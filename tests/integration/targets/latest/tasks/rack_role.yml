@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_RACK_ROLE
+### PYNAUTOBOT_RACK_ROLE
 ##
 ##
 - name: "RACK_ROLE 1: Necessary info creation"

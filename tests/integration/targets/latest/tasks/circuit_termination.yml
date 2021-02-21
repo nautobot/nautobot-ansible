@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### NETBOX_CIRCUIT_TERMINATION
+### PYNAUTOBOT_CIRCUIT_TERMINATION
 ##
 ##
-- name: "NETBOX_CIRCUIT_TERMINATION 1: Create provider within Netbox with only required information"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -16,7 +16,7 @@
     state: present
   register: test_one
 
-- name: "NETBOX_CIRCUIT_TERMINATION 1: ASSERT - Necessary info creation"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: ASSERT - Necessary info creation"
   assert:
     that:
       - test_one is changed
@@ -28,7 +28,7 @@
       - test_one['circuit_termination']['port_speed'] == 10000
       - test_one['msg'] == "circuit_termination test_circuit_a created"
 
-- name: "NETBOX_CIRCUIT_TERMINATION 2: Duplicate"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 2: Duplicate"
   networktocode.nautobot.circuit_termination:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -38,7 +38,7 @@
     state: present
   register: test_two
 
-- name: "NETBOX_CIRCUIT_TERMINATION 2: ASSERT - Create duplicate"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 2: ASSERT - Create duplicate"
   assert:
     that:
       - not test_two['changed']
@@ -48,7 +48,7 @@
       - test_two['circuit_termination']['port_speed'] == 10000
       - test_two['msg'] == "circuit_termination test_circuit_a already exists"
 
-- name: "NETBOX_CIRCUIT_TERMINATION 3: Update provider with other fields"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 3: Update provider with other fields"
   networktocode.nautobot.circuit_termination:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -62,7 +62,7 @@
     state: present
   register: test_three
 
-- name: "NETBOX_CIRCUIT_TERMINATION 3: ASSERT - Updated"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 3: ASSERT - Updated"
   assert:
     that:
       - test_three is changed
@@ -80,7 +80,7 @@
       - test_three['circuit_termination']['description'] == "Test description"
       - test_three['msg'] == "circuit_termination test_circuit_a updated"
 
-- name: "NETBOX_CIRCUIT_TERMINATION 4: Create Z Side"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 4: Create Z Side"
   networktocode.nautobot.circuit_termination:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -92,7 +92,7 @@
     state: present
   register: test_four
 
-- name: "NETBOX_CIRCUIT_TERMINATION 4: ASSERT - Create Z Side"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 4: ASSERT - Create Z Side"
   assert:
     that:
       - test_four is changed
@@ -104,7 +104,7 @@
       - test_four['circuit_termination']['port_speed'] == 10000
       - test_four['msg'] == "circuit_termination test_circuit_z created"
 
-- name: "NETBOX_CIRCUIT_TERMINATION 5: Delete provider within netbox"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Delete provider within nautobot"
   networktocode.nautobot.circuit_termination:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -114,7 +114,7 @@
     state: absent
   register: test_five
 
-- name: "NETBOX_CIRCUIT_TERMINATION 5: ASSERT - Delete"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Delete"
   assert:
     that:
       - test_five is changed

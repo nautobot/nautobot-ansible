@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_VIRTUAL_CHASSIS
+### PYNAUTOBOT_VIRTUAL_CHASSIS
 ##
 ##
 - name: "VIRTUAL_CHASSIS 0: Create device for testing virtual chassis"

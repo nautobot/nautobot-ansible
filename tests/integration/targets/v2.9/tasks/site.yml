@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### NETBOX_SITE
+### PYNAUTOBOT_SITE
 ##
 ##
-- name: "1 - Create site within Netbox with only required information"
+- name: "1 - Create site within Nautobot with only required information"
   networktocode.nautobot.site:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -113,7 +113,7 @@
       - test_four['site']['comments'] == "### Placeholder"
       - test_four['site']['slug'] == "test_california"
 
-- name: "NETBOX_SITE_IDEM: Idempotency - Create duplicate site with all parameters"
+- name: "PYNAUTOBOT_SITE_IDEM: Idempotency - Create duplicate site with all parameters"
   networktocode.nautobot.site:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
@@ -138,7 +138,7 @@
     state: present
   register: test_results
 
-- name: "NETBOX_SITE_IDEM: (ASSERT) Idempotency - Duplicate device site with all parameters"
+- name: "PYNAUTOBOT_SITE_IDEM: (ASSERT) Idempotency - Duplicate device site with all parameters"
   assert:
     that:
       - test_results is not changed
@@ -161,7 +161,7 @@
       - test_results['site']['comments'] == "### Placeholder"
       - test_results['site']['slug'] == "test_california"
 
-- name: "5 - Delete site within netbox"
+- name: "5 - Delete site within nautobot"
   networktocode.nautobot.site:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567

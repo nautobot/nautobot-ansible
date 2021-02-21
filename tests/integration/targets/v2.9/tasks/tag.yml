@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_TAGS
+### PYNAUTOBOT_TAGS
 ##
 ##
 - name: "TAG 1: ASSERT - Necessary info creation"

@@ -22,12 +22,12 @@ sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
 
-project = "ansible_modules"
-copyright = "2020, Mikhail Yohman"
-author = "Mikhail Yohman <@FragmentedPacket>"
+project = "Nautobot Ansible Modules"
+copyright = "2021, Network to Code"
+author = "Network to Code <info@networktocode.com>"
 
 # The full version, including alpha/beta/rc tags
-release = "2.0.0"
+release = "1.0.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -84,10 +84,7 @@ def create_antsibull_docs(files, plugin_type=None):
     """
     for f in files:
         file_name = re.search(r"(?:.+\/)(\S+)\.py", str(f)).group(1)
-        if file_name in ["netbox_interface"]:
-            continue
 
-        print(file_name)
         if plugin_type is not None:
             file_path = Path(f"plugins/{plugin_type}/{file_name}/")
         else:
@@ -96,9 +93,9 @@ def create_antsibull_docs(files, plugin_type=None):
         file_path.mkdir(mode=744, exist_ok=True)
 
         if plugin_type is not None:
-            args_string = f"junk plugin --dest-dir {file_path} --plugin-type {plugin_type} netbox.netbox.{file_name}"
+            args_string = f"junk plugin --dest-dir {file_path} --plugin-type {plugin_type} networktocode.nautobot.{file_name}"
         else:
-            args_string = f"junk plugin --dest-dir {file_path} --plugin-type module netbox.netbox.{file_name}"
+            args_string = f"junk plugin --dest-dir {file_path} --plugin-type module networktocode.nautobot.{file_name}"
         args = args_string.split(" ")
         try:
             antsibull_docs.run(args)
@@ -142,10 +139,12 @@ def build_ansible_docs(app):
 
 
 ###########################################
-# NOT IN USE AND SHOULD BE MANUALLY BUILT
+# NOT IN USE AND SHOULD BE MANUALLY BUILT via antsibull docs
+# Run from the root of the repo
+# antsibull-docs collection --dest-dir docs/plugins --use-current --squash-hierarchy networktocode.nautobot
 ################
 # def setup(app):
-#    app.connect("builder-inited", build_ansible_docs)
-
-
+#   app.connect("builder-inited", build_ansible_docs)
+#
+#
 # build_ansible_docs(None)

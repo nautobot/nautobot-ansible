@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2020, Pavel Korovin (@pkorovin) <p@tristero.se>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -23,10 +22,10 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@fragmentedpacket)
+  - Network to Code (@networktocode)
 requirements:
   - pynautobot
-version_added: "2.0.0"
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -100,7 +99,7 @@ EXAMPLES = r"""
   tasks:
     - name: Create Route Targets
       networktocode.nautobot.route_target:
-        url: http://netbox.local
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: "{{ item.name }}"
@@ -113,7 +112,7 @@ EXAMPLES = r"""
 
     - name: Update Description on Route Targets
       networktocode.nautobot.route_target:
-        url: http://netbox.local
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: "{{ item.name }}"
@@ -127,7 +126,7 @@ EXAMPLES = r"""
 
     - name: Delete Route Targets
       networktocode.nautobot.route_target:
-        url: http://netbox.local
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: "{{ item }}"
@@ -150,7 +149,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
@@ -163,7 +162,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

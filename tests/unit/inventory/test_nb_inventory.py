@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2020, Hillsong, Douglas Heriot (@DouglasHeriot) <douglas.heriot@hillsong.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -39,7 +37,7 @@ def inventory_fixture(
     allowed_device_query_parameters_fixture, allowed_vm_query_parameters_fixture
 ):
     inventory = InventoryModule()
-    inventory.api_endpoint = "https://netbox.test.endpoint:1234"
+    inventory.api_endpoint = "https://nautobot.test.endpoint:1234"
 
     # Fill in data that is fetched dynamically
     inventory.api_version = None
@@ -51,7 +49,7 @@ def inventory_fixture(
 
 @pytest.fixture
 def allowed_device_query_parameters_fixture():
-    # Subset of parameters - real list is fetched dynamically from NetBox openapi endpoint
+    # Subset of parameters - real list is fetched dynamically from Nautobot openapi endpoint
     return [
         "id",
         "interfaces",
@@ -68,7 +66,7 @@ def allowed_device_query_parameters_fixture():
 
 @pytest.fixture
 def allowed_vm_query_parameters_fixture():
-    # Subset of parameters - real list is fetched dynamically from NetBox openapi endpoint
+    # Subset of parameters - real list is fetched dynamically from Nautobot openapi endpoint
     return [
         "id",
         "interfaces",

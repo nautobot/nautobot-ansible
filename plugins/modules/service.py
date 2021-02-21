@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Kulakov Ilya  (@TawR1024)
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -25,7 +24,7 @@ author:
   - Kulakov Ilya (@TawR1024)
 requirements:
   - pynautobot
-version_added: '0.1.5'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -57,11 +56,6 @@ options:
           - Name of the region to be created
         required: true
         type: str
-      port:
-        description:
-          - Specifies which port used by service
-        required: false
-        type: int
       ports:
         description:
           - Specifies which ports used by service (Nautobot 2.10 and newer)
@@ -115,14 +109,14 @@ options:
 """
 
 EXAMPLES = r"""
-- name: "Create netbox service"
+- name: "Create nautobot service"
   connection: local
   hosts: all
   gather_facts: False
 
   tasks:
     - name: Create service
-      service:
+      networktocode.nautobot.service:
         url: url
         token: token
         data:
@@ -136,27 +130,27 @@ EXAMPLES = r"""
             - prometheus
         state: present
 
-- name: "Delete netbox service"
+- name: "Delete nautobot service"
   connection: local
   hosts: all
   gather_facts: False
 
   tasks:
     - name: Delete service
-      service:
+      networktocode.nautobot.service:
         url: url
         token: token
         data:
           device: Test666
           name: node-exporter
-          port: 9100
+          ports: 9100
           protocol: TCP
         state: absent
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
@@ -169,7 +163,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(
@@ -179,7 +173,6 @@ def main():
                     device=dict(required=False, type="raw"),
                     virtual_machine=dict(required=False, type="raw"),
                     name=dict(required=True, type="str"),
-                    port=dict(required=False, type="int"),
                     ports=dict(required=False, type="list", elements="int"),
                     protocol=dict(required=True, type="raw"),
                     ipaddresses=dict(required=False, type="raw"),
@@ -195,24 +188,16 @@ def main():
         ("state", "present", ["name"]),
         ("state", "absent", ["name"]),
     ]
-    mutually_exclusive = [("port", "ports")]
-    required_one_of = [["device", "virtual_machine"], ["port", "ports"]]
+    required_one_of = [["device", "virtual_machine"]]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         required_if=required_if,
         required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
     )
 
     service = NautobotIpamModule(module, NB_SERVICES)
-
-    # Change port to ports for 2.10+ and convert to a list with the single integer
-    if service.data.get("port") and service._version_check_greater(
-        service.version, "2.10", greater_or_equal=True
-    ):
-        service.data["ports"] = [service.data.pop("port")]
 
     # Run the normal run() method
     service.run()

@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_RACK
+### PYNAUTOBOT_RACK
 ##
 ##
 - name: "1 - Test rack creation"

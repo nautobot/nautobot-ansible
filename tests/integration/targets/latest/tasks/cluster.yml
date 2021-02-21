@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_CLUSTER
+### PYNAUTOBOT_CLUSTER
 ##
 ##
 - name: "CLUSTER 1: Necessary info creation"

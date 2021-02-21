@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### NETBOX_IP_ADDRESS
+### PYNAUTOBOT_IP_ADDRESS
 ##
 ##
-- name: "1 - Create IP address within Netbox with only required information - State: Present"
+- name: "1 - Create IP address within Nautobot with only required information - State: Present"
   networktocode.nautobot.ip_address:
     url: http://localhost.org:32768
     token: 0123456789abcdef0123456789abcdef01234567

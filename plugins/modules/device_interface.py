@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -24,10 +22,10 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
+  - Network to Code (@networktocode)
 requirements:
   - pynautobot
-version_added: "0.1.0"
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -53,14 +51,6 @@ options:
           - Name of the interface to be created
         required: true
         type: str
-      form_factor:
-        description:
-          - |
-            Form factor of the interface:
-            ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
-            This has to be specified exactly as what is found within UI
-        required: false
-        type: raw
       type:
         description:
           - |
@@ -158,24 +148,24 @@ EXAMPLES = r"""
   gather_facts: False
   tasks:
     - name: Create interface within Nautobot with only required information
-      device_interface:
-        url: http://netbox.local
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
           name: GigabitEthernet1
         state: present
-    - name: Delete interface within netbox
-      device_interface:
-        url: http://netbox.local
+    - name: Delete interface within nautobot
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
           name: GigabitEthernet1
         state: absent
     - name: Create LAG with several specified options
-      device_interface:
-        url: http://netbox.local
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
@@ -186,8 +176,8 @@ EXAMPLES = r"""
           mode: Access
         state: present
     - name: Create interface and assign it to parent LAG
-      device_interface:
-        url: http://netbox.local
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
@@ -201,8 +191,8 @@ EXAMPLES = r"""
           mode: Access
         state: present
     - name: Create interface as a trunk port
-      device_interface:
-        url: http://netbox.local
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
@@ -222,8 +212,8 @@ EXAMPLES = r"""
           mode: Tagged
         state: present
     - name: Update interface on child device on virtual chassis
-      device_interface:
-        url: http://netbox.local
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           device: test100
@@ -245,7 +235,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
@@ -258,7 +248,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
@@ -268,9 +258,6 @@ def main():
                 options=dict(
                     device=dict(required=False, type="raw"),
                     name=dict(required=True, type="str"),
-                    form_factor=dict(
-                        required=False, type="raw", removed_in_version="0.3.0"
-                    ),
                     type=dict(required=False, type="str"),
                     enabled=dict(required=False, type="bool"),
                     lag=dict(required=False, type="raw"),

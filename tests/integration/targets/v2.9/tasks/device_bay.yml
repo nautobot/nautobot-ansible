@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_DEVICE_BAY
+### PYNAUTOBOT_DEVICE_BAY
 ##
 ##
 - name: "DEVICE_BAY 1: Necessary info creation"

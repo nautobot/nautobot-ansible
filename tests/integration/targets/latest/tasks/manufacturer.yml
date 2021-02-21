@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_MANUFACTURER
+### PYNAUTOBOT_MANUFACTURER
 ##
 ##
 - name: "MANUFACTURER 1: Necessary info creation"

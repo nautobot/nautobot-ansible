@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_SERVICE
+### PYNAUTOBOT_SERVICE
 ##
 ##
 - name: "1 - Device with required information needs to add new service"
@@ -16,7 +16,7 @@
       status: "Staged"
     state: present
 
-- name: "NETBOX_SERVICE: Create new service"
+- name: "PYNAUTOBOT_SERVICE: Create new service"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -28,7 +28,7 @@
     state: present
   register: test_service_create
 
-- name: "NETBOX_SERVICE ASSERT - Create"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Create"
   assert:
     that:
       - test_service_create is changed
@@ -39,7 +39,7 @@
       - test_service_create['diff']['before']['state'] == "absent"
       - test_service_create['msg'] == "services node-exporter created"
 
-- name: "NETBOX_SERVICE: Test idempotence"
+- name: "PYNAUTOBOT_SERVICE: Test idempotence"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -51,7 +51,7 @@
     state: present
   register: test_service_idempotence
 
-- name: "NETBOX_SERVICE ASSERT - Not changed"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Not changed"
   assert:
     that:
       - test_service_idempotence['services']['name'] == "node-exporter"
@@ -59,7 +59,7 @@
       - test_service_idempotence['services']['protocol'] == "tcp"
       - test_service_idempotence['msg'] == "services node-exporter already exists"
 
-- name: "NETBOX_SERVICE: Test update"
+- name: "PYNAUTOBOT_SERVICE: Test update"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -75,7 +75,7 @@
     state: present
   register: test_service_update
 
-- name: "NETBOX_SERVICE ASSERT - Service has been updated"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Service has been updated"
   assert:
     that:
       - test_service_update is changed
@@ -83,7 +83,7 @@
       - test_service_update['diff']['after']['ports'] == [9100, 9200]
       - test_service_update['msg'] == "services node-exporter updated"
 
-- name: "NETBOX_SERVICE: Test same details, but different protocol - Create"
+- name: "PYNAUTOBOT_SERVICE: Test same details, but different protocol - Create"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -95,7 +95,7 @@
     state: present
   register: test_service_protocol
 
-- name: "NETBOX_SERVICE ASSERT - Different protocol - Create"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Different protocol - Create"
   assert:
     that:
       - test_service_protocol is changed
@@ -106,7 +106,7 @@
       - test_service_protocol['services']['protocol'] == "udp"
       - test_service_protocol['msg'] == "services node-exporter created"
 
-- name: "NETBOX_SERVICE: Test service deletion"
+- name: "PYNAUTOBOT_SERVICE: Test service deletion"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -118,7 +118,7 @@
     state: absent
   register: test_service_delete
 
-- name: "NETBOX_SERVICE ASSERT - Service has been deleted"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Service has been deleted"
   assert:
     that:
       - test_service_delete is changed
@@ -126,7 +126,7 @@
       - test_service_delete['diff']['before']['state'] == "present"
       - test_service_delete['msg'] == "services node-exporter deleted"
 
-- name: "NETBOX_SERVICE: Test service IP addresses"
+- name: "PYNAUTOBOT_SERVICE: Test service IP addresses"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -140,7 +140,7 @@
     state: present
   register: test_service_ip_addresses
 
-- name: "NETBOX_SERVICE ASSERT - Service has been created with IP address"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Service has been created with IP address"
   assert:
     that:
       - test_service_ip_addresses is changed
@@ -152,7 +152,7 @@
       - test_service_ip_addresses['services']['ipaddresses'] is defined
       - test_service_ip_addresses['msg'] == "services node-exporter created"
 
-- name: "NETBOX_SERVICE: Missing both device & virtual_machine options - Tests required_one_of"
+- name: "PYNAUTOBOT_SERVICE: Missing both device & virtual_machine options - Tests required_one_of"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -166,13 +166,13 @@
   ignore_errors: yes
   register: test_service_required_one_of
 
-- name: "NETBOX_SERVICE ASSERT - Failed due to missing arguments"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Failed due to missing arguments"
   assert:
     that:
       - test_service_required_one_of is failed
       - 'test_service_required_one_of["msg"] == "one of the following is required: device, virtual_machine"'
 
-- name: "NETBOX_SERVICE: Create new service on virtual_machine"
+- name: "PYNAUTOBOT_SERVICE: Create new service on virtual_machine"
   networktocode.nautobot.service:
     url: "http://localhost:32768"
     token: "0123456789abcdef0123456789abcdef01234567"
@@ -184,7 +184,7 @@
     state: present
   register: test_service_create_vm
 
-- name: "NETBOX_SERVICE ASSERT - Create"
+- name: "PYNAUTOBOT_SERVICE ASSERT - Create"
   assert:
     that:
       - test_service_create_vm is changed

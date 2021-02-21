@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
-# Copyright: (c) 2018, David Gomez (@amb1s1) <david.gomez@networktocode.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -24,11 +22,11 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
+  - Network to Code (@networktocode)
   - David Gomez (@amb1s1)
 requirements:
   - pynautobot
-version_added: '0.1.0'
+version_added: "1.0.0"
 options:
   url:
     description:
@@ -190,8 +188,8 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create device within Nautobot with only required information
-      device:
-        url: http://netbox.local
+      networktocode.nautobot.device:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Device
@@ -201,8 +199,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Create device within Nautobot with empty string name to generate UUID
-      device:
-        url: http://netbox.local
+      networktocode.nautobot.device:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: ""
@@ -211,17 +209,17 @@ EXAMPLES = r"""
           site: Main
         state: present
 
-    - name: Delete device within netbox
-      device:
-        url: http://netbox.local
+    - name: Delete device within nautobot
+      networktocode.nautobot.device:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Device
         state: absent
 
     - name: Create device with tags
-      device:
-        url: http://netbox.local
+      networktocode.nautobot.device:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Another Test Device
@@ -235,8 +233,8 @@ EXAMPLES = r"""
         state: present
 
     - name: Update the rack and position of an existing device
-      device:
-        url: http://netbox.local
+      networktocode.nautobot.device:
+        url: http://nautobot.local
         token: thisIsMyToken
         data:
           name: Test Device
@@ -259,7 +257,7 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotAnsibleModule,
-    NETBOX_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
@@ -273,7 +271,7 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NETBOX_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
             data=dict(

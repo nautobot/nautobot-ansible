@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_VRF
+### PYNAUTOBOT_VRF
 ##
 ##
 - name: "VRF 1: Necessary info creation"

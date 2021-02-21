@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_RACK_GROUP
+### PYNAUTOBOT_RACK_GROUP
 ##
 ##
 - name: "RACK_GROUP 1: Necessary info creation"

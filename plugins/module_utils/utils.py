@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
-# Copyright: (c) 2018, David Gomez (@amb1s1) <david.gomez@networktocode.com>
-# Copyright: (c) 2020, Nokia, Tobias Groß (@toerb) <tobias.gross@nokia.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 
 from __future__ import absolute_import, division, print_function
 
@@ -24,15 +21,15 @@ from ansible.module_utils.common.collections import is_iterable
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils.urls import open_url
 
-PYNETBOX_IMP_ERR = None
+PYNAUTOBOT_IMP_ERR = None
 try:
-    import pynetbox
+    import pynautobot
     import requests
 
-    HAS_PYNETBOX = True
+    HAS_PYNAUTOBOT = True
 except ImportError:
-    PYNETBOX_IMP_ERR = traceback.format_exc()
-    HAS_PYNETBOX = False
+    PYNAUTOBOT_IMP_ERR = traceback.format_exc()
+    HAS_PYNAUTOBOT = False
 
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
@@ -428,7 +425,7 @@ SLUG_REQUIRED = {
     "vlan_groups",
 }
 
-NETBOX_ARG_SPEC = dict(
+NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True),
     token=dict(type="str", required=True, no_log=True),
     state=dict(required=False, default="present", choices=["present", "absent"]),
@@ -453,9 +450,9 @@ class NautobotModule(object):
         self.endpoint = endpoint
         query_params = self.module.params.get("query_params")
 
-        if not HAS_PYNETBOX:
+        if not HAS_PYNAUTOBOT:
             self.module.fail_json(
-                msg=missing_required_lib("pynetbox"), exception=PYNETBOX_IMP_ERR
+                msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
             )
         # These should not be required after making connection to Nautobot
         url = self.module.params["url"]
@@ -467,10 +464,7 @@ class NautobotModule(object):
             self.nb = self._connect_api(url, token, ssl_verify)
         else:
             self.nb = client
-            try:
-                self.version = self.nb.version
-            except AttributeError:
-                self.module.fail_json(msg="Must have pynautobot >=4.1.0")
+            self.version = self.nb.version
 
         # if self.module.params.get("query_params"):
         #    self._validate_query_params(self.module.params["query_params"])
@@ -511,7 +505,7 @@ class NautobotModule(object):
         try:
             session = requests.Session()
             session.verify = ssl_verify
-            nb = pynetbox.api(url, token=token)
+            nb = pynautobot.api(url, token=token)
             nb.http_session = session
             try:
                 self.version = nb.version
@@ -526,7 +520,7 @@ class NautobotModule(object):
     def _nb_endpoint_get(self, nb_endpoint, query_params, search_item):
         try:
             response = nb_endpoint.get(**query_params)
-        except pynetbox.RequestError as e:
+        except pynautobot.RequestError as e:
             self._handle_errors(msg=e.error)
         except ValueError:
             self._handle_errors(
@@ -596,9 +590,6 @@ class NautobotModule(object):
         :params data (dict): Data dictionary after _find_ids method ran
         """
         temp_dict = dict()
-        if self._version_check_greater(self.version, "2.7", greater_or_equal=True):
-            if data.get("form_factor"):
-                temp_dict["type"] = data.pop("form_factor")
         for key in data:
             if self.endpoint == "power_panels" and key == "rack_group":
                 temp_dict[key] = data[key]
@@ -702,7 +693,7 @@ class NautobotModule(object):
             intf_type = self._fetch_choice_value(
                 "Link Aggregation Group (LAG)", "interfaces"
             )
-            query_dict.update({"form_factor": intf_type})
+            query_dict.update({"type": intf_type})
             if isinstance(module_data["device"], int):
                 query_dict.update({"device_id": module_data["device"]})
             else:
@@ -824,13 +815,6 @@ class NautobotModule(object):
         """
         for k, v in data.items():
             if k in CONVERT_TO_ID:
-                if (
-                    not self._version_check_greater(
-                        self.version, "2.9", greater_or_equal=True
-                    )
-                    and k == "tags"
-                ):
-                    continue
                 if k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
@@ -961,7 +945,7 @@ class NautobotModule(object):
         else:
             try:
                 nb_obj = nb_endpoint.create(data)
-            except pynetbox.RequestError as e:
+            except pynautobot.RequestError as e:
                 self._handle_errors(msg=e.error)
 
         diff = self._build_diff(before={"state": "absent"}, after={"state": "present"})
@@ -974,7 +958,7 @@ class NautobotModule(object):
         if not self.check_mode:
             try:
                 self.nb_object.delete()
-            except pynetbox.RequestError as e:
+            except pynautobot.RequestError as e:
                 self._handle_errors(msg=e.error)
 
         diff = self._build_diff(before={"state": "present"}, after={"state": "absent"})

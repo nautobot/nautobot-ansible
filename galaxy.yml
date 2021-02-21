@@ -27,7 +27,6 @@ description: This is a collection of Nautobot Ansible modules
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
 #license:
-#  - GPL-3.0-or-later
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'
@@ -40,6 +39,7 @@ tags:
   - system
   - ipam
   - networking
+  - circuits
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range
@@ -53,16 +53,16 @@ dependencies:
   community.general: ">=1.0.0"
 
 # The URL of the originating SCM repository
-repository: https://github.com/netbox-community/ansible_modules
+repository: https://github.com/nautobot/nautobot-ansible
 
 # The URL to any online docs
-documentation: https://netbox-ansible-collection.readthedocs.io/en/latest/
+documentation: https://nautobot-ansible.readthedocs.io/en/latest/
 
 # The URL to the homepage of the collection/project
-homepage:
+homepage: https://nautobot-ansible.readthedocs.io/en/latest/
 
 # The URL to the collection issue tracker
-issues: https://github.com/netbox-community/ansible_modules/issues
+issues: https://github.com/nautobot/nautobot-ansible/issues
 
 # Files to ignore when building collection. Only supported when building with Ansible 2.10
 # https://github.com/ansible/ansible/issues/67543

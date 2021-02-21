@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Copyright: (c) 2019. Chris Mills <chris@discreet-its.co.uk>
-# GNU General Public License v3.0+
+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-netbox.py
+nautobot.py
 
 A lookup function designed to return data from the Nautobot application
 """
@@ -28,7 +27,7 @@ __metaclass__ = type
 DOCUMENTATION = """
     lookup: lookup
     author: Chris Mills (@cpmills1975)
-    version_added: "2.9"
+    version_added: "1.0.0"
     short_description: Queries and returns elements from Nautobot
     description:
         - Queries Nautobot via its API to return virtually any information
@@ -44,8 +43,8 @@ DOCUMENTATION = """
                 - The URL to the Nautobot instance to query
             env:
                 # in order of precendence
-                - name: NETBOX_API
-                - name: NETBOX_URL
+                - name: NAUTOBOT_API
+                - name: NAUTOBOT_URL
             required: True
         api_filter:
             description:
@@ -61,8 +60,8 @@ DOCUMENTATION = """
                 - This may not be required depending on the Nautobot setup.
             env:
                 # in order of precendence
-                - name: NETBOX_TOKEN
-                - name: NETBOX_API_TOKEN
+                - name: NAUTOBOT_TOKEN
+                - name: NAUTOBOT_API_TOKEN
             required: False
         validate_certs:
             description:
@@ -134,80 +133,80 @@ RETURN = """
 """
 
 
-def get_endpoint(netbox, term):
+def get_endpoint(nautobot, term):
     """
-    get_endpoint(netbox, term)
-        netbox: a predefined pynautobot.api() pointing to a valid instance
+    get_endpoint(nautobot, term)
+        nautobot: a predefined pynautobot.api() pointing to a valid instance
                 of Nautobot
         term: the term passed to the lookup function upon which the api
               call will be identified
     """
 
     endpoint_map = {
-        "aggregates": {"endpoint": netbox.ipam.aggregates},
-        "circuit-terminations": {"endpoint": netbox.circuits.circuit_terminations},
-        "circuit-types": {"endpoint": netbox.circuits.circuit_types},
-        "circuits": {"endpoint": netbox.circuits.circuits},
-        "circuit-providers": {"endpoint": netbox.circuits.providers},
-        "cables": {"endpoint": netbox.dcim.cables},
-        "cluster-groups": {"endpoint": netbox.virtualization.cluster_groups},
-        "cluster-types": {"endpoint": netbox.virtualization.cluster_types},
-        "clusters": {"endpoint": netbox.virtualization.clusters},
-        "config-contexts": {"endpoint": netbox.extras.config_contexts},
-        "console-connections": {"endpoint": netbox.dcim.console_connections},
-        "console-ports": {"endpoint": netbox.dcim.console_ports},
+        "aggregates": {"endpoint": nautobot.ipam.aggregates},
+        "circuit-terminations": {"endpoint": nautobot.circuits.circuit_terminations},
+        "circuit-types": {"endpoint": nautobot.circuits.circuit_types},
+        "circuits": {"endpoint": nautobot.circuits.circuits},
+        "circuit-providers": {"endpoint": nautobot.circuits.providers},
+        "cables": {"endpoint": nautobot.dcim.cables},
+        "cluster-groups": {"endpoint": nautobot.virtualization.cluster_groups},
+        "cluster-types": {"endpoint": nautobot.virtualization.cluster_types},
+        "clusters": {"endpoint": nautobot.virtualization.clusters},
+        "config-contexts": {"endpoint": nautobot.extras.config_contexts},
+        "console-connections": {"endpoint": nautobot.dcim.console_connections},
+        "console-ports": {"endpoint": nautobot.dcim.console_ports},
         "console-server-port-templates": {
-            "endpoint": netbox.dcim.console_server_port_templates
+            "endpoint": nautobot.dcim.console_server_port_templates
         },
-        "console-server-ports": {"endpoint": netbox.dcim.console_server_ports},
-        "device-bay-templates": {"endpoint": netbox.dcim.device_bay_templates},
-        "device-bays": {"endpoint": netbox.dcim.device_bays},
-        "device-roles": {"endpoint": netbox.dcim.device_roles},
-        "device-types": {"endpoint": netbox.dcim.device_types},
-        "devices": {"endpoint": netbox.dcim.devices},
-        "export-templates": {"endpoint": netbox.dcim.export_templates},
-        "front-port-templates": {"endpoint": netbox.dcim.front_port_templates},
-        "front-ports": {"endpoint": netbox.dcim.front_ports},
-        "graphs": {"endpoint": netbox.extras.graphs},
-        "image-attachments": {"endpoint": netbox.extras.image_attachments},
-        "interface-connections": {"endpoint": netbox.dcim.interface_connections},
-        "interface-templates": {"endpoint": netbox.dcim.interface_templates},
-        "interfaces": {"endpoint": netbox.dcim.interfaces},
-        "inventory-items": {"endpoint": netbox.dcim.inventory_items},
-        "ip-addresses": {"endpoint": netbox.ipam.ip_addresses},
-        "manufacturers": {"endpoint": netbox.dcim.manufacturers},
-        "object-changes": {"endpoint": netbox.extras.object_changes},
-        "platforms": {"endpoint": netbox.dcim.platforms},
-        "power-connections": {"endpoint": netbox.dcim.power_connections},
-        "power-outlet-templates": {"endpoint": netbox.dcim.power_outlet_templates},
-        "power-outlets": {"endpoint": netbox.dcim.power_outlets},
-        "power-port-templates": {"endpoint": netbox.dcim.power_port_templates},
-        "power-ports": {"endpoint": netbox.dcim.power_ports},
-        "prefixes": {"endpoint": netbox.ipam.prefixes},
-        "rack-groups": {"endpoint": netbox.dcim.rack_groups},
-        "rack-reservations": {"endpoint": netbox.dcim.rack_reservations},
-        "rack-roles": {"endpoint": netbox.dcim.rack_roles},
-        "racks": {"endpoint": netbox.dcim.racks},
-        "rear-port-templates": {"endpoint": netbox.dcim.rear_port_templates},
-        "rear-ports": {"endpoint": netbox.dcim.rear_ports},
-        "regions": {"endpoint": netbox.dcim.regions},
-        "reports": {"endpoint": netbox.extras.reports},
-        "rirs": {"endpoint": netbox.ipam.rirs},
-        "roles": {"endpoint": netbox.ipam.roles},
-        "secret-roles": {"endpoint": netbox.secrets.secret_roles},
-        "secrets": {"endpoint": netbox.secrets.secrets},
-        "services": {"endpoint": netbox.ipam.services},
-        "sites": {"endpoint": netbox.dcim.sites},
-        "tags": {"endpoint": netbox.extras.tags},
-        "tenant-groups": {"endpoint": netbox.tenancy.tenant_groups},
-        "tenants": {"endpoint": netbox.tenancy.tenants},
-        "topology-maps": {"endpoint": netbox.extras.topology_maps},
-        "virtual-chassis": {"endpoint": netbox.dcim.virtual_chassis},
-        "virtual-machines": {"endpoint": netbox.virtualization.virtual_machines},
-        "virtualization-interfaces": {"endpoint": netbox.virtualization.interfaces},
-        "vlan-groups": {"endpoint": netbox.ipam.vlan_groups},
-        "vlans": {"endpoint": netbox.ipam.vlans},
-        "vrfs": {"endpoint": netbox.ipam.vrfs},
+        "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
+        "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
+        "device-bays": {"endpoint": nautobot.dcim.device_bays},
+        "device-roles": {"endpoint": nautobot.dcim.device_roles},
+        "device-types": {"endpoint": nautobot.dcim.device_types},
+        "devices": {"endpoint": nautobot.dcim.devices},
+        "export-templates": {"endpoint": nautobot.dcim.export_templates},
+        "front-port-templates": {"endpoint": nautobot.dcim.front_port_templates},
+        "front-ports": {"endpoint": nautobot.dcim.front_ports},
+        "graphs": {"endpoint": nautobot.extras.graphs},
+        "image-attachments": {"endpoint": nautobot.extras.image_attachments},
+        "interface-connections": {"endpoint": nautobot.dcim.interface_connections},
+        "interface-templates": {"endpoint": nautobot.dcim.interface_templates},
+        "interfaces": {"endpoint": nautobot.dcim.interfaces},
+        "inventory-items": {"endpoint": nautobot.dcim.inventory_items},
+        "ip-addresses": {"endpoint": nautobot.ipam.ip_addresses},
+        "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
+        "object-changes": {"endpoint": nautobot.extras.object_changes},
+        "platforms": {"endpoint": nautobot.dcim.platforms},
+        "power-connections": {"endpoint": nautobot.dcim.power_connections},
+        "power-outlet-templates": {"endpoint": nautobot.dcim.power_outlet_templates},
+        "power-outlets": {"endpoint": nautobot.dcim.power_outlets},
+        "power-port-templates": {"endpoint": nautobot.dcim.power_port_templates},
+        "power-ports": {"endpoint": nautobot.dcim.power_ports},
+        "prefixes": {"endpoint": nautobot.ipam.prefixes},
+        "rack-groups": {"endpoint": nautobot.dcim.rack_groups},
+        "rack-reservations": {"endpoint": nautobot.dcim.rack_reservations},
+        "rack-roles": {"endpoint": nautobot.dcim.rack_roles},
+        "racks": {"endpoint": nautobot.dcim.racks},
+        "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
+        "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
+        "regions": {"endpoint": nautobot.dcim.regions},
+        "reports": {"endpoint": nautobot.extras.reports},
+        "rirs": {"endpoint": nautobot.ipam.rirs},
+        "roles": {"endpoint": nautobot.ipam.roles},
+        "secret-roles": {"endpoint": nautobot.secrets.secret_roles},
+        "secrets": {"endpoint": nautobot.secrets.secrets},
+        "services": {"endpoint": nautobot.ipam.services},
+        "sites": {"endpoint": nautobot.dcim.sites},
+        "tags": {"endpoint": nautobot.extras.tags},
+        "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
+        "tenants": {"endpoint": nautobot.tenancy.tenants},
+        "topology-maps": {"endpoint": nautobot.extras.topology_maps},
+        "virtual-chassis": {"endpoint": nautobot.dcim.virtual_chassis},
+        "virtual-machines": {"endpoint": nautobot.virtualization.virtual_machines},
+        "virtualization-interfaces": {"endpoint": nautobot.virtualization.interfaces},
+        "vlan-groups": {"endpoint": nautobot.ipam.vlan_groups},
+        "vlans": {"endpoint": nautobot.ipam.vlans},
+        "vrfs": {"endpoint": nautobot.ipam.vrfs},
     }
 
     return endpoint_map[term]["endpoint"]
@@ -237,10 +236,10 @@ def build_filters(filters):
     return filter
 
 
-def get_plugin_endpoint(netbox, plugin, term):
+def get_plugin_endpoint(nautobot, plugin, term):
     """
-    get_plugin_endpoint(netbox, plugin, term)
-        netbox: a predefined pynautobot.api() pointing to a valid instance
+    get_plugin_endpoint(nautobot, plugin, term)
+        nautobot: a predefined pynautobot.api() pointing to a valid instance
                 of Nautobot
         plugin: a string referencing the plugin name
         term: the term passed to the lookup function upon which the api
@@ -248,10 +247,10 @@ def get_plugin_endpoint(netbox, plugin, term):
     """
     attr = "plugins.%s.%s" % (plugin, term)
 
-    def _getattr(netbox, attr):
-        return getattr(netbox, attr)
+    def _getattr(nautobot, attr):
+        return getattr(nautobot, attr)
 
-    return functools.reduce(_getattr, [netbox] + attr.split("."))
+    return functools.reduce(_getattr, [nautobot] + attr.split("."))
 
 
 def make_call(endpoint, filters=None):
@@ -262,7 +261,7 @@ def make_call(endpoint, filters=None):
         endpoint (object): The Nautobot endpoint object to make calls.
 
     Returns:
-        results (object): Pynetbox result.
+        results (object): Pynautobot result.
 
     Raises:
         AnsibleError: Ansible Error containing an error message.
@@ -294,13 +293,13 @@ class LookupModule(LookupBase):
 
         api_token = (
             kwargs.get("token")
-            or os.getenv("NETBOX_TOKEN")
-            or os.getenv("NETBOX_API_TOKEN")
+            or os.getenv("NAUTOBOT_TOKEN")
+            or os.getenv("NAUTOBOT_API_TOKEN")
         )
         api_endpoint = (
             kwargs.get("api_endpoint")
-            or os.getenv("NETBOX_API")
-            or os.getenv("NETBOX_URL")
+            or os.getenv("NAUTOBOT_API")
+            or os.getenv("NAUTOBOT_URL")
         )
         ssl_verify = kwargs.get("validate_certs", True)
         private_key_file = kwargs.get("key_file")
@@ -315,12 +314,12 @@ class LookupModule(LookupBase):
             session = requests.Session()
             session.verify = ssl_verify
 
-            netbox = pynautobot.api(
+            nautobot = pynautobot.api(
                 api_endpoint,
                 token=api_token if api_token else None,
                 private_key_file=private_key_file,
             )
-            netbox.http_session = session
+            nautobot.http_session = session
         except FileNotFoundError:
             raise AnsibleError(
                 "%s cannot be found. Please make sure file exists." % private_key_file
@@ -329,10 +328,10 @@ class LookupModule(LookupBase):
         results = []
         for term in terms:
             if plugin:
-                endpoint = get_plugin_endpoint(netbox, plugin, term)
+                endpoint = get_plugin_endpoint(nautobot, plugin, term)
             else:
                 try:
-                    endpoint = get_endpoint(netbox, term)
+                    endpoint = get_endpoint(nautobot, term)
                 except KeyError:
                     raise AnsibleError(
                         "Unrecognised term %s. Check documentation" % term

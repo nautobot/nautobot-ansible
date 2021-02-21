@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_TENANT_GROUP
+### PYNAUTOBOT_TENANT_GROUP
 ##
 ##
 - name: "1 - Test tenant group creation"

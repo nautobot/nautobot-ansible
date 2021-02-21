@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 ##
 ##
-### NETBOX_POWER_FEED
+### PYNAUTOBOT_POWER_FEED
 ##
 ##
 - name: "POWER_FEED 1: Necessary info creation"

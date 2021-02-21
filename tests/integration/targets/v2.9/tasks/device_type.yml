@@ -1,7 +1,7 @@
 ---
 ##
 ##
-### NETBOX_DEVICE_TYPE
+### PYNAUTOBOT_DEVICE_TYPE
 ##
 ##
 - name: "DEVICE_TYPE 1: Necessary info creation"

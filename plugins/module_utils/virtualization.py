@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -28,12 +27,12 @@ class NautobotVirtualizationModule(NautobotModule):
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
-          - clusters
-          - cluster_groups
-          - cluster_types
-          - interfaces
-          - virtual_machines
-          - cluster
+        - clusters
+        - cluster_groups
+        - cluster_types
+        - interfaces
+        - virtual_machines
+        - cluster
         """
         # Used to dynamically set key when returning results
         endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]

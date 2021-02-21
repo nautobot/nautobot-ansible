@@ -1,0 +1,6 @@
+Nautobot Ansible Collection
+Copyright 2021 Network to Code, LLC
+
+This product includes software copyrighted and licensed under GPLv3 by Mikhail Yohman.
+
+The Initial Developers of some parts of this product, which are copied from, derived from, or inspired by NetBox Ansible Collection, are Mikhail Yohman and the NetBox Ansible Collection open source community (https://github.com/netbox-community/ansible_modules) and licensed under GPLv3.
