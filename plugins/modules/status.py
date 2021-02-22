@@ -47,6 +47,11 @@ options:
           - Status name
         required: true
         type: str
+      description:
+        description:
+          - The description for the status
+        required: false
+        type: str
       slug:
         description:
           - The slugified version of the name or custom slug.
@@ -101,6 +106,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         data:
           name: "ansible_status"
+          description: "Status if provisioned by Ansible"
           content_types:
             - dcim.device
             - dcim.cable
@@ -169,8 +175,9 @@ def main():
                 required=True,
                 options=dict(
                     name=dict(required=True, type="str"),
-                    content_types=dict(required=False, type="list", elements="str",),
+                    content_types=dict(required=False, type="list", elements="str"),
                     color=dict(required=False, type="str"),
+                    description=dict(required=False, type="str"),
                     slug=dict(required=False, type="str"),
                 ),
             ),

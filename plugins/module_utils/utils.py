@@ -416,6 +416,7 @@ SLUG_REQUIRED = {
     "rirs",
     "roles",
     "sites",
+    "statuses",
     "tags",
     "tenants",
     "tenant_groups",
