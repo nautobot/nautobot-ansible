@@ -112,12 +112,26 @@ Parameters
                          / <span style="color: purple">elements=string</span>                                            </div>
                                                         </td>
                                 <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>dcim.device</li>
-                                                                                    </ul>
-                                                                            </td>
+                                                                                                                                                            </td>
                                                                 <td>
-                                            <div>Status content type(s), required if state=present</div>
+                                            <div>Status content type(s). These match app.endpoint and the endpoint is singular.</div>
+                                            <div>e.g. dcim.device, ipam.ipaddress (more can be found in the examples)</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                    <b>description</b>
+                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The description for the status</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -269,9 +283,19 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             data:
-              name: "{{ item.name }}"
+              name: "ansible_status"
+              description: "Status if provisioned by Ansible"
               content_types:
                 - dcim.device
+                - dcim.cable
+                - dcim.powerfeed
+                - dcim.rack
+                - dcim.site
+                - circuits.circuit
+                - virtualization.virtualmachine
+                - ipam.prefix
+                - ipam.ipaddress
+                - ipam.vlan
               color: 01bea3
 
         - name: Delete status
@@ -282,6 +306,15 @@ Examples
               name: "ansible_status"
               content_types:
                 - dcim.device
+                - dcim.cable
+                - dcim.powerfeed
+                - dcim.rack
+                - dcim.site
+                - circuits.circuit
+                - virtualization.virtualmachine
+                - ipam.prefix
+                - ipam.ipaddress
+                - ipam.vlan
               color: 01bea3
             state: absent
 
@@ -346,7 +379,6 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code, LLC (@networktocode)
 - Network to Code (@networktocode)
 - Josh VanDeraa (@jvanaderaa)
 

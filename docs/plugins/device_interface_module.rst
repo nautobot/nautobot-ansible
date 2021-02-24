@@ -140,24 +140,6 @@ Parameters
                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/form_factor"></div>
-                    <b>form_factor</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/form_factor" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Form factor of the interface:
-    ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
-    This has to be specified exactly as what is found within UI</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-data/lag"></div>
                     <b>lag</b>
                     <a class="ansibleOptionLink" href="#parameter-data/lag" title="Permalink to this option"></a>

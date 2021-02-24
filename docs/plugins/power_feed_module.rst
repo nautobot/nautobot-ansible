@@ -228,13 +228,7 @@ Parameters
                                                                     </div>
                                                         </td>
                                 <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>offline</li>
-                                                                                                                                                                                                <li>active</li>
-                                                                                                                                                                                                <li>planned</li>
-                                                                                                                                                                                                <li>failed</li>
-                                                                                    </ul>
-                                                                            </td>
+                                                                                                                                                            </td>
                                                                 <td>
                                             <div>The status of the power feed</div>
                                                         </td>
@@ -430,6 +424,7 @@ Examples
             data:
               name: Test Power Feed
               power_panel: Test Power Panel
+              status: active
             state: present
 
         - name: Update power feed with other fields

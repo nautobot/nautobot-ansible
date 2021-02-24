@@ -451,6 +451,7 @@ Examples
             token: thisIsMyToken
             data:
               prefix: 10.156.0.0/19
+              status: active
             state: present
 
         - name: Delete prefix within nautobot

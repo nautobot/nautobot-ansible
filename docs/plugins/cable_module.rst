@@ -166,12 +166,7 @@ Parameters
                                                                     </div>
                                                         </td>
                                 <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>connected</li>
-                                                                                                                                                                                                <li>planned</li>
-                                                                                                                                                                                                <li>decommissioning</li>
-                                                                                    </ul>
-                                                                            </td>
+                                                                                                                                                            </td>
                                                                 <td>
                                             <div>The status of the cable</div>
                                                         </td>
@@ -425,6 +420,7 @@ Examples
               termination_b:
                 device: Test Nexus Child One
                 name: Ethernet2/1
+              status: active
             state: present
 
         - name: Update cable with other fields

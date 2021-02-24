@@ -564,6 +564,7 @@ Examples
               device_type: C9410R
               device_role: Core Switch
               site: Main
+              status: active
             state: present
 
         - name: Create device within Nautobot with empty string name to generate UUID
@@ -575,6 +576,7 @@ Examples
               device_type: C9410R
               device_role: Core Switch
               site: Main
+              status: active
             state: present
 
         - name: Delete device within nautobot
@@ -594,6 +596,7 @@ Examples
               device_type: C9410R
               device_role: Core Switch
               site: Main
+              status: active
               local_context_data:
                 bgp: "65000"
               tags:

@@ -459,6 +459,7 @@ Examples
             data:
               name: Test Virtual Machine
               cluster: test cluster
+              status: active
             state: present
 
         - name: Delete virtual machine within nautobot
@@ -477,6 +478,7 @@ Examples
               name: Another Test Virtual Machine
               cluster: test cluster
               site: Test Site
+              status: active
               tags:
                 - Schnozzberry
             state: present

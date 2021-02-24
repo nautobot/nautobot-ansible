@@ -507,6 +507,7 @@ Examples
             token: thisIsMyToken
             data:
               name: Test - Colorado
+              status: active
             state: present
 
         - name: Delete site within nautobot

@@ -168,22 +168,6 @@ Parameters
                                 <tr>
                                                     <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/port"></div>
-                    <b>port</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/port" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Specifies which port used by service</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-data/ports"></div>
                     <b>ports</b>
                     <a class="ansibleOptionLink" href="#parameter-data/ports" title="Permalink to this option"></a>

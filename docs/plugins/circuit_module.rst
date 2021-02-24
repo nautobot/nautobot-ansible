@@ -381,6 +381,7 @@ Examples
               cid: Test Circuit
               provider: Test Provider
               circuit_type: Test Circuit Type
+              status: active
             state: present
 
         - name: Update circuit with other fields

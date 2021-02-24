@@ -529,6 +529,7 @@ Examples
             data:
               name: Test rack
               site: Test Site
+              status: active
             state: present
 
         - name: Delete rack within nautobot

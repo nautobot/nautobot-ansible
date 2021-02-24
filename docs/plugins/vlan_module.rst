@@ -364,6 +364,7 @@ Examples
             data:
               name: Test VLAN
               vid: 400
+              status: active
             state: present
 
         - name: Delete vlan within nautobot
@@ -373,6 +374,7 @@ Examples
             data:
               name: Test VLAN
               vid: 400
+              status: active
             state: absent
 
         - name: Create vlan with all information
