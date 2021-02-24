@@ -20,5 +20,5 @@ Contents
    Changelog <changelog/index>
 
 .. note::
-   This is a fork of the networktocode.nautobot Ansible Galaxy collection found at [https://github.com/nautobot/nautobot-ansible](https://github.com/nautobot/nautobot-ansible) in February, 2021
+   This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021
    

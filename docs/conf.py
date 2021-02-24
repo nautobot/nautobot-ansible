@@ -24,7 +24,7 @@ sys.path.insert(0, os.path.abspath("../"))
 
 project = "Nautobot Ansible Modules"
 copyright = "2021, Network to Code"
-author = "Network to Code <info@networktocode.com>"
+author = "Network to Code <opensource@networktocode.com>"
 
 # The full version, including alpha/beta/rc tags
 release = "1.0.0"

@@ -119,7 +119,7 @@ Now we need to update the ``DOCUMENTATION`` variable to match the module we're c
     - Tags should be defined as a YAML list
     - This should be ran with connection C(local) and hosts C(localhost)
   author:
-    - Network to Code <info@networktocode.com>
+    - Network to Code <opensource@networktocode.com>
   requirements:
     - pynautobot
   version_added: "1.0.0"
