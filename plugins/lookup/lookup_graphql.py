@@ -60,7 +60,6 @@ DOCUMENTATION = """
 """
 
 EXAMPLES = """
-tasks:
   # Make API Query without variables
   - name: SET FACT OF STRING
     set_fact:
