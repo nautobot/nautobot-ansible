@@ -4,6 +4,13 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Pins ansible.netcommon to < 2.0 to use ipaddress function that is removed in 2.0.0
 
 v1.0.0
 ======
