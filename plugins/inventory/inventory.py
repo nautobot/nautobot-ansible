@@ -412,23 +412,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         if self.services:
             extractors.update(
-                {
-                    "services": self.extract_services,
-                }
+                {"services": self.extract_services,}
             )
 
         if self.interfaces:
             extractors.update(
-                {
-                    "interfaces": self.extract_interfaces,
-                }
+                {"interfaces": self.extract_interfaces,}
             )
 
         if self.interfaces or self.dns_name or self.ansible_host_dns_name:
             extractors.update(
-                {
-                    "dns_name": self.extract_dns_name,
-                }
+                {"dns_name": self.extract_dns_name,}
             )
 
         return extractors
