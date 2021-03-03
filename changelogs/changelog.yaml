@@ -177,3 +177,10 @@ releases:
         name: lookup
         namespace: null
     release_date: '2021-02-20'
+  1.0.1:
+    changes:
+      release_summary: Removes dependency on ansible.netcommon and uses builtin ipaddress
+        module
+    fragments:
+    - v1.0.1.yml
+    release_date: '2021-03-03'

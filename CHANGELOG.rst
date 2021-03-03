@@ -4,13 +4,14 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+
 v1.0.1
 ======
 
 Release Summary
 ---------------
 
-Removes use of ansible.netcommon for IP address in favor of Python 3 built in ipaddress module.
+Removes dependency on ansible.netcommon and uses builtin ipaddress module
 
 v1.0.0
 ======
