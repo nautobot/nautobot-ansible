@@ -20,7 +20,7 @@ networktocode.nautobot.virtual_chassis -- Create, update or delete virtual chass
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.2).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

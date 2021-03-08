@@ -20,7 +20,7 @@ networktocode.nautobot.console_port -- Create, update or delete console ports wi
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.2).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
