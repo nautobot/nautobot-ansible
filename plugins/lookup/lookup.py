@@ -295,10 +295,7 @@ class LookupModule(LookupBase):
         session = requests.Session()
         session.verify = ssl_verify
 
-        nautobot = pynautobot.api(
-            api_endpoint,
-            token=api_token if api_token else None,
-        )
+        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
         nautobot.http_session = session
 
         results = []
