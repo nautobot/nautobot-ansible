@@ -5,6 +5,14 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v1.0.2
+======
+
+Bugfixes
+--------
+
+- Remove code related to fetching secrets due to secrets not existing in Nautobot.
+
 v1.0.1
 ======
 
