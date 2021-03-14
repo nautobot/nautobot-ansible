@@ -622,7 +622,7 @@ class NautobotModule(object):
         """Determine if the match is already UUID."""
         try:
             uuid_obj = UUID(match)
-        except ValueError:
+        except (ValueError, AttributeError):
             return False
         return str(uuid_obj) == match
 
