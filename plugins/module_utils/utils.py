@@ -10,6 +10,7 @@ import traceback
 import re
 import json
 
+from uuid import UUID
 from itertools import chain
 
 from ansible.module_utils.common.text.converters import to_text
@@ -617,27 +618,37 @@ class NautobotModule(object):
 
         return new_dict
 
+    def is_valid_uuid(self, match):
+        """Determine if the match is already UUID."""
+        try:
+            uuid_obj = UUID(match)
+        except ValueError:
+            return False
+        return str(uuid_obj) == match
+
     def _get_query_param_id(self, match, data):
         """Used to find IDs of necessary searches when required under _build_query_params
         :returns id (int) or data (dict): Either returns the ID or original data passed in
         :params match (str): The key within the user defined data that is required to have an ID
         :params data (dict): User defined data passed into the module
         """
-        if isinstance(data.get(match), int):
-            return data[match]
+
+        match_value = data.get(match)
+        if isinstance(match_value, int) or self.is_valid_uuid(match_value):
+            return match_value
+
+        endpoint = CONVERT_TO_ID[match]
+        app = self._find_app(endpoint)
+        nb_app = getattr(self.nb, app)
+        nb_endpoint = getattr(nb_app, endpoint)
+
+        query_params = {QUERY_TYPES.get(match): data[match]}
+        result = self._nb_endpoint_get(nb_endpoint, query_params, match)
+
+        if result:
+            return result.id
         else:
-            endpoint = CONVERT_TO_ID[match]
-            app = self._find_app(endpoint)
-            nb_app = getattr(self.nb, app)
-            nb_endpoint = getattr(nb_app, endpoint)
-
-            query_params = {QUERY_TYPES.get(match): data[match]}
-            result = self._nb_endpoint_get(nb_endpoint, query_params, match)
-
-            if result:
-                return result.id
-            else:
-                return data
+            return data
 
     def _build_query_params(
         self, parent, module_data, user_query_params=None, child=None
