@@ -704,7 +704,9 @@ class NautobotModule(object):
                 "Link Aggregation Group (LAG)", "interfaces"
             )
             query_dict.update({"type": intf_type})
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -713,7 +715,9 @@ class NautobotModule(object):
             query_dict.update({"prefix": module_data["parent"]})
 
         elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -800,7 +804,9 @@ class NautobotModule(object):
             required_choices = REQUIRED_ID_FIND[endpoint]
             for choice in required_choices:
                 if data.get(choice):
-                    if isinstance(data[choice], int):
+                    if isinstance(data[choice], int) or self.is_valid_uuid(
+                        data[choice]
+                    ):
                         continue
                     choice_value = self._fetch_choice_value(data[choice], endpoint)
                     data[choice] = choice_value
@@ -858,7 +864,9 @@ class NautobotModule(object):
                             )
                         # If user passes in an integer, add to ID list to id_list as user
                         # should have passed in a tag ID
-                        elif isinstance(list_item, int):
+                        elif isinstance(list_item, int) or self.is_valid_uuid(
+                            list_item
+                        ):
                             id_list.append(list_item)
                             continue
                         else:
@@ -880,7 +888,7 @@ class NautobotModule(object):
 
                 if isinstance(v, list):
                     data[k] = id_list
-                elif isinstance(v, int):
+                elif isinstance(v, int) or self.is_valid_uuid(v):
                     pass
                 elif query_id:
                     data[k] = query_id.id
@@ -896,7 +904,7 @@ class NautobotModule(object):
         """
         if value is None:
             return value
-        elif isinstance(value, int):
+        elif isinstance(value, int) or self.is_valid_uuid(value):
             return value
         else:
             removed_chars = re.sub(r"[^\-\.\w\s]", "", value)
