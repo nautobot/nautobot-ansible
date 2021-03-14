@@ -5,6 +5,14 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v1.0.3
+======
+
+Bugfixes
+--------
+
+- Validate if value is already a UUID, return UUID and do not attempt to resolve [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+
 v1.0.2
 ======
 

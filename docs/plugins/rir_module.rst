@@ -20,7 +20,7 @@ networktocode.nautobot.rir -- Create, update or delete RIRs within Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.2).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.3).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

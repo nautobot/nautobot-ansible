@@ -184,3 +184,16 @@ releases:
     fragments:
     - v1.0.1.yml
     release_date: '2021-03-03'
+  1.0.2:
+    changes:
+      bugfixes:
+      - Remove code related to fetching secrets due to secrets not existing in Nautobot.
+    release_date: '2021-03-07'
+  1.0.3:
+    changes:
+      bugfixes:
+      - Validate if value is already a UUID, return UUID and do not attempt to resolve
+        [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+    fragments:
+    - v1.0.3.yml
+    release_date: '2021-03-13'
