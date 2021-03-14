@@ -10,7 +10,7 @@ env:
   global:
     - COLLECTION_NAMESPACE: "networktocode"
     - COLLECTION_NAME: "nautobot"
-    - COLLECTION_VERSION: "1.0.2"
+    - COLLECTION_VERSION: "1.0.3"
 
 jobs:
   include:
@@ -25,6 +25,7 @@ jobs:
 
 before_script:
   - mkdir -p ~/ansible_collections/$COLLECTION_NAMESPACE
+  - ansible-galaxy collection install community.general -p /home/travis/.ansible/collections
   - ansible-galaxy collection build .
   - ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME*.tar.gz -p /home/travis/.ansible/collections
 
