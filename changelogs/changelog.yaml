@@ -197,3 +197,11 @@ releases:
     fragments:
     - v1.0.3.yml
     release_date: '2021-03-13'
+  1.0.4:
+    changes:
+      bugfixes:
+      - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+      - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+    fragments:
+    - v1.0.4.yml
+    release_date: '2021-03-14'

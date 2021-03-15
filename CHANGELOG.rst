@@ -5,6 +5,15 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v1.0.4
+======
+
+Bugfixes
+--------
+
+- Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+- ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+
 v1.0.3
 ======
 
