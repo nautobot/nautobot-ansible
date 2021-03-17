@@ -5,16 +5,12 @@ A lookup function designed to return data from the Nautobot GraphQL endpoint
 from __future__ import absolute_import, division, print_function
 
 import os
-import functools
-from pprint import pformat
 
-from ansible.errors import AnsibleError, AnsibleOptionsError
+from ansible.errors import AnsibleError, 
 from ansible.plugins.lookup import LookupBase
-from ansible.parsing.splitter import parse_kv, split_args
-from ansible.utils.display import Display
 
-import pynautobot
-import requests
+
+from ansible_collections.networktocode.nautobot.plugins.graphql import NautobotGraphql
 
 __metaclass__ = type
 
@@ -151,31 +147,9 @@ class LookupModule(LookupBase):
                 "Variables parameter must be of key/value pairs. Please see docs for examples."
             )
 
-        # Setup the Requests session to use for multiple requests
-        session = requests.Session()
-        session.verify = ssl_verify
-
-        # Create Nautobot instance and assign the session.
-        nautobot = pynautobot.api(url=url, token=token if token else None)
-        nautobot.http_session = session
-
-        results = dict()
         # Make call to Nautobot API and capture any failures
-        graph_response = nautobot.graphql.query(query=query, variables=variables)
+        graph_obj = NautobotGraphql()
+        results = graph_obj(query=query, variables=variables, url=url, token=token, ssl_verify=ssl_verify)
 
-        # Handle for errors in the GraphQL
-        if isinstance(graph_response, pynautobot.GraphQLException):
-            raise AnsibleError(
-                "Error in the query to the Nautobot host. Errors: %s"
-                % (graph_response.errors)
-            )
-
-        # Successful POST to the API
-        if isinstance(graph_response, pynautobot.GraphQLRecord):
-            # Build the results
-            results["data"] = graph_response.json.get("data")
-
-            # Get the errors back
-            results["errors"] = graph_response.json.get("errors")
-
+        # Results should be the data response of the query to be returned as a lookup
         return results
