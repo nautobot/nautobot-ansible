@@ -52,6 +52,11 @@ options:
           - URL-friendly unique shorthand
         required: false
         type: str
+      description:
+        description:
+          - The description of the tenant
+        required: false
+        type: str
     required: true
   state:
     description:
