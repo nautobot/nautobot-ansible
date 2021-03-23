@@ -52,6 +52,11 @@ options:
           - URL-friendly unique shorthand
         required: false
         type: str
+      description:
+        description:
+          - The description of the tenant
+        required: false
+        type: str
     required: true
   state:
     description:
@@ -136,6 +141,7 @@ def main():
                 options=dict(
                     name=dict(required=True, type="str"),
                     slug=dict(required=False, type="str"),
+                    description=dict(required=False, type="str"),
                 ),
             ),
         )
