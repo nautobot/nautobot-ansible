@@ -61,7 +61,7 @@ options:
       site:
         description:
           - Required if I(state=present) and the rack does not exist yet
-        required: true
+        required: false
         type: raw
       parent:
         description:
