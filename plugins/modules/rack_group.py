@@ -73,6 +73,7 @@ options:
           - The region the rack group will be assigned to
         required: false
         type: raw
+    required: true
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
