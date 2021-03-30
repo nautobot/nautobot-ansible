@@ -58,6 +58,11 @@ options:
           - The site the vlan will be assigned to
         required: false
         type: raw
+      description:
+        description:
+          - The description of the vlan group
+        required: false
+        type: str
     required: true
   state:
     description:
@@ -141,6 +146,7 @@ def main():
                     name=dict(required=True, type="str"),
                     slug=dict(required=False, type="str"),
                     site=dict(required=False, type="raw"),
+                    description=dict(required=False, type="str"),
                 ),
             ),
         )
