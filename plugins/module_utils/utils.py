@@ -737,9 +737,6 @@ class NautobotModule(object):
                     {"interface_id": module_data.get("assigned_object_id")}
                 )
 
-        elif parent == "virtual_chassis":
-            query_dict = {"q": self.module.params["data"].get("master")}
-
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
                 rear_port = {
