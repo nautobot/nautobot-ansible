@@ -1,8 +1,6 @@
-#! /usr/bin/env python
+#! /usr/bin/python
 """Ansible plugin definition for query_graphql action plugin."""
 from __future__ import absolute_import, division, print_function
-
-from ansible.module_utils.basic import AnsibleModule
 
 DOCUMENTATION = """
 ---
@@ -107,7 +105,7 @@ RETURN = """
     description:
       - Variables passed in
 """
-
+from ansible.module_utils.basic import AnsibleModule
 
 def main():
     """Main definition of Action Plugin for query_graphql."""
@@ -135,8 +133,5 @@ def main():
         supports_check_mode=True,
     )
 
-    result["message"] = "Failed to execute action plugin."
-
-    module.fail_json(
-        msg="Not intended to execute as a module, instead the action plugin.", **result
-    )
+if __name__ == "__main__":  # pragma: no cover
+    main()
