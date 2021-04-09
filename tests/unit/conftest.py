@@ -1,7 +1,14 @@
 """Pytest conftest setup."""
 import pytest
 
-from plugins.module_utils.utils import NautobotApiBase
+try:
+    from plugins.module_utils.utils import NautobotApiBase
+except ImportError:
+    import sys
+
+    sys.path.append("tests/")
+    sys.path.append("plugins/module_utils")
+    from utils import NautobotApiBase
 
 
 @pytest.fixture
