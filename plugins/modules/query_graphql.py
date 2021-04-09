@@ -113,6 +113,7 @@ RETURN = """
 """
 from ansible.module_utils.basic import AnsibleModule
 
+
 def main():
     """Main definition of Action Plugin for query_graphql."""
     # seed the result dict in the object
@@ -138,6 +139,7 @@ def main():
         # added to the GraphQL endpoint of Nautobot
         supports_check_mode=True,
     )
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()
