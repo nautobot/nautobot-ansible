@@ -12,6 +12,7 @@ from ..module_utils.utils import NautobotApiBase, NautobotGraphQL
 
 __metaclass__ = type
 
+
 def nautobot_action_graphql(args):
     """Ansible Action module execution for Nautobot query_graphql."""
 
@@ -19,9 +20,7 @@ def nautobot_action_graphql(args):
 
     # Verify URL is not None
     if url is None:
-        raise AnsibleError(
-            "Missing URL of Nautobot"
-        )
+        raise AnsibleError("Missing URL of Nautobot")
 
     token = args.get("token") or os.getenv("NAUTOBOT_TOKEN")
     ssl_verify = args.get("validate_certs", True)
@@ -54,7 +53,7 @@ def nautobot_action_graphql(args):
 
     # Setup return results
     results = {}
-    
+
     # Make call to Nautobot API and capture any failures
     nautobot_graph_obj = NautobotGraphQL(
         query_str=query, api=nautobot_api, variables=variables
@@ -76,6 +75,7 @@ def nautobot_action_graphql(args):
         results["data"] = nautobot_response.json.get("data")
 
     return results
+
 
 class ActionModule(ActionBase):
     """Ansible Action Module to interact with Nautobot GraphQL Endpoint.
@@ -109,6 +109,6 @@ class ActionModule(ActionBase):
         # Get the arguments from the module definition
         args = self._task.args
         results = nautobot_action_graphql(args=args)
-        
+
         # Results should be the data response of the query to be returned as a lookup
         return results

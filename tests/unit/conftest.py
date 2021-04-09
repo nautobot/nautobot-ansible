@@ -37,6 +37,7 @@ query() {
 }
 """
 
+
 @pytest.fixture
 def nautobot_url():
     return "https://nautobot.example.com"
@@ -49,5 +50,5 @@ def nautobot_valid_args(graphql_test_query):
         "token": "abc123",
         "validate_certs": False,
         "query": graphql_test_query,
-        "variables": {}
+        "variables": {},
     }

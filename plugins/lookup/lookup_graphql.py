@@ -102,6 +102,7 @@ RETURN = """
     type: dict
 """
 
+
 def nautobot_lookup_graphql(**kwargs):
     """Lookup functionality, broken out to assist with testing
 
@@ -110,11 +111,11 @@ def nautobot_lookup_graphql(**kwargs):
     """
     # Setup API Token information, URL, and SSL verification
     url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
-    
+
     # Verify URL is passed in, that it is not None
     if url is None:
         raise AnsibleLookupError("Missing URL of Nautobot")
-    
+
     token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
     ssl_verify = kwargs.get("validate_certs", True)
 
@@ -130,7 +131,6 @@ def nautobot_lookup_graphql(**kwargs):
         raise AnsibleLookupError(
             "Query parameter was not passed. Please verify that query is passed."
         )
-
 
     # Verify that the query is a string type
     if not isinstance(query, str):
@@ -184,6 +184,6 @@ class LookupModule(LookupBase):
             dict: Data returned from GraphQL endpoint
         """
         lookup_info = nautobot_lookup_graphql(**kwargs)
-        
+
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info

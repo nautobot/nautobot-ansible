@@ -1318,6 +1318,7 @@ class NautobotApiBase:
         self.api = pynautobot.api(url=self.url, token=self.token)
         self.api.http_session.verify = self.ssl_verify
 
+
 class NautobotGraphQL:
     def __init__(self, query_str, api=None, variables=None):
         self.query_str = query_str
