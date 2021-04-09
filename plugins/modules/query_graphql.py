@@ -25,6 +25,7 @@ options:
         description:
             - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.
         required: True
+        type: str
     token:
         description:
             - The API token created through Nautobot
@@ -32,6 +33,7 @@ options:
             # in order of precedence
             - name: NAUTOBOT_TOKEN
         required: False
+        type: str
     url:
         description:
             - The URL to the Nautobot instance to query (http://nautobot.example.com:8000)
@@ -39,15 +41,18 @@ options:
             # in order of precedence
             - name: NAUTOBOT_URL
         required: False
+        type: str
     validate_certs:
         description:
             - Whether or not to validate SSL of the Nautobot instance
         required: False
         default: True
+        type: bool
     variables:
         description:
             - Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
         required: False
+        type: dict
 """
 
 EXAMPLES = """
@@ -103,15 +108,22 @@ RETURN = """
     description:
       - Data result from the GraphQL endpoint
     type: dict
+    returned: success
   url:
     description:
       - Nautobot URL that was supplied for troubleshooting
+    returned: success
+    type: str
   query:
     description:
       - Query string that was sent to Nautobot
+    returned: success
+    type: str
   variables:
     description:
       - Variables passed in
+    returned: success
+    type: dict
 """
 from ansible.module_utils.basic import AnsibleModule
 
@@ -131,7 +143,7 @@ def main():
     # supports check mode
     module = AnsibleModule(
         argument_spec=dict(
-            query=dict(required=True, type="str", default=None),
+            query=dict(required=True, type="str"),
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
