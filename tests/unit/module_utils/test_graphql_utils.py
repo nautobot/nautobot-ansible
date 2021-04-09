@@ -3,7 +3,14 @@ from ansible.errors import AnsibleError
 import pynautobot
 import pytest
 
-from plugins.module_utils.utils import NautobotApiBase, NautobotGraphQL
+try:
+    from plugins.module_utils.utils import NautobotApiBase, NautobotGraphQL
+except ImportError:
+    import sys
+
+    sys.path.append("plugins/module_utils")
+    sys.path.append("tests")
+    from utils import NautobotApiBase, NautobotGraphQL
 
 
 def test_setup_api_base():
