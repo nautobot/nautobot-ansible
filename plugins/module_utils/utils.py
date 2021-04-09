@@ -1314,63 +1314,21 @@ class NautobotApiBase:
                 msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
             )
 
-        self._check_required()
-
         # Setup the API client calls
         self.api = pynautobot.api(url=self.url, token=self.token)
         self.api.http_session.verify = self.ssl_verify
 
-    def _check_required(self):
-        if self.url is None:
-            raise AnsibleError("Missing URL of Nautobot")
-
-        if not isinstance(self.ssl_verify, bool):
-            raise AnsibleError("validate_certs must be a boolean")
-
-
 class NautobotGraphQL:
-    def __init__(self, query, api=None, variables=None):
-        if api is None:
-            raise AnsibleError("Please verify the setup, missing the NautobotApiBase")
-        self.query = query
-        self.pynautobot = api
+    def __init__(self, query_str, api=None, variables=None):
+        self.query_str = query_str
+        self.pynautobot = api.api
         self.variables = variables
-
-        self._check_data()
-
-    def _check_data(self):
-        # Check that a valid query was passed in
-        if self.query is None:
-            raise AnsibleError(
-                "Query parameter was not passed. Please verify that query is passed."
-            )
-
-        # Verify that the query is a string type
-        if not isinstance(self.query, str):
-            raise AnsibleError(
-                "Query parameter must be of type string. Please see docs for examples."
-            )
-
-        # Verify that the variables key coming in is a dictionary
-        if self.variables is not None and not isinstance(self.variables, dict):
-            raise AnsibleError(
-                "Variables parameter must be of key/value pairs. Please see docs for examples."
-            )
 
     def query(self):
         """Makes API call and checks response from GraphQL endpoint."""
         # Make API call to query
-        graph_response = self.pynautobot.api.graphql.query(
-            query=self.query, variables=self.variables
+        graph_response = self.pynautobot.graphql.query(
+            query=self.query_str, variables=self.variables
         )
 
-        # Check for errors in the response
-        if isinstance(graph_response, pynautobot.GraphQLException):
-            raise AnsibleError(
-                "Error in the query to the Nautobot host. Errors: %s"
-                % (graph_response.errors)
-            )
-
-        # Good result, return it
-        if isinstance(graph_response, pynautobot.GraphQLRecord):
-            return graph_response.json.get("data")
+        return graph_response
