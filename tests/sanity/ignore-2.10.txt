@@ -84,6 +84,8 @@ plugins/modules/prefix.py validate-modules:missing-gplv3-license
 plugins/modules/provider.py validate-modules:required_if-requirements-unknown
 plugins/modules/provider.py validate-modules:parameter-list-no-elements
 plugins/modules/provider.py validate-modules:missing-gplv3-license
+plugins/modules/query_graphql.py validate-modules:parameter-list-no-elements
+plugins/modules/query_graphql.py validate-modules:missing-gplv3-license
 plugins/modules/rack.py validate-modules:required_if-requirements-unknown
 plugins/modules/rack.py validate-modules:parameter-list-no-elements
 plugins/modules/rack.py validate-modules:missing-gplv3-license

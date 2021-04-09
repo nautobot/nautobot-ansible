@@ -2,6 +2,8 @@
 """Ansible plugin definition for query_graphql action plugin."""
 from __future__ import absolute_import, division, print_function
 
+__metaclass__ = type
+
 ANSIBLE_METADATA = {
     "metadata_version": "1.1",
     "status": ["preview"],
@@ -36,7 +38,7 @@ options:
         env:
             # in order of precedence
             - name: NAUTOBOT_URL
-        required: True
+        required: False
     validate_certs:
         description:
             - Whether or not to validate SSL of the Nautobot instance
