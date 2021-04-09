@@ -12,7 +12,9 @@ class NautobotGraphql:
         self.query = query
         self.variables = variables
         self.url = url or os.getenv("NAUTOBOT_URL") or os.getenv("NAUTOBOT_API")
-        self.token = token or os.getenv("NAUTOBOT_TOKEN") or os.getenv("NAUTOBOT_API_TOKEN")
+        self.token = (
+            token or os.getenv("NAUTOBOT_TOKEN") or os.getenv("NAUTOBOT_API_TOKEN")
+        )
         self._ssl_verify = ssl_verify
         self.session = requests.Session()
         self.verify_required()
@@ -49,7 +51,9 @@ class NautobotGraphql:
 
         results = dict()
         # Make call to Nautobot API and capture any failures
-        graph_response = self.nautobot.graphql.query(query=self.query, variables=self.variables)
+        graph_response = self.nautobot.graphql.query(
+            query=self.query, variables=self.variables
+        )
 
         # Handle for errors in the GraphQL
         if isinstance(graph_response, pynautobot.GraphQLException):

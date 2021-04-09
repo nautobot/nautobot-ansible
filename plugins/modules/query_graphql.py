@@ -106,6 +106,7 @@ RETURN = """
       - Variables passed in
 """
 
+
 def main():
     """Main definition of Action Plugin for query_graphql."""
     # seed the result dict in the object
@@ -125,13 +126,15 @@ def main():
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
-            variables=dict(required=False, type="dict", default={})
+            variables=dict(required=False, type="dict", default={}),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot
-        supports_check_mode=True    
+        supports_check_mode=True,
     )
 
     result["message"] = "Failed to execute action plugin."
 
-    module.fail_json(msg="Not intended to execute as a module, instead the action plugin.", **result)
+    module.fail_json(
+        msg="Not intended to execute as a module, instead the action plugin.", **result
+    )

@@ -7,12 +7,14 @@ __metaclass__ = type
 
 from ansible.plugins.action import ActionBase
 
+
 class ActionModule(ActionBase):
     """Ansible Action Module to interact with Nautobot GraphQL Endpoint.
 
     Args:
         ActionBase (ActionBase): Ansible Action Plugin
     """
+
     def run(self, tmp=None, task_vars=None):
         """Run of action plugin for interacting with Nautobot GraphQL endpoint.
 
