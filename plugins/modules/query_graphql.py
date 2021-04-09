@@ -73,8 +73,8 @@ EXAMPLES = """
   # Make query to GraphQL Endpoint
   - name: Obtain list of sites from Nautobot
     networktocode.nautobot.query_graphql:
-      url: "{{ lookup('env', 'NAUTOBOT_URL') }}"
-      token: "{{ lookup('env', 'NAUTOBOT_TOKEN') }}"
+      url: http://nautobot.local
+      token: thisIsMyToken
       query: "{{ query_string }}"
 
 
@@ -97,8 +97,8 @@ EXAMPLES = """
   # Get Response with variables
   - name: Obtain list of devices at site in variables from Nautobot
     networktocode.nautobot.query_graphql:
-      url: "{{ lookup('env', 'NAUTOBOT_URL') }}"
-      token: "{{ lookup('env', 'NAUTOBOT_TOKEN') }}"
+      url: http://nautobot.local
+      token: thisIsMyToken
       query: "{{ query_string }}"
       variables: "{{ variables }}"
 """
