@@ -5,6 +5,39 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v1.0.4
+======
+
+Bugfixes
+--------
+
+- Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+- ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+
+v1.0.3
+======
+
+Bugfixes
+--------
+
+- Validate if value is already a UUID, return UUID and do not attempt to resolve [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+
+v1.0.2
+======
+
+Bugfixes
+--------
+
+- Remove code related to fetching secrets due to secrets not existing in Nautobot.
+
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Removes dependency on ansible.netcommon and uses builtin ipaddress module
+
 v1.0.0
 ======
 

@@ -20,7 +20,7 @@ networktocode.nautobot.lookup -- Queries and returns elements from Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -43,7 +43,6 @@ Synopsis
 .. Description
 
 - Queries Nautobot via its API to return virtually any information capable of being held in Nautobot.
-- If wanting to obtain the plaintext attribute of a secret, key_file must be provided.
 
 
 .. Aliases
@@ -127,23 +126,6 @@ Parameters
                                                                                             </td>
                                                 <td>
                                             <div>The api_filter to use.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-key_file"></div>
-                    <b>key_file</b>
-                    <a class="ansibleOptionLink" href="#parameter-key_file" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>The location of the private key tied to user account.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -251,7 +233,6 @@ Examples
                         token='<redacted>') }}"
 
     # This example uses an API Filter
-
     tasks:
       # query a list of devices
       - name: Obtain list of devices from Nautobot
@@ -264,12 +245,6 @@ Examples
                         api_filter='role=management tag=Dell'),
                         token='<redacted>') }}"
 
-    # Obtain a secret for R1-device
-    tasks:
-      - name: "Obtain secrets for R1-Device"
-        debug:
-          msg: "{{ query('networktocode.nautobot.lookup', 'secrets', api_filter='device=R1-Device', api_endpoint='http://localhost/', token='<redacted>', key_file='~/.ssh/id_rsa') }}"
-
     # Fetch bgp sessions for R1-device
     tasks:
       - name: "Obtain bgp sessions for R1-Device"
@@ -279,8 +254,6 @@ Examples
                          api_endpoint='http://localhost/',
                          token='<redacted>',
                          plugin='mycustomstuff') }}"
-
-          msg: "{{ query('networktocode.nautobot.lookup', 'secrets', api_filter='device=R1-Device', api_endpoint='http://localhost/', token='<redacted>', key_file='~/.ssh/id_rsa') }}"
 
 
 

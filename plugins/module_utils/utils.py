@@ -11,9 +11,8 @@ import re
 import json
 import os
 
+from uuid import UUID
 from itertools import chain
-
-from ansible_collections.ansible.netcommon.plugins.module_utils.compat import ipaddress
 
 from ansible.module_utils.common.text.converters import to_text
 
@@ -127,6 +126,7 @@ QUERY_TYPES = dict(
     tenant="slug",
     tenant_group="slug",
     time_zone="timezone",
+    virtual_chassis="name",
     virtual_machine="name",
     virtual_machine_role="slug",
     vlan="name",
@@ -332,7 +332,7 @@ ALLOWED_QUERY_PARAMS = {
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
     "untagged_vlan": set(["group", "name", "site", "vid", "vlan_group", "tenant"]),
-    "virtual_chassis": set(["master"]),
+    "virtual_chassis": set(["name", "master"]),
     "virtual_machine": set(["name", "cluster"]),
     "vlan": set(["group", "name", "site", "tenant", "vid", "vlan_group"]),
     "vlan_group": set(["slug", "site"]),
@@ -621,27 +621,37 @@ class NautobotModule(object):
 
         return new_dict
 
+    def is_valid_uuid(self, match):
+        """Determine if the match is already UUID."""
+        try:
+            uuid_obj = UUID(match)
+        except (ValueError, AttributeError):
+            return False
+        return str(uuid_obj) == match
+
     def _get_query_param_id(self, match, data):
         """Used to find IDs of necessary searches when required under _build_query_params
         :returns id (int) or data (dict): Either returns the ID or original data passed in
         :params match (str): The key within the user defined data that is required to have an ID
         :params data (dict): User defined data passed into the module
         """
-        if isinstance(data.get(match), int):
-            return data[match]
+
+        match_value = data.get(match)
+        if isinstance(match_value, int) or self.is_valid_uuid(match_value):
+            return match_value
+
+        endpoint = CONVERT_TO_ID[match]
+        app = self._find_app(endpoint)
+        nb_app = getattr(self.nb, app)
+        nb_endpoint = getattr(nb_app, endpoint)
+
+        query_params = {QUERY_TYPES.get(match): data[match]}
+        result = self._nb_endpoint_get(nb_endpoint, query_params, match)
+
+        if result:
+            return result.id
         else:
-            endpoint = CONVERT_TO_ID[match]
-            app = self._find_app(endpoint)
-            nb_app = getattr(self.nb, app)
-            nb_endpoint = getattr(nb_app, endpoint)
-
-            query_params = {QUERY_TYPES.get(match): data[match]}
-            result = self._nb_endpoint_get(nb_endpoint, query_params, match)
-
-            if result:
-                return result.id
-            else:
-                return data
+            return data
 
     def _build_query_params(
         self, parent, module_data, user_query_params=None, child=None
@@ -697,7 +707,9 @@ class NautobotModule(object):
                 "Link Aggregation Group (LAG)", "interfaces"
             )
             query_dict.update({"type": intf_type})
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -706,7 +718,9 @@ class NautobotModule(object):
             query_dict.update({"prefix": module_data["parent"]})
 
         elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -724,9 +738,6 @@ class NautobotModule(object):
                 query_dict.update(
                     {"interface_id": module_data.get("assigned_object_id")}
                 )
-
-        elif parent == "virtual_chassis":
-            query_dict = {"q": self.module.params["data"].get("master")}
 
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
@@ -793,7 +804,9 @@ class NautobotModule(object):
             required_choices = REQUIRED_ID_FIND[endpoint]
             for choice in required_choices:
                 if data.get(choice):
-                    if isinstance(data[choice], int):
+                    if isinstance(data[choice], int) or self.is_valid_uuid(
+                        data[choice]
+                    ):
                         continue
                     choice_value = self._fetch_choice_value(data[choice], endpoint)
                     data[choice] = choice_value
@@ -851,7 +864,9 @@ class NautobotModule(object):
                             )
                         # If user passes in an integer, add to ID list to id_list as user
                         # should have passed in a tag ID
-                        elif isinstance(list_item, int):
+                        elif isinstance(list_item, int) or self.is_valid_uuid(
+                            list_item
+                        ):
                             id_list.append(list_item)
                             continue
                         else:
@@ -873,7 +888,7 @@ class NautobotModule(object):
 
                 if isinstance(v, list):
                     data[k] = id_list
-                elif isinstance(v, int):
+                elif isinstance(v, int) or self.is_valid_uuid(v):
                     pass
                 elif query_id:
                     data[k] = query_id.id
@@ -889,7 +904,7 @@ class NautobotModule(object):
         """
         if value is None:
             return value
-        elif isinstance(value, int):
+        elif isinstance(value, int) or self.is_valid_uuid(value):
             return value
         else:
             removed_chars = re.sub(r"[^\-\.\w\s]", "", value)
