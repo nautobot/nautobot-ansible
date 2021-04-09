@@ -29,7 +29,6 @@ DOCUMENTATION = """
             env:
                 # in order of precedence
                 - name: NAUTOBOT_TOKEN
-                - name: NAUTOBOT_API_TOKEN
             required: False
         url:
             description:
@@ -37,7 +36,6 @@ DOCUMENTATION = """
             env:
                 # in order of precedence
                 - name: NAUTOBOT_URL
-                - name: NAUTOBOT_API
             required: True
         validate_certs:
             description:
@@ -68,8 +66,8 @@ EXAMPLES = """
         }
 
   # Make query to GraphQL Endpoint
-  - name: Obtain list of devices from Nautobot
-    set_fact
+  - name: Obtain list of sites from Nautobot
+    set_fact:
       query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query, url='https://nautobot.example.com', token='<redact>') }}"
 
   # Example with variables
@@ -90,7 +88,7 @@ EXAMPLES = """
 
   # Get Response with variables
   - name: Obtain list of devices from Nautobot
-    set_fact
+    set_fact:
       query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query, variables=variables url='https://nautobot.example.com', token='<redact>') }}"
 """
 

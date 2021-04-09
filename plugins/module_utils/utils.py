@@ -1324,12 +1324,15 @@ class NautobotApiBase:
         if self.url is None:
             raise AnsibleError("Missing URL of Nautobot")
 
+        if not isinstance(self.ssl_verify, bool):
+            raise AnsibleError("validate_certs must be a boolean")
+
 class NautobotGraphQL:
     def __init__(self, query, api=None, variables=None):
         if api is None:
             raise AnsibleError("Please verify the setup, missing the NautobotApiBase")
         self.query = query
-        self.api = api
+        self.pynautobot = api
         self.variables = variables
 
         self._check_data()
@@ -1350,7 +1353,7 @@ class NautobotGraphQL:
     def query(self):
         """Makes API call and checks response from GraphQL endpoint."""
         # Make API call to query
-        graph_response = self.api.graphql.query(query=self.query, variables=self.variables)
+        graph_response = self.pynautobot.api.graphql.query(query=self.query, variables=self.variables)
 
         # Check for errors in the response
         if isinstance(graph_response, pynautobot.GraphQLException):
