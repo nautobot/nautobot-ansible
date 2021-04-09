@@ -9,6 +9,7 @@ __metaclass__ = type
 import traceback
 import re
 import json
+import os
 
 from itertools import chain
 
@@ -20,6 +21,7 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.common.collections import is_iterable
 from ansible.module_utils.basic import AnsibleModule, missing_required_lib
 from ansible.module_utils.urls import open_url
+from ansible.errors import AnsibleError
 
 PYNAUTOBOT_IMP_ERR = None
 try:
@@ -1283,3 +1285,64 @@ class NautobotAnsibleModule(AnsibleModule):
             terms = [terms]
 
         return len(set(terms).intersection(module_parameters))
+
+
+class NautobotApiBase:
+    def __init__(self, **kwargs):
+        self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
+        self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        self.ssl_verify = kwargs.get("validate_certs", True)
+
+        # Verify that pynautobot is installed
+        if not HAS_PYNAUTOBOT:
+            self.module.fail_json(
+                msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
+            )
+        
+        self._check_required()
+
+        # Setup the API client calls
+        self.api = pynautobot.api(url=self.url, token=self.token)
+        self.api.http_session.verify = self.ssl_verify
+
+    def _check_required(self):
+        if self.url is None:
+            raise AnsibleError("Missing URL of Nautobot")
+
+class NautobotGraphQL:
+    def __init__(self, query, api=None, variables=None):
+        if api is None:
+            raise AnsibleError("Please verify the setup, missing the NautobotApiBase")
+        self.query = query
+        self.api = api
+        self.variables = variables
+
+        self._check_data()
+
+    def _check_data(self):
+        # Check that a valid query was passed in
+        if self.query is None:
+            raise AnsibleError("Query parameter was not passed. Please verify that query is passed.")
+        
+        # Verify that the query is a string type
+        if not isinstance(self.query, str):
+            raise AnsibleError("Query parameter must be of type string. Please see docs for examples.")
+
+        # Verify that the variables key coming in is a dictionary
+        if self.variables is not None and not isinstance(self.variables, dict):
+            raise AnsibleError("Variables parameter must be of key/value pairs. Please see docs for examples.")
+
+    def query(self):
+        """Makes API call and checks response from GraphQL endpoint."""
+        # Make API call to query
+        graph_response = self.api.graphql.query(query=self.query, variables=self.variables)
+
+        # Check for errors in the response
+        if isinstance(graph_response, pynautobot.GraphQLException):
+            raise AnsibleError(
+                "Error in the query to the Nautobot host. Errors: %s" % (graph_response.errors)
+            )
+
+        # Good result, return it
+        if isinstance(graph_response, pynautobot.GraphQLRecord):
+            return graph_response.json.get("data")

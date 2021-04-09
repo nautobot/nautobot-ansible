@@ -6,11 +6,8 @@ from __future__ import absolute_import, division, print_function
 
 import os
 
-from ansible.errors import AnsibleError, 
 from ansible.plugins.lookup import LookupBase
-
-
-from ansible_collections.networktocode.nautobot.plugins.graphql import NautobotGraphql
+from ..module_utils.utils import NautobotApiBase, NautobotGraphQL
 
 __metaclass__ = type
 
@@ -102,10 +99,6 @@ RETURN = """
     description:
       - Data result from the GraphQL endpoint
     type: dict
-  errors:
-    description:
-      - Errors returned on a query
-    type: dict
 """
 
 
@@ -115,41 +108,23 @@ class LookupModule(LookupBase):
     """
 
     def run(self, **kwargs):
-
         # Setup API Token information, URL, and SSL verification
-        token = (
-            kwargs.get("token")
-            or os.getenv("NAUTOBOT_TOKEN")
-            or os.getenv("NAUTOBOT_API_TOKEN")
-        )
-        url = (
-            kwargs.get("url") or os.getenv("NAUTOBOT_URL") or os.getenv("NAUTOBOT_API")
-        )
+        token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         ssl_verify = kwargs.get("validate_certs", True)
+        nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
         query = kwargs.get("query")
         variables = kwargs.get("variables")
 
-        # Check that Query is passed
-        if query is None:
-            raise AnsibleError(
-                "Query parameter was not passed. Please verify that query is passed."
-            )
-
-        # Validate that the query passed is of type string
-        if not isinstance(query, str):
-            raise AnsibleError(
-                "Query parameter must be of type string. Please see docs for examples."
-            )
-
-        # Check that variables are passed in are of type dictionary if passed
-        if variables is not None and not isinstance(variables, dict):
-            raise AnsibleError(
-                "Variables parameter must be of key/value pairs. Please see docs for examples."
-            )
-
+        # Setup return results
+        results = {}
         # Make call to Nautobot API and capture any failures
-        graph_obj = NautobotGraphql()
-        results = graph_obj(query=query, variables=variables, url=url, token=token, ssl_verify=ssl_verify)
+        nautobot_graph_obj = NautobotGraphQL(
+            query=query, api=nautobot_api, variables=variables
+        )
+
+        # Add data for the return
+        results["data"] = nautobot_graph_obj.query()
 
         # Results should be the data response of the query to be returned as a lookup
         return results
