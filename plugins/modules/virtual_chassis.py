@@ -45,7 +45,7 @@ options:
       name:
         description:
           - Name
-        required: false
+        required: true
         type: str
       master:
         description:
@@ -96,7 +96,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         data:
           name: "Virtual Chassis 1"
-          master: Test Device
         state: present
 
     - name: Update virtual chassis with other fields
@@ -104,6 +103,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         data:
+          name: "Virtual Chassis 1"
           master: Test Device
           domain: Domain Text
         state: present
@@ -113,7 +113,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         data:
-          master: Test Device
+          name: "Virtual Chassis 1"
         state: absent
 """
 
@@ -150,7 +150,7 @@ def main():
                 type="dict",
                 required=True,
                 options=dict(
-                    name=dict(required=False, type="str"),
+                    name=dict(required=True, type="str"),
                     master=dict(required=False, type="raw"),
                     domain=dict(required=False, type="str"),
                     tags=dict(required=False, type="list"),
@@ -159,17 +159,8 @@ def main():
         )
     )
 
-    # required_if = [
-    #    ("state", "present", ["master"]),
-    #    ("state", "absent", ["master"]),
-    # ]
-    required_one_of = [["name", "master"]]
-
     module = NautobotAnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        # required_if=required_if,
-        required_one_of=required_one_of,
+        argument_spec=argument_spec, supports_check_mode=True,
     )
 
     virtual_chassis = NautobotDcimModule(module, NB_VIRTUAL_CHASSIS)

@@ -119,7 +119,6 @@ plugins/modules/tenant.py validate-modules:missing-gplv3-license
 plugins/modules/tenant_group.py validate-modules:required_if-requirements-unknown
 plugins/modules/tenant_group.py validate-modules:missing-gplv3-license
 plugins/modules/virtual_chassis.py validate-modules:parameter-list-no-elements
-plugins/modules/virtual_chassis.py validate-modules:required_one_of-unknown
 plugins/modules/virtual_chassis.py validate-modules:missing-gplv3-license
 plugins/modules/virtual_machine.py validate-modules:required_if-requirements-unknown
 plugins/modules/virtual_machine.py validate-modules:parameter-list-no-elements
