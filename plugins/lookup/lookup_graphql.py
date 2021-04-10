@@ -10,7 +10,10 @@ from ansible.plugins.lookup import LookupBase
 from ansible.errors import AnsibleLookupError
 import pynautobot
 
-from ..module_utils.utils import NautobotApiBase, NautobotGraphQL
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NautobotApiBase,
+    NautobotGraphQL,
+)
 
 __metaclass__ = type
 
