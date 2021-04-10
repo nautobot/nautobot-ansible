@@ -30,9 +30,7 @@ DOCUMENTATION = """
     version_added: "1.0.0"
     short_description: Queries and returns elements from Nautobot
     description:
-        - Queries Nautobot via its API to return virtually any information
-          capable of being held in Nautobot.
-        - If wanting to obtain the plaintext attribute of a secret, key_file must be provided.
+        - Queries Nautobot via its API to return virtually any information capable of being held in Nautobot.
     options:
         _terms:
             description:
@@ -66,10 +64,6 @@ DOCUMENTATION = """
                 - Whether or not to validate SSL of the Nautobot instance
             required: False
             default: True
-        key_file:
-            description:
-                - The location of the private key tied to user account.
-            required: False
         raw_data:
             description:
                 - Whether to return raw API data with the lookup/query or whether to return a key/value dict
@@ -91,7 +85,6 @@ tasks:
                     token='<redacted>') }}"
 
 # This example uses an API Filter
-
 tasks:
   # query a list of devices
   - name: Obtain list of devices from Nautobot
@@ -104,12 +97,6 @@ tasks:
                     api_filter='role=management tag=Dell'),
                     token='<redacted>') }}"
 
-# Obtain a secret for R1-device
-tasks:
-  - name: "Obtain secrets for R1-Device"
-    debug:
-      msg: "{{ query('networktocode.nautobot.lookup', 'secrets', api_filter='device=R1-Device', api_endpoint='http://localhost/', token='<redacted>', key_file='~/.ssh/id_rsa') }}"
-
 # Fetch bgp sessions for R1-device
 tasks:
   - name: "Obtain bgp sessions for R1-Device"
@@ -119,8 +106,6 @@ tasks:
                      api_endpoint='http://localhost/',
                      token='<redacted>',
                      plugin='mycustomstuff') }}"
-
-      msg: "{{ query('networktocode.nautobot.lookup', 'secrets', api_filter='device=R1-Device', api_endpoint='http://localhost/', token='<redacted>', key_file='~/.ssh/id_rsa') }}"
 """
 
 RETURN = """
@@ -191,8 +176,6 @@ def get_endpoint(nautobot, term):
         "reports": {"endpoint": nautobot.extras.reports},
         "rirs": {"endpoint": nautobot.ipam.rirs},
         "roles": {"endpoint": nautobot.ipam.roles},
-        "secret-roles": {"endpoint": nautobot.secrets.secret_roles},
-        "secrets": {"endpoint": nautobot.secrets.secrets},
         "services": {"endpoint": nautobot.ipam.services},
         "sites": {"endpoint": nautobot.dcim.sites},
         "tags": {"endpoint": nautobot.extras.tags},
@@ -292,7 +275,6 @@ class LookupModule(LookupBase):
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
         ssl_verify = kwargs.get("validate_certs", True)
-        private_key_file = kwargs.get("key_file")
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
@@ -300,20 +282,11 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        try:
-            session = requests.Session()
-            session.verify = ssl_verify
+        session = requests.Session()
+        session.verify = ssl_verify
 
-            nautobot = pynautobot.api(
-                api_endpoint,
-                token=api_token if api_token else None,
-                private_key_file=private_key_file,
-            )
-            nautobot.http_session = session
-        except FileNotFoundError:
-            raise AnsibleError(
-                "%s cannot be found. Please make sure file exists." % private_key_file
-            )
+        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
+        nautobot.http_session = session
 
         results = []
         for term in terms:

@@ -20,7 +20,7 @@ networktocode.nautobot.ip_address -- Creates or removes IP addresses from Nautob
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -236,23 +236,6 @@ Parameters
                                                                 <td>
                                             <div>(DEPRECATED) - Nautobot now handles determining the IP family natively.</div>
                                             <div>Specifies with address family the IP address belongs to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/interface"></div>
-                    <b>interface</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/interface" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The name and device of the interface that the IP address should be assigned to
-    Required if state is <code>present</code> and a prefix specified.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -556,7 +539,7 @@ Examples
               nat_inside:
                 address: 192.168.1.20
                 vrf: Test
-              interface:
+              assigned_object:
                 name: GigabitEthernet1
                 device: test100
         - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
@@ -566,22 +549,11 @@ Examples
             data:
               prefix: 192.168.1.0/24
               vrf: Test
-              interface:
+              assigned_object:
                 name: GigabitEthernet1
                 device: test100
             state: present
         - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
-          networktocode.nautobot.ip_address:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            data:
-              prefix: 192.168.1.0/24
-              vrf: Test
-              interface:
-                name: GigabitEthernet1
-                device: test100
-            state: new
-        - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1 (Nautobot 2.9+)
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken

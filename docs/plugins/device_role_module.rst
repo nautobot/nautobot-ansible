@@ -20,7 +20,7 @@ networktocode.nautobot.device_role -- Create, update or delete devices roles wit
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
