@@ -12,7 +12,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-lookup: lookup
+module: query_graphql
 author: Josh VanDeraa (@jvanderaa)
 version_added: "1.1.0"
 short_description: Queries and returns elements from Nautobot GraphQL endpoint

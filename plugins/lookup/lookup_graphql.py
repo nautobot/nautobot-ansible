@@ -15,7 +15,7 @@ from ..module_utils.utils import NautobotApiBase, NautobotGraphQL
 __metaclass__ = type
 
 DOCUMENTATION = """
-    lookup: lookup
+    lookup: lookup_graphql
     author: Josh VanDeraa (@jvanderaa)
     version_added: "1.1.0"
     short_description: Queries and returns elements from Nautobot GraphQL endpoint
