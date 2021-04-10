@@ -2,7 +2,15 @@
 from ansible.errors import AnsibleError
 import pytest
 
-from plugins.action.query_graphql import nautobot_action_graphql
+try:
+    from plugins.action.query_graphql import nautobot_action_graphql
+except ImportError:
+    import sys
+
+    sys.path.append("tests")
+    sys.path.append("plugins/action")
+
+    from query_graphql import nautobot_action_graphql
 
 
 def test_setup_api_error_missing_url(nautobot_valid_args):
