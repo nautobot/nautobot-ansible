@@ -23,7 +23,6 @@ from ansible.module_utils.urls import open_url
 PYNAUTOBOT_IMP_ERR = None
 try:
     import pynautobot
-    import requests
 
     HAS_PYNAUTOBOT = True
 except ImportError:

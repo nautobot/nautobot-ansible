@@ -20,7 +20,6 @@ from ansible.parsing.splitter import parse_kv, split_args
 from ansible.utils.display import Display
 
 import pynautobot
-import requests
 
 __metaclass__ = type
 
