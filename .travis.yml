@@ -12,6 +12,7 @@ env:
     - COLLECTION_NAME: "nautobot"
     - COLLECTION_VERSION: "2.0.0"
 
+
 jobs:
   include:
     - name: "Python 3.6 - Nautobot - Latest PyPi Ansible"
@@ -25,6 +26,7 @@ jobs:
 
 before_script:
   - mkdir -p ~/ansible_collections/$COLLECTION_NAMESPACE
+  - ansible-galaxy collection install community.general -p /home/travis/.ansible/collections
   - ansible-galaxy collection build .
   - ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME*.tar.gz -p /home/travis/.ansible/collections
 

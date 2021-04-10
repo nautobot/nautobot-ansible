@@ -100,13 +100,6 @@ options:
           - CARP
         required: false
         type: str
-      interface:
-        description:
-          - |
-            The name and device of the interface that the IP address should be assigned to
-            Required if state is C(present) and a prefix specified.
-        required: false
-        type: raw
       description:
         description:
           - The description of the interface
@@ -241,7 +234,7 @@ EXAMPLES = r"""
           nat_inside:
             address: 192.168.1.20
             vrf: Test
-          interface:
+          assigned_object:
             name: GigabitEthernet1
             device: test100
     - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
@@ -251,22 +244,11 @@ EXAMPLES = r"""
         data:
           prefix: 192.168.1.0/24
           vrf: Test
-          interface:
+          assigned_object:
             name: GigabitEthernet1
             device: test100
         state: present
     - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        data:
-          prefix: 192.168.1.0/24
-          vrf: Test
-          interface:
-            name: GigabitEthernet1
-            device: test100
-        state: new
-    - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1 (Nautobot 2.9+)
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
@@ -341,7 +323,6 @@ def main():
                             "CARP",
                         ],
                     ),
-                    interface=dict(required=False, type="raw"),
                     description=dict(required=False, type="str"),
                     nat_inside=dict(required=False, type="raw"),
                     dns_name=dict(required=False, type="str"),
@@ -366,7 +347,7 @@ def main():
         ("state", "absent", ["address"]),
         ("state", "new", ["address", "prefix"], True),
     ]
-    mutually_exclusive = [["interface", "assigned_object"], ["address", "prefix"]]
+    mutually_exclusive = [["address", "prefix"]]
 
     module = NautobotAnsibleModule(
         argument_spec=argument_spec,
