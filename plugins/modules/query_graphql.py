@@ -28,12 +28,12 @@ options:
         type: str
     token:
         description:
-            - The API token created through Nautobot, env: NAUTOBOT_TOKEN
+            - The API token created through Nautobot, optional env=NAUTOBOT_TOKEN
         required: False
         type: str
     url:
         description:
-            - The URL to the Nautobot instance to query (http://nautobot.example.com:8000) env: NAUTOBOT_URL
+            - The URL to the Nautobot instance to query (http://nautobot.example.com:8000), optional env=NAUTOBOT_URL
         required: False
         type: str
     validate_certs:
