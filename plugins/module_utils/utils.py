@@ -504,10 +504,8 @@ class NautobotModule(object):
 
     def _connect_api(self, url, token, ssl_verify):
         try:
-            session = requests.Session()
-            session.verify = ssl_verify
             nb = pynautobot.api(url, token=token)
-            nb.http_session = session
+            nb.http_session.verify = ssl_verify
             try:
                 self.version = nb.version
             except Exception:

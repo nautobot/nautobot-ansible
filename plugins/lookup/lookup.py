@@ -292,11 +292,17 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        session = requests.Session()
-        session.verify = ssl_verify
-
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
-        nautobot.http_session = session
+        try:
+            nautobot = pynautobot.api(
+                api_endpoint,
+                token=api_token if api_token else None,
+                private_key_file=private_key_file,
+            )
+            nautobot.http_session.verify = ssl_verify
+        except FileNotFoundError:
+            raise AnsibleError(
+                "%s cannot be found. Please make sure file exists." % private_key_file
+            )
 
         results = []
         for term in terms:
