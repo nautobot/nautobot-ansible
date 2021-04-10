@@ -289,14 +289,8 @@ class LookupModule(LookupBase):
 
     def run(self, terms, variables=None, **kwargs):
 
-        api_token = (
-            kwargs.get("token")
-            or os.getenv("NAUTOBOT_TOKEN")
-        )
-        api_endpoint = (
-            kwargs.get("api_endpoint")
-            or os.getenv("NAUTOBOT_URL")
-        )
+        api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
         ssl_verify = kwargs.get("validate_certs", True)
         private_key_file = kwargs.get("key_file")
         api_filter = kwargs.get("api_filter")
