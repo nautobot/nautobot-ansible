@@ -4,6 +4,17 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v1.1.0
+======
+
+Release Summary
+---------------
+
+New Plugins
+-----------
+
+- networktocode.nautobot.query_graphql - Action plugin to interact with Nautobot GraphQL API endpoint.
+- networktocode.nautobot.lookup_graphql - Lookup plugin to interact with Nautobot GraphQL API endpoint.
 
 v1.0.4
 ======
