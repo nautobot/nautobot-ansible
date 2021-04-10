@@ -3,7 +3,15 @@ from ansible.errors import AnsibleError, AnsibleLookupError
 import pynautobot
 import pytest
 
-from plugins.lookup.lookup_graphql import nautobot_lookup_graphql
+try:
+    from plugins.lookup.lookup_graphql import nautobot_lookup_graphql
+except ImportError:
+    import sys
+
+    sys.path.append("tests")
+    sys.path.append("plugins/lookup")
+
+    from lookup_graphql import nautobot_lookup_graphql
 
 
 def test_setup_api_error_missing_url():
