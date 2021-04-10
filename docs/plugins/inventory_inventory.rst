@@ -98,7 +98,7 @@ Parameters
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
-                                env:NAUTOBOT_API
+                                env:NAUTOBOT_URL
                                                                                             </div>
                                                                     </td>
                                                 <td>
@@ -764,7 +764,7 @@ Parameters
                                 env:NAUTOBOT_TOKEN
                                                                                             </div>
                                                     <div>
-                                env:NAUTOBOT_API_KEY
+                                env:NAUTOBOT_TOKEN
                                                                                             </div>
                                                                     </td>
                                                 <td>
