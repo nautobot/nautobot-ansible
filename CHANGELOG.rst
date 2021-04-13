@@ -4,17 +4,6 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
-v2.0.0
-======
-
-Release Summary
----------------
-
-Deprecations
-~~~~~~~~~~~~
-- Inventory plugin environment variable NAUTOBOT_API renamed to NAUTOBOT_URL.
-- Lookup plugin environment variables NAUTOBOT_API and NAUTOBOT_API_TOKEN removed in favor of only NAUTOBOT_URL and NAUTOBOT_TOKEN.
-- Removed Requests session creation, in favor of using session created by pynautobot.
 
 v1.0.4
 ======
