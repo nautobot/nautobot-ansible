@@ -56,11 +56,11 @@ def test_query_api_query_variables_wrong_type(
     nautobot_valid_args, graphql_test_query_with_var
 ):
     nautobot_valid_args["query"] = graphql_test_query_with_var
-    nautobot_valid_args["variables"] = ["ntc"]
+    nautobot_valid_args["graph_variables"] = ["ntc"]
     with pytest.raises(AnsibleError) as exc:
         test_result = nautobot_action_graphql(args=nautobot_valid_args)
 
     assert (
         str(exc.value)
-        == "Variables parameter must be of key/value pairs. Please see docs for examples."
+        == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
     )

@@ -31,7 +31,7 @@ query {
 
 @pytest.fixture
 def graphql_test_variables():
-    return {"site_name": "den"}
+    return {"site_name": "DEN"}
 
 
 @pytest.fixture
@@ -57,5 +57,5 @@ def nautobot_valid_args(graphql_test_query):
         "token": "abc123",
         "validate_certs": False,
         "query": graphql_test_query,
-        "variables": {},
+        "graph_variables": {},
     }

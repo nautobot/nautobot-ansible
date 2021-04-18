@@ -62,7 +62,7 @@ def nautobot_action_graphql(args):
         )
 
     # Setup return results
-    results = {}
+    results = {"url": url, "query": query, "graph_variables": graph_variables}
 
     # Make call to Nautobot API and capture any failures
     nautobot_graph_obj = NautobotGraphQL(

@@ -10,10 +10,18 @@ from ansible.plugins.lookup import LookupBase
 from ansible.errors import AnsibleLookupError
 import pynautobot
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotApiBase,
-    NautobotGraphQL,
-)
+try:
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+        NautobotApiBase,
+        NautobotGraphQL,
+    )
+except ModuleNotFoundError:
+    # For testing
+    from plugins.module_utils.utils import (
+        NautobotApiBase,
+        NautobotGraphQL
+    )
+
 from ansible.utils.display import Display
 
 __metaclass__ = type

@@ -16,7 +16,7 @@ except ImportError:
 
 def test_setup_api_error_missing_url():
     with pytest.raises(AnsibleLookupError) as exc:
-        test_class = nautobot_lookup_graphql(token="abc123", validate_certs=False)
+        test_class = nautobot_lookup_graphql(query="", token="abc123", validate_certs=False)
 
     assert str(exc.value) == "Missing URL of Nautobot"
 
@@ -24,7 +24,7 @@ def test_setup_api_error_missing_url():
 def test_setup_api_error_incorrect_validate_certs():
     with pytest.raises(AnsibleLookupError) as exc:
         test_class = nautobot_lookup_graphql(
-            url="https://nautobot.example.com", token="abc123", validate_certs="Hi"
+            query="", url="https://nautobot.example.com", token="abc123", validate_certs="Hi"
         )
 
     assert str(exc.value) == "validate_certs must be a boolean"
@@ -71,10 +71,10 @@ def test_query_api_query_variables_wrong_type(
             token="abc123",
             validate_certs=False,
             query=graphql_test_query_with_var,
-            variables=["ntc"],
+            graph_variables=["ntc"],
         )
 
     assert (
         str(exc.value)
-        == "Variables parameter must be of key/value pairs. Please see docs for examples."
+        == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
     )
