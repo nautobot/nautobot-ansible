@@ -16,7 +16,9 @@ except ImportError:
 
 def test_setup_api_error_missing_url():
     with pytest.raises(AnsibleLookupError) as exc:
-        test_class = nautobot_lookup_graphql(query="", token="abc123", validate_certs=False)
+        test_class = nautobot_lookup_graphql(
+            query="", token="abc123", validate_certs=False
+        )
 
     assert str(exc.value) == "Missing URL of Nautobot"
 
@@ -24,7 +26,10 @@ def test_setup_api_error_missing_url():
 def test_setup_api_error_incorrect_validate_certs():
     with pytest.raises(AnsibleLookupError) as exc:
         test_class = nautobot_lookup_graphql(
-            query="", url="https://nautobot.example.com", token="abc123", validate_certs="Hi"
+            query="",
+            url="https://nautobot.example.com",
+            token="abc123",
+            validate_certs="Hi",
         )
 
     assert str(exc.value) == "validate_certs must be a boolean"
