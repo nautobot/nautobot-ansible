@@ -145,7 +145,7 @@ def nautobot_lookup_graphql(**kwargs):
     # Verify that the variables key coming in is a dictionary
     if graph_variables is not None and not isinstance(graph_variables, dict):
         raise AnsibleLookupError(
-            "Variables parameter must be of key/value pairs. Please see docs for examples."
+            "graph_variables parameter must be of key/value pairs. Please see docs for examples."
         )
 
     # Setup return results

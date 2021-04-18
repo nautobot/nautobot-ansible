@@ -34,7 +34,8 @@ def nautobot_action_graphql(args):
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
     query = args.get("query")
-    variables = args.get("variables")
+    graph_variables = args.get("graph_variables")
+    print(graph_variables)
 
     # Check that a valid query was passed in
     if query is None:
@@ -49,9 +50,9 @@ def nautobot_action_graphql(args):
         )
 
     # Verify that the variables key coming in is a dictionary
-    if variables is not None and not isinstance(variables, dict):
+    if graph_variables is not None and not isinstance(graph_variables, dict):
         raise AnsibleError(
-            "Variables parameter must be of key/value pairs. Please see docs for examples."
+            "graph_variables parameter must be of key/value pairs. Please see docs for examples."
         )
 
     # Setup return results
@@ -59,21 +60,21 @@ def nautobot_action_graphql(args):
 
     # Make call to Nautobot API and capture any failures
     nautobot_graph_obj = NautobotGraphQL(
-        query_str=query, api=nautobot_api, variables=variables
+        query_str=query, api=nautobot_api, variables=graph_variables
     )
 
     # Get the response from the object
     nautobot_response = nautobot_graph_obj.query()
 
     # Check for errors in the response
-    if isinstance(nautobot_response, pynautobot.GraphQLException):
+    if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLException):
         raise AnsibleError(
             "Error in the query to the Nautobot host. Errors: %s"
             % (nautobot_response.errors)
         )
 
     # Good result, return it
-    if isinstance(nautobot_response, pynautobot.GraphQLRecord):
+    if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
         # Assign the data of a good result to the response
         results["data"] = nautobot_response.json.get("data")
 
