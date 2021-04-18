@@ -1307,12 +1307,6 @@ class NautobotApiBase:
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         self.ssl_verify = kwargs.get("validate_certs", True)
 
-        # Verify that pynautobot is installed
-        if not HAS_PYNAUTOBOT:
-            self.module.fail_json(
-                msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
-            )
-
         # Setup the API client calls
         self.api = pynautobot.api(url=self.url, token=self.token)
         self.api.http_session.verify = self.ssl_verify

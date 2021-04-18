@@ -79,8 +79,8 @@ EXAMPLES = """
   # Example with variables
   - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
     set_fact:
-      variables:
-        site_name: den
+      graph_variables:
+        site_name: DEN
       query_string: |
         query ($site_name:String!) {
             sites (name: $site_name) {
@@ -95,7 +95,7 @@ EXAMPLES = """
   # Get Response with variables
   - name: Obtain list of devices from Nautobot
     set_fact:
-      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query, variables=variables url='https://nautobot.example.com', token='<redact>') }}"
+      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables, url='https://nautobot.example.com', token='<redact>') }}"
 """
 
 RETURN = """
@@ -112,6 +112,14 @@ def nautobot_lookup_graphql(**kwargs):
     Returns:
         [type]: [description]
     """
+    # Add in logic on query to unpack
+    query = kwargs.get("query")
+
+    # Check that a valid query was passed in
+    if query is None:
+        raise AnsibleLookupError(
+            "Query parameter was not passed. Please verify that query is passed."
+        )
     # Setup API Token information, URL, and SSL verification
     url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
 
@@ -126,14 +134,7 @@ def nautobot_lookup_graphql(**kwargs):
         raise AnsibleLookupError("validate_certs must be a boolean")
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
-    query = kwargs.get("query")
-    variables = kwargs.get("variables")
-
-    # Check that a valid query was passed in
-    if query is None:
-        raise AnsibleLookupError(
-            "Query parameter was not passed. Please verify that query is passed."
-        )
+    graph_variables = kwargs.get("graph_variables")
 
     # Verify that the query is a string type
     if not isinstance(query, str):
@@ -142,7 +143,7 @@ def nautobot_lookup_graphql(**kwargs):
         )
 
     # Verify that the variables key coming in is a dictionary
-    if variables is not None and not isinstance(variables, dict):
+    if graph_variables is not None and not isinstance(graph_variables, dict):
         raise AnsibleLookupError(
             "Variables parameter must be of key/value pairs. Please see docs for examples."
         )
@@ -151,25 +152,27 @@ def nautobot_lookup_graphql(**kwargs):
     results = {}
     # Make call to Nautobot API and capture any failures
     nautobot_graph_obj = NautobotGraphQL(
-        query_str=query, api=nautobot_api, variables=variables
+        query_str=query, api=nautobot_api, variables=graph_variables
     )
 
     # Get the response from the object
     nautobot_response = nautobot_graph_obj.query()
 
     # Check for errors in the response
-    if isinstance(nautobot_response, pynautobot.GraphQLException):
+    if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLException):
         raise AnsibleLookupError(
             "Error in the query to the Nautobot host. Errors: %s"
             % (nautobot_response.errors)
         )
 
     # Good result, return it
-    if isinstance(nautobot_response, pynautobot.GraphQLRecord):
+    if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
         # Assign the data of a good result to the response
-        results["data"] = nautobot_response.json.get("data")
+        print('football')
+        print(nautobot_response)
+        results = nautobot_response.json
 
-    return results
+    return [results]
 
 
 class LookupModule(LookupBase):
@@ -177,7 +180,7 @@ class LookupModule(LookupBase):
     LookupModule(LookupBase) is defined by Ansible
     """
 
-    def run(self, **kwargs):
+    def run(self, query, variables=None, graph_variables=None, **kwargs):
         """Runs Ansible Lookup Plugin for using Nautobot GraphQL endpoint
 
         Raises:
@@ -186,7 +189,8 @@ class LookupModule(LookupBase):
         Returns:
             dict: Data returned from GraphQL endpoint
         """
-        lookup_info = nautobot_lookup_graphql(**kwargs)
+        # Query comes in as a list, this needs to be moved to string for pynautobot
+        lookup_info = nautobot_lookup_graphql(query=query[0], variables=variables, graph_variables=graph_variables, **kwargs)
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info
