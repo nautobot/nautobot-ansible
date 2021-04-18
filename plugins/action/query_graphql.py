@@ -42,7 +42,6 @@ def nautobot_action_graphql(args):
     graph_variables = args.get("graph_variables")
     Display().v("Graph Variables: %s" % graph_variables)
 
-
     # Check that a valid query was passed in
     if query is None:
         raise AnsibleError(

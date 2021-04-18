@@ -17,10 +17,7 @@ try:
     )
 except ModuleNotFoundError:
     # For testing
-    from plugins.module_utils.utils import (
-        NautobotApiBase,
-        NautobotGraphQL
-    )
+    from plugins.module_utils.utils import NautobotApiBase, NautobotGraphQL
 
 from ansible.utils.display import Display
 
@@ -201,7 +198,12 @@ class LookupModule(LookupBase):
             dict: Data returned from GraphQL endpoint
         """
         # Query comes in as a list, this needs to be moved to string for pynautobot
-        lookup_info = nautobot_lookup_graphql(query=query[0], variables=variables, graph_variables=graph_variables, **kwargs)
+        lookup_info = nautobot_lookup_graphql(
+            query=query[0],
+            variables=variables,
+            graph_variables=graph_variables,
+            **kwargs
+        )
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info
