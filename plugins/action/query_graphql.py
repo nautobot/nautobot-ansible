@@ -12,6 +12,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     NautobotApiBase,
     NautobotGraphQL,
 )
+from ansible.utils.display import Display
 
 __metaclass__ = type
 
@@ -20,6 +21,7 @@ def nautobot_action_graphql(args):
     """Ansible Action module execution for Nautobot query_graphql."""
 
     url = args.get("url") or os.getenv("NAUTOBOT_URL")
+    Display().v("URL: %s" % url)
 
     # Verify URL is not None
     if url is None:
@@ -27,6 +29,7 @@ def nautobot_action_graphql(args):
 
     token = args.get("token") or os.getenv("NAUTOBOT_TOKEN")
     ssl_verify = args.get("validate_certs", True)
+    Display().vv("Verify Certificates: %s" % ssl_verify)
 
     # Verify SSL Verify is of boolean
     if not isinstance(ssl_verify, bool):
@@ -34,8 +37,11 @@ def nautobot_action_graphql(args):
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
     query = args.get("query")
+    Display().v("Query String: %s" % query)
+
     graph_variables = args.get("graph_variables")
-    print(graph_variables)
+    Display().v("Graph Variables: %s" % graph_variables)
+
 
     # Check that a valid query was passed in
     if query is None:

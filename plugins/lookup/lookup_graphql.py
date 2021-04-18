@@ -14,6 +14,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     NautobotApiBase,
     NautobotGraphQL,
 )
+from ansible.utils.display import Display
 
 __metaclass__ = type
 
@@ -114,6 +115,7 @@ def nautobot_lookup_graphql(**kwargs):
     """
     # Add in logic on query to unpack
     query = kwargs.get("query")
+    Display().v("Query String: %s" % query)
 
     # Check that a valid query was passed in
     if query is None:
@@ -122,6 +124,7 @@ def nautobot_lookup_graphql(**kwargs):
         )
     # Setup API Token information, URL, and SSL verification
     url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
+    Display().v("Nautobot URL: %s" % url)
 
     # Verify URL is passed in, that it is not None
     if url is None:
@@ -129,12 +132,14 @@ def nautobot_lookup_graphql(**kwargs):
 
     token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
     ssl_verify = kwargs.get("validate_certs", True)
+    Display().vv("Validate certs: %s" % ssl_verify)
 
     if not isinstance(ssl_verify, bool):
         raise AnsibleLookupError("validate_certs must be a boolean")
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
     graph_variables = kwargs.get("graph_variables")
+    Display().v("Graph Variables: %s" % graph_variables)
 
     # Verify that the query is a string type
     if not isinstance(query, str):
@@ -168,8 +173,6 @@ def nautobot_lookup_graphql(**kwargs):
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
         # Assign the data of a good result to the response
-        print('football')
-        print(nautobot_response)
         results = nautobot_response.json
 
     return [results]
