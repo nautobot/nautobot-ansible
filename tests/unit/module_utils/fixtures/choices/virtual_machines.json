@@ -2,15 +2,15 @@
     "status": [
         {
             "value": "active",
-            "display_name": "Active"
+            "display": "Active"
         },
         {
             "value": "offline",
-            "display_name": "Offline"
+            "display": "Offline"
         },
         {
             "value": "staged",
-            "display_name": "Staged"
+            "display": "Staged"
         }
     ]
 }

@@ -780,7 +780,7 @@ class NautobotModule(object):
         choices = [x for x in chain.from_iterable(endpoint_choices.values())]
 
         for item in choices:
-            if item["display_name"].lower() == search.lower():
+            if item["display"].lower() == search.lower():
                 return item["value"]
             elif item["value"] == search.lower():
                 return item["value"]

@@ -58,7 +58,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "Test Nexus One",
+                            "display": "Test Nexus One",
                             "id": 4,
                             "name": "Test Nexus One"
                         },
@@ -182,7 +182,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },
@@ -201,7 +201,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },
