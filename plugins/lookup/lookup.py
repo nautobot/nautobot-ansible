@@ -20,6 +20,7 @@ from ansible.parsing.splitter import parse_kv, split_args
 from ansible.utils.display import Display
 
 import pynautobot
+import requests
 
 __metaclass__ = type
 
@@ -79,7 +80,7 @@ tasks:
   - name: Obtain list of devices from Nautobot
     debug:
       msg: >
-        "Device {{ item.value.display }} (ID: {{ item.key }}) was
+        "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
@@ -91,7 +92,7 @@ tasks:
   - name: Obtain list of devices from Nautobot
     debug:
       msg: >
-        "Device {{ item.value.display }} (ID: {{ item.key }}) was
+        "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
@@ -291,17 +292,11 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        try:
-            nautobot = pynautobot.api(
-                api_endpoint,
-                token=api_token if api_token else None,
-                private_key_file=private_key_file,
-            )
-            nautobot.http_session.verify = ssl_verify
-        except FileNotFoundError:
-            raise AnsibleError(
-                "%s cannot be found. Please make sure file exists." % private_key_file
-            )
+        session = requests.Session()
+        session.verify = ssl_verify
+
+        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
+        nautobot.http_session = session
 
         results = []
         for term in terms:
