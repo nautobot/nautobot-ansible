@@ -2,41 +2,41 @@
     "face": [
         {
             "value": "front",
-            "display_name": "Front"
+            "display": "Front"
         },
         {
             "value": "rear",
-            "display_name": "Rear"
+            "display": "Rear"
         }
     ],
     "status": [
         {
             "value": "offline",
-            "display_name": "Offline"
+            "display": "Offline"
         },
         {
             "value": "active",
-            "display_name": "Active"
+            "display": "Active"
         },
         {
             "value": "planned",
-            "display_name": "Planned"
+            "display": "Planned"
         },
         {
             "value": "staged",
-            "display_name": "Staged"
+            "display": "Staged"
         },
         {
             "value": "failed",
-            "display_name": "Failed"
+            "display": "Failed"
         },
         {
             "value": "inventory",
-            "display_name": "Inventory"
+            "display": "Inventory"
         },
         {
             "value": "decommissioning",
-            "display_name": "Decommissioning"
+            "display": "Decommissioning"
         }
     ]
 }
