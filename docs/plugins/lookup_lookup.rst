@@ -220,7 +220,7 @@ Examples
       - name: Obtain list of devices from Nautobot
         debug:
           msg: >
-            "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
+            "Device {{ item.value.display }} (ID: {{ item.key }}) was
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
@@ -232,7 +232,7 @@ Examples
       - name: Obtain list of devices from Nautobot
         debug:
           msg: >
-            "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
+            "Device {{ item.value.display }} (ID: {{ item.key }}) was
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',

@@ -42,6 +42,11 @@ options:
     description:
       - Defines the rack group configuration
     suboptions:
+      description:
+        description:
+          - The description of the rack group
+        required: false
+        type: str
       name:
         description:
           - The name of the rack group
@@ -56,6 +61,16 @@ options:
       site:
         description:
           - Required if I(state=present) and the rack does not exist yet
+        required: false
+        type: raw
+      parent_rack_group:
+        description:
+          - The parent rack-group the rack group will be assigned to
+        required: false
+        type: raw
+      region:
+        description:
+          - The region the rack group will be assigned to
         required: false
         type: raw
     required: true
@@ -141,7 +156,10 @@ def main():
                 options=dict(
                     name=dict(required=True, type="str"),
                     slug=dict(required=False, type="str"),
+                    description=dict(required=False, type="str"),
                     site=dict(required=False, type="raw"),
+                    region=dict(required=False, type="raw"),
+                    parent_rack_group=dict(required=False, type="raw"),
                 ),
             ),
         )
