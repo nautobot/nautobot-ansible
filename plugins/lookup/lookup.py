@@ -40,8 +40,7 @@ DOCUMENTATION = """
             description:
                 - The URL to the Nautobot instance to query
             env:
-                # in order of precendence
-                - name: NAUTOBOT_API
+                # in order of precedence
                 - name: NAUTOBOT_URL
             required: True
         api_filter:
@@ -59,7 +58,6 @@ DOCUMENTATION = """
             env:
                 # in order of precendence
                 - name: NAUTOBOT_TOKEN
-                - name: NAUTOBOT_API_TOKEN
             required: False
         validate_certs:
             description:
@@ -274,16 +272,8 @@ class LookupModule(LookupBase):
 
     def run(self, terms, variables=None, **kwargs):
 
-        api_token = (
-            kwargs.get("token")
-            or os.getenv("NAUTOBOT_TOKEN")
-            or os.getenv("NAUTOBOT_API_TOKEN")
-        )
-        api_endpoint = (
-            kwargs.get("api_endpoint")
-            or os.getenv("NAUTOBOT_API")
-            or os.getenv("NAUTOBOT_URL")
-        )
+        api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
         ssl_verify = kwargs.get("validate_certs", True)
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
