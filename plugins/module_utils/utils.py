@@ -9,6 +9,7 @@ __metaclass__ = type
 import traceback
 import re
 import json
+import os
 
 from uuid import UUID
 from itertools import chain
@@ -1299,3 +1300,30 @@ class NautobotAnsibleModule(AnsibleModule):
             terms = [terms]
 
         return len(set(terms).intersection(module_parameters))
+
+
+class NautobotApiBase:
+    def __init__(self, **kwargs):
+        self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
+        self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        self.ssl_verify = kwargs.get("validate_certs", True)
+
+        # Setup the API client calls
+        self.api = pynautobot.api(url=self.url, token=self.token)
+        self.api.http_session.verify = self.ssl_verify
+
+
+class NautobotGraphQL:
+    def __init__(self, query_str, api=None, variables=None):
+        self.query_str = query_str
+        self.pynautobot = api.api
+        self.variables = variables
+
+    def query(self):
+        """Makes API call and checks response from GraphQL endpoint."""
+        # Make API call to query
+        graph_response = self.pynautobot.graphql.query(
+            query=self.query_str, variables=self.variables
+        )
+
+        return graph_response
