@@ -225,8 +225,8 @@ query_filters:
 plugin: networktocode.nautobot.inventory
 compose:
   foo: last_updated
-  bar: display_name
-  nested_variable: rack.display_name
+  bar: display
+  nested_variable: rack.display
 
 # You can use keyed_groups to group on properties of devices or VMs.
 # NOTE: It's only possible to key off direct items on the device/VM objects.
