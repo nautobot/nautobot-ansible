@@ -57,19 +57,29 @@ options:
           - The type of the rear port
         choices:
           - 8p8c
+          - 8p6c
+          - 8p4c
+          - 8p2c
+          - gg45
+          - tera-4p
+          - tera-2p
+          - tera-1p
           - 110-punch
           - bnc
           - mrj21
+          - st
+          - sc
+          - sc-apc
           - fc
           - lc
           - lc-apc
+          - mtrj
+          - mpo
           - lsh
           - lsh-apc
-          - mpo
-          - mtrj
-          - sc
-          - sc-apc
-          - st
+          - splice
+          - cs
+          - sn
         required: false
         type: str
       positions:
@@ -175,20 +185,30 @@ def main():
                     type=dict(
                         required=False,
                         choices=[
-                            "8p8c",
-                            "110-punch",
-                            "bnc",
-                            "mrj21",
-                            "fc",
-                            "lc",
-                            "lc-apc",
-                            "lsh",
-                            "lsh-apc",
-                            "mpo",
-                            "mtrj",
-                            "sc",
-                            "sc-apc",
-                            "st",
+                          "8p8c",
+                          "8p6c",
+                          "8p4c",
+                          "8p2c",
+                          "gg45",
+                          "tera-4p",
+                          "tera-2p",
+                          "tera-1p",
+                          "110-punch",
+                          "bnc",
+                          "mrj21",
+                          "st",
+                          "sc",
+                          "sc-apc",
+                          "fc",
+                          "lc",
+                          "lc-apc",
+                          "mtrj",
+                          "mpo",
+                          "lsh",
+                          "lsh-apc",
+                          "splice",
+                          "cs",
+                          "sn",
                         ],
                         type="str",
                     ),
