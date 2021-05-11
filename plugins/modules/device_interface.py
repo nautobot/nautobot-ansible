@@ -51,6 +51,11 @@ options:
           - Name of the interface to be created
         required: true
         type: str
+      label:
+        description:
+          - Physical label of the interface
+        required: false
+        type: str
       type:
         description:
           - |
@@ -258,6 +263,7 @@ def main():
                 options=dict(
                     device=dict(required=False, type="raw"),
                     name=dict(required=True, type="str"),
+                    label=dict(required=False, type="str"),
                     type=dict(required=False, type="str"),
                     enabled=dict(required=False, type="bool"),
                     lag=dict(required=False, type="raw"),
