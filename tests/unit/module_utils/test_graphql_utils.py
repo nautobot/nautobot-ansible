@@ -15,7 +15,7 @@ except ImportError:
 
 def test_setup_api_base():
     test_class = NautobotApiBase(
-        url="https://nautobot.example.com", token="abc123", validate_certs=False
+        url="https://nautobot.example.com", token="abc123", ssl_verify=False
     )
     assert isinstance(test_class.api, pynautobot.api)
     assert test_class.url == "https://nautobot.example.com"
