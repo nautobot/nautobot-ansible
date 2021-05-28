@@ -1,0 +1,11 @@
+---
+- name: "VERIFY DATABASE VARS ARE SET"
+  assert:
+    that:
+      - "{{ item }} is defined"
+    fail_msg: "Required database variable is undefined. Check the docs for more detail"
+  loop:
+    - nautobot_db_username
+    - nautobot_db_password
+    - redis_password
+    - nautobot_db_name

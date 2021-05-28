@@ -1,0 +1,58 @@
+---
+- name: "SET FACT FOR NGINX PORTS TO BE USED"
+  set_fact:
+    nautobot_http_port: "{{ nautobot_http_port | default('80/tcp') }}"
+    nautobot_https_port: "{{ nautobot_https_port | default('443/tcp') }}"
+
+- name: RHEL BASED | INSTALL NGINX
+  import_tasks: rhel.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
+
+- name: DEBIAN BASED | INSTALL NGINX
+  import_tasks: debian.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+
+- name: "CHECK IF SSL PRIVATE KEY EXISTS"
+  ansible.builtin.stat:
+    path: "{{ cert_path }}/private/nautobot.key"
+  register: "private_key_stat"
+
+- name: "CHECK IF SSL CERT IS PRESENT"
+  ansible.builtin.stat:
+    path: "{{ cert_path }}/certs/nautobot.crt"
+  register: "cert_path_stat"
+
+- name: CREATE SELF SIGNED SSL CERTIFICATE
+  ansible.builtin.command: "openssl req -x509 -nodes -days 365 -newkey rsa:4096 -keyout {{ cert_path }}/private/nautobot.key -out {{ cert_path }}/certs/nautobot.crt -subj '/C={{ cert_country }}/ST={{ cert_state }}/L={{ cert_city }}/CN={{ inventory_hostname }}.{{ cert_domain }}'"
+  notify:
+    - RESTART NGINX
+  when: "(create_new_self_signed_cert | default(False)) or (not private_key_stat['stat']['exists']) or (not cert_path_stat['stat']['exists'])"
+
+- name: CONFIGURE NGINX FOR NAUTOBOT
+  ansible.builtin.template:
+    src: nautobot-nginx.conf
+    dest: /etc/nginx/sites-available/nautobot.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ENABLE NGINX FOR NAUTOBOT
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/nautobot.conf
+    dest: /etc/nginx/sites-enabled/nautobot.conf
+    state: link
+  notify:
+    - RESTART NGINX
+
+- name: REMOVE NGINX DEFAULT SITE
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+    - RESTART NGINX
+
+- name: START NGINX
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes

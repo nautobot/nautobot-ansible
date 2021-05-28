@@ -1,0 +1,236 @@
+---
+- name: "RHEL BASED | INSTALL SYSTEM PACKAGES"
+  import_tasks: "rhel.yml"
+  when:
+    - "ansible_facts['os_family']|lower == 'redhat'"
+    - "ansible_facts['distribution_major_version'] == '8'"
+  tags:
+    - "nautobot"
+
+- name: "RHEL BASED | INSTALL SYSTEM PACKAGES"
+  import_tasks: "rhel7.yml"
+  when:
+    - "ansible_facts['os_family']|lower == 'redhat'"
+    - "ansible_facts['distribution_major_version'] == '7'"
+  tags:
+    - "nautobot"
+
+- name: "DEBIAN BASED | INSTALL SYSTEM PACKAGES"
+  import_tasks: "debian.yml"
+  when: "ansible_facts['os_family']|lower == 'debian'"
+  tags:
+    - "nautobot"
+
+- name: "ADD NAUTOBOT GROUP"
+  ansible.builtin.group:
+    name: "nautobot"
+    system: yes
+    state: "present"
+  tags:
+    - "nautobot"
+
+- name: "ADD NAUTOBOT ACCOUNT"
+  ansible.builtin.user:
+    name: "nautobot"
+    home: "/opt/nautobot"
+    shell: "/bin/bash"
+    system: yes
+    groups:
+      - "nautobot"
+    state: "present"
+  tags:
+    - "nautobot"
+
+- name: "SET NAUTOBOT BASHRC SETTING"
+  ansible.builtin.lineinfile:
+    path: "/opt/nautobot/.bashrc"
+    line: "export NAUTOBOT_ROOT=/opt/nautobot"
+  tags:
+    - "nautobot"
+
+- name: "SET NAUTOBOT HOME DIRECTORY PERMISSIONS"
+  ansible.builtin.file:
+    name: "/opt/nautobot"
+    mode: 0775
+    state: "directory"
+  tags:
+    - "nautobot"
+
+- name: "UPGRADE PIP"
+  ansible.builtin.pip:
+    name: "pip"
+    state: "latest"
+    virtualenv: "/opt/nautobot/"
+    virtualenv_command: "python3 -m venv"
+  tags:
+    - "nautobot"
+
+- name: "INSTALL NAUTOBOT FROM PIP"
+  ansible.builtin.pip:
+    name: "nautobot"
+    state: "latest"
+    virtualenv: "/opt/nautobot/"
+    virtualenv_command: "python3 -m venv"
+  tags:
+    - "nautobot"
+
+- name: "UPDATE NAUTOBOT CONFIG"
+  ansible.builtin.template:
+    src: "nautobot_config.py"
+    dest: "/opt/nautobot/nautobot_config.py"
+    owner: "nautobot"
+    group: "nautobot"
+    mode: 0644
+  tags:
+    - "nautobot"
+
+- name: "DEPLOY UWSGI INI FILE"
+  ansible.builtin.template:
+    src: "uwsgi.ini"
+    dest: "/opt/nautobot/uwsgi.ini"
+    owner: "nautobot"
+    group: "nautobot"
+    mode: 0644
+  tags:
+    - "nautobot"
+
+- name: "SET OWNERSHIP ON NAUTOBOT HOME"
+  ansible.builtin.file:
+    name: "/opt/nautobot"
+    owner: "nautobot"
+    group: "nautobot"
+    recurse: yes
+    state: "directory"
+  tags:
+    - "nautobot"
+
+- name: "CREATE NAUTOBOT-WORKER SYSTEMD SERVICE"
+  ansible.builtin.template:
+    src: "nautobot-worker.service"
+    dest: "/etc/systemd/system/nautobot-worker.service"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  register: "create_worker_service"
+  notify:
+    - "RESTART NAUTOBOT-WORKER"
+  tags:
+    - "nautobot"
+
+- name: "CREATE NAUTOBOT SYSTEMD SERVICE"
+  ansible.builtin.template:
+    src: "nautobot.service"
+    dest: "/etc/systemd/system/nautobot.service"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  register: "create_nautobot_service"
+  notify:
+    - "RESTART NAUTOBOT"
+  tags:
+    - "nautobot"
+
+- name: "CREATE NAUTOBOT UPGRADE SERVICE"
+  ansible.builtin.template:
+    src: "nautobot-upgrade.service"
+    dest: "/etc/systemd/system/nautobot-upgrade.service"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  register: "create_upgrade_service"
+  when:
+    - "ansible_facts['os_family']|lower == 'debian'"
+    - "ansible_facts['distribution_major_version'] == '20'"
+  tags:
+    - "nautobot"
+
+- name: "RELOAD SYSTEMD DAEMON"
+  ansible.builtin.command: "systemctl daemon-reload"
+  when:
+    - "(create_upgrade_service['changed']) or (create_nautobot_service['changed']) or (create_worker_service['changed'])"
+  tags:
+    - "nautobot"
+
+- name: "START NAUTOBOT"
+  ansible.builtin.service:
+    name: "nautobot"
+    state: "started"
+    enabled: yes
+  tags:
+    - "nautobot"
+
+- name: "START NAUTOBOT-WORKER"
+  ansible.builtin.service:
+    name: "nautobot-worker"
+    state: "started"
+    enabled: yes
+  tags:
+    - "nautobot"
+
+- name: "START NAUTOBOT UPGRADE SERVICE"
+  ansible.builtin.service:
+    name: "nautobot-upgrade"
+    state: "started"
+  register: "oneshot_start"
+  when:
+    - "ansible_facts['os_family']|lower == 'debian'"
+    - "ansible_facts['distribution_major_version'] == '20'"
+  tags:
+    - "nautobot"
+
+- name: "UPDATE DATABASE BLOCK"
+  when: "(os_family in ['redhat']) or (os_family in ['debian'] and os_version in ['18'])"
+  tags:
+    - "nautobot"
+  block:
+    - name: "MAKE DATABASE MIGRATIONS"
+      ansible.builtin.command: "/opt/nautobot/bin/nautobot-server makemigrations --config=/opt/nautobot/nautobot_config.py"
+      become_user: "nautobot"
+      register: "database_migrations_status"
+      changed_when: "'No changes detected' not in database_migrations_status['stdout']"
+      environment:
+        NAUTOBOT_ROOT: "/opt/nautobot"
+
+    - name: "RUN DATABASE MIGRATIONS"
+      ansible.builtin.command: "/opt/nautobot/bin/nautobot-server migrate --config=/opt/nautobot/nautobot_config.py"
+      become_user: "nautobot"
+      register: "run_db_migrations"
+      changed_when: "'No migrations to apply.' not in run_db_migrations['stdout']"
+      environment:
+        NAUTOBOT_ROOT: "/opt/nautobot"
+
+    - name: "RUN COLLECTSTATIC"
+      ansible.builtin.command: "/opt/nautobot/bin/nautobot-server collectstatic --config=/opt/nautobot/nautobot_config.py --noinput"
+      become_user: "nautobot"
+      register: "collectstatic_output"
+      changed_when: "'0 static files copied' not in collectstatic_output['stdout']"
+      environment:
+        NAUTOBOT_ROOT: "/opt/nautobot"
+
+- name: "RHEL/CENTOS 8 HANDLE FIREWALL"
+  tags:
+    - "nautobot"
+  when:
+    - "os_family == 'redhat'"
+  block:
+    - name: "GATHER RULES IN FIREWALL-CMD"
+      ansible.builtin.command: "firewall-cmd --list-all"
+      become: yes
+      register: "firewall_cmd_output"
+      changed_when: false
+
+    - name: "OPEN FIREWALL PORTS"
+      when:
+        - "(item not in firewall_cmd_output['stdout'])"
+      ansible.builtin.command: "firewall-cmd --zone=public --add-port={{ item }} --permanent"
+      register: "open_port_status"
+      loop:
+        - "{{ nautobot_http_port | default('80/tcp') }}"
+        - "{{ nautobot_https_port | default('443/tcp') }}"
+
+    - debug:
+        msg: "{{ open_port_status }}"
+
+    - name: "RELOAD FIREWALL"
+      when: "open_port_status['changed']"
+      ansible.builtin.command: "firewall-cmd --reload"

@@ -1,0 +1,27 @@
+---
+- name: "SET PYTHON INTERPRETER TO PYTHON2"
+  set_fact:
+    ansible_python_interpreter: "/usr/bin/python"
+    ansible_pip_interpreter: "/usr/bin/pip"
+  tags:
+    - "nautobot"
+
+- name: "INSTALL SYSTEM REQUIREMENTS - RHEL7"
+  ansible.builtin.yum:
+    name:
+      - "git"
+      - "python36"
+      - "python36-devel"
+      - "python3-pip"
+      - "policycoreutils-python-2.5-34.el7.x86_64"
+      - "libselinux-python3"
+    state: "present"
+  tags:
+    - "nautobot"
+
+- name: "SET PYTHON INTERPRETER TO PYTHON3"
+  set_fact:
+    ansible_python_interpreter: "/usr/bin/python3"
+    ansible_pip_interpreter: "/usr/bin/pip3"
+  tags:
+    - "nautobot"

@@ -1,0 +1,9 @@
+---
+- name: "INSTALL NGINX"
+  ansible.builtin.apt:
+    name: "nginx"
+    state: "present"
+
+- name: "SET FACT FOR CERT PATH - RHEL"
+  set_fact:
+    cert_path: "/etc/ssl"

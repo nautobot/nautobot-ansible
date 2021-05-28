@@ -1,0 +1,47 @@
+---
+- name: "SET PYTHON INTERPRETER AND PIP TO USE SYSTEM PYTHON2 AND PIP2 - CENTOS/RHEL 7"
+  when:
+    - "ansible_facts['distribution_major_version'] == '7'"
+  set_fact:
+    ansible_python_interpreter: "/usr/bin/python"
+    ansible_pip_interpreter: "/usr/bin/pip"
+
+- name: "SET PYTHON INTERPRETER AND PIP TO USE SYSTEM PYTHON3 AND PIP3 - CENTOS/RHEL 8"
+  when:
+    - "ansible_facts['distribution_major_version'] == '8'"
+  set_fact:
+    ansible_python_interpreter: "/usr/bin/python3"
+    ansible_pip_interpreter: "/usr/bin/pip3"
+
+- name: "INSTALL NGINX"
+  ansible.builtin.yum:
+    name: "nginx"
+    state: "present"
+
+- name: "CREATE NGINX DIRECTORY STRUCTURE"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+  with_items:
+    - "/etc/nginx/sites-available"
+    - "/etc/nginx/sites-enabled"
+
+- name: MODIFY DEFAULT NGINX CONFIG
+  ansible.builtin.template:
+    src: "nginx.conf"
+    dest: "/etc/nginx/nginx.conf"
+    owner: "root"
+    group: "root"
+    mode: 0644
+  notify:
+    - "RESTART NGINX"
+
+- name: "SELINUX - ALLOW NGINX TO COMMMUNICATE WITH NAUTOBOT"
+  ansible.posix.seboolean:
+    name: "httpd_can_network_connect"
+    state: yes
+    persistent: yes
+
+- name: "SET FACT FOR CERT PATH - RHEL"
+  set_fact:
+    cert_path: "/etc/pki/tls"

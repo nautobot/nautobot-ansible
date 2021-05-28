@@ -1,0 +1,19 @@
+[Unit]
+Description=Nautobot Run Upgrade Process
+Documentation=https://nautobot.readthedocs.io/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment="NAUTOBOT_ROOT=/opt/nautobot"
+
+User=nautobot
+Group=nautobot
+WorkingDirectory=/opt/nautobot
+
+ExecStart=/opt/nautobot/bin/nautobot-server post_upgrade
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,139 @@
+---
+- name: "Install Nautobot and required packages"
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    nautobot_db_username: "nautobot"
+    nautobot_db_password: "insecure_password" # This should be changed
+    redis_password: "insecure_redis_password" # This should be changed
+  tasks:
+    - name: "SET SHORT FACTS"
+      set_fact:
+        os_family: "{{ ansible_facts['os_family']|lower }}"
+        os_version: "{{ ansible_facts['distribution_major_version'] }}"
+      tags:
+        - "all"
+
+    - name: "CHECK THAT ALL REQUIRED VARIABLES ARE SET"
+      include_tasks: "tasks/verify_required_vars.yml"
+      tags:
+        - "all"
+
+    - name: "RHEL BLOCK"
+      tags:
+        - "rhel"
+      when:
+        - "ansible_facts['os_family']|lower == 'redhat'"
+      block:
+        - name: "ENABLE SUBSCRIPTION MANAGER REPOS"
+          rhsm_repository:
+            name: "{{ item }}"
+          loop:
+            - "rhel-*-optional-rpms"
+            - "rhel-*-extras-rpms"
+          when: "ansible_distribution == 'Red Hat Enterprise Linux'"
+
+        - name: "INCLUDE GEERLINGGUY EPEL ROLE"
+          include_role:
+            name: "geerlingguy.repo-epel"
+          tags:
+            - "rhel7"
+            - "all"
+
+        - name: "INCLUDE POSTGRES AND REMI REPO REDIS"
+          become: true
+          when:
+            - "ansible_facts['distribution_major_version'] == '7'"
+          yum:
+            name: "{{ item }}"
+            state: "present"
+          loop:
+            - "https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+            - "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+          tags:
+            - "rhel7"
+            - "redis"
+            - "all"
+
+        - name: "INCLUDE ROLE - REDIS"
+          include_role:
+            name: "geerlingguy.redis"
+          vars:
+            redis_databases: 2
+            redis_requirepass: "{{ redis_password | default(omit) }}"
+
+        - name: "INCLUDE ROLE - POSTGRESQL"
+          when:
+            - "ansible_facts['distribution_major_version'] == '7'"
+          include_role:
+            name: "geerlingguy.postgresql"
+          vars:
+            postgresql_version: 10
+            postgresql_packages:
+              - "postgresql10"
+              - "postgresql10-server"
+              - "postgresql10-contrib"
+              - "postgresql10-libs"
+            postgresql_data_dir: "/var/lib/pgsql/10/data"
+            postgresql_bin_path: "/usr/pgsql-10/bin"
+            postgresql_config_path: "/var/lib/pgsql/10/data"
+            postgresql_daemon: "postgresql-10"
+            postgresql_databases:
+              - name: "nautobot"
+            postgresql_users:
+              - name: "nautobot"
+                password: "{{ nautobot_db_password }}"
+
+        - name: "INCLUDE ROLE - POSTGRESQL - CENTOS/RHEL 8"
+          when:
+            - "ansible_facts['distribution_major_version'] == '8'"
+          include_role:
+            name: "geerlingguy.postgresql"
+          vars:
+            postgresql_version: 10
+            postgresql_packages:
+              - "postgresql"
+              - "postgresql-server"
+              - "postgresql-contrib"
+              - "postgresql-libs"
+            postgresql_databases:
+              - name: "nautobot"
+            postgresql_users:
+              - name: "nautobot"
+                password: "{{ nautobot_db_password }}"
+
+    - name: "DEBIAN BLOCK"
+      tags:
+        - "debian"
+      when: "ansible_facts['os_family']|lower in ['debian']"
+      block:
+        - name: "INCLUDE ROLE - POSTGRESQL"
+          include_role:
+            name: "geerlingguy.postgresql"
+          vars:
+            postgresql_version: 10
+            postgresql_databases:
+              - name: "nautobot"
+            postgresql_users:
+              - name: "nautobot"
+                password: "{{ nautobot_db_password }}"
+
+        - name: "INCLUDE ROLE - POSTGRESQL"
+          include_role:
+            name: "geerlingguy.redis"
+          vars:
+            redis_databases: 2
+            redis_requirepass: "{{ redis_password | default(omit) }}"
+
+    - name: "INCLUDE NAUTOBOT ROLE"
+      include_role:
+        name: "networktocode.nautobot_install.nautobot"
+      tags:
+        - "all"
+
+    - name: "INCLUDE NAUTOBOT ROLE"
+      include_role:
+        name: "networktocode.nautobot_install.nautobot_web"
+      tags:
+        - "all"

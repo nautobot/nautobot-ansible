@@ -1,0 +1,10 @@
+---
+- name: RESTART NAUTOBOT
+  ansible.builtin.service:
+    name: nautobot
+    state: restarted
+
+- name: RESTART NAUTOBOT-WORKER
+  ansible.builtin.service:
+    name: nautobot-worker
+    state: restarted
