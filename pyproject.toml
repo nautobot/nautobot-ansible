@@ -30,6 +30,30 @@ hypothesis = "^6.8.0"
 pynautobot = "^1.0.1"
 pytest-pythonpath = "^0.7.3"
 
+[tool.black]
+# line-length = 120
+# target-version = ['py38']
+# include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | nautobot_config.py
+  | settings.py     # This is where you define files that should not be stylized by black
+                     # the root of the project
+)
+'''
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
