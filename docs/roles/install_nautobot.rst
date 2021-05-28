@@ -19,6 +19,26 @@ Ubuntu 18      No        Yes
 Ubuntu 20      Yes       Yes
 ====== ======= ========= ======
 
+Required Packages
+-----------------
+
+This setup in the example playbook requires additional roles to be installed:
+
+* geerlingguy.repo-epel (For RHEL deployments)
+* geerlingguy.redis
+* geerlingguy.postgresql
+
+You may omit the use of these if you are setting up the Redis and Postgres Databases on your own. These are used within the example play to take a server from nothing installed to a complete installation.
+
+Included Roles
+--------------
+
+There are two roles included, nautobot_install and nautobot_web. `nautobot_install` will install the application only, with no specific web server. The web application will still have pyuwsgi installed, which will respond to HTTP requests (not HTTPS today).  
+
+The `nautobot_install` role will create a new user (nautobot), and install the package using PIP. This follows along what is in the 1.0 release notes for installation found on https://nautobot.readthedocs.io.
+
+`nautobot_web` installs NGINX as a reverse proxy and sets up HTTP/HTTPS listeners. This is in line with having a web server as defined on the 1.0 install notes. This role will also generate a self signed certificate by default. Check the defaults and required fields below.
+
 Required Variables
 ------------------
 
