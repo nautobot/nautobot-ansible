@@ -128,12 +128,12 @@
 
     - name: "INCLUDE NAUTOBOT ROLE"
       include_role:
-        name: "networktocode.nautobot_install.nautobot"
+        name: "networktocode.nautobot.nautobot_install"
       tags:
         - "all"
 
     - name: "INCLUDE NAUTOBOT ROLE"
       include_role:
-        name: "networktocode.nautobot_install.nautobot_web"
+        name: "networktocode.nautobot.nautobot_web"
       tags:
         - "all"
