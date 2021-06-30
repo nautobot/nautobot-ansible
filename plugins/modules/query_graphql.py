@@ -1,6 +1,5 @@
 #!/usr/bin/python
 """Ansible plugin definition for query_graphql action plugin."""
-from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -94,7 +93,7 @@ EXAMPLES = """
       url: http://nautobot.local
       token: thisIsMyToken
       query: "{{ query_string }}"
-      variables: "{{ variables }}"
+      graph_variables: "{{ variables }}"
 """
 
 RETURN = """
