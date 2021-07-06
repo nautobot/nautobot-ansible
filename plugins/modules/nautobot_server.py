@@ -3,10 +3,11 @@
 
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 
-DOCUMENTATION = '''
+DOCUMENTATION = """
 ---
 module: nautobot_server
 short_description: Manages Nautobot Server application.
@@ -120,7 +121,7 @@ notes:
     i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
 requirements: [ "virtualenv", "django" ]
 author: "Christian Adell (@chadell)"
-'''
+"""
 
 EXAMPLES = """
 - name: Run cleanup on the application installed in nautobot_dir
@@ -157,25 +158,25 @@ from ansible.module_utils.basic import AnsibleModule
 
 
 def _fail(module, cmd, out, err, **kwargs):
-    msg = ''
+    msg = ""
     if out:
-        msg += "stdout: %s" % (out, )
+        msg += "stdout: %s" % (out,)
     if err:
-        msg += "\n:stderr: %s" % (err, )
+        msg += "\n:stderr: %s" % (err,)
     module.fail_json(cmd=cmd, msg=msg, **kwargs)
 
 
 def _ensure_virtualenv(module):
 
-    venv_param = module.params['virtualenv']
+    venv_param = module.params["virtualenv"]
     if venv_param is None:
         return
 
-    vbin = os.path.join(venv_param, 'bin')
-    activate = os.path.join(vbin, 'activate')
+    vbin = os.path.join(venv_param, "bin")
+    activate = os.path.join(vbin, "activate")
 
     if not os.path.exists(activate):
-        virtualenv = module.get_bin_path('virtualenv', True)
+        virtualenv = module.get_bin_path("virtualenv", True)
         vcmd = [virtualenv, venv_param]
         rc, out_venv, err_venv = module.run_command(vcmd)
         if rc != 0:
@@ -198,14 +199,17 @@ def loaddata_filter_output(line):
 
 
 def syncdb_filter_output(line):
-    return ("Creating table " in line) \
-        or ("Installed" in line and "Installed 0 object" not in line)
+    return ("Creating table " in line) or (
+        "Installed" in line and "Installed 0 object" not in line
+    )
 
 
 def migrate_filter_output(line):
-    return ("Migrating forwards " in line) \
-        or ("Installed" in line and "Installed 0 object" not in line) \
+    return (
+        ("Migrating forwards " in line)
+        or ("Installed" in line and "Installed 0 object" not in line)
         or ("Applying" in line)
+    )
 
 
 def collectstatic_filter_output(line):
@@ -215,107 +219,147 @@ def collectstatic_filter_output(line):
 def main():
     command_allowed_param_map = dict(
         cleanup=(),
-        createcachetable=('cache_table', 'database', ),
-        flush=('database', ),
-        loaddata=('database', 'fixtures', ),
-        syncdb=('database', ),
-        test=('failfast', 'testrunner', 'apps', ),
+        createcachetable=(
+            "cache_table",
+            "database",
+        ),
+        flush=("database",),
+        loaddata=(
+            "database",
+            "fixtures",
+        ),
+        syncdb=("database",),
+        test=(
+            "failfast",
+            "testrunner",
+            "apps",
+        ),
         validate=(),
-        migrate=('apps', 'skip', 'merge', 'database',),
-        collectstatic=('clear', 'link', ),
+        migrate=(
+            "apps",
+            "skip",
+            "merge",
+            "database",
+        ),
+        collectstatic=(
+            "clear",
+            "link",
+        ),
     )
 
     command_required_param_map = dict(
-        loaddata=('fixtures', ),
+        loaddata=("fixtures",),
     )
 
     # forces --noinput on every command that needs it
     noinput_commands = (
-        'flush',
-        'syncdb',
-        'migrate',
-        'test',
-        'collectstatic',
+        "flush",
+        "syncdb",
+        "migrate",
+        "test",
+        "collectstatic",
     )
 
     # These params are allowed for certain commands only
-    specific_params = ('apps', 'clear', 'database', 'failfast', 'fixtures', 'testrunner')
+    specific_params = (
+        "apps",
+        "clear",
+        "database",
+        "failfast",
+        "fixtures",
+        "testrunner",
+    )
 
     # These params are automatically added to the command if present
-    general_params = ('pythonpath', 'database')
-    specific_boolean_params = ('clear', 'failfast', 'skip', 'merge', 'link')
-    end_of_command_params = ('apps', 'cache_table', 'fixtures')
+    general_params = ("pythonpath", "database")
+    specific_boolean_params = ("clear", "failfast", "skip", "merge", "link")
+    end_of_command_params = ("apps", "cache_table", "fixtures")
 
     module = AnsibleModule(
         argument_spec=dict(
-            command=dict(required=True, type='str'),
-            project_path=dict(required=True, type='path', aliases=['app_path', 'chdir']),
-            pythonpath=dict(default=None, required=False, type='path', aliases=['python_path']),
-            virtualenv=dict(default=None, required=False, type='path', aliases=['virtual_env']),
-            db_password=dict(default=None, required=False, type='str'),
-
+            command=dict(required=True, type="str"),
+            project_path=dict(
+                required=True, type="path", aliases=["app_path", "chdir"]
+            ),
+            pythonpath=dict(
+                default=None, required=False, type="path", aliases=["python_path"]
+            ),
+            virtualenv=dict(
+                default=None, required=False, type="path", aliases=["virtual_env"]
+            ),
+            db_password=dict(default=None, required=False, type="str"),
             apps=dict(default=None, required=False),
-            cache_table=dict(default=None, required=False, type='str'),
-            clear=dict(default=False, required=False, type='bool'),
-            database=dict(default=None, required=False, type='str'),
-            failfast=dict(default=False, required=False, type='bool', aliases=['fail_fast']),
-            fixtures=dict(default=None, required=False, type='str'),
-            testrunner=dict(default=None, required=False, type='str', aliases=['test_runner']),
-            skip=dict(default=None, required=False, type='bool'),
-            merge=dict(default=None, required=False, type='bool'),
-            link=dict(default=None, required=False, type='bool'),
+            cache_table=dict(default=None, required=False, type="str"),
+            clear=dict(default=False, required=False, type="bool"),
+            database=dict(default=None, required=False, type="str"),
+            failfast=dict(
+                default=False, required=False, type="bool", aliases=["fail_fast"]
+            ),
+            fixtures=dict(default=None, required=False, type="str"),
+            testrunner=dict(
+                default=None, required=False, type="str", aliases=["test_runner"]
+            ),
+            skip=dict(default=None, required=False, type="bool"),
+            merge=dict(default=None, required=False, type="bool"),
+            link=dict(default=None, required=False, type="bool"),
         ),
     )
 
-    command = module.params['command']
-    project_path = module.params['project_path']
-    virtualenv = module.params['virtualenv']
+    command = module.params["command"]
+    project_path = module.params["project_path"]
+    virtualenv = module.params["virtualenv"]
 
     for param in specific_params:
         value = module.params[param]
         if param in specific_boolean_params:
             value = module.boolean(value)
         if value and param not in command_allowed_param_map[command]:
-            module.fail_json(msg='%s param is incompatible with command=%s' % (param, command))
+            module.fail_json(
+                msg="%s param is incompatible with command=%s" % (param, command)
+            )
 
     for param in command_required_param_map.get(command, ()):
         if not module.params[param]:
-            module.fail_json(msg='%s param is required for command=%s' % (param, command))
+            module.fail_json(
+                msg="%s param is required for command=%s" % (param, command)
+            )
 
     _ensure_virtualenv(module)
 
-    cmd = "nautobot-server %s" % (command, )
+    cmd = "nautobot-server %s" % (command,)
 
     environ_vars = {}
     if project_path:
-        environ_vars['NAUTOBOT_ROOT'] = project_path
+        environ_vars["NAUTOBOT_ROOT"] = project_path
 
-    db_password = module.params['db_password']
+    db_password = module.params["db_password"]
     if db_password:
-        environ_vars['NAUTOBOT_DB_PASSWORD'] = db_password
+        environ_vars["NAUTOBOT_DB_PASSWORD"] = db_password
 
     if command in noinput_commands:
-        cmd = '%s --noinput' % cmd
+        cmd = "%s --noinput" % cmd
 
     for param in general_params:
         if module.params[param]:
-            cmd = '%s --%s=%s' % (cmd, param, module.params[param])
+            cmd = "%s --%s=%s" % (cmd, param, module.params[param])
 
     for param in specific_boolean_params:
         if module.boolean(module.params[param]):
-            cmd = '%s --%s' % (cmd, param)
+            cmd = "%s --%s" % (cmd, param)
 
     # these params always get tacked on the end of the command
     for param in end_of_command_params:
         if module.params[param]:
-            cmd = '%s %s' % (cmd, module.params[param])
+            cmd = "%s %s" % (cmd, module.params[param])
 
-    rc, out, err = module.run_command(cmd, cwd=project_path, environ_update=environ_vars)
+    rc, out, err = module.run_command(
+        cmd, cwd=project_path, environ_update=environ_vars
+    )
     if rc != 0:
-        if command == 'createcachetable' and 'table' in err and 'already exists' in err:
-            out = 'already exists.'
-        elif 'createsuperuser' in command and 'username is already taken' in err:
-            out = 'Admin user already exists.'
+        if command == "createcachetable" and "table" in err and "already exists" in err:
+            out = "already exists."
+        elif "createsuperuser" in command and "username is already taken" in err:
+            out = "Admin user already exists."
         else:
             if "Unknown command:" in err:
                 _fail(module, cmd, err, "Unknown django command: %s" % command)
@@ -323,7 +367,7 @@ def main():
 
     changed = False
 
-    lines = out.split('\n')
+    lines = out.split("\n")
     filt = globals().get(command + "_filter_output", None)
     if filt:
         filtered_output = list(filter(filt, lines))
@@ -334,10 +378,15 @@ def main():
         changed = check_changed(out)
 
     module.exit_json(
-        changed=changed, out=out, cmd=cmd, app_path=project_path, project_path=project_path,
-        virtualenv=virtualenv, pythonpath=module.params['pythonpath']
+        changed=changed,
+        out=out,
+        cmd=cmd,
+        app_path=project_path,
+        project_path=project_path,
+        virtualenv=virtualenv,
+        pythonpath=module.params["pythonpath"],
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
