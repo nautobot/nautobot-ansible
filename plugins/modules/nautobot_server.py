@@ -314,6 +314,8 @@ def main():
     if rc != 0:
         if command == 'createcachetable' and 'table' in err and 'already exists' in err:
             out = 'already exists.'
+        elif 'createsuperuser' in command and 'username is already taken' in err:
+            out = 'Admin user already exists.'
         else:
             if "Unknown command:" in err:
                 _fail(module, cmd, err, "Unknown django command: %s" % command)
