@@ -14,6 +14,10 @@ short_description: Manages Nautobot Server application.
 description:
     - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the
       C(virtualenv) parameter, all management commands will be executed by the given C(virtualenv) installation.
+requirements:
+  - nautobot
+author:
+  - Network to Code (@networktocode)
 options:
   command:
     description:
@@ -115,8 +119,6 @@ notes:
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
   - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang,
     i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
-requirements: [ "virtualenv", "django" ]
-author: "Christian Adell (@chadell)"
 """
 
 EXAMPLES = """
