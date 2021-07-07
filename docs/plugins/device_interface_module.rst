@@ -20,7 +20,7 @@ networktocode.nautobot.device_interface -- Creates or removes interfaces on devi
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -135,6 +135,22 @@ Parameters
                                                                             </td>
                                                                 <td>
                                             <div>Sets whether interface shows enabled or disabled</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                    <td class="elbow-placeholder"></td>
+                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-data/label"></div>
+                    <b>label</b>
+                    <a class="ansibleOptionLink" href="#parameter-data/label" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Physical label of the interface</div>
                                                         </td>
             </tr>
                                 <tr>
