@@ -12,22 +12,22 @@ DOCUMENTATION = """
 module: nautobot_server
 short_description: Manages Nautobot Server application.
 description:
-    - Manages Nautobot Server using the C(manage.py) application frontend to C(django-admin). With the
+    - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the
       C(virtualenv) parameter, all management commands will be executed by the given C(virtualenv) installation.
 options:
   command:
     description:
-      - The name of the Django management command to run. Built in commands are C(cleanup), C(collectstatic),
-        C(flush), C(loaddata), C(migrate), C(syncdb), C(test), and C(validate).
-      - Other commands can be entered, but will fail if they're unknown to Django.  Other commands that may
+      - The name of the Nautobot management command to run. Some built in commands are C(collectstatic),
+        C(flush), C(loaddata), C(migrate), C(test), and C(validate).
+      - Other commands can be entered, but will fail if they're unknown to Nautobot. Other commands that may
         prompt for user input should be run with the C(--noinput) flag.
-      - The module will perform some basic parameter validation (when applicable) to the commands C(cleanup),
-        C(collectstatic), C(createcachetable), C(flush), C(loaddata), C(migrate), C(syncdb), C(test), and C(validate).
+      - The module will perform some basic parameter validation (when applicable) to the commands C(collectstatic),
+        C(createcachetable), C(flush), C(loaddata), C(migrate), C(test), and C(validate).
     type: str
     required: true
   project_path:
     description:
-      - The path to the root of the Django application where B(manage.py) lives.
+      - The path to the root of the Nautobot application where B(nautobot-server) lives.
     type: path
     required: true
     aliases: [app_path, chdir]
@@ -40,17 +40,17 @@ options:
     aliases: [python_path]
   virtualenv:
     description:
-      - An optional path to a I(virtualenv) installation to use while running the manage application.
+      - An optional path to a I(virtualenv) installation to use while running the nautobot-server application.
     type: path
     aliases: [virtual_env]
   db_password:
     description:
-      - DB password used in Nautobot.
+      - Database password used in Nautobot.
     type: str
     required: false
   apps:
     description:
-      - A list of space-delimited apps to target. Used by the C(test) command.
+      - A list of space-delimited apps/plugins to target. Used by the C(test) command.
     type: str
     required: false
   cache_table:
@@ -67,8 +67,7 @@ options:
     type: bool
   database:
     description:
-      - The database to target. Used by the C(createcachetable), C(flush), C(loaddata), C(syncdb),
-        and C(migrate) commands.
+      - The database to target. Used by the C(createcachetable), C(flush), C(loaddata) and C(migrate) commands.
     type: str
     required: false
   failfast:
@@ -103,52 +102,61 @@ options:
   testrunner:
     description:
       - "From the Django docs: Controls the test runner class that is used to execute tests."
-      - This parameter is passed as-is to C(manage.py).
+      - This parameter is passed as-is to C(nautobot-server).
     type: str
     required: false
     aliases: [test_runner]
 notes:
-  - C(virtualenv) (U(http://www.virtualenv.org)) must be installed on the remote host if the virtualenv parameter
-    is specified.
+  - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
   - This module will create a virtualenv if the virtualenv parameter is specified and a virtualenv does not already
     exist at the given location.
-  - This module assumes English error messages for the C(createcachetable) command to detect table existence,
+  - This module assumes English error messages for the C(createcachetable) command to detect table existence and others,
     unfortunately.
-  - To be able to use the C(migrate) command with django versions < 1.7, you must have C(south) installed and added
-    as an app in your nautobot_config.py.
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
-  - Your C(manage.py) application must be executable (rwxr-xr-x), and must have a valid shebang,
+  - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang,
     i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
 requirements: [ "virtualenv", "django" ]
 author: "Christian Adell (@chadell)"
 """
 
 EXAMPLES = """
-- name: Run cleanup on the application installed in nautobot_dir
-  community.general.django_manage:
-    command: cleanup
+- name: Create an initial superuser
+  networktocode.nautobot.nautobot_server:
+    command: "createsuperuser --noinput --username=admin --email=admin@example.com"
+    db_password: "{{ db_password }}"
     project_path: "{{ nautobot_dir }}"
-- name: Load the initial_data fixture into the application
-  community.general.django_manage:
+- name: Migrate
+  networktocode.nautobot.nautobot_server:
+    command: "migrate"
+    project_path: "{{ nautobot_dir }}"
+    db_password: "{{ db_password }}"
+- name: Make Migrations
+  networktocode.nautobot.nautobot_server:
+    command: "makemigrations"
+    project_path: "{{ nautobot_dir }}"
+    db_password: "{{ db_password }}"
+- name: Collectstatic
+  networktocode.nautobot.nautobot_server:
+    command: "collectstatic"
+    project_path: "{{ nautobot_dir }}"
+    db_password: "{{ db_password }}"
+- name: Post Upgrade
+  networktocode.nautobot.nautobot_server:
+    command: "post_upgrade"
+    project_path: "{{ nautobot_dir }}"
+    db_password: "{{ db_password }}"
+- name: Load the initial_data fixture into Nautobot
+  networktocode.nautobot.nautobot_server:
     command: loaddata
     project_path: "{{ nautobot_dir }}"
     fixtures: "{{ initial_data }}"
-- name: Run syncdb on the application
-  community.general.django_manage:
-    command: syncdb
-    project_path: "{{ nautobot_dir }}"
-    settings: "{{ settings_app_name }}"
-    pythonpath: "{{ settings_dir }}"
-    virtualenv: "{{ virtualenv_dir }}"
+    db_password: "{{ db_password }}"
 - name: Run the SmokeTest test case from the main app. Useful for testing deploys
-  community.general.django_manage:
+  networktocode.nautobot.nautobot_server:
     command: test
     project_path: "{{ nautobot_dir }}"
-    apps: main.SmokeTest
-- name: Create an initial superuser
-  community.general.django_manage:
-    command: "createsuperuser --noinput --username=admin --email=admin@example.com"
-    project_path: "{{ nautobot_dir }}"
+    apps: nautobot
+    db_password: "{{ db_password }}"
 """
 
 import os
@@ -158,6 +166,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 
 def _fail(module, cmd, out, err, **kwargs):
+    """Helper function to customize output/error message."""
     msg = ""
     if out:
         msg += "stdout: %s" % (out,)
@@ -167,23 +176,26 @@ def _fail(module, cmd, out, err, **kwargs):
 
 
 def _ensure_virtualenv(module):
-
+    """Ensure that virtualenv is available or create it."""
     venv_param = module.params["virtualenv"]
     if venv_param is None:
-        return
+        # If no custom virtualenv is defined, we assume it's in the project_path
+        venv_param = module.params["project_path"]
 
     vbin = os.path.join(venv_param, "bin")
     activate = os.path.join(vbin, "activate")
 
     if not os.path.exists(activate):
-        virtualenv = module.get_bin_path("virtualenv", True)
-        vcmd = [virtualenv, venv_param]
+        vcmd = ["python3", "-m", "venv", venv_param]
         rc, out_venv, err_venv = module.run_command(vcmd)
         if rc != 0:
             _fail(module, vcmd, out_venv, err_venv)
 
     os.environ["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
     os.environ["VIRTUAL_ENV"] = venv_param
+
+
+### Helper functions to customize the output state ###
 
 
 def createcachetable_check_changed(output):
@@ -198,12 +210,6 @@ def loaddata_filter_output(line):
     return "Installed" in line and "Installed 0 object" not in line
 
 
-def syncdb_filter_output(line):
-    return ("Creating table " in line) or (
-        "Installed" in line and "Installed 0 object" not in line
-    )
-
-
 def migrate_filter_output(line):
     return (
         ("Migrating forwards " in line)
@@ -216,45 +222,25 @@ def collectstatic_filter_output(line):
     return line and "0 static files" not in line
 
 
+######################################################
+
+
 def main():
     command_allowed_param_map = dict(
-        cleanup=(),
-        createcachetable=(
-            "cache_table",
-            "database",
-        ),
+        createcachetable=("cache_table", "database",),
         flush=("database",),
-        loaddata=(
-            "database",
-            "fixtures",
-        ),
-        syncdb=("database",),
-        test=(
-            "failfast",
-            "testrunner",
-            "apps",
-        ),
+        loaddata=("database", "fixtures",),
+        test=("failfast", "testrunner", "apps",),
         validate=(),
-        migrate=(
-            "apps",
-            "skip",
-            "merge",
-            "database",
-        ),
-        collectstatic=(
-            "clear",
-            "link",
-        ),
+        migrate=("apps", "skip", "merge", "database",),
+        collectstatic=("clear", "link",),
     )
 
-    command_required_param_map = dict(
-        loaddata=("fixtures",),
-    )
+    command_required_param_map = dict(loaddata=("fixtures",),)
 
     # forces --noinput on every command that needs it
     noinput_commands = (
         "flush",
-        "syncdb",
         "migrate",
         "test",
         "collectstatic",
@@ -356,24 +342,33 @@ def main():
         cmd, cwd=project_path, environ_update=environ_vars
     )
     if rc != 0:
+        # Handling expected errors
         if command == "createcachetable" and "table" in err and "already exists" in err:
             out = "already exists."
         elif "createsuperuser" in command and "username is already taken" in err:
             out = "Admin user already exists."
         else:
+            # Customize some output messages
             if "Unknown command:" in err:
                 _fail(module, cmd, err, "Unknown django command: %s" % command)
+            elif "fe_sendauth: no password supplied" in err:
+                _fail(
+                    module,
+                    cmd,
+                    err,
+                    "No DB password provided, you must supply 'db_password' for this command",
+                )
             _fail(module, cmd, out, err, path=os.environ["PATH"], syspath=sys.path)
 
+    # Customizing the final state depending on the output
     changed = False
-
     lines = out.split("\n")
     filt = globals().get(command + "_filter_output", None)
     if filt:
         filtered_output = list(filter(filt, lines))
         if len(filtered_output):
             changed = True
-    check_changed = globals().get("{0}_check_changed".format(command), None)
+    check_changed = globals().get(f"{command}_check_changed", None)
     if check_changed:
         changed = check_changed(out)
 
