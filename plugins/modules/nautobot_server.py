@@ -231,36 +231,16 @@ def collectstatic_filter_output(line):
 
 def main():
     command_allowed_param_map = dict(
-        createcachetable=(
-            "cache_table",
-            "database",
-        ),
+        createcachetable=("cache_table", "database",),
         flush=("database",),
-        loaddata=(
-            "database",
-            "fixtures",
-        ),
-        test=(
-            "failfast",
-            "testrunner",
-            "apps",
-        ),
+        loaddata=("database", "fixtures",),
+        test=("failfast", "testrunner", "apps",),
         validate=(),
-        migrate=(
-            "apps",
-            "skip",
-            "merge",
-            "database",
-        ),
-        collectstatic=(
-            "clear",
-            "link",
-        ),
+        migrate=("apps", "skip", "merge", "database",),
+        collectstatic=("clear", "link",),
     )
 
-    command_required_param_map = dict(
-        loaddata=("fixtures",),
-    )
+    command_required_param_map = dict(loaddata=("fixtures",),)
 
     # forces --noinput on every command that needs it
     noinput_commands = (
