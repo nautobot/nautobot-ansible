@@ -4,6 +4,43 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v2.0.1
+======
+
+Bugfixes
+--------
+
+- SSL Verify Keyword Consistency Update [#45](https://github.com/nautobot/nautobot-ansible/pull/45) - Fixed [#44](https://github.com/nautobot/nautobot-ansible/issues/44) validat_certs not honored
+
+New Components
+--------------
+
+- Add Interface Label Support [#44](https://github.com/nautobot/nautobot-ansible/pull/43) - Fixed [#42](https://github.com/nautobot/nautobot-ansible/issues/42) - Add label to interface
+
+
+v2.0.0
+======
+
+Bugfixes
+--------
+
+- Add Site, Device Tracebacks due to changes in Nautobot (Issue [#34](https://github.com/nautobot/nautobot-ansible/issues/34)) [#35](https://github.com/nautobot/nautobot-ansible/pull/35)
+- Add missing description to tenant_group [#26](https://github.com/nautobot/nautobot-ansible/pull/26)
+- Add missing field to vlan_group [#29](https://github.com/nautobot/nautobot-ansible/pull/29)
+- Fixed query on Virtual Chassis [#32](https://github.com/nautobot/nautobot-ansible/pull/32)
+
+Additions
+---------
+
+- GraphQL Lookup Plugin (networktocode.nautobot.lookup_graphql)
+- GraphQL Action Module (networktocode.nautobot.query_graphql)
+
+Deprecations / Breaking Changes
+-------------------------------
+
+- Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables [#33](https://github.com/nautobot/nautobot-ansible/pull/33). Use:
+    - NAUTOBOT_URL for URL based environment variables where applicable
+    - NAUTOBOT_TOKEN for Token based environment variables where applicable
 
 v1.0.4
 ======

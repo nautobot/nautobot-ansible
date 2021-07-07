@@ -20,7 +20,7 @@ networktocode.nautobot.rear_port_template -- Create, update or delete rear port 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -146,19 +146,29 @@ Parameters
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>8p8c</li>
+                                                                                                                                                                                                <li>8p6c</li>
+                                                                                                                                                                                                <li>8p4c</li>
+                                                                                                                                                                                                <li>8p2c</li>
+                                                                                                                                                                                                <li>gg45</li>
+                                                                                                                                                                                                <li>tera-4p</li>
+                                                                                                                                                                                                <li>tera-2p</li>
+                                                                                                                                                                                                <li>tera-1p</li>
                                                                                                                                                                                                 <li>110-punch</li>
                                                                                                                                                                                                 <li>bnc</li>
                                                                                                                                                                                                 <li>mrj21</li>
+                                                                                                                                                                                                <li>st</li>
+                                                                                                                                                                                                <li>sc</li>
+                                                                                                                                                                                                <li>sc-apc</li>
                                                                                                                                                                                                 <li>fc</li>
                                                                                                                                                                                                 <li>lc</li>
                                                                                                                                                                                                 <li>lc-apc</li>
+                                                                                                                                                                                                <li>mtrj</li>
+                                                                                                                                                                                                <li>mpo</li>
                                                                                                                                                                                                 <li>lsh</li>
                                                                                                                                                                                                 <li>lsh-apc</li>
-                                                                                                                                                                                                <li>mpo</li>
-                                                                                                                                                                                                <li>mtrj</li>
-                                                                                                                                                                                                <li>sc</li>
-                                                                                                                                                                                                <li>sc-apc</li>
-                                                                                                                                                                                                <li>st</li>
+                                                                                                                                                                                                <li>splice</li>
+                                                                                                                                                                                                <li>cs</li>
+                                                                                                                                                                                                <li>sn</li>
                                                                                     </ul>
                                                                             </td>
                                                                 <td>

@@ -20,7 +20,7 @@ networktocode.nautobot.device_interface_template -- Creates or removes interface
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

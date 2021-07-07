@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 1.0.4
+Collection version 2.0.1
 
 .. toctree::
     :maxdepth: 1
@@ -25,6 +25,7 @@ Lookup Plugins
 ~~~~~~~~~~~~~~
 
 * :ref:`lookup <ansible_collections.networktocode.nautobot.lookup_lookup>` -- Queries and returns elements from Nautobot
+* :ref:`lookup_graphql <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>` -- Queries and returns elements from Nautobot GraphQL endpoint
 
 Modules
 ~~~~~~~
@@ -63,6 +64,7 @@ Modules
 * :ref:`power_port_template <ansible_collections.networktocode.nautobot.power_port_template_module>` -- Create, update or delete power port templates within Nautobot
 * :ref:`prefix <ansible_collections.networktocode.nautobot.prefix_module>` -- Creates or removes prefixes from Nautobot
 * :ref:`provider <ansible_collections.networktocode.nautobot.provider_module>` -- Create, update or delete providers within Nautobot
+* :ref:`query_graphql <ansible_collections.networktocode.nautobot.query_graphql_module>` -- Queries and returns elements from Nautobot GraphQL endpoint
 * :ref:`rack <ansible_collections.networktocode.nautobot.rack_module>` -- Create, update or delete racks within Nautobot
 * :ref:`rack_group <ansible_collections.networktocode.nautobot.rack_group_module>` -- Create, update or delete racks groups within Nautobot
 * :ref:`rack_role <ansible_collections.networktocode.nautobot.rack_role_module>` -- Create, update or delete racks roles within Nautobot
