@@ -2,6 +2,8 @@ import json
 
 import unittest
 from unittest.mock import patch
+from parameterized import parameterized
+
 from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
 
@@ -72,13 +74,40 @@ class TestNautobotServer(unittest.TestCase):
             set_module_args({})
             nautobot_server.main()
 
-    def test_ensure_command_called(self):
-        set_module_args(
-            {
-                "command": "createsuperuser --noinput --username=admin --email=admin@example.com",
-                "project_path": "/some/path",
-            }
-        )
+    @parameterized.expand(
+        [
+            [
+                {
+                    "command": "createsuperuser --noinput --username=admin --email=admin@example.com",
+                    "project_path": "/some/path",
+                },
+                [
+                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
+                ],
+                {
+                    "cwd": "/some/path",
+                    "environ_update": {"NAUTOBOT_ROOT": "/some/path"},
+                },
+            ],
+            [
+                {
+                    "command": "migrate",
+                    "project_path": "/some/path",
+                    "db_password": "secret_password",
+                },
+                ["nautobot-server migrate --noinput"],
+                {
+                    "cwd": "/some/path",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/some/path",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+        ]
+    )
+    def test_ensure_command_called(self, module_args, args, kwargs):
+        set_module_args(module_args)
 
         with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
             stdout = "configuration updated"
@@ -94,11 +123,4 @@ class TestNautobotServer(unittest.TestCase):
 
         self.assertEqual(mock_run_command.call_count, 2)
 
-        args = [
-            "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
-        ]
-        kwargs = {
-            "cwd": "/some/path",
-            "environ_update": {"NAUTOBOT_ROOT": "/some/path"},
-        }
         mock_run_command.assert_called_with(*args, **kwargs)
