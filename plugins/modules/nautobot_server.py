@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# (c) 2021, Network to Code <opensource@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -229,16 +231,36 @@ def collectstatic_filter_output(line):
 
 def main():
     command_allowed_param_map = dict(
-        createcachetable=("cache_table", "database",),
+        createcachetable=(
+            "cache_table",
+            "database",
+        ),
         flush=("database",),
-        loaddata=("database", "fixtures",),
-        test=("failfast", "testrunner", "apps",),
+        loaddata=(
+            "database",
+            "fixtures",
+        ),
+        test=(
+            "failfast",
+            "testrunner",
+            "apps",
+        ),
         validate=(),
-        migrate=("apps", "skip", "merge", "database",),
-        collectstatic=("clear", "link",),
+        migrate=(
+            "apps",
+            "skip",
+            "merge",
+            "database",
+        ),
+        collectstatic=(
+            "clear",
+            "link",
+        ),
     )
 
-    command_required_param_map = dict(loaddata=("fixtures",),)
+    command_required_param_map = dict(
+        loaddata=("fixtures",),
+    )
 
     # forces --noinput on every command that needs it
     noinput_commands = (
