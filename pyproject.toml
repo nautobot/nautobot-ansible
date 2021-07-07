@@ -8,7 +8,6 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = "^3.6"
 ansible-base = "^2.10.0"
-parameterized = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
 black = "19.10b0"
@@ -30,6 +29,7 @@ sphinx_rtd_theme = "*"
 hypothesis = "^6.8.0"
 pynautobot = "^1.0.1"
 pytest-pythonpath = "^0.7.3"
+parameterized = "^0.8.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

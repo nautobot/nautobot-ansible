@@ -514,7 +514,7 @@ pyparsing = ">=2.0.2"
 name = "parameterized"
 version = "0.8.1"
 description = "Parameterized testing with any Python test framework"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -997,7 +997,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "04b4e5411a6c77f97fa80d5de471b7f81bcfe35dcd5b4365d90633cbd8e347fc"
+content-hash = "52488c7ad86384902f0eac131045e2fc9a19e121395420e49ef1fb881fa3fdd2"
 
 [metadata.files]
 aiocontextvars = [
