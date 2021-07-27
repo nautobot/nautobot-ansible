@@ -74,7 +74,7 @@ options:
         type: raw
       vlan_role:
         description:
-          - Required if I(state=present) and the vlan does not exist yet
+          - The role of the VLAN.
         required: false
         type: raw
       description:

@@ -242,7 +242,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                            <div>Required if <em>state=present</em> and the vlan does not exist yet</div>
+                                            <div>The role of the VLAN.</div>
                                                         </td>
             </tr>
                     
