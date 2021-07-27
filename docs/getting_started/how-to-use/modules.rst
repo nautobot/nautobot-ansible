@@ -139,6 +139,35 @@ For reference, here is the code that **slugifies** the ``name`` argument when a 
             convert_chars = re.sub(r"[\-\.\s]+", "-", removed_chars)
             return convert_chars.strip().lower()
 
+This can present a challenge if you did not let Nautobot construct the slug. For instance, if you have a site named **New York City**, but you set the slug to **nyc** instead of **new-york-city**.
+This will require users in the future to have to specify the user specified slug for any modules that they will specify the site in.
+
+.. code-block:: yaml
+
+  ---
+  ...
+    tasks:
+      - name: "Configure a device in Nautobot by specifying the slug for the site"
+        networktocode.nautobot.device:
+          data:
+            name: "asdf"
+            device_type: "asdf"
+            device_role: "Router"
+            site: "nyc"
+            status: "Inventory"
+          state: present
+      - name: "Configure a device in Nautobot by specifying dictionary for site with our custom slug"
+        networktocode.nautobot.device:
+          data:
+            name: "asdf"
+            device_type: "asdf"
+            device_role: "Router"
+            site:
+              slug: "nyc"
+            status: "Inventory"
+          state: present
+
+.. note:: You can learn more about advanced concepts :ref:`Advanced Usage - Modules`.
 
 Now that we have a better understanding of why certain arguments are required or not, let's look into updating an existing object.
 
