@@ -451,7 +451,7 @@ class NautobotModule(object):
     :params nb_client (obj): pynautobot.api object passed in (not required)
     """
 
-    def __init__(self, module, endpoint, client=None):
+    def __init__(self, module, endpoint, client=None, remove_keys=None):
         self.module = module
         self.state = self.module.params["state"]
         self.check_mode = self.module.check_mode
@@ -478,11 +478,28 @@ class NautobotModule(object):
         #    self._validate_query_params(self.module.params["query_params"])
 
         # These methods will normalize the regular data
-        cleaned_data = self._remove_arg_spec_default(module.params["data"])
+        cleaned_data = self._remove_arg_spec_default(module.params)
         norm_data = self._normalize_data(cleaned_data)
         choices_data = self._change_choices_id(self.endpoint, norm_data)
         data = self._find_ids(choices_data, query_params)
-        self.data = self._convert_identical_keys(data)
+        data = self._convert_identical_keys(data)
+        self.data = self._build_payload(data, remove_keys)
+
+    def _build_payload(self, data, remove_keys):
+        """Remove any key/value pairs that aren't relevant for interacting with nautobot.
+
+        Args:
+            data ([type]): [description]
+            remove_keys ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        keys_to_remove = set(NAUTOBOT_ARG_SPEC)
+        if remove_keys:
+            keys_to_remove.extend(remove_keys)
+
+        return {k: v for k, v in data.items() if k not in keys_to_remove}
 
     def _version_check_greater(self, greater, lesser, greater_or_equal=False):
         """Determine if first argument is greater than second argument.
