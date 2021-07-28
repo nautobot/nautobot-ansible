@@ -19,8 +19,8 @@ NB_VM_INTERFACES = "interfaces"
 
 
 class NautobotVirtualizationModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
+    def __init__(self, module, endpoint, client=None, remove_keys=None):
+        super().__init__(module, endpoint, client, remove_keys)
 
     def run(self):
         """
