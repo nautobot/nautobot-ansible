@@ -27,8 +27,6 @@ plugins/modules/console_server_port.py validate-modules:parameter-list-no-elemen
 plugins/modules/console_server_port.py validate-modules:missing-gplv3-license
 plugins/modules/console_server_port_template.py validate-modules:required_if-requirements-unknown
 plugins/modules/console_server_port_template.py validate-modules:missing-gplv3-license
-plugins/modules/device.py validate-modules:required_if-requirements-unknown
-plugins/modules/device.py validate-modules:parameter-list-no-elements
 plugins/modules/device.py validate-modules:missing-gplv3-license
 plugins/modules/device_bay.py validate-modules:required_if-requirements-unknown
 plugins/modules/device_bay.py validate-modules:parameter-list-no-elements
