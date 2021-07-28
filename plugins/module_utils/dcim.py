@@ -47,9 +47,6 @@ NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
 class NautobotDcimModule(NautobotModule):
-    def __init__(self, module, endpoint, client=None, remove_keys=None):
-        super().__init__(module, endpoint, client, remove_keys)
-
     def run(self):
         """
         This function should have all necessary code for endpoints within the application
