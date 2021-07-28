@@ -145,6 +145,7 @@ options:
       - Any tags that the device may need to be associated with
     required: false
     type: list
+    elements: raw
   custom_fields:
     description:
       - must exist in Nautobot
@@ -289,7 +290,7 @@ def main():
             vc_position=dict(required=False, type="int"),
             vc_priority=dict(required=False, type="int"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             local_context_data=dict(required=False, type="dict"),
             custom_fields=dict(required=False, type="dict"),
         )
