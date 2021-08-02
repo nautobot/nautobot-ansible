@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -22,6 +23,7 @@ notes:
   - Status should be defined as a YAML list
 author:
   - Network to Code (@networktocode)
+  - Mikhail Yohman (@fragmentedpacket)
   - Josh VanDeraa (@jvanaderaa)
 requirements:
   - pynautobot
