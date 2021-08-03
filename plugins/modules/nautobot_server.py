@@ -35,7 +35,7 @@ options:
     description:
       - The path to the root of the Nautobot application where B(nautobot-server) lives.
     type: path
-    required: true
+    required: false
     aliases: [app_path, chdir]
   pythonpath:
     description:
@@ -128,37 +128,30 @@ EXAMPLES = """
   networktocode.nautobot.nautobot_server:
     command: "createsuperuser --noinput --username=admin --email=admin@example.com"
     db_password: "{{ db_password }}"
-    project_path: "{{ nautobot_dir }}"
 - name: Migrate
   networktocode.nautobot.nautobot_server:
     command: "migrate"
-    project_path: "{{ nautobot_dir }}"
     db_password: "{{ db_password }}"
 - name: Make Migrations
   networktocode.nautobot.nautobot_server:
     command: "makemigrations"
-    project_path: "{{ nautobot_dir }}"
     db_password: "{{ db_password }}"
 - name: Collectstatic
   networktocode.nautobot.nautobot_server:
     command: "collectstatic"
-    project_path: "{{ nautobot_dir }}"
     db_password: "{{ db_password }}"
 - name: Post Upgrade
   networktocode.nautobot.nautobot_server:
     command: "post_upgrade"
-    project_path: "{{ nautobot_dir }}"
     db_password: "{{ db_password }}"
 - name: Load the initial_data fixture into Nautobot
   networktocode.nautobot.nautobot_server:
     command: loaddata
-    project_path: "{{ nautobot_dir }}"
     fixtures: "{{ initial_data }}"
     db_password: "{{ db_password }}"
 - name: Run the SmokeTest test case from the main app. Useful for testing deploys
   networktocode.nautobot.nautobot_server:
     command: test
-    project_path: "{{ nautobot_dir }}"
     apps: nautobot
     db_password: "{{ db_password }}"
 """
@@ -269,7 +262,7 @@ def main():
         argument_spec=dict(
             command=dict(required=True, type="str"),
             project_path=dict(
-                required=True, type="path", aliases=["app_path", "chdir"]
+                default="/opt/nautobot", required=False, type="path", aliases=["app_path", "chdir"]
             ),
             pythonpath=dict(
                 default=None, required=False, type="path", aliases=["python_path"]
