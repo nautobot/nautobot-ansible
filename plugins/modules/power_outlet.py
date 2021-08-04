@@ -36,106 +36,100 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  device:
     description:
-      - Defines the power outlet configuration
-    suboptions:
-      device:
-        description:
-          - The device the power outlet is attached to
-        required: true
-        type: raw
-      name:
-        description:
-          - The name of the power outlet
-        required: true
-        type: str
-      type:
-        description:
-          - The type of the power outlet
-        choices:
-          - iec-60320-c5
-          - iec-60320-c7
-          - iec-60320-c13
-          - iec-60320-c15
-          - iec-60320-c19
-          - iec-60309-p-n-e-4h
-          - iec-60309-p-n-e-6h
-          - iec-60309-p-n-e-9h
-          - iec-60309-2p-e-4h
-          - iec-60309-2p-e-6h
-          - iec-60309-2p-e-9h
-          - iec-60309-3p-e-4h
-          - iec-60309-3p-e-6h
-          - iec-60309-3p-e-9h
-          - iec-60309-3p-n-e-4h
-          - iec-60309-3p-n-e-6h
-          - iec-60309-3p-n-e-9h
-          - nema-5-15r
-          - nema-5-20r
-          - nema-5-30r
-          - nema-5-50r
-          - nema-6-15r
-          - nema-6-20r
-          - nema-6-30r
-          - nema-6-50r
-          - nema-l5-15r
-          - nema-l5-20r
-          - nema-l5-30r
-          - nema-l5-50r
-          - nema-l6-20r
-          - nema-l6-30r
-          - nema-l6-50r
-          - nema-l14-20r
-          - nema-l14-30r
-          - nema-l21-20r
-          - nema-l21-30r
-          - CS6360C
-          - CS6364C
-          - CS8164C
-          - CS8264C
-          - CS8364C
-          - CS8464C
-          - ita-e
-          - ita-f
-          - ita-g
-          - ita-h
-          - ita-i
-          - ita-j
-          - ita-k
-          - ita-l
-          - ita-m
-          - ita-n
-          - ita-o
-          - hdot-cx
-        required: false
-        type: str
-      power_port:
-        description:
-          - The attached power port
-        required: false
-        type: raw
-      feed_leg:
-        description:
-          - The phase, in case of three-phase feed
-        choices:
-          - A
-          - B
-          - C
-        required: false
-        type: str
-      description:
-        description:
-          - Description of the power outlet
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the power outlet may need to be associated with
-        required: false
-        type: list
+      - The device the power outlet is attached to
+    required: true
+    type: raw
+  name:
+    description:
+      - The name of the power outlet
+    required: true
+    type: str
+  type:
+    description:
+      - The type of the power outlet
+    choices:
+      - iec-60320-c5
+      - iec-60320-c7
+      - iec-60320-c13
+      - iec-60320-c15
+      - iec-60320-c19
+      - iec-60309-p-n-e-4h
+      - iec-60309-p-n-e-6h
+      - iec-60309-p-n-e-9h
+      - iec-60309-2p-e-4h
+      - iec-60309-2p-e-6h
+      - iec-60309-2p-e-9h
+      - iec-60309-3p-e-4h
+      - iec-60309-3p-e-6h
+      - iec-60309-3p-e-9h
+      - iec-60309-3p-n-e-4h
+      - iec-60309-3p-n-e-6h
+      - iec-60309-3p-n-e-9h
+      - nema-5-15r
+      - nema-5-20r
+      - nema-5-30r
+      - nema-5-50r
+      - nema-6-15r
+      - nema-6-20r
+      - nema-6-30r
+      - nema-6-50r
+      - nema-l5-15r
+      - nema-l5-20r
+      - nema-l5-30r
+      - nema-l5-50r
+      - nema-l6-20r
+      - nema-l6-30r
+      - nema-l6-50r
+      - nema-l14-20r
+      - nema-l14-30r
+      - nema-l21-20r
+      - nema-l21-30r
+      - CS6360C
+      - CS6364C
+      - CS8164C
+      - CS8264C
+      - CS8364C
+      - CS8464C
+      - ita-e
+      - ita-f
+      - ita-g
+      - ita-h
+      - ita-i
+      - ita-j
+      - ita-k
+      - ita-l
+      - ita-m
+      - ita-n
+      - ita-o
+      - hdot-cx
+    required: false
+    type: str
+  power_port:
+    description:
+      - The attached power port
+    required: false
+    type: raw
+  feed_leg:
+    description:
+      - The phase, in case of three-phase feed
+    choices:
+      - A
+      - B
+      - C
+    required: false
+    type: str
+  description:
+    description:
+      - Description of the power outlet
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the power outlet may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -168,31 +162,28 @@ EXAMPLES = r"""
       networktocode.nautobot.power_outlet:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Outlet
-          device: Test Device
+        name: Test Power Outlet
+        device: Test Device
         state: present
 
     - name: Update power port with other fields
       networktocode.nautobot.power_outlet:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Outlet
-          device: Test Device
-          type: iec-60320-c6
-          power_port: Test Power Port
-          feed_leg: A
-          description: power port description
+        name: Test Power Outlet
+        device: Test Device
+        type: iec-60320-c6
+        power_port: Test Power Port
+        feed_leg: A
+        description: power port description
         state: present
 
     - name: Delete power port within nautobot
       networktocode.nautobot.power_outlet:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Outlet
-          device: Test Device
+        name: Test Power Outlet
+        device: Test Device
         state: absent
 """
 
@@ -208,13 +199,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_POWER_OUTLETS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -225,89 +216,76 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                    type=dict(
-                        required=False,
-                        choices=[
-                            "iec-60320-c5",
-                            "iec-60320-c7",
-                            "iec-60320-c13",
-                            "iec-60320-c15",
-                            "iec-60320-c19",
-                            "iec-60309-p-n-e-4h",
-                            "iec-60309-p-n-e-6h",
-                            "iec-60309-p-n-e-9h",
-                            "iec-60309-2p-e-4h",
-                            "iec-60309-2p-e-6h",
-                            "iec-60309-2p-e-9h",
-                            "iec-60309-3p-e-4h",
-                            "iec-60309-3p-e-6h",
-                            "iec-60309-3p-e-9h",
-                            "iec-60309-3p-n-e-4h",
-                            "iec-60309-3p-n-e-6h",
-                            "iec-60309-3p-n-e-9h",
-                            "nema-5-15r",
-                            "nema-5-20r",
-                            "nema-5-30r",
-                            "nema-5-50r",
-                            "nema-6-15r",
-                            "nema-6-20r",
-                            "nema-6-30r",
-                            "nema-6-50r",
-                            "nema-l5-15r",
-                            "nema-l5-20r",
-                            "nema-l5-30r",
-                            "nema-l5-50r",
-                            "nema-l6-20r",
-                            "nema-l6-30r",
-                            "nema-l6-50r",
-                            "nema-l14-20r",
-                            "nema-l14-30r",
-                            "nema-l21-20r",
-                            "nema-l21-30r",
-                            "CS6360C",
-                            "CS6364C",
-                            "CS8164C",
-                            "CS8264C",
-                            "CS8364C",
-                            "CS8464C",
-                            "ita-e",
-                            "ita-f",
-                            "ita-g",
-                            "ita-h",
-                            "ita-i",
-                            "ita-j",
-                            "ita-k",
-                            "ita-l",
-                            "ita-m",
-                            "ita-n",
-                            "ita-o",
-                            "hdot-cx",
-                        ],
-                        type="str",
-                    ),
-                    power_port=dict(required=False, type="raw"),
-                    feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
-                    description=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                ),
+            device=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(
+                required=False,
+                choices=[
+                    "iec-60320-c5",
+                    "iec-60320-c7",
+                    "iec-60320-c13",
+                    "iec-60320-c15",
+                    "iec-60320-c19",
+                    "iec-60309-p-n-e-4h",
+                    "iec-60309-p-n-e-6h",
+                    "iec-60309-p-n-e-9h",
+                    "iec-60309-2p-e-4h",
+                    "iec-60309-2p-e-6h",
+                    "iec-60309-2p-e-9h",
+                    "iec-60309-3p-e-4h",
+                    "iec-60309-3p-e-6h",
+                    "iec-60309-3p-e-9h",
+                    "iec-60309-3p-n-e-4h",
+                    "iec-60309-3p-n-e-6h",
+                    "iec-60309-3p-n-e-9h",
+                    "nema-5-15r",
+                    "nema-5-20r",
+                    "nema-5-30r",
+                    "nema-5-50r",
+                    "nema-6-15r",
+                    "nema-6-20r",
+                    "nema-6-30r",
+                    "nema-6-50r",
+                    "nema-l5-15r",
+                    "nema-l5-20r",
+                    "nema-l5-30r",
+                    "nema-l5-50r",
+                    "nema-l6-20r",
+                    "nema-l6-30r",
+                    "nema-l6-50r",
+                    "nema-l14-20r",
+                    "nema-l14-30r",
+                    "nema-l21-20r",
+                    "nema-l21-30r",
+                    "CS6360C",
+                    "CS6364C",
+                    "CS8164C",
+                    "CS8264C",
+                    "CS8364C",
+                    "CS8464C",
+                    "ita-e",
+                    "ita-f",
+                    "ita-g",
+                    "ita-h",
+                    "ita-i",
+                    "ita-j",
+                    "ita-k",
+                    "ita-l",
+                    "ita-m",
+                    "ita-n",
+                    "ita-o",
+                    "hdot-cx",
+                ],
+                type="str",
             ),
+            power_port=dict(required=False, type="raw"),
+            feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
+            description=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device", "name"]),
-        ("state", "absent", ["device", "name"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     power_outlet = NautobotDcimModule(module, NB_POWER_OUTLETS)
     power_outlet.run()

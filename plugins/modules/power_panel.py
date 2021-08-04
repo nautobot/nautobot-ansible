@@ -36,27 +36,21 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  site:
     description:
-      - Defines the power panel configuration
-    suboptions:
-      site:
-        description:
-          - The site the power panel is located in
-        required: true
-        type: raw
-      rack_group:
-        description:
-          - The rack group the power panel is assigned to
-        required: false
-        type: raw
-      name:
-        description:
-          - The name of the power panel
-        required: true
-        type: str
+      - The site the power panel is located in
+    required: true
+    type: raw
+  rack_group:
+    description:
+      - The rack group the power panel is assigned to
+    required: false
+    type: raw
+  name:
+    description:
+      - The name of the power panel
+    required: true
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -89,28 +83,25 @@ EXAMPLES = r"""
       networktocode.nautobot.power_panel:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Panel
-          site: Test Site
+        name: Test Power Panel
+        site: Test Site
         state: present
 
     - name: Update power panel with other fields
       networktocode.nautobot.power_panel:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Panel
-          site: Test Site
-          rack_group: Test Rack Group
+        name: Test Power Panel
+        site: Test Site
+        rack_group: Test Rack Group
         state: present
 
     - name: Delete power panel within nautobot
       networktocode.nautobot.power_panel:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Power Panel
-          site: Test Site
+        name: Test Power Panel
+        site: Test Site
         state: absent
 """
 
@@ -126,13 +117,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_POWER_PANELS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -143,26 +134,13 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    site=dict(required=True, type="raw"),
-                    rack_group=dict(required=False, type="raw"),
-                    name=dict(required=True, type="str"),
-                ),
-            ),
+            site=dict(required=True, type="raw"),
+            rack_group=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["site", "name"]),
-        ("state", "absent", ["site", "name"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     power_panel = NautobotDcimModule(module, NB_POWER_PANELS)
     power_panel.run()

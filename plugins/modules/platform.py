@@ -37,43 +37,37 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the platform configuration
-    suboptions:
-      name:
-        description:
-          - The name of the platform
-        required: true
-        type: str
-      slug:
-        description:
-          - The slugified version of the name or custom slug.
-          - This is auto-generated following Nautobot rules if not provided
-        required: false
-        type: str
-      description:
-        description:
-          - The description of the platform
-        required: false
-        type: str
-      manufacturer:
-        description:
-          - The manufacturer the platform will be tied to
-        required: false
-        type: raw
-      napalm_driver:
-        description:
-          - The name of the NAPALM driver to be used when using the NAPALM plugin
-        required: false
-        type: str
-      napalm_args:
-        description:
-          - The optional arguments used for NAPALM connections
-        required: false
-        type: dict
+      - The name of the platform
     required: true
+    type: str
+  slug:
+    description:
+      - The slugified version of the name or custom slug.
+      - This is auto-generated following Nautobot rules if not provided
+    required: false
+    type: str
+  description:
+    description:
+      - The description of the platform
+    required: false
+    type: str
+  manufacturer:
+    description:
+      - The manufacturer the platform will be tied to
+    required: false
+    type: raw
+  napalm_driver:
+    description:
+      - The name of the NAPALM driver to be used when using the NAPALM plugin
+    required: false
+    type: str
+  napalm_args:
+    description:
+      - The optional arguments used for NAPALM connections
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -106,28 +100,25 @@ EXAMPLES = r"""
       networktocode.nautobot.platform:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Platform
+        name: Test Platform
         state: present
 
     - name: Create platform within Nautobot with only required information
       networktocode.nautobot.platform:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Platform All
-          manufacturer: Test Manufacturer
-          napalm_driver: ios
-          napalm_args:
-            global_delay_factor: 2
+        name: Test Platform All
+        manufacturer: Test Manufacturer
+        napalm_driver: ios
+        napalm_args:
+          global_delay_factor: 2
         state: present
 
     - name: Delete platform within nautobot
       networktocode.nautobot.platform:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Platform
+        name: Test Platform
         state: absent
 """
 
@@ -143,13 +134,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_PLATFORMS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -160,26 +151,16 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    slug=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                    manufacturer=dict(required=False, type="raw"),
-                    napalm_driver=dict(required=False, type="str"),
-                    napalm_args=dict(required=False, type="dict"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            slug=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            manufacturer=dict(required=False, type="raw"),
+            napalm_driver=dict(required=False, type="str"),
+            napalm_args=dict(required=False, type="dict"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     platform = NautobotDcimModule(module, NB_PLATFORMS)
     platform.run()
