@@ -37,67 +37,61 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  cid:
     description:
-      - Defines the circuit configuration
-    suboptions:
-      cid:
-        description:
-          - The circuit id of the circuit
-        required: true
-        type: str
-      provider:
-        description:
-          - The provider of the circuit
-        required: false
-        type: raw
-      circuit_type:
-        description:
-          - The circuit type of the circuit
-        required: false
-        type: raw
-      status:
-        description:
-          - The status of the circuit
-        required: false
-        type: raw
-      tenant:
-        description:
-          - The tenant assigned to the circuit
-        required: false
-        type: raw
-      install_date:
-        description:
-          - The date the circuit was installed. e.g. YYYY-MM-DD
-        required: false
-        type: str
-      commit_rate:
-        description:
-          - Commit rate of the circuit (Kbps)
-        required: false
-        type: int
-      description:
-        description:
-          - Description of the circuit
-        required: false
-        type: str
-      comments:
-        description:
-          - Comments related to circuit
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the device may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - The circuit id of the circuit
+    required: true
+    type: str
+  provider:
+    description:
+      - The provider of the circuit
+    required: false
+    type: raw
+  circuit_type:
+    description:
+      - The circuit type of the circuit
+    required: false
+    type: raw
+  status:
+    description:
+      - The status of the circuit
+    required: false
+    type: raw
+  tenant:
+    description:
+      - The tenant assigned to the circuit
+    required: false
+    type: raw
+  install_date:
+    description:
+      - The date the circuit was installed. e.g. YYYY-MM-DD
+    required: false
+    type: str
+  commit_rate:
+    description:
+      - Commit rate of the circuit (Kbps)
+    required: false
+    type: int
+  description:
+    description:
+      - Description of the circuit
+    required: false
+    type: str
+  comments:
+    description:
+      - Comments related to circuit
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the device may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -130,11 +124,10 @@ EXAMPLES = r"""
       networktocode.nautobot.circuit:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          cid: Test Circuit
-          provider: Test Provider
-          circuit_type: Test Circuit Type
-          status: active
+        cid: Test Circuit
+        provider: Test Provider
+        circuit_type: Test Circuit Type
+        status: active
         state: present
 
     - name: Update circuit with other fields
@@ -142,23 +135,22 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         data:
-          cid: Test-Circuit-1000
-          provider: Test Provider
-          circuit_type: Test Circuit Type
-          status: Active
-          tenant: Test Tenant
-          install_date: "2018-12-25"
-          commit_rate: 10000
-          description: Test circuit
-          comments: "FAST CIRCUIT"
+        cid: Test-Circuit-1000
+        provider: Test Provider
+        circuit_type: Test Circuit Type
+        status: Active
+        tenant: Test Tenant
+        install_date: "2018-12-25"
+        commit_rate: 10000
+        description: Test circuit
+        comments: "FAST CIRCUIT"
         state: present
 
     - name: Delete circuit within nautobot
       networktocode.nautobot.circuit:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          cid: Test-Circuit-1000
+        cid: Test-Circuit-1000
         state: absent
 """
 
@@ -174,13 +166,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
     NautobotCircuitsModule,
     NB_CIRCUITS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -191,23 +183,17 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    cid=dict(required=True, type="str"),
-                    provider=dict(required=False, type="raw"),
-                    circuit_type=dict(required=False, type="raw"),
-                    status=dict(required=False, type="raw"),
-                    tenant=dict(required=False, type="raw"),
-                    install_date=dict(required=False, type="str"),
-                    commit_rate=dict(required=False, type="int"),
-                    description=dict(required=False, type="str"),
-                    comments=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            cid=dict(required=True, type="str"),
+            provider=dict(required=False, type="raw"),
+            circuit_type=dict(required=False, type="raw"),
+            status=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
+            install_date=dict(required=False, type="str"),
+            commit_rate=dict(required=False, type="int"),
+            description=dict(required=False, type="str"),
+            comments=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
@@ -216,7 +202,7 @@ def main():
         ("state", "absent", ["cid"]),
     ]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
     )
 

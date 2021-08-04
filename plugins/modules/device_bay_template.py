@@ -36,22 +36,16 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  device_type:
     description:
-      - Defines the device bay template configuration
-    suboptions:
-      device_type:
-        description:
-          - The device type the device bay template will be associated to. The device type must be "parent".
-        required: true
-        type: raw
-      name:
-        description:
-          - The name of the device bay template
-        required: true
-        type: str
-    type: dict
+      - The device type the device bay template will be associated to. The device type must be "parent".
     required: true
+    type: raw
+  name:
+    description:
+      - The name of the device bay template
+    required: true
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -84,20 +78,17 @@ EXAMPLES = r"""
       networktocode.nautobot.device_bay_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: device bay template One
-          device_type: Device Type One
+        name: device bay template One
+        device_type: Device Type One
         state: present
 
     - name: Delete device bay template within nautobot
       networktocode.nautobot.device_bay_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: device bay template One
-          device_type: Device Type One
+        name: device bay template One
+        device_type: Device Type One
         state: absent
-
 """
 
 RETURN = r"""
@@ -112,13 +103,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICE_BAY_TEMPLATES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -129,25 +120,12 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device_type=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                ),
-            ),
+            device_type=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["name", "device_type"]),
-        ("state", "absent", ["name", "device_type"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     device_bay_template = NautobotDcimModule(module, NB_DEVICE_BAY_TEMPLATES)
     device_bay_template.run()

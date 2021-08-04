@@ -37,37 +37,31 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  device:
     description:
-      - Defines the device bay configuration
-    suboptions:
-      device:
-        description:
-          - The device the device bay will be associated to. The device type must be "parent".
-        required: false
-        type: raw
-      name:
-        description:
-          - The name of the device bay
-        required: true
-        type: str
-      description:
-        description:
-          - The description of the device bay. This is supported on v2.6+ of Nautobot
-        required: false
-        type: str
-      installed_device:
-        description:
-          - The ddevice that will be installed into the bay. The device type must be "child".
-        required: false
-        type: raw
-      tags:
-        description:
-          - Any tags that the device bay may need to be associated with
-        required: false
-        type: list
-    type: dict
+      - The device the device bay will be associated to. The device type must be "parent".
+    required: false
+    type: raw
+  name:
+    description:
+      - The name of the device bay
     required: true
+    type: str
+  description:
+    description:
+      - The description of the device bay. This is supported on v2.6+ of Nautobot
+    required: false
+    type: str
+  installed_device:
+    description:
+      - The ddevice that will be installed into the bay. The device type must be "child".
+    required: false
+    type: raw
+  tags:
+    description:
+      - Any tags that the device bay may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -100,30 +94,26 @@ EXAMPLES = r"""
       networktocode.nautobot.device_bay:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: Test Nexus One
-          name: "Device Bay One"
+        device: Test Nexus One
+        name: "Device Bay One"
         state: present
 
     - name: Add device into device bay
       networktocode.nautobot.device_bay:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: Test Nexus One
-          name: "Device Bay One"
-          description: "First child"
-          installed_device: Test Nexus Child One
+        device: Test Nexus One
+        name: "Device Bay One"
+        description: "First child"
+        installed_device: Test Nexus Child One
         state: absent
 
     - name: Delete device bay within nautobot
       networktocode.nautobot.device_bay:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Device Bay One
+        name: Device Bay One
         state: absent
-
 """
 
 RETURN = r"""
@@ -138,13 +128,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICE_BAYS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -155,25 +145,15 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device=dict(required=False, type="raw"),
-                    name=dict(required=True, type="str"),
-                    description=dict(required=False, type="str"),
-                    installed_device=dict(required=False, type="raw"),
-                    tags=dict(required=False, type="list"),
-                ),
-            ),
+            device=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
+            description=dict(required=False, type="str"),
+            installed_device=dict(required=False, type="raw"),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     device_bay = NautobotDcimModule(module, NB_DEVICE_BAYS)
     device_bay.run()

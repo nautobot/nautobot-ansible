@@ -37,55 +37,49 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    required: true
-    type: dict
+  circuit:
     description:
-      - Defines the circuit termination configuration
-    suboptions:
-      circuit:
-        description:
-          - The circuit to assign to circuit termination
-        required: true
-        type: raw
-      term_side:
-        description:
-          - The side of the circuit termination
-        choices:
-          - A
-          - Z
-        required: true
-        type: str
-      site:
-        description:
-          - The site the circuit termination will be assigned to
-        required: false
-        type: raw
-      port_speed:
-        description:
-          - The speed of the port (Kbps)
-        required: false
-        type: int
-      upstream_speed:
-        description:
-          - The upstream speed of the circuit termination
-        required: false
-        type: int
-      xconnect_id:
-        description:
-          - The cross connect ID of the circuit termination
-        required: false
-        type: str
-      pp_info:
-        description:
-          - Patch panel information
-        required: false
-        type: str
-      description:
-        description:
-          - Description of the circuit termination
-        required: false
-        type: str
+      - The circuit to assign to circuit termination
+    required: true
+    type: raw
+  term_side:
+    description:
+      - The side of the circuit termination
+    choices:
+      - A
+      - Z
+    required: true
+    type: str
+  site:
+    description:
+      - The site the circuit termination will be assigned to
+    required: false
+    type: raw
+  port_speed:
+    description:
+      - The speed of the port (Kbps)
+    required: false
+    type: int
+  upstream_speed:
+    description:
+      - The upstream speed of the circuit termination
+    required: false
+    type: int
+  xconnect_id:
+    description:
+      - The cross connect ID of the circuit termination
+    required: false
+    type: str
+  pp_info:
+    description:
+      - Patch panel information
+    required: false
+    type: str
+  description:
+    description:
+      - Description of the circuit termination
+    required: false
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -118,33 +112,30 @@ EXAMPLES = r"""
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          circuit: Test Circuit
-          term_side: A
-          site: Test Site
-          port_speed: 10000
+        circuit: Test Circuit
+        term_side: A
+        site: Test Site
+        port_speed: 10000
         state: present
 
     - name: Update circuit termination with other fields
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          circuit: Test Circuit
-          term_side: A
-          upstream_speed: 1000
-          xconnect_id: 10X100
-          pp_info: PP10-24
-          description: "Test description"
+        circuit: Test Circuit
+        term_side: A
+        upstream_speed: 1000
+        xconnect_id: 10X100
+        pp_info: PP10-24
+        description: "Test description"
         state: present
 
     - name: Delete circuit termination within nautobot
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          circuit: Test Circuit
-          term_side: A
+        circuit: Test Circuit
+        term_side: A
         state: absent
 """
 
@@ -160,13 +151,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
     NautobotCircuitsModule,
     NB_CIRCUIT_TERMINATIONS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -177,31 +168,18 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    circuit=dict(required=True, type="raw"),
-                    term_side=dict(required=True, choices=["A", "Z"]),
-                    site=dict(required=False, type="raw"),
-                    port_speed=dict(required=False, type="int"),
-                    upstream_speed=dict(required=False, type="int"),
-                    xconnect_id=dict(required=False, type="str"),
-                    pp_info=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                ),
-            ),
+            circuit=dict(required=True, type="raw"),
+            term_side=dict(required=True, choices=["A", "Z"]),
+            site=dict(required=False, type="raw"),
+            port_speed=dict(required=False, type="int"),
+            upstream_speed=dict(required=False, type="int"),
+            xconnect_id=dict(required=False, type="str"),
+            pp_info=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["circuit", "term_side"]),
-        ("state", "absent", ["circuit", "term_side"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     circuit_termination = NautobotCircuitsModule(module, NB_CIRCUIT_TERMINATIONS)
     circuit_termination.run()

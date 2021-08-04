@@ -37,52 +37,46 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    required: true
-    type: dict
+  name:
     description:
-      - Defines the cluster configuration
-    suboptions:
-      name:
-        description:
-          - The name of the cluster
-        required: true
-        type: str
-      cluster_type:
-        description:
-          - type of the cluster
-        required: false
-        type: raw
-      cluster_group:
-        description:
-          - group of the cluster
-        required: false
-        type: raw
-      site:
-        description:
-          - Required if I(state=present) and the cluster does not exist yet
-        required: false
-        type: raw
-      comments:
-        description:
-          - Comments that may include additional information in regards to the cluster
-        required: false
-        type: str
-      tenant:
-        description:
-          - Tenant the cluster will be assigned to.
-        required: false
-        type: raw
-      tags:
-        description:
-          - Any tags that the cluster may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - The name of the cluster
+    required: true
+    type: str
+  cluster_type:
+    description:
+      - type of the cluster
+    required: false
+    type: raw
+  cluster_group:
+    description:
+      - group of the cluster
+    required: false
+    type: raw
+  site:
+    description:
+      - Required if I(state=present) and the cluster does not exist yet
+    required: false
+    type: raw
+  comments:
+    description:
+      - Comments that may include additional information in regards to the cluster
+    required: false
+    type: str
+  tenant:
+    description:
+      - Tenant the cluster will be assigned to.
+    required: false
+    type: raw
+  tags:
+    description:
+      - Any tags that the cluster may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -115,39 +109,35 @@ EXAMPLES = r"""
       networktocode.nautobot.cluster:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Cluster
-          cluster_type: libvirt
+        name: Test Cluster
+        cluster_type: libvirt
         state: present
 
     - name: Delete cluster within nautobot
       networktocode.nautobot.cluster:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Cluster
+        name: Test Cluster
         state: absent
 
     - name: Create cluster with tags
       networktocode.nautobot.cluster:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Another Test Cluster
-          cluster_type: libvirt
-          tags:
-            - Schnozzberry
+        name: Another Test Cluster
+        cluster_type: libvirt
+        tags:
+          - Schnozzberry
         state: present
 
     - name: Update the group and site of an existing cluster
       networktocode.nautobot.cluster:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Cluster
-          cluster_type: qemu
-          cluster_group: GROUP
-          site: SITE
+        name: Test Cluster
+        cluster_type: qemu
+        cluster_group: GROUP
+        site: SITE
         state: present
 """
 
@@ -163,13 +153,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
     NB_CLUSTERS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -180,28 +170,18 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    cluster_type=dict(required=False, type="raw"),
-                    cluster_group=dict(required=False, type="raw"),
-                    site=dict(required=False, type="raw"),
-                    tenant=dict(required=False, type="raw"),
-                    comments=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            cluster_type=dict(required=False, type="raw"),
+            cluster_group=dict(required=False, type="raw"),
+            site=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
+            comments=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     cluster = NautobotVirtualizationModule(module, NB_CLUSTERS)
     cluster.run()
