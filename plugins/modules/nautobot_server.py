@@ -174,7 +174,7 @@ def _fail(module, cmd, out, err, **kwargs):
 
 
 def _ensure_virtualenv(module):
-    """Ensure that virtualenv is available or create it."""
+    """Ensure that virtualenv is available."""
     venv_param = module.params["virtualenv"]
     if venv_param is None:
         # If no custom virtualenv is defined, we assume it's in the project_path
@@ -184,10 +184,7 @@ def _ensure_virtualenv(module):
     activate = os.path.join(vbin, "activate")
 
     if not os.path.exists(activate):
-        vcmd = ["python3", "-m", "venv", venv_param]
-        rc, out_venv, err_venv = module.run_command(vcmd)
-        if rc != 0:
-            _fail(module, vcmd, out_venv, err_venv)
+      _fail(module, activate, "Virtualenv doens't exist.", f"{activate} not found.")
 
     os.environ["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
     os.environ["VIRTUAL_ENV"] = venv_param
