@@ -20,14 +20,13 @@ jobs:
         - PYTHON_VER=3.6
       install:
         - pip install -U pip
-        - pip install poetry
-        - poetry config virtualenvs.create false && poetry install
+        - poetry config virtualenvs.create false && poetry add poetry --dev && poetry install
 
 before_script:
   - mkdir -p ~/ansible_collections/$COLLECTION_NAMESPACE
-  - poetry run ansible-galaxy collection install community.general -p /home/travis/.ansible/collections
-  - poetry run ansible-galaxy collection build .
-  - poetry run ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME*.tar.gz -p /home/travis/.ansible/collections
+  - ansible-galaxy collection install community.general -p /home/travis/.ansible/collections
+  - ansible-galaxy collection build .
+  - ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME*.tar.gz -p /home/travis/.ansible/collections
 
   # Run all further tests from within the installed directory
   # Required to resolve imports of other collections
@@ -35,21 +34,21 @@ before_script:
 
 script:
   # Check python syntax
-  - poetry run black . --check --diff
+  - black . --check --diff
 
   # Sanity tests
   # --requirements - install pip packages as necessary
   # Skip pep8 as we use black instead
-  - poetry run ansible-test sanity -v --requirements --python $PYTHON_VER --skip-test pep8 plugins/
+  - ansible-test sanity -v --requirements --python $PYTHON_VER --skip-test pep8 plugins/
 
   # Unit tests, with code coverage
-  - poetry run ansible-test units -v --coverage --python $PYTHON_VER
+  - ansible-test units -v --coverage --python $PYTHON_VER
   # Report code coverage
-  - poetry run ansible-test coverage report --all --omit "tests/*,hacking/*,docs/*" --show-missing
+  - ansible-test coverage report --all --omit "tests/*,hacking/*,docs/*" --show-missing
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: poetry run ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
+  script: ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
   on:
     tags: true
