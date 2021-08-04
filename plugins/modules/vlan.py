@@ -38,62 +38,56 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  site:
     description:
-      - Defines the vlan configuration
-    suboptions:
-      site:
-        description:
-          - The site the VLAN will be associated to
-        required: false
-        type: raw
-      vlan_group:
-        description:
-          - The VLAN group the VLAN will be associated to
-        required: false
-        type: raw
-      vid:
-        description:
-          - The VLAN ID
-        required: false
-        type: int
-      name:
-        description:
-          - The name of the vlan
-        required: true
-        type: str
-      tenant:
-        description:
-          - The tenant that the vlan will be assigned to
-        required: false
-        type: raw
-      status:
-        description:
-          - The status of the vlan
-        required: false
-        type: raw
-      vlan_role:
-        description:
-          - The role of the VLAN.
-        required: false
-        type: raw
-      description:
-        description:
-          - The description of the vlan
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the vlan may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - The site the VLAN will be associated to
+    required: false
+    type: raw
+  vlan_group:
+    description:
+      - The VLAN group the VLAN will be associated to
+    required: false
+    type: raw
+  vid:
+    description:
+      - The VLAN ID
+    required: false
+    type: int
+  name:
+    description:
+      - The name of the vlan
     required: true
+    type: str
+  tenant:
+    description:
+      - The tenant that the vlan will be assigned to
+    required: false
+    type: raw
+  status:
+    description:
+      - The status of the vlan
+    required: false
+    type: raw
+  vlan_role:
+    description:
+      - The role of the VLAN.
+    required: false
+    type: raw
+  description:
+    description:
+      - The description of the vlan
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the vlan may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -126,37 +120,34 @@ EXAMPLES = r"""
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          status: active
+        name: Test VLAN
+        vid: 400
+        status: active
         state: present
 
     - name: Delete vlan within nautobot
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          status: active
+        name: Test VLAN
+        vid: 400
+        status: active
         state: absent
 
     - name: Create vlan with all information
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          site: Test Site
-          group: Test VLAN Group
-          tenant: Test Tenant
-          status: Deprecated
-          vlan_role: Test VLAN Role
-          description: Just a test
-          tags:
-            - Schnozzberry
+        name: Test VLAN
+        vid: 400
+        site: Test Site
+        group: Test VLAN Group
+        tenant: Test Tenant
+        status: Deprecated
+        vlan_role: Test VLAN Role
+        description: Just a test
+        tags:
+          - Schnozzberry
         state: present
 """
 
@@ -172,13 +163,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_VLANS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -189,22 +180,16 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    site=dict(required=False, type="raw"),
-                    vlan_group=dict(required=False, type="raw"),
-                    vid=dict(required=False, type="int"),
-                    name=dict(required=True, type="str"),
-                    tenant=dict(required=False, type="raw"),
-                    status=dict(required=False, type="raw"),
-                    vlan_role=dict(required=False, type="raw"),
-                    description=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            site=dict(required=False, type="raw"),
+            vlan_group=dict(required=False, type="raw"),
+            vid=dict(required=False, type="int"),
+            name=dict(required=True, type="str"),
+            tenant=dict(required=False, type="raw"),
+            status=dict(required=False, type="raw"),
+            vlan_role=dict(required=False, type="raw"),
+            description=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
     required_if = [
@@ -212,7 +197,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
     )
 

@@ -241,7 +241,7 @@ def main():
                     "Wall-mounted cabinet",
                 ],
             ),
-            width=dict(required=False, type="int", choices=[10, 19, 21, 23,],),
+            width=dict(required=False, type="int", choices=[10, 19, 21, 23,]),
             u_height=dict(required=False, type="int"),
             desc_units=dict(required=False, type="bool"),
             outer_width=dict(required=False, type="int"),

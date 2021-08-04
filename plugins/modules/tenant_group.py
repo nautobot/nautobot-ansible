@@ -38,27 +38,21 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the tenant group configuration
-    suboptions:
-      name:
-        description:
-          - Name of the tenant group to be created
-        required: true
-        type: str
-      slug:
-        description:
-          - URL-friendly unique shorthand
-        required: false
-        type: str
-      description:
-        description:
-          - The description of the tenant
-        required: false
-        type: str
+      - Name of the tenant group to be created
     required: true
+    type: str
+  slug:
+    description:
+      - URL-friendly unique shorthand
+    required: false
+    type: str
+  description:
+    description:
+      - The description of the tenant
+    required: false
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -92,17 +86,15 @@ EXAMPLES = r"""
       networktocode.nautobot.tenant_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Tenant Group ABC
-          slug: "tenant_group_abc"
+        name: Tenant Group ABC
+        slug: "tenant_group_abc"
         state: present
 
     - name: Delete tenant within nautobot
       networktocode.nautobot.tenant_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Tenant ABC
+        name: Tenant ABC
         state: absent
 
 """
@@ -119,13 +111,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.tenancy import (
     NautobotTenancyModule,
     NB_TENANT_GROUPS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -136,23 +128,13 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    slug=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            slug=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     tenant_group = NautobotTenancyModule(module, NB_TENANT_GROUPS)
     tenant_group.run()

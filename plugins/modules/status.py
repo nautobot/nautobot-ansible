@@ -39,40 +39,34 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the tag configuration
-    suboptions:
-      name:
-        description:
-          - Status name
-        required: true
-        type: str
-      description:
-        description:
-          - The description for the status
-        required: false
-        type: str
-      slug:
-        description:
-          - The slugified version of the name or custom slug.
-          - This is auto-generated following Nautobot rules if not provided
-        required: false
-        type: str
-      color:
-        description:
-          - Status color
-        required: false
-        type: str
-      content_types:
-        description:
-          - Status content type(s). These match app.endpoint and the endpoint is singular.
-          - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
-        required: false
-        type: list
-        elements: str
+      - Status name
     required: true
+    type: str
+  description:
+    description:
+      - The description for the status
+    required: false
+    type: str
+  slug:
+    description:
+      - The slugified version of the name or custom slug.
+      - This is auto-generated following Nautobot rules if not provided
+    required: false
+    type: str
+  color:
+    description:
+      - Status color
+    required: false
+    type: str
+  content_types:
+    description:
+      - Status content type(s). These match app.endpoint and the endpoint is singular.
+      - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+    required: false
+    type: list
+    elements: str
   query_params:
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
@@ -106,40 +100,26 @@ EXAMPLES = r"""
       networktocode.nautobot.status:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "ansible_status"
-          description: "Status if provisioned by Ansible"
-          content_types:
-            - dcim.device
-            - dcim.cable
-            - dcim.powerfeed
-            - dcim.rack
-            - dcim.site
-            - circuits.circuit
-            - virtualization.virtualmachine
-            - ipam.prefix
-            - ipam.ipaddress
-            - ipam.vlan
-          color: 01bea3
+        name: "ansible_status"
+        description: "Status if provisioned by Ansible"
+        content_types:
+          - dcim.device
+          - dcim.cable
+          - dcim.powerfeed
+          - dcim.rack
+          - dcim.site
+          - circuits.circuit
+          - virtualization.virtualmachine
+          - ipam.prefix
+          - ipam.ipaddress
+          - ipam.vlan
+        color: 01bea3
 
     - name: Delete status
       networktocode.nautobot.status:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "ansible_status"
-          content_types:
-            - dcim.device
-            - dcim.cable
-            - dcim.powerfeed
-            - dcim.rack
-            - dcim.site
-            - circuits.circuit
-            - virtualization.virtualmachine
-            - ipam.prefix
-            - ipam.ipaddress
-            - ipam.vlan
-          color: 01bea3
+        name: "ansible_status"
         state: absent
 """
 
@@ -155,13 +135,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
     NautobotExtrasModule,
     NB_STATUS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -191,7 +171,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
     )
 

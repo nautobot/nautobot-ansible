@@ -38,28 +38,22 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the RIR configuration
-    suboptions:
-      name:
-        description:
-          - The name of the RIR
-        required: true
-        type: str
-      slug:
-        description:
-          - The slugified version of the name or custom slug.
-          - This is auto-generated following Nautobot rules if not provided
-        required: false
-        type: str
-      is_private:
-        description:
-          - IP space managed by this RIR is considered private
-        required: false
-        type: bool
+      - The name of the RIR
     required: true
+    type: str
+  slug:
+    description:
+      - The slugified version of the name or custom slug.
+      - This is auto-generated following Nautobot rules if not provided
+    required: false
+    type: str
+  is_private:
+    description:
+      - IP space managed by this RIR is considered private
+    required: false
+    type: bool
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -92,25 +86,22 @@ EXAMPLES = r"""
       networktocode.nautobot.rir:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test RIR One
+        name: Test RIR One
         state: present
 
     - name: Update Test RIR One
       networktocode.nautobot.rir:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test RIR One
-          is_private: True
+        name: Test RIR One
+        is_private: True
         state: present
 
     - name: Delete RIR within nautobot
       networktocode.nautobot.rir:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test RIR One
+        name: Test RIR One
         state: absent
 """
 
@@ -126,13 +117,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_RIRS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -143,23 +134,13 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    slug=dict(required=False, type="str"),
-                    is_private=dict(required=False, type="bool"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            slug=dict(required=False, type="str"),
+            is_private=dict(required=False, type="bool"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     rir = NautobotIpamModule(module, NB_RIRS)
     rir.run()
