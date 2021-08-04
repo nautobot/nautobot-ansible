@@ -38,58 +38,52 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  device:
     description:
-      - Defines the inventory item configuration
-    suboptions:
-      device:
-        description:
-          - Name of the device the inventory item belongs to
-        required: false
-        type: raw
-      name:
-        description:
-          - Name of the inventory item to be created
-        required: true
-        type: str
-      manufacturer:
-        description:
-          - The manufacturer of the inventory item
-        required: false
-        type: raw
-      part_id:
-        description:
-          - The part ID of the inventory item
-        required: false
-        type: str
-      serial:
-        description:
-          - The serial number of the inventory item
-        required: false
-        type: str
-      asset_tag:
-        description:
-          - The asset tag of the inventory item
-        required: false
-        type: str
-      description:
-        description:
-          - The description of the inventory item
-        required: false
-        type: str
-      discovered:
-        description:
-          - Set the discovery flag for the inventory item
-        required: false
-        default: false
-        type: bool
-      tags:
-        description:
-          - Any tags that the device may need to be associated with
-        required: false
-        type: list
+      - Name of the device the inventory item belongs to
     required: true
+    type: raw
+  name:
+    description:
+      - Name of the inventory item to be created
+    required: true
+    type: str
+  manufacturer:
+    description:
+      - The manufacturer of the inventory item
+    required: false
+    type: raw
+  part_id:
+    description:
+      - The part ID of the inventory item
+    required: false
+    type: str
+  serial:
+    description:
+      - The serial number of the inventory item
+    required: false
+    type: str
+  asset_tag:
+    description:
+      - The asset tag of the inventory item
+    required: false
+    type: str
+  description:
+    description:
+      - The description of the inventory item
+    required: false
+    type: str
+  discovered:
+    description:
+      - Set the discovery flag for the inventory item
+    required: false
+    default: false
+    type: bool
+  tags:
+    description:
+      - Any tags that the device may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -123,32 +117,29 @@ EXAMPLES = r"""
       networktocode.nautobot.inventory_item:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: "10G-SFP+"
+        device: test100
+        name: "10G-SFP+"
         state: present
 
     - name: Update inventory item
       networktocode.nautobot.inventory_item:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: "10G-SFP+"
-          manufacturer: "Cisco"
-          part_id: "10G-SFP+"
-          serial: "1234"
-          asset_tag: "1234"
-          description: "New SFP"
+        device: test100
+        name: "10G-SFP+"
+        manufacturer: "Cisco"
+        part_id: "10G-SFP+"
+        serial: "1234"
+        asset_tag: "1234"
+        description: "New SFP"
         state: present
 
     - name: Delete inventory item within nautobot
       networktocode.nautobot.inventory_item:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: "10G-SFP+"
+        device: test100
+        name: "10G-SFP+"
         state: absent
 """
 
@@ -164,13 +155,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_INVENTORY_ITEMS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -181,32 +172,19 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device=dict(required=False, type="raw"),
-                    name=dict(required=True, type="str"),
-                    manufacturer=dict(required=False, type="raw"),
-                    part_id=dict(required=False, type="str"),
-                    serial=dict(required=False, type="str"),
-                    asset_tag=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                    discovered=dict(required=False, type="bool", default=False),
-                    tags=dict(required=False, type="list"),
-                ),
-            ),
+            device=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            manufacturer=dict(required=False, type="raw"),
+            part_id=dict(required=False, type="str"),
+            serial=dict(required=False, type="str"),
+            asset_tag=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            discovered=dict(required=False, type="bool", default=False),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device", "name"]),
-        ("state", "absent", ["device", "name"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     inventory_item = NautobotDcimModule(module, NB_INVENTORY_ITEMS)
     inventory_item.run()

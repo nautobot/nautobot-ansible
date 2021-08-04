@@ -39,108 +39,102 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  termination_a_type:
     description:
-      - Defines the cable configuration
-    suboptions:
-      termination_a_type:
-        description:
-          - The type of the termination a
-        choices:
-          - circuits.circuittermination
-          - dcim.consoleport
-          - dcim.consoleserverport
-          - dcim.frontport
-          - dcim.interface
-          - dcim.powerfeed
-          - dcim.poweroutlet
-          - dcim.powerport
-          - dcim.rearport
-        required: true
-        type: str
-      termination_a:
-        description:
-          - The termination a
-        required: true
-        type: raw
-      termination_b_type:
-        description:
-          - The type of the termination b
-        choices:
-          - circuits.circuittermination
-          - dcim.consoleport
-          - dcim.consoleserverport
-          - dcim.frontport
-          - dcim.interface
-          - dcim.powerfeed
-          - dcim.poweroutlet
-          - dcim.powerport
-          - dcim.rearport
-        required: true
-        type: str
-      termination_b:
-        description:
-          - The termination b
-        required: true
-        type: raw
-      type:
-        description:
-          - The type of the cable
-        choices:
-          - cat3
-          - cat5
-          - cat5e
-          - cat6
-          - cat6a
-          - cat7
-          - dac-active
-          - dac-passive
-          - mrj21-trunk
-          - coaxial
-          - mmf
-          - mmf-om1
-          - mmf-om2
-          - mmf-om3
-          - mmf-om4
-          - smf
-          - smf-os1
-          - smf-os2
-          - aoc
-          - power
-        required: false
-        type: str
-      status:
-        description:
-          - The status of the cable
-        required: false
-        type: str
-      label:
-        description:
-          - The label of the cable
-        required: false
-        type: str
-      color:
-        description:
-          - The color of the cable
-        required: false
-        type: str
-      length:
-        description:
-          - The length of the cable
-        required: false
-        type: int
-      length_unit:
-        description:
-          - The unit in which the length of the cable is measured
-        choices:
-          - m
-          - cm
-          - ft
-          - in
-        required: false
-        type: str
+      - The type of the termination a
+    choices:
+      - circuits.circuittermination
+      - dcim.consoleport
+      - dcim.consoleserverport
+      - dcim.frontport
+      - dcim.interface
+      - dcim.powerfeed
+      - dcim.poweroutlet
+      - dcim.powerport
+      - dcim.rearport
+    required: true
+    type: str
+  termination_a:
+    description:
+      - The termination a
+    required: true
+    type: raw
+  termination_b_type:
+    description:
+      - The type of the termination b
+    choices:
+      - circuits.circuittermination
+      - dcim.consoleport
+      - dcim.consoleserverport
+      - dcim.frontport
+      - dcim.interface
+      - dcim.powerfeed
+      - dcim.poweroutlet
+      - dcim.powerport
+      - dcim.rearport
+    required: true
+    type: str
+  termination_b:
+    description:
+      - The termination b
+    required: true
+    type: raw
+  type:
+    description:
+      - The type of the cable
+    choices:
+      - cat3
+      - cat5
+      - cat5e
+      - cat6
+      - cat6a
+      - cat7
+      - dac-active
+      - dac-passive
+      - mrj21-trunk
+      - coaxial
+      - mmf
+      - mmf-om1
+      - mmf-om2
+      - mmf-om3
+      - mmf-om4
+      - smf
+      - smf-os1
+      - smf-os2
+      - aoc
+      - power
+    required: false
+    type: str
+  status:
+    description:
+      - The status of the cable
+    required: false
+    type: str
+  label:
+    description:
+      - The label of the cable
+    required: false
+    type: str
+  color:
+    description:
+      - The color of the cable
+    required: false
+    type: str
+  length:
+    description:
+      - The length of the cable
+    required: false
+    type: int
+  length_unit:
+    description:
+      - The unit in which the length of the cable is measured
+    choices:
+      - m
+      - cm
+      - ft
+      - in
+    required: false
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -173,52 +167,49 @@ EXAMPLES = r"""
       networktocode.nautobot.cable:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          termination_a_type: dcim.interface
-          termination_a:
-            device: Test Nexus Child One
-            name: Ethernet2/2
-          termination_b_type: dcim.interface
-          termination_b:
-            device: Test Nexus Child One
-            name: Ethernet2/1
-          status: active
+        termination_a_type: dcim.interface
+        termination_a:
+          device: Test Nexus Child One
+          name: Ethernet2/2
+        termination_b_type: dcim.interface
+        termination_b:
+          device: Test Nexus Child One
+          name: Ethernet2/1
+        status: active
         state: present
 
     - name: Update cable with other fields
       networktocode.nautobot.cable:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          termination_a_type: dcim.interface
-          termination_a:
-            device: Test Nexus Child One
-            name: Ethernet2/2
-          termination_b_type: dcim.interface
-          termination_b:
-            device: Test Nexus Child One
-            name: Ethernet2/1
-          type: mmf-om4
-          status: planned
-          label: label123
-          color: abcdef
-          length: 30
-          length_unit: m
+        termination_a_type: dcim.interface
+        termination_a:
+          device: Test Nexus Child One
+          name: Ethernet2/2
+        termination_b_type: dcim.interface
+        termination_b:
+          device: Test Nexus Child One
+          name: Ethernet2/1
+        type: mmf-om4
+        status: planned
+        label: label123
+        color: abcdef
+        length: 30
+        length_unit: m
         state: present
 
     - name: Delete cable within nautobot
       networktocode.nautobot.cable:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          termination_a_type: dcim.interface
-          termination_a:
-            device: Test Nexus Child One
-            name: Ethernet2/2
-          termination_b_type: dcim.interface
-          termination_b:
-            device: Test Nexus Child One
-            name: Ethernet2/1
+        termination_a_type: dcim.interface
+        termination_a:
+          device: Test Nexus Child One
+          name: Ethernet2/2
+        termination_b_type: dcim.interface
+        termination_b:
+          device: Test Nexus Child One
+          name: Ethernet2/1
         state: absent
 """
 
@@ -234,13 +225,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CABLES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -251,76 +242,70 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
+            termination_a_type=dict(
                 required=True,
-                options=dict(
-                    termination_a_type=dict(
-                        required=True,
-                        choices=[
-                            "circuits.circuittermination",
-                            "dcim.consoleport",
-                            "dcim.consoleserverport",
-                            "dcim.frontport",
-                            "dcim.interface",
-                            "dcim.powerfeed",
-                            "dcim.poweroutlet",
-                            "dcim.powerport",
-                            "dcim.rearport",
-                        ],
-                        type="str",
-                    ),
-                    termination_a=dict(required=True, type="raw"),
-                    termination_b_type=dict(
-                        required=True,
-                        choices=[
-                            "circuits.circuittermination",
-                            "dcim.consoleport",
-                            "dcim.consoleserverport",
-                            "dcim.frontport",
-                            "dcim.interface",
-                            "dcim.powerfeed",
-                            "dcim.poweroutlet",
-                            "dcim.powerport",
-                            "dcim.rearport",
-                        ],
-                        type="str",
-                    ),
-                    termination_b=dict(required=True, type="raw"),
-                    type=dict(
-                        required=False,
-                        choices=[
-                            "cat3",
-                            "cat5",
-                            "cat5e",
-                            "cat6",
-                            "cat6a",
-                            "cat7",
-                            "dac-active",
-                            "dac-passive",
-                            "mrj21-trunk",
-                            "coaxial",
-                            "mmf",
-                            "mmf-om1",
-                            "mmf-om2",
-                            "mmf-om3",
-                            "mmf-om4",
-                            "smf",
-                            "smf-os1",
-                            "smf-os2",
-                            "aoc",
-                            "power",
-                        ],
-                        type="str",
-                    ),
-                    status=dict(required=False, type="str",),
-                    label=dict(required=False, type="str"),
-                    color=dict(required=False, type="str"),
-                    length=dict(required=False, type="int"),
-                    length_unit=dict(
-                        required=False, choices=["m", "cm", "ft", "in"], type="str"
-                    ),
-                ),
+                choices=[
+                    "circuits.circuittermination",
+                    "dcim.consoleport",
+                    "dcim.consoleserverport",
+                    "dcim.frontport",
+                    "dcim.interface",
+                    "dcim.powerfeed",
+                    "dcim.poweroutlet",
+                    "dcim.powerport",
+                    "dcim.rearport",
+                ],
+                type="str",
+            ),
+            termination_a=dict(required=True, type="raw"),
+            termination_b_type=dict(
+                required=True,
+                choices=[
+                    "circuits.circuittermination",
+                    "dcim.consoleport",
+                    "dcim.consoleserverport",
+                    "dcim.frontport",
+                    "dcim.interface",
+                    "dcim.powerfeed",
+                    "dcim.poweroutlet",
+                    "dcim.powerport",
+                    "dcim.rearport",
+                ],
+                type="str",
+            ),
+            termination_b=dict(required=True, type="raw"),
+            type=dict(
+                required=False,
+                choices=[
+                    "cat3",
+                    "cat5",
+                    "cat5e",
+                    "cat6",
+                    "cat6a",
+                    "cat7",
+                    "dac-active",
+                    "dac-passive",
+                    "mrj21-trunk",
+                    "coaxial",
+                    "mmf",
+                    "mmf-om1",
+                    "mmf-om2",
+                    "mmf-om3",
+                    "mmf-om4",
+                    "smf",
+                    "smf-os1",
+                    "smf-os2",
+                    "aoc",
+                    "power",
+                ],
+                type="str",
+            ),
+            status=dict(required=False, type="str",),
+            label=dict(required=False, type="str"),
+            color=dict(required=False, type="str"),
+            length=dict(required=False, type="int"),
+            length_unit=dict(
+                required=False, choices=["m", "cm", "ft", "in"], type="str"
             ),
         )
     )
@@ -349,7 +334,7 @@ def main():
         ),
     ]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
     )
 

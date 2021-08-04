@@ -39,41 +39,35 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  device_type:
     description:
-      - Defines the console server port template configuration
-    suboptions:
-      device_type:
-        description:
-          - The device type the console server port template is attached to
-        required: true
-        type: raw
-      name:
-        description:
-          - The name of the console server port template
-        required: true
-        type: str
-      type:
-        description:
-          - The type of the console server port template
-        choices:
-          - de-9
-          - db-25
-          - rj-11
-          - rj-12
-          - rj-45
-          - usb-a
-          - usb-b
-          - usb-c
-          - usb-mini-a
-          - usb-mini-b
-          - usb-micro-a
-          - usb-micro-b
-          - other
-        required: false
-        type: str
+      - The device type the console server port template is attached to
+    required: true
+    type: raw
+  name:
+    description:
+      - The name of the console server port template
+    required: true
+    type: str
+  type:
+    description:
+      - The type of the console server port template
+    choices:
+      - de-9
+      - db-25
+      - rj-11
+      - rj-12
+      - rj-45
+      - usb-a
+      - usb-b
+      - usb-c
+      - usb-mini-a
+      - usb-mini-b
+      - usb-micro-a
+      - usb-micro-b
+      - other
+    required: false
+    type: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -106,28 +100,25 @@ EXAMPLES = r"""
       networktocode.nautobot.console_server_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Console Server Port Template
-          device_type: Test Device Type
+        name: Test Console Server Port Template
+        device_type: Test Device Type
         state: present
 
     - name: Update console server port template with other fields
       networktocode.nautobot.console_server_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Console Server Port Template
-          device_type: Test Device Type
-          type: iec-60320-c6
+        name: Test Console Server Port Template
+        device_type: Test Device Type
+        type: iec-60320-c6
         state: present
 
     - name: Delete console server port template within nautobot
       networktocode.nautobot.console_server_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Console Server Port Template
-          device_type: Test Device Type
+        name: Test Console Server Port Template
+        device_type: Test Device Type
         state: absent
 """
 
@@ -143,13 +134,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CONSOLE_SERVER_PORT_TEMPLATES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -160,44 +151,31 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device_type=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                    type=dict(
-                        required=False,
-                        choices=[
-                            "de-9",
-                            "db-25",
-                            "rj-11",
-                            "rj-12",
-                            "rj-45",
-                            "usb-a",
-                            "usb-b",
-                            "usb-c",
-                            "usb-mini-a",
-                            "usb-mini-b",
-                            "usb-micro-a",
-                            "usb-micro-b",
-                            "other",
-                        ],
-                        type="str",
-                    ),
-                ),
+            device_type=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(
+                required=False,
+                choices=[
+                    "de-9",
+                    "db-25",
+                    "rj-11",
+                    "rj-12",
+                    "rj-45",
+                    "usb-a",
+                    "usb-b",
+                    "usb-c",
+                    "usb-mini-a",
+                    "usb-mini-b",
+                    "usb-micro-a",
+                    "usb-micro-b",
+                    "other",
+                ],
+                type="str",
             ),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device_type", "name"]),
-        ("state", "absent", ["device_type", "name"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     console_server_port_template = NautobotDcimModule(
         module, NB_CONSOLE_SERVER_PORT_TEMPLATES
