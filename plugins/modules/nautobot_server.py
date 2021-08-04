@@ -37,6 +37,7 @@ options:
     type: path
     required: false
     aliases: [app_path, chdir]
+    default: /opt/nautobot
   pythonpath:
     description:
       - A directory to add to the Python path. Typically used to include the settings module if it is located
@@ -262,7 +263,10 @@ def main():
         argument_spec=dict(
             command=dict(required=True, type="str"),
             project_path=dict(
-                default="/opt/nautobot", required=False, type="path", aliases=["app_path", "chdir"]
+                default="/opt/nautobot", 
+                required=False, 
+                type="path", 
+                aliases=["app_path", "chdir"]
             ),
             pythonpath=dict(
                 default=None, required=False, type="path", aliases=["python_path"]
@@ -270,7 +274,7 @@ def main():
             virtualenv=dict(
                 default=None, required=False, type="path", aliases=["virtual_env"]
             ),
-            db_password=dict(default=None, required=False, type="str"),
+            db_password=dict(default=None, required=False, type="str", no_log=True),
             apps=dict(default=None, required=False),
             cache_table=dict(default=None, required=False, type="str"),
             clear=dict(default=False, required=False, type="bool"),
