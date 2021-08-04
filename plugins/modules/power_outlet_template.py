@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
