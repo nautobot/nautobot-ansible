@@ -342,9 +342,10 @@ def main():
     if rc != 0:
         # Handling expected errors
         if command == "createcachetable" and "table" in err and "already exists" in err:
-            out = "already exists."
+            out = "Cache Table already exists."
         elif "createsuperuser" in command and "username is already taken" in err:
-            out = "Admin user already exists."
+            username =  cmd.split("--username=")[-1].split(" ")[0]
+            out = f"{username} user already exists."
         else:
             # Customize some output messages
             if "Unknown command:" in err:
