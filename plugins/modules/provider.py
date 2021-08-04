@@ -41,7 +41,7 @@ options:
   name:
     description:
       - The name of the provider
-    required: false
+    required: true
     type: str
   asn:
     description:

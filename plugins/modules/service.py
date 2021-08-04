@@ -142,7 +142,6 @@ EXAMPLES = r"""
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
@@ -173,7 +172,7 @@ def main():
     )
     required_one_of = [["device", "virtual_machine"]]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         required_one_of=required_one_of,

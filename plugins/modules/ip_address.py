@@ -39,15 +39,6 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  family:
-    description:
-      - (DEPRECATED) - Nautobot now handles determining the IP family natively.
-      - Specifies with address family the IP address belongs to
-    choices:
-      - 4
-      - 6
-    required: false
-    type: int
   address:
     description:
       - Required if state is C(present)
@@ -281,9 +272,6 @@ def main():
     )
     argument_spec.update(
         dict(
-            family=dict(
-                required=False, type="int", choices=[4, 6], removed_in_version="0.3.0",
-            ),
             address=dict(required=False, type="str"),
             prefix=dict(required=False, type="raw"),
             vrf=dict(required=False, type="raw"),

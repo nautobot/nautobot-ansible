@@ -152,17 +152,11 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    content_types=dict(required=False, type="list", elements="str"),
-                    color=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                    slug=dict(required=False, type="str"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            content_types=dict(required=False, type="list", elements="str"),
+            color=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            slug=dict(required=False, type="str"),
         )
     )
 

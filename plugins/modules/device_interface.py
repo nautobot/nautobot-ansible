@@ -41,7 +41,7 @@ options:
   device:
     description:
       - Name of the device the interface will be associated with (case-sensitive)
-    required: false
+    required: true
     type: raw
   name:
     description:
