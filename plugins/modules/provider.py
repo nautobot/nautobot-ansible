@@ -38,57 +38,51 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the provider configuration
-    suboptions:
-      name:
-        description:
-          - The name of the provider
-        required: false
-        type: str
-      asn:
-        description:
-          - The provider ASN
-        required: false
-        type: int
-      account:
-        description:
-          - The account number of the provider
-        required: false
-        type: str
-      portal_url:
-        description:
-          - The URL of the provider
-        required: false
-        type: str
-      noc_contact:
-        description:
-          - The NOC contact of the provider
-        required: false
-        type: str
-      admin_contact:
-        description:
-          - The admin contact of the provider
-        required: false
-        type: str
-      comments:
-        description:
-          - Comments related to the provider
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the device may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
-    required: true
+      - The name of the provider
+    required: false
+    type: str
+  asn:
+    description:
+      - The provider ASN
+    required: false
+    type: int
+  account:
+    description:
+      - The account number of the provider
+    required: false
+    type: str
+  portal_url:
+    description:
+      - The URL of the provider
+    required: false
+    type: str
+  noc_contact:
+    description:
+      - The NOC contact of the provider
+    required: false
+    type: str
+  admin_contact:
+    description:
+      - The admin contact of the provider
+    required: false
+    type: str
+  comments:
+    description:
+      - Comments related to the provider
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the device may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -121,30 +115,27 @@ EXAMPLES = r"""
       networktocode.nautobot.provider:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Provider
+        name: Test Provider
         state: present
 
     - name: Update provider with other fields
       networktocode.nautobot.provider:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Provider
-          asn: 65001
-          account: 200129104
-          portal_url: http://provider.net
-          noc_contact: noc@provider.net
-          admin_contact: admin@provider.net
-          comments: "BAD PROVIDER"
+        name: Test Provider
+        asn: 65001
+        account: 200129104
+        portal_url: http://provider.net
+        noc_contact: noc@provider.net
+        admin_contact: admin@provider.net
+        comments: "BAD PROVIDER"
         state: present
 
     - name: Delete provider within nautobot
       networktocode.nautobot.provider:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Provider
+        name: Test Provider
         state: absent
 """
 
@@ -160,13 +151,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
     NautobotCircuitsModule,
     NB_PROVIDERS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -177,29 +168,19 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=False, type="str"),
-                    asn=dict(required=False, type="int"),
-                    account=dict(required=False, type="str"),
-                    portal_url=dict(required=False, type="str"),
-                    noc_contact=dict(required=False, type="str"),
-                    admin_contact=dict(required=False, type="str"),
-                    comments=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            asn=dict(required=False, type="int"),
+            account=dict(required=False, type="str"),
+            portal_url=dict(required=False, type="str"),
+            noc_contact=dict(required=False, type="str"),
+            admin_contact=dict(required=False, type="str"),
+            comments=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         ),
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     provider = NautobotCircuitsModule(module, NB_PROVIDERS)
     provider.run()
