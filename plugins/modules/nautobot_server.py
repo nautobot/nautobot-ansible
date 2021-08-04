@@ -157,6 +157,40 @@ EXAMPLES = """
     db_password: "{{ db_password }}"
 """
 
+RETURN = """
+changed:
+  description: Boolean that is true is the command changed the state.
+  returned: always
+  type: bool
+  sample: True
+out:
+  description: Raw output from the command execution.
+  returned: always
+  type: string
+  sample: superadmin user already exists.
+cmd:
+  description: Full command executed in the Server.
+  returned: always
+  type: string
+  sample: nautobot-server createsuperuser --noinput --email=admin33@example.com --username=superadmin
+project_path:
+  description: The path to the root of the Nautobot application where B(nautobot-server) lives.
+  returned: always
+  type: path
+  sample: /opt/nautobot
+virtualenv:
+  description: An optional path to a I(virtualenv) installation to use while running the nautobot-server application.
+  returned: when defined
+  type: path
+  sample: /opt/nautobot/.venv
+pythonpath:
+  description: A directory to add to the Python path. Typically used to include the settings module if it is located
+    external to the application directory.
+  returned: when defined
+  type: path
+  sample: /usr/settings
+"""
+
 import os
 import sys
 
@@ -371,15 +405,19 @@ def main():
     if check_changed:
         changed = check_changed(out)
 
-    module.exit_json(
-        changed=changed,
-        out=out,
-        cmd=cmd,
-        app_path=project_path,
-        project_path=project_path,
-        virtualenv=virtualenv,
-        pythonpath=module.params["pythonpath"],
-    )
+    return_kwargs = {
+      "changed": changed,
+      "out": out,
+      "cmd": cmd,
+      "project_path": project_path
+    }
+
+    if virtualenv:
+      return_kwargs["virtualenv"] = virtualenv
+    if module.params["pythonpath"]:
+      return_kwargs["pythonpath"] = module.params["pythonpath"]
+
+    module.exit_json(**return_kwargs)
 
 
 if __name__ == "__main__":
