@@ -218,7 +218,7 @@ def _ensure_virtualenv(module):
     activate = os.path.join(vbin, "activate")
 
     if not os.path.exists(activate):
-      _fail(module, activate, "Virtualenv doens't exist.", f"{activate} not found.")
+        _fail(module, activate, "Virtualenv doens't exist.", f"{activate} not found.")
 
     os.environ["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
     os.environ["VIRTUAL_ENV"] = venv_param
@@ -294,10 +294,10 @@ def main():
         argument_spec=dict(
             command=dict(required=True, type="str"),
             project_path=dict(
-                default="/opt/nautobot", 
-                required=False, 
-                type="path", 
-                aliases=["app_path", "chdir"]
+                default="/opt/nautobot",
+                required=False,
+                type="path",
+                aliases=["app_path", "chdir"],
             ),
             pythonpath=dict(
                 default=None, required=False, type="path", aliases=["python_path"]
@@ -378,7 +378,7 @@ def main():
         if command == "createcachetable" and "table" in err and "already exists" in err:
             out = "Cache Table already exists."
         elif "createsuperuser" in command and "username is already taken" in err:
-            username =  cmd.split("--username=")[-1].split(" ")[0]
+            username = cmd.split("--username=")[-1].split(" ")[0]
             out = f"{username} user already exists."
         else:
             # Customize some output messages
@@ -406,16 +406,16 @@ def main():
         changed = check_changed(out)
 
     return_kwargs = {
-      "changed": changed,
-      "out": out,
-      "cmd": cmd,
-      "project_path": project_path
+        "changed": changed,
+        "out": out,
+        "cmd": cmd,
+        "project_path": project_path,
     }
 
     if virtualenv:
-      return_kwargs["virtualenv"] = virtualenv
+        return_kwargs["virtualenv"] = virtualenv
     if module.params["pythonpath"]:
-      return_kwargs["pythonpath"] = module.params["pythonpath"]
+        return_kwargs["pythonpath"] = module.params["pythonpath"]
 
     module.exit_json(**return_kwargs)
 
