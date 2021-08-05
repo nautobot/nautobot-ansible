@@ -38,62 +38,56 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  virtual_machine:
     description:
-      - Defines the vm interface configuration
-    suboptions:
-      virtual_machine:
-        description:
-          - Name of the virtual machine the interface will be associated with (case-sensitive)
-        required: false
-        type: raw
-      name:
-        description:
-          - Name of the interface to be created
-        required: true
-        type: str
-      enabled:
-        description:
-          - Sets whether interface shows enabled or disabled
-        required: false
-        type: bool
-      mtu:
-        description:
-          - The MTU of the interface
-        required: false
-        type: int
-      mac_address:
-        description:
-          - The MAC address of the interface
-        required: false
-        type: str
-      description:
-        description:
-          - The description of the interface
-        required: false
-        type: str
-      mode:
-        description:
-          - The mode of the interface
-        required: false
-        type: raw
-      untagged_vlan:
-        description:
-          - The untagged VLAN to be assigned to interface
-        required: false
-        type: raw
-      tagged_vlans:
-        description:
-          - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
-        required: false
-        type: raw
-      tags:
-        description:
-          - Any tags that the prefix may need to be associated with
-        required: false
-        type: list
+      - Name of the virtual machine the interface will be associated with (case-sensitive)
     required: true
-    type: dict
+    type: raw
+  name:
+    description:
+      - Name of the interface to be created
+    required: true
+    type: str
+  enabled:
+    description:
+      - Sets whether interface shows enabled or disabled
+    required: false
+    type: bool
+  mtu:
+    description:
+      - The MTU of the interface
+    required: false
+    type: int
+  mac_address:
+    description:
+      - The MAC address of the interface
+    required: false
+    type: str
+  description:
+    description:
+      - The description of the interface
+    required: false
+    type: str
+  mode:
+    description:
+      - The mode of the interface
+    required: false
+    type: raw
+  untagged_vlan:
+    description:
+      - The untagged VLAN to be assigned to interface
+    required: false
+    type: raw
+  tagged_vlans:
+    description:
+      - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
+    required: false
+    type: raw
+  tags:
+    description:
+      - Any tags that the prefix may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -127,38 +121,35 @@ EXAMPLES = r"""
       networktocode.nautobot.vm_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          virtual_machine: test100
-          name: GigabitEthernet1
+        virtual_machine: test100
+        name: GigabitEthernet1
         state: present
 
     - name: Delete interface within nautobot
       networktocode.nautobot.vm_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          virtual_machine: test100
-          name: GigabitEthernet1
+        virtual_machine: test100
+        name: GigabitEthernet1
         state: absent
 
     - name: Create interface as a trunk port
       networktocode.nautobot.vm_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          virtual_machine: test100
-          name: GigabitEthernet25
-          enabled: false
-          untagged_vlan:
-            name: Wireless
+        virtual_machine: test100
+        name: GigabitEthernet25
+        enabled: false
+        untagged_vlan:
+          name: Wireless
+          site: Test Site
+        tagged_vlans:
+          - name: Data
             site: Test Site
-          tagged_vlans:
-            - name: Data
-              site: Test Site
-            - name: VoIP
-              site: Test Site
-          mtu: 1600
-          mode: Tagged
+          - name: VoIP
+            site: Test Site
+        mtu: 1600
+        mode: Tagged
         state: present
 """
 
@@ -174,13 +165,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
     NB_VM_INTERFACES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -191,33 +182,20 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    virtual_machine=dict(required=False, type="raw"),
-                    name=dict(required=True, type="str"),
-                    enabled=dict(required=False, type="bool"),
-                    mtu=dict(required=False, type="int"),
-                    mac_address=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                    mode=dict(required=False, type="raw"),
-                    untagged_vlan=dict(required=False, type="raw"),
-                    tagged_vlans=dict(required=False, type="raw"),
-                    tags=dict(required=False, type="list"),
-                ),
-            ),
+            virtual_machine=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            enabled=dict(required=False, type="bool"),
+            mtu=dict(required=False, type="int"),
+            mac_address=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            mode=dict(required=False, type="raw"),
+            untagged_vlan=dict(required=False, type="raw"),
+            tagged_vlans=dict(required=False, type="raw"),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["virtual_machine", "name"]),
-        ("state", "absent", ["virtual_machine", "name"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     vm_interface = NautobotVirtualizationModule(module, NB_VM_INTERFACES)
     vm_interface.run()

@@ -39,57 +39,51 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  device_type:
     description:
-      - Defines the rear port template configuration
-    suboptions:
-      device_type:
-        description:
-          - The device type the rear port template is attached to
-        required: true
-        type: raw
-      name:
-        description:
-          - The name of the rear port template
-        required: true
-        type: str
-      type:
-        description:
-          - The type of the rear port
-        choices:
-          - 8p8c
-          - 8p6c
-          - 8p4c
-          - 8p2c
-          - gg45
-          - tera-4p
-          - tera-2p
-          - tera-1p
-          - 110-punch
-          - bnc
-          - mrj21
-          - st
-          - sc
-          - sc-apc
-          - fc
-          - lc
-          - lc-apc
-          - mtrj
-          - mpo
-          - lsh
-          - lsh-apc
-          - splice
-          - cs
-          - sn
-        required: false
-        type: str
-      positions:
-        description:
-          - The number of front ports which may be mapped to each rear port
-        required: false
-        type: int
+      - The device type the rear port template is attached to
+    required: true
+    type: raw
+  name:
+    description:
+      - The name of the rear port template
+    required: true
+    type: str
+  type:
+    description:
+      - The type of the rear port
+    choices:
+      - 8p8c
+      - 8p6c
+      - 8p4c
+      - 8p2c
+      - gg45
+      - tera-4p
+      - tera-2p
+      - tera-1p
+      - 110-punch
+      - bnc
+      - mrj21
+      - st
+      - sc
+      - sc-apc
+      - fc
+      - lc
+      - lc-apc
+      - mtrj
+      - mpo
+      - lsh
+      - lsh-apc
+      - splice
+      - cs
+      - sn
+    required: true
+    type: str
+  positions:
+    description:
+      - The number of front ports which may be mapped to each rear port
+    required: false
+    type: int
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -122,31 +116,28 @@ EXAMPLES = r"""
       networktocode.nautobot.rear_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Rear Port Template
-          device_type: Test Device Type
-          type: bnc
+        name: Test Rear Port Template
+        device_type: Test Device Type
+        type: bnc
         state: present
 
     - name: Update rear port template with other fields
       networktocode.nautobot.rear_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Rear Port Template
-          device_type: Test Device Type
-          type: bnc
-          positions: 5
+        name: Test Rear Port Template
+        device_type: Test Device Type
+        type: bnc
+        positions: 5
         state: present
 
     - name: Delete rear port template within nautobot
       networktocode.nautobot.rear_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Rear Port Template
-          device_type: Test Device Type
-          type: bnc
+        name: Test Rear Port Template
+        device_type: Test Device Type
+        type: bnc
         state: absent
 """
 
@@ -162,13 +153,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_REAR_PORT_TEMPLATES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -179,56 +170,43 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
+            device_type=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(
                 required=True,
-                options=dict(
-                    device_type=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                    type=dict(
-                        required=False,
-                        choices=[
-                            "8p8c",
-                            "8p6c",
-                            "8p4c",
-                            "8p2c",
-                            "gg45",
-                            "tera-4p",
-                            "tera-2p",
-                            "tera-1p",
-                            "110-punch",
-                            "bnc",
-                            "mrj21",
-                            "st",
-                            "sc",
-                            "sc-apc",
-                            "fc",
-                            "lc",
-                            "lc-apc",
-                            "mtrj",
-                            "mpo",
-                            "lsh",
-                            "lsh-apc",
-                            "splice",
-                            "cs",
-                            "sn",
-                        ],
-                        type="str",
-                    ),
-                    positions=dict(required=False, type="int"),
-                ),
+                choices=[
+                    "8p8c",
+                    "8p6c",
+                    "8p4c",
+                    "8p2c",
+                    "gg45",
+                    "tera-4p",
+                    "tera-2p",
+                    "tera-1p",
+                    "110-punch",
+                    "bnc",
+                    "mrj21",
+                    "st",
+                    "sc",
+                    "sc-apc",
+                    "fc",
+                    "lc",
+                    "lc-apc",
+                    "mtrj",
+                    "mpo",
+                    "lsh",
+                    "lsh-apc",
+                    "splice",
+                    "cs",
+                    "sn",
+                ],
+                type="str",
             ),
+            positions=dict(required=False, type="int"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device_type", "name", "type"]),
-        ("state", "absent", ["device_type", "name", "type"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     rear_port_template = NautobotDcimModule(module, NB_REAR_PORT_TEMPLATES)
     rear_port_template.run()

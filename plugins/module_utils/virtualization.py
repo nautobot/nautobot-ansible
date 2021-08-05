@@ -21,9 +21,6 @@ NB_VM_INTERFACES = "interfaces"
 
 
 class NautobotVirtualizationModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
-
     def run(self):
         """
         This function should have all necessary code for endpoints within the application
