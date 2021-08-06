@@ -4,12 +4,19 @@
 ### PYNAUTOBOT_PREFIX
 ##
 ##
+- set_fact:
+    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''"name=Test VRF"'') }}'
+    vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vlan-group') }}"
+
 - name: "1 - Create prefix within Nautobot with only required information"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.156.0.0/19
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
+    status: "Active"
     state: present
   register: test_one
 
@@ -24,10 +31,10 @@
 
 - name: "2 - Duplicate"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.156.0.0/19
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
+    status: "Active"
     state: present
   register: test_two
 
@@ -40,13 +47,12 @@
 
 - name: "3 - Update 10.156.0.0/19"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.156.0.0/19
-      site: Test Site
-      status: Reserved
-      description: "This prefix has been updated"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
+    site: Test Site
+    status: Reserved
+    description: "This prefix has been updated"
     state: present
   register: test_three
 
@@ -54,21 +60,20 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['site'] == 1
+      - test_three['diff']['after']['site'] == test_site['key']
       - test_three['diff']['after']['status'] == "reserved"
       - test_three['diff']['after']['description'] == "This prefix has been updated"
       - test_three['msg'] == "prefix 10.156.0.0/19 updated"
       - test_three['prefix']['prefix'] == "10.156.0.0/19"
-      - test_three['prefix']['site'] == 1
+      - test_three['prefix']['site'] == test_site['key']
       - test_three['prefix']['status'] == "reserved"
       - test_three['prefix']['description'] == "This prefix has been updated"
 
 - name: "4 - Delete prefix within nautobot"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.156.0.0/19
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
     state: absent
   register: test_four
 
@@ -82,25 +87,24 @@
 
 - name: "5 - Create prefix with several specified options"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      prefix: 10.156.32.0/19
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    family: 4
+    prefix: 10.156.32.0/19
+    site: Test Site
+    vrf: Test VRF
+    tenant: Test Tenant
+    vlan:
+      name: Test VLAN
       site: Test Site
-      vrf: Test VRF
       tenant: Test Tenant
-      vlan:
-        name: Test VLAN
-        site: Test Site
-        tenant: Test Tenant
-        vlan_group: Test Vlan Group
-      status: Reserved
-      prefix_role: Network of care
-      description: Test description
-      is_pool: true
-      tags:
-        - "Schnozzberry"
+      vlan_group: Test Vlan Group
+    status: Reserved
+    prefix_role: Network of care
+    description: Test description
+    is_pool: true
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_five
 
@@ -113,23 +117,26 @@
       - test_five['msg'] == "prefix 10.156.32.0/19 created"
       - test_five['prefix']['prefix'] == "10.156.32.0/19"
       - test_five['prefix']['family'] == 4
-      - test_five['prefix']['site'] == 1
-      - test_five['prefix']['vrf'] == 1
-      - test_five['prefix']['tenant'] == 1
-      - test_five['prefix']['vlan'] == 4
+      - test_five['prefix']['site'] == test_site['key']
+      - test_five['prefix']['vrf'] == vrf['key']
+      - test_five['prefix']['tenant'] == tenant['key']
+      - test_five['prefix']['vlan'] == vlan['key']
       - test_five['prefix']['status'] == "reserved"
-      - test_five['prefix']['role'] == 1
+      - test_five['prefix']['role'] == role['key']
       - test_five['prefix']['description'] == "Test description"
       - test_five['prefix']['is_pool'] == true
-      - test_five['prefix']['tags'][0] == 4
+      - test_five['prefix']['tags'][0] == tag_schnozzberry['key']
+  vars:
+    role: '{{ lookup(''networktocode.nautobot.lookup'', ''roles'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''slug="network-of-care"'') }}'
+    vlan: '{{ lookup(''networktocode.nautobot.lookup'', ''vlans'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test VLAN"'') }}'
 
 - name: "6 - Get a new /24 inside 10.156.0.0/19 within Nautobot - Parent doesn't exist"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      parent: 10.156.0.0/19
-      prefix_length: 24
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.156.0.0/19
+    prefix_length: 24
+    status: "Active"
     state: present
     first_available: yes
   register: test_six
@@ -142,10 +149,10 @@
 
 - name: "7 - Create prefix within Nautobot with only required information"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.156.0.0/19
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
+    status: "Active"
     state: present
   register: test_seven
 
@@ -160,11 +167,11 @@
 
 - name: "8 - Get a new /24 inside 10.156.0.0/19 within Nautobot"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      parent: 10.156.0.0/19
-      prefix_length: 24
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.156.0.0/19
+    prefix_length: 24
+    status: "Active"
     state: present
     first_available: yes
   register: test_eight
@@ -180,12 +187,12 @@
 
 - name: "9 - Create 10.157.0.0/19"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 10.157.0.0/19
-      vrf: Test VRF
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.157.0.0/19
+    vrf: Test VRF
+    site: Test Site
+    status: "Active"
     state: present
   register: test_nine
 
@@ -197,18 +204,18 @@
       - test_nine['diff']['after']['state'] == "present"
       - test_nine['msg'] == "prefix 10.157.0.0/19 created"
       - test_nine['prefix']['prefix'] == "10.157.0.0/19"
-      - test_nine['prefix']['site'] == 1
-      - test_nine['prefix']['vrf'] == 1
+      - test_nine['prefix']['site'] == test_site['key']
+      - test_nine['prefix']['vrf'] == vrf['key']
 
 - name: "10 - Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      parent: 10.157.0.0/19
-      prefix_length: 24
-      vrf: Test VRF
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.157.0.0/19
+    prefix_length: 24
+    vrf: Test VRF
+    site: Test Site
+    status: "Active"
     state: present
     first_available: yes
   register: test_ten
@@ -221,16 +228,16 @@
       - test_ten['diff']['after']['state'] == "present"
       - test_ten['msg'] == "prefix 10.157.0.0/24 created"
       - test_ten['prefix']['prefix'] == "10.157.0.0/24"
-      - test_ten['prefix']['site'] == 1
-      - test_ten['prefix']['vrf'] == 1
+      - test_ten['prefix']['site'] == test_site['key']
+      - test_ten['prefix']['vrf'] == vrf['key']
 
 - name: "11 - Get a new /24 inside 10.156.0.0/19 within Nautobot"
   networktocode.nautobot.prefix:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      parent: 10.156.0.0/19
-      prefix_length: 24
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.156.0.0/19
+    prefix_length: 24
+    status: "Active"
     state: present
     first_available: yes
   register: test_eleven

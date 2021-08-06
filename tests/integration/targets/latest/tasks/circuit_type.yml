@@ -6,10 +6,9 @@
 ##
 - name: "CIRCUIT_TYPE 1: Necessary info creation"
   networktocode.nautobot.circuit_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Circuit Type One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Circuit Type One"
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "CIRCUIT_TYPE 2: Create duplicate"
   networktocode.nautobot.circuit_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Circuit Type One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Circuit Type One"
     state: present
   register: test_two
 
@@ -42,11 +40,10 @@
 
 - name: "CIRCUIT_TYPE 3: User specified slug"
   networktocode.nautobot.circuit_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Circuit Type Two"
-      slug: "test-circuit-type-2"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Circuit Type Two"
+    slug: "test-circuit-type-2"
     state: present
   register: test_three
 
@@ -62,10 +59,9 @@
 
 - name: "CIRCUIT_TYPE 4: ASSERT - Delete"
   networktocode.nautobot.circuit_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Circuit Type One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Circuit Type One"
     state: absent
   register: test_four
 
@@ -79,11 +75,10 @@
 
 - name: "CIRCUIT_TYPE 5: ASSERT - Delete"
   networktocode.nautobot.circuit_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Circuit Type Two"
-      slug: "test-circuit-type-2"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Circuit Type Two"
+    slug: "test-circuit-type-2"
     state: absent
   register: test_five
 

@@ -6,10 +6,9 @@
 ##
 - name: "PLATFORM 1: Necessary info creation"
   networktocode.nautobot.platform:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Platform
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "PLATFORM 2: Create duplicate"
   networktocode.nautobot.platform:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Platform
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
     state: present
   register: test_two
 
@@ -42,14 +40,13 @@
 
 - name: "PLATFORM 3: ASSERT - Update"
   networktocode.nautobot.platform:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Platform
-      manufacturer: Test Manufacturer
-      napalm_driver: ios
-      napalm_args:
-        global_delay_factor: 2
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
+    manufacturer: Test Manufacturer
+    napalm_driver: ios
+    napalm_args:
+      global_delay_factor: 2
     state: present
   register: test_three
 
@@ -57,20 +54,21 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['manufacturer'] == 3
+      - test_three['diff']['after']['manufacturer'] == manufacturer['key']
       - test_three['diff']['after']['napalm_args']['global_delay_factor'] == 2
       - test_three['diff']['after']['napalm_driver'] == "ios"
-      - test_three['platform']['manufacturer'] == 3
+      - test_three['platform']['manufacturer'] == manufacturer['key']
       - test_three['platform']['napalm_args']['global_delay_factor'] == 2
       - test_three['platform']['napalm_driver'] == "ios"
       - test_three['msg'] == "platform Test Platform updated"
+  vars:
+    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-manufacturer') }}"
 
 - name: "PLATFORM 4: ASSERT - Delete"
   networktocode.nautobot.platform:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Platform
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
     state: absent
   register: test_four
 
@@ -84,10 +82,9 @@
 
 - name: "PLATFORM 5: ASSERT - Delete non existing"
   networktocode.nautobot.platform:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Platform
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
     state: absent
   register: test_five
 

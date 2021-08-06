@@ -7,13 +7,15 @@
 ### PYNAUTOBOT_CONSOLE_SERVER_PORT_TEMPLATE
 ##
 ##
+- set_fact:
+    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
+
 - name: "CONSOLE_SERVER_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.console_server_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port Template
-      device_type: Cisco Test
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port Template
+    device_type: Cisco Test
     state: present
   register: test_one
 
@@ -24,16 +26,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['console_server_port_template']['name'] == "Console Server Port Template"
-      - test_one['console_server_port_template']['device_type'] == 1
+      - test_one['console_server_port_template']['device_type'] == cisco_test['key']
       - test_one['msg'] == "console_server_port_template Console Server Port Template created"
 
 - name: "CONSOLE_SERVER_PORT_TEMPLATE 2: Create duplicate"
   networktocode.nautobot.console_server_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port Template
-      device_type: Cisco Test
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port Template
+    device_type: Cisco Test
     state: present
   register: test_two
 
@@ -42,17 +43,16 @@
     that:
       - not test_two['changed']
       - test_two['console_server_port_template']['name'] == "Console Server Port Template"
-      - test_two['console_server_port_template']['device_type'] == 1
+      - test_two['console_server_port_template']['device_type'] == cisco_test['key']
       - test_two['msg'] == "console_server_port_template Console Server Port Template already exists"
 
 - name: "CONSOLE_SERVER_PORT_TEMPLATE 3: Update Console Server Port Template with other fields"
   networktocode.nautobot.console_server_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port Template
-      device_type: Cisco Test
-      type: usb-a
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port Template
+    device_type: Cisco Test
+    type: usb-a
     state: present
   register: test_three
 
@@ -62,17 +62,16 @@
       - test_three is changed
       - test_three['diff']['after']['type'] == "usb-a"
       - test_three['console_server_port_template']['name'] == "Console Server Port Template"
-      - test_three['console_server_port_template']['device_type'] == 1
+      - test_three['console_server_port_template']['device_type'] == cisco_test['key']
       - test_three['console_server_port_template']['type'] == "usb-a"
       - test_three['msg'] == "console_server_port_template Console Server Port Template updated"
 
 - name: "CONSOLE_SERVER_PORT_TEMPLATE 4: Create Console Server Port Template for Delete Test"
   networktocode.nautobot.console_server_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port Template 2
-      device_type: Cisco Test
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port Template 2
+    device_type: Cisco Test
     state: present
   register: test_four
 
@@ -83,16 +82,15 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['console_server_port_template']['name'] == "Console Server Port Template 2"
-      - test_four['console_server_port_template']['device_type'] == 1
+      - test_four['console_server_port_template']['device_type'] == cisco_test['key']
       - test_four['msg'] == "console_server_port_template Console Server Port Template 2 created"
 
 - name: "CONSOLE_SERVER_PORT_TEMPLATE 5: Delete Console Server Port Template"
   networktocode.nautobot.console_server_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port Template 2
-      device_type: Cisco Test
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port Template 2
+    device_type: Cisco Test
     state: absent
   register: test_five
 

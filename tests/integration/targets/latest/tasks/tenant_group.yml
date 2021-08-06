@@ -6,10 +6,9 @@
 ##
 - name: "1 - Test tenant group creation"
   networktocode.nautobot.tenant_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tenant Group Two"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tenant Group Two"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -24,10 +23,9 @@
 
 - name: "Test duplicate tenant group"
   networktocode.nautobot.tenant_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tenant Group Two"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tenant Group Two"
   register: test_two
 
 - name: "2 - ASSERT"
@@ -40,10 +38,9 @@
 
 - name: "3 - Test delete"
   networktocode.nautobot.tenant_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tenant Group Two"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tenant Group Two"
     state: "absent"
   register: test_three
 
@@ -57,11 +54,10 @@
 
 - name: "4 - Test another tenant group creation"
   networktocode.nautobot.tenant_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tenant Group ABC"
-      slug: "test_tenant_group_four"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tenant Group ABC"
+    slug: "test_tenant_group_four"
   register: test_four
 
 - name: "4 - ASSERT"

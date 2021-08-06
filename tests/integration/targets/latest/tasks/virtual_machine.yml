@@ -4,13 +4,19 @@
 ### PYNAUTOBOT_VIRTUAL_MACHINES
 ##
 ##
+- set_fact:
+    test_cluster: '{{ lookup(''networktocode.nautobot.lookup'', ''clusters'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Cluster"'') }}'
+    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    role: "{{ lookup('networktocode.nautobot.lookup', 'device-roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vm-role') }}"
+
 - name: "VIRTUAL_MACHINE 1: Necessary info creation"
   networktocode.nautobot.virtual_machine:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test VM One"
-      cluster: "Test Cluster"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VM One"
+    cluster: "Test Cluster"
+    status: "Active"
     state: present
   register: test_one
 
@@ -21,16 +27,16 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['virtual_machine']['name'] == "Test VM One"
-      - test_one['virtual_machine']['cluster'] == 1
+      - test_one['virtual_machine']['cluster'] == test_cluster['key']
       - test_one['msg'] == "virtual_machine Test VM One created"
 
 - name: "VIRTUAL_MACHINE 2: Create duplicate"
   networktocode.nautobot.virtual_machine:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test VM One"
-      cluster: "Test Cluster"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VM One"
+    cluster: "Test Cluster"
+    status: "Active"
     state: present
   register: test_two
 
@@ -39,22 +45,21 @@
     that:
       - not test_two['changed']
       - test_two['virtual_machine']['name'] == "Test VM One"
-      - test_two['virtual_machine']['cluster'] == 1
+      - test_two['virtual_machine']['cluster'] == test_cluster['key']
       - test_two['msg'] == "virtual_machine Test VM One already exists"
 
 - name: "VIRTUAL_MACHINE 3: Update"
   networktocode.nautobot.virtual_machine:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test VM One"
-      cluster: "Test Cluster"
-      vcpus: 8
-      memory: 8
-      status: "Planned"
-      virtual_machine_role: "Test VM Role"
-      tags:
-        - "Schnozzberry"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VM One"
+    cluster: "Test Cluster"
+    vcpus: 8
+    memory: 8
+    status: "Planned"
+    virtual_machine_role: "Test VM Role"
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_three
 
@@ -65,23 +70,22 @@
       - test_three['diff']['after']['vcpus'] == 8
       - test_three['diff']['after']['memory'] == 8
       - test_three['diff']['after']['status'] == "planned"
-      - test_three['diff']['after']['role'] == 2
-      - test_three['diff']['after']['tags'][0] == 4
+      - test_three['diff']['after']['role'] == role['key']
+      - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_three['virtual_machine']['name'] == "Test VM One"
-      - test_three['virtual_machine']['cluster'] == 1
+      - test_three['virtual_machine']['cluster'] == test_cluster['key']
       - test_three['virtual_machine']['vcpus'] == 8
       - test_three['virtual_machine']['memory'] == 8
       - test_three['virtual_machine']['status'] == "planned"
-      - test_three['virtual_machine']['role'] == 2
-      - test_three['virtual_machine']['tags'][0] == 4
+      - test_three['virtual_machine']['role'] == role['key']
+      - test_three['virtual_machine']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "virtual_machine Test VM One updated"
 
 - name: "VIRTUAL_MACHINE 4: ASSERT - Delete"
   networktocode.nautobot.virtual_machine:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test VM One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VM One"
     state: absent
   register: test_four
 
@@ -90,10 +94,10 @@
     that:
       - test_four is changed
       - test_four['virtual_machine']['name'] == "Test VM One"
-      - test_four['virtual_machine']['cluster'] == 1
+      - test_four['virtual_machine']['cluster'] == test_cluster['key']
       - test_four['virtual_machine']['vcpus'] == 8
       - test_four['virtual_machine']['memory'] == 8
       - test_four['virtual_machine']['status'] == "planned"
-      - test_four['virtual_machine']['role'] == 2
-      - test_four['virtual_machine']['tags'][0] == 4
+      - test_four['virtual_machine']['role'] == role['key']
+      - test_four['virtual_machine']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "virtual_machine Test VM One deleted"

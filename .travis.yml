@@ -4,53 +4,72 @@ services:
   - docker
 
 os: linux
-dist: bionic
+dist: focal
+
+stages:
+  - test
+  - integration
 
 env:
   global:
     - COLLECTION_NAMESPACE: "networktocode"
     - COLLECTION_NAME: "nautobot"
-    - COLLECTION_VERSION: "2.0.1"
+    - COLLECTION_VERSION: "3.0.0"
+    - COMPOSE_PROJECT_NAME: "nautobot_ansible"
 
-jobs:
-  include:
-    - name: "Python 3.6 - Nautobot - Latest PyPi Ansible"
-      python: 3.6
-      env:
-        - PYTHON_VER=3.6
-      install:
-        - pip install -U pip
-        - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-        - export PATH=$HOME/.poetry/bin:$PATH
-        - poetry config virtualenvs.create false && poetry install
+python:
+  - 3.6
+  - 3.7
+  - 3.8
+  - 3.9
 
-before_script:
-  - mkdir -p ~/ansible_collections/$COLLECTION_NAMESPACE
-  - ansible-galaxy collection install community.general -p /home/travis/.ansible/collections
-  - ansible-galaxy collection build .
-  - ansible-galaxy collection install $COLLECTION_NAMESPACE-$COLLECTION_NAME*.tar.gz -p /home/travis/.ansible/collections
-
-  # Run all further tests from within the installed directory
-  # Required to resolve imports of other collections
-  - cd /home/travis/.ansible/collections/ansible_collections/$COLLECTION_NAMESPACE/$COLLECTION_NAME
+install:
+  - pip install -U pip
+  - pip install invoke
+  - invoke start
+  - docker-compose --version
 
 script:
-  # Check python syntax
-  - black . --check --diff
+  - invoke unit
 
-  # Sanity tests
-  # --requirements - install pip packages as necessary
-  # Skip pep8 as we use black instead
-  - ansible-test sanity -v --requirements --python $PYTHON_VER --skip-test pep8 plugins/
-
-  # Unit tests, with code coverage
-  - ansible-test units -v --coverage --python $PYTHON_VER
-  # Report code coverage
-  - ansible-test coverage report --all --omit "tests/*,hacking/*,docs/*" --show-missing
+jobs:
+  fast_finish: true
+  include:
+    - name: "Python 3.6 - Nautobot 1.0.X - ansible-base 2.10.X"
+      python: 3.6
+      stage: integration
+      env:
+        - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.6
+        - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=1.0.3
+      script:
+        - cat development/dev.env
+        - cat development/docker-compose.yml
+        - docker ps
+        - sleep 60
+        - docker ps -f name=nautobot_ansible_nautobot -q | xargs -L 1 docker logs
+        - invoke integration
+    - name: "Python 3.7 - Nautobot 1.1.X - Latest Ansible Core"
+      python: 3.7
+      stage: integration
+      env:
+        - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.7
+        - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=1.1.1
+      script:
+        - poetry install ansible-core
+        - docker ps -f name=nautobot_ansible_nautobot -q | xargs -L 1 docker logs
+        - invoke integration
+    # - name: "Python 3.8 - Nautobot 1.1.X - Latest Ansible Core"
+    #   python: 3.8
+    #   env:
+    #     - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.8
+    #     - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=develop
+    #   script:
+    #     - poetry install ansible-core
+    #     - invoke integration
 
 deploy:
   provider: script
-  skip_cleanup: true
+  cleanup: true
   script: ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
   on:
     tags: true
