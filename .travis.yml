@@ -51,7 +51,9 @@ jobs:
       script:
         - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
         - export PATH=$HOME/.poetry/bin:$PATH
-        - poetry remove ansible-base && poetry add ansible-core
+        - poetry config virtualenvs.create false
+        - poetry remove ansible-base
+        - poetry add ansible-core
         - invoke integration
     # - name: "Python 3.8 - Nautobot 1.1.X - Latest Ansible Core"
     #   python: 3.8
