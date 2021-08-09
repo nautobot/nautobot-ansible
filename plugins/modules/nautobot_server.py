@@ -239,12 +239,22 @@ def main():
     }
 
     required_if = [
-        ["command", "createsuperuser", ["args",],],
+        ["command", "createsuperuser", ["args"]],
     ]
 
     module = AnsibleModule(
         argument_spec=dict(
-            command=dict(required=True, type="str"),
+            command=dict(
+                required=True,
+                type="str",
+                choices=[
+                    "createsuperuser",
+                    "migrate",
+                    "makemigrations",
+                    "collectstatic",
+                    "post_upgrade",
+                ],
+            ),
             args=dict(required=False, type="dict", default={}),
             project_path=dict(
                 default="/opt/nautobot",
@@ -258,7 +268,7 @@ def main():
             virtualenv=dict(
                 default=None, required=False, type="path", aliases=["virtual_env"]
             ),
-            db_password=dict(default=None, required=True, type="str", no_log=True),
+            db_password=dict(required=True, type="str", no_log=True),
         ),
         required_if=required_if,
     )
@@ -289,7 +299,7 @@ def main():
         elif args[param] and param not in end_of_command_params:
             cmd = "%s --%s=%s" % (cmd, param, args[param])
 
-    # Positional parameters are added at the end of the comenad, in specific order
+    # Positional parameters are added at the end of the command, in specific order
     if command in end_of_command_params:
         for param in end_of_command_params[command]:
             if param in args:

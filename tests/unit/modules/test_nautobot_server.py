@@ -85,18 +85,6 @@ class TestNautobotServer(unittest.TestCase):
                 [],
                 {},
             ],
-            # TODO: required_if validation is not working :(
-            # [
-            #     {
-            #         "command": "createsuperuser",
-            #         "db_password": "secret_password",
-            #     },
-            #     AnsibleFailJson,
-            #     "",
-            #     False,
-            #     [],
-            #     {},
-            # ],
             [
                 {
                     "command": "createsuperuser",
