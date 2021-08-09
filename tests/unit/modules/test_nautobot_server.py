@@ -38,8 +38,6 @@ class AnsibleFailJson(Exception):
 
 def exit_json(*args, **kwargs):
     """function to patch over exit_json; package return data into an exception"""
-    if "changed" not in kwargs:
-        kwargs["changed"] = False
     raise AnsibleExitJson(kwargs)
 
 
@@ -78,49 +76,203 @@ class TestNautobotServer(unittest.TestCase):
         [
             [
                 {
-                    "command": "createsuperuser --noinput --username=admin --email=admin@example.com",
-                    "project_path": "/some/path",
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
                 },
+                AnsibleFailJson,
+                "",
+                False,
+                [],
+                {},
+            ],
+            # TODO: required_if validation is not working :(
+            # [
+            #     {
+            #         "command": "createsuperuser",
+            #         "db_password": "secret_password",
+            #     },
+            #     AnsibleFailJson,
+            #     "",
+            #     False,
+            #     [],
+            #     {},
+            # ],
+            [
+                {
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
+                    "db_password": "secret_password",
+                    "project_path": "/some/other",
+                },
+                AnsibleExitJson,
+                "Superuser created successfully",
+                True,
                 [
                     "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
                 ],
                 {
-                    "cwd": "/some/path",
-                    "environ_update": {"NAUTOBOT_ROOT": "/some/path"},
+                    "cwd": "/some/other",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/some/other",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
                 },
             ],
             [
                 {
-                    "command": "migrate",
-                    "project_path": "/some/path",
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
                     "db_password": "secret_password",
                 },
+                AnsibleExitJson,
+                "Superuser created successfully",
+                True,
+                [
+                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
+                ],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [
+                {
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
+                    "db_password": "secret_password",
+                },
+                AnsibleExitJson,
+                "username is already taken",
+                False,
+                [
+                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
+                ],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [{"command": "migrate",}, AnsibleFailJson, "", False, [], {},],
+            [
+                {"command": "migrate", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "Migrating forwards ",
+                True,
                 ["nautobot-server migrate --noinput"],
                 {
-                    "cwd": "/some/path",
+                    "cwd": "/opt/nautobot",
                     "environ_update": {
-                        "NAUTOBOT_ROOT": "/some/path",
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [
+                {"command": "migrate", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "No migrations to apply",
+                False,
+                ["nautobot-server migrate --noinput"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [{"command": "makemigrations",}, AnsibleFailJson, "", False, [], {},],
+            [
+                {"command": "makemigrations", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "Alter field",
+                True,
+                ["nautobot-server makemigrations --noinput"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [
+                {"command": "makemigrations", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "",
+                False,
+                ["nautobot-server makemigrations --noinput"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [{"command": "collectstatic",}, AnsibleFailJson, "", False, [], {},],
+            [
+                {"command": "collectstatic", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "972 static files copied",
+                True,
+                ["nautobot-server collectstatic --noinput"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [{"command": "post_upgrade",}, AnsibleFailJson, "", False, [], {},],
+            [
+                {"command": "post_upgrade", "db_password": "secret_password",},
+                AnsibleExitJson,
+                "",
+                True,
+                ["nautobot-server post_upgrade"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
                         "NAUTOBOT_DB_PASSWORD": "secret_password",
                     },
                 },
             ],
         ]
     )
-    def test_ensure_command_called(self, module_args, args, kwargs):
+    def test_ensure_command_called(
+        self, module_args, expected_exception, stdout, changed, args, kwargs
+    ):
         set_module_args(module_args)
 
-        with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
-            stdout = "configuration updated"
+        with patch.object(
+            basic.AnsibleModule, "run_command"
+        ) as mock_run_command, patch(
+            "plugins.modules.nautobot_server._ensure_virtualenv"
+        ) as mock_ensure_virtualenv:
+            mock_ensure_virtualenv.return_value = True
             stderr = ""
             rc = 0
             mock_run_command.return_value = rc, stdout, stderr  # successful execution
 
-            with self.assertRaises(AnsibleExitJson) as result:
+            with self.assertRaises(expected_exception) as result:
                 nautobot_server.main()
-            self.assertFalse(
-                result.exception.args[0]["changed"]
+
+            if expected_exception == AnsibleFailJson:
+                return
+
+            self.assertEqual(
+                result.exception.args[0]["changed"], changed
             )  # ensure result is changed
 
-        self.assertEqual(mock_run_command.call_count, 2)
+        self.assertEqual(mock_run_command.call_count, 1)
 
         mock_run_command.assert_called_with(*args, **kwargs)

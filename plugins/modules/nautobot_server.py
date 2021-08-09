@@ -9,7 +9,14 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-DOCUMENTATION = """
+ANSIBLE_METADATA = {
+    "metadata_version": "1.0",
+    "status": ["preview"],
+    "supported_by": "community",
+}
+
+
+DOCUMENTATION = r"""
 ---
 module: nautobot_server
 short_description: Manages Nautobot Server application.
@@ -23,14 +30,19 @@ author:
 options:
   command:
     description:
-      - The name of the Nautobot management command to run. Some built in commands are C(collectstatic),
-        C(flush), C(loaddata), C(migrate), C(test), and C(validate).
-      - Other commands can be entered, but will fail if they're unknown to Nautobot. Other commands that may
-        prompt for user input should be run with the C(--noinput) flag.
-      - The module will perform some basic parameter validation (when applicable) to the commands C(collectstatic),
-        C(createcachetable), C(flush), C(loaddata), C(migrate), C(test), and C(validate).
+      - The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser),
+        C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
+      - Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
+      - The module will perform some basic parameter validation (when applicable) to the commands.
     type: str
     required: true
+  args:
+    description:
+      - A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument
+        can be a flag, an optional argument or a positional argument. If not defined in the code, the default
+        assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
+    type: dict
+    required: false
   project_path:
     description:
       - The path to the root of the Nautobot application where B(nautobot-server) lives.
@@ -55,109 +67,40 @@ options:
       - Database password used in Nautobot.
     type: str
     required: false
-  apps:
-    description:
-      - A list of space-delimited apps/plugins to target. Used by the C(test) command.
-    type: str
-    required: false
-  cache_table:
-    description:
-      - The name of the table used for database-backed caching. Used by the C(createcachetable) command.
-    type: str
-    required: false
-  clear:
-    description:
-      - Clear the existing files before trying to copy or link the original file.
-      - Used only with the 'collectstatic' command. The C(--noinput) argument will be added automatically.
-    required: false
-    default: no
-    type: bool
-  database:
-    description:
-      - The database to target. Used by the C(createcachetable), C(flush), C(loaddata) and C(migrate) commands.
-    type: str
-    required: false
-  failfast:
-    description:
-      - Fail the command immediately if a test fails. Used by the C(test) command.
-    required: false
-    default: false
-    type: bool
-    aliases: [fail_fast]
-  fixtures:
-    description:
-      - A space-delimited list of fixture file names to load in the database. B(Required) by the C(loaddata) command.
-    type: str
-    required: false
-  skip:
-    description:
-     - Will skip over out-of-order missing migrations, you can only use this parameter with C(migrate) command.
-    required: false
-    type: bool
-  merge:
-    description:
-     - Will run out-of-order or missing migrations as they are not rollback migrations, you can only use this
-       parameter with C(migrate) command.
-    required: false
-    type: bool
-  link:
-    description:
-     - Will create links to the files instead of copying them, you can only use this parameter with
-       C(collectstatic) command.
-    required: false
-    type: bool
-  testrunner:
-    description:
-      - "From the Django docs: Controls the test runner class that is used to execute tests."
-      - This parameter is passed as-is to C(nautobot-server).
-    type: str
-    required: false
-    aliases: [test_runner]
 notes:
   - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
-  - This module will create a virtualenv if the virtualenv parameter is specified and a virtualenv does not already
-    exist at the given location.
-  - This module assumes English error messages for the C(createcachetable) command to detect table existence and others,
-    unfortunately.
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
   - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang,
     i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
 """
 
-EXAMPLES = """
-- name: Create an initial superuser
-  networktocode.nautobot.nautobot_server:
-    command: "createsuperuser --noinput --username=admin --email=admin@example.com"
-    db_password: "{{ db_password }}"
-- name: Migrate
-  networktocode.nautobot.nautobot_server:
-    command: "migrate"
-    db_password: "{{ db_password }}"
-- name: Make Migrations
-  networktocode.nautobot.nautobot_server:
-    command: "makemigrations"
-    db_password: "{{ db_password }}"
-- name: Collectstatic
-  networktocode.nautobot.nautobot_server:
-    command: "collectstatic"
-    db_password: "{{ db_password }}"
-- name: Post Upgrade
-  networktocode.nautobot.nautobot_server:
-    command: "post_upgrade"
-    db_password: "{{ db_password }}"
-- name: Load the initial_data fixture into Nautobot
-  networktocode.nautobot.nautobot_server:
-    command: loaddata
-    fixtures: "{{ initial_data }}"
-    db_password: "{{ db_password }}"
-- name: Run the SmokeTest test case from the main app. Useful for testing deploys
-  networktocode.nautobot.nautobot_server:
-    command: test
-    apps: nautobot
-    db_password: "{{ db_password }}"
+EXAMPLES = r"""
+  - name: Createsuperuser
+    networktocode.nautobot.nautobot_server:
+      command: "createsuperuser"
+      args:
+        email: "admin93@example.com"
+        username: "superadmin7"
+      db_password: "{{ db_password }}"
+  - name: Migrate
+    networktocode.nautobot.nautobot_server:
+      command: "migrate"
+      db_password: "{{ db_password }}"
+  - name: Make Migrations
+    networktocode.nautobot.nautobot_server:
+      command: "makemigrations"
+      db_password: "{{ db_password }}"
+  - name: Collectstatic
+    networktocode.nautobot.nautobot_server:
+      command: "collectstatic"
+      db_password: "{{ db_password }}"
+  - name: Post Upgrade
+    networktocode.nautobot.nautobot_server:
+      command: "post_upgrade"
+      db_password: "{{ db_password }}"
 """
 
-RETURN = """
+RETURN = r"""
 changed:
   description: Boolean that is true is the command changed the state.
   returned: always
@@ -227,16 +170,8 @@ def _ensure_virtualenv(module):
 ### Helper functions to customize the output state ###
 
 
-def createcachetable_check_changed(output):
-    return "already exists" not in output
-
-
-def flush_filter_output(line):
-    return "Installed" in line and "Installed 0 object" not in line
-
-
-def loaddata_filter_output(line):
-    return "Installed" in line and "Installed 0 object" not in line
+def createsuperuser_filter_output(line):
+    return "Superuser created successfully" in line
 
 
 def migrate_filter_output(line):
@@ -247,6 +182,21 @@ def migrate_filter_output(line):
     )
 
 
+def makemigrations_filter_output(line):
+    return (
+        ("Alter field" in line)
+        or ("Add field" in line)
+        or ("Run Python" in line)
+        or ("Rename field" in line)
+        or ("Remove field" in line)
+    )
+
+
+def post_upgrade_filter_output(line):
+    # post_upgrade always changes the state, even only removing state and invalidating cache.
+    return True
+
+
 def collectstatic_filter_output(line):
     return line and "0 static files" not in line
 
@@ -255,44 +205,47 @@ def collectstatic_filter_output(line):
 
 
 def main():
-    command_allowed_param_map = dict(
-        createcachetable=("cache_table", "database",),
-        flush=("database",),
-        loaddata=("database", "fixtures",),
-        test=("failfast", "testrunner", "apps",),
-        validate=(),
-        migrate=("apps", "skip", "merge", "database",),
-        collectstatic=("clear", "link",),
+
+    specific_boolean_params = (
+        "clear",
+        "failfast",
+        "skip",
+        "merge",
+        "link",
+        # collectstatic
+        "no-post-process",
+        "no-default-ignore",
+        # makemigrations
+        "empty",
+        # post_upgrade
+        "no-clearsessions",
+        "no-collectstatic",
+        "no-invalidate-all",
+        "no-migrate",
+        "no-remove-staled-content-type",
+        "no-trace-paths",
     )
 
-    command_required_param_map = dict(loaddata=("fixtures",),)
-
-    # forces --noinput on every command that needs it
-    noinput_commands = (
-        "flush",
+    commands_with_noinput = (
+        "createsuperuser",
         "migrate",
-        "test",
+        "makemigrations",
         "collectstatic",
     )
 
-    # These params are allowed for certain commands only
-    specific_params = (
-        "apps",
-        "clear",
-        "database",
-        "failfast",
-        "fixtures",
-        "testrunner",
-    )
+    end_of_command_params = {
+        "migrate": ["app_label", "migration_name"],
+        "makemigrate": ["app_label"],
+    }
 
-    # These params are automatically added to the command if present
-    general_params = ("pythonpath", "database")
-    specific_boolean_params = ("clear", "failfast", "skip", "merge", "link")
-    end_of_command_params = ("apps", "cache_table", "fixtures")
+    required_if = [
+        ["command", "createsuperuser", ["args",],],
+    ]
 
     module = AnsibleModule(
         argument_spec=dict(
             command=dict(required=True, type="str"),
+            args=dict(required=False, type="dict", default={}),
             project_path=dict(
                 default="/opt/nautobot",
                 required=False,
@@ -305,42 +258,15 @@ def main():
             virtualenv=dict(
                 default=None, required=False, type="path", aliases=["virtual_env"]
             ),
-            db_password=dict(default=None, required=False, type="str", no_log=True),
-            apps=dict(default=None, required=False),
-            cache_table=dict(default=None, required=False, type="str"),
-            clear=dict(default=False, required=False, type="bool"),
-            database=dict(default=None, required=False, type="str"),
-            failfast=dict(
-                default=False, required=False, type="bool", aliases=["fail_fast"]
-            ),
-            fixtures=dict(default=None, required=False, type="str"),
-            testrunner=dict(
-                default=None, required=False, type="str", aliases=["test_runner"]
-            ),
-            skip=dict(default=None, required=False, type="bool"),
-            merge=dict(default=None, required=False, type="bool"),
-            link=dict(default=None, required=False, type="bool"),
+            db_password=dict(default=None, required=True, type="str", no_log=True),
         ),
+        required_if=required_if,
     )
 
     command = module.params["command"]
+    args = module.params["args"]
     project_path = module.params["project_path"]
     virtualenv = module.params["virtualenv"]
-
-    for param in specific_params:
-        value = module.params[param]
-        if param in specific_boolean_params:
-            value = module.boolean(value)
-        if value and param not in command_allowed_param_map[command]:
-            module.fail_json(
-                msg="%s param is incompatible with command=%s" % (param, command)
-            )
-
-    for param in command_required_param_map.get(command, ()):
-        if not module.params[param]:
-            module.fail_json(
-                msg="%s param is required for command=%s" % (param, command)
-            )
 
     _ensure_virtualenv(module)
 
@@ -354,21 +280,20 @@ def main():
     if db_password:
         environ_vars["NAUTOBOT_DB_PASSWORD"] = db_password
 
-    if command in noinput_commands:
+    if command in commands_with_noinput:
         cmd = "%s --noinput" % cmd
 
-    for param in general_params:
-        if module.params[param]:
-            cmd = "%s --%s=%s" % (cmd, param, module.params[param])
-
-    for param in specific_boolean_params:
-        if module.boolean(module.params[param]):
+    for param in args:
+        if args[param] and param in specific_boolean_params:
             cmd = "%s --%s" % (cmd, param)
+        elif args[param] and param not in end_of_command_params:
+            cmd = "%s --%s=%s" % (cmd, param, args[param])
 
-    # these params always get tacked on the end of the command
-    for param in end_of_command_params:
-        if module.params[param]:
-            cmd = "%s %s" % (cmd, module.params[param])
+    # Positional parameters are added at the end of the comenad, in specific order
+    if command in end_of_command_params:
+        for param in end_of_command_params[command]:
+            if param in args:
+                cmd = "%s %s" % (cmd, args[param])
 
     rc, out, err = module.run_command(
         cmd, cwd=project_path, environ_update=environ_vars
@@ -396,14 +321,11 @@ def main():
     # Customizing the final state depending on the output
     changed = False
     lines = out.split("\n")
-    filt = globals().get(command + "_filter_output", None)
+    filt = globals().get(f"{command}_filter_output", None)
     if filt:
         filtered_output = list(filter(filt, lines))
         if len(filtered_output):
             changed = True
-    check_changed = globals().get(f"{command}_check_changed", None)
-    if check_changed:
-        changed = check_changed(out)
 
     return_kwargs = {
         "changed": changed,
