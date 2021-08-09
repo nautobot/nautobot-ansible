@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -36,32 +39,26 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  name:
     description:
-      - Defines the virtual chassis configuration
-    suboptions:
-      name:
-        description:
-          - Name
-        required: true
-        type: str
-      master:
-        description:
-          - The master device the virtual chassis is attached to
-        required: false
-        type: raw
-      domain:
-        description:
-          - domain of the virtual chassis
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the virtual chassis may need to be associated with
-        required: false
-        type: list
+      - Name
+    required: true
+    type: str
+  master:
+    description:
+      - The master device the virtual chassis is attached to
+    required: false
+    type: raw
+  domain:
+    description:
+      - domain of the virtual chassis
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the virtual chassis may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -94,26 +91,23 @@ EXAMPLES = r"""
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "Virtual Chassis 1"
+        name: "Virtual Chassis 1"
         state: present
 
     - name: Update virtual chassis with other fields
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "Virtual Chassis 1"
-          master: Test Device
-          domain: Domain Text
+        name: "Virtual Chassis 1"
+        master: Test Device
+        domain: Domain Text
         state: present
 
     - name: Delete virtual chassis within nautobot
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "Virtual Chassis 1"
+        name: "Virtual Chassis 1"
         state: absent
 """
 
@@ -129,13 +123,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_VIRTUAL_CHASSIS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -146,22 +140,14 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    master=dict(required=False, type="raw"),
-                    domain=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            master=dict(required=False, type="raw"),
+            domain=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     virtual_chassis = NautobotDcimModule(module, NB_VIRTUAL_CHASSIS)
     virtual_chassis.run()

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2019, Amy Liebowitz (@amylieb)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -37,47 +38,41 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the tenant configuration
-    suboptions:
-      name:
-        description:
-          - Name of the tenant to be created
-        required: true
-        type: str
-      tenant_group:
-        description:
-          - Tenant group this tenant should be in
-        required: false
-        type: raw
-      description:
-        description:
-          - The description of the tenant
-        required: false
-        type: str
-      comments:
-        description:
-          - Comments for the tenant. This can be markdown syntax
-        required: false
-        type: str
-      slug:
-        description:
-          - URL-friendly unique shorthand
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the tenant may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - Name of the tenant to be created
     required: true
+    type: str
+  tenant_group:
+    description:
+      - Tenant group this tenant should be in
+    required: false
+    type: raw
+  description:
+    description:
+      - The description of the tenant
+    required: false
+    type: str
+  comments:
+    description:
+      - Comments for the tenant. This can be markdown syntax
+    required: false
+    type: str
+  slug:
+    description:
+      - URL-friendly unique shorthand
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the tenant may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -111,32 +106,29 @@ EXAMPLES = r"""
       networktocode.nautobot.tenant:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Tenant ABC
+        name: Tenant ABC
         state: present
 
     - name: Delete tenant within nautobot
       networktocode.nautobot.tenant:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Tenant ABC
+        name: Tenant ABC
         state: absent
 
     - name: Create tenant with all parameters
       networktocode.nautobot.tenant:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Tenant ABC
-          group: Very Special Tenants
-          description: ABC Incorporated
-          comments: '### This tenant is super cool'
-          slug: tenant_abc
-          tags:
-            - tagA
-            - tagB
-            - tagC
+        name: Tenant ABC
+        group: Very Special Tenants
+        description: ABC Incorporated
+        comments: '### This tenant is super cool'
+        slug: tenant_abc
+        tags:
+          - tagA
+          - tagB
+          - tagC
         state: present
 """
 
@@ -152,13 +144,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.tenancy import (
     NautobotTenancyModule,
     NB_TENANTS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -169,27 +161,17 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    tenant_group=dict(required=False, type="raw"),
-                    description=dict(required=False, type="str"),
-                    comments=dict(required=False, type="str"),
-                    slug=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            tenant_group=dict(required=False, type="raw"),
+            description=dict(required=False, type="str"),
+            comments=dict(required=False, type="str"),
+            slug=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     tenant = NautobotTenancyModule(module, NB_TENANTS)
     tenant.run()

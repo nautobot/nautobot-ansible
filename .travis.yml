@@ -20,7 +20,8 @@ jobs:
         - PYTHON_VER=3.6
       install:
         - pip install -U pip
-        - pip install poetry
+        - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+        - export PATH=$HOME/.poetry/bin:$PATH
         - poetry config virtualenvs.create false && poetry install
 
 before_script:

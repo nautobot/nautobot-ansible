@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2020, Pavel Korovin (@pkorovin) <p@tristero.se>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -22,7 +23,7 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network to Code (@networktocode)
+  - Mikhail Yohman (@FragmentedPacket)
 requirements:
   - pynautobot
 version_added: "1.0.0"
@@ -37,37 +38,31 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the route target configuration
-    suboptions:
-      name:
-        description:
-          - Route target name
-        required: true
-        type: str
-      tenant:
-        description:
-          - The tenant that the route target will be assigned to
-        required: false
-        type: raw
-      description:
-        description:
-          - Tag description
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the device may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - Route target name
     required: true
+    type: str
+  tenant:
+    description:
+      - The tenant that the route target will be assigned to
+    required: false
+    type: raw
+  description:
+    description:
+      - Tag description
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the device may need to be associated with
+    required: false
+    type: list
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -101,11 +96,10 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item.name }}"
-          tenant: "Test Tenant"
-          tags:
-            - Schnozzberry
+        name: "{{ item.name }}"
+        tenant: "Test Tenant"
+        tags:
+          - Schnozzberry
       loop:
         - { name: "65000:65001", description: "management" }
         - { name: "65000:65002", description: "tunnel" }
@@ -114,12 +108,11 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item.name }}"
-          tenant: "Test Tenant"
-          description: "{{ item.description }}"
-          tags:
-            - Schnozzberry
+        name: "{{ item.name }}"
+        tenant: "Test Tenant"
+        description: "{{ item.description }}"
+        tags:
+          - Schnozzberry
       loop:
         - { name: "65000:65001", description: "management" }
         - { name: "65000:65002", description: "tunnel" }
@@ -128,8 +121,7 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item }}"
+        name: "{{ item }}"
         state: absent
       loop:
         - "65000:65001"
@@ -148,13 +140,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_ROUTE_TARGETS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -165,23 +157,15 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    tenant=dict(required=False, type="raw"),
-                    description=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            tenant=dict(required=False, type="raw"),
+            description=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     route_target = NautobotIpamModule(module, NB_ROUTE_TARGETS)
     route_target.run()

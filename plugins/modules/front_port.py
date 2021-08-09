@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -36,62 +39,56 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
-    required: true
+  device:
     description:
-      - Defines the front port configuration
-    suboptions:
-      device:
-        description:
-          - The device the front port is attached to
-        required: true
-        type: raw
-      name:
-        description:
-          - The name of the front port
-        required: true
-        type: str
-      type:
-        description:
-          - The type of the front port
-        choices:
-          - 8p8c
-          - 110-punch
-          - bnc
-          - mrj21
-          - fc
-          - lc
-          - lc-apc
-          - lsh
-          - lsh-apc
-          - mpo
-          - mtrj
-          - sc
-          - sc-apc
-          - st
-        required: true
-        type: str
-      rear_port:
-        description:
-          - The rear_port the front port is attached to
-        required: true
-        type: raw        
-      rear_port_position:
-        description:
-          - The position of the rear port this front port is connected to
-        required: false
-        type: int
-      description:
-        description:
-          - Description of the front port
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the front port may need to be associated with
-        required: false
-        type: list
+      - The device the front port is attached to
+    required: true
+    type: raw
+  name:
+    description:
+      - The name of the front port
+    required: true
+    type: str
+  type:
+    description:
+      - The type of the front port
+    choices:
+      - 8p8c
+      - 110-punch
+      - bnc
+      - mrj21
+      - fc
+      - lc
+      - lc-apc
+      - lsh
+      - lsh-apc
+      - mpo
+      - mtrj
+      - sc
+      - sc-apc
+      - st
+    required: true
+    type: str
+  rear_port:
+    description:
+      - The rear_port the front port is attached to
+    required: true
+    type: raw        
+  rear_port_position:
+    description:
+      - The position of the rear port this front port is connected to
+    required: false
+    type: int
+  description:
+    description:
+      - Description of the front port
+    required: false
+    type: str
+  tags:
+    description:
+      - Any tags that the front port may need to be associated with
+    required: false
+    type: list
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -124,35 +121,32 @@ EXAMPLES = r"""
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Front Port
-          device: Test Device
-          type: bnc
-          rear_port: Test Rear Port
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
         state: present
 
     - name: Update front port with other fields
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Front Port
-          device: Test Device
-          type: bnc
-          rear_port: Test Rear Port
-          rear_port_position: 5
-          description: front port description
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
+        rear_port_position: 5
+        description: front port description
         state: present
 
     - name: Delete front port within nautobot
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Front Port
-          device: Test Device
-          type: bnc
-          rear_port: Test Rear Port
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
         state: absent
 """
 
@@ -168,13 +162,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_FRONT_PORTS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -185,49 +179,36 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
+            device=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(
                 required=True,
-                options=dict(
-                    device=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                    type=dict(
-                        required=True,
-                        choices=[
-                            "8p8c",
-                            "110-punch",
-                            "bnc",
-                            "mrj21",
-                            "fc",
-                            "lc",
-                            "lc-apc",
-                            "lsh",
-                            "lsh-apc",
-                            "mpo",
-                            "mtrj",
-                            "sc",
-                            "sc-apc",
-                            "st",
-                        ],
-                        type="str",
-                    ),
-                    rear_port=dict(required=True, type="raw"),
-                    rear_port_position=dict(required=False, type="int"),
-                    description=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                ),
+                choices=[
+                    "8p8c",
+                    "110-punch",
+                    "bnc",
+                    "mrj21",
+                    "fc",
+                    "lc",
+                    "lc-apc",
+                    "lsh",
+                    "lsh-apc",
+                    "mpo",
+                    "mtrj",
+                    "sc",
+                    "sc-apc",
+                    "st",
+                ],
+                type="str",
             ),
+            rear_port=dict(required=True, type="raw"),
+            rear_port_position=dict(required=False, type="int"),
+            description=dict(required=False, type="str"),
+            tags=dict(required=False, type="list"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device", "name", "type", "rear_port"]),
-        ("state", "absent", ["device", "name", "type", "rear_port"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     front_port = NautobotDcimModule(module, NB_FRONT_PORTS)
     front_port.run()

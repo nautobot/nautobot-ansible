@@ -20,7 +20,7 @@ networktocode.nautobot.virtual_chassis -- Create, update or delete virtual chass
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -125,7 +125,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-data/name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                                                                    </div>
+                                                 / <span style="color: red">required</span>                    </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -267,7 +267,6 @@ Examples
             token: thisIsMyToken
             data:
               name: "Virtual Chassis 1"
-              master: Test Device
             state: present
 
         - name: Update virtual chassis with other fields
@@ -275,6 +274,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             data:
+              name: "Virtual Chassis 1"
               master: Test Device
               domain: Domain Text
             state: present
@@ -284,7 +284,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             data:
-              master: Test Device
+              name: "Virtual Chassis 1"
             state: absent
 
 
