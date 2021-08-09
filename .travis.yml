@@ -27,7 +27,6 @@ install:
   - pip install -U pip
   - pip install invoke
   - invoke start
-  - docker-compose --version
 
 script:
   - invoke unit
@@ -42,11 +41,6 @@ jobs:
         - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.6
         - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=1.0.3
       script:
-        - cat development/dev.env
-        - cat development/docker-compose.yml
-        - docker ps
-        - sleep 60
-        - docker ps -f name=nautobot_ansible_nautobot -q | xargs -L 1 docker logs
         - invoke integration
     - name: "Python 3.7 - Nautobot 1.1.X - Latest Ansible Core"
       python: 3.7
@@ -55,8 +49,9 @@ jobs:
         - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.7
         - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=1.1.1
       script:
-        - poetry install ansible-core
-        - docker ps -f name=nautobot_ansible_nautobot -q | xargs -L 1 docker logs
+        - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+        - export PATH=$HOME/.poetry/bin:$PATH
+        - poetry remove ansible-base && poetry add ansible-core
         - invoke integration
     # - name: "Python 3.8 - Nautobot 1.1.X - Latest Ansible Core"
     #   python: 3.8
