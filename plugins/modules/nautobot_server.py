@@ -175,10 +175,13 @@ def _fail(module, cmd, out, err, **kwargs):
     module.fail_json(cmd=cmd, msg=msg, **kwargs)
 
 
-def _ensure_virtualenv(virtualenv, project_path):
+def _ensure_virtualenv(module):
     """Ensure that virtualenv is available."""
     # If no custom virtualenv is defined, we assume it's in the project_path
-    venv_param = virtualenv or project_path
+    venv_param = module.params["virtualenv"]
+    if venv_param is None:
+        # If no custom virtualenv is defined, we assume it's in the project_path
+        venv_param = module.params["project_path"]
 
     vbin = os.path.join(venv_param, "bin")
     activate = os.path.join(vbin, "activate")
@@ -193,11 +196,11 @@ def _ensure_virtualenv(virtualenv, project_path):
 ### Helper functions to customize the output state ###
 
 
-def createsuperuser_filter_output(line):
+def createsuperuser_changed(line):
     return "Superuser created successfully" in line
 
 
-def migrate_filter_output(line):
+def migrate_changed(line):
     return (
         ("Migrating forwards " in line)
         or ("Installed" in line and "Installed 0 object" not in line)
@@ -205,7 +208,7 @@ def migrate_filter_output(line):
     )
 
 
-def makemigrations_filter_output(line):
+def makemigrations_changed(line):
     return (
         ("Alter field" in line)
         or ("Add field" in line)
@@ -215,12 +218,12 @@ def makemigrations_filter_output(line):
     )
 
 
-def post_upgrade_filter_output(line):
+def post_upgrade_changed(line):
     # post_upgrade always changes the state, even only removing state and invalidating cache.
     return True
 
 
-def collectstatic_filter_output(line):
+def collectstatic_changed(line):
     return line and "0 static files" not in line
 
 
@@ -229,7 +232,7 @@ def collectstatic_filter_output(line):
 
 def main():
 
-
+    # Commands that are known to use the --noinput flag
     commands_with_noinput = {
         "createsuperuser",
         "migrate",
@@ -237,38 +240,23 @@ def main():
         "collectstatic",
     }
 
-
     required_if = [
         ["command", "createsuperuser", ["args"]],
     ]
 
     module = AnsibleModule(
         argument_spec=dict(
-            command=dict(
-                required=True,
-                type="str",
-                choices=[
-                    "createsuperuser",
-                    "migrate",
-                    "makemigrations",
-                    "collectstatic",
-                    "post_upgrade",
-                ],
-            ),
+            command=dict(required=True, type="str"),
             args=dict(type="dict", default={}),
-            optional_args=dict(type="list", default=[]),
+            positional_args=dict(type="list", default=[]),
             flags=dict(type="list", default=[]),
             project_path=dict(
                 default="/opt/nautobot",
                 type="path",
                 aliases=["app_path", "chdir"],
             ),
-            pythonpath=dict(
-                required=False, type="path", aliases=["python_path"]
-            ),
-            virtualenv=dict(
-                required=False, type="path", aliases=["virtual_env"]
-            ),
+            pythonpath=dict(required=False, type="path", aliases=["python_path"]),
+            virtualenv=dict(required=False, type="path", aliases=["virtual_env"]),
             db_password=dict(required=True, type="str", no_log=True),
         ),
         required_if=required_if,
@@ -277,11 +265,10 @@ def main():
     command = module.params["command"]
     args = module.params["args"]
     flags = module.params["flags"]
-    optional_args = module.params["optional_args"]
+    positional_args = module.params["positional_args"]
     project_path = module.params["project_path"]
-    virtualenv = module.params["virtualenv"]
 
-    _ensure_virtualenv(virtualenv, project_path)
+    _ensure_virtualenv(module)
 
     cmd = "nautobot-server %s" % (command,)
 
@@ -296,12 +283,18 @@ def main():
     if command in commands_with_noinput:
         cmd = "%s --noinput" % cmd
 
-for arg, value in args.items():
-    cmd += " --%s=%s" % (arg, value)
-for flag in flags:
-    cmd += " --%s" % (flag,)
-for arg in optional_args:
-    cmd += " %s" %(arg,)
+    for flag in flags:
+        if flag == "noinput" and command in commands_with_noinput:
+            continue
+
+        cmd += " --%s" % (flag,)
+
+    for arg, value in args.items():
+        cmd += " --%s=%s" % (arg, value)
+
+    for value in positional_args:
+        cmd += " %s" % (value,)
+
     rc, out, err = module.run_command(
         cmd, cwd=project_path, environ_update=environ_vars
     )
@@ -328,7 +321,7 @@ for arg in optional_args:
     # Customizing the final state depending on the output
     changed = False
     lines = out.split("\n")
-    filt = globals().get(f"{command}_filter_output", None)
+    filt = globals().get(f"{command}_changed", None)
     if filt:
         filtered_output = list(filter(filt, lines))
         if len(filtered_output):

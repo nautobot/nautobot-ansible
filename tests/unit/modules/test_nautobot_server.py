@@ -162,6 +162,25 @@ class TestNautobotServer(unittest.TestCase):
                 },
             ],
             [
+                {
+                    "command": "migrate",
+                    "db_password": "secret_password",
+                    "flags": ["merge"],
+                    "positional_args": ["my_plugin_name"],
+                },
+                AnsibleExitJson,
+                "Migrating forwards ",
+                True,
+                ["nautobot-server migrate --noinput --merge my_plugin_name"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [
                 {"command": "migrate", "db_password": "secret_password",},
                 AnsibleExitJson,
                 "No migrations to apply",
@@ -196,6 +215,24 @@ class TestNautobotServer(unittest.TestCase):
                 "",
                 False,
                 ["nautobot-server makemigrations --noinput"],
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {
+                        "NAUTOBOT_ROOT": "/opt/nautobot",
+                        "NAUTOBOT_DB_PASSWORD": "secret_password",
+                    },
+                },
+            ],
+            [
+                {
+                    "command": "makemigrations",
+                    "db_password": "secret_password",
+                    "positional_args": ["my_plugin_name"],
+                },
+                AnsibleExitJson,
+                "",
+                False,
+                ["nautobot-server makemigrations --noinput my_plugin_name"],
                 {
                     "cwd": "/opt/nautobot",
                     "environ_update": {
