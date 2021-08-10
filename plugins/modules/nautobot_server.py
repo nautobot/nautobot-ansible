@@ -251,9 +251,7 @@ def main():
             positional_args=dict(type="list", default=[], elements="str"),
             flags=dict(type="list", default=[], elements="str"),
             project_path=dict(
-                default="/opt/nautobot",
-                type="path",
-                aliases=["app_path", "chdir"],
+                default="/opt/nautobot", type="path", aliases=["app_path", "chdir"],
             ),
             pythonpath=dict(required=False, type="path", aliases=["python_path"]),
             virtualenv=dict(required=False, type="path", aliases=["virtual_env"]),
