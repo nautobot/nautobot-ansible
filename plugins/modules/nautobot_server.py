@@ -21,8 +21,7 @@ DOCUMENTATION = r"""
 module: nautobot_server
 short_description: Manages Nautobot Server application.
 description:
-    - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the
-      C(virtualenv) parameter, all management commands will be executed by the given C(virtualenv) installation.
+    - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the C(virtualenv) parameter, all management commands will be executed by the given C(virtualenv) installation.
 requirements:
   - nautobot
 author:
@@ -30,17 +29,14 @@ author:
 options:
   command:
     description:
-      - The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser),
-        C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
+      - The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser), C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
       - Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
       - The module will perform some basic parameter validation (when applicable) to the commands.
     type: str
     required: true
   args:
     description:
-      - A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument
-        can be a flag, an optional argument or a positional argument. If not defined in the code, the default
-        assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
+      - A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument can be a flag, an optional argument or a positional argument. If not defined in the code, the default assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
     type: dict
     required: false
   positional_args:
@@ -63,8 +59,7 @@ options:
     default: /opt/nautobot
   pythonpath:
     description:
-      - A directory to add to the Python path. Typically used to include the settings module if it is located
-        external to the application directory.
+      - A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
     type: path
     required: false
     aliases: [python_path]
@@ -82,8 +77,7 @@ options:
 notes:
   - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
-  - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang,
-    i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
+  - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang, i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
 """
 
 EXAMPLES = r"""
@@ -152,8 +146,7 @@ virtualenv:
   type: path
   sample: /opt/nautobot/.venv
 pythonpath:
-  description: A directory to add to the Python path. Typically used to include the settings module if it is located
-    external to the application directory.
+  description: A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
   returned: when defined
   type: path
   sample: /usr/settings
