@@ -8,12 +8,21 @@ from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
 
 try:
-    from plugins.modules import nautobot_server
+    from ansible_collections.networktocode.nautobot.plugins.modules import (
+        nautobot_server,
+    )
+
+    MOCKER_PATCH_PATH = (
+        "ansible_collections.networktocode.nautobot.plugins.modules.nautobot_server"
+    )
 except ImportError:
     import sys
 
+    # Not installed as a collection
+    # Try importing relative to root directory of this ansible_modules project
     sys.path.append("tests")
     sys.path.append("plugins/modules")
+    MOCKER_PATCH_PATH = "plugins.modules.nautobot_server"
 
     import nautobot_server
 
@@ -281,7 +290,7 @@ class TestNautobotServer(unittest.TestCase):
         with patch.object(
             basic.AnsibleModule, "run_command"
         ) as mock_run_command, patch(
-            "plugins.modules.nautobot_server._ensure_virtualenv"
+            MOCKER_PATCH_PATH + "._ensure_virtualenv"
         ) as mock_ensure_virtualenv:
             mock_ensure_virtualenv.return_value = True
             stderr = ""
