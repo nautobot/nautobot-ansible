@@ -29,27 +29,34 @@ author:
 options:
   command:
     description:
-      - The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser), C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
-      - Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
-      - The module will perform some basic parameter validation (when applicable) to the commands.
+      - |
+        The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser),
+        C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
+        Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
+        The module will perform some basic parameter validation, when applicable, to the commands.
     type: str
     required: true
   args:
     description:
-      - A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument can be a flag, an optional argument or a positional argument. If not defined in the code, the default assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
+      - |
+        A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument
+        can be a flag, an optional argument or a positional argument. If not defined in the code, the default
+        assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
     type: dict
     required: false
   positional_args:
     description:
-      - A list of additional arguments to append to the end of the command that is passed to `nautobot-server`.
+      - A list of additional arguments to append to the end of the command that is passed to C(nautobot-server).
       - These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2".
     type: list
     required: false
+    elements: str
   flags:
     description:
-      - A list of flags to append to the command that is passed to `nautobot-server`, so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
+      - A list of flags to append to the command that is passed to C(nautobot-server), so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
     type: list
     required: false
+    elements: str
   project_path:
     description:
       - The path to the root of the Nautobot application where B(nautobot-server) lives.
@@ -73,7 +80,7 @@ options:
     description:
       - Database password used in Nautobot.
     type: str
-    required: false
+    required: true
 notes:
   - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
@@ -128,27 +135,27 @@ changed:
 out:
   description: Raw output from the command execution.
   returned: always
-  type: string
+  type: str
   sample: superadmin user already exists.
 cmd:
   description: Full command executed in the Server.
   returned: always
-  type: string
+  type: str
   sample: nautobot-server createsuperuser --noinput --email=admin33@example.com --username=superadmin
 project_path:
   description: The path to the root of the Nautobot application where B(nautobot-server) lives.
   returned: always
-  type: path
+  type: str
   sample: /opt/nautobot
 virtualenv:
   description: An optional path to a I(virtualenv) installation to use while running the nautobot-server application.
   returned: when defined
-  type: path
+  type: str
   sample: /opt/nautobot/.venv
 pythonpath:
   description: A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
   returned: when defined
-  type: path
+  type: str
   sample: /usr/settings
 """
 
@@ -241,8 +248,8 @@ def main():
         argument_spec=dict(
             command=dict(required=True, type="str"),
             args=dict(type="dict", default={}),
-            positional_args=dict(type="list", default=[]),
-            flags=dict(type="list", default=[]),
+            positional_args=dict(type="list", default=[], elements="str"),
+            flags=dict(type="list", default=[], elements="str"),
             project_path=dict(
                 default="/opt/nautobot",
                 type="path",
