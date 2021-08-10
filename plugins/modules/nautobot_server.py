@@ -43,6 +43,17 @@ options:
         assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
     type: dict
     required: false
+  positional_args:
+    description:
+      - A list of additional arguments to append to the end of the command that is passed to `nautobot-server`.
+      - These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2".
+    type: list
+    required: false
+  flags:
+    description:
+      - A list of flags to append to the command that is passed to `nautobot-server`, so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
+    type: list
+    required: false
   project_path:
     description:
       - The path to the root of the Nautobot application where B(nautobot-server) lives.
@@ -61,6 +72,7 @@ options:
     description:
       - An optional path to a I(virtualenv) installation to use while running the nautobot-server application.
     type: path
+    required: false
     aliases: [virtual_env]
   db_password:
     description:
@@ -98,11 +110,24 @@ EXAMPLES = r"""
     networktocode.nautobot.nautobot_server:
       command: "post_upgrade"
       db_password: "{{ db_password }}"
+  - name: Make Migrations for Plugin
+    networktocode.nautobot.nautobot_server:
+      command: "makemigrations"
+      positional_args: ["my_plugin_name"]
+      db_password: "{{ db_password }}"
+  - name: Migrate Plugin
+    networktocode.nautobot.nautobot_server:
+      command: "migrate"
+      args:
+        verbosity: 3
+      flags: ["merge"]
+      positional_args: ["my_plugin_name"]
+      db_password: "{{ db_password }}"
 """
 
 RETURN = r"""
 changed:
-  description: Boolean that is true is the command changed the state.
+  description: Boolean that is true if the command changed the state.
   returned: always
   type: bool
   sample: True
@@ -150,12 +175,10 @@ def _fail(module, cmd, out, err, **kwargs):
     module.fail_json(cmd=cmd, msg=msg, **kwargs)
 
 
-def _ensure_virtualenv(module):
+def _ensure_virtualenv(virtualenv, project_path):
     """Ensure that virtualenv is available."""
-    venv_param = module.params["virtualenv"]
-    if venv_param is None:
-        # If no custom virtualenv is defined, we assume it's in the project_path
-        venv_param = module.params["project_path"]
+    # If no custom virtualenv is defined, we assume it's in the project_path
+    venv_param = virtualenv or project_path
 
     vbin = os.path.join(venv_param, "bin")
     activate = os.path.join(vbin, "activate")
@@ -206,37 +229,14 @@ def collectstatic_filter_output(line):
 
 def main():
 
-    specific_boolean_params = (
-        "clear",
-        "failfast",
-        "skip",
-        "merge",
-        "link",
-        # collectstatic
-        "no-post-process",
-        "no-default-ignore",
-        # makemigrations
-        "empty",
-        # post_upgrade
-        "no-clearsessions",
-        "no-collectstatic",
-        "no-invalidate-all",
-        "no-migrate",
-        "no-remove-staled-content-type",
-        "no-trace-paths",
-    )
 
-    commands_with_noinput = (
+    commands_with_noinput = {
         "createsuperuser",
         "migrate",
         "makemigrations",
         "collectstatic",
-    )
-
-    end_of_command_params = {
-        "migrate": ["app_label", "migration_name"],
-        "makemigrate": ["app_label"],
     }
+
 
     required_if = [
         ["command", "createsuperuser", ["args"]],
@@ -255,18 +255,19 @@ def main():
                     "post_upgrade",
                 ],
             ),
-            args=dict(required=False, type="dict", default={}),
+            args=dict(type="dict", default={}),
+            optional_args=dict(type="list", default=[]),
+            flags=dict(type="list", default=[]),
             project_path=dict(
                 default="/opt/nautobot",
-                required=False,
                 type="path",
                 aliases=["app_path", "chdir"],
             ),
             pythonpath=dict(
-                default=None, required=False, type="path", aliases=["python_path"]
+                required=False, type="path", aliases=["python_path"]
             ),
             virtualenv=dict(
-                default=None, required=False, type="path", aliases=["virtual_env"]
+                required=False, type="path", aliases=["virtual_env"]
             ),
             db_password=dict(required=True, type="str", no_log=True),
         ),
@@ -275,10 +276,12 @@ def main():
 
     command = module.params["command"]
     args = module.params["args"]
+    flags = module.params["flags"]
+    optional_args = module.params["optional_args"]
     project_path = module.params["project_path"]
     virtualenv = module.params["virtualenv"]
 
-    _ensure_virtualenv(module)
+    _ensure_virtualenv(virtualenv, project_path)
 
     cmd = "nautobot-server %s" % (command,)
 
@@ -293,18 +296,12 @@ def main():
     if command in commands_with_noinput:
         cmd = "%s --noinput" % cmd
 
-    for param in args:
-        if args[param] and param in specific_boolean_params:
-            cmd = "%s --%s" % (cmd, param)
-        elif args[param] and param not in end_of_command_params:
-            cmd = "%s --%s=%s" % (cmd, param, args[param])
-
-    # Positional parameters are added at the end of the command, in specific order
-    if command in end_of_command_params:
-        for param in end_of_command_params[command]:
-            if param in args:
-                cmd = "%s %s" % (cmd, args[param])
-
+for arg, value in args.items():
+    cmd += " --%s=%s" % (arg, value)
+for flag in flags:
+    cmd += " --%s" % (flag,)
+for arg in optional_args:
+    cmd += " %s" %(arg,)
     rc, out, err = module.run_command(
         cmd, cwd=project_path, environ_update=environ_vars
     )
@@ -343,11 +340,6 @@ def main():
         "cmd": cmd,
         "project_path": project_path,
     }
-
-    if virtualenv:
-        return_kwargs["virtualenv"] = virtualenv
-    if module.params["pythonpath"]:
-        return_kwargs["pythonpath"] = module.params["pythonpath"]
 
     module.exit_json(**return_kwargs)
 
