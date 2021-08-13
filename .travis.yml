@@ -43,12 +43,13 @@ jobs:
       script:
         - invoke integration
     - name: "Python 3.7 - Nautobot 1.1.X - Latest Ansible Core"
-      python: 3.7
+      python: 3.9
       stage: integration
       env:
         - INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER=3.7
         - INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER=1.1.1
       before_script:
+        - pip list
         - sudo apt update && sudo apt install python3-virtualenv
       script:
         - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
