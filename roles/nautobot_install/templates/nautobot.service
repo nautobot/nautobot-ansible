@@ -1,12 +1,13 @@
 [Unit]
 Description=Nautobot WSGI Service
-Documentation=https://nautobot.readthedocs.io/
+Documentation=https://nautobot.readthedocs.io/en/stable/
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
 Environment="NAUTOBOT_ROOT=/opt/nautobot"
+EnvironmentFile=/opt/nautobot/nautobot.env
 
 User=nautobot
 Group=nautobot

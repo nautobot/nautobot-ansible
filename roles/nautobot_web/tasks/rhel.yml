@@ -26,22 +26,20 @@
     - "/etc/nginx/sites-available"
     - "/etc/nginx/sites-enabled"
 
-- name: MODIFY DEFAULT NGINX CONFIG
+- name: "SET FACT FOR CERT PATH - RHEL"
+  set_fact:
+    cert_path: "/etc/pki/tls"
+
+- name: "GENERATE NGINX CONFIG FILE - RHEL"
   ansible.builtin.template:
-    src: "nginx.conf"
+    src: "nginx_rhel_base.conf"
     dest: "/etc/nginx/nginx.conf"
     owner: "root"
     group: "root"
     mode: 0644
-  notify:
-    - "RESTART NGINX"
 
 - name: "SELINUX - ALLOW NGINX TO COMMMUNICATE WITH NAUTOBOT"
   ansible.posix.seboolean:
     name: "httpd_can_network_connect"
     state: yes
     persistent: yes
-
-- name: "SET FACT FOR CERT PATH - RHEL"
-  set_fact:
-    cert_path: "/etc/pki/tls"

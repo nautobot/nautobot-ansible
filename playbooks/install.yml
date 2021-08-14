@@ -6,7 +6,7 @@
   vars:
     nautobot_db_username: "nautobot"
     nautobot_db_password: "insecure_password" # This should be changed
-    redis_password: "insecure_redis_password" # This should be changed
+    # redis_password: "insecure_redis_password" # This should be changed
   tasks:
     - name: "SET SHORT FACTS"
       set_fact:
@@ -61,7 +61,6 @@
             name: "geerlingguy.redis"
           vars:
             redis_databases: 2
-            redis_requirepass: "{{ redis_password | default(omit) }}"
 
         - name: "INCLUDE ROLE - POSTGRESQL"
           when:
@@ -69,7 +68,7 @@
           include_role:
             name: "geerlingguy.postgresql"
           vars:
-            postgresql_version: 10
+            postgresql_version: 12
             postgresql_packages:
               - "postgresql10"
               - "postgresql10-server"
@@ -91,7 +90,7 @@
           include_role:
             name: "geerlingguy.postgresql"
           vars:
-            postgresql_version: 10
+            postgresql_version: 12
             postgresql_packages:
               - "postgresql"
               - "postgresql-server"
@@ -112,7 +111,7 @@
           include_role:
             name: "geerlingguy.postgresql"
           vars:
-            postgresql_version: 10
+            postgresql_version: 12
             postgresql_databases:
               - name: "nautobot"
             postgresql_users:
@@ -124,7 +123,6 @@
             name: "geerlingguy.redis"
           vars:
             redis_databases: 2
-            redis_requirepass: "{{ redis_password | default(omit) }}"
 
     - name: "INCLUDE NAUTOBOT ROLE"
       include_role:

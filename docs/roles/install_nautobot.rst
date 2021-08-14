@@ -45,9 +45,9 @@ Required Variables
 The variables required need to be defined in the inventory or the
 playbook for the host.
 
-==================== ======= ==================================
+==================== ======= ==================================================================
 Variable Name        Default Description
-==================== ======= ==================================
+==================== ======= ==================================================================
 cert_country                 Country for the certificate
 cert_state                   State for the certificate
 cert_city                    City for the certificate
@@ -56,7 +56,8 @@ nautobot_db_username         Username for the Nautobot database
 nautobot_db_password         Password for the Nautobot database
 nautobot_db_name             Name of the Nautobot database
 redis_password               Password for the redis database
-==================== ======= ==================================
+allowed_hosts                Comma separated list of hosts for the Django Allowed Hosts setting
+==================== ======= ==================================================================
 
 Optional Variables
 ------------------

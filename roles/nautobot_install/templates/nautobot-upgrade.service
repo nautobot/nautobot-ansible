@@ -7,6 +7,7 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 Environment="NAUTOBOT_ROOT=/opt/nautobot"
+EnvironmentFile=/opt/nautobot/nautobot.env
 
 User=nautobot
 Group=nautobot

@@ -4,6 +4,17 @@
 
 To keep the code simple, we only officially support the two latest releases of Nautobot and don't guarantee backwards compatibility beyond that.
 
+## Nautobot Roles
+
+There are two roles that provide the model to handle a Nautobot installation onto an OS. The roles are used in conjunction with other roles provided by Geerlingguy, Redis and Postgres.
+
+### Nautobot Install
+
+The Nautobot Install role is used to install just the application. The currently supported installation method is to leverage Postgres, with a future feature request to support MySQL support as well.
+
+### Nautobot Web
+
+This role installs NGINX to handle the web application front end. This is an optional add on that is currently _recommended_ but is not required.
 ## Requirements
 
 - Nautobot 1.0.0+ or the two latest Nautobot releases

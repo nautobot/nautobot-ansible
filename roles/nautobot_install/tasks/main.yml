@@ -94,6 +94,16 @@
   tags:
     - "nautobot"
 
+- name: "DEPLOY ENVIRONMENT VARIABLE FILE"
+  ansible.builtin.template:
+    src: "nautobot.env.j2"
+    dest: "/opt/nautobot/nautobot.env"
+    owner: "nautobot"
+    group: "nautobot"
+    mode: 0600
+  tags:
+    - "nautobot"
+
 - name: "SET OWNERSHIP ON NAUTOBOT HOME"
   ansible.builtin.file:
     name: "/opt/nautobot"
