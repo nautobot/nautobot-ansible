@@ -7,13 +7,32 @@
 ### PYNAUTOBOT_POWER_OUTLET_TEMPLATE
 ##
 ##
+- name: "POWER_PORT_TEMPLATE 0: Create device type for testing power ports"
+  networktocode.nautobot.device_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: Device Type Power Outlet
+    manufacturer: Test Manufacturer
+    state: present
+
+- name: "POWER_PORT_TEMPLATE 1: Necessary info creation"
+  networktocode.nautobot.power_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port Template - Outlet
+    device_type: Device Type Power Outlet
+    state: present
+
+- set_fact:
+    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=device-type-power-outlet') }}"
+    power_port_template: '{{ lookup(''networktocode.nautobot.lookup'', ''power-port-templates'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Power Port Template - Outlet"'') }}'
+
 - name: "POWER_OUTLET_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.power_outlet_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Outlet Template
-      device_type: Device Type Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Outlet Template
+    device_type: Device Type Power Outlet
     state: present
   register: test_one
 
@@ -24,16 +43,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['power_outlet_template']['name'] == "Power Outlet Template"
-      - test_one['power_outlet_template']['device_type'] == 8
+      - test_one['power_outlet_template']['device_type'] == device_type['key']
       - test_one['msg'] == "power_outlet_template Power Outlet Template created"
 
 - name: "POWER_OUTLET_TEMPLATE 2: Create duplicate"
   networktocode.nautobot.power_outlet_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Outlet Template
-      device_type: Device Type Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Outlet Template
+    device_type: Device Type Power Outlet
     state: present
   register: test_two
 
@@ -42,19 +60,18 @@
     that:
       - not test_two['changed']
       - test_two['power_outlet_template']['name'] == "Power Outlet Template"
-      - test_two['power_outlet_template']['device_type'] == 8
+      - test_two['power_outlet_template']['device_type'] == device_type['key']
       - test_two['msg'] == "power_outlet_template Power Outlet Template already exists"
 
 - name: "POWER_OUTLET_TEMPLATE 3: Update power_outlet_template with other fields"
   networktocode.nautobot.power_outlet_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Outlet Template
-      device_type: Device Type Power Tests
-      type: ita-e
-      power_port: Power Port
-      feed_leg: B
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Outlet Template
+    device_type: Device Type Power Outlet
+    type: ita-e
+    power_port_template: Power Port Template - Outlet
+    feed_leg: B
     state: present
   register: test_three
 
@@ -63,22 +80,21 @@
     that:
       - test_three is changed
       - test_three['diff']['after']['type'] == "ita-e"
-      - test_three['diff']['after']['power_port'] == 1
+      - test_three['diff']['after']['power_port'] == power_port_template['key']
       - test_three['diff']['after']['feed_leg'] == "B"
       - test_three['power_outlet_template']['name'] == "Power Outlet Template"
-      - test_three['power_outlet_template']['device_type'] == 8
+      - test_three['power_outlet_template']['device_type'] == device_type['key']
       - test_three['power_outlet_template']['type'] == "ita-e"
-      - test_three['power_outlet_template']['power_port'] == 1
+      - test_three['power_outlet_template']['power_port'] == power_port_template['key']
       - test_three['power_outlet_template']['feed_leg'] == "B"
       - test_three['msg'] == "power_outlet_template Power Outlet Template updated"
 
 - name: "POWER_OUTLET_TEMPLATE 4: Create Power Outlet Template for Delete Test"
   networktocode.nautobot.power_outlet_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Outlet Template 2
-      device_type: Device Type Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Outlet Template 2
+    device_type: Device Type Power Outlet
     state: present
   register: test_four
 
@@ -89,16 +105,15 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['power_outlet_template']['name'] == "Power Outlet Template 2"
-      - test_four['power_outlet_template']['device_type'] == 8
+      - test_four['power_outlet_template']['device_type'] == device_type['key']
       - test_four['msg'] == "power_outlet_template Power Outlet Template 2 created"
 
 - name: "POWER_OUTLET_TEMPLATE 5: Delete Power Outlet Template"
   networktocode.nautobot.power_outlet_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Outlet Template 2
-      device_type: Device Type Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Outlet Template 2
+    device_type: Device Type Power Outlet
     state: absent
   register: test_five
 

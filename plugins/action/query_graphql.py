@@ -4,9 +4,16 @@ from __future__ import absolute_import, division, print_function
 
 import os
 
+from ansible.module_utils.six import raise_from
 from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
-import pynautobot
+
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotApiBase,
@@ -100,6 +107,12 @@ class ActionModule(ActionBase):
             tmp ([type], optional): [description]. Defaults to None.
             task_vars ([type], optional): [description]. Defaults to None.
         """
+        if PYNAUTOBOT_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
+            )
+
         self._supports_check_mode = False
         self._supports_async = False
 

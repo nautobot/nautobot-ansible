@@ -73,6 +73,7 @@ options:
       - Any tags that the cluster may need to be associated with
     required: false
     type: list
+    elements: raw
   custom_fields:
     description:
       - must exist in Nautobot
@@ -177,7 +178,7 @@ def main():
             site=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

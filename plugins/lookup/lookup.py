@@ -19,9 +19,22 @@ from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
 from ansible.parsing.splitter import parse_kv, split_args
 from ansible.utils.display import Display
+from ansible.module_utils.six import raise_from
 
-import pynautobot
-import requests
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
+
+try:
+    import requests
+except ImportError as imp_exc:
+    REQUESTS_IMPORT_ERROR = imp_exc
+else:
+    REQUESTS_IMPORT_ERROR = None
+
 
 __metaclass__ = type
 
@@ -164,6 +177,7 @@ def get_endpoint(nautobot, term):
         "power-connections": {"endpoint": nautobot.dcim.power_connections},
         "power-outlet-templates": {"endpoint": nautobot.dcim.power_outlet_templates},
         "power-outlets": {"endpoint": nautobot.dcim.power_outlets},
+        "power-panels": {"endpoint": nautobot.dcim.power_panels},
         "power-port-templates": {"endpoint": nautobot.dcim.power_port_templates},
         "power-ports": {"endpoint": nautobot.dcim.power_ports},
         "prefixes": {"endpoint": nautobot.ipam.prefixes},
@@ -179,6 +193,7 @@ def get_endpoint(nautobot, term):
         "roles": {"endpoint": nautobot.ipam.roles},
         "services": {"endpoint": nautobot.ipam.services},
         "sites": {"endpoint": nautobot.dcim.sites},
+        "statuses": {"endpoint": nautobot.extras.statuses},
         "tags": {"endpoint": nautobot.extras.tags},
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
         "tenants": {"endpoint": nautobot.tenancy.tenants},
@@ -272,6 +287,16 @@ class LookupModule(LookupBase):
     """
 
     def run(self, terms, variables=None, **kwargs):
+        if PYNAUTOBOT_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
+            )
+        if REQUESTS_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("requests must be installed to use this plugin"),
+                REQUESTS_IMPORT_ERROR,
+            )
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")

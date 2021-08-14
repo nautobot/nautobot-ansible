@@ -1,0 +1,1 @@
+plugins/inventory/inventory.py pylint:isinstance-second-argument-not-valid-type # Bug that requires newer version (2.7.5) of pylint: https://github.com/PyCQA/pylint/issues/3507

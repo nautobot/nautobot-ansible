@@ -4,14 +4,16 @@
 ### PYNAUTOBOT_DEVICE_INTERFACE_TEMPLATE
 ##
 ##
+- set_fact:
+    dt_arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=arista-test') }}"
+
 - name: "1 - Interface with required information"
   networktocode.nautobot.device_interface_template:
-    url: "http://localhost:32768"
-    token: "0123456789abcdef0123456789abcdef01234567"
-    data:
-      device_type: Arista Test
-      name: 10GBASE-T (10GE)
-      type: 10gbase-t
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Arista Test
+    name: 10GBASE-T (10GE)
+    type: 10gbase-t
   register: test_one
 
 - name: "1 - ASSERT"
@@ -22,18 +24,17 @@
       - test_one['diff']['before']['state'] == 'absent'
       - test_one['diff']['after']['state'] == 'present'
       - test_one['interface_template']['name'] == "10GBASE-T (10GE)"
-      - test_one['interface_template']['device_type'] == 2
+      - test_one['interface_template']['device_type'] == dt_arista['key']
       - test_one['interface_template']['type'] == '10gbase-t'
 
 - name: "2 - Update 10GBASE-T (10GE)"
   networktocode.nautobot.device_interface_template:
-    url: "http://localhost:32768"
-    token: "0123456789abcdef0123456789abcdef01234567"
-    data:
-      device_type: Arista Test
-      name: 10GBASE-T (10GE)
-      type: 10gbase-t
-      mgmt_only: true
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Arista Test
+    name: 10GBASE-T (10GE)
+    type: 10gbase-t
+    mgmt_only: true
   register: test_two
 
 - name: "2 - ASSERT"
@@ -43,17 +44,16 @@
       - test_two['msg'] == "interface_template 10GBASE-T (10GE) updated"
       - test_two['diff']['after']['mgmt_only'] == true
       - test_two['interface_template']['name'] == "10GBASE-T (10GE)"
-      - test_two['interface_template']['device_type'] == 2
+      - test_two['interface_template']['device_type'] == dt_arista['key']
       - test_two['interface_template']['mgmt_only'] == true
 
 - name: "3 - Delete interface template 10GBASE-T (10GE)"
   networktocode.nautobot.device_interface_template:
-    url: "http://localhost:32768"
-    token: "0123456789abcdef0123456789abcdef01234567"
-    data:
-      device_type: Arista Test
-      name: 10GBASE-T (10GE)
-      type: 10gbase-t
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Arista Test
+    name: 10GBASE-T (10GE)
+    type: 10gbase-t
     state: absent
   register: test_three
 
@@ -67,13 +67,12 @@
 
 - name: "4 - Create LAG with several specified options"
   networktocode.nautobot.device_interface_template:
-    url: "http://localhost:32768"
-    token: "0123456789abcdef0123456789abcdef01234567"
-    data:
-      device_type: Arista Test
-      name: port channel template
-      type: lag
-      mgmt_only: false
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Arista Test
+    name: port channel template
+    type: lag
+    mgmt_only: false
     state: present
   register: test_four
 
@@ -85,18 +84,17 @@
       - test_four['diff']['before']['state'] == 'absent'
       - test_four['diff']['after']['state'] == 'present'
       - test_four['interface_template']['name'] == "port channel template"
-      - test_four['interface_template']['device_type'] == 2
+      - test_four['interface_template']['device_type'] == dt_arista['key']
       - test_four['interface_template']['type'] == "lag"
       - test_four['interface_template']['mgmt_only'] == false
 
 - name: "5 - Duplicate Interface Template port channel template"
   networktocode.nautobot.device_interface_template:
-    url: "http://localhost:32768"
-    token: "0123456789abcdef0123456789abcdef01234567"
-    data:
-      device_type: Arista Test
-      name: port channel template
-      type: lag
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Arista Test
+    name: port channel template
+    type: lag
   register: test_five
 
 - name: "5 - ASSERT"
@@ -105,5 +103,5 @@
       - not test_five['changed']
       - test_five['msg'] == "interface_template port channel template already exists"
       - test_five['interface_template']['name'] == "port channel template"
-      - test_five['interface_template']['device_type'] == 2
+      - test_five['interface_template']['device_type'] == dt_arista['key']
       - test_five['interface_template']['type'] == "lag"

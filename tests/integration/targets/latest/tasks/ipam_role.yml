@@ -6,10 +6,9 @@
 ##
 - name: "IPAM_ROLE 1: Necessary info creation"
   networktocode.nautobot.ipam_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test IPAM Role"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test IPAM Role"
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "IPAM_ROLE 2: Create duplicate"
   networktocode.nautobot.ipam_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test IPAM Role"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test IPAM Role"
     state: present
   register: test_two
 
@@ -42,11 +40,10 @@
 
 - name: "IPAM_ROLE 3: ASSERT - Update"
   networktocode.nautobot.ipam_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test IPAM Role"
-      weight: 4096
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test IPAM Role"
+    weight: 4096
     state: present
   register: test_three
 
@@ -62,10 +59,9 @@
 
 - name: "IPAM_ROLE 4: ASSERT - Delete"
   networktocode.nautobot.ipam_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test IPAM Role
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test IPAM Role
     state: absent
   register: test_four
 
@@ -79,10 +75,9 @@
 
 - name: "IPAM_ROLE 5: ASSERT - Delete non existing"
   networktocode.nautobot.ipam_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test IPAM Role
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test IPAM Role
     state: absent
   register: test_five
 

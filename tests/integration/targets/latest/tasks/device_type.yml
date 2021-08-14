@@ -4,14 +4,16 @@
 ### PYNAUTOBOT_DEVICE_TYPE
 ##
 ##
+- set_fact:
+    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-manufacturer') }}"
+
 - name: "DEVICE_TYPE 1: Necessary info creation"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      slug: test-device-type
-      model: ws-test-3750
-      manufacturer: Test Manufacturer
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    slug: test-device-type
+    model: ws-test-3750
+    manufacturer: Test Manufacturer
     state: present
   register: test_one
 
@@ -23,17 +25,16 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['device_type']['slug'] == "test-device-type"
       - test_one['device_type']['model'] == "ws-test-3750"
-      - test_one['device_type']['manufacturer'] == 3
+      - test_one['device_type']['manufacturer'] == manufacturer['key']
       - test_one['msg'] == "device_type test-device-type created"
 
 - name: "DEVICE_TYPE 2: Create duplicate"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      slug: test-device-type
-      model: "ws-test-3750"
-      manufacturer: Test Manufacturer
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    slug: test-device-type
+    model: "ws-test-3750"
+    manufacturer: Test Manufacturer
     state: present
   register: test_two
 
@@ -43,21 +44,20 @@
       - not test_two['changed']
       - test_one['device_type']['slug'] == "test-device-type"
       - test_one['device_type']['model'] == "ws-test-3750"
-      - test_one['device_type']['manufacturer'] == 3
+      - test_one['device_type']['manufacturer'] == manufacturer['key']
       - test_two['msg'] == "device_type test-device-type already exists"
 
 - name: "DEVICE_TYPE 3: ASSERT - Update"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      slug: test-device-type
-      model: ws-test-3750
-      manufacturer: Test Manufacturer
-      part_number: ws-3750g-v2
-      u_height: 1
-      is_full_depth: false
-      subdevice_role: parent
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    slug: test-device-type
+    model: ws-test-3750
+    manufacturer: Test Manufacturer
+    part_number: ws-3750g-v2
+    u_height: 1
+    is_full_depth: false
+    subdevice_role: parent
     state: present
   register: test_three
 
@@ -70,7 +70,7 @@
       - test_three['diff']['after']['subdevice_role'] == "parent"
       - test_three['device_type']['slug'] == "test-device-type"
       - test_three['device_type']['model'] == "ws-test-3750"
-      - test_three['device_type']['manufacturer'] == 3
+      - test_three['device_type']['manufacturer'] == manufacturer['key']
       - test_three['device_type']['is_full_depth'] == false
       - test_three['device_type']['part_number'] == "ws-3750g-v2"
       - test_three['device_type']['subdevice_role'] == "parent"
@@ -78,10 +78,9 @@
 
 - name: "DEVICE_TYPE 4: ASSERT - Delete"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      model: test-device-type
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: test-device-type
     state: absent
   register: test_four
 
@@ -95,10 +94,9 @@
 
 - name: "DEVICE_TYPE 5: ASSERT - Delete non existing"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      model: "Test Device Type"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: "Test Device Type"
     state: absent
   register: test_five
 
@@ -111,12 +109,11 @@
 
 - name: "DEVICE_TYPE 6: Without Slug"
   networktocode.nautobot.device_type:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      model: "WS Test 3850"
-      manufacturer: "Test Manufacturer"
-      subdevice_role: "parent"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: "WS Test 3850"
+    manufacturer: "Test Manufacturer"
+    subdevice_role: "parent"
     state: present
   register: test_six
 
@@ -128,5 +125,5 @@
       - test_six['diff']['after']['state'] == "present"
       - test_six['device_type']['slug'] == "ws-test-3850"
       - test_six['device_type']['model'] == "WS Test 3850"
-      - test_six['device_type']['manufacturer'] == 3
+      - test_six['device_type']['manufacturer'] == manufacturer['key']
       - test_six['msg'] == "device_type WS Test 3850 created"

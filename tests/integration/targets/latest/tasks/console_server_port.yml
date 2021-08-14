@@ -7,13 +7,15 @@
 ### PYNAUTOBOT_CONSOLE_SERVER_PORT
 ##
 ##
+- set_fact:
+    test100: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
+
 - name: "CONSOLE_SERVER_PORT 1: Necessary info creation"
   networktocode.nautobot.console_server_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port
-      device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port
+    device: test100
     state: present
   register: test_one
 
@@ -24,16 +26,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['console_server_port']['name'] == "Console Server Port"
-      - test_one['console_server_port']['device'] == 1
+      - test_one['console_server_port']['device'] == test100['key']
       - test_one['msg'] == "console_server_port Console Server Port created"
 
 - name: "CONSOLE_SERVER_PORT 2: Create duplicate"
   networktocode.nautobot.console_server_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port
-      device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port
+    device: test100
     state: present
   register: test_two
 
@@ -42,18 +43,17 @@
     that:
       - not test_two['changed']
       - test_two['console_server_port']['name'] == "Console Server Port"
-      - test_two['console_server_port']['device'] == 1
+      - test_two['console_server_port']['device'] == test100['key']
       - test_two['msg'] == "console_server_port Console Server Port already exists"
 
 - name: "CONSOLE_SERVER_PORT 3: Update Console Server Port with other fields"
   networktocode.nautobot.console_server_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port
-      device: test100
-      type: usb-a
-      description: test description
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port
+    device: test100
+    type: usb-a
+    description: test description
     state: present
   register: test_three
 
@@ -64,18 +64,17 @@
       - test_three['diff']['after']['type'] == "usb-a"
       - test_three['diff']['after']['description'] == "test description"
       - test_three['console_server_port']['name'] == "Console Server Port"
-      - test_three['console_server_port']['device'] == 1
+      - test_three['console_server_port']['device'] == test100['key']
       - test_three['console_server_port']['type'] == "usb-a"
       - test_three['console_server_port']['description'] == "test description"
       - test_three['msg'] == "console_server_port Console Server Port updated"
 
 - name: "CONSOLE_SERVER_PORT 4: Create Console Server Port for Delete Test"
   networktocode.nautobot.console_server_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port 2
-      device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port 2
+    device: test100
     state: present
   register: test_four
 
@@ -86,16 +85,15 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['console_server_port']['name'] == "Console Server Port 2"
-      - test_four['console_server_port']['device'] == 1
+      - test_four['console_server_port']['device'] == test100['key']
       - test_four['msg'] == "console_server_port Console Server Port 2 created"
 
 - name: "CONSOLE_SERVER_PORT 5: Delete Console Server Port"
   networktocode.nautobot.console_server_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Console Server Port 2
-      device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Server Port 2
+    device: test100
     state: absent
   register: test_five
 

@@ -1,16 +1,18 @@
 ---
 #
 # ADD (CHECK MODE)
+- set_fact:
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Check Mode - Add all fields except description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      tenant: "Test Tenant"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    tenant: "Test Tenant"
+    tags:
+      - first
+      - second
   check_mode: yes
   register: test_results
 
@@ -19,7 +21,7 @@
     that:
       - test_results is changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['diff']['after']['state'] == "present"
       - test_results['diff']['before']['state'] == "absent"
@@ -28,14 +30,13 @@
 # ADD
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Add all fields except description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      tenant: "Test Tenant"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    tenant: "Test Tenant"
+    tags:
+      - first
+      - second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: (ASSERT) Add all fields except description"
@@ -43,7 +44,7 @@
     that:
       - test_results is changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['diff']['after']['state'] == "present"
       - test_results['diff']['before']['state'] == "absent"
@@ -52,14 +53,13 @@
 # ADD (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      tenant: "Test Tenant"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    tenant: "Test Tenant"
+    tags:
+      - first
+      - second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
@@ -67,7 +67,7 @@
     that:
       - test_results is not changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['msg'] == "route_target 65000:65001 already exists"
 
@@ -75,15 +75,14 @@
 # UPDATE (CHECK MODE)
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: Check Mode - Update description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      description: "NEW DESCRIPTION"
-      tenant: "Test Tenant"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    description: "NEW DESCRIPTION"
+    tenant: "Test Tenant"
+    tags:
+      - first
+      - second
   check_mode: yes
   register: test_results
 
@@ -92,7 +91,7 @@
     that:
       - test_results is changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['after']['description'] == "NEW DESCRIPTION"
@@ -102,15 +101,14 @@
 # UPDATE
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: Update description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      tenant: "Test Tenant"
-      description: "NEW DESCRIPTION"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    tenant: "Test Tenant"
+    description: "NEW DESCRIPTION"
+    tags:
+      - first
+      - second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: (ASSERT) Update description"
@@ -118,7 +116,7 @@
     that:
       - test_results is changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['after']['description'] == "NEW DESCRIPTION"
@@ -128,15 +126,14 @@
 # UPDATE (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
-      tenant: "Test Tenant"
-      description: "NEW DESCRIPTION"
-      tags:
-        - first
-        - second
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
+    tenant: "Test Tenant"
+    description: "NEW DESCRIPTION"
+    tags:
+      - first
+      - second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
@@ -144,7 +141,7 @@
     that:
       - test_results is not changed
       - test_results['route_target']['name'] == "65000:65001"
-      - test_results['route_target']['tenant'] == 1
+      - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
       - test_results['msg'] == "route_target 65000:65001 already exists"
@@ -153,10 +150,9 @@
 # DELETE (CHECK MODE)
 - name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: Check Mode - Delete route target"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
     state: absent
   check_mode: yes
   register: test_results
@@ -172,10 +168,9 @@
 # DELETE
 - name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: Delete route target"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
     state: absent
   register: test_results
 
@@ -190,10 +185,9 @@
 # DELETE (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
   networktocode.nautobot.route_target:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "65000:65001"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "65000:65001"
     state: absent
   register: test_results
 

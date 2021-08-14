@@ -111,6 +111,7 @@ options:
       - Any tags that the interface may need to be associated with
     required: false
     type: list
+    elements: raw
   update_vc_child:
     type: bool
     default: False
@@ -259,13 +260,15 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    device_interface = NautobotDcimModule(module, NB_INTERFACES)
+    device_interface = NautobotDcimModule(
+        module, NB_INTERFACES, remove_keys=["update_vc_child"]
+    )
     device_interface.run()
 
 

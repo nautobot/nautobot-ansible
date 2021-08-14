@@ -68,6 +68,7 @@ options:
       - Any tags that the tenant may need to be associated with
     required: false
     type: list
+    elements: raw
   custom_fields:
     description:
       - must exist in Nautobot
@@ -166,7 +167,7 @@ def main():
             description=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
             slug=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )
