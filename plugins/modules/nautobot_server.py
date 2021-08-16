@@ -148,21 +148,6 @@ project_path:
   returned: always
   type: str
   sample: /opt/nautobot
-virtualenv:
-  description: An optional path to a I(virtualenv) installation to use while running the nautobot-server application.
-  returned: when defined
-  type: str
-  sample: /opt/nautobot/.venv
-settings:
-  description: The Python path to the application's settings module, such as 'myapp.settings'.
-  returned: when defined
-  type: str
-  sample: myapp.settings
-pythonpath:
-  description: A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
-  returned: when defined
-  type: str
-  sample: /usr/settings
 """
 
 import os
