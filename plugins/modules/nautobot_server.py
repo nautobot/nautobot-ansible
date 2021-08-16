@@ -64,6 +64,11 @@ options:
     required: false
     aliases: [app_path, chdir]
     default: /opt/nautobot
+  settings:
+    description:
+      - The Python path to the application's settings module, such as 'myapp.settings'.
+    required: false
+    type: path
   pythonpath:
     description:
       - A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
@@ -76,11 +81,16 @@ options:
     type: path
     required: false
     aliases: [virtual_env]
+  db_username:
+    description:
+      - Database username used in Nautobot.
+    type: str
+    required: false
   db_password:
     description:
       - Database password used in Nautobot.
     type: str
-    required: true
+    required: false
 notes:
   - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
@@ -95,14 +105,6 @@ EXAMPLES = r"""
         email: "admin93@example.com"
         username: "superadmin7"
       db_password: "{{ db_password }}"
-  - name: Migrate
-    networktocode.nautobot.nautobot_server:
-      command: "migrate"
-      db_password: "{{ db_password }}"
-  - name: Make Migrations
-    networktocode.nautobot.nautobot_server:
-      command: "makemigrations"
-      db_password: "{{ db_password }}"
   - name: Collectstatic
     networktocode.nautobot.nautobot_server:
       command: "collectstatic"
@@ -110,7 +112,6 @@ EXAMPLES = r"""
   - name: Post Upgrade
     networktocode.nautobot.nautobot_server:
       command: "post_upgrade"
-      db_password: "{{ db_password }}"
   - name: Make Migrations for Plugin
     networktocode.nautobot.nautobot_server:
       command: "makemigrations"
@@ -123,6 +124,7 @@ EXAMPLES = r"""
         verbosity: 3
       flags: ["merge"]
       positional_args: ["my_plugin_name"]
+      db_username: "{{ db_username }}"
       db_password: "{{ db_password }}"
 """
 
@@ -152,6 +154,11 @@ virtualenv:
   returned: when defined
   type: str
   sample: /opt/nautobot/.venv
+settings:
+  description: The Python path to the application's settings module, such as 'myapp.settings'.
+  returned: when defined
+  type: str
+  sample: myapp.settings
 pythonpath:
   description: A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory.
   returned: when defined
@@ -173,24 +180,6 @@ def _fail(module, cmd, out, err, **kwargs):
     if err:
         msg += "\n:stderr: %s" % (err,)
     module.fail_json(cmd=cmd, msg=msg, **kwargs)
-
-
-def _ensure_virtualenv(module):
-    """Ensure that virtualenv is available."""
-    # If no custom virtualenv is defined, we assume it's in the project_path
-    venv_param = module.params["virtualenv"]
-    if venv_param is None:
-        # If no custom virtualenv is defined, we assume it's in the project_path
-        venv_param = module.params["project_path"]
-
-    vbin = os.path.join(venv_param, "bin")
-    activate = os.path.join(vbin, "activate")
-
-    if not os.path.exists(activate):
-        _fail(module, activate, "Virtualenv doens't exist.", f"{activate} not found.")
-
-    os.environ["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
-    os.environ["VIRTUAL_ENV"] = venv_param
 
 
 ### Helper functions to customize the output state ###
@@ -253,9 +242,11 @@ def main():
             project_path=dict(
                 default="/opt/nautobot", type="path", aliases=["app_path", "chdir"],
             ),
+            settings=dict(required=False, type="path",),
             pythonpath=dict(required=False, type="path", aliases=["python_path"]),
             virtualenv=dict(required=False, type="path", aliases=["virtual_env"]),
-            db_password=dict(required=True, type="str", no_log=True),
+            db_username=dict(required=False, type="str"),
+            db_password=dict(required=False, type="str", no_log=True),
         ),
         required_if=required_if,
     )
@@ -265,18 +256,32 @@ def main():
     flags = module.params["flags"]
     positional_args = module.params["positional_args"]
     project_path = module.params["project_path"]
+    venv_param = module.params["virtualenv"]
 
-    _ensure_virtualenv(module)
+    db_username = module.params["db_username"]
+    db_password = module.params["db_password"]
 
-    cmd = "nautobot-server %s" % (command,)
-
+    # Update ENV Variables to run `nautobot-server` command
     environ_vars = {}
     if project_path:
         environ_vars["NAUTOBOT_ROOT"] = project_path
-
-    db_password = module.params["db_password"]
+    if db_username:
+        environ_vars["NAUTOBOT_DB_USERNAME"] = db_username
     if db_password:
         environ_vars["NAUTOBOT_DB_PASSWORD"] = db_password
+    if venv_param:
+        # Update PATH if custom virtualenv is provided
+        vbin = os.path.join(venv_param, "bin")
+        activate = os.path.join(vbin, "activate")
+        if not os.path.exists(activate):
+            _fail(
+                module, activate, "Virtualenv doens't exist.", f"{activate} not found."
+            )
+        environ_vars["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
+
+    # Build the `nautobot-server` command, taking into account the 3 types of arguments, flags, arguments and
+    # positional arguments (at the end, and in specific order per command)
+    cmd = "nautobot-server %s" % (command,)
 
     if command in commands_with_noinput:
         cmd = "%s --noinput" % cmd
@@ -293,6 +298,7 @@ def main():
     for value in positional_args:
         cmd += " %s" % (value,)
 
+    # Run `nautobot-server` command and handle the command output to understand the error and provide useful info
     rc, out, err = module.run_command(
         cmd, cwd=project_path, environ_update=environ_vars
     )
@@ -312,7 +318,7 @@ def main():
                     module,
                     cmd,
                     err,
-                    "No DB password provided, you must supply 'db_password' for this command",
+                    "No DB password available in the nautobot-server, you must supply 'db_password' for this command",
                 )
             _fail(module, cmd, out, err, path=os.environ["PATH"], syspath=sys.path)
 

@@ -87,17 +87,6 @@ class TestNautobotServer(unittest.TestCase):
                 {
                     "command": "createsuperuser",
                     "args": {"username": "admin", "email": "admin@example.com"},
-                },
-                AnsibleFailJson,
-                "",
-                False,
-                [],
-                {},
-            ],
-            [
-                {
-                    "command": "createsuperuser",
-                    "args": {"username": "admin", "email": "admin@example.com"},
                     "db_password": "secret_password",
                     "project_path": "/some/other",
                 },
@@ -155,7 +144,6 @@ class TestNautobotServer(unittest.TestCase):
                     },
                 },
             ],
-            [{"command": "migrate",}, AnsibleFailJson, "", False, [], {},],
             [
                 {"command": "migrate", "db_password": "secret_password",},
                 AnsibleExitJson,
@@ -203,7 +191,6 @@ class TestNautobotServer(unittest.TestCase):
                     },
                 },
             ],
-            [{"command": "makemigrations",}, AnsibleFailJson, "", False, [], {},],
             [
                 {"command": "makemigrations", "db_password": "secret_password",},
                 AnsibleExitJson,
@@ -250,7 +237,6 @@ class TestNautobotServer(unittest.TestCase):
                     },
                 },
             ],
-            [{"command": "collectstatic",}, AnsibleFailJson, "", False, [], {},],
             [
                 {"command": "collectstatic", "db_password": "secret_password",},
                 AnsibleExitJson,
@@ -265,7 +251,6 @@ class TestNautobotServer(unittest.TestCase):
                     },
                 },
             ],
-            [{"command": "post_upgrade",}, AnsibleFailJson, "", False, [], {},],
             [
                 {"command": "post_upgrade", "db_password": "secret_password",},
                 AnsibleExitJson,
@@ -287,12 +272,7 @@ class TestNautobotServer(unittest.TestCase):
     ):
         set_module_args(module_args)
 
-        with patch.object(
-            basic.AnsibleModule, "run_command"
-        ) as mock_run_command, patch(
-            MOCKER_PATCH_PATH + "._ensure_virtualenv"
-        ) as mock_ensure_virtualenv:
-            mock_ensure_virtualenv.return_value = True
+        with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
             stderr = ""
             rc = 0
             mock_run_command.return_value = rc, stdout, stderr  # successful execution
