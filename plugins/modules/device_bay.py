@@ -63,6 +63,7 @@ options:
       - Any tags that the device bay may need to be associated with
     required: false
     type: list
+    elements: raw
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -150,7 +151,7 @@ def main():
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
             installed_device=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

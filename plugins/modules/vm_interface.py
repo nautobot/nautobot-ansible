@@ -88,6 +88,7 @@ options:
       - Any tags that the prefix may need to be associated with
     required: false
     type: list
+    elements: raw
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -191,7 +192,7 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

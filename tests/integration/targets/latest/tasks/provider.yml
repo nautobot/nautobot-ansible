@@ -6,10 +6,9 @@
 ##
 - name: "PYNAUTOBOT_PROVIDER 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.provider:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Provider One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "PYNAUTOBOT_PROVIDER 2: Duplicate"
   networktocode.nautobot.provider:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Provider One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
     state: present
   register: test_two
 
@@ -42,16 +40,15 @@
 
 - name: "PYNAUTOBOT_PROVIDER 3: Update provider with other fields"
   networktocode.nautobot.provider:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Provider One
-      asn: 65001
-      account: "200129104"
-      portal_url: http://provider.net
-      noc_contact: noc@provider.net
-      admin_contact: admin@provider.net
-      comments: "BAD PROVIDER"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    asn: 65001
+    account: "200129104"
+    portal_url: http://provider.net
+    noc_contact: noc@provider.net
+    admin_contact: admin@provider.net
+    comments: "BAD PROVIDER"
     state: present
   register: test_three
 
@@ -77,10 +74,9 @@
 
 - name: "PYNAUTOBOT_PROVIDER 4: Delete provider within nautobot"
   networktocode.nautobot.provider:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Provider One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
     state: absent
   register: test_four
 

@@ -109,7 +109,7 @@ options:
       - hdot-cx
     required: false
     type: str
-  power_port:
+  power_port_template:
     description:
       - The attached power port
     required: false
@@ -270,7 +270,7 @@ def main():
                 ],
                 type="str",
             ),
-            power_port=dict(required=False, type="raw"),
+            power_port_template=dict(required=False, type="raw"),
             feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
         )
     )

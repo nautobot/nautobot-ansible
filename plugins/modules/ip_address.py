@@ -128,6 +128,7 @@ options:
       - Any tags that the IP address may need to be associated with
     required: false
     type: list
+    elements: raw
   custom_fields:
     description:
       - must exist in Nautobot
@@ -303,7 +304,7 @@ def main():
                     virtual_machine=dict(required=False, type="str"),
                 ),
             ),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

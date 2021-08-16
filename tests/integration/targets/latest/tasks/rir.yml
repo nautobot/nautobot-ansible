@@ -6,10 +6,9 @@
 ##
 - name: "RIR 1: Necessary info creation"
   networktocode.nautobot.rir:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test RIR One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test RIR One
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "RIR 2: Create duplicate"
   networktocode.nautobot.rir:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test RIR One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test RIR One
     state: present
   register: test_two
 
@@ -42,11 +40,10 @@
 
 - name: "RIR 3: ASSERT - Update"
   networktocode.nautobot.rir:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test RIR One"
-      is_private: true
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test RIR One"
+    is_private: true
     state: present
   register: test_three
 
@@ -62,10 +59,9 @@
 
 - name: "RIR 4: ASSERT - Delete"
   networktocode.nautobot.rir:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test RIR One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test RIR One"
     state: absent
   register: test_four
 

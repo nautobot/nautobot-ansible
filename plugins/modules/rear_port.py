@@ -84,6 +84,7 @@ options:
       - Any tags that the rear port may need to be associated with
     required: false
     type: list
+    elements: raw
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -195,7 +196,7 @@ def main():
             ),
             positions=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

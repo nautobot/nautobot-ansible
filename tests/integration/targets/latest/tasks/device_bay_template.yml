@@ -4,13 +4,15 @@
 ### PYNAUTOBOT_DEVICE_BAY_TEMPLATE
 ##
 ##
+- set_fact:
+    nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=nexus-parent') }}"
+
 - name: "DEVICE_BAY_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.device_bay_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device_type: WS Test 3850
-      name: Device Bay Template One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Nexus Parent
+    name: Device Bay Template One
     state: present
   register: test_one
 
@@ -21,16 +23,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['device_bay_template']['name'] == "Device Bay Template One"
-      - test_one['device_bay_template']['device_type'] == 7
+      - test_one['device_bay_template']['device_type'] == nexus_parent['key']
       - test_one['msg'] == "device_bay_template Device Bay Template One created"
 
 - name: "DEVICE_BAY_TEMPLATE 2: Create duplicate"
   networktocode.nautobot.device_bay_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device_type: WS Test 3850
-      name: Device Bay Template One
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Nexus Parent
+    name: Device Bay Template One
     state: present
   register: test_two
 
@@ -39,16 +40,15 @@
     that:
       - not test_two['changed']
       - test_two['device_bay_template']['name'] == "Device Bay Template One"
-      - test_two['device_bay_template']['device_type'] == 7
+      - test_two['device_bay_template']['device_type'] == nexus_parent['key']
       - test_two['msg'] == "device_bay_template Device Bay Template One already exists"
 
 - name: "DEVICE_BAY_TEMPLATE 3: ASSERT - Create Device Bay Template for Delete Test"
   networktocode.nautobot.device_bay_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device_type: WS Test 3850
-      name: Device Bay Template Two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Nexus Parent
+    name: Device Bay Template Two
     state: present
   register: test_three
 
@@ -59,16 +59,15 @@
       - test_three['diff']['before']['state'] == "absent"
       - test_three['diff']['after']['state'] == "present"
       - test_three['device_bay_template']['name'] == "Device Bay Template Two"
-      - test_three['device_bay_template']['device_type'] == 7
+      - test_three['device_bay_template']['device_type'] == nexus_parent['key']
       - test_three['msg'] == "device_bay_template Device Bay Template Two created"
 
 - name: "DEVICE_BAY_TEMPLATE 4: ASSERT - Delete"
   networktocode.nautobot.device_bay_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Device Bay Template Two
-      device_type: WS Test 3850
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Device Bay Template Two
+    device_type: Nexus Parent
     state: absent
   register: test_four
 
@@ -77,5 +76,5 @@
     that:
       - test_four is changed
       - test_four['device_bay_template']['name'] == "Device Bay Template Two"
-      - test_four['device_bay_template']['device_type'] == 7
+      - test_four['device_bay_template']['device_type'] == nexus_parent['key']
       - test_four['msg'] == "device_bay_template Device Bay Template Two deleted"
