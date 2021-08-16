@@ -38,10 +38,8 @@ options:
     required: true
   args:
     description:
-      - |
-        A dictionary of the arguments used together with the command. Depending on the pre-defined type, the argument
-        can be a flag, an optional argument or a positional argument. If not defined in the code, the default
-        assumption is an optional argument, so "name_arg: value_arg" is translated to "--name_arg value_arg".
+      - A dictionary of the optional arguments and their values used together with the command.
+      - This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
     type: dict
     required: false
   positional_args:
