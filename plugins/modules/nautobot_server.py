@@ -38,8 +38,9 @@ options:
     required: true
   args:
     description:
-      - A dictionary of the optional arguments and their values used together with the command.
-      - This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
+      - |
+        A dictionary of the optional arguments and their values used together with the command.
+        This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
     type: dict
     required: false
   positional_args:
