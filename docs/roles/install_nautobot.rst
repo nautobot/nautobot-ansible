@@ -93,9 +93,9 @@ provided.
 +------------------------------+--------------+-----------------------+
 | Variable Name                | Default      | Description           |
 +==============================+==============+=======================+
-| os_family                    | ansible      | lower                 |
-|                              | _facts[      |                       |
-|                              | ‘os_family’] |                       |
+| os_family                    | ansible      | lower case name of os |
+|                              | _facts[      | family/distribution   |
+|                              | ‘os_family’] | redhat or debian      |
 +------------------------------+--------------+-----------------------+
 | os_version                   | ansible      | The major OS version, |
 |                              | _facts[‘dist | 7/8 for RHEL flavors, |
