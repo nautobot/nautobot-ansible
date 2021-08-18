@@ -4,13 +4,15 @@
 ### PYNAUTOBOT_RACK_GROUP
 ##
 ##
+- set_fact:
+    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
+
 - name: "RACK_GROUP 1: Necessary info creation"
   networktocode.nautobot.rack_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Group
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Group
+    site: Test Site
     state: present
   register: test_one
 
@@ -22,16 +24,15 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['rack_group']['name'] == "Rack Group"
       - test_one['rack_group']['slug'] == "rack-group"
-      - test_one['rack_group']['site'] == 1
+      - test_one['rack_group']['site'] == test_site['key']
       - test_one['msg'] == "rack_group Rack Group created"
 
 - name: "RACK_GROUP 2: Create duplicate"
   networktocode.nautobot.rack_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Group
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Group
+    site: Test Site
     state: present
   register: test_two
 
@@ -41,15 +42,14 @@
       - not test_two['changed']
       - test_two['rack_group']['name'] == "Rack Group"
       - test_two['rack_group']['slug'] == "rack-group"
-      - test_two['rack_group']['site'] == 1
+      - test_two['rack_group']['site'] == test_site['key']
       - test_two['msg'] == "rack_group Rack Group already exists"
 
 - name: "RACK_GROUP 3: ASSERT - Delete"
   networktocode.nautobot.rack_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Group
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Group
     state: absent
   register: test_three
 

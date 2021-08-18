@@ -4,13 +4,19 @@
 ### PYNAUTOBOT_CLUSTER
 ##
 ##
+- set_fact:
+    test_cluster_type: "{{ lookup('networktocode.nautobot.lookup', 'cluster-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-cluster-type') }}"
+    test_cluster_group: "{{ lookup('networktocode.nautobot.lookup', 'cluster-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-cluster-group') }}"
+    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+
 - name: "CLUSTER 1: Necessary info creation"
   networktocode.nautobot.cluster:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Cluster One"
-      cluster_type: "Test Cluster Type"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cluster One"
+    cluster_type: "Test Cluster Type"
     state: present
   register: test_one
 
@@ -21,16 +27,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['cluster']['name'] == "Test Cluster One"
-      - test_one['cluster']['type'] == 1
+      - test_one['cluster']['type'] == test_cluster_type['key']
       - test_one['msg'] == "cluster Test Cluster One created"
 
 - name: "CLUSTER 2: Create duplicate"
   networktocode.nautobot.cluster:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Cluster One"
-      cluster_type: "Test Cluster Type"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cluster One"
+    cluster_type: "Test Cluster Type"
     state: present
   register: test_two
 
@@ -39,22 +44,21 @@
     that:
       - not test_two['changed']
       - test_two['cluster']['name'] == "Test Cluster One"
-      - test_two['cluster']['type'] == 1
+      - test_two['cluster']['type'] == test_cluster_type['key']
       - test_two['msg'] == "cluster Test Cluster One already exists"
 
 - name: "CLUSTER 3: Update"
   networktocode.nautobot.cluster:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Cluster One"
-      cluster_type: "Test Cluster Type"
-      cluster_group: "Test Cluster Group"
-      site: "Test Site"
-      comments: "Updated cluster"
-      tenant: "Test Tenant"
-      tags:
-        - "Schnozzberry"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cluster One"
+    cluster_type: "Test Cluster Type"
+    cluster_group: "Test Cluster Group"
+    site: "Test Site"
+    comments: "Updated cluster"
+    tenant: "Test Tenant"
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_three
 
@@ -62,26 +66,25 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['group'] == 1
-      - test_three['diff']['after']['site'] == 1
+      - test_three['diff']['after']['group'] == test_cluster_group['key']
+      - test_three['diff']['after']['site'] == test_site['key']
       - test_three['diff']['after']['comments'] == "Updated cluster"
-      - test_three['diff']['after']['tags'][0] == 4
-      - test_three['diff']['after']['tenant'] == 1
+      - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
+      - test_three['diff']['after']['tenant'] == tenant['key']
       - test_three['cluster']['name'] == "Test Cluster One"
-      - test_three['cluster']['type'] == 1
-      - test_three['cluster']['group'] == 1
-      - test_three['cluster']['site'] == 1
+      - test_three['cluster']['type'] == test_cluster_type['key']
+      - test_three['cluster']['group'] == test_cluster_group['key']
+      - test_three['cluster']['site'] == test_site['key']
       - test_three['cluster']['comments'] == "Updated cluster"
-      - test_three['cluster']['tags'][0] == 4
-      - test_three['cluster']['tenant'] == 1
+      - test_three['cluster']['tags'][0] == tag_schnozzberry['key']
+      - test_three['cluster']['tenant'] == tenant['key']
       - test_three['msg'] == "cluster Test Cluster One updated"
 
 - name: "CLUSTER 4: ASSERT - Delete"
   networktocode.nautobot.cluster:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Cluster One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cluster One"
     state: absent
   register: test_four
 
@@ -90,9 +93,9 @@
     that:
       - test_four is changed
       - test_four['cluster']['name'] == "Test Cluster One"
-      - test_four['cluster']['type'] == 1
-      - test_four['cluster']['group'] == 1
-      - test_four['cluster']['site'] == 1
+      - test_four['cluster']['type'] == test_cluster_type['key']
+      - test_four['cluster']['group'] == test_cluster_group['key']
+      - test_four['cluster']['site'] == test_site['key']
       - test_four['cluster']['comments'] == "Updated cluster"
-      - test_four['cluster']['tags'][0] == 4
+      - test_four['cluster']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "cluster Test Cluster One deleted"

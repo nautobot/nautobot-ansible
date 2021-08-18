@@ -7,8 +7,15 @@ from __future__ import absolute_import, division, print_function
 import os
 
 from ansible.plugins.lookup import LookupBase
-from ansible.errors import AnsibleLookupError
-import pynautobot
+from ansible.errors import AnsibleLookupError, AnsibleError
+from ansible.module_utils.six import raise_from
+
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
@@ -197,6 +204,12 @@ class LookupModule(LookupBase):
         Returns:
             dict: Data returned from GraphQL endpoint
         """
+        if PYNAUTOBOT_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
+            )
+
         # Query comes in as a list, this needs to be moved to string for pynautobot
         lookup_info = nautobot_lookup_graphql(
             query=query[0],

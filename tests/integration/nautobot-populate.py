@@ -14,8 +14,8 @@ from packaging import version
 
 
 # Set nb variable to connect to Nautobot and use the veriable in future calls
-nb_host = os.getenv("PYNAUTOBOT_HOST", "http://localhost:32768")
-nb_token = os.getenv("PYNAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
+nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
+nb_token = os.getenv("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
 nb = pynautobot.api(nb_host, nb_token)
 nb_version = version.parse(nb.version)
 
@@ -40,22 +40,21 @@ def make_nautobot_calls(endpoint, payload):
 
 
 # Create tags used in future tests
-if nb_version >= version.parse("2.9"):
-    create_tags = make_nautobot_calls(
-        nb.extras.tags,
-        [
-            {"name": "First", "slug": "first"},
-            {"name": "Second", "slug": "second"},
-            {"name": "Third", "slug": "third"},
-            {"name": "Schnozzberry", "slug": "schnozzberry"},
-            {"name": "Lookup", "slug": "lookup"},
-            {"name": "Nolookup", "slug": "nolookup"},
-            {"name": "tagA", "slug": "taga"},
-            {"name": "tagB", "slug": "tagb"},
-            {"name": "tagC", "slug": "tagc"},
-            {"name": "Updated", "slug": "updated"},
-        ],
-    )
+create_tags = make_nautobot_calls(
+    nb.extras.tags,
+    [
+        {"name": "First", "slug": "first"},
+        {"name": "Second", "slug": "second"},
+        {"name": "Third", "slug": "third"},
+        {"name": "Schnozzberry", "slug": "schnozzberry"},
+        {"name": "Lookup", "slug": "lookup"},
+        {"name": "Nolookup", "slug": "nolookup"},
+        {"name": "tagA", "slug": "taga"},
+        {"name": "tagB", "slug": "tagb"},
+        {"name": "tagC", "slug": "tagc"},
+        {"name": "Updated", "slug": "updated"},
+    ],
+)
 
 # ORDER OF OPERATIONS FOR THE MOST PART
 
@@ -94,14 +93,18 @@ sites = [
         "slug": "test-site",
         "tenant": test_tenant.id,
         "region": test_region.id,
+        "status": "active",
     },
-    {"name": "Test Site2", "slug": "test-site2"},
+    {"name": "Test Site2", "slug": "test-site2", "status": "active"},
 ]
 created_sites = make_nautobot_calls(nb.dcim.sites, sites)
 ### Site variables to be used later on
 test_site = nb.dcim.sites.get(slug="test-site")
 test_site2 = nb.dcim.sites.get(slug="test-site2")
 
+### Create power panel
+power_panels = [{"name": "Test Power Panel", "site": test_site.id}]
+created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)
 
 ## Create VRFs
 vrfs = [{"name": "Test VRF", "rd": "1:1"}]
@@ -110,8 +113,8 @@ created_vrfs = make_nautobot_calls(nb.ipam.vrfs, vrfs)
 
 ## Create PREFIXES
 prefixes = [
-    {"prefix": "192.168.100.0/24", "site": test_site2.id},
-    {"prefix": "10.10.0.0/16"},
+    {"prefix": "192.168.100.0/24", "site": test_site2.id, "status": "active"},
+    {"prefix": "10.10.0.0/16", "status": "active"},
 ]
 created_prefixes = make_nautobot_calls(nb.ipam.prefixes, prefixes)
 
@@ -138,15 +141,16 @@ test_vlan_group = nb.ipam.vlan_groups.get(slug="test-vlan-group")
 
 ## Create VLANS
 vlans = [
-    {"name": "Wireless", "vid": 100, "site": test_site.id},
-    {"name": "Data", "vid": 200, "site": test_site.id},
-    {"name": "VoIP", "vid": 300, "site": test_site.id},
+    {"name": "Wireless", "vid": 100, "site": test_site.id, "status": "active"},
+    {"name": "Data", "vid": 200, "site": test_site.id, "status": "active"},
+    {"name": "VoIP", "vid": 300, "site": test_site.id, "status": "active"},
     {
         "name": "Test VLAN",
         "vid": 400,
         "site": test_site.id,
         "tenant": test_tenant.id,
         "group": test_vlan_group.id,
+        "status": "active",
     },
 ]
 created_vlans = make_nautobot_calls(nb.ipam.vlans, vlans)
@@ -178,14 +182,14 @@ device_types = [
         "slug": "nexus-parent",
         "u_height": 0,
         "manufacturer": cisco_manu.id,
-        "subdevice_role": True,
+        "subdevice_role": "parent",
     },
     {
         "model": "Nexus Child",
         "slug": "nexus-child",
         "u_height": 0,
         "manufacturer": cisco_manu.id,
-        "subdevice_role": False,
+        "subdevice_role": "child",
     },
     {"model": "1841", "slug": "1841", "manufacturer": cisco_manu.id,},
 ]
@@ -196,6 +200,19 @@ cisco_test = nb.dcim.device_types.get(slug="cisco-test")
 arista_test = nb.dcim.device_types.get(slug="arista-test")
 nexus_parent = nb.dcim.device_types.get(slug="nexus-parent")
 nexus_child = nb.dcim.device_types.get(slug="nexus-child")
+
+# Create Rear Port Template
+rear_port_templates = [
+    {
+        "name": "Test Rear Port Template",
+        "device_type": cisco_test.id,
+        "type": "bnc",
+        "positions": 5,
+    }
+]
+created_rear_port_templates = make_nautobot_calls(
+    nb.dcim.rear_port_templates, rear_port_templates
+)
 
 ## Create Device Roles
 device_roles = [
@@ -225,22 +242,31 @@ rack_groups = [
 ]
 created_rack_groups = make_nautobot_calls(nb.dcim.rack_groups, rack_groups)
 
+rack_group1 = nb.dcim.rack_groups.get(slug="test-rack-group")
+rack_group2 = nb.dcim.rack_groups.get(slug="parent-rack-group")
 ### Create Rack Group Parent relationship
-created_rack_groups[0].parent = created_rack_groups[1]
-created_rack_groups[0].save()
+rack_group1.parent = rack_group2.id
+rack_group1.save()
 
 ## Create Rack Roles
 rack_roles = [{"name": "Test Rack Role", "slug": "test-rack-role", "color": "4287f5"}]
 created_rack_roles = make_nautobot_calls(nb.dcim.rack_roles, rack_roles)
+rack_role1 = nb.dcim.rack_roles.get(slug="test-rack-role")
 
 ## Create Racks
 racks = [
     {
         "name": "Test Rack Site 2",
         "site": test_site2.id,
-        "role": created_rack_roles[0].id,
+        "role": rack_role1.id,
+        "status": "active",
     },
-    {"name": "Test Rack", "site": test_site.id, "group": created_rack_groups[0].id},
+    {
+        "name": "Test Rack",
+        "site": test_site.id,
+        "group": rack_group1.id,
+        "status": "active",
+    },
 ]
 created_racks = make_nautobot_calls(nb.dcim.racks, racks)
 test_rack = nb.dcim.racks.get(name="Test Rack")  # racks don't have slugs
@@ -255,6 +281,7 @@ devices = [
         "device_role": core_switch.id,
         "site": test_site.id,
         "local_context_data": {"ntp_servers": ["pool.ntp.org"]},
+        "status": "active",
     },
     {
         "name": "TestDeviceR1",
@@ -262,6 +289,7 @@ devices = [
         "device_role": core_switch.id,
         "site": test_site.id,
         "rack": test_rack.id,
+        "status": "active",
     },
     {
         "name": "R1-Device",
@@ -269,29 +297,55 @@ devices = [
         "device_role": core_switch.id,
         "site": test_site2.id,
         "rack": test_rack_site2.id,
+        "status": "active",
     },
     {
         "name": "Test Nexus One",
         "device_type": nexus_parent.id,
         "device_role": core_switch.id,
         "site": test_site.id,
+        "status": "active",
     },
     {
         "name": "Test Nexus Child One",
         "device_type": nexus_child.id,
         "device_role": core_switch.id,
         "site": test_site.id,
+        "status": "active",
     },
 ]
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 ### Device variables to be used later on
 test100 = nb.dcim.devices.get(name="test100")
 
+### Create rear port
+rear_ports = [
+    {"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}
+]
+created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
+
+### Create power ports
+power_ports = [{"name": "Test Power Port", "device": test100.id}]
+created_power_ports = make_nautobot_calls(nb.dcim.power_ports, power_ports)
+
+### Create console ports
+console_ports = [{"name": "Test Console Port", "device": test100.id}]
+created_console_ports = make_nautobot_calls(nb.dcim.console_ports, console_ports)
+
+### Create console server ports
+console_server_ports = [{"name": "Test Console Server Port", "device": test100.id}]
+created_console_server_ports = make_nautobot_calls(
+    nb.dcim.console_server_ports, console_server_ports
+)
+
 # Create VC, assign member, create initial interface
-created_vcs = make_nautobot_calls(nb.dcim.virtual_chassis, {"name": "VC1", "master": 4})
-nexus_child = nb.dcim.devices.get(5)
-nexus_child.update({"virtual_chassis": 1, "vc_position": 2})
-nexus = nb.dcim.devices.get(4)
+nexus = nb.dcim.devices.get(name="Test Nexus One")
+created_vcs = make_nautobot_calls(
+    nb.dcim.virtual_chassis, {"name": "VC1", "master": nexus.id}
+)
+vc = nb.dcim.virtual_chassis.get(name="VC1")
+nexus_child = nb.dcim.devices.get(name="Test Nexus Child One")
+nexus_child.update({"virtual_chassis": vc.id, "vc_position": 2})
 nexus.update({"vc_position": 0})
 nexus_interfaces = [
     {"device": nexus.id, "name": "Ethernet1/1", "type": "1000base-t"},
@@ -305,28 +359,58 @@ dev_interfaces = [
     {"name": "GigabitEthernet2", "device": test100.id, "type": "1000base-t"},
 ]
 created_interfaces = make_nautobot_calls(nb.dcim.interfaces, dev_interfaces)
+nexus_eth1 = nb.dcim.interfaces.get(device_id=nexus.id, name="Ethernet1/1")
+nexus_child_eth1 = nb.dcim.interfaces.get(device_id=nexus_child.id, name="Ethernet2/1")
+
 ## Interface variables to be used later on
-test100_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=1)
-test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=1)
+test100_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=test100.id)
+test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.id)
 
 
 ## Create IP Addresses
 ip_addresses = [
-    {"address": "172.16.180.1/24", "interface": test100_gi1.id},
-    {"address": "2001::1:1/64", "interface": test100_gi2.id},
-    {"address": "172.16.180.11/24", "interface": created_nexus_interfaces[0].id},
+    {
+        "address": "172.16.180.1/24",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": test100_gi1.id,
+        "status": "active",
+    },
+    {
+        "address": "2001::1:1/64",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": test100_gi2.id,
+        "status": "active",
+    },
+    {
+        "address": "172.16.180.11/24",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": nexus_eth1.id,
+        "status": "active",
+    },
     {
         "address": "172.16.180.12/24",
-        "interface": created_nexus_interfaces[1].id,
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": nexus_child_eth1.id,
         "dns_name": "nexus.example.com",
+        "status": "active",
     },
-    {"address": "172.16.180.254/24"},
+    {"address": "172.16.180.254/24", "status": "active"},
 ]
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
+# Grab first two IPs
+ip1 = nb.ipam.ip_addresses.get(
+    address="172.16.180.1/24", assigned_object_id=test100_gi1.id
+)
+ip2 = nb.ipam.ip_addresses.get(
+    address="2001::1:1/64", assigned_object_id=test100_gi2.id
+)
 
 # Assign Primary IP
-nexus.update({"primary_ip4": 4})
+nexus_eth1_ip = nb.ipam.ip_addresses.get(
+    address="172.16.180.11/24", assigned_object_id=nexus_eth1.id
+)
+nexus.update({"primary_ip4": nexus_eth1_ip})
 
 ## Create RIRs
 rirs = [{"name": "Example RIR", "slug": "example-rir"}]
@@ -354,7 +438,7 @@ clusters = [
         "group": test_cluster_group.id,
         "site": test_site.id,
     },
-    {"name": "Test Cluster 2", "type": test_cluster_type.id,},
+    {"name": "Test Cluster 2", "type": test_cluster_type.id},
 ]
 created_clusters = make_nautobot_calls(nb.virtualization.clusters, clusters)
 test_cluster = nb.virtualization.clusters.get(name="Test Cluster")
@@ -362,12 +446,12 @@ test_cluster2 = nb.virtualization.clusters.get(name="Test Cluster 2")
 
 ## Create Virtual Machine
 virtual_machines = [
-    {"name": "test100-vm", "cluster": test_cluster.id},
-    {"name": "test101-vm", "cluster": test_cluster.id},
-    {"name": "test102-vm", "cluster": test_cluster.id},
-    {"name": "test103-vm", "cluster": test_cluster.id},
-    {"name": "test104-vm", "cluster": test_cluster2.id},
-    {"name": "Test VM With Spaces", "cluster": test_cluster2.id},
+    {"name": "test100-vm", "cluster": test_cluster.id, "status": "active"},
+    {"name": "test101-vm", "cluster": test_cluster.id, "status": "active"},
+    {"name": "test102-vm", "cluster": test_cluster.id, "status": "active"},
+    {"name": "test103-vm", "cluster": test_cluster.id, "status": "active"},
+    {"name": "test104-vm", "cluster": test_cluster2.id, "status": "active"},
+    {"name": "Test VM With Spaces", "cluster": test_cluster2.id, "status": "active",},
 ]
 created_virtual_machines = make_nautobot_calls(
     nb.virtualization.virtual_machines, virtual_machines
@@ -401,19 +485,19 @@ created_virtual_machines_intfs = make_nautobot_calls(
 
 ## Create Services
 services = [
-    {"device": test100.id, "name": "ssh", "port": 22, "protocol": "tcp"},
+    {"device": test100.id, "name": "ssh", "ports": [22], "protocol": "tcp"},
     {
         "device": test100.id,
         "name": "http",
-        "ports": 80,
+        "ports": [80],
         "protocol": "tcp",
-        "ipaddresses": [created_ip_addresses[0].id, created_ip_addresses[1].id],
+        "ipaddresses": [ip1.id, ip2.id],
     },
-    {"device": nexus.id, "name": "telnet", "port": 23, "protocol": "tcp"},
+    {"device": nexus.id, "name": "telnet", "ports": [23], "protocol": "tcp"},
     {
         "virtual_machine": test_spaces_vm.id,
         "name": "ssh",
-        "ports": 22,
+        "ports": [22],
         "protocol": "tcp",
     },
 ]
@@ -433,11 +517,17 @@ test_circuit_type = nb.circuits.circuit_types.get(slug="test-circuit-type")
 
 ## Create Circuit
 circuits = [
-    {"cid": "Test Circuit", "provider": test_provider.id, "type": test_circuit_type.id},
+    {
+        "cid": "Test Circuit",
+        "provider": test_provider.id,
+        "type": test_circuit_type.id,
+        "status": "active",
+    },
     {
         "cid": "Test Circuit Two",
         "provider": test_provider.id,
         "type": test_circuit_type.id,
+        "status": "active",
     },
 ]
 created_circuits = make_nautobot_calls(nb.circuits.circuits, circuits)

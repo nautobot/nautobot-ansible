@@ -6,10 +6,9 @@
 ##
 - name: "1 - Test tenant creation"
   networktocode.nautobot.tenant:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Tenant ABC"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Tenant ABC"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -24,10 +23,9 @@
 
 - name: "Test duplicate tenant"
   networktocode.nautobot.tenant:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Tenant ABC"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Tenant ABC"
   register: test_two
 
 - name: "2 - ASSERT"
@@ -40,11 +38,10 @@
 
 - name: "3 - Test update"
   networktocode.nautobot.tenant:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Tenant ABC"
-      description: "Updated description"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Tenant ABC"
+    description: "Updated description"
   register: test_three
 
 - name: "3 - ASSERT"
@@ -59,10 +56,9 @@
 
 - name: "4 - Test delete"
   networktocode.nautobot.tenant:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Tenant ABC"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Tenant ABC"
     state: "absent"
   register: test_four
 
@@ -76,18 +72,17 @@
 
 - name: "5 - Create tenant with all parameters"
   networktocode.nautobot.tenant:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Tenant ABC"
-      description: "ABC Incorporated"
-      comments: "### This tenant is super cool"
-      tenant_group: "Test Tenant Group"
-      slug: "tenant_abc"
-      tags:
-        - "tagA"
-        - "tagB"
-        - "tagC"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Tenant ABC"
+    description: "ABC Incorporated"
+    comments: "### This tenant is super cool"
+    tenant_group: "Test Tenant Group"
+    slug: "tenant_abc"
+    tags:
+      - "tagA"
+      - "tagB"
+      - "tagC"
     state: present
   register: test_five
 
@@ -101,6 +96,8 @@
       - test_five['tenant']['slug'] == "tenant_abc"
       - test_five['tenant']['description'] == "ABC Incorporated"
       - test_five['tenant']['comments'] == "### This tenant is super cool"
-      - test_five['tenant']['group'] == 1
+      - test_five['tenant']['group'] == group['key']
       - test_five['tenant']['tags'] | length == 3
       - test_five['msg'] == "tenant Tenant ABC created"
+  vars:
+    group: "{{ lookup('networktocode.nautobot.lookup', 'tenant-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant-group') }}"
