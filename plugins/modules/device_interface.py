@@ -112,6 +112,11 @@ options:
     required: false
     type: list
     elements: raw
+  custom_fields:
+    description:
+      - Allows modification of any custom tags on the interface. The custom field must already exist in the model
+    required: false
+    type: dict
   update_vc_child:
     type: bool
     default: False
@@ -215,6 +220,17 @@ EXAMPLES = r"""
         name: GigabitEthernet2/0/1
         enabled: false
         update_vc_child: True
+    - name: |
+        Create an interface and update custom_field data point, 
+        setting the value to True
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: GigabitEthernet1/1/1
+        enabled: false
+        custom_fields:
+          monitored: True
 """
 
 RETURN = r"""
@@ -261,6 +277,7 @@ def main():
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
