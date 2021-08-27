@@ -20,7 +20,7 @@ networktocode.nautobot.device_interface_template -- Creates or removes interface
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -66,31 +66,15 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the prefix configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/device_type"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-device_type"></div>
                     <b>device_type</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/device_type" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-device_type" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -102,11 +86,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/mgmt_only"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-mgmt_only"></div>
                     <b>mgmt_only</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/mgmt_only" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-mgmt_only" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
@@ -122,11 +105,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/name"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
                     <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -138,26 +120,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/type"></div>
-                    <b>type</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/type" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Form factor of the interface:
-    ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
-    This has to be specified exactly as what is found within UI</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
@@ -174,7 +137,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -193,7 +156,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -208,7 +171,24 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-type"></div>
+                    <b>type</b>
+                    <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Form factor of the interface:
+    ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
+    This has to be specified exactly as what is found within UI</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -223,7 +203,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -271,19 +251,17 @@ Examples
           networktocode.nautobot.device_interface_template:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              device_type: Arista Test
-              name: 10GBASE-T (10GE)
-              type: 10gbase-t
+            device_type: Arista Test
+            name: 10GBASE-T (10GE)
+            type: 10gbase-t
             state: present
         - name: Delete interface template within nautobot
           networktocode.nautobot.device_interface_template:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              device_type: Arista Test
-              name: 10GBASE-T (10GE)
-              type: 10gbase-t
+            device_type: Arista Test
+            name: 10GBASE-T (10GE)
+            type: 10gbase-t
             state: absent
 
 

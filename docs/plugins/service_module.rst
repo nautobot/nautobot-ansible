@@ -20,7 +20,7 @@ networktocode.nautobot.service -- Creates or removes service from Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -66,31 +66,15 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the service configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/custom_fields"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
                     <b>custom_fields</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/custom_fields" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
@@ -102,11 +86,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
                     <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -118,11 +101,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/device"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-device"></div>
                     <b>device</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/device" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-device" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
@@ -134,11 +116,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/ipaddresses"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-ipaddresses"></div>
                     <b>ipaddresses</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/ipaddresses" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-ipaddresses" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
@@ -150,11 +131,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/name"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
                     <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -166,11 +146,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/ports"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-ports"></div>
                     <b>ports</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/ports" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-ports" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=integer</span>                                            </div>
@@ -182,11 +161,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/protocol"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-protocol"></div>
                     <b>protocol</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/protocol" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-protocol" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -198,40 +176,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>What tags to add/update</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/virtual_machine"></div>
-                    <b>virtual_machine</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/virtual_machine" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Specifies on which virtual machine the service is running</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
@@ -248,7 +193,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -267,7 +212,22 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+                    <b>tags</b>
+                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=raw</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>What tags to add/update</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -282,7 +242,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -297,7 +257,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -310,6 +270,21 @@ Parameters
                                     </td>
                                                                 <td>
                                             <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-virtual_machine"></div>
+                    <b>virtual_machine</b>
+                    <a class="ansibleOptionLink" href="#parameter-virtual_machine" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Specifies on which virtual machine the service is running</div>
                                                         </td>
             </tr>
                         </table>
@@ -344,15 +319,15 @@ Examples
           networktocode.nautobot.service:
             url: url
             token: token
-            data:
-              device: Test666
-              name: node-exporter
-              port: 9100
-              protocol: TCP
-              ipaddresses:
-                - address: 127.0.0.1
-              tags:
-                - prometheus
+            device: Test666
+            name: node-exporter
+            ports:
+              - 9100
+            protocol: TCP
+            ipaddresses:
+              - address: 127.0.0.1
+            tags:
+              - prometheus
             state: present
 
     - name: "Delete nautobot service"
@@ -365,11 +340,11 @@ Examples
           networktocode.nautobot.service:
             url: url
             token: token
-            data:
-              device: Test666
-              name: node-exporter
-              ports: 9100
-              protocol: TCP
+            device: Test666
+            name: node-exporter
+            ports:
+              - 9100
+            protocol: TCP
             state: absent
 
 

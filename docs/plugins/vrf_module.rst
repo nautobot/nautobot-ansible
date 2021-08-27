@@ -20,7 +20,7 @@ networktocode.nautobot.vrf -- Create, update or delete vrfs within Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -66,31 +66,15 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the vrf configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/custom_fields"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
                     <b>custom_fields</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/custom_fields" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
@@ -102,11 +86,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
                     <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -118,11 +101,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/enforce_unique"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-enforce_unique"></div>
                     <b>enforce_unique</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/enforce_unique" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-enforce_unique" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
@@ -138,11 +120,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/export_targets"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-export_targets"></div>
                     <b>export_targets</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/export_targets" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-export_targets" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
@@ -157,11 +138,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/import_targets"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-import_targets"></div>
                     <b>import_targets</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/import_targets" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-import_targets" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
@@ -176,11 +156,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/name"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
                     <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -192,56 +171,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/rd"></div>
-                    <b>rd</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/rd" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The RD of the VRF. Must be quoted to pass as a string.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Any tags that the vrf may need to be associated with</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tenant"></div>
-                    <b>tenant</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tenant" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The tenant that the vrf will be assigned to</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
@@ -258,7 +188,22 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-rd"></div>
+                    <b>rd</b>
+                    <a class="ansibleOptionLink" href="#parameter-rd" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The RD of the VRF. Must be quoted to pass as a string.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -277,7 +222,37 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+                    <b>tags</b>
+                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=raw</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Any tags that the vrf may need to be associated with</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
+                    <b>tenant</b>
+                    <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The tenant that the vrf will be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -292,7 +267,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -307,7 +282,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -355,34 +330,31 @@ Examples
           networktocode.nautobot.vrf:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              name: Test VRF
+            name: Test VRF
             state: present
 
         - name: Delete vrf within nautobot
           networktocode.nautobot.vrf:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              name: Test VRF
+            name: Test VRF
             state: absent
 
         - name: Create vrf with all information
           networktocode.nautobot.vrf:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              name: Test VRF
-              rd: "65000:1"
-              tenant: Test Tenant
-              enforce_unique: true
-              import_targets:
-                - "65000:65001"
-              export_targets:
-                - "65000:65001"
-              description: VRF description
-              tags:
-                - Schnozzberry
+            name: Test VRF
+            rd: "65000:1"
+            tenant: Test Tenant
+            enforce_unique: true
+            import_targets:
+              - "65000:65001"
+            export_targets:
+              - "65000:65001"
+            description: VRF description
+            tags:
+              - Schnozzberry
             state: present
 
 
@@ -446,7 +418,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
+- Mikhail Yohman (@FragmentedPacket)
 
 
 

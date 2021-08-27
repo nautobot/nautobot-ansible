@@ -20,7 +20,7 @@ networktocode.nautobot.device_type -- Create, update or delete device types with
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -66,31 +66,15 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the device type configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/comments"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-comments"></div>
                     <b>comments</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/comments" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -102,11 +86,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/custom_fields"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
                     <b>custom_fields</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/custom_fields" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
@@ -118,11 +101,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/is_full_depth"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-is_full_depth"></div>
                     <b>is_full_depth</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/is_full_depth" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-is_full_depth" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
@@ -138,11 +120,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/manufacturer"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-manufacturer"></div>
                     <b>manufacturer</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/manufacturer" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-manufacturer" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
@@ -154,11 +135,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/model"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-model"></div>
                     <b>model</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/model" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-model" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                  / <span style="color: red">required</span>                    </div>
@@ -170,11 +150,10 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/part_number"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-part_number"></div>
                     <b>part_number</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/part_number" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-part_number" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -186,80 +165,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/slug"></div>
-                    <b>slug</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/slug" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The slug of the device type. Must follow slug formatting (URL friendly)</div>
-                                            <div>If not specified, it will slugify the model</div>
-                                            <div>ex. test-device-type</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/subdevice_role"></div>
-                    <b>subdevice_role</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/subdevice_role" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>Parent</li>
-                                                                                                                                                                                                <li>parent</li>
-                                                                                                                                                                                                <li>Child</li>
-                                                                                                                                                                                                <li>child</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>Whether the device type is parent, child, or neither</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Any tags that the device type may need to be associated with</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/u_height"></div>
-                    <b>u_height</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/u_height" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The height of the device type in rack units</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
@@ -276,7 +182,24 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-slug"></div>
+                    <b>slug</b>
+                    <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The slug of the device type. Must follow slug formatting (URL friendly)</div>
+                                            <div>If not specified, it will slugify the model</div>
+                                            <div>ex. test-device-type</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -295,7 +218,43 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-subdevice_role"></div>
+                    <b>subdevice_role</b>
+                    <a class="ansibleOptionLink" href="#parameter-subdevice_role" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>Parent</li>
+                                                                                                                                                                                                <li>parent</li>
+                                                                                                                                                                                                <li>Child</li>
+                                                                                                                                                                                                <li>child</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether the device type is parent, child, or neither</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+                    <b>tags</b>
+                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=raw</span>                                            </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Any tags that the device type may need to be associated with</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -310,7 +269,22 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-u_height"></div>
+                    <b>u_height</b>
+                    <a class="ansibleOptionLink" href="#parameter-u_height" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The height of the device type in rack units</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -325,7 +299,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -373,32 +347,29 @@ Examples
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              slug: test-device-type
-              model: ws-test-3750
-              manufacturer: Test Manufacturer
+            slug: test-device-type
+            model: ws-test-3750
+            manufacturer: Test Manufacturer
             state: present
 
         - name: Create device type within Nautobot with only required information
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              slug: test-device-type
-              model: ws-test-3750
-              manufacturer: Test Manufacturer
-              part_number: ws-3750g-v2
-              u_height: 1
-              is_full_depth: False
-              subdevice_role: parent
+            slug: test-device-type
+            model: ws-test-3750
+            manufacturer: Test Manufacturer
+            part_number: ws-3750g-v2
+            u_height: 1
+            is_full_depth: False
+            subdevice_role: parent
             state: present
 
         - name: Delete device type within nautobot
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              slug: test-device-type
+            slug: test-device-type
             state: absent
 
 
@@ -462,7 +433,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
+- Mikhail Yohman (@FragmentedPacket)
 
 
 
