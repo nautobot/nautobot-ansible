@@ -4,43 +4,74 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+
+v3.0.0
+======
+
+Release Summary
+---------------
+
+Updates format for modules to support Ansible 4 / ansible-core 2.11 arg spec verification changes
+
+Major Changes
+-------------
+
+- (#66) Remove data sub-dictionary from modules
+
+Minor Changes
+-------------
+
+- (#75) Device Interface module supports custom_fields
+
 v2.0.1
 ======
+
+Release Summary
+---------------
+
+Bug fix updates for label support and SSL version consistency
 
 Bugfixes
 --------
 
-- SSL Verify Keyword Consistency Update [#45](https://github.com/nautobot/nautobot-ansible/pull/45) - Fixed [#44](https://github.com/nautobot/nautobot-ansible/issues/44) validat_certs not honored
-
-New Components
---------------
-
-- Add Interface Label Support [#44](https://github.com/nautobot/nautobot-ansible/pull/43) - Fixed [#42](https://github.com/nautobot/nautobot-ansible/issues/42) - Add label to interface
-
+- (#44) Add Interface Label Support
+- (#45) SSL Verify Keyword Consistency Update
 
 v2.0.0
 ======
 
+Release Summary
+---------------
+
+Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
+
+Major Changes
+-------------
+
+- (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+
 Bugfixes
 --------
 
-- Add Site, Device Tracebacks due to changes in Nautobot (Issue [#34](https://github.com/nautobot/nautobot-ansible/issues/34)) [#35](https://github.com/nautobot/nautobot-ansible/pull/35)
-- Add missing description to tenant_group [#26](https://github.com/nautobot/nautobot-ansible/pull/26)
-- Add missing field to vlan_group [#29](https://github.com/nautobot/nautobot-ansible/pull/29)
-- Fixed query on Virtual Chassis [#32](https://github.com/nautobot/nautobot-ansible/pull/32)
+- (#26) Add missing description to tenant_group
+- (#29) Add missing field to vlan_group
+- (#32) Fixed query on Virtual Chassis
+- (#35) Add Site, Device Tracebacks due to changes in Nautobot
 
-Additions
----------
+v1.1.0
+======
 
-- GraphQL Lookup Plugin (networktocode.nautobot.lookup_graphql)
-- GraphQL Action Module (networktocode.nautobot.query_graphql)
+New Modules
+-----------
 
-Deprecations / Breaking Changes
--------------------------------
+Networktocode
+~~~~~~~~~~~~~
 
-- Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables [#33](https://github.com/nautobot/nautobot-ansible/pull/33). Use:
-    - NAUTOBOT_URL for URL based environment variables where applicable
-    - NAUTOBOT_TOKEN for Token based environment variables where applicable
+nautobot
+^^^^^^^^
+
+- networktocode.nautobot.networktocode.nautobot.lookup_graphql - Lookup plugin to query Nautobot GraphQL API endpoint
+- networktocode.nautobot.networktocode.nautobot.query_graphql - Action plugin to query Nautobot GraphQL API endpoint
 
 v1.0.4
 ======
