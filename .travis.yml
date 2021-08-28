@@ -9,6 +9,7 @@ dist: focal
 stages:
   - test
   - integration
+  - deploy
 
 env:
   global:
