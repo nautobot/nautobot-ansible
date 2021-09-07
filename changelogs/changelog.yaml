@@ -237,7 +237,8 @@ releases:
       major_changes:
       - (#66) Remove data sub-dictionary from modules
       minor_changes:
+      - (#57) Adds nautobot-server module
       - (#75) Device Interface module supports custom_fields
       release_summary: Updates format for modules to support Ansible 4 / ansible-core
         2.11 arg spec verification changes
-    release_date: '2021-08-27'
+    release_date: '2021-09-06'

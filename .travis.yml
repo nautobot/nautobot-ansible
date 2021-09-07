@@ -9,7 +9,8 @@ dist: focal
 stages:
   - test
   - integration
-  - deploy
+  - name: "deploy"
+    if: "tag IS present"
 
 env:
   global:
@@ -68,11 +69,13 @@ jobs:
     #     - poetry install ansible-core
     #     - invoke integration
 
-deploy:
-  provider: script
-  cleanup: true
-  before_script:
-    - pip install ansible-core
-  script: ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
-  on:
-    tags: true
+    - name: "Deploy stage"
+      stage: deploy
+      provider: script
+      cleanup: true
+      before_script:
+        - pip install ansible-core
+      script: 
+        - ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
+      on:
+        tags: true
