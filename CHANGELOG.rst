@@ -21,6 +21,7 @@ Major Changes
 Minor Changes
 -------------
 
+- (#57) Adds nautobot-server module
 - (#75) Device Interface module supports custom_fields
 
 v2.0.1
