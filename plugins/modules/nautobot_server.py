@@ -26,6 +26,7 @@ requirements:
   - nautobot
 author:
   - Network to Code (@networktocode)
+version_added: "3.0.0"
 options:
   command:
     description:
