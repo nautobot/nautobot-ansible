@@ -76,4 +76,5 @@ jobs:
       before_script:
         - pip install ansible-core
       script: 
+        - ansible-galaxy collection build
         - ansible-galaxy collection publish $TRAVIS_BUILD_DIR/$COLLECTION_NAMESPACE-$COLLECTION_NAME-$COLLECTION_VERSION.tar.gz --api-key="$GALAXY_API_TOKEN"
