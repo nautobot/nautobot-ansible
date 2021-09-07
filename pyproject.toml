@@ -29,6 +29,7 @@ sphinx_rtd_theme = "*"
 hypothesis = "^6.8.0"
 pynautobot = "^1.0.2"
 pytest-pythonpath = "^0.7.3"
+parameterized = "^0.8.1"
 invoke = "^1.6.0"
 bandit = "^1.7.0"
 
