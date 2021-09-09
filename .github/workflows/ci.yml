@@ -12,6 +12,8 @@ jobs:
         uses: "actions/checkout@v2"
       - name: "Install invoke"
         run: "pip install invoke"
+      - name: "Start containers"
+        run: "invoke start"
       - name: "Linting"
         run: "invoke lint"
   # test:
