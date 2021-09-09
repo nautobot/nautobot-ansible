@@ -35,6 +35,43 @@ jobs:
         run: "invoke unit"
     needs:
       - "lint"
+  integration-ansible-base:
+    runs-on: "ubuntu-20.04"
+    env:
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "3.6"
+      INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "1.0.3"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v2"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke"
+      - name: "Start containers"
+        run: "invoke start"
+      - name: "Tests"
+        run: "invoke integration"
+    needs:
+      - "test"
+  integration-ansible-core:
+    runs-on: "ubuntu-20.04"
+    env:
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "3.6"
+      INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "1.0.3"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v2"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke poetry"
+      - name: "Remove ansible-base"
+        run: "poetry remove ansible-base"
+      - name: "Remove ansible-core"
+        run: "poetry add ansible-core"
+      - name: "Start containers"
+        run: "invoke start"
+      - name: "Tests"
+        run: "invoke integration"
+    needs:
+      - "test"
+
   # integration:
   #   runs-on: "ubuntu-20.04"
   #   strategy:
