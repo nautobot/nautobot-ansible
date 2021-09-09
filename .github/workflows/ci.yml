@@ -23,7 +23,7 @@ jobs:
       matrix:
         python-version: ["3.6", "3.7", "3.8", "3.9"]
     env:
-      INVOKE_NAUTOBOT_CHATOPS_PYTHON_VER: "${{ matrix.python-version }}"
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
       - name: "Check out repository code"
         uses: "actions/checkout@v2"
@@ -43,8 +43,8 @@ jobs:
   #       python-version: ["3.6", "3.7", "3.8", "3.9"]
   #       nautobot-version: ["1.0.3", "1.1.2"]
   #   env:
-  #     INVOKE_NAUTOBOT_CHATOPS_PYTHON_VER: "${{ matrix.python-version }}"
-  #     INVOKE_NAUTOBOT_CHATOPS_NAUTOBOT_VER: "${{ matrix.nautobot-version }}"
+  #     INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
+  #     INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ matrix.nautobot-version }}"
 
   # black:
   #   runs-on: "ubuntu-20.04"
