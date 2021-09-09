@@ -56,9 +56,16 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9"]
-        nautobot-version: ["1.0.3", "1.1.1"]
-        ansible-release: ["base", "core"]
+        # python-version: ["3.6", "3.7", "3.8", "3.9"]
+        # nautobot-version: ["1.0.3", "1.1.1"]
+        # ansible-release: ["base", "core"]
+        include:
+          - python-version: "3.6"
+            nautobot-version: "1.0.3"
+            ansible-release: "base"
+          - python-version: "3.7"
+            nautobot-version: "1.1.1"
+            ansible-release: "core"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
       INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ matrix.nautobot-version }}"
