@@ -11,14 +11,24 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@v2"
       - name: "Install invoke"
-        run: "pip install invoke"
+        run: "pip install -U pip && pip install invoke"
       - name: "Start containers"
         run: "invoke start"
       - name: "Linting"
         run: "invoke lint"
-  # test:
-  #   runs-on: "ubuntu-20.04"
-
+  test:
+    runs-on: "ubuntu-20.04"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v2"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke"
+      - name: "Start containers"
+        run: "invoke start"
+      - name: "Tests"
+        run: "invoke unit"
+    needs:
+      - "lint"
 
   # black:
   #   runs-on: "ubuntu-20.04"
