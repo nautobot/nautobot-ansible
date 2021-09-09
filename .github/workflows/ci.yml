@@ -54,8 +54,8 @@ jobs:
   integration-ansible-core:
     runs-on: "ubuntu-20.04"
     env:
-      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "3.6"
-      INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "1.0.3"
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "3.7"
+      INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "1.1.1"
     steps:
       - name: "Check out repository code"
         uses: "actions/checkout@v2"
