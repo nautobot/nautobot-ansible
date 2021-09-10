@@ -115,6 +115,6 @@ jobs:
       - name: "Build the collection"
         run: "ansible-galaxy collection build --output-path build"
       - name: "Publish the collection"
-        run: "ansible-galaxy collection publish build/* --api-key=$GALAXY_API_TOKEN"
+        run: "ansible-galaxy collection publish build/* --api-key=${{ secrets.GALAXY_API_TOKEN }}"
     needs:
       - "integration"
