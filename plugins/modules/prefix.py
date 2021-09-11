@@ -93,7 +93,7 @@ options:
     description:
       - The status of the prefix
       - Required if I(state=present) and does not exist yet
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   prefix_role:
