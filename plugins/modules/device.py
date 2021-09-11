@@ -45,51 +45,61 @@ options:
       - The name of the device
     required: true
     type: str
+    version_added: "3.0.0"
   device_type:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   device_role:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the device will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   platform:
     description:
       - The platform of the device
     required: false
     type: raw
+    version_added: "3.0.0"
   serial:
     description:
       - Serial number of the device
     required: false
     type: str
+    version_added: "3.0.0"
   asset_tag:
     description:
       - Asset tag that is associated to the device
     required: false
     type: str
+    version_added: "3.0.0"
   site:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   rack:
     description:
       - The name of the rack to assign the device to
     required: false
     type: raw
+    version_added: "3.0.0"
   position:
     description:
       - The position of the device in the rack defined above
     required: false
     type: int
+    version_added: "3.0.0"
   face:
     description:
       - Required if I(rack) is defined
@@ -100,62 +110,75 @@ options:
       - rear
     required: false
     type: str
+    version_added: "3.0.0"
   status:
     description:
       - The status of the device
+      - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   primary_ip4:
     description:
       - Primary IPv4 address assigned to the device
     required: false
     type: raw
+    version_added: "3.0.0"
   primary_ip6:
     description:
       - Primary IPv6 address assigned to the device
     required: false
     type: raw
+    version_added: "3.0.0"
   cluster:
     description:
       - Cluster that the device will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   virtual_chassis:
     description:
       - Virtual chassis the device will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   vc_position:
     description:
       - Position in the assigned virtual chassis
     required: false
     type: int
+    version_added: "3.0.0"
   vc_priority:
     description:
       - Priority in the assigned virtual chassis
     required: false
     type: int
+    version_added: "3.0.0"
   comments:
     description:
       - Comments that may include additional information in regards to the device
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   local_context_data:
     description:
       - Arbitrary JSON data to define the devices configuration variables.
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -170,6 +193,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

@@ -43,52 +43,63 @@ options:
       - The site the VLAN will be associated to
     required: false
     type: raw
+    version_added: "3.0.0"
   vlan_group:
     description:
       - The VLAN group the VLAN will be associated to
     required: false
     type: raw
+    version_added: "3.0.0"
   vid:
     description:
       - The VLAN ID
     required: false
     type: int
+    version_added: "3.0.0"
   name:
     description:
       - The name of the vlan
     required: true
     type: str
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the vlan will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   status:
     description:
       - The status of the vlan
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   vlan_role:
     description:
       - The role of the VLAN.
     required: false
     type: raw
+    version_added: "3.0.0"
   description:
     description:
       - The description of the vlan
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the vlan may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -103,6 +114,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

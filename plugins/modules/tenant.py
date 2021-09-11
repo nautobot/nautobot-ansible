@@ -43,37 +43,44 @@ options:
       - Name of the tenant to be created
     required: true
     type: str
+    version_added: "3.0.0"
   tenant_group:
     description:
       - Tenant group this tenant should be in
     required: false
     type: raw
+    version_added: "3.0.0"
   description:
     description:
       - The description of the tenant
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments for the tenant. This can be markdown syntax
     required: false
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - URL-friendly unique shorthand
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the tenant may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -88,6 +95,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |

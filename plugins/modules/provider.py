@@ -43,47 +43,56 @@ options:
       - The name of the provider
     required: true
     type: str
+    version_added: "3.0.0"
   asn:
     description:
       - The provider ASN
     required: false
     type: int
+    version_added: "3.0.0"
   account:
     description:
       - The account number of the provider
     required: false
     type: str
+    version_added: "3.0.0"
   portal_url:
     description:
       - The URL of the provider
     required: false
     type: str
+    version_added: "3.0.0"
   noc_contact:
     description:
       - The NOC contact of the provider
     required: false
     type: str
+    version_added: "3.0.0"
   admin_contact:
     description:
       - The admin contact of the provider
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments related to the provider
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -98,6 +107,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

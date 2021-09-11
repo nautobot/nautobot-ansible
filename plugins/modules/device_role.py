@@ -43,26 +43,31 @@ options:
       - The name of the device role
     required: true
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the device role
     required: false
     type: str
+    version_added: "3.0.0"
   color:
     description:
       - Hexidecimal code for a color, ex. FFFFFF
     required: false
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   vm_role:
     description:
       - Whether the role is a VM role
     type: bool
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -77,6 +82,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

@@ -54,11 +54,13 @@ options:
       - dcim.rearport
     required: true
     type: str
+    version_added: "3.0.0"
   termination_a:
     description:
       - The termination a
     required: true
     type: raw
+    version_added: "3.0.0"
   termination_b_type:
     description:
       - The type of the termination b
@@ -74,11 +76,13 @@ options:
       - dcim.rearport
     required: true
     type: str
+    version_added: "3.0.0"
   termination_b:
     description:
       - The termination b
     required: true
     type: raw
+    version_added: "3.0.0"
   type:
     description:
       - The type of the cable
@@ -105,27 +109,34 @@ options:
       - power
     required: false
     type: str
+    version_added: "3.0.0"
   status:
     description:
       - The status of the cable
+      - Required if I(state=present) and does not exist yet
     required: false
     type: str
+    version_added: "3.0.0"
   label:
     description:
       - The label of the cable
     required: false
     type: str
+    version_added: "3.0.0"
   color:
     description:
       - The color of the cable
     required: false
     type: str
+    version_added: "3.0.0"
   length:
     description:
       - The length of the cable
     required: false
     type: int
+    version_added: "3.0.0"
   length_unit:
+    version_added: "3.0.0"
     description:
       - The unit in which the length of the cable is measured
     choices:
@@ -142,6 +153,7 @@ options:
     default: present
     type: str
   query_params:
+    version_added: "3.0.0"
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
       - in plugins/module_utils/utils.py and provides control to users on what may make

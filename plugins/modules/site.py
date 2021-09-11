@@ -46,94 +46,113 @@ options:
   status:
     description:
       - Status of the site
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   region:
     description:
       - The region that the site should be associated with
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant the site will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   facility:
     description:
       - Data center provider or facility, ex. Equinix NY7
     required: false
     type: str
+    version_added: "3.0.0"
   asn:
     description:
       - The ASN associated with the site
     required: false
     type: int
+    version_added: "3.0.0"
   time_zone:
     description:
       - Timezone associated with the site, ex. America/Denver
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the prefix
     required: false
     type: str
+    version_added: "3.0.0"
   physical_address:
     description:
       - Physical address of site
     required: false
     type: str
+    version_added: "3.0.0"
   shipping_address:
     description:
       - Shipping address of site
     required: false
     type: str
+    version_added: "3.0.0"
   latitude:
     description:
       - Latitude in decimal format
     required: false
     type: str
+    version_added: "3.0.0"
   longitude:
     description:
       - Longitude in decimal format
     required: false
     type: str
+    version_added: "3.0.0"
   contact_name:
     description:
       - Name of contact for site
     required: false
     type: str
+    version_added: "3.0.0"
   contact_phone:
     description:
       - Contact phone number for site
     required: false
     type: str
+    version_added: "3.0.0"
   contact_email:
     description:
       - Contact email for site
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments for the site. This can be markdown syntax
     required: false
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - URL-friendly unique shorthand
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the prefix may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -148,6 +167,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |

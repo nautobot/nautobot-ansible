@@ -43,27 +43,32 @@ options:
       - The device the device bay will be associated to. The device type must be "parent".
     required: false
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the device bay
     required: true
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the device bay. This is supported on v2.6+ of Nautobot
     required: false
     type: str
+    version_added: "3.0.0"
   installed_device:
     description:
       - The ddevice that will be installed into the bay. The device type must be "child".
     required: false
     type: raw
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device bay may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -78,6 +83,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
