@@ -50,6 +50,14 @@ options:
         required: False
         default: True
         type: bool
+    populate_root:
+        description:
+            - Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the
+              'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query
+              will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
+        required: False
+        default: False
+        type: bool
 """
 
 EXAMPLES = """
@@ -145,6 +153,7 @@ def main():
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
+            populate_root=dict(required=False, type="bool", default=False),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot

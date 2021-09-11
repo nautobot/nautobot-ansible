@@ -58,4 +58,5 @@ def nautobot_valid_args(graphql_test_query):
         "validate_certs": False,
         "query": graphql_test_query,
         "graph_variables": {},
+        "populate_root": False,
     }
