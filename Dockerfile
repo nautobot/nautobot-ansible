@@ -102,6 +102,21 @@ RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --python ${PYTHON_VER} \
     plugins/
 
+RUN poetry remove ansible-base
+
+RUN poetry add ansible-core
+
+# Run sanity tests on ansible-core
+RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
+    --requirements \
+    --skip-test pep8 \
+    --python ${PYTHON_VER} \
+    plugins/
+
+RUN poetry remove ansible-core
+
+RUN poetry add ansible-base
+
 # Run unit tests
 RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --python $PYTHON_VERSION
 
