@@ -1,4 +1,3 @@
-    version_added: "3.0.0"
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2020, Pavel Korovin (@pkorovin) <p@tristero.se>
