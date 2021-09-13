@@ -44,6 +44,7 @@ options:
       - Required if state is C(present)
     required: false
     type: str
+    version_added: "3.0.0"
   prefix:
     description:
       - |
@@ -58,21 +59,26 @@ options:
         Unused if an address is specified.
     required: false
     type: raw
+    version_added: "3.0.0"
   vrf:
     description:
       - VRF that IP address is associated with
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the device will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   status:
     description:
       - The status of the IP address
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   role:
     description:
       - The role of the IP address
@@ -87,21 +93,25 @@ options:
       - CARP
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   nat_inside:
     description:
       - The inside IP address this IP is assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   dns_name:
     description:
       - Hostname or FQDN
     required: false
     type: str
+    version_added: "3.0.0"
   assigned_object:
     description:
       - Definition of the assigned object.
@@ -123,17 +133,20 @@ options:
           - The virtual machine the interface is attached to.
         type: str
         required: False
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the IP address may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - |
@@ -152,6 +165,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

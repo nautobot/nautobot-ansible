@@ -44,11 +44,13 @@ options:
       - The device type the rear port template is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the rear port template
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the rear port
@@ -79,11 +81,13 @@ options:
       - sn
     required: true
     type: str
+    version_added: "3.0.0"
   positions:
     description:
       - The number of front ports which may be mapped to each rear port
     required: false
     type: int
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -98,6 +102,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

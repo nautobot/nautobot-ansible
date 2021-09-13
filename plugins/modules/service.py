@@ -42,47 +42,56 @@ options:
       - Specifies on which device the service is running
     required: false
     type: raw
+    version_added: "3.0.0"
   virtual_machine:
     description:
       - Specifies on which virtual machine the service is running
     required: false
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the region to be created
     required: true
     type: str
+    version_added: "3.0.0"
   ports:
     description:
       - Specifies which ports used by service (Nautobot 2.10 and newer)
     type: list
     elements: int
+    version_added: "3.0.0"
   protocol:
     description:
       - Specifies which protocol used by service
     required: true
     type: raw
+    version_added: "3.0.0"
   ipaddresses:
     description:
       - Specifies which IPaddresses to associate with service.
     required: false
     type: raw
+    version_added: "3.0.0"
   description:
     description:
       - Service description
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - What tags to add/update
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - Must exist in Nautobot and in key/value format
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -97,6 +106,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

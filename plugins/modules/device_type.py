@@ -43,11 +43,13 @@ options:
       - The manufacturer of the device type
     required: false
     type: raw
+    version_added: "3.0.0"
   model:
     description:
       - The model of the device type
     required: true
     type: raw
+    version_added: "3.0.0"
   slug:
     description:
       - The slug of the device type. Must follow slug formatting (URL friendly)
@@ -55,21 +57,25 @@ options:
       - ex. test-device-type
     required: false
     type: str
+    version_added: "3.0.0"
   part_number:
     description:
       - The part number of the device type
     required: false
     type: str
+    version_added: "3.0.0"
   u_height:
     description:
       - The height of the device type in rack units
     required: false
     type: int
+    version_added: "3.0.0"
   is_full_depth:
     description:
       - Whether or not the device consumes both front and rear rack faces
     required: false
     type: bool
+    version_added: "3.0.0"
   subdevice_role:
     description:
       - Whether the device type is parent, child, or neither
@@ -80,22 +86,26 @@ options:
       - child
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments that may include additional information in regards to the device_type
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device type may need to be associated with
     required: false
     type: list
     elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -110,6 +120,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

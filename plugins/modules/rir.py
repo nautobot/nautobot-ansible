@@ -43,17 +43,20 @@ options:
       - The name of the RIR
     required: true
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   is_private:
     description:
       - IP space managed by this RIR is considered private
     required: false
     type: bool
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -68,6 +71,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

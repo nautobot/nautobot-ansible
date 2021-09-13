@@ -44,11 +44,13 @@ options:
       - The device type the front port template is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the front port template
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the front port template
@@ -79,16 +81,19 @@ options:
       - sn
     required: true
     type: str
+    version_added: "3.0.0"
   rear_port_template:
     description:
       - The rear_port_template the front port template is attached to
     required: true
-    type: raw        
+    type: raw
+    version_added: "3.0.0"
   rear_port_template_position:
     description:
       - The position of the rear port template this front port template is connected to
     required: false
     type: int
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -103,6 +108,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

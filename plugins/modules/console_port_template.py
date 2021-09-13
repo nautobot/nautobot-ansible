@@ -44,14 +44,17 @@ options:
       - The device type the console port template is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the console port template
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the console port template
+    version_added: "3.0.0"
     choices:
       - de-9
       - db-25
@@ -82,6 +85,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

@@ -43,32 +43,38 @@ options:
       - The name of the platform
     required: true
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the platform
     required: false
     type: str
+    version_added: "3.0.0"
   manufacturer:
     description:
       - The manufacturer the platform will be tied to
     required: false
     type: raw
+    version_added: "3.0.0"
   napalm_driver:
     description:
       - The name of the NAPALM driver to be used when using the NAPALM plugin
     required: false
     type: str
+    version_added: "3.0.0"
   napalm_args:
     description:
       - The optional arguments used for NAPALM connections
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -83,6 +89,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

@@ -43,32 +43,38 @@ options:
       - The description of the rack group
     required: false
     type: str
+    version_added: "3.0.0"
   name:
     description:
       - The name of the rack group
     required: true
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   site:
     description:
       - Required if I(state=present) and the rack does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   parent_rack_group:
     description:
       - The parent rack-group the rack group will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   region:
     description:
       - The region the rack group will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -83,6 +89,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.

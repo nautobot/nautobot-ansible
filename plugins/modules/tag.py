@@ -43,22 +43,26 @@ options:
       - Tag name
     required: true
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   color:
     description:
       - Tag color
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - Tag description
     required: false
     type: str
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -73,6 +77,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
