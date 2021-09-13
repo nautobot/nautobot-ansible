@@ -95,8 +95,6 @@ RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz
 # Switch to the collection path for tests
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 
-RUN ansible --version
-
 # Run sanity tests
 RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
