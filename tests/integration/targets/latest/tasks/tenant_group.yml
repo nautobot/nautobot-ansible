@@ -4,11 +4,16 @@
 ### PYNAUTOBOT_TENANT_GROUP
 ##
 ##
+
+- set_fact:
+    tenant_group_object: "{{ lookup('networktocode.nautobot.lookup', 'tenant-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant-group') }}"
+
 - name: "1 - Test tenant group creation"
   networktocode.nautobot.tenant_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Tenant Group Two"
+    parent_tenant_group: "test-tenant-group"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -20,12 +25,14 @@
       - test_one['tenant_group']['name'] == "Test Tenant Group Two"
       - test_one['tenant_group']['slug'] == "test-tenant-group-two"
       - test_one['msg'] == "tenant_group Test Tenant Group Two created"
+      - test_one['tenant_group']['parent'] == tenant_group_object['value']['id']
 
 - name: "Test duplicate tenant group"
   networktocode.nautobot.tenant_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Tenant Group Two"
+    parent_tenant_group: "test-tenant-group"
   register: test_two
 
 - name: "2 - ASSERT"
@@ -35,6 +42,7 @@
       - test_two['tenant_group']['name'] == "Test Tenant Group Two"
       - test_two['tenant_group']['slug'] == "test-tenant-group-two"
       - test_two['msg'] == "tenant_group Test Tenant Group Two already exists"
+      - test_two['tenant_group']['parent'] == tenant_group_object['value']['id']
 
 - name: "3 - Test delete"
   networktocode.nautobot.tenant_group:
