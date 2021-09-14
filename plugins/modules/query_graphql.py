@@ -90,22 +90,23 @@ EXAMPLES = """
         site_name: den
       query_string: |
         query ($site_name:String!) {
-            sites (name: $site_name) {
+          sites (name: $site_name) {
             id
             name
             region {
                 name
             }
-            }
+          }
         }
 
-  # Get Response with variables
+  # Get Response with variables and set to root keys
   - name: Obtain list of devices at site in variables from Nautobot
     networktocode.nautobot.query_graphql:
       url: http://nautobot.local
       token: thisIsMyToken
       query: "{{ query_string }}"
       variables: "{{ variables }}"
+      populate_root: "yes"
 """
 
 RETURN = """
