@@ -43,16 +43,19 @@ options:
       - Name of the tenant group to be created
     required: true
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - URL-friendly unique shorthand
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the tenant
     required: false
     type: str
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -64,6 +67,7 @@ options:
       - Name of the parent tenant group
     required: false
     type: raw
+    version_added: "3.1.0"
   query_params:
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
