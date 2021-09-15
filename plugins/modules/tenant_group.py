@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
+    "metadata_version": "1.2",
     "status": ["preview"],
     "supported_by": "community",
 }
@@ -62,6 +62,12 @@ options:
     choices: [ absent, present ]
     default: present
     type: str
+  parent_tenant_group:
+    description:
+      - Name of the parent tenant group
+    required: false
+    type: raw
+    version_added: "3.1.0"
   query_params:
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
@@ -94,12 +100,21 @@ EXAMPLES = r"""
         slug: "tenant_group_abc"
         state: present
 
-    - name: Delete tenant within nautobot
+    - name: Delete tenant within Nautobot
       networktocode.nautobot.tenant_group:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Tenant ABC
         state: absent
+
+    - name: Update tenant within Nautobot with a parent tenant group
+      networktocode.nautobot.tenant_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Tenant Group ABC
+        parent_tenant_group: Customer Tenants
+        slug: "tenant_group_abc"
+        state: present
 
 """
 
@@ -135,6 +150,7 @@ def main():
             name=dict(required=True, type="str"),
             slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            parent_tenant_group=dict(required=False, type="raw"),
         )
     )
 
