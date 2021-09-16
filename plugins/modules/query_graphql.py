@@ -50,7 +50,7 @@ options:
         required: False
         default: True
         type: bool
-    populate_root:
+    update_hostvars:
         description:
             - Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the
               'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query
@@ -106,7 +106,7 @@ EXAMPLES = """
       token: thisIsMyToken
       query: "{{ query_string }}"
       variables: "{{ variables }}"
-      populate_root: "yes"
+      update_hostvars: "yes"
 """
 
 RETURN = """
@@ -154,7 +154,7 @@ def main():
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
-            populate_root=dict(required=False, type="bool", default=False),
+            update_hostvars=dict(required=False, type="bool", default=False),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot

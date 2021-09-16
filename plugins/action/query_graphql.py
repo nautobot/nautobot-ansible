@@ -45,12 +45,12 @@ def nautobot_action_graphql(args):
     if not isinstance(ssl_verify, bool):
         raise AnsibleError("validate_certs must be a boolean")
 
-    populate_root = args.get("populate_root", False)
-    Display().vv("Populate root is set to: %s" % populate_root)
+    update_hostvars = args.get("update_hostvars", False)
+    Display().vv("Populate root is set to: %s" % update_hostvars)
 
     # Verify SSL Verify is of boolean
-    if not isinstance(populate_root, bool):
-        raise AnsibleError("populate_root must be a boolean")
+    if not isinstance(update_hostvars, bool):
+        raise AnsibleError("update_hostvars must be a boolean")
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
     query = args.get("query")
@@ -97,14 +97,13 @@ def nautobot_action_graphql(args):
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
-        # If populate_root is set, add to ansible_facts which will set to the root of
+        # If update_hostvars is set, add to ansible_facts which will set to the root of
         # the data structure, e.g. hostvars[inventory_hostname]
-        if args.get("populate_root"):
+        if args.get("update_hostvars"):
             results["ansible_facts"] = nautobot_response.json.get("data")
-        else:
-            # Assign the data of a good result to the response to the data key
-            # otherwise, e.g. hostvars[inventory_hostname]['data']
-            results["data"] = nautobot_response.json.get("data")
+        # Assign to data regardless a good result to the response to the data key
+        # e.g. hostvars[inventory_hostname]['data']
+        results["data"] = nautobot_response.json.get("data")
 
     return results
 

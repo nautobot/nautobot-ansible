@@ -30,12 +30,12 @@ def test_setup_api_error_incorrect_validate_certs(nautobot_valid_args):
     assert str(exc.value) == "validate_certs must be a boolean"
 
 
-def test_setup_api_error_incorrect_populate_root(nautobot_valid_args):
-    nautobot_valid_args["populate_root"] = "Hi"
+def test_setup_api_error_incorrect_update_hostvars(nautobot_valid_args):
+    nautobot_valid_args["update_hostvars"] = "Hi"
     with pytest.raises(AnsibleError) as exc:
         test_class = nautobot_action_graphql(args=nautobot_valid_args)
 
-    assert str(exc.value) == "populate_root must be a boolean"
+    assert str(exc.value) == "update_hostvars must be a boolean"
 
 
 def test_query_api_query_error_none(nautobot_valid_args):
