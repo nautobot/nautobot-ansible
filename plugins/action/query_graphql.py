@@ -46,7 +46,7 @@ def nautobot_action_graphql(args):
         raise AnsibleError("validate_certs must be a boolean")
 
     update_hostvars = args.get("update_hostvars", False)
-    Display().vv("Update hostvars is set to: %s" % update_hostvars) # nosec
+    Display().vv("Update hostvars is set to: %s" % update_hostvars)  # nosec
 
     # Verify SSL Verify is of boolean
     if not isinstance(update_hostvars, bool):
