@@ -50,6 +50,14 @@ options:
         required: False
         default: True
         type: bool
+    update_hostvars:
+        description:
+            - Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the
+              'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query
+              will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
+        required: False
+        default: False
+        type: bool
 """
 
 EXAMPLES = """
@@ -82,22 +90,23 @@ EXAMPLES = """
         site_name: den
       query_string: |
         query ($site_name:String!) {
-            sites (name: $site_name) {
+          sites (name: $site_name) {
             id
             name
             region {
                 name
             }
-            }
+          }
         }
 
-  # Get Response with variables
+  # Get Response with variables and set to root keys
   - name: Obtain list of devices at site in variables from Nautobot
     networktocode.nautobot.query_graphql:
       url: http://nautobot.local
       token: thisIsMyToken
       query: "{{ query_string }}"
       variables: "{{ variables }}"
+      update_hostvars: "yes"
 """
 
 RETURN = """
@@ -145,6 +154,7 @@ def main():
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
+            update_hostvars=dict(required=False, type="bool", default=False),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot
