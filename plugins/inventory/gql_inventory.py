@@ -12,7 +12,7 @@ DOCUMENTATION = """
         - Armen Martirosyan
     short_description: Nautobot inventory source using GraphQL capability
     description:
-        - Get inventory hosts from Nautobot
+        - Get inventory hosts from Nautobot unsing GraphQL queries
     extends_documentation_fragment:
         - constructed
         - inventory_cache
@@ -81,42 +81,18 @@ EXAMPLES = """
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
-gql_query:
+query:
+  tags: name
 
+# To group by use group_by key
+# Supported inputs are platform, status, device_role, site
 
-# has_primary_ip is a useful way to filter out patch panels and other passive devices
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: http://localhost:8000
+validate_certs: True
+group_by:
+  - platform
 
-# Query filters are passed directly as an argument to the fetching queries.
-# You can repeat tags in the query string.
-
-query_filters:
-  - role: server
-  - tag: web
-  - tag: production
-
-# See the Nautobot documentation at https://nautobot.readthedocs.io/en/latest/api/overview/
-# the query_filters work as a logical **OR**
-#
-# Prefix any custom fields with cf_ and pass the field value with the regular Nautobot query string
-
-query_filters:
-  - cf_foo: bar
-
-# Nautobot inventory plugin also supports Constructable semantics
-# You can fill your hosts vars using the compose option:
-
-plugin: networktocode.nautobot.inventory
-compose:
-  foo: last_updated
-  bar: display
-  nested_variable: rack.display
-
-# You can use keyed_groups to group on properties of devices or VMs.
-# NOTE: It's only possible to key off direct items on the device/VM objects.
-plugin: networktocode.nautobot.inventory
-keyed_groups:
-  - prefix: status
-    key: status.value
 """
 
 import json
@@ -131,6 +107,12 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from jinja2 import Environment, FileSystemLoader
 
 PATH = os.path.dirname(os.path.realpath(__file__))
+GROUP_BY = {
+    "platform": "napalm_driver",
+    "status": "name",
+    "device_role": "name",
+    "site": "name",
+}
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -170,9 +152,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         template = env.get_template("graphql_query.j2")
         a = self.gql_query
         query = template.render(query=self.gql_query)
-        import pdb
 
-        pdb.set_trace()
         data = {"query": "query {%s}" % query}
 
         try:
@@ -200,22 +180,29 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
-            raise AnsibleError(to_native(e.fp.read()))
+            else:
+                self.display.display(
+                    "Something went wrong while executing the query.\nReturned code: {code}\nReason: {reason}".format(
+                        code=e.code, reason=e
+                    ),
+                    color="red",
+                )
+                # Need to return mock response data that is empty to prevent any failures downstream
+                return {"results": [], "next": None}
         json_data = json.loads(response.read())
-        import pdb
 
         groups = []
         if self.group_by:
             for group_by in self.group_by:
-                try:
-                    for device in json_data["data"]["devices"]:
-                        if device.get(group_by):
-                            if device[group_by]["napalm_driver"] not in groups:
-                                groups.append(device[group_by]["napalm_driver"])
-                        else:
-                            groups.append("unknown")
-                except:
-                    pdb.set_trace()
+                for device in json_data["data"]["devices"]:
+                    if device.get(group_by) and GROUP_BY.get(group_by):
+                        if device[group_by][GROUP_BY.get(group_by)] not in groups:
+                            groups.append(
+                                {device[group_by][GROUP_BY.get(group_by)]: group_by}
+                            )
+                    else:
+                        groups.append({"unknown": "unknown"})
+
         else:
             for device in json_data["data"]["devices"]:
                 groups.append(device["site"]["name"])
@@ -224,19 +211,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     groups.append(device["platform"]["name"])
 
         for group in groups:
-            for device in json_data["data"]["devices"]:
-                if group == device["site"]["name"]:
-                    if device["primary_ip4"] != None:
-                        self.create_inventory(
-                            group,
-                            device["name"],
-                            device["primary_ip4"]["address"],
-                            "ansible_host",
-                        )
-                    else:
-                        self.create_inventory(
-                            group, device["name"], device["name"], "ansible_host"
-                        )
+            for key, value in group.items():
+                for device in json_data["data"]["devices"]:
+                    if value in device and device[value]:
+                        if key == device[value][GROUP_BY[value]]:
+                            if device["primary_ip4"]:
+                                self.create_inventory(
+                                    key,
+                                    device["name"],
+                                    device["primary_ip4"]["address"],
+                                    "ansible_host",
+                                )
+                            else:
+                                self.create_inventory(
+                                    key, device["name"], device["name"], "ansible_host"
+                                )
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
