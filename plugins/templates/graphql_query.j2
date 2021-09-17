@@ -1,0 +1,26 @@
+devices {
+  name
+  platform {
+    napalm_driver
+  }
+  status {
+    name
+  }
+  primary_ip4 {
+    address
+  }
+  device_role {
+    name
+  }
+  site {
+    name
+  }
+  device_role {
+    name
+  }
+{%- for key, value in query.items() -%}
+  {{ key }} {
+    {{value}}
+  }
+{%- endfor -%}
+}
