@@ -132,14 +132,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """Returns default query"""
         return "devices { name platform { napalm_driver } status { name } primary_ip4 { address } device_role { name } site { name }  cf_port {name}}"
 
-    def create_inventory(self, group, host, var, var_type):
-        """[summary]
+    def create_inventory(self, group: str, host: str, var: str, var_type: str):
+        """Creates Ansible inventory.
 
         Args:
-            group ([type]): [description]
-            host ([type]): [description]
-            var ([type]): [description]
-            var_type ([type]): [description]
+            group (str): Name of the group
+            host (str): Hostname
+            var (str): Variable value
+            var_type (str): Type of the variable
         """
         self.inventory.add_group(group)
         self.inventory.add_host(host, group)
