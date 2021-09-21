@@ -227,8 +227,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 return {"results": [], "next": None}
             else:
                 self.display.display(
-                    "Something went wrong while executing the query. If additional query was added confirm that it has proper syntax.\nReturned code: {code}\nReason: {reason}".format(
-                        code=e.code, reason=e
+                    "Something went wrong while executing the query.\nReason: {reason}".format(
+                        code=e.code, reason=json.loads(e.fp.read().decode())["errors"][0]["message"]
                     ),
                     color="red",
                 )

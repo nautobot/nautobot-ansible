@@ -1,4 +1,4 @@
-devices (name_ic: \"lax01-leaf-01\") {
+devices {% include "graphql_filters.j2" %} {
   name
   platform {
     napalm_driver
