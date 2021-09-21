@@ -206,23 +206,23 @@ releases:
     - v1.0.4.yml
     release_date: '2021-03-14'
   1.1.0:
-    changes:
-    modules:
-      - description: Action plugin to query Nautobot GraphQL API endpoint
-        name: query_graphql
-        namespace: 'networktocode.nautobot'
-      - description: Lookup plugin to query Nautobot GraphQL API endpoint
-        name: lookup_graphql
-        namespace: 'networktocode.nautobot'
     fragments:
     - v1.1.0.yml
+    modules:
+    - description: Lookup plugin to query Nautobot GraphQL API endpoint
+      name: lookup_graphql
+      namespace: networktocode.nautobot
+    - description: Action plugin to query Nautobot GraphQL API endpoint
+      name: query_graphql
+      namespace: networktocode.nautobot
     release_date: '2021-04-12'
   1.2.0:
-    changes:
-    modules:
-      - description: Inventory plugin leveraging Nautobot's GraphQL API
-        name: gql_inventory
-        namespace: 'networktocode.nautobot'
     fragments:
     - v1.2.0.yml
+    modules:
+    - description: Inventory plugin leveraging Nautobot's GraphQL API
+      name: gql_inventory
+      namespace: networktocode.nautobot
     release_date: '2021-09-22'
+  3.0.0:
+    release_date: '2021-09-21'
