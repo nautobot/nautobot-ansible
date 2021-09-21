@@ -182,7 +182,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.inventory.add_group(group)
         self.inventory.add_host(host, group)
 
-    def add_variable(self, host: str, var: str, var_type:str):
+    def add_variable(self, host: str, var: str, var_type: str):
         """Adds variables to group or host.
 
         Args:
@@ -228,7 +228,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             else:
                 self.display.display(
                     "Something went wrong while executing the query.\nReason: {reason}".format(
-                        code=e.code, reason=json.loads(e.fp.read().decode())["errors"][0]["message"]
+                        code=e.code,
+                        reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
                     ),
                     color="red",
                 )
@@ -253,44 +254,51 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 if not GROUP_BY.get(group_by):
                     self.display.display(
                         "WARNING: '{}' is not supported as a 'group_by' option. Supported options are: {} ".format(
-                            group_by, " ".join("'{}',".format(str(x)) for x in GROUP_BY.keys())
+                            group_by,
+                            " ".join("'{}',".format(str(x)) for x in GROUP_BY.keys()),
                         ),
                         color="yellow",
                     )
                     continue
                 for device in json_data["data"]["devices"]:
-                    groups[device["site"]["name"]]= "site"
+                    groups[device["site"]["name"]] = "site"
                     if device.get(group_by) and GROUP_BY.get(group_by):
-                        groups[device[group_by][GROUP_BY.get(group_by)]]= group_by
+                        groups[device[group_by][GROUP_BY.get(group_by)]] = group_by
                     else:
-                        groups["unknown"]= "unknown"
+                        groups["unknown"] = "unknown"
 
         else:
             for device in json_data["data"]["devices"]:
-                groups[device["site"]["name"]]= "site"
+                groups[device["site"]["name"]] = "site"
 
         for key, value in groups.items():
             for device in json_data["data"]["devices"]:
                 if device.get(value) and key == device[value][GROUP_BY[value]]:
-                    self.create_inventory(
-                        key,
-                        device["name"]
-                    )
+                    self.create_inventory(key, device["name"])
                     if device["primary_ip4"]:
-                        self.add_variable(device["name"], device["primary_ip4"]["address"], "ansible_host")
+                        self.add_variable(
+                            device["name"],
+                            device["primary_ip4"]["address"],
+                            "ansible_host",
+                        )
                     else:
-                        self.add_variable(device["name"], device["name"], "ansible_host")
+                        self.add_variable(
+                            device["name"], device["name"], "ansible_host"
+                        )
                     if device["platform"]:
                         self.add_variable(
                             device["name"],
-                            ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),
-                            "ansible_network_os"
+                            ANSIBLE_LIB_MAPPER_REVERSE.get(
+                                NAPALM_LIB_MAPPER.get(
+                                    device["platform"]["napalm_driver"]
+                                )
+                            ),
+                            "ansible_network_os",
                         )
 
                     for var in self.variables:
                         if var in device and device[var]:
                             self.add_variable(device["name"], device[var], var)
-
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
