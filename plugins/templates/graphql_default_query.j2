@@ -1,4 +1,4 @@
-devices {
+devices (name_ic: \"lax01-leaf-01\") {
   name
   platform {
     napalm_driver
@@ -18,9 +18,5 @@ devices {
   device_role {
     name
   }
-{%- for key, value in query.items() -%}
-  {{ key }} {
-    {{value}}
-  }
-{%- endfor -%}
+{% include "graphql_additional_query.j2" %}
 }

@@ -217,3 +217,12 @@ releases:
     fragments:
     - v1.1.0.yml
     release_date: '2021-04-12'
+  1.2.0:
+    changes:
+    modules:
+      - description: Inventory plugin leveraging Nautobot's GraphQL API
+        name: gql_inventory
+        namespace: 'networktocode.nautobot'
+    fragments:
+    - v1.2.0.yml
+    release_date: '2021-09-22'

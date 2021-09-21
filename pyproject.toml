@@ -8,6 +8,7 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = "^3.6"
 ansible-base = "^2.10.0"
+netutils = "^0.2.2"
 
 [tool.poetry.dev-dependencies]
 black = "19.10b0"
