@@ -195,7 +195,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def main(self):
         """Main function."""
         file_loader = FileSystemLoader(f"{PATH}/../templates")
-        env = Environment(loader=file_loader)
+        env = Environment(loader=file_loader, autoescape=True)
         template = env.get_template("graphql_default_query.j2")
         query = template.render(query=self.gql_query, filters=self.filters)
         data = {"query": "query {%s}" % query}
