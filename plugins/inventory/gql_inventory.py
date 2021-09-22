@@ -228,7 +228,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             else:
                 self.display.display(
                     "Something went wrong while executing the query.\nReason: {reason}".format(
-                        code=e.code,
                         reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
                     ),
                     color="red",
@@ -240,7 +239,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {}".format(
+                "Query returned an error.\nReason: {0}".format(
                     json_data["errors"][0]["message"]
                 ),
                 color="red",
@@ -253,9 +252,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             for group_by in self.group_by:
                 if not GROUP_BY.get(group_by):
                     self.display.display(
-                        "WARNING: '{}' is not supported as a 'group_by' option. Supported options are: {} ".format(
+                        "WARNING: '{0}' is not supported as a 'group_by' option. Supported options are: {1} ".format(
                             group_by,
-                            " ".join("'{}',".format(str(x)) for x in GROUP_BY.keys()),
+                            " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
                         ),
                         color="yellow",
                     )
