@@ -20,7 +20,7 @@ networktocode.nautobot.vm_interface -- Creates or removes interfaces from virtua
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 2.0.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -66,34 +66,21 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the vm interface configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
                     <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -102,14 +89,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/enabled"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-enabled"></div>
                     <b>enabled</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/enabled" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                                         <ul style="margin: 0; padding: 0"><b>Choices:</b>
@@ -122,14 +111,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/mac_address"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-mac_address"></div>
                     <b>mac_address</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/mac_address" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-mac_address" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -138,14 +129,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/mode"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-mode"></div>
                     <b>mode</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/mode" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-mode" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -154,14 +147,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/mtu"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-mtu"></div>
                     <b>mtu</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/mtu" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-mtu" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -170,14 +165,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/name"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
                     <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -186,78 +183,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tagged_vlans"></div>
-                    <b>tagged_vlans</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tagged_vlans" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>A list of tagged VLANS to be assigned to interface. Mode must be set to either <code>Tagged</code> or <code>Tagged All</code></div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Any tags that the prefix may need to be associated with</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/untagged_vlan"></div>
-                    <b>untagged_vlan</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/untagged_vlan" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The untagged VLAN to be assigned to interface</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/virtual_machine"></div>
-                    <b>virtual_machine</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/virtual_machine" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Name of the virtual machine the interface will be associated with (case-sensitive)</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -268,7 +203,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -287,7 +222,43 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tagged_vlans"></div>
+                    <b>tagged_vlans</b>
+                    <a class="ansibleOptionLink" href="#parameter-tagged_vlans" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>A list of tagged VLANS to be assigned to interface. Mode must be set to either <code>Tagged</code> or <code>Tagged All</code></div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+                    <b>tags</b>
+                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=raw</span>                                            </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Any tags that the prefix may need to be associated with</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -302,7 +273,25 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-untagged_vlan"></div>
+                    <b>untagged_vlan</b>
+                    <a class="ansibleOptionLink" href="#parameter-untagged_vlan" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The untagged VLAN to be assigned to interface</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -317,7 +306,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -331,6 +320,24 @@ Parameters
                                                                 <td>
                                             <div>If <code>no</code>, SSL certificates will not be validated.
     This should only be used on personally controlled sites using self-signed certificates.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-virtual_machine"></div>
+                    <b>virtual_machine</b>
+                    <a class="ansibleOptionLink" href="#parameter-virtual_machine" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Name of the virtual machine the interface will be associated with (case-sensitive)</div>
                                                         </td>
             </tr>
                         </table>
@@ -365,38 +372,35 @@ Examples
           networktocode.nautobot.vm_interface:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              virtual_machine: test100
-              name: GigabitEthernet1
+            virtual_machine: test100
+            name: GigabitEthernet1
             state: present
 
         - name: Delete interface within nautobot
           networktocode.nautobot.vm_interface:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              virtual_machine: test100
-              name: GigabitEthernet1
+            virtual_machine: test100
+            name: GigabitEthernet1
             state: absent
 
         - name: Create interface as a trunk port
           networktocode.nautobot.vm_interface:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              virtual_machine: test100
-              name: GigabitEthernet25
-              enabled: false
-              untagged_vlan:
-                name: Wireless
+            virtual_machine: test100
+            name: GigabitEthernet25
+            enabled: false
+            untagged_vlan:
+              name: Wireless
+              site: Test Site
+            tagged_vlans:
+              - name: Data
                 site: Test Site
-              tagged_vlans:
-                - name: Data
-                  site: Test Site
-                - name: VoIP
-                  site: Test Site
-              mtu: 1600
-              mode: Tagged
+              - name: VoIP
+                site: Test Site
+            mtu: 1600
+            mode: Tagged
             state: present
 
 

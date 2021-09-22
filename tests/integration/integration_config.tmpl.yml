@@ -1,0 +1,3 @@
+---
+nautobot_url: ${NAUTOBOT_URL:-"http://nautobot:8000"}
+nautobot_token: ${NAUTOBOT_TOKEN:-"0123456789abcdef0123456789abcdef01234567"}

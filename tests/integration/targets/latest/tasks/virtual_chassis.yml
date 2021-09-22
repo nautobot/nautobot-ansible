@@ -9,24 +9,26 @@
 ##
 - name: "VIRTUAL_CHASSIS 0: Create device for testing virtual chassis"
   networktocode.nautobot.device:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Device Virtual Chassis Tests
-      device_type: Cisco Test
-      device_role: Core Switch
-      site: Test Site
-      vc_position: 1
-      vc_priority: 1
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Device Virtual Chassis Tests
+    device_type: Cisco Test
+    device_role: Core Switch
+    site: Test Site
+    vc_position: 1
+    vc_priority: 1
+    status: "Active"
     state: present
+
+- set_fact:
+    device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Device Virtual Chassis Tests"'') }}'
 
 - name: "VIRTUAL_CHASSIS 1: Necessary info creation"
   networktocode.nautobot.virtual_chassis:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "First VC"
-      master: Device Virtual Chassis Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "First VC"
+    master: Device Virtual Chassis Tests
     state: present
   register: test_one
 
@@ -36,17 +38,16 @@
       - test_one is changed
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
-      - test_one['virtual_chassis']['master'] == 11
+      - test_one['virtual_chassis']['master'] == device['key']
       - test_one['virtual_chassis']['name'] == "First VC"
       - test_one['msg'] == "virtual_chassis First VC created"
 
 - name: "VIRTUAL_CHASSIS 2: Create duplicate"
   networktocode.nautobot.virtual_chassis:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "First VC"
-      master: Device Virtual Chassis Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "First VC"
+    master: Device Virtual Chassis Tests
     state: present
   register: test_two
 
@@ -54,18 +55,17 @@
   assert:
     that:
       - not test_two['changed']
-      - test_two['virtual_chassis']['master'] == 11
+      - test_two['virtual_chassis']['master'] == device['key']
       - test_two['virtual_chassis']['name'] == "First VC"
       - test_two['msg'] == "virtual_chassis First VC already exists"
 
 - name: "POWER_FEED 3: Update virtual_chassis with other fields"
   networktocode.nautobot.virtual_chassis:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "First VC"
-      master: Device Virtual Chassis Tests
-      domain: Domain Text
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "First VC"
+    master: Device Virtual Chassis Tests
+    domain: Domain Text
     state: present
   register: test_three
 
@@ -74,31 +74,33 @@
     that:
       - test_three is changed
       - test_three['diff']['after']['domain'] == "Domain Text"
-      - test_three['virtual_chassis']['master'] == 11
+      - test_three['virtual_chassis']['master'] == device['key']
       - test_three['virtual_chassis']['domain'] == "Domain Text"
       - test_three['virtual_chassis']['name'] == "First VC"
       - test_three['msg'] == "virtual_chassis First VC updated"
 
 - name: "VIRTUAL_CHASSIS 4: Create device for testing virtual chassis deletion"
   networktocode.nautobot.device:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Device Virtual Chassis Tests 2
-      device_type: Cisco Test
-      device_role: Core Switch
-      site: Test Site
-      vc_position: 1
-      vc_priority: 15
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Device Virtual Chassis Tests 2
+    device_type: Cisco Test
+    device_role: Core Switch
+    site: Test Site
+    vc_position: 1
+    vc_priority: 15
+    status: "Active"
     state: present
+
+- set_fact:
+    device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Device Virtual Chassis Tests 2"'') }}'
 
 - name: "VIRTUAL_CHASSIS 4: Create Virtual Chassis for Delete Test"
   networktocode.nautobot.virtual_chassis:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Second VC"
-      master: Device Virtual Chassis Tests 2
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Second VC"
+    master: Device Virtual Chassis Tests 2
     state: present
   register: test_four
 
@@ -108,17 +110,16 @@
       - test_four is changed
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
-      - test_four['virtual_chassis']['master'] == 12
+      - test_four['virtual_chassis']['master'] == device['key']
       - test_four['virtual_chassis']['name'] == "Second VC"
       - test_four['msg'] == "virtual_chassis Second VC created"
 
 - name: "VIRTUAL_CHASSIS 5: Delete Virtual Chassis"
   networktocode.nautobot.virtual_chassis:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Second VC"
-      master: Device Virtual Chassis Tests 2
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Second VC"
+    master: Device Virtual Chassis Tests 2
     state: absent
   register: test_five
 

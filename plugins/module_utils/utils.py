@@ -105,8 +105,10 @@ QUERY_TYPES = dict(
     nat_outside="address",
     parent_rack_group="slug",
     parent_region="slug",
+    parent_tenant_group="slug",
     power_panel="name",
     power_port="name",
+    power_port_template="name",
     platform="slug",
     prefix_role="slug",
     primary_ip="address",
@@ -172,8 +174,10 @@ CONVERT_TO_ID = {
     "platform": "platforms",
     "parent_rack_group": "rack_groups",
     "parent_region": "regions",
+    "parent_tenant_group": "tenant_groups",
     "power_panel": "power_panels",
     "power_port": "power_ports",
+    "power_port_template": "power_port_templates",
     "prefix_role": "roles",
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
@@ -304,6 +308,7 @@ ALLOWED_QUERY_PARAMS = {
     "nat_inside": set(["vrf", "address"]),
     "parent_rack_group": set(["slug"]),
     "parent_region": set(["slug"]),
+    "parent_tenant_group": set(["slug"]),
     "platform": set(["slug"]),
     "power_feed": set(["name", "power_panel"]),
     "power_outlet": set(["name", "device"]),
@@ -394,6 +399,8 @@ CONVERT_KEYS = {
     "cluster_group": "group",
     "parent_rack_group": "parent",
     "parent_region": "parent",
+    "parent_tenant_group": "parent",
+    "power_port_template": "power_port",
     "prefix_role": "role",
     "rack_group": "group",
     "rack_role": "role",
@@ -495,7 +502,7 @@ class NautobotModule:
         """
         keys_to_remove = set(NAUTOBOT_ARG_SPEC)
         if remove_keys:
-            keys_to_remove.extend(remove_keys)
+            keys_to_remove.update(remove_keys)
 
         return {k: v for k, v in data.items() if k not in keys_to_remove}
 
@@ -595,8 +602,7 @@ class NautobotModule:
         Returns message and changed = False
         :params msg (str): Message indicating why there is no change
         """
-        if msg:
-            self.module.fail_json(msg=msg, changed=False)
+        self.module.fail_json(msg=msg, changed=False)
 
     def _build_diff(self, before=None, after=None):
         """Builds diff of before and after changes"""
@@ -800,7 +806,7 @@ class NautobotModule:
                 msg="Failed to fetch endpoint choices to validate against. This requires a write-enabled token. Make sure the token is write-enabled. If looking to fetch only information, use either the inventory or lookup plugin."
             )
 
-        choices = [x for x in chain.from_iterable(endpoint_choices.values())]
+        choices = list(chain.from_iterable(endpoint_choices.values()))
 
         for item in choices:
             if item["display"].lower() == search.lower():
@@ -873,7 +879,11 @@ class NautobotModule:
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        if k == "tags" and isinstance(list_item, str):
+                        if (
+                            k == "tags"
+                            and isinstance(list_item, str)
+                            and not self.is_valid_uuid(list_item)
+                        ):
                             temp_dict = {"slug": self._to_slug(list_item)}
                         elif isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
@@ -939,15 +949,16 @@ class NautobotModule:
         for k, v in data.items():
             if isinstance(v, dict):
                 if v.get("id"):
-                    try:
-                        data[k] = int(v["id"])
-                    except (ValueError, TypeError):
-                        pass
-                else:
-                    for subk, subv in v.items():
-                        sub_data_type = QUERY_TYPES.get(subk, "q")
-                        if sub_data_type == "slug":
-                            data[k][subk] = self._to_slug(subv)
+                    if self.is_valid_uuid(v["id"]):
+                        data[k] = v["id"]
+                        continue
+                    else:
+                        self._handle_errors(f"Invalid ID passed for {k}: {v['id']}")
+
+                for subk, subv in v.items():
+                    sub_data_type = QUERY_TYPES.get(subk, "q")
+                    if sub_data_type == "slug":
+                        data[k][subk] = self._to_slug(subv)
             else:
                 data_type = QUERY_TYPES.get(k, "q")
                 if data_type == "slug":

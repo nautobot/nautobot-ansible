@@ -43,16 +43,19 @@ options:
       - Name of the device the interface will be associated with (case-sensitive)
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the interface to be created
     required: true
     type: str
+    version_added: "3.0.0"
   label:
     description:
       - Physical label of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - |
@@ -61,56 +64,74 @@ options:
         This has to be specified exactly as what is found within UI
     required: false
     type: str
+    version_added: "3.0.0"
   enabled:
     description:
       - Sets whether interface shows enabled or disabled
     required: false
     type: bool
+    version_added: "3.0.0"
   lag:
     description:
       - Parent LAG interface will be a member of
     required: false
     type: raw
+    version_added: "3.0.0"
   mtu:
     description:
       - The MTU of the interface
     required: false
     type: int
+    version_added: "3.0.0"
   mac_address:
     description:
       - The MAC address of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   mgmt_only:
     description:
       - This interface is used only for out-of-band management
     required: false
     type: bool
+    version_added: "3.0.0"
   description:
     description:
       - The description of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   mode:
     description:
       - The mode of the interface
     required: false
     type: raw
+    version_added: "3.0.0"
   untagged_vlan:
     description:
       - The untagged VLAN to be assigned to interface
     required: false
     type: raw
+    version_added: "3.0.0"
   tagged_vlans:
     description:
       - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
     required: false
     type: raw
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the interface may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
+  custom_fields:
+    description:
+      - Allows modification of any custom tags on the interface. The custom field must already exist in the model
+    required: false
+    type: dict
+    version_added: "3.0.0"
   update_vc_child:
     type: bool
     default: False
@@ -118,6 +139,7 @@ options:
       - |
         Use when master device is specified for C(device) and the specified interface exists on a child device
         and needs updated
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -132,6 +154,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -214,6 +237,17 @@ EXAMPLES = r"""
         name: GigabitEthernet2/0/1
         enabled: false
         update_vc_child: True
+    - name: |
+        Create an interface and update custom_field data point, 
+        setting the value to True
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: GigabitEthernet1/1/1
+        enabled: false
+        custom_fields:
+          monitored: True
 """
 
 RETURN = r"""
@@ -259,13 +293,16 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    device_interface = NautobotDcimModule(module, NB_INTERFACES)
+    device_interface = NautobotDcimModule(
+        module, NB_INTERFACES, remove_keys=["update_vc_child"]
+    )
     device_interface.run()
 
 

@@ -4,13 +4,16 @@
 ### PYNAUTOBOT_AGGEGATE
 ##
 ##
+- set_fact:
+    rir: "{{ lookup('networktocode.nautobot.lookup', 'rirs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=example-rir') }}"
+    schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+
 - name: "AGGREGATE 1: Necessary info creation"
   networktocode.nautobot.aggregate:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: "10.0.0.0/8"
-      rir: "Example RIR"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: "10.0.0.0/8"
+    rir: "Example RIR"
     state: present
   register: test_one
 
@@ -22,15 +25,14 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['aggregate']['prefix'] == "10.0.0.0/8"
       - test_one['aggregate']['family'] == 4
-      - test_one['aggregate']['rir'] == 1
+      - test_one['aggregate']['rir'] == rir['key']
       - test_one['msg'] == "aggregate 10.0.0.0/8 created"
 
 - name: "AGGREGATE 2: Create duplicate"
   networktocode.nautobot.aggregate:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: "10.0.0.0/8"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: "10.0.0.0/8"
     state: present
   register: test_two
 
@@ -40,20 +42,19 @@
       - not test_two['changed']
       - test_two['aggregate']['prefix'] == "10.0.0.0/8"
       - test_two['aggregate']['family'] == 4
-      - test_two['aggregate']['rir'] == 1
+      - test_two['aggregate']['rir'] == rir['key']
       - test_two['msg'] == "aggregate 10.0.0.0/8 already exists"
 
 - name: "AGGREGATE 3: ASSERT - Update"
   networktocode.nautobot.aggregate:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: "10.0.0.0/8"
-      rir: "Example RIR"
-      date_added: "1989-01-18"
-      description: "Test Description"
-      tags:
-        - "Schnozzberry"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: "10.0.0.0/8"
+    rir: "Example RIR"
+    date_added: "1989-01-18"
+    description: "Test Description"
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_three
 
@@ -63,21 +64,20 @@
       - test_three is changed
       - test_three['diff']['after']['date_added'] == "1989-01-18"
       - test_three['diff']['after']['description'] == "Test Description"
-      - test_three['diff']['after']['tags'][0] == 4
+      - test_three['diff']['after']['tags'][0] == schnozzberry['key']
       - test_three['aggregate']['prefix'] == "10.0.0.0/8"
       - test_three['aggregate']['family'] == 4
-      - test_three['aggregate']['rir'] == 1
+      - test_three['aggregate']['rir'] == rir['key']
       - test_three['aggregate']['date_added'] == "1989-01-18"
       - test_three['aggregate']['description'] == "Test Description"
-      - test_three['aggregate']['tags'][0] == 4
+      - test_three['aggregate']['tags'][0] == schnozzberry['key']
       - test_three['msg'] == "aggregate 10.0.0.0/8 updated"
 
 - name: "AGGREGATE 4: ASSERT - Delete"
   networktocode.nautobot.aggregate:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: "10.0.0.0/8"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: "10.0.0.0/8"
     state: absent
   register: test_four
 
@@ -87,19 +87,18 @@
       - test_four is changed
       - test_four['aggregate']['prefix'] == "10.0.0.0/8"
       - test_four['aggregate']['family'] == 4
-      - test_four['aggregate']['rir'] == 1
+      - test_four['aggregate']['rir'] == rir['key']
       - test_four['aggregate']['date_added'] == "1989-01-18"
       - test_four['aggregate']['description'] == "Test Description"
-      - test_four['aggregate']['tags'][0] == 4
+      - test_four['aggregate']['tags'][0] == schnozzberry['key']
       - test_four['msg'] == "aggregate 10.0.0.0/8 deleted"
 
 - name: "AGGREGATE 5: Necessary info creation"
   networktocode.nautobot.aggregate:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: "2001::/32"
-      rir: "Example RIR"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: "2001::/32"
+    rir: "Example RIR"
     state: present
   register: test_five
 
@@ -111,5 +110,5 @@
       - test_five['diff']['after']['state'] == "present"
       - test_five['aggregate']['prefix'] == "2001::/32"
       - test_five['aggregate']['family'] == 6
-      - test_five['aggregate']['rir'] == 1
+      - test_five['aggregate']['rir'] == rir['key']
       - test_five['msg'] == "aggregate 2001::/32 created"

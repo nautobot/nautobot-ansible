@@ -44,56 +44,69 @@ options:
       - The circuit id of the circuit
     required: true
     type: str
+    version_added: "3.0.0"
   provider:
     description:
       - The provider of the circuit
     required: false
     type: raw
+    version_added: "3.0.0"
   circuit_type:
     description:
       - The circuit type of the circuit
     required: false
     type: raw
+    version_added: "3.0.0"
   status:
     description:
       - The status of the circuit
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant assigned to the circuit
     required: false
     type: raw
+    version_added: "3.0.0"
   install_date:
     description:
       - The date the circuit was installed. e.g. YYYY-MM-DD
     required: false
     type: str
+    version_added: "3.0.0"
   commit_rate:
     description:
       - Commit rate of the circuit (Kbps)
     required: false
     type: int
+    version_added: "3.0.0"
   description:
     description:
       - Description of the circuit
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments related to circuit
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -108,6 +121,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -194,7 +208,7 @@ def main():
             commit_rate=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

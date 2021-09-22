@@ -44,16 +44,19 @@ options:
       - Specifies which address family the prefix prefix belongs to
     required: false
     type: int
+    version_added: "3.0.0"
   prefix:
     description:
       - Required if state is C(present) and first_available is False. Will allocate or free this prefix.
     required: false
     type: raw
+    version_added: "3.0.0"
   parent:
     description:
       - Required if state is C(present) and first_available is C(yes). Will get a new available prefix in this parent prefix.
     required: false
     type: raw
+    version_added: "3.0.0"
   prefix_length:
     description:
       - |
@@ -61,56 +64,69 @@ options:
         Will get a new available prefix of the given prefix_length in this parent prefix.
     required: false
     type: int
+    version_added: "3.0.0"
   site:
     description:
       - Site that prefix is associated with
     required: false
     type: raw
+    version_added: "3.0.0"
   vrf:
     description:
       - VRF that prefix is associated with
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the prefix will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   vlan:
     description:
       - The VLAN the prefix will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   status:
     description:
       - The status of the prefix
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   prefix_role:
     description:
       - The role of the prefix
     required: false
     type: raw
+    version_added: "3.0.0"
   is_pool:
     description:
       - All IP Addresses within this prefix are considered usable
     required: false
     type: bool
+    version_added: "3.0.0"
   description:
     description:
       - The description of the prefix
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the prefix may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - Must exist in Nautobot and in key/value format
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -125,6 +141,7 @@ options:
         Unused with state C(absent).
     default: false
     type: bool
+    version_added: "3.0.0"
   query_params:
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
@@ -133,6 +150,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -263,7 +281,7 @@ def main():
             prefix_role=dict(required=False, type="raw"),
             is_pool=dict(required=False, type="bool"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
             first_available=dict(required=False, type="bool", default=False),
         )

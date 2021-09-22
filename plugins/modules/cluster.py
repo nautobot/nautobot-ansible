@@ -43,41 +43,50 @@ options:
       - The name of the cluster
     required: true
     type: str
+    version_added: "3.0.0"
   cluster_type:
     description:
       - type of the cluster
     required: false
     type: raw
+    version_added: "3.0.0"
   cluster_group:
     description:
       - group of the cluster
     required: false
     type: raw
+    version_added: "3.0.0"
   site:
     description:
       - Required if I(state=present) and the cluster does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   comments:
     description:
       - Comments that may include additional information in regards to the cluster
     required: false
     type: str
+    version_added: "3.0.0"
   tenant:
     description:
       - Tenant the cluster will be assigned to.
     required: false
     type: raw
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the cluster may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -92,6 +101,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -177,7 +187,7 @@ def main():
             site=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

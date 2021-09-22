@@ -43,31 +43,38 @@ options:
       - "The aggregate prefix"
     required: true
     type: raw
+    version_added: "3.0.0"
   rir:
     description:
       - "The RIR the aggregate will be assigned to"
     required: false
     type: raw
+    version_added: "3.0.0"
   date_added:
     description:
       - "Date added, format: YYYY-MM-DD"
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - "The description of the aggregate"
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - "Any tags that the aggregate may need to be associated with"
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - "must exist in Nautobot"
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - "The state of the aggregate"
@@ -82,6 +89,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - "If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates."
@@ -157,7 +165,7 @@ def main():
             rir=dict(required=False, type="raw"),
             date_added=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

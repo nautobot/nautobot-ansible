@@ -44,11 +44,13 @@ options:
       - The device type the power outlet is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the power outlet
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the power outlet
@@ -109,11 +111,13 @@ options:
       - hdot-cx
     required: false
     type: str
-  power_port:
+    version_added: "3.0.0"
+  power_port_template:
     description:
       - The attached power port
     required: false
     type: raw
+    version_added: "3.0.0"
   feed_leg:
     description:
       - The phase, in case of three-phase feed
@@ -123,6 +127,7 @@ options:
       - C
     required: false
     type: str
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -137,6 +142,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -270,7 +276,7 @@ def main():
                 ],
                 type="str",
             ),
-            power_port=dict(required=False, type="raw"),
+            power_port_template=dict(required=False, type="raw"),
             feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
         )
     )

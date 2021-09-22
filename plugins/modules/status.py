@@ -44,22 +44,26 @@ options:
       - Status name
     required: true
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description for the status
     required: false
     type: str
+    version_added: "3.0.0"
   slug:
     description:
       - The slugified version of the name or custom slug.
       - This is auto-generated following Nautobot rules if not provided
     required: false
     type: str
+    version_added: "3.0.0"
   color:
     description:
       - Status color
     required: false
     type: str
+    version_added: "3.0.0"
   content_types:
     description:
       - Status content type(s). These match app.endpoint and the endpoint is singular.
@@ -67,6 +71,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   query_params:
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
@@ -75,6 +80,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.

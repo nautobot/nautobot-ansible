@@ -44,21 +44,26 @@ options:
       - The power panel the power feed is terminated on
     required: true
     type: raw
+    version_added: "3.0.0"
   rack:
     description:
       - The rack the power feed is assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the power feed
     required: true
     type: str
+    version_added: "3.0.0"
   status:
     description:
       - The status of the power feed
+      - Required if I(state=present) and does not exist yet
     required: false
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the power feed
@@ -67,6 +72,7 @@ options:
       - redundant
     required: false
     type: str
+    version_added: "3.0.0"
   supply:
     description:
       - The supply type of the power feed
@@ -75,6 +81,7 @@ options:
       - dc
     required: false
     type: str
+    version_added: "3.0.0"
   phase:
     description:
       - The phase type of the power feed
@@ -83,36 +90,44 @@ options:
       - three-phase
     required: false
     type: str
+    version_added: "3.0.0"
   voltage:
     description:
       - The voltage of the power feed
     required: false
     type: int
+    version_added: "3.0.0"
   amperage:
     description:
       - The amperage of the power feed
     required: false
     type: int
+    version_added: "3.0.0"
   max_utilization:
     description:
       - The maximum permissible draw of the power feed in percent
     required: false
     type: int
+    version_added: "3.0.0"
   comments:
     description:
       - Comments related to the power feed
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the power feed may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -127,6 +142,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -217,7 +233,7 @@ def main():
             amperage=dict(required=False, type="int"),
             max_utilization=dict(required=False, type="int"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

@@ -43,50 +43,58 @@ options:
       - The name of the vrf
     required: true
     type: str
+    version_added: "3.0.0"
   rd:
     description:
       - The RD of the VRF. Must be quoted to pass as a string.
     required: false
     type: str
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the vrf will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   enforce_unique:
     description:
       - Prevent duplicate prefixes/IP addresses within this VRF
     required: false
     type: bool
+    version_added: "3.0.0"
   import_targets:
     description:
       - Import targets tied to VRF
     required: false
     type: list
     elements: str
-    version_added: "1.0.0"
+    version_added: "3.0.0"
   export_targets:
     description:
       - Export targets tied to VRF
     required: false
     type: list
     elements: str
-    version_added: "1.0.0"
+    version_added: "3.0.0"
   description:
     description:
       - The description of the vrf
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the vrf may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -101,6 +109,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -183,7 +192,7 @@ def main():
             import_targets=dict(required=False, type="list", elements="str"),
             export_targets=dict(required=False, type="list", elements="str"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

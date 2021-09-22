@@ -43,51 +43,62 @@ options:
       - Name of the virtual machine the interface will be associated with (case-sensitive)
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the interface to be created
     required: true
     type: str
+    version_added: "3.0.0"
   enabled:
     description:
       - Sets whether interface shows enabled or disabled
     required: false
     type: bool
+    version_added: "3.0.0"
   mtu:
     description:
       - The MTU of the interface
     required: false
     type: int
+    version_added: "3.0.0"
   mac_address:
     description:
       - The MAC address of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the interface
     required: false
     type: str
+    version_added: "3.0.0"
   mode:
     description:
       - The mode of the interface
     required: false
     type: raw
+    version_added: "3.0.0"
   untagged_vlan:
     description:
       - The untagged VLAN to be assigned to interface
     required: false
     type: raw
+    version_added: "3.0.0"
   tagged_vlans:
     description:
       - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
     required: false
     type: raw
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the prefix may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -102,6 +113,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -191,7 +203,7 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

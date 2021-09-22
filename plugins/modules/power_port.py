@@ -44,11 +44,13 @@ options:
       - The device the power port is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the power port
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the power port
@@ -109,26 +111,32 @@ options:
       - ita-o
     required: false
     type: str
+    version_added: "3.0.0"
   allocated_draw:
     description:
       - The allocated draw of the power port in watt
     required: false
     type: int
+    version_added: "3.0.0"
   maximum_draw:
     description:
       - The maximum permissible draw of the power port in watt
     required: false
     type: int
+    version_added: "3.0.0"
   description:
     description:
       - Description of the power port
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the power port may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -143,6 +151,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -280,7 +289,7 @@ def main():
             allocated_draw=dict(required=False, type="int"),
             maximum_draw=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

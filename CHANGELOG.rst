@@ -8,19 +8,56 @@ networktocode.nautobot Release Notes
 v3.0.0
 ======
 
-v1.2.0
+Release Summary
+---------------
+
+Updates format for modules to support Ansible 4 / ansible-core 2.11 arg spec verification changes
+
+Major Changes
+-------------
+
+- (#66) Remove data sub-dictionary from modules
+
+Minor Changes
+-------------
+
+- (#57) Adds nautobot-server module
+- (#75) Device Interface module supports custom_fields
+
+v2.0.1
 ======
 
-New Modules
------------
+Release Summary
+---------------
 
-Networktocode
-~~~~~~~~~~~~~
+Bug fix updates for label support and SSL version consistency
 
-nautobot
-^^^^^^^^
+Bugfixes
+--------
 
-- networktocode.nautobot.networktocode.nautobot.gql_inventory - Inventory plugin leveraging Nautobot's GraphQL API
+- (#44) Add Interface Label Support
+- (#45) SSL Verify Keyword Consistency Update
+
+v2.0.0
+======
+
+Release Summary
+---------------
+
+Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
+
+Major Changes
+-------------
+
+- (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+
+Bugfixes
+--------
+
+- (#26) Add missing description to tenant_group
+- (#29) Add missing field to vlan_group
+- (#32) Fixed query on Virtual Chassis
+- (#35) Add Site, Device Tracebacks due to changes in Nautobot
 
 v1.1.0
 ======

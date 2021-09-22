@@ -44,11 +44,13 @@ options:
       - Name of the device the interface template will be associated with (case-sensitive)
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the interface template to be created
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - |
@@ -57,11 +59,13 @@ options:
         This has to be specified exactly as what is found within UI
     required: true
     type: str
+    version_added: "3.0.0"
   mgmt_only:
     description:
       - This interface template is used only for out-of-band management
     required: false
     type: bool
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -76,6 +80,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |

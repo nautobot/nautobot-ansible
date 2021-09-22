@@ -43,47 +43,57 @@ options:
       - Name of the device the inventory item belongs to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the inventory item to be created
     required: true
     type: str
+    version_added: "3.0.0"
   manufacturer:
     description:
       - The manufacturer of the inventory item
     required: false
     type: raw
+    version_added: "3.0.0"
   part_id:
     description:
       - The part ID of the inventory item
     required: false
     type: str
+    version_added: "3.0.0"
   serial:
     description:
       - The serial number of the inventory item
     required: false
     type: str
+    version_added: "3.0.0"
   asset_tag:
     description:
       - The asset tag of the inventory item
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - The description of the inventory item
     required: false
     type: str
+    version_added: "3.0.0"
   discovered:
     description:
       - Set the discovery flag for the inventory item
     required: false
     default: false
     type: bool
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -98,6 +108,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -180,7 +191,7 @@ def main():
             asset_tag=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             discovered=dict(required=False, type="bool", default=False),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

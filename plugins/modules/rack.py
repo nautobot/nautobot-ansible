@@ -43,46 +43,56 @@ options:
       - The name of the rack
     required: true
     type: str
+    version_added: "3.0.0"
   facility_id:
     description:
       - The unique rack ID assigned by the facility
     required: false
     type: str
+    version_added: "3.0.0"
   site:
     description:
       - Required if I(state=present) and the rack does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   rack_group:
     description:
       - The rack group the rack will be associated to
     required: false
     type: raw
+    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the device will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   status:
     description:
       - The status of the rack
+      - Required if I(state=present) and does not exist yet
     required: false
     type: raw
+    version_added: "3.0.0"
   rack_role:
     description:
       - The rack role the rack will be associated to
     required: false
     type: raw
+    version_added: "3.0.0"
   serial:
     description:
       - Serial number of the rack
     required: false
     type: str
+    version_added: "3.0.0"
   asset_tag:
     description:
       - Asset tag that is associated to the rack
     required: false
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of rack
@@ -94,6 +104,7 @@ options:
       - Wall-mounted cabinet
     required: false
     type: str
+    version_added: "3.0.0"
   width:
     description:
       - The rail-to-rail width
@@ -104,26 +115,31 @@ options:
       - 23
     required: false
     type: int
+    version_added: "3.0.0"
   u_height:
     description:
       - The height of the rack in rack units
     required: false
     type: int
+    version_added: "3.0.0"
   desc_units:
     description:
       - Rack units will be numbered top-to-bottom
     required: false
     type: bool
+    version_added: "3.0.0"
   outer_width:
     description:
       - The outer width of the rack
     required: false
     type: int
+    version_added: "3.0.0"
   outer_depth:
     description:
       - The outer depth of the rack
     required: false
     type: int
+    version_added: "3.0.0"
   outer_unit:
     description:
       - Whether the rack unit is in Millimeters or Inches and is I(required) if outer_width/outer_depth is specified
@@ -132,21 +148,26 @@ options:
       - Inches
     required: false
     type: str
+    version_added: "3.0.0"
   comments:
     description:
       - Comments that may include additional information in regards to the rack
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the rack may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -161,6 +182,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -250,7 +272,7 @@ def main():
                 required=False, type="str", choices=["Millimeters", "Inches",],
             ),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

@@ -42,8 +42,10 @@ options:
     description:
       - The circuit to assign to circuit termination
     required: true
+    version_added: "3.0.0"
     type: raw
   term_side:
+    version_added: "3.0.0"
     description:
       - The side of the circuit termination
     choices:
@@ -52,31 +54,37 @@ options:
     required: true
     type: str
   site:
+    version_added: "3.0.0"
     description:
       - The site the circuit termination will be assigned to
     required: false
     type: raw
   port_speed:
+    version_added: "3.0.0"
     description:
       - The speed of the port (Kbps)
     required: false
     type: int
   upstream_speed:
+    version_added: "3.0.0"
     description:
       - The upstream speed of the circuit termination
     required: false
     type: int
   xconnect_id:
+    version_added: "3.0.0"
     description:
       - The cross connect ID of the circuit termination
     required: false
     type: str
   pp_info:
+    version_added: "3.0.0"
     description:
       - Patch panel information
     required: false
     type: str
   description:
+    version_added: "3.0.0"
     description:
       - Description of the circuit termination
     required: false
@@ -88,6 +96,7 @@ options:
     default: present
     type: str
   query_params:
+    version_added: "3.0.0"
     description:
       - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
       - in plugins/module_utils/utils.py and provides control to users on what may make

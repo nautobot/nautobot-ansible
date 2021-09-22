@@ -44,21 +44,26 @@ options:
       - Name
     required: true
     type: str
+    version_added: "3.0.0"
   master:
     description:
       - The master device the virtual chassis is attached to
     required: false
     type: raw
+    version_added: "3.0.0"
   domain:
     description:
       - domain of the virtual chassis
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the virtual chassis may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -73,6 +78,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -143,7 +149,7 @@ def main():
             name=dict(required=True, type="str"),
             master=dict(required=False, type="raw"),
             domain=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

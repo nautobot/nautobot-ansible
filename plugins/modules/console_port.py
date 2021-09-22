@@ -44,11 +44,13 @@ options:
       - The device the console port is attached to
     required: true
     type: raw
+    version_added: "3.0.0"
   name:
     description:
       - The name of the console port
     required: true
     type: str
+    version_added: "3.0.0"
   type:
     description:
       - The type of the console port
@@ -68,16 +70,20 @@ options:
       - other
     required: false
     type: str
+    version_added: "3.0.0"
   description:
     description:
       - Description of the console port
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the console port may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -92,6 +98,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -184,7 +191,7 @@ def main():
                 type="str",
             ),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
         )
     )
 

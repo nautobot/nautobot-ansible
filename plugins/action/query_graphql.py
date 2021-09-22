@@ -1,12 +1,22 @@
+# -*- coding: utf-8 -*-
+# Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """Nautobot Action Plugin to Query GraphQL."""
 
 from __future__ import absolute_import, division, print_function
 
 import os
 
+from ansible.module_utils.six import raise_from
 from ansible.errors import AnsibleError
 from ansible.plugins.action import ActionBase
-import pynautobot
+
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotApiBase,
@@ -34,6 +44,13 @@ def nautobot_action_graphql(args):
     # Verify SSL Verify is of boolean
     if not isinstance(ssl_verify, bool):
         raise AnsibleError("validate_certs must be a boolean")
+
+    update_hostvars = args.get("update_hostvars", False)
+    Display().vv("Update hostvars is set to: %s" % update_hostvars)  # nosec
+
+    # Verify SSL Verify is of boolean
+    if not isinstance(update_hostvars, bool):
+        raise AnsibleError("update_hostvars must be a boolean")
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
     query = args.get("query")
@@ -80,7 +97,12 @@ def nautobot_action_graphql(args):
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
-        # Assign the data of a good result to the response
+        # If update_hostvars is set, add to ansible_facts which will set to the root of
+        # the data structure, e.g. hostvars[inventory_hostname]
+        if args.get("update_hostvars"):
+            results["ansible_facts"] = nautobot_response.json.get("data")
+        # Assign to data regardless a good result to the response to the data key
+        # e.g. hostvars[inventory_hostname]['data']
         results["data"] = nautobot_response.json.get("data")
 
     return results
@@ -100,6 +122,12 @@ class ActionModule(ActionBase):
             tmp ([type], optional): [description]. Defaults to None.
             task_vars ([type], optional): [description]. Defaults to None.
         """
+        if PYNAUTOBOT_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
+            )
+
         self._supports_check_mode = False
         self._supports_async = False
 

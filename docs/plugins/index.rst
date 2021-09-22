@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 2.0.1
+Collection version 3.0.0
 
 .. toctree::
     :maxdepth: 1
@@ -55,6 +55,7 @@ Modules
 * :ref:`ip_address <ansible_collections.networktocode.nautobot.ip_address_module>` -- Creates or removes IP addresses from Nautobot
 * :ref:`ipam_role <ansible_collections.networktocode.nautobot.ipam_role_module>` -- Creates or removes ipam roles from Nautobot
 * :ref:`manufacturer <ansible_collections.networktocode.nautobot.manufacturer_module>` -- Create or delete manufacturers within Nautobot
+* :ref:`nautobot_server <ansible_collections.networktocode.nautobot.nautobot_server_module>` -- Manages Nautobot Server application.
 * :ref:`platform <ansible_collections.networktocode.nautobot.platform_module>` -- Create or delete platforms within Nautobot
 * :ref:`power_feed <ansible_collections.networktocode.nautobot.power_feed_module>` -- Create, update or delete power feeds within Nautobot
 * :ref:`power_outlet <ansible_collections.networktocode.nautobot.power_outlet_module>` -- Create, update or delete power outlets within Nautobot

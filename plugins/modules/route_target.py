@@ -48,21 +48,26 @@ options:
       - The tenant that the route target will be assigned to
     required: false
     type: raw
+    version_added: "3.0.0"
   description:
     description:
       - Tag description
     required: false
     type: str
+    version_added: "3.0.0"
   tags:
     description:
       - Any tags that the device may need to be associated with
     required: false
     type: list
+    elements: raw
+    version_added: "3.0.0"
   custom_fields:
     description:
       - must exist in Nautobot
     required: false
     type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -77,6 +82,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -160,7 +166,7 @@ def main():
             name=dict(required=True, type="str"),
             tenant=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
-            tags=dict(required=False, type="list"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )
