@@ -20,7 +20,7 @@ networktocode.nautobot.tenant_group -- Creates or removes tenant groups from Nau
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -104,6 +104,24 @@ Parameters
                                                                                                                                                             </td>
                                                                 <td>
                                             <div>Name of the tenant group to be created</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-parent_tenant_group"></div>
+                    <b>parent_tenant_group</b>
+                    <a class="ansibleOptionLink" href="#parameter-parent_tenant_group" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.1.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Name of the parent tenant group</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -246,12 +264,21 @@ Examples
             slug: "tenant_group_abc"
             state: present
 
-        - name: Delete tenant within nautobot
+        - name: Delete tenant within Nautobot
           networktocode.nautobot.tenant_group:
             url: http://nautobot.local
             token: thisIsMyToken
             name: Tenant ABC
             state: absent
+
+        - name: Update tenant within Nautobot with a parent tenant group
+          networktocode.nautobot.tenant_group:
+            url: http://nautobot.local
+            token: thisIsMyToken
+            name: Tenant Group ABC
+            parent_tenant_group: Customer Tenants
+            slug: "tenant_group_abc"
+            state: present
 
 
 

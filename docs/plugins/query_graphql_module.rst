@@ -20,7 +20,7 @@ networktocode.nautobot.query_graphql -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -119,6 +119,25 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-update_hostvars"></div>
+                    <b>update_hostvars</b>
+                    <a class="ansibleOptionLink" href="#parameter-update_hostvars" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">boolean</span>
+                                                                    </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
+                                                                                                                                                                                                <li>yes</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the &#x27;data&#x27; key (e.g. hostvars[inventory_hostname][&#x27;data&#x27;]). Beware, that the root keys provided by the query will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -197,22 +216,23 @@ Examples
             site_name: den
           query_string: |
             query ($site_name:String!) {
-                sites (name: $site_name) {
+              sites (name: $site_name) {
                 id
                 name
                 region {
                     name
                 }
-                }
+              }
             }
 
-      # Get Response with variables
+      # Get Response with variables and set to root keys
       - name: Obtain list of devices at site in variables from Nautobot
         networktocode.nautobot.query_graphql:
           url: http://nautobot.local
           token: thisIsMyToken
           query: "{{ query_string }}"
           variables: "{{ variables }}"
+          update_hostvars: "yes"
 
 
 
