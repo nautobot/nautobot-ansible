@@ -1,7 +1,5 @@
 ---
 version: "3.4"
-x-args: &args
-  PYTHON_VER: ${PYTHON_VER:-3.8}
 # Build block with context and target default
 x-build: &build
   args: *args
