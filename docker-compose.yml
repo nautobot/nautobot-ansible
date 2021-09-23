@@ -2,7 +2,6 @@
 version: "3.4"
 # Build block with context and target default
 x-build: &build
-  args: *args
   context: .
   target: unittests
 x-service: &service
