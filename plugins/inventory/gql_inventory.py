@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Remy Leone
+# Copyright (c) 2021, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -20,7 +20,7 @@ DOCUMENTATION = """
       - netutils
     options:
       plugin:
-          description: Token that ensures this is a source file for the 'nautobot' plugin.
+          description: Setting that ensures this is a source file for the 'networktocode.nautobot' plugin.
           required: True
           choices: ['networktocode.nautobot.gql_inventory']
       api_endpoint:
@@ -37,19 +37,6 @@ DOCUMENTATION = """
               - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
           default: True
           type: boolean
-      follow_redirects:
-          description:
-              - Determine how redirects are followed.
-              - By default, I(follow_redirects) is set to uses urllib2 default behavior.
-          default: urllib2
-          choices: ['urllib2', 'all', 'yes', 'safe', 'none']
-      max_uri_length:
-          description:
-              - When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).
-              - You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.
-          type: int
-          default: 4000
-          version_added: "1.0.0"
       token:
           required: False
           description:
@@ -124,9 +111,9 @@ plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 query:
-  tags: name
+  interfaces: name
 additional_variables:
-  - tags
+  - interfaces
 
 # Filter output using any supported parameters
 # To get supported parameters check the api/docs page for devices
@@ -284,12 +271,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                         self.add_variable(
                             device["name"], device["name"], "ansible_host"
                         )
-                    if device["platform"]:
+                    if device["platform"] and "napalm_driver" in device["platform"]:
                         self.add_variable(
                             device["name"],
                             ANSIBLE_LIB_MAPPER_REVERSE.get(
                                 NAPALM_LIB_MAPPER.get(
-                                    device["platform"]["napalm_driver"]
+                                    device["platform"][
+                                        "napalm_driver"
+                                    ]  # Convert napalm_driver to ansible_network_os value
                                 )
                             ),
                             "ansible_network_os",
@@ -310,8 +299,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.api_endpoint = self.get_option("api_endpoint").strip("/")
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
-        self.follow_redirects = self.get_option("follow_redirects")
-        self.max_uri_length = self.get_option("max_uri_length")
         self.headers = {
             "User-Agent": "ansible %s Python %s"
             % (ansible_version, python_version.split(" ")[0]),
