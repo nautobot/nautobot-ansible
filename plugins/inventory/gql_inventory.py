@@ -136,7 +136,13 @@ from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from jinja2 import Environment, FileSystemLoader
-from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
+
+try:
+    from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
+
+    HAS_NETUTILS = True
+except ImportError:
+    HAS_NETUTILS = False
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 GROUP_BY = {
@@ -181,6 +187,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def main(self):
         """Main function."""
+        if not HAS_NETUTILS:
+            raise AnsibleError(
+                "networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils."
+            )
+
         file_loader = FileSystemLoader(f"{PATH}/../templates")
         env = Environment(loader=file_loader, autoescape=True)
         template = env.get_template("graphql_default_query.j2")
