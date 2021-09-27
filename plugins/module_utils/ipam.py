@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-
+# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -31,9 +31,6 @@ NB_SERVICES = "services"
 
 
 class NautobotIpamModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
-
     def _handle_state_new_present(self, nb_app, nb_endpoint, endpoint_name, name, data):
         if data.get("address"):
             if self.state == "present":

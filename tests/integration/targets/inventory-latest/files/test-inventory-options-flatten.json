@@ -58,7 +58,7 @@
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
-                            "display_name": "Test Nexus One",
+                            "display": "Test Nexus One",
                             "id": 4,
                             "name": "Test Nexus One"
                         },
@@ -112,7 +112,7 @@
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
-                            "display_name": "Test Nexus Child One",
+                            "display": "Test Nexus Child One",
                             "id": 5,
                             "name": "Test Nexus Child One"
                         },
@@ -170,7 +170,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "Test Nexus One",
+                            "display": "Test Nexus One",
                             "id": 4,
                             "name": "Test Nexus One"
                         },
@@ -300,7 +300,7 @@
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },
@@ -354,7 +354,7 @@
                         "count_ipaddresses": 1,
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },
@@ -414,7 +414,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },
@@ -435,7 +435,7 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
-                            "display_name": "test100",
+                            "display": "test100",
                             "id": 1,
                             "name": "test100"
                         },

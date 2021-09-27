@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2019, Bruno Inec (@sweenu) <bruno@inec.fr>
+# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -7,6 +9,7 @@ __metaclass__ = type
 
 import pytest
 import os
+from hypothesis import given, settings, HealthCheck, strategies as st
 from functools import partial
 from unittest.mock import patch, MagicMock, Mock
 from ansible.module_utils.basic import AnsibleModule
@@ -355,3 +358,18 @@ def test_version_check_greater_equal_to_true(mock_module, obj_mock, version):
 def test_version_check_greater_equal_to_false(mock_module, obj_mock, version):
     mock_module.nb_object = obj_mock
     assert not mock_module._version_check_greater(version, "2.7", greater_or_equal=True)
+
+
+@given(st.uuids(version=4))
+@settings(suppress_health_check=[HealthCheck(9)])
+def test_get_query_param_id_return_uuid(mock_module, value):
+    string_value = str(value)
+    data = mock_module._get_query_param_id("test", {"test": string_value})
+    assert data == string_value
+
+
+@given(st.integers())
+@settings(suppress_health_check=[HealthCheck(9)])
+def test_get_query_param_id_return_int(mock_module, value):
+    data = mock_module._get_query_param_id("test", {"test": value})
+    assert data == value

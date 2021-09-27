@@ -7,15 +7,18 @@
 ### PYNAUTOBOT_FRONT_PORT
 ##
 ##
+- set_fact:
+    test100: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
+    rear_port: '{{ lookup(''networktocode.nautobot.lookup'', ''rear-ports'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Rear Port"'') }}'
+
 - name: "FRONT_PORT 1: Necessary info creation"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port
-      device: test100
-      type: bnc
-      rear_port: Rear Port
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port
+    device: test100
+    type: bnc
+    rear_port: Test Rear Port
     state: present
   register: test_one
 
@@ -26,20 +29,19 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['front_port']['name'] == "Front Port"
-      - test_one['front_port']['device'] == 1
+      - test_one['front_port']['device'] == test100['key']
       - test_one['front_port']['type'] == "bnc"
-      - test_one['front_port']['rear_port'] == 1
+      - test_one['front_port']['rear_port'] == rear_port['key']
       - test_one['msg'] == "front_port Front Port created"
 
 - name: "FRONT_PORT 2: Create duplicate"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port
-      device: test100
-      type: bnc
-      rear_port: Rear Port
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port
+    device: test100
+    type: bnc
+    rear_port: Test Rear Port
     state: present
   register: test_two
 
@@ -48,22 +50,21 @@
     that:
       - not test_two['changed']
       - test_two['front_port']['name'] == "Front Port"
-      - test_two['front_port']['device'] == 1
+      - test_two['front_port']['device'] == test100['key']
       - test_two['front_port']['type'] == "bnc"
-      - test_two['front_port']['rear_port'] == 1
+      - test_two['front_port']['rear_port'] == rear_port['key']
       - test_two['msg'] == "front_port Front Port already exists"
 
 - name: "FRONT_PORT 3: Update Front Port with other fields"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port
-      device: test100
-      type: bnc
-      rear_port: Rear Port
-      rear_port_position: 5
-      description: test description
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port
+    device: test100
+    type: bnc
+    rear_port: Test Rear Port
+    rear_port_position: 5
+    description: test description
     state: present
   register: test_three
 
@@ -74,22 +75,21 @@
       - test_three['diff']['after']['rear_port_position'] == 5
       - test_three['diff']['after']['description'] == "test description"
       - test_three['front_port']['name'] == "Front Port"
-      - test_three['front_port']['device'] == 1
+      - test_three['front_port']['device'] == test100['key']
       - test_three['front_port']['type'] == "bnc"
-      - test_three['front_port']['rear_port'] == 1
+      - test_three['front_port']['rear_port'] == rear_port['key']
       - test_three['front_port']['rear_port_position'] == 5
       - test_three['front_port']['description'] == "test description"
       - test_three['msg'] == "front_port Front Port updated"
 
 - name: "FRONT_PORT 4: Create Front Port for Delete Test"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port 2
-      device: test100
-      type: bnc
-      rear_port: Rear Port
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port 2
+    device: test100
+    type: bnc
+    rear_port: Test Rear Port
     state: present
   register: test_four
 
@@ -100,20 +100,19 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['front_port']['name'] == "Front Port 2"
-      - test_four['front_port']['device'] == 1
+      - test_four['front_port']['device'] == test100['key']
       - test_four['front_port']['type'] == "bnc"
-      - test_four['front_port']['rear_port'] == 1
+      - test_four['front_port']['rear_port'] == rear_port['key']
       - test_four['msg'] == "front_port Front Port 2 created"
 
 - name: "FRONT_PORT 5: Delete Front Port"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port 2
-      device: test100
-      type: bnc
-      rear_port: Rear Port
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port 2
+    device: test100
+    type: bnc
+    rear_port: Test Rear Port
     state: absent
   register: test_five
 
@@ -127,15 +126,14 @@
 
 - name: "FRONT_PORT 6: Create duplicate with rear_port dictionary"
   networktocode.nautobot.front_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Front Port
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port
+    device: test100
+    type: bnc
+    rear_port:
       device: test100
-      type: bnc
-      rear_port:
-        device: test100
-        name: Rear Port
+      name: Test Rear Port
     state: present
   register: test_six
 
@@ -144,7 +142,7 @@
     that:
       - not test_six['changed']
       - test_six['front_port']['name'] == "Front Port"
-      - test_six['front_port']['device'] == 1
+      - test_six['front_port']['device'] == test100['key']
       - test_six['front_port']['type'] == "bnc"
-      - test_six['front_port']['rear_port'] == 1
+      - test_six['front_port']['rear_port'] == rear_port['key']
       - test_six['msg'] == "front_port Front Port already exists"

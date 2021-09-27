@@ -6,12 +6,11 @@
 ##
 - name: "TAG 1: ASSERT - Necessary info creation"
   networktocode.nautobot.tag:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tag 1"
-      description: "Tag 1 test"
-      color: "0000ff"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tag 1"
+    description: "Tag 1 test"
+    color: "0000ff"
     state: present
   register: test_one
 
@@ -29,12 +28,11 @@
 
 - name: "TAG 2: Create duplicate"
   networktocode.nautobot.tag:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tag 1"
-      description: "Tag 1 test"
-      color: "0000ff"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tag 1"
+    description: "Tag 1 test"
+    color: "0000ff"
     state: present
   register: test_two
 
@@ -47,12 +45,11 @@
 
 - name: "TAG 3: ASSERT - Update"
   networktocode.nautobot.tag:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tag 1"
-      description: "Tag 1 update test"
-      color: "00ff00"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tag 1"
+    description: "Tag 1 update test"
+    color: "00ff00"
     state: present
   register: test_three
 
@@ -69,10 +66,9 @@
 
 - name: "TAG 4: ASSERT - Delete"
   networktocode.nautobot.tag:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tag 1"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tag 1"
     state: absent
   register: test_four
 
@@ -87,13 +83,12 @@
 
 - name: "TAG 5: ASSERT - Necessary info creation"
   networktocode.nautobot.tag:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Tag 5"
-      slug: "test-tag-five"
-      description: "Tag 5 test"
-      color: "0000ff"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Tag 5"
+    slug: "test-tag-five"
+    description: "Tag 5 test"
+    color: "0000ff"
     state: present
   register: test_five
 

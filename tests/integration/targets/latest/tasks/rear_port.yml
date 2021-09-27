@@ -7,14 +7,16 @@
 ### PYNAUTOBOT_REAR_PORT
 ##
 ##
+- set_fact:
+    test100: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
+
 - name: "REAR_PORT 1: Necessary info creation"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port
-      device: test100
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port
+    device: test100
+    type: bnc
     state: present
   register: test_one
 
@@ -25,18 +27,17 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['rear_port']['name'] == "Rear Port"
-      - test_one['rear_port']['device'] == 1
+      - test_one['rear_port']['device'] == test100['key']
       - test_one['rear_port']['type'] == "bnc"
       - test_one['msg'] == "rear_port Rear Port created"
 
 - name: "REAR_PORT 2: Create duplicate"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port
-      device: test100
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port
+    device: test100
+    type: bnc
     state: present
   register: test_two
 
@@ -45,20 +46,19 @@
     that:
       - not test_two['changed']
       - test_two['rear_port']['name'] == "Rear Port"
-      - test_two['rear_port']['device'] == 1
+      - test_two['rear_port']['device'] == test100['key']
       - test_two['rear_port']['type'] == "bnc"
       - test_two['msg'] == "rear_port Rear Port already exists"
 
 - name: "REAR_PORT 3: Update Rear Port with other fields"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port
-      device: test100
-      type: bnc
-      positions: 5
-      description: test description
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port
+    device: test100
+    type: bnc
+    positions: 5
+    description: test description
     state: present
   register: test_three
 
@@ -69,7 +69,7 @@
       - test_three['diff']['after']['positions'] == 5
       - test_three['diff']['after']['description'] == "test description"
       - test_three['rear_port']['name'] == "Rear Port"
-      - test_three['rear_port']['device'] == 1
+      - test_three['rear_port']['device'] == test100['key']
       - test_three['rear_port']['type'] == "bnc"
       - test_three['rear_port']['positions'] == 5
       - test_three['rear_port']['description'] == "test description"
@@ -77,12 +77,11 @@
 
 - name: "REAR_PORT 4: Create Rear Port for Delete Test"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port 2
-      device: test100
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 2
+    device: test100
+    type: bnc
     state: present
   register: test_four
 
@@ -93,18 +92,17 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['rear_port']['name'] == "Rear Port 2"
-      - test_four['rear_port']['device'] == 1
+      - test_four['rear_port']['device'] == test100['key']
       - test_four['rear_port']['type'] == "bnc"
       - test_four['msg'] == "rear_port Rear Port 2 created"
 
 - name: "REAR_PORT 5: Delete Rear Port"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port 2
-      device: test100
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 2
+    device: test100
+    type: bnc
     state: absent
   register: test_five
 
@@ -118,12 +116,11 @@
 
 - name: "REAR_PORT 6: Create second Rear Port"
   networktocode.nautobot.rear_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port
-      device: Test Nexus One
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port
+    device: Test Nexus One
+    type: bnc
     state: present
   register: test_six
 
@@ -134,6 +131,8 @@
       - test_six['diff']['before']['state'] == "absent"
       - test_six['diff']['after']['state'] == "present"
       - test_six['rear_port']['name'] == "Rear Port"
-      - test_six['rear_port']['device'] == 4
+      - test_six['rear_port']['device'] == device['key']
       - test_six['rear_port']['type'] == "bnc"
       - test_six['msg'] == "rear_port Rear Port created"
+  vars:
+    device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus One"'') }}'

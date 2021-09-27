@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-
-
+# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2020, Nokia, Tobias Groß (@toerb) <tobias.gross@nokia.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -46,9 +47,6 @@ NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
 class NautobotDcimModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
-
     def run(self):
         """
         This function should have all necessary code for endpoints within the application
@@ -108,17 +106,21 @@ class NautobotDcimModule(NautobotModule):
         elif data.get("slug"):
             name = data["slug"]
         elif endpoint_name == "cable":
-            if self.module.params["data"]["termination_a"].get("name"):
-                termination_a_name = self.module.params["data"]["termination_a"]["name"]
-            elif self.module.params["data"]["termination_a"].get("slug"):
-                termination_a_name = self.module.params["data"]["termination_a"]["slug"]
+            if self.module.params["termination_a"].get("name"):
+                termination_a_name = self.module.params["termination_a"]["name"]
+            elif self.module.params["termination_a"].get("slug"):
+                termination_a_name = self.module.params["termination_a"]["slug"]
+            elif self.module.params["termination_a"].get("circuit"):
+                termination_a_name = self.module.params["termination_a"]["circuit"]
             else:
                 termination_a_name = data.get("termination_a_id")
 
-            if self.module.params["data"]["termination_b"].get("name"):
-                termination_b_name = self.module.params["data"]["termination_b"]["name"]
-            elif self.module.params["data"]["termination_b"].get("slug"):
-                termination_b_name = self.module.params["data"]["termination_b"]["slug"]
+            if self.module.params["termination_b"].get("name"):
+                termination_b_name = self.module.params["termination_b"]["name"]
+            elif self.module.params["termination_b"].get("slug"):
+                termination_b_name = self.module.params["termination_b"]["slug"]
+            elif self.module.params["termination_a"].get("circuit"):
+                termination_a_name = self.module.params["termination_b"]["circuit"]
             else:
                 termination_b_name = data.get("termination_b_id")
 

@@ -184,3 +184,61 @@ releases:
     fragments:
     - v1.0.1.yml
     release_date: '2021-03-03'
+  1.0.2:
+    changes:
+      bugfixes:
+      - Remove code related to fetching secrets due to secrets not existing in Nautobot.
+    release_date: '2021-03-07'
+  1.0.3:
+    changes:
+      bugfixes:
+      - Validate if value is already a UUID, return UUID and do not attempt to resolve
+        [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+    fragments:
+    - v1.0.3.yml
+    release_date: '2021-03-13'
+  1.0.4:
+    changes:
+      bugfixes:
+      - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+      - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+    fragments:
+    - v1.0.4.yml
+    release_date: '2021-03-14'
+  1.1.0:
+    fragments:
+    - v1.1.0.yml
+    modules:
+    - description: Lookup plugin to query Nautobot GraphQL API endpoint
+      name: lookup_graphql
+      namespace: networktocode.nautobot
+    - description: Action plugin to query Nautobot GraphQL API endpoint
+      name: query_graphql
+      namespace: networktocode.nautobot
+    release_date: '2021-04-12'
+  2.0.0:
+    changes:
+      bugfixes:
+      - (#26) Add missing description to tenant_group
+      - (#29) Add missing field to vlan_group
+      - (#32) Fixed query on Virtual Chassis
+      - (#35) Add Site, Device Tracebacks due to changes in Nautobot
+      major_changes:
+      - (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+      release_summary: Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
+  2.0.1:
+    changes:
+      bugfixes:
+      - (#44) Add Interface Label Support
+      - (#45) SSL Verify Keyword Consistency Update
+      release_summary: Bug fix updates for label support and SSL version consistency
+  3.0.0:
+    changes:
+      major_changes:
+      - (#66) Remove data sub-dictionary from modules
+      minor_changes:
+      - (#57) Adds nautobot-server module
+      - (#75) Device Interface module supports custom_fields
+      release_summary: Updates format for modules to support Ansible 4 / ansible-core
+        2.11 arg spec verification changes
+    release_date: '2021-09-06'

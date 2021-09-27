@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2018, David Gomez (@amb1s1) <david.gomez@networktocode.com>
+# Copyright: (c) 2020, Nokia, Tobias Groß (@toerb) <tobias.gross@nokia.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -9,20 +12,19 @@ __metaclass__ = type
 import traceback
 import re
 import json
+import os
 
+from uuid import UUID
 from itertools import chain
 
 from ansible.module_utils.common.text.converters import to_text
 
-from ansible.module_utils._text import to_native
-from ansible.module_utils.common.collections import is_iterable
-from ansible.module_utils.basic import AnsibleModule, missing_required_lib
+from ansible.module_utils.basic import missing_required_lib
 from ansible.module_utils.urls import open_url
 
 PYNAUTOBOT_IMP_ERR = None
 try:
     import pynautobot
-    import requests
 
     HAS_PYNAUTOBOT = True
 except ImportError:
@@ -101,9 +103,12 @@ QUERY_TYPES = dict(
     manufacturer="slug",
     nat_inside="address",
     nat_outside="address",
+    parent_rack_group="slug",
     parent_region="slug",
+    parent_tenant_group="slug",
     power_panel="name",
     power_port="name",
+    power_port_template="name",
     platform="slug",
     prefix_role="slug",
     primary_ip="address",
@@ -123,6 +128,7 @@ QUERY_TYPES = dict(
     tenant="slug",
     tenant_group="slug",
     time_zone="timezone",
+    virtual_chassis="name",
     virtual_machine="name",
     virtual_machine_role="slug",
     vlan="name",
@@ -166,9 +172,12 @@ CONVERT_TO_ID = {
     "nat_inside": "ip_addresses",
     "nat_outside": "ip_addresses",
     "platform": "platforms",
+    "parent_rack_group": "rack_groups",
     "parent_region": "regions",
+    "parent_tenant_group": "tenant_groups",
     "power_panel": "power_panels",
     "power_port": "power_ports",
+    "power_port_template": "power_port_templates",
     "prefix_role": "roles",
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
@@ -297,7 +306,9 @@ ALLOWED_QUERY_PARAMS = {
     "manufacturer": set(["slug"]),
     "master": set(["name"]),
     "nat_inside": set(["vrf", "address"]),
+    "parent_rack_group": set(["slug"]),
     "parent_region": set(["slug"]),
+    "parent_tenant_group": set(["slug"]),
     "platform": set(["slug"]),
     "power_feed": set(["name", "power_panel"]),
     "power_outlet": set(["name", "device"]),
@@ -328,7 +339,7 @@ ALLOWED_QUERY_PARAMS = {
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
     "untagged_vlan": set(["group", "name", "site", "vid", "vlan_group", "tenant"]),
-    "virtual_chassis": set(["master"]),
+    "virtual_chassis": set(["name", "device"]),
     "virtual_machine": set(["name", "cluster"]),
     "vlan": set(["group", "name", "site", "tenant", "vid", "vlan_group"]),
     "vlan_group": set(["slug", "site"]),
@@ -386,7 +397,10 @@ CONVERT_KEYS = {
     "circuit_type": "type",
     "cluster_type": "type",
     "cluster_group": "group",
+    "parent_rack_group": "parent",
     "parent_region": "parent",
+    "parent_tenant_group": "parent",
+    "power_port_template": "power_port",
     "prefix_role": "role",
     "rack_group": "group",
     "rack_role": "role",
@@ -433,7 +447,7 @@ NAUTOBOT_ARG_SPEC = dict(
 )
 
 
-class NautobotModule(object):
+class NautobotModule:
     """
     Initialize connection to Nautobot, sets AnsibleModule passed in to
     self.module to be used throughout the class
@@ -442,7 +456,7 @@ class NautobotModule(object):
     :params nb_client (obj): pynautobot.api object passed in (not required)
     """
 
-    def __init__(self, module, endpoint, client=None):
+    def __init__(self, module, endpoint, client=None, remove_keys=None):
         self.module = module
         self.state = self.module.params["state"]
         self.check_mode = self.module.check_mode
@@ -469,11 +483,28 @@ class NautobotModule(object):
         #    self._validate_query_params(self.module.params["query_params"])
 
         # These methods will normalize the regular data
-        cleaned_data = self._remove_arg_spec_default(module.params["data"])
+        cleaned_data = self._remove_arg_spec_default(module.params)
         norm_data = self._normalize_data(cleaned_data)
         choices_data = self._change_choices_id(self.endpoint, norm_data)
         data = self._find_ids(choices_data, query_params)
-        self.data = self._convert_identical_keys(data)
+        data = self._convert_identical_keys(data)
+        self.data = self._build_payload(data, remove_keys)
+
+    def _build_payload(self, data, remove_keys):
+        """Remove any key/value pairs that aren't relevant for interacting with Nautobot.
+
+        Args:
+            data ([type]): [description]
+            remove_keys ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+        keys_to_remove = set(NAUTOBOT_ARG_SPEC)
+        if remove_keys:
+            keys_to_remove.update(remove_keys)
+
+        return {k: v for k, v in data.items() if k not in keys_to_remove}
 
     def _version_check_greater(self, greater, lesser, greater_or_equal=False):
         """Determine if first argument is greater than second argument.
@@ -502,10 +533,8 @@ class NautobotModule(object):
 
     def _connect_api(self, url, token, ssl_verify):
         try:
-            session = requests.Session()
-            session.verify = ssl_verify
             nb = pynautobot.api(url, token=token)
-            nb.http_session = session
+            nb.http_session.verify = ssl_verify
             try:
                 self.version = nb.version
             except Exception:
@@ -573,8 +602,7 @@ class NautobotModule(object):
         Returns message and changed = False
         :params msg (str): Message indicating why there is no change
         """
-        if msg:
-            self.module.fail_json(msg=msg, changed=False)
+        self.module.fail_json(msg=msg, changed=False)
 
     def _build_diff(self, before=None, after=None):
         """Builds diff of before and after changes"""
@@ -617,27 +645,37 @@ class NautobotModule(object):
 
         return new_dict
 
+    def is_valid_uuid(self, match):
+        """Determine if the match is already UUID."""
+        try:
+            uuid_obj = UUID(match)
+        except (ValueError, AttributeError):
+            return False
+        return str(uuid_obj) == match
+
     def _get_query_param_id(self, match, data):
         """Used to find IDs of necessary searches when required under _build_query_params
         :returns id (int) or data (dict): Either returns the ID or original data passed in
         :params match (str): The key within the user defined data that is required to have an ID
         :params data (dict): User defined data passed into the module
         """
-        if isinstance(data.get(match), int):
-            return data[match]
+
+        match_value = data.get(match)
+        if isinstance(match_value, int) or self.is_valid_uuid(match_value):
+            return match_value
+
+        endpoint = CONVERT_TO_ID[match]
+        app = self._find_app(endpoint)
+        nb_app = getattr(self.nb, app)
+        nb_endpoint = getattr(nb_app, endpoint)
+
+        query_params = {QUERY_TYPES.get(match): data[match]}
+        result = self._nb_endpoint_get(nb_endpoint, query_params, match)
+
+        if result:
+            return result.id
         else:
-            endpoint = CONVERT_TO_ID[match]
-            app = self._find_app(endpoint)
-            nb_app = getattr(self.nb, app)
-            nb_endpoint = getattr(nb_app, endpoint)
-
-            query_params = {QUERY_TYPES.get(match): data[match]}
-            result = self._nb_endpoint_get(nb_endpoint, query_params, match)
-
-            if result:
-                return result.id
-            else:
-                return data
+            return data
 
     def _build_query_params(
         self, parent, module_data, user_query_params=None, child=None
@@ -693,7 +731,9 @@ class NautobotModule(object):
                 "Link Aggregation Group (LAG)", "interfaces"
             )
             query_dict.update({"type": intf_type})
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -702,7 +742,9 @@ class NautobotModule(object):
             query_dict.update({"prefix": module_data["parent"]})
 
         elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -720,9 +762,6 @@ class NautobotModule(object):
                 query_dict.update(
                     {"interface_id": module_data.get("assigned_object_id")}
                 )
-
-        elif parent == "virtual_chassis":
-            query_dict = {"q": self.module.params["data"].get("master")}
 
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
@@ -767,10 +806,10 @@ class NautobotModule(object):
                 msg="Failed to fetch endpoint choices to validate against. This requires a write-enabled token. Make sure the token is write-enabled. If looking to fetch only information, use either the inventory or lookup plugin."
             )
 
-        choices = [x for x in chain.from_iterable(endpoint_choices.values())]
+        choices = list(chain.from_iterable(endpoint_choices.values()))
 
         for item in choices:
-            if item["display_name"].lower() == search.lower():
+            if item["display"].lower() == search.lower():
                 return item["value"]
             elif item["value"] == search.lower():
                 return item["value"]
@@ -789,7 +828,9 @@ class NautobotModule(object):
             required_choices = REQUIRED_ID_FIND[endpoint]
             for choice in required_choices:
                 if data.get(choice):
-                    if isinstance(data[choice], int):
+                    if isinstance(data[choice], int) or self.is_valid_uuid(
+                        data[choice]
+                    ):
                         continue
                     choice_value = self._fetch_choice_value(data[choice], endpoint)
                     data[choice] = choice_value
@@ -838,7 +879,11 @@ class NautobotModule(object):
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        if k == "tags" and isinstance(list_item, str):
+                        if (
+                            k == "tags"
+                            and isinstance(list_item, str)
+                            and not self.is_valid_uuid(list_item)
+                        ):
                             temp_dict = {"slug": self._to_slug(list_item)}
                         elif isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
@@ -847,7 +892,9 @@ class NautobotModule(object):
                             )
                         # If user passes in an integer, add to ID list to id_list as user
                         # should have passed in a tag ID
-                        elif isinstance(list_item, int):
+                        elif isinstance(list_item, int) or self.is_valid_uuid(
+                            list_item
+                        ):
                             id_list.append(list_item)
                             continue
                         else:
@@ -869,7 +916,7 @@ class NautobotModule(object):
 
                 if isinstance(v, list):
                     data[k] = id_list
-                elif isinstance(v, int):
+                elif isinstance(v, int) or self.is_valid_uuid(v):
                     pass
                 elif query_id:
                     data[k] = query_id.id
@@ -885,7 +932,7 @@ class NautobotModule(object):
         """
         if value is None:
             return value
-        elif isinstance(value, int):
+        elif isinstance(value, int) or self.is_valid_uuid(value):
             return value
         else:
             removed_chars = re.sub(r"[^\-\.\w\s]", "", value)
@@ -902,15 +949,16 @@ class NautobotModule(object):
         for k, v in data.items():
             if isinstance(v, dict):
                 if v.get("id"):
-                    try:
-                        data[k] = int(v["id"])
-                    except (ValueError, TypeError):
-                        pass
-                else:
-                    for subk, subv in v.items():
-                        sub_data_type = QUERY_TYPES.get(subk, "q")
-                        if sub_data_type == "slug":
-                            data[k][subk] = self._to_slug(subv)
+                    if self.is_valid_uuid(v["id"]):
+                        data[k] = v["id"]
+                        continue
+                    else:
+                        self._handle_errors(f"Invalid ID passed for {k}: {v['id']}")
+
+                for subk, subv in v.items():
+                    sub_data_type = QUERY_TYPES.get(subk, "q")
+                    if sub_data_type == "slug":
+                        data[k][subk] = self._to_slug(subv)
             else:
                 data_type = QUERY_TYPES.get(k, "q")
                 if data_type == "slug":
@@ -1049,235 +1097,28 @@ class NautobotModule(object):
         raise NotImplementedError
 
 
-class NautobotAnsibleModule(AnsibleModule):
-    """
-    Creating this due to needing to override some functionality to provide required_together, required_if
-    and will be able to override more in the future.
-    This is due to the Nautobot modules having the module arguments within a key in the argument spec, using suboptions rather than
-    having all module arguments within the regular argument spec.
+class NautobotApiBase:
+    def __init__(self, **kwargs):
+        self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
+        self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
+        self.ssl_verify = kwargs.get("ssl_verify", True)
 
-    Didn't want to change that functionality of the Nautobot modules as its disruptive and we're required to send a specific payload
-    to the Nautobot API
-    """
+        # Setup the API client calls
+        self.api = pynautobot.api(url=self.url, token=self.token)
+        self.api.http_session.verify = self.ssl_verify
 
-    def __init__(
-        self,
-        argument_spec,
-        bypass_checks=False,
-        no_log=False,
-        mutually_exclusive=None,
-        required_together=None,
-        required_one_of=None,
-        add_file_common_args=False,
-        supports_check_mode=False,
-        required_if=None,
-        required_by=None,
-    ):
-        super().__init__(
-            argument_spec,
-            bypass_checks=False,
-            no_log=False,
-            mutually_exclusive=mutually_exclusive,
-            required_together=required_together,
-            required_one_of=required_one_of,
-            add_file_common_args=False,
-            supports_check_mode=supports_check_mode,
-            required_if=required_if,
+
+class NautobotGraphQL:
+    def __init__(self, query_str, api=None, variables=None):
+        self.query_str = query_str
+        self.pynautobot = api.api
+        self.variables = variables
+
+    def query(self):
+        """Makes API call and checks response from GraphQL endpoint."""
+        # Make API call to query
+        graph_response = self.pynautobot.graphql.query(
+            query=self.query_str, variables=self.variables
         )
 
-    def _check_mutually_exclusive(self, spec, param=None):
-        if param is None:
-            param = self.params
-
-        try:
-            self.check_mutually_exclusive(spec, param)
-        except TypeError as e:
-            msg = to_native(e)
-            if self._options_context:
-                msg += " found in %s" % " -> ".join(self._options_context)
-            self.fail_json(msg=msg)
-
-    def check_mutually_exclusive(self, terms, module_parameters):
-        """Check mutually exclusive terms against argument parameters
-        Accepts a single list or list of lists that are groups of terms that should be
-        mutually exclusive with one another
-        :arg terms: List of mutually exclusive module parameters
-        :arg module_parameters: Dictionary of module parameters
-        :returns: Empty list or raises TypeError if the check fails.
-        """
-
-        results = []
-        if terms is None:
-            return results
-
-        for check in terms:
-            count = self.count_terms(check, module_parameters["data"])
-            if count > 1:
-                results.append(check)
-
-        if results:
-            full_list = ["|".join(check) for check in results]
-            msg = "parameters are mutually exclusive: %s" % ", ".join(full_list)
-            raise TypeError(to_native(msg))
-
-        return results
-
-    def _check_required_if(self, spec, param=None):
-        """ ensure that parameters which conditionally required are present """
-        if spec is None:
-            return
-
-        if param is None:
-            param = self.params
-
-        try:
-            self.check_required_if(spec, param)
-        except TypeError as e:
-            msg = to_native(e)
-            if self._options_context:
-                msg += " found in %s" % " -> ".join(self._options_context)
-            self.fail_json(msg=msg)
-
-    def check_required_if(self, requirements, module_parameters):
-        results = []
-        if requirements is None:
-            return results
-
-        for req in requirements:
-            missing = {}
-            missing["missing"] = []
-            max_missing_count = 0
-            is_one_of = False
-            if len(req) == 4:
-                key, val, requirements, is_one_of = req
-            else:
-                key, val, requirements = req
-
-            # is_one_of is True at least one requirement should be
-            # present, else all requirements should be present.
-            if is_one_of:
-                max_missing_count = len(requirements)
-                missing["requires"] = "any"
-            else:
-                missing["requires"] = "all"
-
-            if key in module_parameters and module_parameters[key] == val:
-                for check in requirements:
-                    count = self.count_terms(check, module_parameters["data"])
-                    if count == 0:
-                        missing["missing"].append(check)
-            if len(missing["missing"]) and len(missing["missing"]) >= max_missing_count:
-                missing["parameter"] = key
-                missing["value"] = val
-                missing["requirements"] = requirements
-                results.append(missing)
-
-        if results:
-            for missing in results:
-                msg = "%s is %s but %s of the following are missing: %s" % (
-                    missing["parameter"],
-                    missing["value"],
-                    missing["requires"],
-                    ", ".join(missing["missing"]),
-                )
-                raise TypeError(to_native(msg))
-
-        return results
-
-    def _check_required_one_of(self, spec, param=None):
-        if spec is None:
-            return
-
-        if param is None:
-            param = self.params
-
-        try:
-            self.check_required_one_of(spec, param)
-        except TypeError as e:
-            msg = to_native(e)
-            if self._options_context:
-                msg += " found in %s" % " -> ".join(self._options_context)
-            self.fail_json(msg=msg)
-
-    def check_required_one_of(self, terms, module_parameters):
-        """Check each list of terms to ensure at least one exists in the given module
-        parameters
-        Accepts a list of lists or tuples
-        :arg terms: List of lists of terms to check. For each list of terms, at
-            least one is required.
-        :arg module_parameters: Dictionary of module parameters
-        :returns: Empty list or raises TypeError if the check fails.
-        """
-
-        results = []
-        if terms is None:
-            return results
-
-        for term in terms:
-            count = self.count_terms(term, module_parameters["data"])
-            if count == 0:
-                results.append(term)
-
-        if results:
-            for term in results:
-                msg = "one of the following is required: %s" % ", ".join(term)
-                raise TypeError(to_native(msg))
-
-        return results
-
-    def _check_required_together(self, spec, param=None):
-        if spec is None:
-            return
-        if param is None:
-            param = self.params
-
-        try:
-            self.check_required_together(spec, param)
-        except TypeError as e:
-            msg = to_native(e)
-            if self._options_context:
-                msg += " found in %s" % " -> ".join(self._options_context)
-            self.fail_json(msg=msg)
-
-    def check_required_together(self, terms, module_parameters):
-        """Check each list of terms to ensure every parameter in each list exists
-        in the given module parameters
-        Accepts a list of lists or tuples
-        :arg terms: List of lists of terms to check. Each list should include
-            parameters that are all required when at least one is specified
-            in the module_parameters.
-        :arg module_parameters: Dictionary of module parameters
-        :returns: Empty list or raises TypeError if the check fails.
-        """
-
-        results = []
-        if terms is None:
-            return results
-
-        for term in terms:
-            counts = [
-                self.count_terms(field, module_parameters["data"]) for field in term
-            ]
-            non_zero = [c for c in counts if c > 0]
-            if len(non_zero) > 0:
-                if 0 in counts:
-                    results.append(term)
-        if results:
-            for term in results:
-                msg = "parameters are required together: %s" % ", ".join(term)
-                raise TypeError(to_native(msg))
-
-        return results
-
-    def count_terms(self, terms, module_parameters):
-        """Count the number of occurrences of a key in a given dictionary
-        :arg terms: String or iterable of values to check
-        :arg module_parameters: Dictionary of module parameters
-        :returns: An integer that is the number of occurrences of the terms values
-        in the provided dictionary.
-        """
-
-        if not is_iterable(terms):
-            terms = [terms]
-
-        return len(set(terms).intersection(module_parameters))
+        return graph_response

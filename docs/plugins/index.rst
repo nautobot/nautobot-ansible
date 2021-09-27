@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 1.0.2
+Collection version 3.0.0
 
 .. toctree::
     :maxdepth: 1
@@ -25,6 +25,7 @@ Lookup Plugins
 ~~~~~~~~~~~~~~
 
 * :ref:`lookup <ansible_collections.networktocode.nautobot.lookup_lookup>` -- Queries and returns elements from Nautobot
+* :ref:`lookup_graphql <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>` -- Queries and returns elements from Nautobot GraphQL endpoint
 
 Modules
 ~~~~~~~
@@ -54,6 +55,7 @@ Modules
 * :ref:`ip_address <ansible_collections.networktocode.nautobot.ip_address_module>` -- Creates or removes IP addresses from Nautobot
 * :ref:`ipam_role <ansible_collections.networktocode.nautobot.ipam_role_module>` -- Creates or removes ipam roles from Nautobot
 * :ref:`manufacturer <ansible_collections.networktocode.nautobot.manufacturer_module>` -- Create or delete manufacturers within Nautobot
+* :ref:`nautobot_server <ansible_collections.networktocode.nautobot.nautobot_server_module>` -- Manages Nautobot Server application.
 * :ref:`platform <ansible_collections.networktocode.nautobot.platform_module>` -- Create or delete platforms within Nautobot
 * :ref:`power_feed <ansible_collections.networktocode.nautobot.power_feed_module>` -- Create, update or delete power feeds within Nautobot
 * :ref:`power_outlet <ansible_collections.networktocode.nautobot.power_outlet_module>` -- Create, update or delete power outlets within Nautobot
@@ -63,6 +65,7 @@ Modules
 * :ref:`power_port_template <ansible_collections.networktocode.nautobot.power_port_template_module>` -- Create, update or delete power port templates within Nautobot
 * :ref:`prefix <ansible_collections.networktocode.nautobot.prefix_module>` -- Creates or removes prefixes from Nautobot
 * :ref:`provider <ansible_collections.networktocode.nautobot.provider_module>` -- Create, update or delete providers within Nautobot
+* :ref:`query_graphql <ansible_collections.networktocode.nautobot.query_graphql_module>` -- Queries and returns elements from Nautobot GraphQL endpoint
 * :ref:`rack <ansible_collections.networktocode.nautobot.rack_module>` -- Create, update or delete racks within Nautobot
 * :ref:`rack_group <ansible_collections.networktocode.nautobot.rack_group_module>` -- Create, update or delete racks groups within Nautobot
 * :ref:`rack_role <ansible_collections.networktocode.nautobot.rack_role_module>` -- Create, update or delete racks roles within Nautobot

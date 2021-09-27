@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -22,7 +23,7 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network to Code (@networktocode)
+  - Mikhail Yohman (@FragmentedPacket)
 requirements:
   - pynautobot
 version_added: "1.0.0"
@@ -37,62 +38,68 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  site:
     description:
-      - Defines the vlan configuration
-    suboptions:
-      site:
-        description:
-          - The site the VLAN will be associated to
-        required: false
-        type: raw
-      vlan_group:
-        description:
-          - The VLAN group the VLAN will be associated to
-        required: false
-        type: raw
-      vid:
-        description:
-          - The VLAN ID
-        required: false
-        type: int
-      name:
-        description:
-          - The name of the vlan
-        required: true
-        type: str
-      tenant:
-        description:
-          - The tenant that the vlan will be assigned to
-        required: false
-        type: raw
-      status:
-        description:
-          - The status of the vlan
-        required: false
-        type: raw
-      vlan_role:
-        description:
-          - Required if I(state=present) and the vlan does not exist yet
-        required: false
-        type: raw
-      description:
-        description:
-          - The description of the vlan
-        required: false
-        type: str
-      tags:
-        description:
-          - Any tags that the vlan may need to be associated with
-        required: false
-        type: list
-      custom_fields:
-        description:
-          - must exist in Nautobot
-        required: false
-        type: dict
+      - The site the VLAN will be associated to
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  vlan_group:
+    description:
+      - The VLAN group the VLAN will be associated to
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  vid:
+    description:
+      - The VLAN ID
+    required: false
+    type: int
+    version_added: "3.0.0"
+  name:
+    description:
+      - The name of the vlan
     required: true
+    type: str
+    version_added: "3.0.0"
+  tenant:
+    description:
+      - The tenant that the vlan will be assigned to
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  status:
+    description:
+      - The status of the vlan
+      - Required if I(state=present) and does not exist yet
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  vlan_role:
+    description:
+      - The role of the VLAN.
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  description:
+    description:
+      - The description of the vlan
+    required: false
+    type: str
+    version_added: "3.0.0"
+  tags:
+    description:
+      - Any tags that the vlan may need to be associated with
+    required: false
+    type: list
+    elements: raw
+    version_added: "3.0.0"
+  custom_fields:
+    description:
+      - must exist in Nautobot
+    required: false
+    type: dict
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -107,6 +114,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -125,37 +133,34 @@ EXAMPLES = r"""
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          status: active
+        name: Test VLAN
+        vid: 400
+        status: active
         state: present
 
     - name: Delete vlan within nautobot
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          status: active
+        name: Test VLAN
+        vid: 400
+        status: active
         state: absent
 
     - name: Create vlan with all information
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test VLAN
-          vid: 400
-          site: Test Site
-          group: Test VLAN Group
-          tenant: Test Tenant
-          status: Deprecated
-          vlan_role: Test VLAN Role
-          description: Just a test
-          tags:
-            - Schnozzberry
+        name: Test VLAN
+        vid: 400
+        site: Test Site
+        group: Test VLAN Group
+        tenant: Test Tenant
+        status: Deprecated
+        vlan_role: Test VLAN Role
+        description: Just a test
+        tags:
+          - Schnozzberry
         state: present
 """
 
@@ -171,13 +176,13 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_VLANS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -188,22 +193,16 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    site=dict(required=False, type="raw"),
-                    vlan_group=dict(required=False, type="raw"),
-                    vid=dict(required=False, type="int"),
-                    name=dict(required=True, type="str"),
-                    tenant=dict(required=False, type="raw"),
-                    status=dict(required=False, type="raw"),
-                    vlan_role=dict(required=False, type="raw"),
-                    description=dict(required=False, type="str"),
-                    tags=dict(required=False, type="list"),
-                    custom_fields=dict(required=False, type="dict"),
-                ),
-            ),
+            site=dict(required=False, type="raw"),
+            vlan_group=dict(required=False, type="raw"),
+            vid=dict(required=False, type="int"),
+            name=dict(required=True, type="str"),
+            tenant=dict(required=False, type="raw"),
+            status=dict(required=False, type="raw"),
+            vlan_role=dict(required=False, type="raw"),
+            description=dict(required=False, type="str"),
+            tags=dict(required=False, type="list", elements="raw"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
     required_if = [
@@ -211,7 +210,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = NautobotAnsibleModule(
+    module = AnsibleModule(
         argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
     )
 

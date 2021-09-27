@@ -20,7 +20,7 @@ networktocode.nautobot.inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.2).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -98,7 +98,7 @@ Parameters
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
-                                env:NAUTOBOT_API
+                                env:NAUTOBOT_URL
                                                                                             </div>
                                                                     </td>
                                                 <td>
@@ -763,9 +763,6 @@ Parameters
                                                                             <div>
                                 env:NAUTOBOT_TOKEN
                                                                                             </div>
-                                                    <div>
-                                env:NAUTOBOT_API_KEY
-                                                                                            </div>
                                                                     </td>
                                                 <td>
                                             <div>Nautobot API token to be able to read against Nautobot.</div>
@@ -888,8 +885,8 @@ Examples
     plugin: networktocode.nautobot.inventory
     compose:
       foo: last_updated
-      bar: display_name
-      nested_variable: rack.display_name
+      bar: display
+      nested_variable: rack.display
 
     # You can use keyed_groups to group on properties of devices or VMs.
     # NOTE: It's only possible to key off direct items on the device/VM objects.

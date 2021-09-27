@@ -20,7 +20,7 @@ networktocode.nautobot.lookup -- Queries and returns elements from Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.2).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -101,9 +101,6 @@ Parameters
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
-                                env:NAUTOBOT_API
-                                                                                            </div>
-                                                    <div>
                                 env:NAUTOBOT_URL
                                                                                             </div>
                                                                     </td>
@@ -176,9 +173,6 @@ Parameters
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                    <div>
-                                env:NAUTOBOT_API_TOKEN
                                                                                             </div>
                                                                     </td>
                                                 <td>

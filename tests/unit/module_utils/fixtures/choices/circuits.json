@@ -2,27 +2,27 @@
     "status": [
         {
             "value": "planned",
-            "display_name": "Planned"
+            "display": "Planned"
         },
         {
             "value": "provisioning",
-            "display_name": "Provisioning"
+            "display": "Provisioning"
         },
         {
             "value": "active",
-            "display_name": "Active"
+            "display": "Active"
         },
         {
             "value": "offline",
-            "display_name": "Offline"
+            "display": "Offline"
         },
         {
             "value": "deprovisioning",
-            "display_name": "Deprovisioning"
+            "display": "Deprovisioning"
         },
         {
             "value": "decommissioned",
-            "display_name": "Decommissioned"
+            "display": "Decommissioned"
         }
     ]
 }

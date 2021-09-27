@@ -9,7 +9,7 @@ namespace: networktocode
 name: nautobot
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 1.0.2
+version: 3.0.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -45,9 +45,7 @@ tags:
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies:
-  # Required for json_query used in lookup plugin integration tests
-  community.general: ">=1.0.0"
+# dependencies:
 
 # The URL of the originating SCM repository
 repository: https://github.com/nautobot/nautobot-ansible
@@ -61,13 +59,7 @@ homepage: https://nautobot-ansible.readthedocs.io/en/latest/
 # The URL to the collection issue tracker
 issues: https://github.com/nautobot/nautobot-ansible/issues
 
-# Files to ignore when building collection. Only supported when building with Ansible 2.10
-# https://github.com/ansible/ansible/issues/67543
-# https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#ignoring-files-and-folders
 build_ignore:
-  - "venv"
-  - "ansible_collections"
-  - "tests/output"
   - ".pytest_cache"
   - ".vscode"
   - "*.tar.gz"

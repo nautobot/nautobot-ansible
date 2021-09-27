@@ -6,10 +6,9 @@
 ##
 - name: "MANUFACTURER 1: Necessary info creation"
   networktocode.nautobot.manufacturer:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Manufacturer Two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Manufacturer Two
     state: present
   register: test_one
 
@@ -25,10 +24,9 @@
 
 - name: "MANUFACTURER 2: Create duplicate"
   networktocode.nautobot.manufacturer:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Manufacturer Two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Manufacturer Two
     state: present
   register: test_two
 
@@ -42,10 +40,9 @@
 
 - name: "MANUFACTURER 3: Update"
   networktocode.nautobot.manufacturer:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: test manufacturer two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: test manufacturer two
     state: present
   register: test_three
 
@@ -59,10 +56,9 @@
 
 - name: "MANUFACTURER 4: ASSERT - Delete"
   networktocode.nautobot.manufacturer:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: test manufacturer two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: test manufacturer two
     state: absent
   register: test_four
 
@@ -76,10 +72,9 @@
 
 - name: "MANUFACTURER 5: ASSERT - Delete non existing"
   networktocode.nautobot.manufacturer:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Test Manufacturer Two
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Manufacturer Two
     state: absent
   register: test_five
 

@@ -9,22 +9,24 @@
 ##
 - name: "POWER_PORT 0: Create device for testing power ports"
   networktocode.nautobot.device:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Device Power Tests
-      device_type: Cisco Test
-      device_role: Core Switch
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Device Power Tests
+    device_type: Cisco Test
+    device_role: Core Switch
+    status: "Active"
+    site: Test Site
     state: present
+
+- set_fact:
+    device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Device Power Tests"'') }}'
 
 - name: "POWER_PORT 1: Necessary info creation"
   networktocode.nautobot.power_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Port
-      device: Device Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port
+    device: Device Power Tests
     state: present
   register: test_one
 
@@ -35,16 +37,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['power_port']['name'] == "Power Port"
-      - test_one['power_port']['device'] == 10
+      - test_one['power_port']['device'] == device['key']
       - test_one['msg'] == "power_port Power Port created"
 
 - name: "POWER_PORT 2: Create duplicate"
   networktocode.nautobot.power_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Port
-      device: Device Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port
+    device: Device Power Tests
     state: present
   register: test_two
 
@@ -53,20 +54,19 @@
     that:
       - not test_two['changed']
       - test_two['power_port']['name'] == "Power Port"
-      - test_two['power_port']['device'] == 10
+      - test_two['power_port']['device'] == device['key']
       - test_two['msg'] == "power_port Power Port already exists"
 
 - name: "POWER_FEED 3: Update power_port with other fields"
   networktocode.nautobot.power_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Port
-      device: Device Power Tests
-      type: ita-e
-      allocated_draw: 10
-      maximum_draw: 20
-      description: test description
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port
+    device: Device Power Tests
+    type: ita-e
+    allocated_draw: 10
+    maximum_draw: 20
+    description: test description
     state: present
   register: test_three
 
@@ -79,7 +79,7 @@
       - test_three['diff']['after']['maximum_draw'] == 20
       - test_three['diff']['after']['description'] == "test description"
       - test_three['power_port']['name'] == "Power Port"
-      - test_three['power_port']['device'] == 10
+      - test_three['power_port']['device'] == device['key']
       - test_three['power_port']['type'] == "ita-e"
       - test_three['power_port']['allocated_draw'] == 10
       - test_three['power_port']['maximum_draw'] == 20
@@ -88,11 +88,10 @@
 
 - name: "POWER_PORT 4: Create Power Port for Delete Test"
   networktocode.nautobot.power_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Port 2
-      device: Device Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port 2
+    device: Device Power Tests
     state: present
   register: test_four
 
@@ -103,16 +102,15 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['power_port']['name'] == "Power Port 2"
-      - test_four['power_port']['device'] == 10
+      - test_four['power_port']['device'] == device['key']
       - test_four['msg'] == "power_port Power Port 2 created"
 
 - name: "POWER_PORT 5: Delete Power Port"
   networktocode.nautobot.power_port:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Power Port 2
-      device: Device Power Tests
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port 2
+    device: Device Power Tests
     state: absent
   register: test_five
 

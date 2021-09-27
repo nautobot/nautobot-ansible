@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -22,7 +23,7 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network to Code (@networktocode)
+  - Mikhail Yohman (@FragmentedPacket)
 requirements:
   - pynautobot
 version_added: "1.0.0"
@@ -37,37 +38,36 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  name:
     description:
-      - Defines the device role configuration
-    suboptions:
-      name:
-        description:
-          - The name of the device role
-        required: true
-        type: str
-      description:
-        description:
-          - The description of the device role
-        required: false
-        type: str
-      color:
-        description:
-          - Hexidecimal code for a color, ex. FFFFFF
-        required: false
-        type: str
-      slug:
-        description:
-          - The slugified version of the name or custom slug.
-          - This is auto-generated following Nautobot rules if not provided
-        required: false
-        type: str
-      vm_role:
-        description:
-          - Whether the role is a VM role
-        type: bool
+      - The name of the device role
     required: true
-    type: dict
+    type: str
+    version_added: "3.0.0"
+  description:
+    description:
+      - The description of the device role
+    required: false
+    type: str
+    version_added: "3.0.0"
+  color:
+    description:
+      - Hexidecimal code for a color, ex. FFFFFF
+    required: false
+    type: str
+    version_added: "3.0.0"
+  slug:
+    description:
+      - The slugified version of the name or custom slug.
+      - This is auto-generated following Nautobot rules if not provided
+    required: false
+    type: str
+    version_added: "3.0.0"
+  vm_role:
+    description:
+      - Whether the role is a VM role
+    type: bool
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -82,6 +82,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
@@ -100,17 +101,15 @@ EXAMPLES = r"""
       networktocode.nautobot.device_role:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test device role
-          color: FFFFFF
+        name: Test device role
+        color: FFFFFF
         state: present
 
     - name: Delete device role within nautobot
       networktocode.nautobot.device_role:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: Test Rack role
+        name: Test Rack role
         state: absent
 """
 
@@ -125,13 +124,13 @@ msg:
   type: str
 """
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
     NAUTOBOT_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICE_ROLES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -142,25 +141,15 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    description=dict(required=False, type="str"),
-                    color=dict(required=False, type="str"),
-                    slug=dict(required=False, type="str"),
-                    vm_role=dict(required=False, type="bool"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            description=dict(required=False, type="str"),
+            color=dict(required=False, type="str"),
+            slug=dict(required=False, type="str"),
+            vm_role=dict(required=False, type="bool"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     device_role = NautobotDcimModule(module, NB_DEVICE_ROLES)
     device_role.run()
