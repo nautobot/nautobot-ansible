@@ -1,0 +1,22 @@
+devices {% include "graphql_filters.j2" %} {
+  name
+  platform {
+    napalm_driver
+  }
+  status {
+    name
+  }
+  primary_ip4 {
+    address
+  }
+  device_role {
+    name
+  }
+  site {
+    name
+  }
+  device_role {
+    name
+  }
+{% include "graphql_additional_query.j2" %}
+}

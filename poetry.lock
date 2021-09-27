@@ -551,6 +551,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "netutils"
+version = "0.2.2"
+description = "Common helper functions useful in network automation."
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "packaging"
 version = "21.0"
 description = "Core utilities for Python packages"
@@ -1487,6 +1495,10 @@ multidict = [
     {file = "multidict-5.1.0-cp39-cp39-win32.whl", hash = "sha256:fc13a9524bc18b6fb6e0dbec3533ba0496bbed167c56d0aabefd965584557d80"},
     {file = "multidict-5.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:7df80d07818b385f3129180369079bd6934cf70469f99daaebfac89dca288359"},
     {file = "multidict-5.1.0.tar.gz", hash = "sha256:25b4e5f22d3a37ddf3effc0710ba692cfc792c2b9edfb9c05aefe823256e84d5"},
+]
+netutils = [
+    {file = "netutils-0.2.2-py3-none-any.whl", hash = "sha256:a0335a8d7e5210877cdc9017d2984a0abef23529b8f0147915f0ea5147b6a2c3"},
+    {file = "netutils-0.2.2.tar.gz", hash = "sha256:b848ed9536e13931761ec641346f5330e18f78a91d880253cf86d860a084555b"},
 ]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},

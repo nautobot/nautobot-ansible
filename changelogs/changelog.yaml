@@ -242,3 +242,13 @@ releases:
       release_summary: Updates format for modules to support Ansible 4 / ansible-core
         2.11 arg spec verification changes
     release_date: '2021-09-06'
+  3.1.0:
+    modules:
+    - description: Inventory plugin leveraging Nautobot's GraphQL API
+      name: gql_inventory
+      namespace: networktocode.nautobot
+    changes:
+      minor_changes:
+      - (#53) Adds inventory plugin using GraphQL API
+      release_summary: Adds inventory plugin leveraging Nautobot's GraphQL API
+    release_date: '2021-09-22'

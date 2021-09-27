@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 3.0.0
+Collection version 3.1.0
 
 .. toctree::
     :maxdepth: 1
@@ -19,6 +19,7 @@ These are the plugins in the networktocode.nautobot collection
 Inventory Plugins
 ~~~~~~~~~~~~~~~~~
 
+* :ref:`gql_inventory <ansible_collections.networktocode.nautobot.gql_inventory_inventory>` -- Nautobot inventory source using GraphQL capability
 * :ref:`inventory <ansible_collections.networktocode.nautobot.inventory_inventory>` -- Nautobot inventory source
 
 Lookup Plugins

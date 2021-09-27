@@ -20,7 +20,7 @@ networktocode.nautobot.prefix -- Creates or removes prefixes from Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.0.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -305,7 +305,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
-                                                 / <span style="color: red">required</span>                    </div>
+                                                                    </div>
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 3.0.0 of networktocode.nautobot
                       </div>
