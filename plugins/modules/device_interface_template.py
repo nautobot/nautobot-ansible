@@ -38,6 +38,7 @@ options:
     type: str
   data:
     description:
+      - (deprecated) In the next version of the modules the `data` option will be removed. All sub options will now be an option of the module.
       - Defines the prefix configuration
     suboptions:
       device_type:
