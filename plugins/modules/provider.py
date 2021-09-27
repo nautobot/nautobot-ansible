@@ -40,6 +40,7 @@ options:
   data:
     type: dict
     description:
+      - (deprecated) In the next version of the modules the `data` option will be removed. All sub options will now be an option of the module.
       - Defines the provider configuration
     suboptions:
       name:

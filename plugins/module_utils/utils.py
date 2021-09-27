@@ -454,6 +454,11 @@ class NautobotModule(object):
         self.check_mode = self.module.check_mode
         self.endpoint = endpoint
         query_params = self.module.params.get("query_params")
+        self.module.deprecate(
+            "The 'data' option is being removed. All sub options will be moved up one level to an option.",
+            version="3.0.0",
+            collection_name="networktocode.nautobot",
+        )
 
         if not HAS_PYNAUTOBOT:
             self.module.fail_json(
