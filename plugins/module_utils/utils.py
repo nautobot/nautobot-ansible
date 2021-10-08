@@ -477,13 +477,7 @@ class NautobotModule:
         if remove_keys:
             keys_to_remove.update(remove_keys)
 
-        return_dict = dict()
-        for key, value in data.items():
-            if key not in keys_to_remove:
-                return_dict.update({key: value})
-
-        # return {k: v for k, v in data.items() if k not in keys_to_remove}
-        return return_dict
+        return {k: v for k, v in data.items() if k not in keys_to_remove}
 
     def _version_check_greater(self, greater, lesser, greater_or_equal=False):
         """Determine if first argument is greater than second argument.
