@@ -480,7 +480,7 @@ class NautobotModule:
         return_dict = dict()
         for key, value in data.items():
             if key not in keys_to_remove:
-                return_dict.append({key: value})
+                return_dict.update({key: value})
 
         # return {k: v for k, v in data.items() if k not in keys_to_remove}
         return return_dict
