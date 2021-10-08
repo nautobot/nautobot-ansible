@@ -363,7 +363,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         resources = []
 
         for i in range(0, len(query_values), chunk_size):
+            # fmt: off
             chunk = query_values[i: i + chunk_size]
+            # fmt: on
             # process chunk of size <= chunk_size
             url = api_url
             for value in chunk:
