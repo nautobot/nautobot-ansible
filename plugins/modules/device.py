@@ -274,9 +274,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICES,
@@ -303,9 +301,7 @@ def main():
             site=dict(required=False, type="raw"),
             rack=dict(required=False, type="raw"),
             position=dict(required=False, type="int"),
-            face=dict(
-                required=False, type="str", choices=["Front", "front", "Rear", "rear"],
-            ),
+            face=dict(required=False, type="str", choices=["Front", "front", "Rear", "rear"],),
             status=dict(required=False, type="raw"),
             primary_ip4=dict(required=False, type="raw"),
             primary_ip6=dict(required=False, type="raw"),
@@ -325,9 +321,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
     if module.params["name"] == "":
         module.params["name"] = str(uuid.uuid4())
 

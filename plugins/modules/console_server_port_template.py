@@ -137,9 +137,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CONSOLE_SERVER_PORT_TEMPLATES,
@@ -181,9 +179,7 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    console_server_port_template = NautobotDcimModule(
-        module, NB_CONSOLE_SERVER_PORT_TEMPLATES
-    )
+    console_server_port_template = NautobotDcimModule(module, NB_CONSOLE_SERVER_PORT_TEMPLATES)
     console_server_port_template.run()
 
 

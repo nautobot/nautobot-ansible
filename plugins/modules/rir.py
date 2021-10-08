@@ -120,9 +120,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_RIRS,
@@ -136,13 +134,7 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(
-        dict(
-            name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
-            is_private=dict(required=False, type="bool"),
-        )
-    )
+    argument_spec.update(dict(name=dict(required=True, type="str"), slug=dict(required=False, type="str"), is_private=dict(required=False, type="bool"),))
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
