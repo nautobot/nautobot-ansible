@@ -85,7 +85,7 @@ jobs:
         if: "${{ matrix.ansible-release == 'legacy' }}"
         run: "poetry remove ansible-base"
       - name: "Add Ansible 2.9"
-        if: "${{ matrix.ansible-release == 'core' }}"
+        if: "${{ matrix.ansible-release == 'legacy' }}"
         run: "poetry add ansible@^2.9"
       - name: "Start containers"
         run: "invoke start"
