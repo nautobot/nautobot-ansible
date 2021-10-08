@@ -390,7 +390,7 @@ CONVERT_KEYS = {
 }
 
 # This is used to dynamically convert name to slug on endpoints requiring a slug
-SLUG_REQUIRED = [
+SLUG_REQUIRED = {
     "circuit_types",
     "cluster_groups",
     "cluster_types",
@@ -411,7 +411,7 @@ SLUG_REQUIRED = [
     "platforms",
     "providers",
     "vlan_groups",
-]
+}
 
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True),
