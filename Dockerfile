@@ -84,7 +84,7 @@ ENV ANSIBLE_UNIT_ARGS=${ANSIBLE_UNIT_ARGS}
 # Ansible sanity and unit tests
 #
 # Runs the sanity and unit tests inside the container build context to isolate
-# thsoe tests from all runtime influences
+# those tests from all runtime influences
 
 # Build Collection to run ansible-tests against
 RUN ansible-galaxy collection build --output-path ./dist/ .
