@@ -195,12 +195,18 @@
       - test_six['diff']['after']['state'] == "absent"
       - test_six['msg'] == "device R1-changed-name deleted"
 
-- name: "7 - Add primary_ip4/6 to test100"
+- name: "GRAB IP Address UUIDs for following tests"
+  ansible.builtin.set_fact:
+    ip4: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.180.1/24') }}"
+    ip6: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=2001::1:1/64') }}"
+
+- name: "7 - Add primary_ip4/6 to test100 with UUID and regular definition"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "test100"
-    primary_ip4: "172.16.180.1/24"
+    # This will test the UUID for ip4
+    primary_ip4: "{{ ip4['key'] }}"
     primary_ip6: "2001::1:1/64"
     status: "Active"
     state: present
@@ -220,9 +226,6 @@
       - test_seven['device']['primary_ip4'] == ip4['key']
       - test_seven['device']['primary_ip6'] == ip6['key']
       - test_seven['msg'] == "device test100 updated"
-  vars:
-    ip4: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.180.1/24') }}"
-    ip6: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=2001::1:1/64') }}"
 
 - name: "8 - Device with empty string name"
   networktocode.nautobot.device:
