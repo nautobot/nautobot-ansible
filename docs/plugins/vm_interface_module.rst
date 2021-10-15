@@ -20,7 +20,7 @@ networktocode.nautobot.vm_interface -- Creates or removes interfaces from virtua
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

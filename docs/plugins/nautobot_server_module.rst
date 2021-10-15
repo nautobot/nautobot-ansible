@@ -20,7 +20,7 @@ networktocode.nautobot.nautobot_server -- Manages Nautobot Server application.
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -42,7 +42,8 @@ Synopsis
 
 .. Description
 
-- Manages Nautobot Server using the ``nautobot-server`` application frontend to ``django-admin``. With the ``virtualenv`` parameter, all management commands will be executed by the given ``virtualenv`` installation.
+- Manages Nautobot Server using the ``nautobot-server`` application frontend to ``django-admin``. With the ``virtualenv`` parameter
+- all management commands will be executed by the given ``virtualenv`` installation.
 
 
 .. Aliases
@@ -238,9 +239,9 @@ Notes
 -----
 
 .. note::
-   - This module is inspired from Django_manage Ansible module (https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py).
+   - Inspired from Django_manage (https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py).
    - To be able to use the ``collectstatic`` command, you must have enabled staticfiles in your nautbot_config.py.
-   - Your ``nautobot-server`` application must be executable (rwxr-xr-x), and must have a valid shebang, i.e. ``#!/usr/bin/env python``, for invoking the appropriate Python interpreter.
+   - Your ``nautobot-server`` application must be executable (rwxr-xr-x), and must have a valid shebang.
 
 .. Seealso
 

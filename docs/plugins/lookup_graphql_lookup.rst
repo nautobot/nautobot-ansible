@@ -20,7 +20,7 @@ networktocode.nautobot.lookup_graphql -- Queries and returns elements from Nauto
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -85,7 +85,7 @@ Parameters
                                                     <td>
                                                                                             </td>
                                                 <td>
-                                            <div>The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.</div>
+                                            <div>The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -160,7 +160,8 @@ Parameters
                                                     <td>
                                                                                             </td>
                                                 <td>
-                                            <div>Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details</div>
+                                            <div>Dictionary of keys/values to pass into the GraphQL query</div>
+                                            <div>See [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details</div>
                                                         </td>
             </tr>
                         </table>
@@ -218,7 +219,8 @@ Examples
       # Get Response with variables
       - name: Obtain list of devices from Nautobot
         set_fact:
-          query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables, url='https://nautobot.example.com', token='<redact>') }}"
+          query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
+            url='https://nautobot.example.com', token='<redact>') }}"
 
 
 
