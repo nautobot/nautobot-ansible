@@ -5,6 +5,43 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.1.1
+======
+
+Release Summary
+---------------
+
+Quick bugfix release for not attempting to resolve IDs for fields that a user has passed in an ID/UUID for
+
+Bugfixes
+--------
+
+- (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID for a resolvable field
+
+v3.1.0
+======
+
+Release Summary
+---------------
+
+Adds inventory plugin leveraging Nautobot's GraphQL API
+
+Minor Changes
+-------------
+
+- (#53) Adds inventory plugin using GraphQL API
+
+New Modules
+-----------
+
+Networktocode
+~~~~~~~~~~~~~
+
+nautobot
+^^^^^^^^
+
+- networktocode.nautobot.networktocode.nautobot.gql_inventory - Inventory plugin leveraging Nautobot's GraphQL API
+
 v3.0.0
 ======
 

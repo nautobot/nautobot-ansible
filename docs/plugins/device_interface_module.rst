@@ -20,7 +20,7 @@ networktocode.nautobot.device_interface -- Creates or removes interfaces on devi
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -555,7 +555,7 @@ Examples
             enabled: false
             update_vc_child: True
         - name: |
-            Create an interface and update custom_field data point, 
+            Create an interface and update custom_field data point,
             setting the value to True
           networktocode.nautobot.device_interface:
             url: http://nautobot.local

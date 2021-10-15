@@ -20,7 +20,7 @@ networktocode.nautobot.gql_inventory -- Nautobot inventory source using GraphQL 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -302,31 +302,6 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-follow_redirects"></div>
-                    <b>follow_redirects</b>
-                    <a class="ansibleOptionLink" href="#parameter-follow_redirects" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li><div style="color: blue"><b>urllib2</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                                <li>all</li>
-                                                                                                                                                                                                <li>yes</li>
-                                                                                                                                                                                                <li>safe</li>
-                                                                                                                                                                                                <li>none</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Determine how redirects are followed.</div>
-                                            <div>By default, <em>follow_redirects</em> is set to uses urllib2 default behavior.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-group_by"></div>
                     <b>group_by</b>
                     <a class="ansibleOptionLink" href="#parameter-group_by" title="Permalink to this option"></a>
@@ -381,28 +356,6 @@ Parameters
             </tr>
                                 <tr>
                                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-max_uri_length"></div>
-                    <b>max_uri_length</b>
-                    <a class="ansibleOptionLink" href="#parameter-max_uri_length" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 1.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">4000</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).</div>
-                                            <div>You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
                     <b>plugin</b>
                     <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
@@ -418,7 +371,7 @@ Parameters
                                                     <td>
                                                                                             </td>
                                                 <td>
-                                            <div>Token that ensures this is a source file for the &#x27;nautobot&#x27; plugin.</div>
+                                            <div>Setting that ensures this is a source file for the &#x27;networktocode.nautobot&#x27; plugin.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -577,9 +530,9 @@ Examples
     api_endpoint: http://localhost:8000
     validate_certs: True
     query:
-      tags: name
+      interfaces: name
     additional_variables:
-      - tags
+      - interfaces
 
     # Filter output using any supported parameters
     # To get supported parameters check the api/docs page for devices

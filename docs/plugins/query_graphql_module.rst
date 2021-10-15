@@ -20,7 +20,7 @@ networktocode.nautobot.query_graphql -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -84,7 +84,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                            <div>Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details</div>
+                                            <div>Dictionary of keys/values to pass into the GraphQL query, see (<a href='https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html'>https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html</a>) for more info</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -99,7 +99,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                                 <td>
-                                            <div>The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.</div>
+                                            <div>The GraphQL formatted query string, see (<a href='https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html'>https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html</a>) for more details.</div>
                                                         </td>
             </tr>
                                 <tr>
