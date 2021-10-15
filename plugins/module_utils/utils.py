@@ -855,6 +855,11 @@ class NautobotModule:
         """
         for k, v in data.items():
             if k in CONVERT_TO_ID:
+                # Do not attempt to resolve if already ID/UUID is provided
+                if isinstance(v, int) or self.is_valid_uuid(v):
+                    continue
+
+                # Special circumstances to set endpoint to search within
                 if k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
@@ -916,8 +921,6 @@ class NautobotModule:
 
                 if isinstance(v, list):
                     data[k] = id_list
-                elif isinstance(v, int) or self.is_valid_uuid(v):
-                    pass
                 elif query_id:
                     data[k] = query_id.id
                 else:
