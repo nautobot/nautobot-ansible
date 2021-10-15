@@ -26,12 +26,12 @@ requirements:
 options:
     graph_variables:
         description:
-            - Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
+            - Dictionary of keys/values to pass into the GraphQL query, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more info
         required: False
         type: dict
     query:
         description:
-            - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.
+            - The GraphQL formatted query string, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more details.
         required: True
         type: str
     token:

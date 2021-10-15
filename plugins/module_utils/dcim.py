@@ -124,12 +124,7 @@ class NautobotDcimModule(NautobotModule):
             else:
                 termination_b_name = data.get("termination_b_id")
 
-            name = "%s %s <> %s %s" % (
-                data.get("termination_a_type"),
-                termination_a_name,
-                data.get("termination_b_type"),
-                termination_b_name,
-            )
+            name = "%s %s <> %s %s" % (data.get("termination_a_type"), termination_a_name, data.get("termination_b_type"), termination_b_name,)
 
         if self.endpoint in SLUG_REQUIRED:
             if not data.get("slug"):
@@ -155,27 +150,18 @@ class NautobotDcimModule(NautobotModule):
             else:
                 self._handle_errors(msg="More than one result returned for %s" % (name))
         else:
-            object_query_params = self._build_query_params(
-                endpoint_name, data, user_query_params
-            )
-            self.nb_object = self._nb_endpoint_get(
-                nb_endpoint, object_query_params, name
-            )
+            object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
+            self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
         # This is logic to handle interfaces on a VC
         if self.endpoint == "interfaces":
             if self.nb_object:
                 device = self.nb.dcim.devices.get(self.nb_object.device.id)
-                if (
-                    device["virtual_chassis"]
-                    and self.nb_object.device.id != self.data["device"]
-                ):
+                if device["virtual_chassis"] and self.nb_object.device.id != self.data["device"]:
                     if self.module.params.get("update_vc_child"):
                         data["device"] = self.nb_object.device.id
                     else:
-                        self._handle_errors(
-                            msg="Must set update_vc_child to True to allow child device interface modification"
-                        )
+                        self._handle_errors(msg="Must set update_vc_child to True to allow child device interface modification")
 
         if self.state == "present":
             self._ensure_object_exists(nb_endpoint, endpoint_name, name, data)

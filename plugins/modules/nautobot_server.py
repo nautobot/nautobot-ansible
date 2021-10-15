@@ -21,7 +21,8 @@ DOCUMENTATION = r"""
 module: nautobot_server
 short_description: Manages Nautobot Server application.
 description:
-    - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the C(virtualenv) parameter, all management commands will be executed by the given C(virtualenv) installation.
+    - Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the C(virtualenv) parameter
+    - all management commands will be executed by the given C(virtualenv) installation.
 requirements:
   - nautobot
 author:
@@ -92,9 +93,9 @@ options:
     type: str
     required: false
 notes:
-  - This module is inspired from Django_manage Ansible module (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
+  - Inspired from Django_manage (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
   - To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
-  - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang, i.e. C(#!/usr/bin/env python), for invoking the appropriate Python interpreter.
+  - Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang.
 """
 
 EXAMPLES = r"""
@@ -167,7 +168,7 @@ def _fail(module, cmd, out, err, **kwargs):
     module.fail_json(cmd=cmd, msg=msg, **kwargs)
 
 
-### Helper functions to customize the output state ###
+# Helper functions to customize the output state #
 
 
 def createsuperuser_changed(line):
@@ -175,21 +176,11 @@ def createsuperuser_changed(line):
 
 
 def migrate_changed(line):
-    return (
-        ("Migrating forwards " in line)
-        or ("Installed" in line and "Installed 0 object" not in line)
-        or ("Applying" in line)
-    )
+    return ("Migrating forwards " in line) or ("Installed" in line and "Installed 0 object" not in line) or ("Applying" in line)
 
 
 def makemigrations_changed(line):
-    return (
-        ("Alter field" in line)
-        or ("Add field" in line)
-        or ("Run Python" in line)
-        or ("Rename field" in line)
-        or ("Remove field" in line)
-    )
+    return ("Alter field" in line) or ("Add field" in line) or ("Run Python" in line) or ("Rename field" in line) or ("Remove field" in line)
 
 
 def post_upgrade_changed(line):
@@ -224,9 +215,7 @@ def main():
             args=dict(type="dict", default={}),
             positional_args=dict(type="list", default=[], elements="str"),
             flags=dict(type="list", default=[], elements="str"),
-            project_path=dict(
-                default="/opt/nautobot", type="path", aliases=["app_path", "chdir"],
-            ),
+            project_path=dict(default="/opt/nautobot", type="path", aliases=["app_path", "chdir"],),
             settings=dict(required=False, type="path",),
             pythonpath=dict(required=False, type="path", aliases=["python_path"]),
             virtualenv=dict(required=False, type="path", aliases=["virtual_env"]),
@@ -259,9 +248,7 @@ def main():
         vbin = os.path.join(venv_param, "bin")
         activate = os.path.join(vbin, "activate")
         if not os.path.exists(activate):
-            _fail(
-                module, activate, "Virtualenv doens't exist.", f"{activate} not found."
-            )
+            _fail(module, activate, "Virtualenv doens't exist.", f"{activate} not found.")
         environ_vars["PATH"] = "%s:%s" % (vbin, os.environ["PATH"])
 
     # Build the `nautobot-server` command, taking into account the 3 types of arguments, flags, arguments and
@@ -284,9 +271,7 @@ def main():
         cmd += " %s" % (value,)
 
     # Run `nautobot-server` command and handle the command output to understand the error and provide useful info
-    rc, out, err = module.run_command(
-        cmd, cwd=project_path, environ_update=environ_vars
-    )
+    rc, out, err = module.run_command(cmd, cwd=project_path, environ_update=environ_vars)
     if rc != 0:
         # Handling expected errors
         if command == "createcachetable" and "table" in err and "already exists" in err:
@@ -300,10 +285,7 @@ def main():
                 _fail(module, cmd, err, "Unknown django command: %s" % command)
             elif "fe_sendauth: no password supplied" in err:
                 _fail(
-                    module,
-                    cmd,
-                    err,
-                    "No DB password available in the nautobot-server, you must supply 'db_password' for this command",
+                    module, cmd, err, "No DB password available in the nautobot-server, you must supply 'db_password' for this command",
                 )
             _fail(module, cmd, out, err, path=os.environ["PATH"], syspath=sys.path)
 

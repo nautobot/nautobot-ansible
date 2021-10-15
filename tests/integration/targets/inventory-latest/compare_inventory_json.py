@@ -82,16 +82,10 @@ def write_json(filename, data):
 def main():
     parser = argparse.ArgumentParser(description="Diff Ansible inventory JSON output")
     parser.add_argument(
-        "filename_a",
-        metavar="ORIGINAL.json",
-        type=str,
-        help="Original json to test against",
+        "filename_a", metavar="ORIGINAL.json", type=str, help="Original json to test against",
     )
     parser.add_argument(
-        "filename_b",
-        metavar="NEW.json",
-        type=str,
-        help="Newly generated json to compare against original",
+        "filename_b", metavar="NEW.json", type=str, help="Newly generated json to compare against original",
     )
     parser.add_argument(
         "--write",

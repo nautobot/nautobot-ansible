@@ -202,9 +202,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_POWER_FEEDS,
@@ -226,9 +224,7 @@ def main():
             status=dict(required=False, type="str",),
             type=dict(required=False, choices=["primary", "redundant"], type="str"),
             supply=dict(required=False, choices=["ac", "dc"], type="str"),
-            phase=dict(
-                required=False, choices=["single-phase", "three-phase"], type="str",
-            ),
+            phase=dict(required=False, choices=["single-phase", "three-phase"], type="str",),
             voltage=dict(required=False, type="int"),
             amperage=dict(required=False, type="int"),
             max_utilization=dict(required=False, type="int"),
@@ -243,9 +239,7 @@ def main():
         ("state", "absent", ["power_panel", "name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     power_feed = NautobotDcimModule(module, NB_POWER_FEEDS)
     power_feed.run()

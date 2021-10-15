@@ -108,9 +108,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICE_BAY_TEMPLATES,
@@ -124,12 +122,7 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(
-        dict(
-            device_type=dict(required=True, type="raw"),
-            name=dict(required=True, type="str"),
-        )
-    )
+    argument_spec.update(dict(device_type=dict(required=True, type="raw"), name=dict(required=True, type="str"),))
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 

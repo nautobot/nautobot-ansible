@@ -238,7 +238,7 @@ EXAMPLES = r"""
         enabled: false
         update_vc_child: True
     - name: |
-        Create an interface and update custom_field data point, 
+        Create an interface and update custom_field data point,
         setting the value to True
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
@@ -261,9 +261,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_INTERFACES,
@@ -300,9 +298,7 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    device_interface = NautobotDcimModule(
-        module, NB_INTERFACES, remove_keys=["update_vc_child"]
-    )
+    device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
 
 

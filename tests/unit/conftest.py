@@ -13,9 +13,7 @@ except ImportError:
 
 @pytest.fixture
 def nautobot_api_base():
-    return NautobotApiBase(
-        url="https://nautobot.mock.com", token="abc123", valdiate_certs=False
-    )
+    return NautobotApiBase(url="https://nautobot.mock.com", token="abc123", valdiate_certs=False)
 
 
 @pytest.fixture

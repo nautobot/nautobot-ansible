@@ -43,7 +43,7 @@ DOCUMENTATION = """
     options:
         query:
             description:
-                - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.
+                - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
             required: True
         token:
             description:
@@ -66,7 +66,8 @@ DOCUMENTATION = """
             default: True
         variables:
             description:
-                - Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
+                - Dictionary of keys/values to pass into the GraphQL query
+                - See [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
             required: False
     requirements:
         - pynautobot
@@ -111,7 +112,8 @@ EXAMPLES = """
   # Get Response with variables
   - name: Obtain list of devices from Nautobot
     set_fact:
-      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables, url='https://nautobot.example.com', token='<redact>') }}"
+      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
+        url='https://nautobot.example.com', token='<redact>') }}"
 """
 
 RETURN = """
@@ -134,9 +136,7 @@ def nautobot_lookup_graphql(**kwargs):
 
     # Check that a valid query was passed in
     if query is None:
-        raise AnsibleLookupError(
-            "Query parameter was not passed. Please verify that query is passed."
-        )
+        raise AnsibleLookupError("Query parameter was not passed. Please verify that query is passed.")
     # Setup API Token information, URL, and SSL verification
     url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
     Display().v("Nautobot URL: %s" % url)
@@ -158,32 +158,23 @@ def nautobot_lookup_graphql(**kwargs):
 
     # Verify that the query is a string type
     if not isinstance(query, str):
-        raise AnsibleLookupError(
-            "Query parameter must be of type string. Please see docs for examples."
-        )
+        raise AnsibleLookupError("Query parameter must be of type string. Please see docs for examples.")
 
     # Verify that the variables key coming in is a dictionary
     if graph_variables is not None and not isinstance(graph_variables, dict):
-        raise AnsibleLookupError(
-            "graph_variables parameter must be of key/value pairs. Please see docs for examples."
-        )
+        raise AnsibleLookupError("graph_variables parameter must be of key/value pairs. Please see docs for examples.")
 
     # Setup return results
     results = {}
     # Make call to Nautobot API and capture any failures
-    nautobot_graph_obj = NautobotGraphQL(
-        query_str=query, api=nautobot_api, variables=graph_variables
-    )
+    nautobot_graph_obj = NautobotGraphQL(query_str=query, api=nautobot_api, variables=graph_variables)
 
     # Get the response from the object
     nautobot_response = nautobot_graph_obj.query()
 
     # Check for errors in the response
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLException):
-        raise AnsibleLookupError(
-            "Error in the query to the Nautobot host. Errors: %s"
-            % (nautobot_response.errors)
-        )
+        raise AnsibleLookupError("Error in the query to the Nautobot host. Errors: %s" % (nautobot_response.errors))
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
@@ -209,17 +200,11 @@ class LookupModule(LookupBase):
         """
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"),
-                PYNAUTOBOT_IMPORT_ERROR,
+                AnsibleError("pynautobot must be installed to use this plugin"), PYNAUTOBOT_IMPORT_ERROR,
             )
 
         # Query comes in as a list, this needs to be moved to string for pynautobot
-        lookup_info = nautobot_lookup_graphql(
-            query=query[0],
-            variables=variables,
-            graph_variables=graph_variables,
-            **kwargs
-        )
+        lookup_info = nautobot_lookup_graphql(query=query[0], variables=variables, graph_variables=graph_variables, **kwargs)
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info

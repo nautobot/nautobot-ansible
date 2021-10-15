@@ -214,9 +214,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
     NB_VIRTUAL_MACHINES,
@@ -256,9 +254,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     virtual_machine = NautobotVirtualizationModule(module, NB_VIRTUAL_MACHINES)
     virtual_machine.run()

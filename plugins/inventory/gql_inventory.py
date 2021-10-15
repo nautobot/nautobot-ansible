@@ -188,9 +188,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def main(self):
         """Main function."""
         if not HAS_NETUTILS:
-            raise AnsibleError(
-                "networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils."
-            )
+            raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
         file_loader = FileSystemLoader(f"{PATH}/../templates")
         env = Environment(loader=file_loader, autoescape=True)
@@ -216,10 +214,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(
-                        self.api_endpoint + "/"
-                    ),
-                    color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
@@ -237,10 +232,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(
-                    json_data["errors"][0]["message"]
-                ),
-                color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
@@ -251,8 +243,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 if not GROUP_BY.get(group_by):
                     self.display.display(
                         "WARNING: '{0}' is not supported as a 'group_by' option. Supported options are: {1} ".format(
-                            group_by,
-                            " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
+                            group_by, " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
                         ),
                         color="yellow",
                     )
@@ -274,23 +265,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     self.create_inventory(key, device["name"])
                     if device["primary_ip4"]:
                         self.add_variable(
-                            device["name"],
-                            device["primary_ip4"]["address"],
-                            "ansible_host",
+                            device["name"], device["primary_ip4"]["address"], "ansible_host",
                         )
                     else:
-                        self.add_variable(
-                            device["name"], device["name"], "ansible_host"
-                        )
+                        self.add_variable(device["name"], device["name"], "ansible_host")
                     if device["platform"] and "napalm_driver" in device["platform"]:
                         self.add_variable(
                             device["name"],
                             ANSIBLE_LIB_MAPPER_REVERSE.get(
-                                NAPALM_LIB_MAPPER.get(
-                                    device["platform"][
-                                        "napalm_driver"
-                                    ]  # Convert napalm_driver to ansible_network_os value
-                                )
+                                NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])  # Convert napalm_driver to ansible_network_os value
                             ),
                             "ansible_network_os",
                         )
@@ -311,8 +294,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
         self.headers = {
-            "User-Agent": "ansible %s Python %s"
-            % (ansible_version, python_version.split(" ")[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ")[0]),
             "Content-type": "application/json",
         }
         if token:

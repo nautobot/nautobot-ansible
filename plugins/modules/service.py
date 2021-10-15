@@ -154,9 +154,7 @@ EXAMPLES = r"""
         state: absent
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_SERVICES,
@@ -185,11 +183,7 @@ def main():
     )
     required_one_of = [["device", "virtual_machine"]]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_one_of=required_one_of,)
 
     service = NautobotIpamModule(module, NB_SERVICES)
 

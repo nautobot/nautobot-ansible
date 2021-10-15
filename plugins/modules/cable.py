@@ -236,9 +236,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CABLES,
@@ -316,39 +314,16 @@ def main():
             label=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
             length=dict(required=False, type="int"),
-            length_unit=dict(
-                required=False, choices=["m", "cm", "ft", "in"], type="str"
-            ),
+            length_unit=dict(required=False, choices=["m", "cm", "ft", "in"], type="str"),
         )
     )
 
     required_if = [
-        (
-            "state",
-            "present",
-            [
-                "termination_a_type",
-                "termination_a",
-                "termination_b_type",
-                "termination_b",
-                "status",
-            ],
-        ),
-        (
-            "state",
-            "absent",
-            [
-                "termination_a_type",
-                "termination_a",
-                "termination_b_type",
-                "termination_b",
-            ],
-        ),
+        ("state", "present", ["termination_a_type", "termination_a", "termination_b_type", "termination_b", "status"],),
+        ("state", "absent", ["termination_a_type", "termination_a", "termination_b_type", "termination_b"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     cable = NautobotDcimModule(module, NB_CABLES)
     cable.run()

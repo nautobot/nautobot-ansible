@@ -68,18 +68,7 @@ API_APPS_ENDPOINTS = dict(
         "virtual_chassis",
     ],
     extras=["tags", "statuses"],
-    ipam=[
-        "aggregates",
-        "ip_addresses",
-        "prefixes",
-        "rirs",
-        "roles",
-        "route_targets",
-        "vlans",
-        "vlan_groups",
-        "vrfs",
-        "services",
-    ],
+    ipam=["aggregates", "ip_addresses", "prefixes", "rirs", "roles", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
@@ -346,21 +335,7 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "tenant"]),
 }
 
-QUERY_PARAMS_IDS = set(
-    [
-        "circuit",
-        "cluster",
-        "device",
-        "group",
-        "interface",
-        "rir",
-        "vrf",
-        "site",
-        "tenant",
-        "type",
-        "virtual_machine",
-    ]
-)
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine"])
 
 REQUIRED_ID_FIND = {
     "cables": set(["status", "type", "length_unit"]),
@@ -464,9 +439,7 @@ class NautobotModule:
         query_params = self.module.params.get("query_params")
 
         if not HAS_PYNAUTOBOT:
-            self.module.fail_json(
-                msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
-            )
+            self.module.fail_json(msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR)
         # These should not be required after making connection to Nautobot
         url = self.module.params["url"]
         token = self.module.params["token"]
@@ -538,9 +511,7 @@ class NautobotModule:
             try:
                 self.version = nb.version
             except Exception:
-                self.module.fail_json(
-                    msg="Failed to establish connection to Nautobot API"
-                )
+                self.module.fail_json(msg="Failed to establish connection to Nautobot API")
             return nb
         except Exception:
             self.module.fail_json(msg="Failed to establish connection to Nautobot API")
@@ -551,9 +522,7 @@ class NautobotModule:
         except pynautobot.RequestError as e:
             self._handle_errors(msg=e.error)
         except ValueError:
-            self._handle_errors(
-                msg="More than one result returned for %s" % (search_item)
-            )
+            self._handle_errors(msg="More than one result returned for %s" % (search_item))
 
         return response
 
@@ -574,9 +543,7 @@ class NautobotModule:
         try:
             raw_data = to_text(response.read(), errors="surrogate_or_strict")
         except UnicodeError:
-            self._handle_errors(
-                msg="Incorrect encoding of fetched payload from Nautobot API."
-            )
+            self._handle_errors(msg="Incorrect encoding of fetched payload from Nautobot API.")
 
         try:
             openapi = json.loads(raw_data)
@@ -591,11 +558,7 @@ class NautobotModule:
                 invalid_query_params.append(param)
 
         if invalid_query_params:
-            self._handle_errors(
-                "The following query_params are invalid: {0}".format(
-                    ", ".join(invalid_query_params)
-                )
-            )
+            self._handle_errors("The following query_params are invalid: {0}".format(", ".join(invalid_query_params)))
 
     def _handle_errors(self, msg):
         """
@@ -677,9 +640,7 @@ class NautobotModule:
         else:
             return data
 
-    def _build_query_params(
-        self, parent, module_data, user_query_params=None, child=None
-    ):
+    def _build_query_params(self, parent, module_data, user_query_params=None, child=None):
         """
         :returns dict(query_dict): Returns a query dictionary built using mappings to dynamically
         build available query params for Nautobot endpoints
@@ -727,13 +688,9 @@ class NautobotModule:
         elif parent == "lag":
             if not child:
                 query_dict["name"] = module_data["lag"]
-            intf_type = self._fetch_choice_value(
-                "Link Aggregation Group (LAG)", "interfaces"
-            )
+            intf_type = self._fetch_choice_value("Link Aggregation Group (LAG)", "interfaces")
             query_dict.update({"type": intf_type})
-            if isinstance(module_data["device"], int) or self.is_valid_uuid(
-                module_data["device"]
-            ):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(module_data["device"]):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -742,26 +699,16 @@ class NautobotModule:
             query_dict.update({"prefix": module_data["parent"]})
 
         elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int) or self.is_valid_uuid(
-                module_data["device"]
-            ):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(module_data["device"]):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
 
-        elif (
-            parent == "ip_address"
-            and "assigned_object" in matches
-            and module_data.get("assigned_object_type")
-        ):
+        elif parent == "ip_address" and "assigned_object" in matches and module_data.get("assigned_object_type"):
             if module_data["assigned_object_type"] == "virtualization.vminterface":
-                query_dict.update(
-                    {"vminterface_id": module_data.get("assigned_object_id")}
-                )
+                query_dict.update({"vminterface_id": module_data.get("assigned_object_id")})
             elif module_data["assigned_object_type"] == "dcim.interface":
-                query_dict.update(
-                    {"interface_id": module_data.get("assigned_object_id")}
-                )
+                query_dict.update({"interface_id": module_data.get("assigned_object_id")})
 
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
@@ -785,11 +732,10 @@ class NautobotModule:
 
         if not query_dict:
             provided_kwargs = child.keys() if child else module_data.keys()
-            acceptable_query_params = (
-                user_query_params if user_query_params else query_params
-            )
+            acceptable_query_params = user_query_params if user_query_params else query_params
             self._handle_errors(
-                f"One or more of the kwargs provided are invalid for {parent}, provided kwargs: {', '.join(sorted(provided_kwargs))}. Acceptable kwargs: {', '.join(sorted(acceptable_query_params))}"
+                f"One or more of the kwargs provided are invalid for {parent},"
+                f" provided kwargs: {', '.join(sorted(provided_kwargs))}. Acceptable kwargs: {', '.join(sorted(acceptable_query_params))}"
             )
 
         query_dict = self._convert_identical_keys(query_dict)
@@ -803,7 +749,8 @@ class NautobotModule:
             endpoint_choices = nb_endpoint.choices()
         except ValueError:
             self._handle_errors(
-                msg="Failed to fetch endpoint choices to validate against. This requires a write-enabled token. Make sure the token is write-enabled. If looking to fetch only information, use either the inventory or lookup plugin."
+                msg="Failed to fetch endpoint choices to validate against. This requires a write-enabled token. Make "
+                "sure the token is write-enabled. If looking to fetch only information, use either the inventory or lookup plugin."
             )
 
         choices = list(chain.from_iterable(endpoint_choices.values()))
@@ -813,9 +760,7 @@ class NautobotModule:
                 return item["value"]
             elif item["value"] == search.lower():
                 return item["value"]
-        self._handle_errors(
-            msg="%s was not found as a valid choice for %s" % (search, endpoint)
-        )
+        self._handle_errors(msg="%s was not found as a valid choice for %s" % (search, endpoint))
 
     def _change_choices_id(self, endpoint, data):
         """Used to change data that is static and under _choices for the application.
@@ -828,9 +773,7 @@ class NautobotModule:
             required_choices = REQUIRED_ID_FIND[endpoint]
             for choice in required_choices:
                 if data.get(choice):
-                    if isinstance(data[choice], int) or self.is_valid_uuid(
-                        data[choice]
-                    ):
+                    if isinstance(data[choice], int) or self.is_valid_uuid(data[choice]):
                         continue
                     choice_value = self._fetch_choice_value(data[choice], endpoint)
                     data[choice] = choice_value
@@ -874,9 +817,7 @@ class NautobotModule:
                 nb_endpoint = getattr(nb_app, endpoint)
 
                 if isinstance(v, dict):
-                    if (k == "interface" or k == "assigned_object") and v.get(
-                        "virtual_machine"
-                    ):
+                    if (k == "interface" or k == "assigned_object") and v.get("virtual_machine"):
                         nb_app = getattr(self.nb, "virtualization")
                         nb_endpoint = getattr(nb_app, endpoint)
                     query_params = self._build_query_params(k, data, child=v)
@@ -884,22 +825,14 @@ class NautobotModule:
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        if (
-                            k == "tags"
-                            and isinstance(list_item, str)
-                            and not self.is_valid_uuid(list_item)
-                        ):
+                        if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
                             temp_dict = {"slug": self._to_slug(list_item)}
                         elif isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
-                            temp_dict = self._build_query_params(
-                                k, data, child=norm_data
-                            )
+                            temp_dict = self._build_query_params(k, data, child=norm_data)
                         # If user passes in an integer, add to ID list to id_list as user
                         # should have passed in a tag ID
-                        elif isinstance(list_item, int) or self.is_valid_uuid(
-                            list_item
-                        ):
+                        elif isinstance(list_item, int) or self.is_valid_uuid(list_item):
                             id_list.append(list_item)
                             continue
                         else:
@@ -912,9 +845,7 @@ class NautobotModule:
                             self._handle_errors(msg="%s not found" % (list_item))
                 else:
                     if k in ["lag", "rear_port", "rear_port_template"]:
-                        query_params = self._build_query_params(
-                            k, data, user_query_params
-                        )
+                        query_params = self._build_query_params(k, data, user_query_params)
                     else:
                         query_params = {QUERY_TYPES.get(k, "q"): search}
                     query_id = self._nb_endpoint_get(nb_endpoint, query_params, k)
@@ -1039,10 +970,7 @@ class NautobotModule:
                     if key == "form_factor":
                         msg = "form_factor is not valid for Nautobot 2.7 onword. Please use the type key instead."
                     else:
-                        msg = (
-                            "%s does not exist on existing object. Check to make sure valid field."
-                            % (key)
-                        )
+                        msg = "%s does not exist on existing object. Check to make sure valid field." % (key)
 
                     self._handle_errors(msg=msg)
 
@@ -1070,9 +998,7 @@ class NautobotModule:
         else:
             self.nb_object, diff = self._update_object(data)
             if self.nb_object is False:
-                self._handle_errors(
-                    msg="Request failed, couldn't update device: %s" % name
-                )
+                self._handle_errors(msg="Request failed, couldn't update device: %s" % name)
             if diff:
                 self.result["msg"] = "%s %s updated" % (endpoint_name, name)
                 self.result["changed"] = True
@@ -1120,8 +1046,6 @@ class NautobotGraphQL:
     def query(self):
         """Makes API call and checks response from GraphQL endpoint."""
         # Make API call to query
-        graph_response = self.pynautobot.graphql.query(
-            query=self.query_str, variables=self.variables
-        )
+        graph_response = self.pynautobot.graphql.query(query=self.query_str, variables=self.variables)
 
         return graph_response
