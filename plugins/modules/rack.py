@@ -225,9 +225,7 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_RACKS,
@@ -252,25 +250,13 @@ def main():
             rack_role=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
-            type=dict(
-                required=False,
-                type="str",
-                choices=[
-                    "2-post frame",
-                    "4-post frame",
-                    "4-post cabinet",
-                    "Wall-mounted frame",
-                    "Wall-mounted cabinet",
-                ],
-            ),
-            width=dict(required=False, type="int", choices=[10, 19, 21, 23,]),
+            type=dict(required=False, type="str", choices=["2-post frame", "4-post frame", "4-post cabinet", "Wall-mounted frame", "Wall-mounted cabinet"],),
+            width=dict(required=False, type="int", choices=[10, 19, 21, 23]),
             u_height=dict(required=False, type="int"),
             desc_units=dict(required=False, type="bool"),
             outer_width=dict(required=False, type="int"),
             outer_depth=dict(required=False, type="int"),
-            outer_unit=dict(
-                required=False, type="str", choices=["Millimeters", "Inches",],
-            ),
+            outer_unit=dict(required=False, type="str", choices=["Millimeters", "Inches"],),
             comments=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
@@ -282,9 +268,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     rack = NautobotDcimModule(module, NB_RACKS)
     rack.run()

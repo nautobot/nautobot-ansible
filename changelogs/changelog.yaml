@@ -242,3 +242,21 @@ releases:
       release_summary: Updates format for modules to support Ansible 4 / ansible-core
         2.11 arg spec verification changes
     release_date: '2021-09-06'
+  3.1.0:
+    changes:
+      minor_changes:
+      - (#53) Adds inventory plugin using GraphQL API
+      release_summary: Adds inventory plugin leveraging Nautobot's GraphQL API
+    modules:
+    - description: Inventory plugin leveraging Nautobot's GraphQL API
+      name: gql_inventory
+      namespace: networktocode.nautobot
+    release_date: '2021-09-22'
+  3.1.1:
+    changes:
+      bugfixes:
+      - (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID
+        for a resolvable field
+      release_summary: Quick bugfix release for not attempting to resolve IDs for
+        fields that a user has passed in an ID/UUID for
+    release_date: '2021-10-15'

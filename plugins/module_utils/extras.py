@@ -50,9 +50,7 @@ class NautobotExtrasModule(NautobotModule):
         if data.get("color"):
             data["color"] = data["color"].lower()
 
-        object_query_params = self._build_query_params(
-            endpoint_name, data, user_query_params
-        )
+        object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
         if self.state == "present":
