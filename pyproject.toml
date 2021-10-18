@@ -29,6 +29,7 @@ sphinx_rtd_theme = "*"
 hypothesis = "^6.8.0"
 pynautobot = "^1.0.1"
 pytest-pythonpath = "^0.7.3"
+bandit = "^1.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
