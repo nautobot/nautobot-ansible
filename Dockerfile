@@ -15,7 +15,7 @@ WORKDIR /usr/src/app
 RUN python -m pip install -U pip
 
 # Install poetry for dep management
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+RUN pip install poetry
 ENV PATH="$PATH:/root/.poetry/bin"
 RUN poetry config virtualenvs.create false
 
