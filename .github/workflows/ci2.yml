@@ -1,5 +1,5 @@
 ---
-name: "CI"
+name: "CI Version 2"
 on:  # yamllint disable
   push:
     branches:
