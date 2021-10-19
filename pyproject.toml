@@ -6,7 +6,7 @@ authors = ["Network to Code <opensource@networktocode.com"]
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.8"
 ansible-base = "^2.10.0"
 netutils = "^0.2.2"
 
