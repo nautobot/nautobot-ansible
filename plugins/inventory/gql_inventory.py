@@ -294,7 +294,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
         self.headers = {
-            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ")[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
             "Content-type": "application/json",
         }
         if token:

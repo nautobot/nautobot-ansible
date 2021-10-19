@@ -1351,7 +1351,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.services = self.get_option("services")
         self.fetch_all = self.get_option("fetch_all")
         self.headers = {
-            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ")[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
             "Content-type": "application/json",
         }
         if token:
