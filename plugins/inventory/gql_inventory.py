@@ -32,6 +32,12 @@ DOCUMENTATION = """
           description: Timeout for Nautobot requests in seconds
           type: int
           default: 60
+      follow_redirects:
+          description:
+              - Determine how redirects are followed.
+              - By default, I(follow_redirects) is set to uses urllib2 default behavior.
+          default: urllib2
+          choices: ['urllib2', 'all', 'yes', 'safe', 'none']
       validate_certs:
           description:
               - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
@@ -198,7 +204,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         try:
             response = open_url(
-                self.api_endpoint + "/",
+                self.api_endpoint + "/api/graphql/",
                 method="post",
                 data=json.dumps(data),
                 headers=self.headers,
@@ -304,5 +310,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_by = self.get_option("group_by")
         self.filters = self.get_option("filters")
         self.variables = self.get_option("additional_variables")
+        self.follow_redirects = self.get_option("follow_redirects")
 
         self.main()
