@@ -20,7 +20,7 @@ networktocode.nautobot.rack_role -- Create, update or delete racks roles within 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.2).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
