@@ -44,9 +44,8 @@
                 "tags": []
             },
             "Test Nexus One": {
-                "ansible_host": "172.16.180.12",
+                "ansible_host": "172.16.180.11",
                 "device_type": "nexus-parent",
-                "dns_name": "nexus.example.com",
                 "interfaces": [
                     {
                         "cable": null,
@@ -56,25 +55,28 @@
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
                         "count_ipaddresses": 1,
+                        "custom_fields": {},
                         "description": "",
                         "device": {
                             "display": "Test Nexus One",
-                            "id": 4,
+                            "id": "ea63e7d8-af14-4f6e-8148-21703b36f9bc",
                             "name": "Test Nexus One"
                         },
+                        "display": "Ethernet1/1",
                         "enabled": true,
-                        "id": 1,
+                        "id": "62a1d726-4b95-48ec-9248-cd866451f17c",
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.11/24",
                                 "custom_fields": {},
                                 "description": "",
+                                "display": "172.16.180.11/24",
                                 "dns_name": "",
                                 "family": {
                                     "label": "IPv4",
                                     "value": 4
                                 },
-                                "id": 3,
+                                "id": "1ce1f312-af87-469c-b21b-53cd2286c239",
                                 "nat_inside": null,
                                 "nat_outside": null,
                                 "role": null,
@@ -110,25 +112,28 @@
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
                         "count_ipaddresses": 1,
+                        "custom_fields": {},
                         "description": "",
                         "device": {
                             "display": "Test Nexus Child One",
-                            "id": 5,
+                            "id": "f8d4f86b-7e49-4c7f-b332-4daea9db18ce",
                             "name": "Test Nexus Child One"
                         },
+                        "display": "Ethernet2/1",
                         "enabled": true,
-                        "id": 2,
+                        "id": "d5108cca-6ffd-4a37-a5ee-ef43e6034c35",
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.12/24",
                                 "custom_fields": {},
                                 "description": "",
+                                "display": "172.16.180.12/24",
                                 "dns_name": "nexus.example.com",
                                 "family": {
                                     "label": "IPv4",
                                     "value": 4
                                 },
-                                "id": 4,
+                                "id": "4eb3d831-dd3b-4c48-8cfe-77247ba05857",
                                 "nat_inside": null,
                                 "nat_outside": null,
                                 "role": null,
@@ -159,7 +164,7 @@
                 ],
                 "is_virtual": false,
                 "manufacturer": "cisco",
-                "primary_ip4": "172.16.180.12",
+                "primary_ip4": "172.16.180.11",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -171,10 +176,11 @@
                         "description": "",
                         "device": {
                             "display": "Test Nexus One",
-                            "id": 4,
+                            "id": "ea63e7d8-af14-4f6e-8148-21703b36f9bc",
                             "name": "Test Nexus One"
                         },
-                        "id": 3,
+                        "display": "telnet (TCP/23)",
+                        "id": "a695f981-e78b-486c-b5c6-ccca293bd10c",
                         "ipaddresses": [],
                         "name": "telnet",
                         "ports": [
@@ -201,25 +207,9 @@
                 "interfaces": [
                     {
                         "description": "",
+                        "display": "Eth1",
                         "enabled": true,
-                        "id": 11,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth0",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 6,
-                            "name": "Test VM With Spaces"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 12,
+                        "id": "4c25afc9-7992-4999-ad56-15ec009cd6fb",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
@@ -229,7 +219,27 @@
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 6,
+                            "display": "Test VM With Spaces",
+                            "id": "de5b86d4-faca-4999-97a8-42d41212c9df",
+                            "name": "Test VM With Spaces"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth0",
+                        "enabled": true,
+                        "id": "82f90843-984c-480a-ab61-c2397f176ebc",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth0",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "Test VM With Spaces",
+                            "id": "de5b86d4-faca-4999-97a8-42d41212c9df",
                             "name": "Test VM With Spaces"
                         }
                     }
@@ -241,7 +251,8 @@
                         "custom_fields": {},
                         "description": "",
                         "device": null,
-                        "id": 4,
+                        "display": "ssh (TCP/22)",
+                        "id": "d6278253-7171-45a9-8294-edcb0279ba89",
                         "ipaddresses": [],
                         "name": "ssh",
                         "ports": [
@@ -253,7 +264,8 @@
                         },
                         "tags": [],
                         "virtual_machine": {
-                            "id": 6,
+                            "display": "Test VM With Spaces",
+                            "id": "de5b86d4-faca-4999-97a8-42d41212c9df",
                             "name": "Test VM With Spaces"
                         }
                     }
@@ -298,79 +310,28 @@
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
                         "count_ipaddresses": 1,
+                        "custom_fields": {},
                         "description": "",
                         "device": {
                             "display": "test100",
-                            "id": 1,
+                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
                             "name": "test100"
                         },
+                        "display": "GigabitEthernet2",
                         "enabled": true,
-                        "id": 3,
-                        "ip_addresses": [
-                            {
-                                "address": "172.16.180.1/24",
-                                "custom_fields": {},
-                                "description": "",
-                                "dns_name": "",
-                                "family": {
-                                    "label": "IPv4",
-                                    "value": 4
-                                },
-                                "id": 1,
-                                "nat_inside": null,
-                                "nat_outside": null,
-                                "role": null,
-                                "status": {
-                                    "label": "Active",
-                                    "value": "active"
-                                },
-                                "tags": [],
-                                "tenant": null,
-                                "vrf": null
-                            }
-                        ],
-                        "label": "",
-                        "lag": null,
-                        "mac_address": null,
-                        "mgmt_only": false,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "GigabitEthernet1",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "type": {
-                            "label": "1000BASE-T (1GE)",
-                            "value": "1000base-t"
-                        },
-                        "untagged_vlan": null
-                    },
-                    {
-                        "cable": null,
-                        "cable_peer": null,
-                        "cable_peer_type": null,
-                        "connected_endpoint": null,
-                        "connected_endpoint_reachable": null,
-                        "connected_endpoint_type": null,
-                        "count_ipaddresses": 1,
-                        "description": "",
-                        "device": {
-                            "display": "test100",
-                            "id": 1,
-                            "name": "test100"
-                        },
-                        "enabled": true,
-                        "id": 4,
+                        "id": "3238d44e-7079-4a89-b017-91c7a2d75684",
                         "ip_addresses": [
                             {
                                 "address": "2001::1:1/64",
                                 "custom_fields": {},
                                 "description": "",
+                                "display": "2001::1:1/64",
                                 "dns_name": "",
                                 "family": {
                                     "label": "IPv6",
                                     "value": 6
                                 },
-                                "id": 2,
+                                "id": "ca8efb66-c066-412c-83ad-654148a84a07",
                                 "nat_inside": null,
                                 "nat_outside": null,
                                 "role": null,
@@ -397,6 +358,63 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null
+                    },
+                    {
+                        "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
+                        "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
+                        "connected_endpoint_type": null,
+                        "count_ipaddresses": 1,
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "display": "test100",
+                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
+                            "name": "test100"
+                        },
+                        "display": "GigabitEthernet1",
+                        "enabled": true,
+                        "id": "35d11187-c9ea-46fe-9c88-d6737c5eb5fb",
+                        "ip_addresses": [
+                            {
+                                "address": "172.16.180.1/24",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "172.16.180.1/24",
+                                "dns_name": "",
+                                "family": {
+                                    "label": "IPv4",
+                                    "value": 4
+                                },
+                                "id": "30d556e4-eac1-44bc-8eb1-b89b5bcbc511",
+                                "nat_inside": null,
+                                "nat_outside": null,
+                                "role": null,
+                                "status": {
+                                    "label": "Active",
+                                    "value": "active"
+                                },
+                                "tags": [],
+                                "tenant": null,
+                                "vrf": null
+                            }
+                        ],
+                        "label": "",
+                        "lag": null,
+                        "mac_address": null,
+                        "mgmt_only": false,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "GigabitEthernet1",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "type": {
+                            "label": "1000BASE-T (1GE)",
+                            "value": "1000base-t"
+                        },
+                        "untagged_vlan": null
                     }
                 ],
                 "is_virtual": false,
@@ -415,14 +433,28 @@
                         "description": "",
                         "device": {
                             "display": "test100",
-                            "id": 1,
+                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
                             "name": "test100"
                         },
-                        "id": 1,
-                        "ipaddresses": [],
-                        "name": "ssh",
+                        "display": "http (TCP/80)",
+                        "id": "3d78dc72-7e8e-41b7-a37a-ba84337a5727",
+                        "ipaddresses": [
+                            {
+                                "address": "2001::1:1/64",
+                                "display": "2001::1:1/64",
+                                "family": 6,
+                                "id": "ca8efb66-c066-412c-83ad-654148a84a07"
+                            },
+                            {
+                                "address": "172.16.180.1/24",
+                                "display": "172.16.180.1/24",
+                                "family": 4,
+                                "id": "30d556e4-eac1-44bc-8eb1-b89b5bcbc511"
+                            }
+                        ],
+                        "name": "http",
                         "ports": [
-                            22
+                            80
                         ],
                         "protocol": {
                             "label": "TCP",
@@ -436,25 +468,15 @@
                         "description": "",
                         "device": {
                             "display": "test100",
-                            "id": 1,
+                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
                             "name": "test100"
                         },
-                        "id": 2,
-                        "ipaddresses": [
-                            {
-                                "address": "172.16.180.1/24",
-                                "family": 4,
-                                "id": 1
-                            },
-                            {
-                                "address": "2001::1:1/64",
-                                "family": 6,
-                                "id": 2
-                            }
-                        ],
-                        "name": "http",
+                        "display": "ssh (TCP/22)",
+                        "id": "4a860231-f92c-45ed-9627-1a96271afacd",
+                        "ipaddresses": [],
+                        "name": "ssh",
                         "ports": [
-                            80
+                            22
                         ],
                         "protocol": {
                             "label": "TCP",
@@ -470,7 +492,8 @@
                     "value": "active"
                 },
                 "tags": [],
-                "tenant": "test-tenant-group"
+                "tenant": "test-tenant",
+                "tenant_group": "test-tenant-group"
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
@@ -479,59 +502,9 @@
                 "interfaces": [
                     {
                         "description": "",
+                        "display": "Eth3",
                         "enabled": true,
-                        "id": 1,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth0",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 1,
-                            "name": "test100-vm"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 2,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth1",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 1,
-                            "name": "test100-vm"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 3,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth2",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 1,
-                            "name": "test100-vm"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 4,
+                        "id": "2204a297-1f3b-4ffd-9e64-6180dc47520d",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
@@ -541,14 +514,54 @@
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 1,
+                            "display": "test100-vm",
+                            "id": "58e8cf37-19df-487b-ae69-459bac135820",
                             "name": "test100-vm"
                         }
                     },
                     {
                         "description": "",
+                        "display": "Eth0",
                         "enabled": true,
-                        "id": 5,
+                        "id": "377cc446-23fd-4261-ab19-9aa11cdb10ed",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth0",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "test100-vm",
+                            "id": "58e8cf37-19df-487b-ae69-459bac135820",
+                            "name": "test100-vm"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth2",
+                        "enabled": true,
+                        "id": "4cbc45d3-351c-4018-b5fe-a86f92ab0172",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth2",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "test100-vm",
+                            "id": "58e8cf37-19df-487b-ae69-459bac135820",
+                            "name": "test100-vm"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth4",
+                        "enabled": true,
+                        "id": "9da10636-4d2d-4033-b8d8-418f435beed1",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
@@ -558,7 +571,27 @@
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 1,
+                            "display": "test100-vm",
+                            "id": "58e8cf37-19df-487b-ae69-459bac135820",
+                            "name": "test100-vm"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth1",
+                        "enabled": true,
+                        "id": "d7d1f9b3-60c0-43ed-b41e-88c641162a7c",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth1",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "test100-vm",
+                            "id": "58e8cf37-19df-487b-ae69-459bac135820",
                             "name": "test100-vm"
                         }
                     }
@@ -583,42 +616,9 @@
                 "interfaces": [
                     {
                         "description": "",
+                        "display": "Eth2",
                         "enabled": true,
-                        "id": 6,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth0",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 2,
-                            "name": "test101-vm"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 7,
-                        "ip_addresses": [],
-                        "mac_address": null,
-                        "mode": null,
-                        "mtu": null,
-                        "name": "Eth1",
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "untagged_vlan": null,
-                        "virtual_machine": {
-                            "id": 2,
-                            "name": "test101-vm"
-                        }
-                    },
-                    {
-                        "description": "",
-                        "enabled": true,
-                        "id": 8,
+                        "id": "2e4ef518-f706-4d03-8544-9871d415590d",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
@@ -628,31 +628,35 @@
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 2,
+                            "display": "test101-vm",
+                            "id": "db0fdd3e-4b9e-46ce-9d6f-047d6add42ef",
                             "name": "test101-vm"
                         }
                     },
                     {
                         "description": "",
+                        "display": "Eth1",
                         "enabled": true,
-                        "id": 9,
+                        "id": "934116ac-e74f-4079-896c-fd482ecd799a",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
-                        "name": "Eth3",
+                        "name": "Eth1",
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 2,
+                            "display": "test101-vm",
+                            "id": "db0fdd3e-4b9e-46ce-9d6f-047d6add42ef",
                             "name": "test101-vm"
                         }
                     },
                     {
                         "description": "",
+                        "display": "Eth4",
                         "enabled": true,
-                        "id": 10,
+                        "id": "af1a0f19-ecf1-448c-9133-7dde2919032a",
                         "ip_addresses": [],
                         "mac_address": null,
                         "mode": null,
@@ -662,7 +666,46 @@
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
-                            "id": 2,
+                            "display": "test101-vm",
+                            "id": "db0fdd3e-4b9e-46ce-9d6f-047d6add42ef",
+                            "name": "test101-vm"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth0",
+                        "enabled": true,
+                        "id": "e8fe6d13-3f56-4d5e-87bc-6e489f2ef9cb",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth0",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "test101-vm",
+                            "id": "db0fdd3e-4b9e-46ce-9d6f-047d6add42ef",
+                            "name": "test101-vm"
+                        }
+                    },
+                    {
+                        "description": "",
+                        "display": "Eth3",
+                        "enabled": true,
+                        "id": "f5085a49-2391-4ad3-a9da-0ea7d7861607",
+                        "ip_addresses": [],
+                        "mac_address": null,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "Eth3",
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "untagged_vlan": null,
+                        "virtual_machine": {
+                            "display": "test101-vm",
+                            "id": "db0fdd3e-4b9e-46ce-9d6f-047d6add42ef",
                             "name": "test101-vm"
                         }
                     }
@@ -731,6 +774,20 @@
             }
         }
     },
+    "active": {
+        "hosts": [
+            "R1-Device",
+            "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
+        ]
+    },
     "all": {
         "children": [
             "Test_Cluster",
@@ -751,6 +808,8 @@
             "test_rack_group",
             "test_rack_role",
             "test_site2",
+            "test_tenant",
+            "test_tenant_group",
             "ungrouped"
         ]
     },
@@ -800,20 +859,6 @@
     "parent_region": {
         "children": [
             "test_region"
-        ]
-    },
-    "active": {
-        "hosts": [
-            "R1-Device",
-            "Test Nexus One",
-            "Test VM With Spaces",
-            "TestDeviceR1",
-            "test100",
-            "test100-vm",
-            "test101-vm",
-            "test102-vm",
-            "test103-vm",
-            "test104-vm"
         ]
     },
     "test_cluster_group": {
@@ -867,12 +912,12 @@
     },
     "test_tenant": {
         "hosts": [
-            "test10"
+            "test100"
         ]
     },
     "test_tenant_group": {
         "hosts": [
-            "test10"
+            "test100"
         ]
     }
 }

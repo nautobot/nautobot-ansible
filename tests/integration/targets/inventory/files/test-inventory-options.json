@@ -33,7 +33,7 @@
                 "manufacturer": "cisco",
                 "rack": "Test Rack Site 2",
                 "rack_groups": [],
-                "rack_id": "1",
+                "rack_id": "fec7e7e4-3468-41b1-8a7e-56e3e2911a77",
                 "rack_role": "test-rack-role",
                 "regions": [],
                 "role": "core-switch",
@@ -48,6 +48,7 @@
                 "cluster": "Test Cluster 2",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "Test VM With Spaces",
                 "is_virtual": true,
                 "regions": [],
                 "status": {
@@ -67,7 +68,7 @@
                     "test-rack-group",
                     "parent-rack-group"
                 ],
-                "rack_id": "2",
+                "rack_id": "a78e6c77-4293-4d4f-94af-47182ea88c6e",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -81,14 +82,13 @@
                 "tags": []
             },
             "VC1": {
-                "ansible_host": "nexus.example.com",
+                "ansible_host": "172.16.180.11",
                 "custom_fields": {},
                 "device_type": "nexus-parent",
                 "display": "Test Nexus One",
-                "dns_name": "nexus.example.com",
                 "is_virtual": false,
                 "manufacturer": "cisco",
-                "primary_ip4": "172.16.180.12",
+                "primary_ip4": "172.16.180.11",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -122,13 +122,16 @@
                     "label": "Active",
                     "value": "active"
                 },
-                "tags": []
+                "tags": [],
+                "tenant": "test-tenant",
+                "tenant_group": "test-tenant-group"
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
                 "cluster_group": "test-cluster-group",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "test100-vm",
                 "is_virtual": true,
                 "regions": [
                     "test-region",
@@ -146,6 +149,7 @@
                 "cluster_group": "test-cluster-group",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "test101-vm",
                 "is_virtual": true,
                 "regions": [
                     "test-region",
@@ -163,6 +167,7 @@
                 "cluster_group": "test-cluster-group",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "test102-vm",
                 "is_virtual": true,
                 "regions": [
                     "test-region",
@@ -180,6 +185,7 @@
                 "cluster_group": "test-cluster-group",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "test103-vm",
                 "is_virtual": true,
                 "regions": [
                     "test-region",
@@ -196,6 +202,7 @@
                 "cluster": "Test Cluster 2",
                 "cluster_type": "test-cluster-type",
                 "custom_fields": {},
+                "display": "test104-vm",
                 "is_virtual": true,
                 "regions": [],
                 "status": {
@@ -205,6 +212,20 @@
                 "tags": []
             }
         }
+    },
+    "active": {
+        "hosts": [
+            "R1-Device",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "VC1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
+        ]
     },
     "all": {
         "children": [
@@ -227,6 +248,7 @@
             "test_rack_group",
             "test_rack_role",
             "test_site2",
+            "test_tenant",
             "ungrouped"
         ]
     },
@@ -284,20 +306,6 @@
             "test_region"
         ]
     },
-    "active": {
-        "hosts": [
-            "R1-Device",
-            "Test VM With Spaces",
-            "TestDeviceR1",
-            "VC1",
-            "test100",
-            "test100-vm",
-            "test101-vm",
-            "test102-vm",
-            "test103-vm",
-            "test104-vm"
-        ]
-    },
     "test_cluster_group": {
         "hosts": [
             "test100-vm",
@@ -345,6 +353,11 @@
     "test_site2": {
         "hosts": [
             "R1-Device"
+        ]
+    },
+    "test_tenant": {
+        "hosts": [
+            "test100"
         ]
     }
 }
