@@ -544,7 +544,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_tenant_group(self, host):
         try:
-            return self._pluralize(self.tenant_group_lookup[host["tenant"]["id"]])
+            return self.tenant_group_lookup[host["tenant"]["id"]]
         except Exception:
             return
 
