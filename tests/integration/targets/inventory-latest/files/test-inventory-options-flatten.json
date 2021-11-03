@@ -469,7 +469,8 @@
                     "label": "Active",
                     "value": "active"
                 },
-                "tags": []
+                "tags": [],
+                "tenant": "test-tenant-group"
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
@@ -862,6 +863,16 @@
     "test_site2": {
         "hosts": [
             "R1-Device"
+        ]
+    },
+    "test_tenant": {
+        "hosts": [
+            "test10"
+        ]
+    },
+    "test_tenant_group": {
+        "hosts": [
+            "test10"
         ]
     }
 }

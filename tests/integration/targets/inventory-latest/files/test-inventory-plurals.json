@@ -521,7 +521,10 @@
                     "label": "Active",
                     "value": "active"
                 },
-                "tags": []
+                "tags": [],
+                "tenants": [
+                    "test-tenant"
+                ]
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
@@ -981,6 +984,16 @@
             "test102-vm",
             "test103-vm",
             "test104-vm"
+        ]
+    },
+    "test_tenant": {
+        "hosts": [
+            "test10"
+        ]
+    },
+    "test_tenant_group": {
+        "hosts": [
+            "test10"
         ]
     }
 }

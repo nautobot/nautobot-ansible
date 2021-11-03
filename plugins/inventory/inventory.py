@@ -116,6 +116,7 @@ DOCUMENTATION = """
                 - site
                 - tenants
                 - tenant
+                - tenant_group
                 - racks
                 - rack
                 - rack_group
@@ -396,6 +397,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "is_virtual": self.extract_is_virtual,
             self._pluralize_group_by("site"): self.extract_site,
             self._pluralize_group_by("tenant"): self.extract_tenant,
+            "tenant_group": self.extract_tenant_group,
             self._pluralize_group_by("rack"): self.extract_rack,
             "rack_group": self.extract_rack_group,
             "rack_role": self.extract_rack_role,
@@ -537,6 +539,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def extract_tenant(self, host):
         try:
             return self._pluralize(self.tenants_lookup[host["tenant"]["id"]])
+        except Exception:
+            return
+
+    def extract_tenant_group(self, host):
+        try:
+            return self._pluralize(self.tenant_group_lookup[host["tenant"]["id"]])
         except Exception:
             return
 
@@ -741,6 +749,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         url = self.api_endpoint + "/api/tenancy/tenants/?limit=0"
         tenants = self.get_resource_list(api_url=url)
         self.tenants_lookup = dict((tenant["id"], tenant["slug"]) for tenant in tenants)
+
+        def get_group_for_tenant(tenant):
+            try:
+                return (tenant["id"], tenant["group"]["slug"])
+            except Exception:
+                return (tenant["id"], None)
+
+        self.tenant_group_lookup = dict(map(get_group_for_tenant, tenants))
 
     def refresh_racks_lookup(self):
         url = self.api_endpoint + "/api/dcim/racks/?limit=0"
