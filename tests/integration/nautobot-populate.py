@@ -60,10 +60,10 @@ create_tags = make_nautobot_calls(
 # Create TENANT GROUPS
 tenant_groups = [{"name": "Test Tenant Group", "slug": "test-tenant-group"}]
 created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_groups)
-tenant_group = nb.tenancy.tenant_groups.get(slug="test-tenant-group")
+test_tenant_group = nb.tenancy.tenant_groups.get(slug="test-tenant-group")
 
 # Create TENANTS
-tenants = [{"name": "Test Tenant", "slug": "test-tenant", "group": tenant_group.id}]
+tenants = [{"name": "Test Tenant", "slug": "test-tenant", "group": test_tenant_group.id}]
 created_tenants = make_nautobot_calls(nb.tenancy.tenants, tenants)
 # Test Tenant to be used later on
 test_tenant = nb.tenancy.tenants.get(slug="test-tenant")
@@ -215,7 +215,7 @@ devices = [
         "device_type": cisco_test.id,
         "device_role": core_switch.id,
         "site": test_site.id,
-        "tenant": tenant_group.id,
+        "tenant": test_tenant.id,
         "local_context_data": {"ntp_servers": ["pool.ntp.org"]},
         "status": "active",
     },
