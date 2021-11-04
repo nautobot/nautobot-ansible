@@ -275,7 +275,13 @@ test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.
 ip_addresses = [
     {"address": "172.16.180.1/24", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi1.id, "status": "active"},
     {"address": "2001::1:1/64", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi2.id, "status": "active"},
-    {"address": "172.16.180.11/24", "dns_name": "nexus.example.com", "assigned_object_type": "dcim.interface", "assigned_object_id": nexus_eth1.id, "status": "active"},
+    {
+        "address": "172.16.180.11/24",
+        "dns_name": "nexus.example.com",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": nexus_eth1.id,
+        "status": "active",
+    },
     {
         "address": "172.16.180.12/24",
         "assigned_object_type": "dcim.interface",
