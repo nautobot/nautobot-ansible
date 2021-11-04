@@ -66,6 +66,7 @@ DOCUMENTATION = """
             - List of group names to group the hosts
           type: list
           default: []
+          choices: ["platform", "status", "device_role", "site"]
       filters:
           required: false
           description:
@@ -217,7 +218,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
+                    color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
@@ -235,7 +237,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
+                color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
@@ -246,7 +249,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 if not GROUP_BY.get(group_by):
                     self.display.display(
                         "WARNING: '{0}' is not supported as a 'group_by' option. Supported options are: {1} ".format(
-                            group_by, " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
+                            group_by,
+                            " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
                         ),
                         color="yellow",
                     )
@@ -268,7 +272,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     self.create_inventory(key, device["name"])
                     if device["primary_ip4"]:
                         self.add_variable(
-                            device["name"], device["primary_ip4"]["address"], "ansible_host",
+                            device["name"],
+                            device["primary_ip4"]["address"],
+                            "ansible_host",
                         )
                     else:
                         self.add_variable(device["name"], device["name"], "ansible_host")
