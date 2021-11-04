@@ -4,7 +4,7 @@ Nautobot Ansible Install Nautobot Notes
 Supported and Tested OSs
 ------------------------
 
-The following OS’s are tested/supported. The support is expected to line
+The following OSs are tested/supported. The support is expected to line
 up with the supported OSs of Nautobot specifically. Issues related to
 supported OSs will be taken. If the issue is on a tested but unsupported
 OS, then the mileage may vary; issues are welcome but may have limited
