@@ -33,7 +33,6 @@
                 "manufacturer": "cisco",
                 "rack": "Test Rack Site 2",
                 "rack_groups": [],
-                "rack_id": "1aedea0d-5f15-46a8-8590-664d56088f47",
                 "rack_role": "test-rack-role",
                 "regions": [],
                 "role": "core-switch",
@@ -68,7 +67,6 @@
                     "test-rack-group",
                     "parent-rack-group"
                 ],
-                "rack_id": "622952e7-137a-469b-bbc5-30c5d22d6d42",
                 "regions": [
                     "test-region",
                     "parent-region"
@@ -82,10 +80,11 @@
                 "tags": []
             },
             "VC1": {
-                "ansible_host": "172.16.180.11",
+                "ansible_host": "nexus.example.com",
                 "custom_fields": {},
                 "device_type": "nexus-parent",
                 "display": "Test Nexus One",
+                "dns_name": "nexus.example.com",
                 "is_virtual": false,
                 "manufacturer": "cisco",
                 "primary_ip4": "172.16.180.11",

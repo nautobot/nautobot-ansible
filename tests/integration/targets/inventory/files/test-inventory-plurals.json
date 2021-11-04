@@ -48,6 +48,7 @@
                 "device_types": [
                     "nexus-parent"
                 ],
+                "dns_name": "nexus.example.com",
                 "interfaces": [
                     {
                         "cable": null,
@@ -71,7 +72,7 @@
                                 "custom_fields": {},
                                 "description": "",
                                 "display": "172.16.180.11/24",
-                                "dns_name": "",
+                                "dns_name": "nexus.example.com",
                                 "family": {
                                     "label": "IPv4",
                                     "value": 4
