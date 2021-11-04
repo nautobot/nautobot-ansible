@@ -161,7 +161,13 @@ Parameters
                          / <span style="color: purple">elements=string</span>                                            </div>
                                                         </td>
                                 <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>platform</li>
+                                                                                                                                                                                                <li>status</li>
+                                                                                                                                                                                                <li>device_role</li>
+                                                                                                                                                                                                <li>site</li>
+                                                                                    </ul>
+                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
                                                                                             </td>

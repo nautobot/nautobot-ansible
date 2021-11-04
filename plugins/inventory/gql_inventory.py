@@ -66,6 +66,7 @@ DOCUMENTATION = """
             - List of group names to group the hosts
           type: list
           default: []
+          choices: ["platform", "status", "device_role", "site"]
       filters:
           required: false
           description:
@@ -86,7 +87,7 @@ query:
   tags: name
 
 # To group by use group_by key
-# Supported inputs are platform, status, device_role, site
+# Please see choices for supported group_by options.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
@@ -94,7 +95,7 @@ group_by:
   - platform
 
 # To group by use group_by key
-# Supported inputs are platform, status, device_role, site
+# Please see choices for supported group_by options.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
