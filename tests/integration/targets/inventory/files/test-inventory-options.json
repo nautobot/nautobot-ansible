@@ -33,7 +33,7 @@
                 "manufacturer": "cisco",
                 "rack": "Test Rack Site 2",
                 "rack_groups": [],
-                "rack_id": "fec7e7e4-3468-41b1-8a7e-56e3e2911a77",
+                "rack_id": "1aedea0d-5f15-46a8-8590-664d56088f47",
                 "rack_role": "test-rack-role",
                 "regions": [],
                 "role": "core-switch",
@@ -68,7 +68,7 @@
                     "test-rack-group",
                     "parent-rack-group"
                 ],
-                "rack_id": "a78e6c77-4293-4d4f-94af-47182ea88c6e",
+                "rack_id": "622952e7-137a-469b-bbc5-30c5d22d6d42",
                 "regions": [
                     "test-region",
                     "parent-region"

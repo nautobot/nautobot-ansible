@@ -59,11 +59,9 @@
                         "description": "",
                         "device": {
                             "display": "Test Nexus One",
-                            "id": "ea63e7d8-af14-4f6e-8148-21703b36f9bc",
                             "name": "Test Nexus One"
                         },
                         "display": "telnet (TCP/23)",
-                        "id": "a695f981-e78b-486c-b5c6-ccca293bd10c",
                         "ipaddresses": [],
                         "name": "telnet",
                         "ports": [
@@ -101,7 +99,6 @@
                         "description": "",
                         "device": null,
                         "display": "ssh (TCP/22)",
-                        "id": "d6278253-7171-45a9-8294-edcb0279ba89",
                         "ipaddresses": [],
                         "name": "ssh",
                         "ports": [
@@ -114,7 +111,6 @@
                         "tags": [],
                         "virtual_machine": {
                             "display": "Test VM With Spaces",
-                            "id": "de5b86d4-faca-4999-97a8-42d41212c9df",
                             "name": "Test VM With Spaces"
                         }
                     }
@@ -190,23 +186,19 @@
                         "description": "",
                         "device": {
                             "display": "test100",
-                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
                             "name": "test100"
                         },
                         "display": "http (TCP/80)",
-                        "id": "3d78dc72-7e8e-41b7-a37a-ba84337a5727",
                         "ipaddresses": [
                             {
                                 "address": "2001::1:1/64",
                                 "display": "2001::1:1/64",
-                                "family": 6,
-                                "id": "ca8efb66-c066-412c-83ad-654148a84a07"
+                                "family": 6
                             },
                             {
                                 "address": "172.16.180.1/24",
                                 "display": "172.16.180.1/24",
-                                "family": 4,
-                                "id": "30d556e4-eac1-44bc-8eb1-b89b5bcbc511"
+                                "family": 4
                             }
                         ],
                         "name": "http",
@@ -225,11 +217,9 @@
                         "description": "",
                         "device": {
                             "display": "test100",
-                            "id": "96b4c8da-2745-4a20-8282-3db2df755bf7",
                             "name": "test100"
                         },
                         "display": "ssh (TCP/22)",
-                        "id": "4a860231-f92c-45ed-9627-1a96271afacd",
                         "ipaddresses": [],
                         "name": "ssh",
                         "ports": [
