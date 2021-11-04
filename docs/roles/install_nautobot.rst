@@ -42,7 +42,7 @@ The `nautobot_install` role will create a new user (nautobot), and install the p
 Required Variables
 ------------------
 
-The variables required need to be defined in the inventory or the
+The variables required to be defined in the inventory or the
 playbook for the host.
 
 ==================== ======= ==================================================================
