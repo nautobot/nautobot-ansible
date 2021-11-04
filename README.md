@@ -10,7 +10,7 @@ There are two roles that provide the model to handle a Nautobot installation ont
 
 ### Nautobot Install
 
-The Nautobot Install role is used to install just the application. The currently supported installation method is to leverage Postgres, with a future feature request to support MySQL support as well.
+The Nautobot Install role is used to install just the application. The currently supported installation method is to leverage Postgres, with a future feature request to support MySQL as well.
 
 ### Nautobot Web
 
