@@ -11,19 +11,18 @@ import sys
 import json
 import argparse
 from jsondiff import diff
-from typing import Iterable
 from operator import itemgetter
 
 # Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port
 # Remove these from files saved in git as test data
-KEYS_REMOVE = frozenset(["created", "last_updated", "url"])
+KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url"])
 
 # Ignore these when performing diffs as they will be different for each test run
 KEYS_IGNORE = frozenset()
 
 
-def all_keys_to_ignore(nautobot_version):
+def all_keys_to_ignore():
     keys = KEYS_REMOVE.union(KEYS_IGNORE)
 
     return keys
@@ -62,11 +61,11 @@ def sort_hostvar_arrays(obj):
     for hostname, host in hostvars.items():
         interfaces = host.get("interfaces")
         if interfaces:
-            host["interfaces"] = sorted(interfaces, key=itemgetter("id"))
+            host["interfaces"] = sorted(interfaces, key=itemgetter("name"))
 
         services = host.get("services")
         if services:
-            host["services"] = sorted(services, key=itemgetter("id"))
+            host["services"] = sorted(services, key=itemgetter("name"))
 
 
 def read_json(filename):
@@ -122,7 +121,7 @@ def main():
         data_b = read_json(args.filename_b)
 
         # Ignore keys that we don't want to diff, in addition to the ones removed that change on every commit
-        keys = all_keys_to_ignore(args.nautobot_version)
+        keys = all_keys_to_ignore()
         remove_keys(data_a, keys)
         remove_keys(data_b, keys)
 

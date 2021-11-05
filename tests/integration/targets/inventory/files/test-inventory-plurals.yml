@@ -20,6 +20,7 @@ fetch_all: False
 group_by:
   - sites
   - tenants
+  - tenant_group
   - racks
   - rack_group
   - rack_role

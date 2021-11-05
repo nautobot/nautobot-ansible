@@ -57,17 +57,16 @@ create_tags = make_nautobot_calls(
 )
 
 # ORDER OF OPERATIONS FOR THE MOST PART
-
-# Create TENANTS
-tenants = [{"name": "Test Tenant", "slug": "test-tenant"}]
-created_tenants = make_nautobot_calls(nb.tenancy.tenants, tenants)
-# Test Tenant to be used later on
-test_tenant = nb.tenancy.tenants.get(slug="test-tenant")
-
-
 # Create TENANT GROUPS
 tenant_groups = [{"name": "Test Tenant Group", "slug": "test-tenant-group"}]
 created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_groups)
+test_tenant_group = nb.tenancy.tenant_groups.get(slug="test-tenant-group")
+
+# Create TENANTS
+tenants = [{"name": "Test Tenant", "slug": "test-tenant", "group": test_tenant_group.id}]
+created_tenants = make_nautobot_calls(nb.tenancy.tenants, tenants)
+# Test Tenant to be used later on
+test_tenant = nb.tenancy.tenants.get(slug="test-tenant")
 
 
 # Create Regions
@@ -216,6 +215,7 @@ devices = [
         "device_type": cisco_test.id,
         "device_role": core_switch.id,
         "site": test_site.id,
+        "tenant": test_tenant.id,
         "local_context_data": {"ntp_servers": ["pool.ntp.org"]},
         "status": "active",
     },
@@ -275,7 +275,13 @@ test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.
 ip_addresses = [
     {"address": "172.16.180.1/24", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi1.id, "status": "active"},
     {"address": "2001::1:1/64", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi2.id, "status": "active"},
-    {"address": "172.16.180.11/24", "assigned_object_type": "dcim.interface", "assigned_object_id": nexus_eth1.id, "status": "active"},
+    {
+        "address": "172.16.180.11/24",
+        "dns_name": "nexus.example.com",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": nexus_eth1.id,
+        "status": "active",
+    },
     {
         "address": "172.16.180.12/24",
         "assigned_object_type": "dcim.interface",
