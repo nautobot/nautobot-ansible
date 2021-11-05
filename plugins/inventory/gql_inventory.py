@@ -41,7 +41,7 @@ DOCUMENTATION = """
           default: True
           type: boolean
       token:
-          required: False
+          required: True
           description:
             - Nautobot API token to be able to read against Nautobot.
             - This may not be required depending on the Nautobot setup.
@@ -302,10 +302,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         }
         if token:
             self.headers.update({"Authorization": "Token %s" % token})
-        else:
-            self.display.display(
-                "Token not set. Ensure your Nautobot instance is setup to provide information without a token or set the token in your yml file."
-            )
         self.gql_query = self.get_option("query")
         self.group_by = self.get_option("group_by")
         self.filters = self.get_option("filters")
