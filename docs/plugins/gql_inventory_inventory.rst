@@ -172,7 +172,7 @@ Parameters
                                                     <td>
                                                                                             </td>
                                                 <td>
-                                            <div>List of group names to group the hosts</div>
+                                            <div>List of data paths to group the hosts.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -289,7 +289,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
+
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
 
@@ -309,12 +309,14 @@ Examples
       - platform
 
     # To group by use group_by key
-    # Supported inputs are platform, status, device_role, site
+    # The syntax follows your graphql query. You specify the full path to the data you would like to group by using dot notation.
+    # Note. If you pass in a single string specifying an attribute, the name value is tried followed by the slug value.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
     group_by:
-      - platform
+    - tenant.name
+    - status.slug
 
 
     # Add additional variables
