@@ -91,25 +91,14 @@ query:
   tags: name
 
 # To group by use group_by key
-# The syntax follows your graphql query. You specify the full path to the data you would like to group by using dot notation.
-# Note. If you pass in a single string specifying an attribute, the name value is tried followed by the slug value.
+# Specify the full path to the data you would like to use to group by.
+# Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 group_by:
   - tenant.name
   - status.slug
-
-# To group by use group_by key
-# The syntax follows your graphql query. You specify the full path to the data you would like to group by using dot notation.
-# Note. If you pass in a single string specifying an attribute, the name value is tried followed by the slug value.
-plugin: networktocode.nautobot.gql_inventory
-api_endpoint: http://localhost:8000
-validate_certs: True
-group_by:
-  - tenant.name
-  - status.slug
-
 
 # Add additional variables
 plugin: networktocode.nautobot.gql_inventory
@@ -226,7 +215,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
+                    color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
@@ -244,7 +234,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
+                color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
