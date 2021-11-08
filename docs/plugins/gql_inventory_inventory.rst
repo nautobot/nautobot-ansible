@@ -309,8 +309,8 @@ Examples
       - platform
 
     # To group by use group_by key
-    # The syntax follows your graphql query. You specify the full path to the data you would like to group by using dot notation.
-    # Note. If you pass in a single string specifying an attribute, the name value is tried followed by the slug value.
+    # Specify the full path to the data you would like to use to group by.
+    # Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
