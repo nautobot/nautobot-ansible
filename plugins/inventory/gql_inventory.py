@@ -2,6 +2,8 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+from collections.abc import Mapping
+from re import A
 
 __metaclass__ = type
 
@@ -63,10 +65,9 @@ DOCUMENTATION = """
       group_by:
           required: False
           description:
-            - List of group names to group the hosts
+            - List of data paths to group by.
           type: list
           default: []
-          choices: ["platform", "status", "device_role", "site"]
       filters:
           required: false
           description:
@@ -87,21 +88,14 @@ query:
   tags: name
 
 # To group by use group_by key
-# Please see choices for supported group_by options.
+# Specify the full path to the data you would like to use to group by.
+# Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 group_by:
-  - platform
-
-# To group by use group_by key
-# Please see choices for supported group_by options.
-plugin: networktocode.nautobot.gql_inventory
-api_endpoint: http://localhost:8000
-validate_certs: True
-group_by:
-  - platform
-
+  - tenant.name
+  - status.slug
 
 # Add additional variables
 plugin: networktocode.nautobot.gql_inventory
@@ -189,6 +183,44 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
+    def create_groups(self, json_data: dict):
+        """Creates groups for host based on `group_by` parameters."""
+        for device in json_data["data"]["devices"]:
+            device_name = device["name"]
+            self.inventory.add_host(device_name)
+            for group_by in self.group_by:
+                group_by_path = group_by.split(".")
+                try:
+                    attr_value = device[group_by_path[0]]
+                except KeyError:
+                    self.display.display(f"Could not find value for {group_by_path[0]} on device {device_name}")
+                    continue
+                for attribute in group_by_path[1:]:
+                    if not isinstance(attr_value, Mapping):
+                        error_path = group_by.split(attribute)[0][:-1]
+                        self.display.display(f"Device {device_name} attribute {error_path} is not a dictionary.")
+                        continue
+                    try:
+                        attr_value = attr_value[attribute]
+                    except KeyError:
+                        self.display.display(f"Could not find value for {attribute} in {group_by} on device {device_name}")
+                        break
+                if isinstance(attr_value, Mapping):
+                    try:
+                        attr_value = attr_value["name"]
+                        self.display.display(f"No name value for {attr_value} on device {device_name} for group {group_by}.")
+                    except KeyError:
+                        try:
+                            attr_value = attr_value["slug"]
+                        except KeyError:
+                            self.display.display(f"No slug value for {attr_value} on device {device_name} for group {group_by}.")
+                            continue
+                if isinstance(attr_value, str):
+                    self.inventory.add_group(attr_value)
+                    self.inventory.add_child(attr_value, device_name)
+                else:
+                    self.display.display(f"{attr_value} is not a valid group name for device {device_name} for group {group_by}.")
+
     def main(self):
         """Main function."""
         if not HAS_NETUTILS:
@@ -218,8 +250,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
-                    color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
@@ -237,59 +268,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
-                color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
 
-        groups = {}
-        if self.group_by:
-            for group_by in self.group_by:
-                if not GROUP_BY.get(group_by):
-                    self.display.display(
-                        "WARNING: '{0}' is not supported as a 'group_by' option. Supported options are: {1} ".format(
-                            group_by,
-                            " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
-                        ),
-                        color="yellow",
-                    )
-                    continue
-                for device in json_data["data"]["devices"]:
-                    groups[device["site"]["name"]] = "site"
-                    if device.get(group_by) and GROUP_BY.get(group_by):
-                        groups[device[group_by][GROUP_BY.get(group_by)]] = group_by
-                    else:
-                        groups["unknown"] = "unknown"
-
-        else:
-            for device in json_data["data"]["devices"]:
-                groups[device["site"]["name"]] = "site"
-
-        for key, value in groups.items():
-            for device in json_data["data"]["devices"]:
-                if device.get(value) and key == device[value][GROUP_BY[value]]:
-                    self.create_inventory(key, device["name"])
-                    if device["primary_ip4"]:
-                        self.add_variable(
-                            device["name"],
-                            device["primary_ip4"]["address"],
-                            "ansible_host",
-                        )
-                    else:
-                        self.add_variable(device["name"], device["name"], "ansible_host")
-                    if device["platform"] and "napalm_driver" in device["platform"]:
-                        self.add_variable(
-                            device["name"],
-                            ANSIBLE_LIB_MAPPER_REVERSE.get(
-                                NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])  # Convert napalm_driver to ansible_network_os value
-                            ),
-                            "ansible_network_os",
-                        )
-
-                    for var in self.variables:
-                        if var in device and device[var]:
-                            self.add_variable(device["name"], device[var], var)
+        self.create_groups(json_data)
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
@@ -308,6 +292,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         }
         if token:
             self.headers.update({"Authorization": "Token %s" % token})
+
         self.gql_query = self.get_option("query")
         self.group_by = self.get_option("group_by")
         self.filters = self.get_option("filters")
