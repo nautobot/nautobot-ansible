@@ -15,9 +15,6 @@ DOCUMENTATION = """
     short_description: Nautobot inventory source using GraphQL capability
     description:
       - Get inventory hosts from Nautobot using GraphQL queries
-    extends_documentation_fragment:
-      - constructed
-      - inventory_cache
     requirements:
       - netutils
     options:
