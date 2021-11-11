@@ -20,7 +20,7 @@ networktocode.nautobot.inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.2).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -485,6 +485,7 @@ Parameters
                                                                                                                                                                                                 <li>site</li>
                                                                                                                                                                                                 <li>tenants</li>
                                                                                                                                                                                                 <li>tenant</li>
+                                                                                                                                                                                                <li>tenant_group</li>
                                                                                                                                                                                                 <li>racks</li>
                                                                                                                                                                                                 <li>rack</li>
                                                                                                                                                                                                 <li>rack_group</li>

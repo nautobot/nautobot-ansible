@@ -5,6 +5,22 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.2.0
+======
+
+Release Summary
+---------------
+
+A few updates to the inventory plugins to support new options or require existing parameters.
+
+Minor Changes
+-------------
+
+- (#105) Documentation updates
+- (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+- (#108) Add choices to `group_by` in `gql_inventory` plugin
+- (#109) token is explicitly required within `gql_inventory` plugin. (This was always true, but never enforced.)
+
 v3.1.1
 ======
 
