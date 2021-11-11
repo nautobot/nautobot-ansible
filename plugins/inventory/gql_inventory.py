@@ -4,6 +4,7 @@
 from __future__ import absolute_import, division, print_function
 from collections.abc import Mapping
 from re import A
+from slugify import slugify
 
 __metaclass__ = type
 
@@ -183,6 +184,47 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
+    def create_groups(self, json_data: dict):
+        """Creates groups for host based on `group_by` parameters."""
+        for device in json_data["data"]["devices"]:
+            device_name = device["name"]
+            self.inventory.add_host(device_name)
+            for group_by in self.group_by:
+                group_by_path = group_by.split(".")
+                try:
+                    attr_value = device[group_by_path[0]]
+                    if attr_value == "None":
+                        continue
+                except KeyError:
+                    self.display.display(f"Could not find value for {group_by_path[0]} on device {device_name}")
+                    continue
+                for attribute in group_by_path[1:]:
+                    if not isinstance(attr_value, Mapping):
+                        error_path = group_by.split(attribute)[0][:-1]
+                        self.display.display(f"Device {device_name} attribute {error_path} is not a dictionary.")
+                        continue
+                    try:
+                        attr_value = attr_value[attribute]
+                    except KeyError:
+                        self.display.display(f"Could not find value for {attribute} in {group_by} on device {device_name}")
+                        break
+                if isinstance(attr_value, Mapping):
+                    try:
+                        attr_value = attr_value["name"]
+                        self.display.display(f"No name value for {attr_value} on device {device_name} for group {group_by}.")
+                    except KeyError:
+                        try:
+                            attr_value = attr_value["slug"]
+                        except KeyError:
+                            self.display.display(f"No slug value for {attr_value} on device {device_name} for group {group_by}.")
+                            continue
+                if isinstance(attr_value, str):
+                    valid_attr_value = attr_value.replace("-", "_")
+                    self.inventory.add_group(valid_attr_value)
+                    self.inventory.add_child(valid_attr_value, device_name)
+                else:
+                    self.display.display(f"{attr_value} is not a valid group name for device {device_name} for group {group_by}.")
+
     def main(self):
         """Main function."""
         if not HAS_NETUTILS:
@@ -212,7 +254,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
+                    color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
@@ -230,46 +273,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
+                color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
 
-        for device in json_data["data"]["devices"]:
-            device_name = device["name"]
-            self.inventory.add_host(device_name)
-            for group_by in self.group_by:
-                group_by_path = group_by.split(".")
-                try:
-                    attr_value = device[group_by_path[0]]
-                except KeyError:
-                    self.display.display(f"Could not find value for {group_by_path[0]} on device {device_name}")
-                    continue
-                for attribute in group_by_path[1:]:
-                    if not isinstance(attr_value, Mapping):
-                        error_path = group_by.split(attribute)[0][:-1]
-                        self.display.display(f"Device {device_name} attribute {error_path} is not a dictionary.")
-                        continue
-                    try:
-                        attr_value = attr_value[attribute]
-                    except KeyError:
-                        self.display.display(f"Could not find value for {attribute} in {group_by} on device {device_name}")
-                        break
-                if isinstance(attr_value, Mapping):
-                    try:
-                        attr_value = attr_value["name"]
-                        self.display.display(f"No name value for {attr_value} on device {device_name} for group {group_by}.")
-                    except KeyError:
-                        try:
-                            attr_value = attr_value["slug"]
-                        except KeyError:
-                            self.display.display(f"No slug value for {attr_value} on device {device_name} for group {group_by}.")
-                            continue
-                if isinstance(attr_value, str):
-                    self.inventory.add_group(attr_value)
-                    self.inventory.add_child(attr_value, device_name)
-                else:
-                    self.display.display(f"{attr_value} is not a valid group name for device {device_name} for group {group_by}.")
+        self.create_groups(json_data)
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
