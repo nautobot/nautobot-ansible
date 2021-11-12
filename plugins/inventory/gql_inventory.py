@@ -4,7 +4,6 @@
 from __future__ import absolute_import, division, print_function
 from collections.abc import Mapping
 from re import A
-from slugify import slugify
 
 __metaclass__ = type
 
@@ -193,8 +192,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 group_by_path = group_by.split(".")
                 try:
                     attr_value = device[group_by_path[0]]
-                    if attr_value == "None":
-                        continue
                 except KeyError:
                     self.display.display(f"Could not find value for {group_by_path[0]} on device {device_name}")
                     continue
@@ -219,9 +216,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                             self.display.display(f"No slug value for {attr_value} on device {device_name} for group {group_by}.")
                             continue
                 if isinstance(attr_value, str):
-                    valid_attr_value = attr_value.replace("-", "_")
-                    self.inventory.add_group(valid_attr_value)
-                    self.inventory.add_child(valid_attr_value, device_name)
+                    self.inventory.add_group(attr_value)
+                    self.inventory.add_child(attr_value, device_name)
                 else:
                     self.display.display(f"{attr_value} is not a valid group name for device {device_name} for group {group_by}.")
 
