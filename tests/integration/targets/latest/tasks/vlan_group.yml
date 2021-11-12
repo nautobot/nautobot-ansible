@@ -4,13 +4,16 @@
 ### PYNAUTOBOT_VLAN_GROUP
 ##
 ##
+- set_fact:
+    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
+    test_site2: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site2') }}"
+
 - name: "VLAN_GROUP 1: Necessary info creation"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "VLAN Group One"
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group One"
+    site: Test Site
     state: present
   register: test_one
 
@@ -22,16 +25,15 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['vlan_group']['name'] == "VLAN Group One"
       - test_one['vlan_group']['slug'] == "vlan-group-one"
-      - test_one['vlan_group']['site'] == 1
+      - test_one['vlan_group']['site'] == test_site['key']
       - test_one['msg'] == "vlan_group VLAN Group One created"
 
 - name: "VLAN_GROUP 2: Create duplicate"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "VLAN Group One"
-      site: Test Site
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group One"
+    site: Test Site
     state: present
   register: test_two
 
@@ -41,16 +43,15 @@
       - not test_two['changed']
       - test_two['vlan_group']['name'] == "VLAN Group One"
       - test_two['vlan_group']['slug'] == "vlan-group-one"
-      - test_two['vlan_group']['site'] == 1
+      - test_two['vlan_group']['site'] == test_site['key']
       - test_two['msg'] == "vlan_group VLAN Group One already exists"
 
 - name: "VLAN_GROUP 3: ASSERT - Create with same name, different site"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "VLAN Group One"
-      site: "Test Site2"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group One"
+    site: "Test Site2"
     state: present
   register: test_three
 
@@ -60,15 +61,14 @@
       - test_three is changed
       - test_three['vlan_group']['name'] == "VLAN Group One"
       - test_three['vlan_group']['slug'] == "vlan-group-one"
-      - test_three['vlan_group']['site'] == 2
+      - test_three['vlan_group']['site'] == test_site2['key']
       - test_three['msg'] == "vlan_group VLAN Group One created"
 
 - name: "VLAN_GROUP 4: ASSERT - Create vlan group, no site"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "VLAN Group One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group One"
     state: present
   ignore_errors: yes
   register: test_four
@@ -81,11 +81,10 @@
 
 - name: "VLAN_GROUP 5: ASSERT - Delete"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: VLAN Group One
-      site: Test Site2
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: VLAN Group One
+    site: Test Site2
     state: absent
   register: test_five
 
@@ -97,16 +96,15 @@
       - test_five['diff']['after']['state'] == "absent"
       - test_five['vlan_group']['name'] == "VLAN Group One"
       - test_five['vlan_group']['slug'] == "vlan-group-one"
-      - test_five['vlan_group']['site'] == 2
+      - test_five['vlan_group']['site'] == test_site2['key']
       - test_five['msg'] == "vlan_group VLAN Group One deleted"
 
 - name: "VLAN_GROUP 6: ASSERT - Delete non existing"
   networktocode.nautobot.vlan_group:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: VLAN Group One
-      site: Test Site2
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: VLAN Group One
+    site: Test Site2
     state: absent
   register: test_six
 

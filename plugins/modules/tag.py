@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2020, Pavel Korovin (@pkorovin) <p@tristero.se>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -37,33 +38,31 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
-    type: dict
+  name:
     description:
-      - Defines the tag configuration
-    suboptions:
-      name:
-        description:
-          - Tag name
-        required: true
-        type: str
-      slug:
-        description:
-          - The slugified version of the name or custom slug.
-          - This is auto-generated following Nautobot rules if not provided
-        required: false
-        type: str
-      color:
-        description:
-          - Tag color
-        required: false
-        type: str
-      description:
-        description:
-          - Tag description
-        required: false
-        type: str
+      - Tag name
     required: true
+    type: str
+    version_added: "3.0.0"
+  slug:
+    description:
+      - The slugified version of the name or custom slug.
+      - This is auto-generated following Nautobot rules if not provided
+    required: false
+    type: str
+    version_added: "3.0.0"
+  color:
+    description:
+      - Tag color
+    required: false
+    type: str
+    version_added: "3.0.0"
+  description:
+    description:
+      - Tag description
+    required: false
+    type: str
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -78,6 +77,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -97,9 +97,8 @@ EXAMPLES = r"""
       networktocode.nautobot.tag:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item.name }}"
-          description: "{{ item.description }}"
+        name: "{{ item.name }}"
+        description: "{{ item.description }}"
       loop:
         - { name: mgmt, description: "management" }
         - { name: tun, description: "tunnel" }
@@ -108,8 +107,7 @@ EXAMPLES = r"""
       networktocode.nautobot.tag:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item }}"
+        name: "{{ item }}"
         state: absent
       loop:
         - mgmt
@@ -127,14 +125,12 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
     NautobotExtrasModule,
     NB_TAGS,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -145,24 +141,14 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    name=dict(required=True, type="str"),
-                    color=dict(required=False, type="str"),
-                    description=dict(required=False, type="str"),
-                    slug=dict(required=False, type="str"),
-                ),
-            ),
+            name=dict(required=True, type="str"),
+            color=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            slug=dict(required=False, type="str"),
         )
     )
 
-    required_if = [("state", "present", ["name"]), ("state", "absent", ["name"])]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     tag = NautobotExtrasModule(module, NB_TAGS)
     tag.run()

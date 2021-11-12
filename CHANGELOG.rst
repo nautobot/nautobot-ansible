@@ -5,6 +5,128 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.2.0
+======
+
+Release Summary
+---------------
+
+A few updates to the inventory plugins to support new options or require existing parameters.
+
+Minor Changes
+-------------
+
+- (#105) Documentation updates
+- (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+- (#108) Add choices to `group_by` in `gql_inventory` plugin
+- (#109) token is explicitly required within `gql_inventory` plugin. (This was always true, but never enforced.)
+
+v3.1.1
+======
+
+Release Summary
+---------------
+
+Quick bugfix release for not attempting to resolve IDs for fields that a user has passed in an ID/UUID for
+
+Bugfixes
+--------
+
+- (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID for a resolvable field
+
+v3.1.0
+======
+
+Release Summary
+---------------
+
+Adds inventory plugin leveraging Nautobot's GraphQL API
+
+Minor Changes
+-------------
+
+- (#53) Adds inventory plugin using GraphQL API
+
+New Modules
+-----------
+
+Networktocode
+~~~~~~~~~~~~~
+
+nautobot
+^^^^^^^^
+
+- networktocode.nautobot.networktocode.nautobot.gql_inventory - Inventory plugin leveraging Nautobot's GraphQL API
+
+v3.0.0
+======
+
+Release Summary
+---------------
+
+Updates format for modules to support Ansible 4 / ansible-core 2.11 arg spec verification changes
+
+Major Changes
+-------------
+
+- (#66) Remove data sub-dictionary from modules
+
+Minor Changes
+-------------
+
+- (#57) Adds nautobot-server module
+- (#75) Device Interface module supports custom_fields
+
+v2.0.1
+======
+
+Release Summary
+---------------
+
+Bug fix updates for label support and SSL version consistency
+
+Bugfixes
+--------
+
+- (#44) Add Interface Label Support
+- (#45) SSL Verify Keyword Consistency Update
+
+v2.0.0
+======
+
+Release Summary
+---------------
+
+Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
+
+Major Changes
+-------------
+
+- (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+
+Bugfixes
+--------
+
+- (#26) Add missing description to tenant_group
+- (#29) Add missing field to vlan_group
+- (#32) Fixed query on Virtual Chassis
+- (#35) Add Site, Device Tracebacks due to changes in Nautobot
+
+v1.1.0
+======
+
+New Modules
+-----------
+
+Networktocode
+~~~~~~~~~~~~~
+
+nautobot
+^^^^^^^^
+
+- networktocode.nautobot.networktocode.nautobot.lookup_graphql - Lookup plugin to query Nautobot GraphQL API endpoint
+- networktocode.nautobot.networktocode.nautobot.query_graphql - Action plugin to query Nautobot GraphQL API endpoint
+
 v1.0.4
 ======
 

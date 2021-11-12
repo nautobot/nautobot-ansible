@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-
+# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -31,9 +31,6 @@ NB_SERVICES = "services"
 
 
 class NautobotIpamModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
-
     def _handle_state_new_present(self, nb_app, nb_endpoint, endpoint_name, name, data):
         if data.get("address"):
             if self.state == "present":
@@ -45,15 +42,11 @@ class NautobotIpamModule(NautobotModule):
                 self.result["diff"] = diff
         else:
             if self.state == "present":
-                self._ensure_ip_in_prefix_present_on_netif(
-                    nb_app, nb_endpoint, data, endpoint_name
-                )
+                self._ensure_ip_in_prefix_present_on_netif(nb_app, nb_endpoint, data, endpoint_name)
             elif self.state == "new":
                 self._get_new_available_ip_address(nb_app, data, endpoint_name)
 
-    def _ensure_ip_in_prefix_present_on_netif(
-        self, nb_app, nb_endpoint, data, endpoint_name
-    ):
+    def _ensure_ip_in_prefix_present_on_netif(self, nb_app, nb_endpoint, data, endpoint_name):
         query_params = {
             "parent": data["prefix"],
         }
@@ -77,10 +70,7 @@ class NautobotIpamModule(NautobotModule):
         if attached_ips:
             self.nb_object = attached_ips[-1].serialize()
             self.result["changed"] = False
-            self.result["msg"] = "%s %s already attached" % (
-                endpoint_name,
-                self.nb_object["address"],
-            )
+            self.result["msg"] = "%s %s already attached" % (endpoint_name, self.nb_object["address"],)
         else:
             self._get_new_available_ip_address(nb_app, data, endpoint_name)
 
@@ -89,23 +79,16 @@ class NautobotIpamModule(NautobotModule):
         prefix = self._nb_endpoint_get(nb_app.prefixes, prefix_query, data["prefix"])
         if not prefix:
             self.result["changed"] = False
-            self.result["msg"] = "%s does not exist - please create first" % (
-                data["prefix"]
-            )
+            self.result["msg"] = "%s does not exist - please create first" % (data["prefix"])
         elif prefix.available_ips.list():
             self.nb_object, diff = self._create_object(prefix.available_ips, data)
             self.nb_object = self.nb_object.serialize()
             self.result["changed"] = True
-            self.result["msg"] = "%s %s created" % (
-                endpoint_name,
-                self.nb_object["address"],
-            )
+            self.result["msg"] = "%s %s created" % (endpoint_name, self.nb_object["address"],)
             self.result["diff"] = diff
         else:
             self.result["changed"] = False
-            self.result["msg"] = "No available IPs available within %s" % (
-                data["prefix"]
-            )
+            self.result["msg"] = "No available IPs available within %s" % (data["prefix"])
 
     def _get_new_available_prefix(self, data, endpoint_name):
         if not self.nb_object:
@@ -117,15 +100,10 @@ class NautobotIpamModule(NautobotModule):
                 self.result["msg"] = "New prefix created within %s" % (data["parent"])
                 self.module.exit_json(**self.result)
 
-            self.nb_object, diff = self._create_object(
-                self.nb_object.available_prefixes, data
-            )
+            self.nb_object, diff = self._create_object(self.nb_object.available_prefixes, data)
             self.nb_object = self.nb_object.serialize()
             self.result["changed"] = True
-            self.result["msg"] = "%s %s created" % (
-                endpoint_name,
-                self.nb_object["prefix"],
-            )
+            self.result["msg"] = "%s %s created" % (endpoint_name, self.nb_object["prefix"],)
             self.result["diff"] = diff
         else:
             self.result["changed"] = False
@@ -161,9 +139,7 @@ class NautobotIpamModule(NautobotModule):
         if self.endpoint == "ip_addresses":
             if data.get("address"):
                 try:
-                    data["address"] = to_text(
-                        ip_interface(data["address"]).with_prefixlen
-                    )
+                    data["address"] = to_text(ip_interface(data["address"]).with_prefixlen)
                 except ValueError:
                     pass
             name = data.get("address")
@@ -183,21 +159,13 @@ class NautobotIpamModule(NautobotModule):
 
         if data.get("prefix") and self.endpoint == "ip_addresses":
             object_query_params = self._build_query_params("prefix", data)
-            self.nb_object = self._nb_endpoint_get(
-                nb_app.prefixes, object_query_params, name
-            )
+            self.nb_object = self._nb_endpoint_get(nb_app.prefixes, object_query_params, name)
         else:
-            object_query_params = self._build_query_params(
-                endpoint_name, data, user_query_params
-            )
-            self.nb_object = self._nb_endpoint_get(
-                nb_endpoint, object_query_params, name
-            )
+            object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
+            self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
         if self.state in ("new", "present") and endpoint_name == "ip_address":
-            self._handle_state_new_present(
-                nb_app, nb_endpoint, endpoint_name, name, data
-            )
+            self._handle_state_new_present(nb_app, nb_endpoint, endpoint_name, name, data)
         elif self.state == "present" and first_available and data.get("parent"):
             self._get_new_available_prefix(data, endpoint_name)
         elif self.state == "present":

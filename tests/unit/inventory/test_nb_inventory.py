@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Copyright: (c) 2020, Hillsong, Douglas Heriot (@DouglasHeriot) <douglas.heriot@hillsong.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -10,12 +12,8 @@ from functools import partial
 from unittest.mock import patch, MagicMock, Mock, call
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import (
-        InventoryModule,
-    )
-    from ansible_collections.networktocode.nautobot.tests.test_data import (
-        load_test_data,
-    )
+    from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import InventoryModule
+    from ansible_collections.networktocode.nautobot.tests.test_data import load_test_data
 
 except ImportError:
     import sys
@@ -27,15 +25,11 @@ except ImportError:
     sys.path.append("tests")
     from test_data import load_test_data
 
-load_relative_test_data = partial(
-    load_test_data, os.path.dirname(os.path.abspath(__file__))
-)
+load_relative_test_data = partial(load_test_data, os.path.dirname(os.path.abspath(__file__)))
 
 
 @pytest.fixture
-def inventory_fixture(
-    allowed_device_query_parameters_fixture, allowed_vm_query_parameters_fixture
-):
+def inventory_fixture(allowed_device_query_parameters_fixture, allowed_vm_query_parameters_fixture):
     inventory = InventoryModule()
     inventory.api_endpoint = "https://nautobot.test.endpoint:1234"
 
@@ -80,26 +74,18 @@ def allowed_vm_query_parameters_fixture():
     ]
 
 
-@pytest.mark.parametrize(
-    "parameter, expected", load_relative_test_data("validate_query_parameter")
-)
+@pytest.mark.parametrize("parameter, expected", load_relative_test_data("validate_query_parameter"))
 def test_validate_query_parameter(inventory_fixture, parameter, expected):
 
     value = "some value, doesn't matter"
-    result = inventory_fixture.validate_query_parameter(
-        {parameter: value}, inventory_fixture.allowed_device_query_parameters
-    )
+    result = inventory_fixture.validate_query_parameter({parameter: value}, inventory_fixture.allowed_device_query_parameters)
     assert (result == (parameter, value)) == expected
 
 
-@pytest.mark.parametrize(
-    "parameters, expected", load_relative_test_data("filter_query_parameters")
-)
+@pytest.mark.parametrize("parameters, expected", load_relative_test_data("filter_query_parameters"))
 def test_filter_query_parameters(inventory_fixture, parameters, expected):
 
-    result = inventory_fixture.filter_query_parameters(
-        parameters, inventory_fixture.allowed_device_query_parameters
-    )
+    result = inventory_fixture.filter_query_parameters(parameters, inventory_fixture.allowed_device_query_parameters)
 
     # Result is iterators of tuples
     # expected from json file is an array of dicts
@@ -142,18 +128,10 @@ def test_refresh_lookups(inventory_fixture):
 
 
 @pytest.mark.parametrize(
-    "plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected",
-    load_relative_test_data("group_extractors"),
+    "plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected", load_relative_test_data("group_extractors"),
 )
 def test_group_extractors(
-    inventory_fixture,
-    plurals,
-    services,
-    interfaces,
-    dns_name,
-    ansible_host_dns_name,
-    expected,
-    not_expected,
+    inventory_fixture, plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected,
 ):
     inventory_fixture.plurals = plurals
     inventory_fixture.services = services
@@ -170,21 +148,16 @@ def test_group_extractors(
 
 
 @pytest.mark.parametrize(
-    "api_url, max_uri_length, query_key, query_values, expected",
-    load_relative_test_data("get_resource_list_chunked"),
+    "api_url, max_uri_length, query_key, query_values, expected", load_relative_test_data("get_resource_list_chunked"),
 )
-def test_get_resource_list_chunked(
-    inventory_fixture, api_url, max_uri_length, query_key, query_values, expected
-):
+def test_get_resource_list_chunked(inventory_fixture, api_url, max_uri_length, query_key, query_values, expected):
     mock_get_resource_list = Mock()
     mock_get_resource_list.return_value = ["resource"]
 
     inventory_fixture.get_resource_list = mock_get_resource_list
     inventory_fixture.max_uri_length = max_uri_length
 
-    resources = inventory_fixture.get_resource_list_chunked(
-        api_url, query_key, query_values
-    )
+    resources = inventory_fixture.get_resource_list_chunked(api_url, query_key, query_values)
 
     mock_get_resource_list.assert_has_calls(map(call, expected))
     assert mock_get_resource_list.call_count == len(expected)

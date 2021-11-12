@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -36,35 +39,33 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  device_type:
     description:
-      - Defines the prefix configuration
-    suboptions:
-      device_type:
-        description:
-          - Name of the device the interface template will be associated with (case-sensitive)
-        required: true
-        type: raw
-      name:
-        description:
-          - Name of the interface template to be created
-        required: true
-        type: str
-      type:
-        description:
-          - |
-            Form factor of the interface:
-            ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
-            This has to be specified exactly as what is found within UI
-        required: true
-        type: str
-      mgmt_only:
-        description:
-          - This interface template is used only for out-of-band management
-        required: false
-        type: bool
+      - Name of the device the interface template will be associated with (case-sensitive)
     required: true
-    type: dict
+    type: raw
+    version_added: "3.0.0"
+  name:
+    description:
+      - Name of the interface template to be created
+    required: true
+    type: str
+    version_added: "3.0.0"
+  type:
+    description:
+      - |
+        Form factor of the interface:
+        ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
+        This has to be specified exactly as what is found within UI
+    required: true
+    type: str
+    version_added: "3.0.0"
+  mgmt_only:
+    description:
+      - This interface template is used only for out-of-band management
+    required: false
+    type: bool
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -79,6 +80,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -98,19 +100,17 @@ EXAMPLES = r"""
       networktocode.nautobot.device_interface_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device_type: Arista Test
-          name: 10GBASE-T (10GE)
-          type: 10gbase-t
+        device_type: Arista Test
+        name: 10GBASE-T (10GE)
+        type: 10gbase-t
         state: present
     - name: Delete interface template within nautobot
       networktocode.nautobot.device_interface_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device_type: Arista Test
-          name: 10GBASE-T (10GE)
-          type: 10gbase-t
+        device_type: Arista Test
+        name: 10GBASE-T (10GE)
+        type: 10gbase-t
         state: absent
 """
 
@@ -125,14 +125,12 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_INTERFACE_TEMPLATES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -143,27 +141,14 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device_type=dict(required=True, type="raw"),
-                    name=dict(required=True, type="str"),
-                    type=dict(required=True, type="str",),
-                    mgmt_only=dict(required=False, type="bool"),
-                ),
-            ),
+            device_type=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(required=True, type="str",),
+            mgmt_only=dict(required=False, type="bool"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device_type", "name", "type"]),
-        ("state", "absent", ["device_type", "name", "type"]),
-    ]
-
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     device_interface_template = NautobotDcimModule(module, NB_INTERFACE_TEMPLATES)
     device_interface_template.run()

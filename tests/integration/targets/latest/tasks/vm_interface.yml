@@ -4,13 +4,17 @@
 ### PYNAUTOBOT_VM_INTERFACE
 ##
 ##
+- set_fact:
+    vm100: "{{ lookup('networktocode.nautobot.lookup', 'virtual-machines', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100-vm') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+
 - name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      virtual_machine: "test100-vm"
-      name: "Eth10"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    virtual_machine: "test100-vm"
+    name: "Eth10"
     state: present
   register: test_one
 
@@ -21,16 +25,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['interface']['name'] == "Eth10"
-      - test_one['interface']['virtual_machine'] == 1
+      - test_one['interface']['virtual_machine'] == vm100['key']
       - test_one['msg'] == "interface Eth10 created"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 2: Create duplicate"
   networktocode.nautobot.vm_interface:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      virtual_machine: "test100-vm"
-      name: "Eth10"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    virtual_machine: "test100-vm"
+    name: "Eth10"
     state: present
   register: test_two
 
@@ -39,31 +42,30 @@
     that:
       - not test_two['changed']
       - test_two['interface']['name'] == "Eth10"
-      - test_two['interface']['virtual_machine'] == 1
+      - test_two['interface']['virtual_machine'] == vm100['key']
       - test_two['msg'] == "interface Eth10 already exists"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 3: Updated"
   networktocode.nautobot.vm_interface:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      virtual_machine: "test100-vm"
-      name: "Eth10"
-      enabled: false
-      mtu: 9000
-      mac_address: "00:00:00:AA:AA:01"
-      description: "Updated test100-vm"
-      mode: Tagged
-      untagged_vlan:
-        name: Wireless
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    virtual_machine: "test100-vm"
+    name: "Eth10"
+    enabled: false
+    mtu: 9000
+    mac_address: "00:00:00:AA:AA:01"
+    description: "Updated test100-vm"
+    mode: Tagged
+    untagged_vlan:
+      name: Wireless
+      site: Test Site
+    tagged_vlans:
+      - name: Data
         site: Test Site
-      tagged_vlans:
-        - name: Data
-          site: Test Site
-        - name: VoIP
-          site: Test Site
-      tags:
-        - "Schnozzberry"
+      - name: VoIP
+        site: Test Site
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_three
 
@@ -76,28 +78,27 @@
       - test_three['diff']['after']['mac_address'] == "00:00:00:AA:AA:01"
       - test_three['diff']['after']['description'] == "Updated test100-vm"
       - test_three['diff']['after']['mode'] == "tagged"
-      - test_three['diff']['after']['untagged_vlan'] == 1
-      - test_three['diff']['after']['tagged_vlans'] == [2, 3]
-      - test_three['diff']['after']['tags'][0] == 4
+      - test_three['diff']['after']['untagged_vlan'] == wireless['key']
+      - test_three['diff']['after']['tagged_vlans']|length == 2
+      - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_three['interface']['name'] == "Eth10"
-      - test_three['interface']['virtual_machine'] == 1
+      - test_three['interface']['virtual_machine'] == vm100['key']
       - test_three['interface']['enabled'] == false
       - test_three['interface']['mtu'] == 9000
       - test_three['interface']['mac_address'] == "00:00:00:AA:AA:01"
       - test_three['interface']['description'] == "Updated test100-vm"
       - test_three['interface']['mode'] == "tagged"
-      - test_three['interface']['untagged_vlan'] == 1
-      - test_three['interface']['tagged_vlans'] == [2, 3]
-      - test_three['interface']['tags'][0] == 4
+      - test_three['interface']['untagged_vlan'] == wireless['key']
+      - test_three['interface']['tagged_vlans']|length == 2
+      - test_three['interface']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "interface Eth10 updated"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Delete"
   networktocode.nautobot.vm_interface:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Eth10"
-      virtual_machine: "test100-vm"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Eth10"
+    virtual_machine: "test100-vm"
     state: absent
   register: test_four
 
@@ -106,31 +107,30 @@
     that:
       - test_four is changed
       - test_four['interface']['name'] == "Eth10"
-      - test_four['interface']['virtual_machine'] == 1
+      - test_four['interface']['virtual_machine'] == vm100['key']
       - test_four['msg'] == "interface Eth10 deleted"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 5: Attempt to update interface with same name on other VMs"
   networktocode.nautobot.vm_interface:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      virtual_machine: "test100-vm"
-      name: "Eth0"
-      enabled: false
-      mtu: 9000
-      mac_address: "00:00:00:AA:AA:01"
-      description: "Updated test100-vm Eth0 intf"
-      mode: Tagged
-      untagged_vlan:
-        name: Wireless
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    virtual_machine: "test100-vm"
+    name: "Eth0"
+    enabled: false
+    mtu: 9000
+    mac_address: "00:00:00:AA:AA:01"
+    description: "Updated test100-vm Eth0 intf"
+    mode: Tagged
+    untagged_vlan:
+      name: Wireless
+      site: Test Site
+    tagged_vlans:
+      - name: Data
         site: Test Site
-      tagged_vlans:
-        - name: Data
-          site: Test Site
-        - name: VoIP
-          site: Test Site
-      tags:
-        - "Schnozzberry"
+      - name: VoIP
+        site: Test Site
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_five
 
@@ -143,17 +143,17 @@
       - test_five['diff']['after']['mac_address'] == "00:00:00:AA:AA:01"
       - test_five['diff']['after']['description'] == "Updated test100-vm Eth0 intf"
       - test_five['diff']['after']['mode'] == "tagged"
-      - test_five['diff']['after']['untagged_vlan'] == 1
-      - test_five['diff']['after']['tagged_vlans'] == [2, 3]
-      - test_five['diff']['after']['tags'][0] == 4
+      - test_five['diff']['after']['untagged_vlan'] == wireless['key']
+      - test_five['diff']['after']['tagged_vlans']|length == 2
+      - test_five['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_five['interface']['name'] == "Eth0"
-      - test_five['interface']['virtual_machine'] == 1
+      - test_five['interface']['virtual_machine'] == vm100['key']
       - test_five['interface']['enabled'] == false
       - test_five['interface']['mtu'] == 9000
       - test_five['interface']['mac_address'] == "00:00:00:AA:AA:01"
       - test_five['interface']['description'] == "Updated test100-vm Eth0 intf"
       - test_five['interface']['mode'] == "tagged"
-      - test_five['interface']['untagged_vlan'] == 1
-      - test_five['interface']['tagged_vlans'] == [2, 3]
-      - test_five['interface']['tags'][0] == 4
+      - test_five['interface']['untagged_vlan'] == wireless['key']
+      - test_five['interface']['tagged_vlans']|length == 2
+      - test_five['interface']['tags'][0] == tag_schnozzberry['key']
       - test_five['msg'] == "interface Eth0 updated"

@@ -20,7 +20,7 @@ networktocode.nautobot.lookup -- Queries and returns elements from Nautobot
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -100,7 +100,7 @@ Parameters
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
-                                                    <div>
+                                                                            <div>
                                 env:NAUTOBOT_URL
                                                                                             </div>
                                                                     </td>
@@ -220,7 +220,7 @@ Examples
       - name: Obtain list of devices from Nautobot
         debug:
           msg: >
-            "Device {{ item.value.display }} (ID: {{ item.key }}) was
+            "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
@@ -232,7 +232,7 @@ Examples
       - name: Obtain list of devices from Nautobot
         debug:
           msg: >
-            "Device {{ item.value.display }} (ID: {{ item.key }}) was
+            "Device {{ item.value.display_name }} (ID: {{ item.key }}) was
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',

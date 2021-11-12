@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-
+# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -16,9 +16,6 @@ NB_STATUS = "statuses"
 
 
 class NautobotExtrasModule(NautobotModule):
-    def __init__(self, module, endpoint):
-        super().__init__(module, endpoint)
-
     def run(self):
         """
         This function should have all necessary code for endpoints within the application
@@ -53,9 +50,7 @@ class NautobotExtrasModule(NautobotModule):
         if data.get("color"):
             data["color"] = data["color"].lower()
 
-        object_query_params = self._build_query_params(
-            endpoint_name, data, user_query_params
-        )
+        object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
         if self.state == "present":

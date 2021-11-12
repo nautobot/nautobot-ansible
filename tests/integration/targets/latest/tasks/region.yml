@@ -4,12 +4,14 @@
 ### PYNAUTOBOT_REGION
 ##
 ##
+- set_fact:
+    region: "{{ lookup('networktocode.nautobot.lookup', 'regions', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-region') }}"
+
 - name: "REGION 1: Necessary info creation"
   networktocode.nautobot.region:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Region One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Region One"
     state: present
   register: test_one
 
@@ -25,10 +27,9 @@
 
 - name: "REGION 2: Create duplicate"
   networktocode.nautobot.region:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Region One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Region One"
     state: present
   register: test_two
 
@@ -42,11 +43,10 @@
 
 - name: "REGION 3: ASSERT - Update"
   networktocode.nautobot.region:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Region One"
-      parent_region: "Test Region"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Region One"
+    parent_region: "Test Region"
     state: present
   register: test_three
 
@@ -54,18 +54,17 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['parent'] == 1
+      - test_three['diff']['after']['parent'] == region['key']
       - test_three['region']['name'] == "Test Region One"
       - test_three['region']['slug'] == "test-region-one"
-      - test_three['region']['parent'] == 1
+      - test_three['region']['parent'] == region['key']
       - test_three['msg'] == "region Test Region One updated"
 
 - name: "REGION 4: ASSERT - Delete"
   networktocode.nautobot.region:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test Region One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Region One"
     state: absent
   register: test_four
 
@@ -75,5 +74,5 @@
       - test_four is changed
       - test_four['region']['name'] == "Test Region One"
       - test_four['region']['slug'] == "test-region-one"
-      - test_four['region']['parent'] == 1
+      - test_four['region']['parent'] == region['key']
       - test_four['msg'] == "region Test Region One deleted"

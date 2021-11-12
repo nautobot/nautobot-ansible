@@ -6,11 +6,10 @@
 ##
 - name: "RACK_ROLE 1: Necessary info creation"
   networktocode.nautobot.rack_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Role
-      color: "ffffff"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Role
+    color: "ffffff"
     state: present
   register: test_one
 
@@ -27,10 +26,9 @@
 
 - name: "RACK_ROLE 2: Create duplicate"
   networktocode.nautobot.rack_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Role
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Role
     state: present
   register: test_two
 
@@ -45,11 +43,10 @@
 
 - name: "RACK_ROLE 3: Update"
   networktocode.nautobot.rack_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Role
-      color: "003EFF"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Role
+    color: "003EFF"
     state: present
   register: test_three
 
@@ -65,10 +62,9 @@
 
 - name: "RACK_ROLE 4: Delete"
   networktocode.nautobot.rack_role:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rack Role
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rack Role
     state: absent
   register: test_four
 

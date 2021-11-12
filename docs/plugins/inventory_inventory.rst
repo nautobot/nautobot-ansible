@@ -20,7 +20,7 @@ networktocode.nautobot.inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -364,9 +364,10 @@ Parameters
                                                 <td>
                                             <div>By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.</div>
                                             <div>When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device_id and virtual_machine_id.</div>
-                                            <div>If you are using the various query_filters options to reduce the number of devices, you may find querying Nautobot faster with fetch_all set to False.</div>
+                                            <div>If you are using the various query_filters options to reduce the number of devices, querying Nautobot may be faster with fetch_all False.</div>
                                             <div>For efficiency, when False, these requests will be batched, for example /api/dcim/interfaces?limit=0&amp;device_id=1&amp;device_id=2&amp;device_id=3</div>
-                                            <div>These GET request URIs can become quite large for a large number of devices. If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.</div>
+                                            <div>These GET request URIs can become quite large for a large number of devices.</div>
+                                            <div>If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -484,6 +485,7 @@ Parameters
                                                                                                                                                                                                 <li>site</li>
                                                                                                                                                                                                 <li>tenants</li>
                                                                                                                                                                                                 <li>tenant</li>
+                                                                                                                                                                                                <li>tenant_group</li>
                                                                                                                                                                                                 <li>racks</li>
                                                                                                                                                                                                 <li>rack</li>
                                                                                                                                                                                                 <li>rack_group</li>
@@ -761,9 +763,6 @@ Parameters
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
-                                env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                    <div>
                                 env:NAUTOBOT_TOKEN
                                                                                             </div>
                                                                     </td>
