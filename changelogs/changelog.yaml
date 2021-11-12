@@ -260,3 +260,14 @@ releases:
       release_summary: Quick bugfix release for not attempting to resolve IDs for
         fields that a user has passed in an ID/UUID for
     release_date: '2021-10-15'
+  3.2.0:
+    changes:
+      minor_changes:
+      - (#105) Documentation updates
+      - (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+      - (#108) Add choices to `group_by` in `gql_inventory` plugin
+      - (#109) token is explicitly required within `gql_inventory` plugin. (This was
+        always true, but never enforced.)
+      release_summary: A few updates to the inventory plugins to support new options
+        or require existing parameters.
+    release_date: '2021-11-10'
