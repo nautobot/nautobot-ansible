@@ -20,7 +20,7 @@ networktocode.nautobot.gql_inventory -- Nautobot inventory source using GraphQL 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.2).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.0).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -238,7 +238,7 @@ Parameters
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
-                                                                    </div>
+                                                 / <span style="color: red">required</span>                    </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -301,7 +301,7 @@ Examples
       tags: name
 
     # To group by use group_by key
-    # Supported inputs are platform, status, device_role, site
+    # Please see choices for supported group_by options.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
