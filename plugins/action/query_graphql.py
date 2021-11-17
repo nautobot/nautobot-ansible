@@ -113,7 +113,8 @@ class ActionModule(ActionBase):
         """
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"), PYNAUTOBOT_IMPORT_ERROR,
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
             )
 
         self._supports_check_mode = False

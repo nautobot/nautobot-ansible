@@ -74,7 +74,10 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
         # represents a simple terminal value
         "simplevalue": [
             (r"(true|false|null)\b", token.Keyword.Constant),
-            (("%(int_part)s(%(frac_part)s%(exp_part)s|" "%(exp_part)s|%(frac_part)s)") % vars(), token.Number.Float,),
+            (
+                ("%(int_part)s(%(frac_part)s%(exp_part)s|" "%(exp_part)s|%(frac_part)s)") % vars(),
+                token.Number.Float,
+            ),
             (int_part, token.Number.Integer),
             (r'"(\\\\|\\"|[^"])*"', token.String),
         ],
@@ -98,32 +101,74 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
         # #########################################
         "host-postfix": [
             (r"\n", token.Text, "#pop:3"),
-            (r"( )(=>)( )(\{)", bygroups(token.Text, token.Punctuation, token.Text, token.Punctuation), "objectvalue",),
+            (
+                r"( )(=>)( )(\{)",
+                bygroups(token.Text, token.Punctuation, token.Text, token.Punctuation),
+                "objectvalue",
+            ),
         ],
         "host-error": [
-            (r"(?:(:)( )(UNREACHABLE|FAILED)(!))?", bygroups(token.Punctuation, token.Text, token.Keyword, token.Punctuation), "host-postfix",),
+            (
+                r"(?:(:)( )(UNREACHABLE|FAILED)(!))?",
+                bygroups(token.Punctuation, token.Text, token.Keyword, token.Punctuation),
+                "host-postfix",
+            ),
             (r"", token.Text, "host-postfix"),
         ],
         "host-name": [
             (
                 r"(\[)([^ \]]+)(?:( )(=>)( )([^\]]+))?(\])",
-                bygroups(token.Punctuation, token.Name.Variable, token.Text, token.Punctuation, token.Text, token.Name.Variable, token.Punctuation,),
+                bygroups(
+                    token.Punctuation,
+                    token.Name.Variable,
+                    token.Text,
+                    token.Punctuation,
+                    token.Text,
+                    token.Name.Variable,
+                    token.Punctuation,
+                ),
                 "host-error",
             )
         ],
         "host-result": [
             (r"\n", token.Text, "#pop"),
-            (r"( +)(ok|changed|failed|skipped|unreachable)(=)([0-9]+)", bygroups(token.Text, token.Keyword, token.Punctuation, token.Number.Integer),),
+            (
+                r"( +)(ok|changed|failed|skipped|unreachable)(=)([0-9]+)",
+                bygroups(token.Text, token.Keyword, token.Punctuation, token.Number.Integer),
+            ),
         ],
         "root": [
             (
                 r"(PLAY|TASK|PLAY RECAP)(?:( )(\[)([^\]]+)(\]))?( )(\*+)(\n)",
-                bygroups(token.Keyword, token.Text, token.Punctuation, token.Literal, token.Punctuation, token.Text, token.Name.Variable, token.Text,),
+                bygroups(
+                    token.Keyword,
+                    token.Text,
+                    token.Punctuation,
+                    token.Literal,
+                    token.Punctuation,
+                    token.Text,
+                    token.Name.Variable,
+                    token.Text,
+                ),
             ),
-            (r"(fatal|ok|changed|skipping)(:)( )", bygroups(token.Keyword, token.Punctuation, token.Text), "host-name",),
-            (r"(\[)(WARNING)(\]:)([^\n]+)", bygroups(token.Punctuation, token.Keyword, token.Punctuation, token.Text),),
-            (r"([^ ]+)( +)(:)", bygroups(token.Name, token.Text, token.Punctuation), "host-result",),
-            (r"(\tto retry, use: )(.*)(\n)", bygroups(token.Text, token.Literal.String, token.Text),),
+            (
+                r"(fatal|ok|changed|skipping)(:)( )",
+                bygroups(token.Keyword, token.Punctuation, token.Text),
+                "host-name",
+            ),
+            (
+                r"(\[)(WARNING)(\]:)([^\n]+)",
+                bygroups(token.Punctuation, token.Keyword, token.Punctuation, token.Text),
+            ),
+            (
+                r"([^ ]+)( +)(:)",
+                bygroups(token.Name, token.Text, token.Punctuation),
+                "host-result",
+            ),
+            (
+                r"(\tto retry, use: )(.*)(\n)",
+                bygroups(token.Text, token.Literal.String, token.Text),
+            ),
             (r".*\n", token.Other),
         ],
     }

@@ -198,7 +198,11 @@ def main():
             part_number=dict(required=False, type="str"),
             u_height=dict(required=False, type="int"),
             is_full_depth=dict(required=False, type="bool"),
-            subdevice_role=dict(required=False, choices=["Parent", "parent", "Child", "child"], type="str",),
+            subdevice_role=dict(
+                required=False,
+                choices=["Parent", "parent", "Child", "child"],
+                type="str",
+            ),
             comments=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),

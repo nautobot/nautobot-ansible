@@ -200,7 +200,8 @@ class LookupModule(LookupBase):
         """
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"), PYNAUTOBOT_IMPORT_ERROR,
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
             )
 
         # Query comes in as a list, this needs to be moved to string for pynautobot

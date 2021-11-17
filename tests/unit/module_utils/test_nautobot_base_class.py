@@ -169,7 +169,10 @@ def test_to_slug_returns_valid_slug(mock_module, non_slug, expected):
 
 @pytest.mark.parametrize("endpoint, app", load_relative_test_data("find_app"))
 def test_find_app_returns_valid_app(mock_module, endpoint, app):
-    assert app == mock_module._find_app(endpoint), "app: %s, endpoint: %s" % (app, endpoint,)
+    assert app == mock_module._find_app(endpoint), "app: %s, endpoint: %s" % (
+        app,
+        endpoint,
+    )
 
 
 @pytest.mark.parametrize("endpoint, data, expected", load_relative_test_data("choices_id"))
@@ -181,7 +184,8 @@ def test_change_choices_id(mocker, mock_module, endpoint, data, expected):
 
 
 @pytest.mark.parametrize(
-    "parent, module_data, expected", load_relative_test_data("build_query_params_no_child"),
+    "parent, module_data, expected",
+    load_relative_test_data("build_query_params_no_child"),
 )
 def test_build_query_params_no_child(mock_module, mocker, parent, module_data, expected):
     get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))
@@ -191,7 +195,8 @@ def test_build_query_params_no_child(mock_module, mocker, parent, module_data, e
 
 
 @pytest.mark.parametrize(
-    "parent, module_data, child, expected", load_relative_test_data("build_query_params_child"),
+    "parent, module_data, child, expected",
+    load_relative_test_data("build_query_params_child"),
 )
 def test_build_query_params_child(mock_module, mocker, parent, module_data, child, expected):
     get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))
@@ -205,7 +210,8 @@ def test_build_query_params_child(mock_module, mocker, parent, module_data, chil
 
 
 @pytest.mark.parametrize(
-    "parent, module_data, user_query_params, expected", load_relative_test_data("build_query_params_user_query_params"),
+    "parent, module_data, user_query_params, expected",
+    load_relative_test_data("build_query_params_user_query_params"),
 )
 def test_build_query_params_user_query_params(mock_module, mocker, parent, module_data, user_query_params, expected):
     get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))

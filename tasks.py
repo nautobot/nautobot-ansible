@@ -194,18 +194,18 @@ def post_upgrade(context):
 @task
 def lint(context):
     """Run linting tools"""
-    start(context)
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from lint lint", env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from lint lint",
+        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
 
 @task
 def unit(context):
     """Run unit tests"""
-    start(context)
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from unit unit", env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from unit unit",
+        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
 
