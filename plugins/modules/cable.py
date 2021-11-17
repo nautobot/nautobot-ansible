@@ -310,7 +310,10 @@ def main():
                 ],
                 type="str",
             ),
-            status=dict(required=False, type="str",),
+            status=dict(
+                required=False,
+                type="str",
+            ),
             label=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
             length=dict(required=False, type="int"),
@@ -319,7 +322,11 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["termination_a_type", "termination_a", "termination_b_type", "termination_b", "status"],),
+        (
+            "state",
+            "present",
+            ["termination_a_type", "termination_a", "termination_b_type", "termination_b", "status"],
+        ),
         ("state", "absent", ["termination_a_type", "termination_a", "termination_b_type", "termination_b"]),
     ]
 

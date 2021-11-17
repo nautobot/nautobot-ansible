@@ -124,7 +124,12 @@ class NautobotDcimModule(NautobotModule):
             else:
                 termination_b_name = data.get("termination_b_id")
 
-            name = "%s %s <> %s %s" % (data.get("termination_a_type"), termination_a_name, data.get("termination_b_type"), termination_b_name,)
+            name = "%s %s <> %s %s" % (
+                data.get("termination_a_type"),
+                termination_a_name,
+                data.get("termination_b_type"),
+                termination_b_name,
+            )
 
         if self.endpoint in SLUG_REQUIRED:
             if not data.get("slug"):

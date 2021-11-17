@@ -128,10 +128,18 @@ def test_refresh_lookups(inventory_fixture):
 
 
 @pytest.mark.parametrize(
-    "plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected", load_relative_test_data("group_extractors"),
+    "plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected",
+    load_relative_test_data("group_extractors"),
 )
 def test_group_extractors(
-    inventory_fixture, plurals, services, interfaces, dns_name, ansible_host_dns_name, expected, not_expected,
+    inventory_fixture,
+    plurals,
+    services,
+    interfaces,
+    dns_name,
+    ansible_host_dns_name,
+    expected,
+    not_expected,
 ):
     inventory_fixture.plurals = plurals
     inventory_fixture.services = services
@@ -148,7 +156,8 @@ def test_group_extractors(
 
 
 @pytest.mark.parametrize(
-    "api_url, max_uri_length, query_key, query_values, expected", load_relative_test_data("get_resource_list_chunked"),
+    "api_url, max_uri_length, query_key, query_values, expected",
+    load_relative_test_data("get_resource_list_chunked"),
 )
 def test_get_resource_list_chunked(inventory_fixture, api_url, max_uri_length, query_key, query_values, expected):
     mock_get_resource_list = Mock()

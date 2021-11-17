@@ -288,14 +288,22 @@ def main():
             vrf=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
-            role=dict(required=False, type="str", choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],),
+            role=dict(
+                required=False,
+                type="str",
+                choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],
+            ),
             description=dict(required=False, type="str"),
             nat_inside=dict(required=False, type="raw"),
             dns_name=dict(required=False, type="str"),
             assigned_object=dict(
                 required=False,
                 type="dict",
-                options=dict(name=dict(required=False, type="str"), device=dict(required=False, type="str"), virtual_machine=dict(required=False, type="str"),),
+                options=dict(
+                    name=dict(required=False, type="str"),
+                    device=dict(required=False, type="str"),
+                    virtual_machine=dict(required=False, type="str"),
+                ),
             ),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
@@ -309,7 +317,12 @@ def main():
     ]
     mutually_exclusive = [["address", "prefix"]]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if, mutually_exclusive=mutually_exclusive,)
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_if=required_if,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     ip_address = NautobotIpamModule(module, NB_IP_ADDRESSES)
     ip_address.run()

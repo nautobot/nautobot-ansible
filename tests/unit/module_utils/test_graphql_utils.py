@@ -38,7 +38,11 @@ def test_query_api_setup(nautobot_api_base, graphql_test_query):
 
 
 def test_query_api_setup_with_variable(nautobot_api_base, graphql_test_query_with_var, graphql_test_variables):
-    test_class = NautobotGraphQL(query_str=graphql_test_query_with_var, api=nautobot_api_base, variables=graphql_test_variables,)
+    test_class = NautobotGraphQL(
+        query_str=graphql_test_query_with_var,
+        api=nautobot_api_base,
+        variables=graphql_test_variables,
+    )
     assert isinstance(test_class, NautobotGraphQL)
     assert test_class.query_str == graphql_test_query_with_var
     assert isinstance(test_class.pynautobot, pynautobot.api)

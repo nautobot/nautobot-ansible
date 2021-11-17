@@ -6,6 +6,9 @@
 ARG PYTHON_VER=3.8
 FROM python:${PYTHON_VER} AS base
 
+# Allow for flexible Python versions, for broader testing
+ARG PYTHON_VER=3.8
+ENV PYTHON_VERSION=${PYTHON_VER}
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -yqq && apt-get install -yqq shellcheck && apt-get clean
 
@@ -19,47 +22,26 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 ENV PATH="$PATH:/root/.poetry/bin"
 RUN poetry config virtualenvs.create false
 
-# Install project manifest
-COPY pyproject.toml .
+# Bring in Poetry related files needed for other stages
+COPY pyproject.toml poetry.lock ./
 
-# Install poetry.lock from which to build
-COPY poetry.lock .
+# Install only package Dependencies
+RUN poetry install --no-dev
 
-# Install all dependencies
-RUN poetry install
-
-# Allow for flexible Python versions, for broader testing
-ARG PYTHON_VER
-ENV PYTHON_VERSION=${PYTHON_VER}
-
-# Set a custom collection path for all ansible commands
-# Note: This only allows for one path, not colon-separated, because we use it
-# elsewhere
-ARG ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections
-ENV ANSIBLE_COLLECTIONS_PATH=${ANSIBLE_COLLECTIONS_PATH}
-
-# For Module unit tests as we use some testing features avaiable in this collection
-RUN ansible-galaxy collection install community.general
-
-# Copy in the application source and everything not explicitly banned by
-# .dockerignore
+# Copy in the application source and everything not explicitly banned by .dockerignore
 COPY . .
 
 #########
 # Linting
 #
-# Runs all necessary linting and code checks
+# Runs all necessary non Ansible linting and code checks
 FROM base AS lint
 
+# Install dev dependencies
+RUN poetry install
 
-# We should look into pylint/flake8, etc. in the future
-# RUN echo 'Running Flake8' && \
-#     flake8 . && \
 RUN echo 'Running Black' && \
     black --check --diff . && \
-    # Removed and running Pylint in unit tests after project has been created
-    # echo 'Running Pylint' && \
-    # find . -name '*.py' | xargs pylint  && \
     echo 'Running Bandit' && \
     bandit --recursive ./ --configfile .bandit.yml
 
@@ -70,7 +52,16 @@ RUN echo 'Running Black' && \
 # This test stage runs true unit tests (no outside services) at build time, as
 # well as enforcing codestyle and performing fast syntax checks. It is built
 # into an image with docker-compose for running the full test suite.
-FROM base AS unittests
+FROM lint AS unittests
+
+# Remove black from dev dependencies to prevent conflicts with Ansible
+RUN poetry remove black --dev
+
+# Set a custom collection path for all ansible commands
+# Note: This only allows for one path, not colon-separated, because we use it
+# elsewhere
+ARG ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections
+ENV ANSIBLE_COLLECTIONS_PATH=${ANSIBLE_COLLECTIONS_PATH}
 
 ARG PYTHON_VER=3.8
 ENV PYTHON_VERSION=${PYTHON_VER}
@@ -81,10 +72,8 @@ ENV ANSIBLE_SANITY_ARGS=${ANSIBLE_SANITY_ARGS}
 ARG ANSIBLE_UNIT_ARGS
 ENV ANSIBLE_UNIT_ARGS=${ANSIBLE_UNIT_ARGS}
 
-# Ansible sanity and unit tests
-#
-# Runs the sanity and unit tests inside the container build context to isolate
-# those tests from all runtime influences
+# For Module unit tests as we use some testing features avaiable in this collection
+RUN ansible-galaxy collection install community.general
 
 # Build Collection to run ansible-tests against
 RUN ansible-galaxy collection build --output-path ./dist/ .
@@ -99,11 +88,11 @@ WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
     --skip-test pep8 \
-    --python default \
+    --python ${PYTHON_VER} \
     plugins/
 
 # Run unit tests
-RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --python default
+RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --python ${PYTHON_VERSION}
 
 ############
 # Integration Tests

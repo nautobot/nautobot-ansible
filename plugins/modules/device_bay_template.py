@@ -122,7 +122,12 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(dict(device_type=dict(required=True, type="raw"), name=dict(required=True, type="str"),))
+    argument_spec.update(
+        dict(
+            device_type=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+        )
+    )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
