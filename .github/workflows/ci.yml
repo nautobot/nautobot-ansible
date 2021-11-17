@@ -1,6 +1,6 @@
 ---
 name: "CI"
-on:  # yamllint disable
+on: # yamllint disable
   push:
     branches:
       - "develop"
@@ -27,7 +27,7 @@ jobs:
       fail-fast: true
       matrix:
         # Add 3.6 back once we fix the sanity decode issue
-        python-version: ["3.7", "3.8", "3.9"]
+        python-version: ["3.7", "3.8", "3.9.7"]
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
@@ -51,7 +51,7 @@ jobs:
         include:
           - python-version: "3.7"
             nautobot-version: "1.0.3"
-            ansible-release: "base"  # Ansible 2.10
+            ansible-release: "base" # Ansible 2.10
           - python-version: "3.8"
             nautobot-version: "1.1.1"
             ansible-release: "2.11"

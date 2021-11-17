@@ -99,11 +99,11 @@ WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
     --skip-test pep8 \
-    --python ${PYTHON_VER} \
+    --python default \
     plugins/
 
 # Run unit tests
-RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --python $PYTHON_VERSION
+RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --python default
 
 ############
 # Integration Tests
