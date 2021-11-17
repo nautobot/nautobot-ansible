@@ -98,7 +98,7 @@ jobs:
         run: "poetry remove ansible-base"
       - name: "Add Ansible 2.12"
         if: "${{ matrix.ansible-release == '2.12' }}"
-        run: "poetry add ansible-core@^2.12 --python {{ matrix.python-version }}"
+        run: "poetry add ansible-core@^2.12 --python ${{ matrix.python-version }}"
       - name: "Start containers"
         run: "invoke start"
       - name: "Tests"
