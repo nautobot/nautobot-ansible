@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 3.2.0
+Collection version 3.2.1
 
 .. toctree::
     :maxdepth: 1
