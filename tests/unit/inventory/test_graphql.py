@@ -33,7 +33,6 @@ def load_graphql_test_data(path, test_path):
 
 
 load_relative_test_data = partial(load_graphql_test_data, os.path.dirname(os.path.abspath(__file__)))
-ANSIBLE_VERSION = os.environ["ANSIBLE_VERSION"]
 
 
 @pytest.fixture
