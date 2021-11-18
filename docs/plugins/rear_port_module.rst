@@ -20,7 +20,7 @@ networktocode.nautobot.rear_port -- Create, update or delete rear ports within N
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.0).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.1).
 
     To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

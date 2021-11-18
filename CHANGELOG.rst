@@ -5,6 +5,19 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.2.1
+======
+
+Release Summary
+---------------
+
+Unbreak plugins/inventory/inventory.yml
+
+Bugfixes
+--------
+
+- Remove bad code in plugins/inventory/inventory.yml when locally built to publish that prevented it from grabbing all hosts
+
 v3.2.0
 ======
 
