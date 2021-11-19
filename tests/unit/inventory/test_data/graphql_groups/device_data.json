@@ -1,0 +1,23 @@
+{
+    "name": "mydevice",
+    "platform": {
+        "napalm_driver": "asa"
+    },
+    "status": {
+        "name": "Active"
+    },
+    "primary_ip4": null,
+    "device_role": {
+        "name": "edge",
+        "color_category": {
+            "primary": "red"
+        }
+    },
+    "site": {
+        "name": "ATL01"
+    },
+    "tenant": {
+        "slug": "mytenant",
+        "type": "local"
+    }
+}

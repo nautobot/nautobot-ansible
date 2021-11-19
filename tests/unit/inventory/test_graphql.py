@@ -26,110 +26,73 @@ except ImportError:
     from gql_inventory import InventoryModule
 
 
-def load_graphql_test_data(path, test_path):
-    with open(f"{path}/test_data/{test_path}/data.json", "r") as f:
+def load_graphql_device_data(path, test_path):
+    with open(f"{path}/test_data/{test_path}/device_data.json", "r") as f:
         data = json.loads(f.read())
     return data
 
 
-load_relative_test_data = partial(load_graphql_test_data, os.path.dirname(os.path.abspath(__file__)))
-
-
-@pytest.fixture
-def active_status_expected_hosts():
-    return [
-        "aaa00-descriptor-01",
-        "ams01-edge-01",
-        "ams01-edge-02",
-        "ams01-leaf-01",
-        "ams01-leaf-02",
-        "ams01-leaf-03",
-        "ams01-leaf-04",
-        "ams01-leaf-05",
-        "ams01-leaf-06",
-        "ams01-leaf-07",
-        "ams01-leaf-08",
-        "ang01-edge-01",
-        "ang01-edge-02",
-        "ang01-leaf-01",
-        "ang01-leaf-02",
-        "ang01-leaf-03",
-        "ang01-leaf-04",
-        "atl01-edge-01",
-        "atl01-edge-02",
-        "atl01-leaf-01",
-        "atl01-leaf-02",
-        "atl01-leaf-03",
-        "atl01-leaf-04",
-        "atl01-leaf-05",
-        "atl01-leaf-06",
-        "atl01-leaf-07",
-        "atl01-leaf-08",
-        "atl02-edge-01",
-        "atl02-edge-02",
-        "atl02-leaf-01",
-    ]
-
-
-@pytest.fixture
-def expected_groups_status_name():
-    return ["all", "ungrouped", "Active"]
-
-
-@pytest.fixture
-def expected_groups_site_string_only():
-    return ["all", "ungrouped", "ATL01", "AMS01", "ANG01", "ATL02"]
-
-
-@pytest.fixture()
-def site_atl02_expected_hosts():
-    return ["atl02-edge-01", "atl02-edge-02", "atl02-leaf-01"]
-
-
-@pytest.fixture
-def expected_groups_tenant_slug():
-    return ["all", "ungrouped", "ATL01", "AMS01", "ANG01", "ATL02"]
+load_relative_test_data = partial(load_graphql_device_data, os.path.dirname(os.path.abspath(__file__)))
 
 
 @pytest.fixture
 def inventory_fixture():
     inventory = InventoryModule()
     inventory.inventory = InventoryData()
+    inventory.inventory.add_host("mydevice")
 
     return inventory
 
 
-def test_group_by_path(inventory_fixture, expected_groups_status_name, active_status_expected_hosts):
+@pytest.fixture
+def device_data():
     json_data = load_relative_test_data("graphql_groups")
-    inventory_fixture.group_by = ["status.name"]
-    inventory_fixture.create_groups(json_data)
+    return json_data
+
+
+def test_group_by_path_multiple(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["device_role.color_category.primary"]
+    inventory_fixture.create_groups(device_data)
     inventory_groups = list(inventory_fixture.inventory.groups.keys())
-    active_status_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("Active")
-    assert active_status_expected_hosts == active_status_inventory_hosts
-    assert expected_groups_status_name == inventory_groups
+    local_device_type_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("red")
+    assert ["all", "ungrouped", "red"] == inventory_groups
+    assert ["mydevice"] == local_device_type_inventory_hosts
 
 
-def test_group_by_string_only(inventory_fixture, expected_groups_site_string_only, site_atl02_expected_hosts):
-    json_data = load_relative_test_data("graphql_groups")
+def test_group_by_path(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tenant.type"]
+    inventory_fixture.create_groups(device_data)
+    inventory_groups = list(inventory_fixture.inventory.groups.keys())
+    local_device_type_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("local")
+    assert ["all", "ungrouped", "local"] == inventory_groups
+    assert ["mydevice"] == local_device_type_inventory_hosts
+
+
+def test_group_by_string_only(inventory_fixture, device_data):
     inventory_fixture.group_by = ["site"]
-    inventory_fixture.create_groups(json_data)
+    inventory_fixture.create_groups(device_data)
     inventory_groups = list(inventory_fixture.inventory.groups.keys())
-    atl02_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("ATL02")
-    assert expected_groups_site_string_only == inventory_groups
-    assert site_atl02_expected_hosts == atl02_inventory_hosts
+    atl01_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("ATL01")
+    assert ["all", "ungrouped", "ATL01"] == inventory_groups
+    assert ["mydevice"] == atl01_inventory_hosts
 
 
 @patch.object(Display, "display")
-def test_no_initial_value(mock_display, inventory_fixture):
-    json_data = load_relative_test_data("graphql_groups")
+def test_no_parent_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["color.slug"]
-    inventory_fixture.create_groups(json_data)
-    mock_display.assert_any_call("Could not find value for color on device aaa00-descriptor-01")
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("Could not find value for color on device mydevice")
 
 
 @patch.object(Display, "display")
-def test_no_value_subsequent_key(mock_display, inventory_fixture):
-    json_data = load_relative_test_data("graphql_groups")
-    inventory_fixture.group_by = ["site.rainbow"]
-    inventory_fixture.create_groups(json_data)
-    mock_display.assert_any_call("Could not find value for rainbow in site.rainbow on device aaa00-descriptor-01")
+def test_no_chain_value(mock_display, inventory_fixture, device_data):
+    inventory_fixture.group_by = ["site.type"]
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("Could not find value for type in site.type on device mydevice")
+
+
+@patch.object(Display, "display")
+def test_no_name_or_slug_value(mock_display, inventory_fixture, device_data):
+    inventory_fixture.group_by = ["platform"]
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")

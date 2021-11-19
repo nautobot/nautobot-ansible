@@ -183,43 +183,60 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
-    def create_groups(self, json_data: dict):
-        """Creates groups for host based on `group_by` parameters."""
-        for device in json_data["data"]["devices"]:
-            device_name = device["name"]
-            self.inventory.add_host(device_name)
-            for group_by in self.group_by:
-                group_by_path = group_by.split(".")
-                try:
-                    attr_value = device[group_by_path[0]]
-                except KeyError:
-                    self.display.display(f"Could not find value for {group_by_path[0]} on device {device_name}")
+    def add_ipv4_address(self, device):
+        """Add primary IPv4 address to host."""
+        if device["primary_ip4"]:
+            self.add_variable(device["device_name"], device["primary_ip4"]["address"], "ansible_host")
+        else:
+            self.add_variable(device["device_name"], device["name"], "ansible_host")
+
+    def add_ansible_platform(self, device):
+        """Add network platform to host"""
+        if device["platform"] and "napalm_driver" in device["platform"]:
+            self.add_variable(
+                device["name"],
+                ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
+                "ansible_network_os",
+            )
+
+    def create_groups(self, device):
+        """Create groups specified and add device to group."""
+        device_name = device["name"]
+        for group_by_path in self.group_by:
+            parent_attr, *chain = group_by_path.split(".")
+            device_attr = device.get(parent_attr)
+            if device_attr is None:
+                self.display.display(f"Could not find value for {parent_attr} on device {device_name}")
+                continue
+
+            if not chain:
+                group_name = device_attr
+
+            while chain:
+                group_name = chain.pop(0)
+                if isinstance(device_attr.get(group_name), Mapping):
+                    device_attr = device_attr.get(group_name)
                     continue
-                for attribute in group_by_path[1:]:
-                    if not isinstance(attr_value, Mapping):
-                        error_path = group_by.split(attribute)[0][:-1]
-                        self.display.display(f"Device {device_name} attribute {error_path} is not a dictionary.")
-                        continue
-                    try:
-                        attr_value = attr_value[attribute]
-                    except KeyError:
-                        self.display.display(f"Could not find value for {attribute} in {group_by} on device {device_name}")
-                        break
-                if isinstance(attr_value, Mapping):
-                    try:
-                        attr_value = attr_value["name"]
-                        self.display.display(f"No name value for {attr_value} on device {device_name} for group {group_by}.")
-                    except KeyError:
-                        try:
-                            attr_value = attr_value["slug"]
-                        except KeyError:
-                            self.display.display(f"No slug value for {attr_value} on device {device_name} for group {group_by}.")
-                            continue
-                if isinstance(attr_value, str):
-                    self.inventory.add_group(attr_value)
-                    self.inventory.add_child(attr_value, device_name)
                 else:
-                    self.display.display(f"{attr_value} is not a valid group name for device {device_name} for group {group_by}.")
+                    try:
+                        group_name = device_attr[group_name]
+                    except KeyError:
+                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}")
+                        break
+
+            if isinstance(group_name, Mapping):
+                if "name" in group_name:
+                    group_name = group_name["name"]
+                elif "slug" in group_name:
+                    group_name = group_name["slug"]
+                else:
+                    self.display.display(f"No slug or name value for {group_name} in {group_by_path} on device {device_name}.")
+
+            if isinstance(group_name, str):
+                self.inventory.add_group(group_name)
+                self.inventory.add_child(group_name, device_name)
+            else:
+                self.display.display(f"{group_name} is not a valid group name for device {device_name}.")
 
     def main(self):
         """Main function."""
@@ -275,7 +292,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
 
-        self.create_groups(json_data)
+        for device in json_data["data"]["devices"]:
+            self.inventory.add_host(device["name"])
+            self.add_ipv4_address(device)
+            self.add_ansible_platform(device)
+            self.create_groups(device)
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
