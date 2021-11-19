@@ -93,7 +93,6 @@ query:
 
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
-# Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
