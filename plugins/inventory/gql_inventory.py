@@ -3,7 +3,6 @@
 
 from __future__ import absolute_import, division, print_function
 from collections.abc import Mapping
-from re import A
 
 __metaclass__ = type
 
@@ -65,7 +64,12 @@ DOCUMENTATION = """
       group_by:
           required: False
           description:
-            - List of data paths to group by.
+            - List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)
+            - The final value returned by each path is used to derive group names and then group the devices into these groups.
+            - Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
+            - If value returned by the defined path is a dictionary, 
+            an attempt will first be made to access the `name` field, and then the `slug` field. 
+            (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
           type: list
           default: []
       filters:
@@ -89,7 +93,6 @@ query:
 
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
-# Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
