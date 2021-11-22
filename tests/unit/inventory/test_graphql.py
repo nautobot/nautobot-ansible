@@ -111,7 +111,7 @@ def test_multiple_group_by_no_fail(inventory_fixture, device_data):
 def test_no_chain_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["site.type"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call("Could not find value for type in site.type on device mydevice")
+    mock_display.assert_any_call("Could not find value for type in site.type on device mydevice.")
 
 
 @patch.object(Display, "display")
