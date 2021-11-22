@@ -164,16 +164,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         return False
 
-    def create_inventory(self, group: str, host: str):
-        """Creates Ansible inventory.
-
-        Args:
-            group (str): Name of the group
-            host (str): Hostname
-        """
-        self.inventory.add_group(group)
-        self.inventory.add_host(host, group)
-
     def add_variable(self, host: str, var: str, var_type: str):
         """Adds variables to group or host.
 
@@ -187,9 +177,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def add_ipv4_address(self, device):
         """Add primary IPv4 address to host."""
         if device["primary_ip4"]:
-            self.add_variable(device["device_name"], device["primary_ip4"]["address"], "ansible_host")
+            self.add_variable(device["name"], device["primary_ip4"]["address"], "ansible_host")
         else:
-            self.add_variable(device["device_name"], device["name"], "ansible_host")
+            self.add_variable(device["name"], device["name"], "ansible_host")
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
@@ -199,6 +189,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
+
+    def populate_variables(self, device):
+        """Add specified variables to device."""
+        for var in self.variables:
+            if var in device and device[var]:
+                self.add_variable(device["name"], device[var], var)
 
     def create_groups(self, device):
         """Create groups specified and add device to group."""
@@ -297,6 +293,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.inventory.add_host(device["name"])
             self.add_ipv4_address(device)
             self.add_ansible_platform(device)
+            self.populate_variables(device)
             self.create_groups(device)
 
     def parse(self, inventory, loader, path, cache=True):

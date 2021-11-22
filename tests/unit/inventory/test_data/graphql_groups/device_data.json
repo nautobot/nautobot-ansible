@@ -6,7 +6,9 @@
     "status": {
         "name": "Active"
     },
-    "primary_ip4": null,
+    "primary_ip4": {
+        "address": "10.10.10.10/32"
+    },
     "device_role": {
         "name": "edge",
         "color_category": {
