@@ -218,7 +218,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     try:
                         group_name = device_attr[group_name]
                     except KeyError:
-                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}")
+                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}.")
                         break
 
             if isinstance(group_name, Mapping):
