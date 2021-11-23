@@ -64,7 +64,7 @@ DOCUMENTATION = """
                 - Whether or not to validate SSL of the Nautobot instance
             required: False
             default: True
-        variables:
+        graph_variables:
             description:
                 - Dictionary of keys/values to pass into the GraphQL query
                 - See [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
@@ -91,7 +91,7 @@ EXAMPLES = """
   # Make query to GraphQL Endpoint
   - name: Obtain list of sites from Nautobot
     set_fact:
-      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query, url='https://nautobot.example.com', token='<redact>') }}"
+      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
   # Example with variables
   - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
