@@ -233,7 +233,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.inventory.add_group(group_name)
                 self.inventory.add_child(group_name, device_name)
             else:
-                self.display.display(f"{group_name} is not a valid group name for device {device_name}.")
+                self.display.display(
+                    f"Groups must be a string. {group_name} is not a string. Please make sure your group_by path specified resolves to a string value."
+                )
 
     def main(self):
         """Main function."""
