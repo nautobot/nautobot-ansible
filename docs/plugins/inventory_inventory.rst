@@ -2,6 +2,16 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.inventory_inventory:
@@ -20,9 +30,13 @@ networktocode.nautobot.inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.inventory`.
 
@@ -72,7 +86,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -80,7 +95,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If True, sets DNS Name (fetched from primary_ip) to be used in ansible_host variable, instead of IP Address.</div>
                                                         </td>
@@ -93,14 +108,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_URL
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Endpoint of the Nautobot API</div>
                                                         </td>
@@ -113,7 +130,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -124,12 +142,14 @@ Parameters
                                                     <div> ini entries:
                                                                     <p>
                                         [inventory]<br>cache = no
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                             </div>
                                                                             <div>
                                 env:ANSIBLE_INVENTORY_CACHE
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Toggle to enable/disable the caching of the inventory&#x27;s source data, requires a cache plugin setup to work.</div>
                                                         </td>
@@ -142,25 +162,30 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                     <div> ini entries:
                                                                     <p>
                                         [defaults]<br>fact_caching_connection = None
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                                     <p>
                                         [inventory]<br>cache_connection = None
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                             </div>
                                                                             <div>
                                 env:ANSIBLE_CACHE_PLUGIN_CONNECTION
-                                                                                            </div>
+                                                                	
+                            </div>
                                                     <div>
                                 env:ANSIBLE_INVENTORY_CACHE_CONNECTION
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Cache connection data or path, read cache plugin documentation for specifics.</div>
                                                         </td>
@@ -173,7 +198,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"memory"</div>
                                     </td>
@@ -181,18 +207,22 @@ Parameters
                                                     <div> ini entries:
                                                                     <p>
                                         [defaults]<br>fact_caching = memory
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                                     <p>
                                         [inventory]<br>cache_plugin = memory
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                             </div>
                                                                             <div>
                                 env:ANSIBLE_CACHE_PLUGIN
-                                                                                            </div>
+                                                                	
+                            </div>
                                                     <div>
                                 env:ANSIBLE_INVENTORY_CACHE_PLUGIN
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Cache plugin to use for the inventory&#x27;s source data.</div>
                                                         </td>
@@ -205,7 +235,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">"ansible_inventory_"</div>
                                     </td>
@@ -213,18 +244,22 @@ Parameters
                                                     <div> ini entries:
                                                                     <p>
                                         [default]<br>fact_caching_prefix = ansible_inventory_
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                                     <p>
                                         [inventory]<br>cache_prefix = ansible_inventory_
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                             </div>
                                                                             <div>
                                 env:ANSIBLE_CACHE_PLUGIN_PREFIX
-                                                                                            </div>
+                                                                	
+                            </div>
                                                     <div>
                                 env:ANSIBLE_INVENTORY_CACHE_PLUGIN_PREFIX
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Prefix to use for cache plugin files/tables</div>
                                                         </td>
@@ -237,7 +272,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">3600</div>
                                     </td>
@@ -245,18 +281,22 @@ Parameters
                                                     <div> ini entries:
                                                                     <p>
                                         [defaults]<br>fact_caching_timeout = 3600
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                                     <p>
                                         [inventory]<br>cache_timeout = 3600
-                                                                                                                    </p>
+                                                                                	
+                                    </p>
                                                             </div>
                                                                             <div>
                                 env:ANSIBLE_CACHE_PLUGIN_TIMEOUT
-                                                                                            </div>
+                                                                	
+                            </div>
                                                     <div>
                                 env:ANSIBLE_INVENTORY_CACHE_TIMEOUT
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Cache duration in seconds</div>
                                                         </td>
@@ -269,12 +309,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">{}</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>List of custom ansible host vars to create from the device object fetched from Nautobot</div>
                                                         </td>
@@ -287,7 +328,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -295,7 +337,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If True, it adds config_context in host vars.</div>
                                             <div>Config-context enables the association of arbitrary data to devices and virtual machines grouped by region, site, role, platform, and/or tenant. Please check official nautobot docs for more info.</div>
@@ -309,12 +351,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>List of parameters passed to the query string for devices (Multiple values may be separated by commas)</div>
                                                         </td>
@@ -327,7 +370,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -335,7 +379,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Force IP Addresses to be fetched so that the dns_name for the primary_ip of each device or VM is set as a host_var.</div>
                                             <div>Setting interfaces will also fetch IP addresses and the dns_name host_var will be set.</div>
@@ -352,7 +396,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
@@ -360,7 +405,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.</div>
                                             <div>When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device_id and virtual_machine_id.</div>
@@ -381,7 +426,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -389,7 +435,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If <em>config_context</em> is enabled, by default it&#x27;s added as a host var named config_context.</div>
                                             <div>If flatten_config_context is set to True, the config context variables will be added directly to the host instead.</div>
@@ -406,7 +452,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -414,7 +461,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>By default, host custom fields are added as a dictionary host var named custom_fields.</div>
                                             <div>If flatten_custom_fields is set to True, the fields will be added directly to the host instead.</div>
@@ -431,7 +478,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -439,7 +487,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If <em>local_context_data</em> is enabled, by default it&#x27;s added as a host var named local_context_data.</div>
                                             <div>If flatten_local_context_data is set to True, the config context variables will be added directly to the host instead.</div>
@@ -453,7 +501,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>urllib2</b>&nbsp;&larr;</div></li>
@@ -464,7 +513,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Determine how redirects are followed.</div>
                                             <div>By default, <em>follow_redirects</em> is set to uses urllib2 default behavior.</div>
@@ -478,7 +527,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>sites</li>
@@ -511,7 +561,7 @@ Parameters
                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Keys used to create groups. The <em>plurals</em> option controls which of these are valid.</div>
                                                         </td>
@@ -527,7 +577,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -535,7 +586,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Will not add the group_by choice name to the group names</div>
                                                         </td>
@@ -548,12 +599,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">{}</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Add hosts to group based on Jinja2 conditionals.</div>
                                                         </td>
@@ -569,7 +621,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -577,7 +630,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If True, it adds the device or virtual machine interface information in host vars.</div>
                                                         </td>
@@ -590,12 +643,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Add hosts to group based on the values of a variable.</div>
                                                         </td>
@@ -611,12 +665,13 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">4000</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).</div>
                                             <div>You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.</div>
@@ -630,14 +685,15 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>networktocode.nautobot.inventory</li>
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>token that ensures this is a source file for the &#x27;nautobot&#x27; plugin.</div>
                                                         </td>
@@ -653,7 +709,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
@@ -661,7 +718,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.</div>
                                             <div>Group names will be plural (ie. &quot;sites_mysite&quot; instead of &quot;site_mysite&quot;)</div>
@@ -676,12 +733,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>List of parameters passed to the query string for both devices and VMs (Multiple values may be separated by commas)</div>
                                                         </td>
@@ -697,7 +755,8 @@ Parameters
                                           <div style="font-style: italic; font-size: small; color: darkgreen">
                         added in 1.0.0 of networktocode.nautobot
                       </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
@@ -705,7 +764,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If True, it adds the device or virtual machine services information in host vars.</div>
                                                         </td>
@@ -718,7 +777,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -726,7 +786,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>If <code>yes</code> make invalid entries a fatal error, otherwise skip and continue.</div>
                                             <div>Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.</div>
@@ -740,12 +800,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">60</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Timeout for Nautobot requests in seconds</div>
                                                         </td>
@@ -758,14 +819,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Nautobot API token to be able to read against Nautobot.</div>
                                             <div>This may not be required depending on the Nautobot setup.</div>
@@ -779,7 +842,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
@@ -787,7 +851,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
                                                         </td>
@@ -800,7 +864,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
@@ -808,7 +873,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>When a device is part of a virtual chassis, use the virtual chassis name as the Ansible inventory hostname.</div>
                                             <div>The host var values will be from the virtual chassis master.</div>
@@ -822,18 +887,22 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>List of parameters passed to the query string for VMs (Multiple values may be separated by commas)</div>
                                                         </td>
             </tr>
                         </table>
     <br/>
+
+.. Attributes
+
 
 .. Notes
 

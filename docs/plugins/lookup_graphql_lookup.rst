@@ -2,6 +2,16 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.lookup_graphql_lookup:
@@ -20,9 +30,13 @@ networktocode.nautobot.lookup_graphql -- Queries and returns elements from Nauto
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.lookup_graphql`.
 
@@ -73,17 +87,37 @@ Parameters
         </tr>
                     <tr>
                                                                 <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-graph_variables"></div>
+                    <b>graph_variables</b>
+                    <a class="ansibleOptionLink" href="#parameter-graph_variables" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                                              	
+                                    </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                    <td>
+                                                                                                                    </td>
+                                                <td>
+                                            <div>Dictionary of keys/values to pass into the GraphQL query</div>
+                                            <div>See [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query"></div>
                     <b>query</b>
                     <a class="ansibleOptionLink" href="#parameter-query" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).</div>
                                                         </td>
@@ -96,14 +130,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>The API token created through Nautobot</div>
                                                         </td>
@@ -116,14 +152,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_URL
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>The URL to the Nautobot instance to query (http://nautobot.example.com:8000)</div>
                                                         </td>
@@ -136,36 +174,22 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                 <b>Default:</b><br/><div style="color: blue">"yes"</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Whether or not to validate SSL of the Nautobot instance</div>
                                                         </td>
             </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-variables"></div>
-                    <b>variables</b>
-                    <a class="ansibleOptionLink" href="#parameter-variables" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Dictionary of keys/values to pass into the GraphQL query</div>
-                                            <div>See [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details</div>
-                                                        </td>
-            </tr>
                         </table>
     <br/>
+
+.. Attributes
+
 
 .. Notes
 
@@ -198,7 +222,7 @@ Examples
       # Make query to GraphQL Endpoint
       - name: Obtain list of sites from Nautobot
         set_fact:
-          query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query, url='https://nautobot.example.com', token='<redact>') }}"
+          query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
       # Example with variables
       - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
@@ -255,7 +279,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                 <td>
                                             <div>Data result from the GraphQL endpoint</div>
                                         <br/>
-                                    </td>
+                                                        </td>
             </tr>
                         </table>
     <br/><br/>

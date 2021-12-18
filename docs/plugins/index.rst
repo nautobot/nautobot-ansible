@@ -1,14 +1,14 @@
-:orphan:
 
 .. _plugins_in_networktocode.nautobot:
 
 Networktocode.Nautobot
 ======================
 
-Collection version 3.2.1
+Collection version 3.3.0
 
 .. toctree::
     :maxdepth: 1
+
 
 Plugin Index
 ------------
@@ -89,6 +89,72 @@ Modules
 * :ref:`vrf <ansible_collections.networktocode.nautobot.vrf_module>` -- Create, update or delete vrfs within Nautobot
 
 
+
 .. seealso::
 
     List of :ref:`collections <list_of_collections>` with docs hosted here.
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    gql_inventory_inventory
+    inventory_inventory
+    lookup_lookup
+    lookup_graphql_lookup
+    aggregate_module
+    cable_module
+    circuit_module
+    circuit_termination_module
+    circuit_type_module
+    cluster_module
+    cluster_group_module
+    cluster_type_module
+    console_port_module
+    console_port_template_module
+    console_server_port_module
+    console_server_port_template_module
+    device_module
+    device_bay_module
+    device_bay_template_module
+    device_interface_module
+    device_interface_template_module
+    device_role_module
+    device_type_module
+    front_port_module
+    front_port_template_module
+    inventory_item_module
+    ip_address_module
+    ipam_role_module
+    manufacturer_module
+    nautobot_server_module
+    platform_module
+    power_feed_module
+    power_outlet_module
+    power_outlet_template_module
+    power_panel_module
+    power_port_module
+    power_port_template_module
+    prefix_module
+    provider_module
+    query_graphql_module
+    rack_module
+    rack_group_module
+    rack_role_module
+    rear_port_module
+    rear_port_template_module
+    region_module
+    rir_module
+    route_target_module
+    service_module
+    site_module
+    status_module
+    tag_module
+    tenant_module
+    tenant_group_module
+    virtual_chassis_module
+    virtual_machine_module
+    vlan_module
+    vlan_group_module
+    vm_interface_module
+    vrf_module
