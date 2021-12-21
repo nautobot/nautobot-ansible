@@ -274,7 +274,14 @@ releases:
   3.2.1:
     changes:
       bugfixes:
-      - Remove bad code in plugins/inventory/inventory.yml when locally built to publish that prevented it from grabbing all hosts
+      - Remove bad code in plugins/inventory/inventory.yml when locally built to publish
+        that prevented it from grabbing all hosts
       release_summary: Unbreak plugins/inventory/inventory.yml
     release_date: '2021-11-18'
-
+  3.3.0:
+    changes:
+      minor_changes:
+      - (#115) Documentation fixes
+      - (#110) Allow users to define any path for defining GroupBy Group names
+    release_summary: GraphQL Inventory Group Customization
+    release_date: '2021-12-17'

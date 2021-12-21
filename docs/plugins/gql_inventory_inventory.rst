@@ -2,6 +2,16 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory:
@@ -20,9 +30,13 @@ networktocode.nautobot.gql_inventory -- Nautobot inventory source using GraphQL 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.2.1).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.gql_inventory`.
 
@@ -78,12 +92,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Variable types and values to use while making the call</div>
                                                         </td>
@@ -96,14 +111,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_URL
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Endpoint of the Nautobot API</div>
                                                         </td>
@@ -116,12 +133,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">{}</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Granular device search query</div>
                                                         </td>
@@ -134,7 +152,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li><div style="color: blue"><b>urllib2</b>&nbsp;&larr;</div></li>
@@ -145,7 +164,7 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Determine how redirects are followed.</div>
                                             <div>By default, <em>follow_redirects</em> is set to uses urllib2 default behavior.</div>
@@ -159,20 +178,18 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>platform</li>
-                                                                                                                                                                                                <li>status</li>
-                                                                                                                                                                                                <li>device_role</li>
-                                                                                                                                                                                                <li>site</li>
-                                                                                    </ul>
-                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
+                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
-                                            <div>List of data paths to group the hosts.</div>
+                                            <div>List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)</div>
+                                            <div>The final value returned by each path is used to derive group names and then group the devices into these groups.</div>
+                                            <div>Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)</div>
+                                            <div>If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)</div>
                                                         </td>
             </tr>
                                 <tr>
@@ -183,14 +200,15 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>networktocode.nautobot.gql_inventory</li>
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Setting that ensures this is a source file for the &#x27;networktocode.nautobot&#x27; plugin.</div>
                                                         </td>
@@ -203,12 +221,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">{}</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>GraphQL query to send to Nautobot to obtain desired data</div>
                                                         </td>
@@ -221,12 +240,13 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                     <b>Default:</b><br/><div style="color: blue">60</div>
                                     </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Timeout for Nautobot requests in seconds</div>
                                                         </td>
@@ -239,14 +259,16 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                  / <span style="color: red">required</span>                    </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                             </td>
                                                     <td>
                                                                             <div>
                                 env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                                    </td>
+                                                                	
+                            </div>
+                                                                                            </td>
                                                 <td>
                                             <div>Nautobot API token to be able to read against Nautobot.</div>
                                             <div>This may not be required depending on the Nautobot setup.</div>
@@ -260,7 +282,8 @@ Parameters
                     <div style="font-size: small">
                         <span style="color: purple">boolean</span>
                                                                     </div>
-                                                        </td>
+                                                              	
+                                    </td>
                                 <td>
                                                                                                                                                                                                                     <ul style="margin: 0; padding: 0"><b>Choices:</b>
                                                                                                                                                                 <li>no</li>
@@ -268,13 +291,16 @@ Parameters
                                                                                     </ul>
                                                                             </td>
                                                     <td>
-                                                                                            </td>
+                                                                                                                    </td>
                                                 <td>
                                             <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
                                                         </td>
             </tr>
                         </table>
     <br/>
+
+.. Attributes
+
 
 .. Notes
 
@@ -289,7 +315,7 @@ Examples
 
 .. code-block:: yaml+jinja
 
-
+    
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
 
@@ -301,23 +327,13 @@ Examples
       tags: name
 
     # To group by use group_by key
-    # Please see choices for supported group_by options.
-    plugin: networktocode.nautobot.gql_inventory
-    api_endpoint: http://localhost:8000
-    validate_certs: True
-    group_by:
-      - platform
-
-    # To group by use group_by key
     # Specify the full path to the data you would like to use to group by.
-    # Note. If you pass in a single string rather than a path, the plugin will automatically try to find a name or slug value.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
     group_by:
-    - tenant.name
-    - status.slug
-
+      - tenant.name
+      - status.slug
 
     # Add additional variables
     plugin: networktocode.nautobot.gql_inventory

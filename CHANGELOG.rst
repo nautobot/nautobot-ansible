@@ -5,6 +5,20 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.3.0
+======
+
+Release Summary
+---------------
+
+GraphQL Inventory Group Customization
+
+Minor Changes
+-------------
+
+- (#115) Documentation fixes
+- (#110) Allow users to define any path for defining GroupBy Group names
+
 v3.2.1
 ======
 
