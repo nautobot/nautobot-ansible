@@ -251,7 +251,9 @@ msg:
 """
 
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_PREFIXES,
@@ -291,7 +293,9 @@ def main():
         ("first_available", "yes", ["parent"]),
     ]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
+    )
 
     prefix = NautobotIpamModule(module, NB_PREFIXES, remove_keys=["first_available"])
     prefix.run()

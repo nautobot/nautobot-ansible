@@ -43,7 +43,10 @@ def test_query_api_query_error_none(nautobot_valid_args):
     with pytest.raises(AnsibleError) as exc:
         test_class = nautobot_action_graphql(args=nautobot_valid_args)
 
-    assert str(exc.value) == "Query parameter was not passed. Please verify that query is passed."
+    assert (
+        str(exc.value)
+        == "Query parameter was not passed. Please verify that query is passed."
+    )
 
 
 def test_query_api_query_error_dictionary(nautobot_valid_args):
@@ -51,13 +54,21 @@ def test_query_api_query_error_dictionary(nautobot_valid_args):
     with pytest.raises(AnsibleError) as exc:
         test_class = nautobot_action_graphql(args=nautobot_valid_args)
 
-    assert str(exc.value) == "Query parameter must be of type string. Please see docs for examples."
+    assert (
+        str(exc.value)
+        == "Query parameter must be of type string. Please see docs for examples."
+    )
 
 
-def test_query_api_query_variables_wrong_type(nautobot_valid_args, graphql_test_query_with_var):
+def test_query_api_query_variables_wrong_type(
+    nautobot_valid_args, graphql_test_query_with_var
+):
     nautobot_valid_args["query"] = graphql_test_query_with_var
     nautobot_valid_args["graph_variables"] = ["ntc"]
     with pytest.raises(AnsibleError) as exc:
         test_result = nautobot_action_graphql(args=nautobot_valid_args)
 
-    assert str(exc.value) == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
+    assert (
+        str(exc.value)
+        == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
+    )

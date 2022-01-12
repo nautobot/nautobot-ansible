@@ -15,9 +15,15 @@ from unittest.mock import patch, MagicMock, Mock
 from ansible.module_utils.basic import AnsibleModule
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotModule
-    from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import NB_DEVICES
-    from ansible_collections.networktocode.nautobot.tests.test_data import load_test_data
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+        NautobotModule,
+    )
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+        NB_DEVICES,
+    )
+    from ansible_collections.networktocode.nautobot.tests.test_data import (
+        load_test_data,
+    )
 
     MOCKER_PATCH_PATH = "ansible_collections.networktocode.nautobot.plugins.module_utils.utils.NautobotModule"
 except ImportError:
@@ -34,7 +40,9 @@ except ImportError:
 
     MOCKER_PATCH_PATH = "utils.NautobotModule"
 
-load_relative_test_data = partial(load_test_data, os.path.dirname(os.path.abspath(__file__)))
+load_relative_test_data = partial(
+    load_test_data, os.path.dirname(os.path.abspath(__file__))
+)
 
 
 @pytest.fixture
@@ -109,12 +117,16 @@ def endpoint_mock(mocker, obj_mock):
 
 @pytest.fixture
 def on_creation_diff(mock_module):
-    return mock_module._build_diff(before={"state": "absent"}, after={"state": "present"})
+    return mock_module._build_diff(
+        before={"state": "absent"}, after={"state": "present"}
+    )
 
 
 @pytest.fixture
 def on_deletion_diff(mock_module):
-    return mock_module._build_diff(before={"state": "present"}, after={"state": "absent"})
+    return mock_module._build_diff(
+        before={"state": "present"}, after={"state": "absent"}
+    )
 
 
 @pytest.fixture
@@ -138,7 +150,9 @@ def changed_serialized_obj(obj_mock):
 
 @pytest.fixture
 def on_update_diff(mock_module, obj_mock, changed_serialized_obj):
-    return mock_module._build_diff(before={"name": "Test Device1"}, after={"name": "Test Device1 (modified)"})
+    return mock_module._build_diff(
+        before={"name": "Test Device1"}, after={"name": "Test Device1 (modified)"}
+    )
 
 
 def test_init(mock_module, find_ids_return):
@@ -175,9 +189,13 @@ def test_find_app_returns_valid_app(mock_module, endpoint, app):
     )
 
 
-@pytest.mark.parametrize("endpoint, data, expected", load_relative_test_data("choices_id"))
+@pytest.mark.parametrize(
+    "endpoint, data, expected", load_relative_test_data("choices_id")
+)
 def test_change_choices_id(mocker, mock_module, endpoint, data, expected):
-    fetch_choice_value = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value"))
+    fetch_choice_value = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value")
+    )
     fetch_choice_value.return_value = "temp"
     new_data = mock_module._change_choices_id(endpoint, data)
     assert new_data == expected
@@ -187,8 +205,12 @@ def test_change_choices_id(mocker, mock_module, endpoint, data, expected):
     "parent, module_data, expected",
     load_relative_test_data("build_query_params_no_child"),
 )
-def test_build_query_params_no_child(mock_module, mocker, parent, module_data, expected):
-    get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))
+def test_build_query_params_no_child(
+    mock_module, mocker, parent, module_data, expected
+):
+    get_query_param_id = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id")
+    )
     get_query_param_id.return_value = 1
     query_params = mock_module._build_query_params(parent, module_data)
     assert query_params == expected
@@ -198,11 +220,17 @@ def test_build_query_params_no_child(mock_module, mocker, parent, module_data, e
     "parent, module_data, child, expected",
     load_relative_test_data("build_query_params_child"),
 )
-def test_build_query_params_child(mock_module, mocker, parent, module_data, child, expected):
-    get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))
+def test_build_query_params_child(
+    mock_module, mocker, parent, module_data, child, expected
+):
+    get_query_param_id = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id")
+    )
     get_query_param_id.return_value = 1
     # This will need to be updated, but attempting to fix issue quickly
-    fetch_choice_value = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value"))
+    fetch_choice_value = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value")
+    )
     fetch_choice_value.return_value = 200
 
     query_params = mock_module._build_query_params(parent, module_data, child=child)
@@ -213,14 +241,22 @@ def test_build_query_params_child(mock_module, mocker, parent, module_data, chil
     "parent, module_data, user_query_params, expected",
     load_relative_test_data("build_query_params_user_query_params"),
 )
-def test_build_query_params_user_query_params(mock_module, mocker, parent, module_data, user_query_params, expected):
-    get_query_param_id = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id"))
+def test_build_query_params_user_query_params(
+    mock_module, mocker, parent, module_data, user_query_params, expected
+):
+    get_query_param_id = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._get_query_param_id")
+    )
     get_query_param_id.return_value = 1
     # This will need to be updated, but attempting to fix issue quickly
-    fetch_choice_value = mocker.patch("%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value"))
+    fetch_choice_value = mocker.patch(
+        "%s%s" % (MOCKER_PATCH_PATH, "._fetch_choice_value")
+    )
     fetch_choice_value.return_value = 200
 
-    query_params = mock_module._build_query_params(parent, module_data, user_query_params)
+    query_params = mock_module._build_query_params(
+        parent, module_data, user_query_params
+    )
     assert query_params == expected
 
 
@@ -232,7 +268,9 @@ def test_build_diff_returns_valid_diff(mock_module):
     assert diff == {"before": before, "after": after}
 
 
-def test_create_object_check_mode_false(mock_module, endpoint_mock, normalized_data, on_creation_diff):
+def test_create_object_check_mode_false(
+    mock_module, endpoint_mock, normalized_data, on_creation_diff
+):
     return_value = endpoint_mock.create().serialize()
     serialized_obj, diff = mock_module._create_object(endpoint_mock, normalized_data)
     assert endpoint_mock.create.called_once_with(normalized_data)
@@ -240,7 +278,9 @@ def test_create_object_check_mode_false(mock_module, endpoint_mock, normalized_d
     assert diff == on_creation_diff
 
 
-def test_create_object_check_mode_true(mock_module, endpoint_mock, normalized_data, on_creation_diff):
+def test_create_object_check_mode_true(
+    mock_module, endpoint_mock, normalized_data, on_creation_diff
+):
     mock_module.check_mode = True
     serialized_obj, diff = mock_module._create_object(endpoint_mock, normalized_data)
     assert endpoint_mock.create.not_called()
@@ -272,7 +312,9 @@ def test_update_object_no_changes(mock_module, obj_mock):
     assert diff is None
 
 
-def test_update_object_with_changes_check_mode_false(mock_module, obj_mock, changed_serialized_obj, on_update_diff):
+def test_update_object_with_changes_check_mode_false(
+    mock_module, obj_mock, changed_serialized_obj, on_update_diff
+):
     mock_module.nb_object = obj_mock
     serialized_obj, diff = mock_module._update_object(changed_serialized_obj)
     assert obj_mock.update.called_once_with(changed_serialized_obj)
@@ -280,7 +322,9 @@ def test_update_object_with_changes_check_mode_false(mock_module, obj_mock, chan
     assert diff == on_update_diff
 
 
-def test_update_object_with_changes_check_mode_true(mock_module, obj_mock, changed_serialized_obj, on_update_diff):
+def test_update_object_with_changes_check_mode_true(
+    mock_module, obj_mock, changed_serialized_obj, on_update_diff
+):
     mock_module.nb_object = obj_mock
     mock_module.check_mode = True
     updated_serialized_obj = obj_mock.serialize().copy()

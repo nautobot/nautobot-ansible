@@ -67,7 +67,9 @@ def docker_compose(context, command, **kwargs):
     }
     compose_command = f'docker-compose --project-name {context.nautobot_ansible.project_name} --project-directory "{context.nautobot_ansible.compose_dir}"'
     for compose_file in context.nautobot_ansible.compose_files:
-        compose_file_path = os.path.join(context.nautobot_ansible.compose_dir, compose_file)
+        compose_file_path = os.path.join(
+            context.nautobot_ansible.compose_dir, compose_file
+        )
         compose_command += f' -f "{compose_file_path}"'
     compose_command += f" {command}"
     print(f'Running docker-compose command "{command}"')
@@ -152,7 +154,11 @@ def createsuperuser(context, user="admin"):
     run_command(context, command)
 
 
-@task(help={"name": "name of the migration to be created; if unspecified, will autogenerate a name"})
+@task(
+    help={
+        "name": "name of the migration to be created; if unspecified, will autogenerate a name"
+    }
+)
 def makemigrations(context, name=""):
     """Perform makemigrations operation in Django."""
     command = "nautobot-server makemigrations my_plugin"

@@ -265,7 +265,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
     NB_IP_ADDRESSES,
@@ -280,7 +282,9 @@ def main():
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     # state choices present, absent, new
-    argument_spec["state"] = dict(required=False, default="present", choices=["present", "absent", "new"])
+    argument_spec["state"] = dict(
+        required=False, default="present", choices=["present", "absent", "new"]
+    )
     argument_spec.update(
         dict(
             address=dict(required=False, type="str"),
@@ -291,7 +295,16 @@ def main():
             role=dict(
                 required=False,
                 type="str",
-                choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],
+                choices=[
+                    "Loopback",
+                    "Secondary",
+                    "Anycast",
+                    "VIP",
+                    "VRRP",
+                    "HSRP",
+                    "GLBP",
+                    "CARP",
+                ],
             ),
             description=dict(required=False, type="str"),
             nat_inside=dict(required=False, type="raw"),

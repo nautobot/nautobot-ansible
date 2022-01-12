@@ -152,7 +152,9 @@ def get_endpoint(nautobot, term):
         "config-contexts": {"endpoint": nautobot.extras.config_contexts},
         "console-connections": {"endpoint": nautobot.dcim.console_connections},
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
-        "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
+        "console-server-port-templates": {
+            "endpoint": nautobot.dcim.console_server_port_templates
+        },
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
@@ -268,7 +270,11 @@ def make_call(endpoint, filters=None):
             results = endpoint.all()
     except pynautobot.RequestError as e:
         if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError("{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(e.error))
+            raise AnsibleError(
+                "{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(
+                    e.error
+                )
+            )
         else:
             raise AnsibleError(e.error)
 
@@ -319,15 +325,23 @@ class LookupModule(LookupBase):
                 try:
                     endpoint = get_endpoint(nautobot, term)
                 except KeyError:
-                    raise AnsibleError("Unrecognised term %s. Check documentation" % term)
+                    raise AnsibleError(
+                        "Unrecognised term %s. Check documentation" % term
+                    )
 
-            Display().vvvv("Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter))
+            Display().vvvv(
+                "Nautobot lookup for %s to %s using token %s filter %s"
+                % (term, api_endpoint, api_token, api_filter)
+            )
 
             if api_filter:
                 filter = build_filters(api_filter)
 
                 if "id" in filter:
-                    Display().vvvv("Filter is: %s and includes id, will use .get instead of .filter" % (filter))
+                    Display().vvvv(
+                        "Filter is: %s and includes id, will use .get instead of .filter"
+                        % (filter)
+                    )
                     try:
                         id = int(filter["id"][0])
                         data = endpoint.get(id)

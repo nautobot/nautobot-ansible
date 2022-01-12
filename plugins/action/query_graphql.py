@@ -61,28 +61,39 @@ def nautobot_action_graphql(args):
 
     # Check that a valid query was passed in
     if query is None:
-        raise AnsibleError("Query parameter was not passed. Please verify that query is passed.")
+        raise AnsibleError(
+            "Query parameter was not passed. Please verify that query is passed."
+        )
 
     # Verify that the query is a string type
     if not isinstance(query, str):
-        raise AnsibleError("Query parameter must be of type string. Please see docs for examples.")
+        raise AnsibleError(
+            "Query parameter must be of type string. Please see docs for examples."
+        )
 
     # Verify that the variables key coming in is a dictionary
     if graph_variables is not None and not isinstance(graph_variables, dict):
-        raise AnsibleError("graph_variables parameter must be of key/value pairs. Please see docs for examples.")
+        raise AnsibleError(
+            "graph_variables parameter must be of key/value pairs. Please see docs for examples."
+        )
 
     # Setup return results
     results = {"url": url, "query": query, "graph_variables": graph_variables}
 
     # Make call to Nautobot API and capture any failures
-    nautobot_graph_obj = NautobotGraphQL(query_str=query, api=nautobot_api, variables=graph_variables)
+    nautobot_graph_obj = NautobotGraphQL(
+        query_str=query, api=nautobot_api, variables=graph_variables
+    )
 
     # Get the response from the object
     nautobot_response = nautobot_graph_obj.query()
 
     # Check for errors in the response
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLException):
-        raise AnsibleError("Error in the query to the Nautobot host. Errors: %s" % (nautobot_response.errors))
+        raise AnsibleError(
+            "Error in the query to the Nautobot host. Errors: %s"
+            % (nautobot_response.errors)
+        )
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):

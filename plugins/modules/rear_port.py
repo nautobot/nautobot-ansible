@@ -162,7 +162,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_REAR_PORTS,
@@ -182,7 +184,22 @@ def main():
             name=dict(required=True, type="str"),
             type=dict(
                 required=True,
-                choices=["8p8c", "110-punch", "bnc", "mrj21", "fc", "lc", "lc-apc", "lsh", "lsh-apc", "mpo", "mtrj", "sc", "sc-apc", "st"],
+                choices=[
+                    "8p8c",
+                    "110-punch",
+                    "bnc",
+                    "mrj21",
+                    "fc",
+                    "lc",
+                    "lc-apc",
+                    "lsh",
+                    "lsh-apc",
+                    "mpo",
+                    "mtrj",
+                    "sc",
+                    "sc-apc",
+                    "st",
+                ],
                 type="str",
             ),
             positions=dict(required=False, type="int"),

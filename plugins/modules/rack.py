@@ -225,7 +225,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_RACKS,
@@ -253,7 +255,13 @@ def main():
             type=dict(
                 required=False,
                 type="str",
-                choices=["2-post frame", "4-post frame", "4-post cabinet", "Wall-mounted frame", "Wall-mounted cabinet"],
+                choices=[
+                    "2-post frame",
+                    "4-post frame",
+                    "4-post cabinet",
+                    "Wall-mounted frame",
+                    "Wall-mounted cabinet",
+                ],
             ),
             width=dict(required=False, type="int", choices=[10, 19, 21, 23]),
             u_height=dict(required=False, type="int"),
@@ -276,7 +284,9 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
+    )
 
     rack = NautobotDcimModule(module, NB_RACKS)
     rack.run()

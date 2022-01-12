@@ -16,7 +16,9 @@ except ImportError:
 
 def test_setup_api_error_missing_url():
     with pytest.raises(AnsibleLookupError) as exc:
-        test_class = nautobot_lookup_graphql(query="", token="abc123", validate_certs=False)
+        test_class = nautobot_lookup_graphql(
+            query="", token="abc123", validate_certs=False
+        )
 
     assert str(exc.value) == "Missing URL of Nautobot"
 
@@ -43,7 +45,10 @@ def test_query_api_query_error_none(nautobot_url):
             variables=None,
         )
 
-    assert str(exc.value) == "Query parameter was not passed. Please verify that query is passed."
+    assert (
+        str(exc.value)
+        == "Query parameter was not passed. Please verify that query is passed."
+    )
 
 
 def test_query_api_query_error_dictionary(nautobot_url):
@@ -56,10 +61,15 @@ def test_query_api_query_error_dictionary(nautobot_url):
             variables=None,
         )
 
-    assert str(exc.value) == "Query parameter must be of type string. Please see docs for examples."
+    assert (
+        str(exc.value)
+        == "Query parameter must be of type string. Please see docs for examples."
+    )
 
 
-def test_query_api_query_variables_wrong_type(graphql_test_query_with_var, nautobot_url):
+def test_query_api_query_variables_wrong_type(
+    graphql_test_query_with_var, nautobot_url
+):
     with pytest.raises(AnsibleError) as exc:
         test_class = nautobot_lookup_graphql(
             url=nautobot_url,
@@ -69,4 +79,7 @@ def test_query_api_query_variables_wrong_type(graphql_test_query_with_var, nauto
             graph_variables=["ntc"],
         )
 
-    assert str(exc.value) == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
+    assert (
+        str(exc.value)
+        == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
+    )
