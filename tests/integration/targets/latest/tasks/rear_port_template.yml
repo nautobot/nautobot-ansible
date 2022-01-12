@@ -7,14 +7,17 @@
 ### PYNAUTOBOT_REAR_PORT_TEMPLATE
 ##
 ##
+- set_fact:
+    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
+    arista_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=arista-test') }}"
+
 - name: "REAR_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template
-      device_type: Cisco Test
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template
+    device_type: Cisco Test
+    type: bnc
     state: present
   register: test_one
 
@@ -25,18 +28,17 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['rear_port_template']['name'] == "Rear Port Template"
-      - test_one['rear_port_template']['device_type'] == 1
+      - test_one['rear_port_template']['device_type'] == cisco_test['key']
       - test_one['rear_port_template']['type'] == "bnc"
       - test_one['msg'] == "rear_port_template Rear Port Template created"
 
 - name: "REAR_PORT_TEMPLATE 2: Create duplicate"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template
-      device_type: Cisco Test
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template
+    device_type: Cisco Test
+    type: bnc
     state: present
   register: test_two
 
@@ -45,19 +47,18 @@
     that:
       - not test_two['changed']
       - test_two['rear_port_template']['name'] == "Rear Port Template"
-      - test_two['rear_port_template']['device_type'] == 1
+      - test_two['rear_port_template']['device_type'] == cisco_test['key']
       - test_two['rear_port_template']['type'] == "bnc"
       - test_two['msg'] == "rear_port_template Rear Port Template already exists"
 
 - name: "REAR_PORT_TEMPLATE 3: Update Rear Port Template with other fields"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template
-      device_type: Cisco Test
-      type: bnc
-      positions: 5
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template
+    device_type: Cisco Test
+    type: bnc
+    positions: 5
     state: present
   register: test_three
 
@@ -67,19 +68,18 @@
       - test_three is changed
       - test_three['diff']['after']['positions'] == 5
       - test_three['rear_port_template']['name'] == "Rear Port Template"
-      - test_three['rear_port_template']['device_type'] == 1
+      - test_three['rear_port_template']['device_type'] == cisco_test['key']
       - test_three['rear_port_template']['type'] == "bnc"
       - test_three['rear_port_template']['positions'] == 5
       - test_three['msg'] == "rear_port_template Rear Port Template updated"
 
 - name: "REAR_PORT_TEMPLATE 4: Create Rear Port Template for Delete Test"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template 2
-      device_type: Cisco Test
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template 2
+    device_type: Cisco Test
+    type: bnc
     state: present
   register: test_four
 
@@ -90,18 +90,17 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['rear_port_template']['name'] == "Rear Port Template 2"
-      - test_four['rear_port_template']['device_type'] == 1
+      - test_four['rear_port_template']['device_type'] == cisco_test['key']
       - test_four['rear_port_template']['type'] == "bnc"
       - test_four['msg'] == "rear_port_template Rear Port Template 2 created"
 
 - name: "REAR_PORT_TEMPLATE 5: Delete Rear Port Template"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template 2
-      device_type: Cisco Test
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template 2
+    device_type: Cisco Test
+    type: bnc
     state: absent
   register: test_five
 
@@ -115,12 +114,11 @@
 
 - name: "REAR_PORT_TEMPLATE 6: Create second Rear Port Template"
   networktocode.nautobot.rear_port_template:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: Rear Port Template 2
-      device_type: Arista Test
-      type: bnc
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port Template 2
+    device_type: Arista Test
+    type: bnc
     state: present
   register: test_six
 
@@ -131,6 +129,6 @@
       - test_six['diff']['before']['state'] == "absent"
       - test_six['diff']['after']['state'] == "present"
       - test_six['rear_port_template']['name'] == "Rear Port Template 2"
-      - test_six['rear_port_template']['device_type'] == 2
+      - test_six['rear_port_template']['device_type'] == arista_test['key']
       - test_six['rear_port_template']['type'] == "bnc"
       - test_six['msg'] == "rear_port_template Rear Port Template 2 created"

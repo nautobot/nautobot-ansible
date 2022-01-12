@@ -2,6 +2,16 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.ip_address_module:
@@ -20,9 +30,13 @@ networktocode.nautobot.ip_address -- Creates or removes IP addresses from Nautob
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.ip_address`.
 
@@ -66,34 +80,21 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="3">Parameter</th>
+            <th colspan="2">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the IP address configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/address"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-address"></div>
                     <b>address</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/address" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-address" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -102,14 +103,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/assigned_object"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-assigned_object"></div>
                     <b>assigned_object</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/assigned_object" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-assigned_object" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -119,11 +122,10 @@ Parameters
             </tr>
                                         <tr>
                                                     <td class="elbow-placeholder"></td>
-                                    <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/assigned_object/device"></div>
+                    <div class="ansibleOptionAnchor" id="parameter-assigned_object/device"></div>
                     <b>device</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/assigned_object/device" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-assigned_object/device" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -136,11 +138,10 @@ Parameters
             </tr>
                                 <tr>
                                                     <td class="elbow-placeholder"></td>
-                                    <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/assigned_object/name"></div>
+                    <div class="ansibleOptionAnchor" id="parameter-assigned_object/name"></div>
                     <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/assigned_object/name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-assigned_object/name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -153,11 +154,10 @@ Parameters
             </tr>
                                 <tr>
                                                     <td class="elbow-placeholder"></td>
-                                    <td class="elbow-placeholder"></td>
                                                 <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/assigned_object/virtual_machine"></div>
+                    <div class="ansibleOptionAnchor" id="parameter-assigned_object/virtual_machine"></div>
                     <b>virtual_machine</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/assigned_object/virtual_machine" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-assigned_object/virtual_machine" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
@@ -170,14 +170,16 @@ Parameters
             </tr>
                     
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/custom_fields"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
                     <b>custom_fields</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/custom_fields" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">dictionary</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -186,14 +188,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
                     <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -202,14 +206,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/dns_name"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-dns_name"></div>
                     <b>dns_name</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/dns_name" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-dns_name" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -218,35 +224,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/family"></div>
-                    <b>family</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/family" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>4</li>
-                                                                                                                                                                                                <li>6</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>(DEPRECATED) - Nautobot now handles determining the IP family natively.</div>
-                                            <div>Specifies with address family the IP address belongs to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/nat_inside"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-nat_inside"></div>
                     <b>nat_inside</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/nat_inside" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-nat_inside" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -255,14 +242,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/prefix"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-prefix"></div>
                     <b>prefix</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/prefix" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-prefix" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -279,14 +268,36 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/role"></div>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
+                    <b>query_params</b>
+                    <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=string</span>                                            </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined</div>
+                                            <div>in plugins/module_utils/utils.py and provides control to users on what may make</div>
+                                            <div>an object unique in their environment.</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-role"></div>
                     <b>role</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/role" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                             <ul style="margin: 0; padding: 0"><b>Choices:</b>
@@ -305,89 +316,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/status"></div>
-                    <b>status</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/status" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The status of the IP address</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Any tags that the IP address may need to be associated with</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/tenant"></div>
-                    <b>tenant</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/tenant" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The tenant that the device will be assigned to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data/vrf"></div>
-                    <b>vrf</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/vrf" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>VRF that IP address is associated with</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="3">
-                    <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
-                    <b>query_params</b>
-                    <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined</div>
-                                            <div>in plugins/module_utils/utils.py and provides control to users on what may make</div>
-                                            <div>an object unique in their environment.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -410,7 +339,62 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-status"></div>
+                    <b>status</b>
+                    <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The status of the IP address</div>
+                                            <div>Required if <em>state=present</em> and does not exist yet</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+                    <b>tags</b>
+                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">list</span>
+                         / <span style="color: purple">elements=raw</span>                                            </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>Any tags that the IP address may need to be associated with</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
+                    <b>tenant</b>
+                    <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The tenant that the device will be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -425,7 +409,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -440,7 +424,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="3">
+                                                                <td colspan="2">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -455,8 +439,29 @@ Parameters
                                             <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.</div>
                                                         </td>
             </tr>
+                                <tr>
+                                                                <td colspan="2">
+                    <div class="ansibleOptionAnchor" id="parameter-vrf"></div>
+                    <b>vrf</b>
+                    <a class="ansibleOptionLink" href="#parameter-vrf" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>VRF that IP address is associated with</div>
+                                                        </td>
+            </tr>
                         </table>
     <br/>
+
+.. Attributes
+
 
 .. Notes
 
@@ -488,81 +493,73 @@ Examples
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              address: 192.168.1.10
-              status: active
+            address: 192.168.1.10
+            status: active
             state: present
         - name: Force to create (even if it already exists) the IP
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              address: 192.168.1.10
+            address: 192.168.1.10
             state: new
         - name: Get a new available IP inside 192.168.1.0/24
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              prefix: 192.168.1.0/24
+            prefix: 192.168.1.0/24
             state: new
         - name: Delete IP address within nautobot
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              address: 192.168.1.10
+            address: 192.168.1.10
             state: absent
         - name: Create IP address with several specified options
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              family: 4
-              address: 192.168.1.20
-              vrf: Test
-              tenant: Test Tenant
-              status: Reserved
-              role: Loopback
-              description: Test description
-              tags:
-                - Schnozzberry
+            family: 4
+            address: 192.168.1.20
+            vrf: Test
+            tenant: Test Tenant
+            status: Reserved
+            role: Loopback
+            description: Test description
+            tags:
+              - Schnozzberry
             state: present
         - name: Create IP address and assign a nat_inside IP
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              family: 4
-              address: 192.168.1.30
+            family: 4
+            address: 192.168.1.30
+            vrf: Test
+            nat_inside:
+              address: 192.168.1.20
               vrf: Test
-              nat_inside:
-                address: 192.168.1.20
-                vrf: Test
-              assigned_object:
-                name: GigabitEthernet1
-                device: test100
+            assigned_object:
+              name: GigabitEthernet1
+              device: test100
         - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              prefix: 192.168.1.0/24
-              vrf: Test
-              assigned_object:
-                name: GigabitEthernet1
-                device: test100
+            prefix: 192.168.1.0/24
+            vrf: Test
+            assigned_object:
+              name: GigabitEthernet1
+              device: test100
             state: present
         - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              prefix: 192.168.1.0/24
-              vrf: Test
-              assigned_object:
-                name: GigabitEthernet1
-                device: test100
+            prefix: 192.168.1.0/24
+            vrf: Test
+            assigned_object:
+              name: GigabitEthernet1
+              device: test100
             state: new
 
 
@@ -598,7 +595,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                 <td>
                                             <div>Serialized object as created or already existent within Nautobot</div>
                                         <br/>
-                                    </td>
+                                                        </td>
             </tr>
                                 <tr>
                                 <td colspan="1">
@@ -613,7 +610,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                 <td>
                                             <div>Message indicating failure or info about what has been achieved</div>
                                         <br/>
-                                    </td>
+                                                        </td>
             </tr>
                         </table>
     <br/><br/>
@@ -626,7 +623,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
+- Mikhail Yohman (@FragmentedPacket)
 - Anthony Ruhier (@Anthony25)
 
 

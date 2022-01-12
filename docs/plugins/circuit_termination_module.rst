@@ -2,6 +2,16 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.circuit_termination_module:
@@ -20,9 +30,13 @@ networktocode.nautobot.circuit_termination -- Create, update or delete circuit t
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 1.0.4).
+    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.circuit_termination`.
 
@@ -66,34 +80,21 @@ Parameters
 
     <table  border=0 cellpadding=0 class="documentation-table">
         <tr>
-            <th colspan="2">Parameter</th>
+            <th colspan="1">Parameter</th>
             <th>Choices/<font color="blue">Defaults</font></th>
                         <th width="100%">Comments</th>
         </tr>
                     <tr>
-                                                                <td colspan="2">
-                    <div class="ansibleOptionAnchor" id="parameter-data"></div>
-                    <b>data</b>
-                    <a class="ansibleOptionLink" href="#parameter-data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Defines the circuit termination configuration</div>
-                                                        </td>
-            </tr>
-                                        <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/circuit"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-circuit"></div>
                     <b>circuit</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/circuit" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-circuit" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">raw</span>
                                                  / <span style="color: red">required</span>                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -102,14 +103,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/description"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-description"></div>
                     <b>description</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/description" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -118,14 +121,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/port_speed"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-port_speed"></div>
                     <b>port_speed</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/port_speed" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-port_speed" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">integer</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -134,14 +139,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/pp_info"></div>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-pp_info"></div>
                     <b>pp_info</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/pp_info" title="Permalink to this option"></a>
+                    <a class="ansibleOptionLink" href="#parameter-pp_info" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">string</span>
                                                                     </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -150,82 +157,16 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/site"></div>
-                    <b>site</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/site" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The site the circuit termination will be assigned to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/term_side"></div>
-                    <b>term_side</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/term_side" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>A</li>
-                                                                                                                                                                                                <li>Z</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>The side of the circuit termination</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/upstream_speed"></div>
-                    <b>upstream_speed</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/upstream_speed" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The upstream speed of the circuit termination</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                    <td class="elbow-placeholder"></td>
-                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-data/xconnect_id"></div>
-                    <b>xconnect_id</b>
-                    <a class="ansibleOptionLink" href="#parameter-data/xconnect_id" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The cross connect ID of the circuit termination</div>
-                                                        </td>
-            </tr>
-                    
-                                <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
                     <b>query_params</b>
                     <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
                     <div style="font-size: small">
                         <span style="color: purple">list</span>
                          / <span style="color: purple">elements=string</span>                                            </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
                                                         </td>
                                 <td>
                                                                                                                                                             </td>
@@ -236,7 +177,25 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-site"></div>
+                    <b>site</b>
+                    <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">raw</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The site the circuit termination will be assigned to</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-state"></div>
                     <b>state</b>
                     <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
@@ -255,7 +214,29 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-term_side"></div>
+                    <b>term_side</b>
+                    <a class="ansibleOptionLink" href="#parameter-term_side" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                 / <span style="color: red">required</span>                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
+                                                                                                                                                                <li>A</li>
+                                                                                                                                                                                                <li>Z</li>
+                                                                                    </ul>
+                                                                            </td>
+                                                                <td>
+                                            <div>The side of the circuit termination</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-token"></div>
                     <b>token</b>
                     <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
@@ -270,7 +251,25 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-upstream_speed"></div>
+                    <b>upstream_speed</b>
+                    <a class="ansibleOptionLink" href="#parameter-upstream_speed" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">integer</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The upstream speed of the circuit termination</div>
+                                                        </td>
+            </tr>
+                                <tr>
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-url"></div>
                     <b>url</b>
                     <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
@@ -285,7 +284,7 @@ Parameters
                                                         </td>
             </tr>
                                 <tr>
-                                                                <td colspan="2">
+                                                                <td colspan="1">
                     <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
                     <b>validate_certs</b>
                     <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
@@ -300,8 +299,29 @@ Parameters
                                             <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.</div>
                                                         </td>
             </tr>
+                                <tr>
+                                                                <td colspan="1">
+                    <div class="ansibleOptionAnchor" id="parameter-xconnect_id"></div>
+                    <b>xconnect_id</b>
+                    <a class="ansibleOptionLink" href="#parameter-xconnect_id" title="Permalink to this option"></a>
+                    <div style="font-size: small">
+                        <span style="color: purple">string</span>
+                                                                    </div>
+                                          <div style="font-style: italic; font-size: small; color: darkgreen">
+                        added in 3.0.0 of networktocode.nautobot
+                      </div>
+                                                        </td>
+                                <td>
+                                                                                                                                                            </td>
+                                                                <td>
+                                            <div>The cross connect ID of the circuit termination</div>
+                                                        </td>
+            </tr>
                         </table>
     <br/>
+
+.. Attributes
+
 
 .. Notes
 
@@ -333,33 +353,30 @@ Examples
           networktocode.nautobot.circuit_termination:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              circuit: Test Circuit
-              term_side: A
-              site: Test Site
-              port_speed: 10000
+            circuit: Test Circuit
+            term_side: A
+            site: Test Site
+            port_speed: 10000
             state: present
 
         - name: Update circuit termination with other fields
           networktocode.nautobot.circuit_termination:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              circuit: Test Circuit
-              term_side: A
-              upstream_speed: 1000
-              xconnect_id: 10X100
-              pp_info: PP10-24
-              description: "Test description"
+            circuit: Test Circuit
+            term_side: A
+            upstream_speed: 1000
+            xconnect_id: 10X100
+            pp_info: PP10-24
+            description: "Test description"
             state: present
 
         - name: Delete circuit termination within nautobot
           networktocode.nautobot.circuit_termination:
             url: http://nautobot.local
             token: thisIsMyToken
-            data:
-              circuit: Test Circuit
-              term_side: A
+            circuit: Test Circuit
+            term_side: A
             state: absent
 
 
@@ -395,7 +412,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                 <td>
                                             <div>Serialized object as created or already existent within Nautobot</div>
                                         <br/>
-                                    </td>
+                                                        </td>
             </tr>
                                 <tr>
                                 <td colspan="1">
@@ -410,7 +427,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
                 <td>
                                             <div>Message indicating failure or info about what has been achieved</div>
                                         <br/>
-                                    </td>
+                                                        </td>
             </tr>
                         </table>
     <br/><br/>
@@ -423,7 +440,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
+- Mikhail Yohman (@FragmentedPacket)
 
 
 

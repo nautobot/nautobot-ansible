@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -22,7 +23,7 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network to Code (@networktocode)
+  - Mikhail Yohman (@FragmentedPacket)
 requirements:
   - pynautobot
 version_added: "1.0.0"
@@ -37,85 +38,100 @@ options:
       - The token created within Nautobot to authorize API access
     required: true
     type: str
-  data:
+  device:
     description:
-      - Defines the interface configuration
-    suboptions:
-      device:
-        description:
-          - Name of the device the interface will be associated with (case-sensitive)
-        required: false
-        type: raw
-      name:
-        description:
-          - Name of the interface to be created
-        required: true
-        type: str
-      label:
-        description:
-          - Physical label of the interface
-        required: false
-        type: str
-      type:
-        description:
-          - |
-            Form factor of the interface:
-            ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
-            This has to be specified exactly as what is found within UI
-        required: false
-        type: str
-      enabled:
-        description:
-          - Sets whether interface shows enabled or disabled
-        required: false
-        type: bool
-      lag:
-        description:
-          - Parent LAG interface will be a member of
-        required: false
-        type: raw
-      mtu:
-        description:
-          - The MTU of the interface
-        required: false
-        type: int
-      mac_address:
-        description:
-          - The MAC address of the interface
-        required: false
-        type: str
-      mgmt_only:
-        description:
-          - This interface is used only for out-of-band management
-        required: false
-        type: bool
-      description:
-        description:
-          - The description of the interface
-        required: false
-        type: str
-      mode:
-        description:
-          - The mode of the interface
-        required: false
-        type: raw
-      untagged_vlan:
-        description:
-          - The untagged VLAN to be assigned to interface
-        required: false
-        type: raw
-      tagged_vlans:
-        description:
-          - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
-        required: false
-        type: raw
-      tags:
-        description:
-          - Any tags that the interface may need to be associated with
-        required: false
-        type: list
+      - Name of the device the interface will be associated with (case-sensitive)
     required: true
+    type: raw
+    version_added: "3.0.0"
+  name:
+    description:
+      - Name of the interface to be created
+    required: true
+    type: str
+    version_added: "3.0.0"
+  label:
+    description:
+      - Physical label of the interface
+    required: false
+    type: str
+    version_added: "3.0.0"
+  type:
+    description:
+      - |
+        Form factor of the interface:
+        ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
+        This has to be specified exactly as what is found within UI
+    required: false
+    type: str
+    version_added: "3.0.0"
+  enabled:
+    description:
+      - Sets whether interface shows enabled or disabled
+    required: false
+    type: bool
+    version_added: "3.0.0"
+  lag:
+    description:
+      - Parent LAG interface will be a member of
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  mtu:
+    description:
+      - The MTU of the interface
+    required: false
+    type: int
+    version_added: "3.0.0"
+  mac_address:
+    description:
+      - The MAC address of the interface
+    required: false
+    type: str
+    version_added: "3.0.0"
+  mgmt_only:
+    description:
+      - This interface is used only for out-of-band management
+    required: false
+    type: bool
+    version_added: "3.0.0"
+  description:
+    description:
+      - The description of the interface
+    required: false
+    type: str
+    version_added: "3.0.0"
+  mode:
+    description:
+      - The mode of the interface
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  untagged_vlan:
+    description:
+      - The untagged VLAN to be assigned to interface
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  tagged_vlans:
+    description:
+      - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
+    required: false
+    type: raw
+    version_added: "3.0.0"
+  tags:
+    description:
+      - Any tags that the interface may need to be associated with
+    required: false
+    type: list
+    elements: raw
+    version_added: "3.0.0"
+  custom_fields:
+    description:
+      - Allows modification of any custom tags on the interface. The custom field must already exist in the model
+    required: false
     type: dict
+    version_added: "3.0.0"
   update_vc_child:
     type: bool
     default: False
@@ -123,6 +139,7 @@ options:
       - |
         Use when master device is specified for C(device) and the specified interface exists on a child device
         and needs updated
+    version_added: "3.0.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -137,6 +154,7 @@ options:
     required: false
     type: list
     elements: str
+    version_added: "3.0.0"
   validate_certs:
     description:
       - |
@@ -156,75 +174,80 @@ EXAMPLES = r"""
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: GigabitEthernet1
+        device: test100
+        name: GigabitEthernet1
         state: present
     - name: Delete interface within nautobot
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: GigabitEthernet1
+        device: test100
+        name: GigabitEthernet1
         state: absent
     - name: Create LAG with several specified options
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: port-channel1
-          type: Link Aggregation Group (LAG)
-          mtu: 1600
-          mgmt_only: false
-          mode: Access
+        device: test100
+        name: port-channel1
+        type: Link Aggregation Group (LAG)
+        mtu: 1600
+        mgmt_only: false
+        mode: Access
         state: present
     - name: Create interface and assign it to parent LAG
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: GigabitEthernet1
-          enabled: false
-          type: 1000Base-t (1GE)
-          lag:
-            name: port-channel1
-          mtu: 1600
-          mgmt_only: false
-          mode: Access
+        device: test100
+        name: GigabitEthernet1
+        enabled: false
+        type: 1000Base-t (1GE)
+        lag:
+          name: port-channel1
+        mtu: 1600
+        mgmt_only: false
+        mode: Access
         state: present
     - name: Create interface as a trunk port
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: GigabitEthernet25
-          enabled: false
-          type: 1000Base-t (1GE)
-          untagged_vlan:
-            name: Wireless
+        device: test100
+        name: GigabitEthernet25
+        enabled: false
+        type: 1000Base-t (1GE)
+        untagged_vlan:
+          name: Wireless
+          site: Test Site
+        tagged_vlans:
+          - name: Data
             site: Test Site
-          tagged_vlans:
-            - name: Data
-              site: Test Site
-            - name: VoIP
-              site: Test Site
-          mtu: 1600
-          mgmt_only: true
-          mode: Tagged
+          - name: VoIP
+            site: Test Site
+        mtu: 1600
+        mgmt_only: true
+        mode: Tagged
         state: present
     - name: Update interface on child device on virtual chassis
       networktocode.nautobot.device_interface:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          device: test100
-          name: GigabitEthernet2/0/1
-          enabled: false
+        device: test100
+        name: GigabitEthernet2/0/1
+        enabled: false
         update_vc_child: True
+    - name: |
+        Create an interface and update custom_field data point,
+        setting the value to True
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: GigabitEthernet1/1/1
+        enabled: false
+        custom_fields:
+          monitored: True
 """
 
 RETURN = r"""
@@ -238,14 +261,12 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotAnsibleModule,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_INTERFACES,
 )
+from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
 
 
@@ -257,40 +278,27 @@ def main():
     argument_spec.update(
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
-            data=dict(
-                type="dict",
-                required=True,
-                options=dict(
-                    device=dict(required=False, type="raw"),
-                    name=dict(required=True, type="str"),
-                    label=dict(required=False, type="str"),
-                    type=dict(required=False, type="str"),
-                    enabled=dict(required=False, type="bool"),
-                    lag=dict(required=False, type="raw"),
-                    mtu=dict(required=False, type="int"),
-                    mac_address=dict(required=False, type="str"),
-                    mgmt_only=dict(required=False, type="bool"),
-                    description=dict(required=False, type="str"),
-                    mode=dict(required=False, type="raw"),
-                    untagged_vlan=dict(required=False, type="raw"),
-                    tagged_vlans=dict(required=False, type="raw"),
-                    tags=dict(required=False, type="list"),
-                ),
-            ),
+            device=dict(required=True, type="raw"),
+            name=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
+            type=dict(required=False, type="str"),
+            enabled=dict(required=False, type="bool"),
+            lag=dict(required=False, type="raw"),
+            mtu=dict(required=False, type="int"),
+            mac_address=dict(required=False, type="str"),
+            mgmt_only=dict(required=False, type="bool"),
+            description=dict(required=False, type="str"),
+            mode=dict(required=False, type="raw"),
+            untagged_vlan=dict(required=False, type="raw"),
+            tagged_vlans=dict(required=False, type="raw"),
+            tags=dict(required=False, type="list", elements="raw"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
-    required_if = [
-        ("state", "present", ["device", "name"]),
-        ("state", "absent", ["device", "name"]),
-        ("update_vc_child", True, ["device"]),
-    ]
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    module = NautobotAnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
-
-    device_interface = NautobotDcimModule(module, NB_INTERFACES)
+    device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
 
 

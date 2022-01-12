@@ -14,23 +14,19 @@ except ImportError:
 
 
 def test_setup_api_base():
-    test_class = NautobotApiBase(
-        url="https://nautobot.example.com", token="abc123", ssl_verify=False
-    )
+    test_class = NautobotApiBase(url="https://nautobot.example.com", token="abc123", ssl_verify=False)
     assert isinstance(test_class.api, pynautobot.api)
     assert test_class.url == "https://nautobot.example.com"
     assert test_class.token == "abc123"
-    assert test_class.ssl_verify == False
+    assert test_class.ssl_verify is False
 
 
 def test_setup_api_base_ssl_verify_true():
-    test_class = NautobotApiBase(
-        url="https://nautobot.example.com", token="abc123", ssl_verify=True
-    )
+    test_class = NautobotApiBase(url="https://nautobot.example.com", token="abc123", ssl_verify=True)
     assert isinstance(test_class.api, pynautobot.api)
     assert test_class.url == "https://nautobot.example.com"
     assert test_class.token == "abc123"
-    assert test_class.ssl_verify == True
+    assert test_class.ssl_verify is True
 
 
 def test_query_api_setup(nautobot_api_base, graphql_test_query):
@@ -41,9 +37,7 @@ def test_query_api_setup(nautobot_api_base, graphql_test_query):
     assert test_class.variables is None
 
 
-def test_query_api_setup_with_variable(
-    nautobot_api_base, graphql_test_query_with_var, graphql_test_variables
-):
+def test_query_api_setup_with_variable(nautobot_api_base, graphql_test_query_with_var, graphql_test_variables):
     test_class = NautobotGraphQL(
         query_str=graphql_test_query_with_var,
         api=nautobot_api_base,

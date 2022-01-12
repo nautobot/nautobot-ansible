@@ -13,9 +13,7 @@ except ImportError:
 
 @pytest.fixture
 def nautobot_api_base():
-    return NautobotApiBase(
-        url="https://nautobot.mock.com", token="abc123", valdiate_certs=False
-    )
+    return NautobotApiBase(url="https://nautobot.mock.com", token="abc123", valdiate_certs=False)
 
 
 @pytest.fixture
@@ -58,4 +56,5 @@ def nautobot_valid_args(graphql_test_query):
         "validate_certs": False,
         "query": graphql_test_query,
         "graph_variables": {},
+        "update_hostvars": False,
     }

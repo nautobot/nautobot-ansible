@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-
+# Copyright: (c) 2019. Chris Mills <chris@discreet-its.co.uk>
+# GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
 nautobot.py
@@ -18,9 +19,22 @@ from ansible.errors import AnsibleError
 from ansible.plugins.lookup import LookupBase
 from ansible.parsing.splitter import parse_kv, split_args
 from ansible.utils.display import Display
+from ansible.module_utils.six import raise_from
 
-import pynautobot
-import requests
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
+
+try:
+    import requests
+except ImportError as imp_exc:
+    REQUESTS_IMPORT_ERROR = imp_exc
+else:
+    REQUESTS_IMPORT_ERROR = None
+
 
 __metaclass__ = type
 
@@ -138,9 +152,7 @@ def get_endpoint(nautobot, term):
         "config-contexts": {"endpoint": nautobot.extras.config_contexts},
         "console-connections": {"endpoint": nautobot.dcim.console_connections},
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
-        "console-server-port-templates": {
-            "endpoint": nautobot.dcim.console_server_port_templates
-        },
+        "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
@@ -163,6 +175,7 @@ def get_endpoint(nautobot, term):
         "power-connections": {"endpoint": nautobot.dcim.power_connections},
         "power-outlet-templates": {"endpoint": nautobot.dcim.power_outlet_templates},
         "power-outlets": {"endpoint": nautobot.dcim.power_outlets},
+        "power-panels": {"endpoint": nautobot.dcim.power_panels},
         "power-port-templates": {"endpoint": nautobot.dcim.power_port_templates},
         "power-ports": {"endpoint": nautobot.dcim.power_ports},
         "prefixes": {"endpoint": nautobot.ipam.prefixes},
@@ -178,6 +191,7 @@ def get_endpoint(nautobot, term):
         "roles": {"endpoint": nautobot.ipam.roles},
         "services": {"endpoint": nautobot.ipam.services},
         "sites": {"endpoint": nautobot.dcim.sites},
+        "statuses": {"endpoint": nautobot.extras.statuses},
         "tags": {"endpoint": nautobot.extras.tags},
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
         "tenants": {"endpoint": nautobot.tenancy.tenants},
@@ -254,11 +268,7 @@ def make_call(endpoint, filters=None):
             results = endpoint.all()
     except pynautobot.RequestError as e:
         if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError(
-                "{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(
-                    e.error
-                )
-            )
+            raise AnsibleError("{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(e.error))
         else:
             raise AnsibleError(e.error)
 
@@ -271,6 +281,16 @@ class LookupModule(LookupBase):
     """
 
     def run(self, terms, variables=None, **kwargs):
+        if PYNAUTOBOT_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
+            )
+        if REQUESTS_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("requests must be installed to use this plugin"),
+                REQUESTS_IMPORT_ERROR,
+            )
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
@@ -285,7 +305,10 @@ class LookupModule(LookupBase):
         session = requests.Session()
         session.verify = ssl_verify
 
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
+        nautobot = pynautobot.api(
+            api_endpoint,
+            token=api_token if api_token else None,
+        )
         nautobot.http_session = session
 
         results = []
@@ -296,23 +319,15 @@ class LookupModule(LookupBase):
                 try:
                     endpoint = get_endpoint(nautobot, term)
                 except KeyError:
-                    raise AnsibleError(
-                        "Unrecognised term %s. Check documentation" % term
-                    )
+                    raise AnsibleError("Unrecognised term %s. Check documentation" % term)
 
-            Display().vvvv(
-                u"Nautobot lookup for %s to %s using token %s filter %s"
-                % (term, api_endpoint, api_token, api_filter)
-            )
+            Display().vvvv("Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter))
 
             if api_filter:
                 filter = build_filters(api_filter)
 
                 if "id" in filter:
-                    Display().vvvv(
-                        u"Filter is: %s and includes id, will use .get instead of .filter"
-                        % (filter)
-                    )
+                    Display().vvvv("Filter is: %s and includes id, will use .get instead of .filter" % (filter))
                     try:
                         id = int(filter["id"][0])
                         data = endpoint.get(id)

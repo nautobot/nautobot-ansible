@@ -6,10 +6,10 @@
 ##
 - name: "1 - Create IP address within Nautobot with only required information - State: Present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.1.10/30
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.1.10/30
+    status: "active"
     state: present
   register: test_one
 
@@ -24,13 +24,13 @@
 
 - name: "2 - Update 192.168.1.10/30"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.1.10/30
-      description: "Updated ip address"
-      tags:
-        - "Updated"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.1.10/30
+    status: "active"
+    description: "Updated ip address"
+    tags:
+      - "Updated"
     state: present
   register: test_two
 
@@ -39,18 +39,19 @@
     that:
       - test_two is changed
       - test_two['diff']['after']['description'] == "Updated ip address"
-      - test_two['diff']['after']['tags'][0] == 10
+      - test_two['diff']['after']['tags'][0] == tag_updated['key']
       - test_two['msg'] == "ip_address 192.168.1.10/30 updated"
       - test_two['ip_address']['address'] == "192.168.1.10/30"
-      - test_two['ip_address']['tags'][0] == 10
+      - test_two['ip_address']['tags'][0] == tag_updated['key']
       - test_two['ip_address']['description'] == "Updated ip address"
+  vars:
+    tag_updated: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=updated') }}"
 
 - name: "3 - Delete IP - 192.168.1.10 - State: Absent"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.1.10/30
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.1.10/30
     state: absent
   register: test_three
 
@@ -64,10 +65,10 @@
 
 - name: "4 - Create IP in global VRF - 192.168.1.20/30 - State: Present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.1.20/30
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.1.20/30
+    status: "active"
     state: present
   register: test_four
 
@@ -82,10 +83,10 @@
 
 - name: "5 - Create IP in global VRF - 192.168.1.20/30 - State: New"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.1.20/30
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.1.20/30
+    status: "active"
     state: new
   register: test_five
 
@@ -100,10 +101,10 @@
 
 - name: "6 - Create new address with only prefix specified - State: new"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      prefix: 192.168.100.0/24
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 192.168.100.0/24
+    status: "active"
     state: new
   register: test_six
 
@@ -118,20 +119,23 @@
 
 - name: "7 - Create IP address with several specified"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      address: 172.16.1.20/24
-      vrf: Test VRF
-      tenant: Test Tenant
-      status: Reserved
-      role: Loopback
-      description: Test description
-      tags:
-        - "Schnozzberry"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 172.16.1.20/24
+    vrf: Test VRF
+    tenant: Test Tenant
+    status: Reserved
+    role: Loopback
+    description: Test description
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_seven
+
+- set_fact:
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''"name=Test VRF"'') }}'
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
 
 - name: "7 - ASSERT"
   assert:
@@ -145,21 +149,20 @@
       - test_seven['ip_address']['family'] == 4
       - test_seven['ip_address']['role'] == "loopback"
       - test_seven['ip_address']['status'] == "reserved"
-      - test_seven['ip_address']['tags'][0] == 4
-      - test_seven['ip_address']['tenant'] == 1
-      - test_seven['ip_address']['vrf'] == 1
+      - test_seven['ip_address']['tags'][0] == tag_schnozzberry['key']
+      - test_seven['ip_address']['tenant'] == tenant['key']
+      - test_seven['ip_address']['vrf'] == vrf['key']
 
 - name: "8 - Create IP address and assign a nat_inside IP"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      address: 10.10.1.30/16
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.10.1.30/16
+    vrf: Test VRF
+    status: "active"
+    nat_inside:
+      address: 172.16.1.20
       vrf: Test VRF
-      nat_inside:
-        address: 172.16.1.20
-        vrf: Test VRF
   register: test_eight
 
 - name: "8 - ASSERT"
@@ -171,20 +174,24 @@
       - test_eight['msg'] == "ip_address 10.10.1.30/16 created"
       - test_eight['ip_address']['address'] == "10.10.1.30/16"
       - test_eight['ip_address']['family'] == 4
-      - test_eight['ip_address'].get('nat_inside')
-      - test_eight['ip_address']['vrf'] == 1
+      - test_eight['ip_address']['nat_inside'] == nat_inside['key']
+      - test_eight['ip_address']['vrf'] == vrf['key']
+  vars:
+    nat_inside: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.1.20/24 vrf_id=' ~ vrf['key']) }}"
 
 - name: "9 - Create IP address on GigabitEthernet2 - test100 - State: present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      address: 10.10.200.30/16
-      assigned_object:
-        name: GigabitEthernet2
-        device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.10.200.30/16
+    status: "active"
+    assigned_object:
+      name: GigabitEthernet2
+      device: test100
   register: test_nine
+
+- set_fact:
+    test100_gi2: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=GigabitEthernet2 device=test100') }}"
 
 - name: "9 - ASSERT"
   assert:
@@ -196,18 +203,17 @@
       - test_nine['ip_address']['address'] == "10.10.200.30/16"
       - test_nine['ip_address']['family'] == 4
       - test_nine['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_nine['ip_address']['assigned_object_id'] == 4
+      - test_nine['ip_address']['assigned_object_id'] == test100_gi2['key']
 
 - name: "10 - Create IP address on GigabitEthernet2 - test100 - State: new"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      prefix: 10.10.0.0/16
-      assigned_object:
-        name: GigabitEthernet2
-        device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.10.0.0/16
+    status: "active"
+    assigned_object:
+      name: GigabitEthernet2
+      device: test100
     state: new
   register: test_ten
 
@@ -221,18 +227,17 @@
       - test_ten['ip_address']['address'] == "10.10.0.1/16"
       - test_ten['ip_address']['family'] == 4
       - test_ten['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_ten['ip_address']['assigned_object_id'] == 4
+      - test_ten['ip_address']['assigned_object_id'] == test100_gi2['key']
 
 - name: "11 - Create IP address on GigabitEthernet2 - test100 - State: present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      prefix: 192.168.100.0/24
-      assigned_object:
-        name: GigabitEthernet2
-        device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 192.168.100.0/24
+    status: "active"
+    assigned_object:
+      name: GigabitEthernet2
+      device: test100
     state: present
   register: test_eleven
 
@@ -247,13 +252,13 @@
 
 - name: "12 - Duplicate - 192.168.100.2/24 on interface"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.100.2/24
-      assigned_object:
-        name: GigabitEthernet2
-        device: test100
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.100.2/24
+    status: "active"
+    assigned_object:
+      name: GigabitEthernet2
+      device: test100
     state: present
   register: test_twelve
 
@@ -264,14 +269,14 @@
       - test_twelve['msg'] == "ip_address 192.168.100.2/24 already exists"
       - test_twelve['ip_address']['address'] == "192.168.100.2/24"
       - test_twelve['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_twelve['ip_address']['assigned_object_id'] == 4
+      - test_twelve['ip_address']['assigned_object_id'] == test100_gi2['key']
 
 - name: "13 - Duplicate - 192.168.100.2/24"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 192.168.100.2/24
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 192.168.100.2/24
+    status: "active"
     state: present
   register: test_thirteen
 
@@ -284,14 +289,13 @@
 
 - name: "14 - Create IP address on Eth0 - test100-vm - State: present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      address: 10.188.1.100/24
-      assigned_object:
-        name: Eth0
-        virtual_machine: test100-vm
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.188.1.100/24
+    status: "active"
+    assigned_object:
+      name: Eth0
+      virtual_machine: test100-vm
   register: test_fourteen
 
 - name: "14 - ASSERT"
@@ -304,18 +308,19 @@
       - test_fourteen['ip_address']['address'] == "10.188.1.100/24"
       - test_fourteen['ip_address']['family'] == 4
       - test_fourteen['ip_address']['assigned_object_type'] == "virtualization.vminterface"
-      - test_fourteen['ip_address']['assigned_object_id'] == 1
+      - test_fourteen['ip_address']['assigned_object_id'] == interface['key']
+  vars:
+    interface: "{{ lookup('networktocode.nautobot.lookup', 'virtualization-interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Eth0 virtual_machine=test100-vm') }}"
 
 - name: "15 - Create same IP address on Eth0 - test101-vm - State: present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      family: 4
-      address: 10.188.1.100/24
-      assigned_object:
-        name: Eth0
-        virtual_machine: test101-vm
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.188.1.100/24
+    status: "active"
+    assigned_object:
+      name: Eth0
+      virtual_machine: test101-vm
     state: "present"
   register: test_fifteen
 
@@ -329,14 +334,16 @@
       - test_fifteen['ip_address']['address'] == "10.188.1.100/24"
       - test_fifteen['ip_address']['family'] == 4
       - test_fifteen['ip_address']['assigned_object_type'] == "virtualization.vminterface"
-      - test_fifteen['ip_address']['assigned_object_id'] == 6
+      - test_fifteen['ip_address']['assigned_object_id'] == interface['key']
+  vars:
+    interface: "{{ lookup('networktocode.nautobot.lookup', 'virtualization-interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Eth0 virtual_machine=test101-vm') }}"
 
 - name: "16 - Create IP address with no mask - State: Present"
   networktocode.nautobot.ip_address:
-    url: http://localhost.org:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      address: 10.120.10.1
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.120.10.1
+    status: "active"
     state: present
   register: test_sixteen
 

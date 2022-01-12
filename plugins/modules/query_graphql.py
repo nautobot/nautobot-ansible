@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """Ansible plugin definition for query_graphql action plugin."""
 from __future__ import absolute_import, division, print_function
 
@@ -23,12 +26,12 @@ requirements:
 options:
     graph_variables:
         description:
-            - Dictionary of keys/values to pass into the GraphQL query, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details
+            - Dictionary of keys/values to pass into the GraphQL query, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more info
         required: False
         type: dict
     query:
         description:
-            - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html) for more details.
+            - The GraphQL formatted query string, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more details.
         required: True
         type: str
     token:
@@ -46,6 +49,14 @@ options:
             - Whether or not to validate SSL of the Nautobot instance
         required: False
         default: True
+        type: bool
+    update_hostvars:
+        description:
+            - Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the
+              'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query
+              will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
+        required: False
+        default: False
         type: bool
 """
 
@@ -79,22 +90,23 @@ EXAMPLES = """
         site_name: den
       query_string: |
         query ($site_name:String!) {
-            sites (name: $site_name) {
+          sites (name: $site_name) {
             id
             name
             region {
                 name
             }
-            }
+          }
         }
 
-  # Get Response with variables
+  # Get Response with variables and set to root keys
   - name: Obtain list of devices at site in variables from Nautobot
     networktocode.nautobot.query_graphql:
       url: http://nautobot.local
       token: thisIsMyToken
       query: "{{ query_string }}"
       variables: "{{ variables }}"
+      update_hostvars: "yes"
 """
 
 RETURN = """
@@ -142,6 +154,7 @@ def main():
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
+            update_hostvars=dict(required=False, type="bool", default=False),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot

@@ -298,11 +298,11 @@
     {
         "before": {
             "interface": {
-                "id": "123"
+                "id": "112232fb-b7b2-4375-ac1f-322bb88c0b76"
             }
         },
         "after": {
-            "interface": 123
+            "interface": "112232fb-b7b2-4375-ac1f-322bb88c0b76"
         }
     },
     {

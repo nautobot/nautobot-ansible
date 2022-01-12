@@ -4,13 +4,17 @@
 ### PYNAUTOBOT_DEVICE_BAY
 ##
 ##
+- set_fact:
+    nexus_parent: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus One"'') }}'
+    nexus_child: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus Child One"'') }}'
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+
 - name: "DEVICE_BAY 1: Necessary info creation"
   networktocode.nautobot.device_bay:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device: "Test Nexus One"
-      name: "Device Bay One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: "Test Nexus One"
+    name: "Device Bay One"
     state: present
   register: test_one
 
@@ -21,16 +25,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['device_bay']['name'] == "Device Bay One"
-      - test_one['device_bay']['device'] == 4
+      - test_one['device_bay']['device'] == nexus_parent['key']
       - test_one['msg'] == "device_bay Device Bay One created"
 
 - name: "DEVICE_BAY 2: Create duplicate"
   networktocode.nautobot.device_bay:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device: "Test Nexus One"
-      name: "Device Bay One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: "Test Nexus One"
+    name: "Device Bay One"
     state: present
   register: test_two
 
@@ -39,19 +42,18 @@
     that:
       - not test_two['changed']
       - test_two['device_bay']['name'] == "Device Bay One"
-      - test_two['device_bay']['device'] == 4
+      - test_two['device_bay']['device'] == nexus_parent['key']
       - test_two['msg'] == "device_bay Device Bay One already exists"
 
 - name: "DEVICE_BAY 3: ASSERT - Update"
   networktocode.nautobot.device_bay:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      device: "Test Nexus One"
-      name: "Device Bay One"
-      installed_device: "Test Nexus Child One"
-      tags:
-        - "Schnozzberry"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: "Test Nexus One"
+    name: "Device Bay One"
+    installed_device: "Test Nexus Child One"
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_three
 
@@ -59,20 +61,19 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['installed_device'] == 5
-      - test_three['diff']['after']['tags'][0] == 4
+      - test_three['diff']['after']['installed_device'] == nexus_child['key']
+      - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_three['device_bay']['name'] == "Device Bay One"
-      - test_three['device_bay']['device'] == 4
-      - test_three['device_bay']['installed_device'] == 5
-      - test_three['device_bay']['tags'][0] == 4
+      - test_three['device_bay']['device'] == nexus_parent['key']
+      - test_three['device_bay']['installed_device'] == nexus_child['key']
+      - test_three['device_bay']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "device_bay Device Bay One updated"
 
 - name: "DEVICE_BAY 4: ASSERT - Delete"
   networktocode.nautobot.device_bay:
-    url: http://localhost:32768
-    token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Device Bay One"
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Device Bay One"
     state: absent
   register: test_four
 
@@ -81,7 +82,7 @@
     that:
       - test_four is changed
       - test_four['device_bay']['name'] == "Device Bay One"
-      - test_four['device_bay']['device'] == 4
-      - test_four['device_bay']['installed_device'] == 5
-      - test_four['device_bay']['tags'][0] == 4
+      - test_four['device_bay']['device'] == nexus_parent['key']
+      - test_four['device_bay']['installed_device'] == nexus_child['key']
+      - test_four['device_bay']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "device_bay Device Bay One deleted"
