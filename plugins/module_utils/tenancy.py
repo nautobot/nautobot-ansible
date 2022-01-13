@@ -47,9 +47,7 @@ class NautobotTenancyModule(NautobotModule):
             if not data.get("slug"):
                 data["slug"] = self._to_slug(name)
 
-        object_query_params = self._build_query_params(
-            endpoint_name, data, user_query_params
-        )
+        object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
         if self.state == "present":

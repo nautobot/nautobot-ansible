@@ -284,9 +284,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     rack = NautobotDcimModule(module, NB_RACKS)
     rack.run()

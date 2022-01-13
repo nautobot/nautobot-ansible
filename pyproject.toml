@@ -34,9 +34,9 @@ invoke = "^1.6.0"
 bandit = "^1.7.0"
 
 [tool.black]
-# line-length = 120
-# target-version = ['py38']
-# include = '\.pyi?$'
+line-length = 160
+target-version = ['py38']
+include = '\.pyi?$'
 exclude = '''
 (
   /(

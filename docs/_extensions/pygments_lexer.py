@@ -75,11 +75,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
         "simplevalue": [
             (r"(true|false|null)\b", token.Keyword.Constant),
             (
-                (
-                    "%(int_part)s(%(frac_part)s%(exp_part)s|"
-                    "%(exp_part)s|%(frac_part)s)"
-                )
-                % vars(),
+                ("%(int_part)s(%(frac_part)s%(exp_part)s|" "%(exp_part)s|%(frac_part)s)") % vars(),
                 token.Number.Float,
             ),
             (int_part, token.Number.Integer),
@@ -128,9 +124,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
         "host-error": [
             (
                 r"(?:(:)( )(UNREACHABLE|FAILED)(!))?",
-                bygroups(
-                    token.Punctuation, token.Text, token.Keyword, token.Punctuation
-                ),
+                bygroups(token.Punctuation, token.Text, token.Keyword, token.Punctuation),
                 "host-postfix",
             ),
             (r"", token.Text, "host-postfix"),
@@ -154,9 +148,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
             (r"\n", token.Text, "#pop"),
             (
                 r"( +)(ok|changed|failed|skipped|unreachable)(=)([0-9]+)",
-                bygroups(
-                    token.Text, token.Keyword, token.Punctuation, token.Number.Integer
-                ),
+                bygroups(token.Text, token.Keyword, token.Punctuation, token.Number.Integer),
             ),
         ],
         "root": [
@@ -180,9 +172,7 @@ class AnsibleOutputPrimaryLexer(RegexLexer):
             ),
             (
                 r"(\[)(WARNING)(\]:)([^\n]+)",
-                bygroups(
-                    token.Punctuation, token.Keyword, token.Punctuation, token.Text
-                ),
+                bygroups(token.Punctuation, token.Keyword, token.Punctuation, token.Text),
             ),
             (
                 r"([^ ]+)( +)(:)",
@@ -203,9 +193,7 @@ class AnsibleOutputLexer(DelegatingLexer):
     aliases = ["ansible-output"]
 
     def __init__(self, **options):
-        super(AnsibleOutputLexer, self).__init__(
-            DiffLexer, AnsibleOutputPrimaryLexer, **options
-        )
+        super(AnsibleOutputLexer, self).__init__(DiffLexer, AnsibleOutputPrimaryLexer, **options)
 
 
 # ####################################################################################################

@@ -12,9 +12,7 @@ try:
         nautobot_server,
     )
 
-    MOCKER_PATCH_PATH = (
-        "ansible_collections.networktocode.nautobot.plugins.modules.nautobot_server"
-    )
+    MOCKER_PATCH_PATH = "ansible_collections.networktocode.nautobot.plugins.modules.nautobot_server"
 except ImportError:
     import sys
 
@@ -93,9 +91,7 @@ class TestNautobotServer(unittest.TestCase):
                 AnsibleExitJson,
                 "Superuser created successfully",
                 True,
-                [
-                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
-                ],
+                ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
                 {
                     "cwd": "/some/other",
                     "environ_update": {
@@ -113,9 +109,7 @@ class TestNautobotServer(unittest.TestCase):
                 AnsibleExitJson,
                 "Superuser created successfully",
                 True,
-                [
-                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
-                ],
+                ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
                 {
                     "cwd": "/opt/nautobot",
                     "environ_update": {
@@ -133,9 +127,7 @@ class TestNautobotServer(unittest.TestCase):
                 AnsibleExitJson,
                 "username is already taken",
                 False,
-                [
-                    "nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"
-                ],
+                ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
                 {
                     "cwd": "/opt/nautobot",
                     "environ_update": {
@@ -267,9 +259,7 @@ class TestNautobotServer(unittest.TestCase):
             ],
         ]
     )
-    def test_ensure_command_called(
-        self, module_args, expected_exception, stdout, changed, args, kwargs
-    ):
+    def test_ensure_command_called(self, module_args, expected_exception, stdout, changed, args, kwargs):
         set_module_args(module_args)
 
         with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
@@ -283,9 +273,7 @@ class TestNautobotServer(unittest.TestCase):
             if expected_exception == AnsibleFailJson:
                 return
 
-            self.assertEqual(
-                result.exception.args[0]["changed"], changed
-            )  # ensure result is changed
+            self.assertEqual(result.exception.args[0]["changed"], changed)  # ensure result is changed
 
         self.assertEqual(mock_run_command.call_count, 1)
 

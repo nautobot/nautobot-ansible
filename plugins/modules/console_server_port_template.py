@@ -181,9 +181,7 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    console_server_port_template = NautobotDcimModule(
-        module, NB_CONSOLE_SERVER_PORT_TEMPLATES
-    )
+    console_server_port_template = NautobotDcimModule(module, NB_CONSOLE_SERVER_PORT_TEMPLATES)
     console_server_port_template.run()
 
 

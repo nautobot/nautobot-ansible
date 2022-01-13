@@ -282,9 +282,7 @@ def main():
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     # state choices present, absent, new
-    argument_spec["state"] = dict(
-        required=False, default="present", choices=["present", "absent", "new"]
-    )
+    argument_spec["state"] = dict(required=False, default="present", choices=["present", "absent", "new"])
     argument_spec.update(
         dict(
             address=dict(required=False, type="str"),

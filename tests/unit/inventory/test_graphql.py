@@ -35,9 +35,7 @@ def load_graphql_device_data(path, test_path):
     return data
 
 
-load_relative_test_data = partial(
-    load_graphql_device_data, os.path.dirname(os.path.abspath(__file__))
-)
+load_relative_test_data = partial(load_graphql_device_data, os.path.dirname(os.path.abspath(__file__)))
 
 
 @pytest.fixture
@@ -59,9 +57,7 @@ def test_group_by_path_multiple(inventory_fixture, device_data):
     inventory_fixture.group_by = ["device_role.color_category.primary"]
     inventory_fixture.create_groups(device_data)
     inventory_groups = list(inventory_fixture.inventory.groups.keys())
-    local_device_type_inventory_hosts = (
-        inventory_fixture.inventory.get_groups_dict().get("red")
-    )
+    local_device_type_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("red")
     assert ["all", "ungrouped", "red"] == inventory_groups
     assert ["mydevice"] == local_device_type_inventory_hosts
 
@@ -70,9 +66,7 @@ def test_group_by_path(inventory_fixture, device_data):
     inventory_fixture.group_by = ["tenant.type"]
     inventory_fixture.create_groups(device_data)
     inventory_groups = list(inventory_fixture.inventory.groups.keys())
-    local_device_type_inventory_hosts = (
-        inventory_fixture.inventory.get_groups_dict().get("local")
-    )
+    local_device_type_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("local")
     assert ["all", "ungrouped", "local"] == inventory_groups
     assert ["mydevice"] == local_device_type_inventory_hosts
 
@@ -119,27 +113,21 @@ def test_multiple_group_by_no_fail(inventory_fixture, device_data):
 def test_no_chain_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["site.type"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call(
-        "Could not find value for type in site.type on device mydevice."
-    )
+    mock_display.assert_any_call("Could not find value for type in site.type on device mydevice.")
 
 
 @patch.object(Display, "display")
 def test_no_name_or_slug_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call(
-        "No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
-    )
+    mock_display.assert_any_call("No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
 
 
 @patch.object(Display, "display")
 def test_group_name_dict(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call(
-        "No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
-    )
+    mock_display.assert_any_call("No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
 
 
 def test_add_ipv4(inventory_fixture, device_data):

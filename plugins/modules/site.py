@@ -278,9 +278,7 @@ def main():
         ("state", "absent", ["name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     site = NautobotDcimModule(module, NB_SITES)
     site.run()

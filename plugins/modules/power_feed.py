@@ -248,9 +248,7 @@ def main():
         ("state", "absent", ["power_panel", "name"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     power_feed = NautobotDcimModule(module, NB_POWER_FEEDS)
     power_feed.run()

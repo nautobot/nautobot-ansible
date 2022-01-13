@@ -63,9 +63,7 @@ created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_gro
 test_tenant_group = nb.tenancy.tenant_groups.get(slug="test-tenant-group")
 
 # Create TENANTS
-tenants = [
-    {"name": "Test Tenant", "slug": "test-tenant", "group": test_tenant_group.id}
-]
+tenants = [{"name": "Test Tenant", "slug": "test-tenant", "group": test_tenant_group.id}]
 created_tenants = make_nautobot_calls(nb.tenancy.tenants, tenants)
 # Test Tenant to be used later on
 test_tenant = nb.tenancy.tenants.get(slug="test-tenant")
@@ -211,9 +209,7 @@ rear_port_templates = [
         "positions": 5,
     }
 ]
-created_rear_port_templates = make_nautobot_calls(
-    nb.dcim.rear_port_templates, rear_port_templates
-)
+created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, rear_port_templates)
 
 # Create Device Roles
 device_roles = [
@@ -321,9 +317,7 @@ created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 test100 = nb.dcim.devices.get(name="test100")
 
 # Create rear port
-rear_ports = [
-    {"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}
-]
+rear_ports = [{"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}]
 created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
 
 # Create power ports
@@ -336,15 +330,11 @@ created_console_ports = make_nautobot_calls(nb.dcim.console_ports, console_ports
 
 # Create console server ports
 console_server_ports = [{"name": "Test Console Server Port", "device": test100.id}]
-created_console_server_ports = make_nautobot_calls(
-    nb.dcim.console_server_ports, console_server_ports
-)
+created_console_server_ports = make_nautobot_calls(nb.dcim.console_server_ports, console_server_ports)
 
 # Create VC, assign member, create initial interface
 nexus = nb.dcim.devices.get(name="Test Nexus One")
-created_vcs = make_nautobot_calls(
-    nb.dcim.virtual_chassis, {"name": "VC1", "master": nexus.id}
-)
+created_vcs = make_nautobot_calls(nb.dcim.virtual_chassis, {"name": "VC1", "master": nexus.id})
 vc = nb.dcim.virtual_chassis.get(name="VC1")
 nexus_child = nb.dcim.devices.get(name="Test Nexus Child One")
 nexus_child.update({"virtual_chassis": vc.id, "vc_position": 2})
@@ -402,17 +392,11 @@ ip_addresses = [
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
 # Grab first two IPs
-ip1 = nb.ipam.ip_addresses.get(
-    address="172.16.180.1/24", assigned_object_id=test100_gi1.id
-)
-ip2 = nb.ipam.ip_addresses.get(
-    address="2001::1:1/64", assigned_object_id=test100_gi2.id
-)
+ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24", assigned_object_id=test100_gi1.id)
+ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64", assigned_object_id=test100_gi2.id)
 
 # Assign Primary IP
-nexus_eth1_ip = nb.ipam.ip_addresses.get(
-    address="172.16.180.11/24", assigned_object_id=nexus_eth1.id
-)
+nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24", assigned_object_id=nexus_eth1.id)
 nexus.update({"primary_ip4": nexus_eth1_ip})
 
 # Create RIRs
@@ -421,16 +405,12 @@ created_rirs = make_nautobot_calls(nb.ipam.rirs, rirs)
 
 # Create Cluster Group
 cluster_groups = [{"name": "Test Cluster Group", "slug": "test-cluster-group"}]
-created_cluster_groups = make_nautobot_calls(
-    nb.virtualization.cluster_groups, cluster_groups
-)
+created_cluster_groups = make_nautobot_calls(nb.virtualization.cluster_groups, cluster_groups)
 test_cluster_group = nb.virtualization.cluster_groups.get(slug="test-cluster-group")
 
 # Create Cluster Type
 cluster_types = [{"name": "Test Cluster Type", "slug": "test-cluster-type"}]
-created_cluster_types = make_nautobot_calls(
-    nb.virtualization.cluster_types, cluster_types
-)
+created_cluster_types = make_nautobot_calls(nb.virtualization.cluster_types, cluster_types)
 test_cluster_type = nb.virtualization.cluster_types.get(slug="test-cluster-type")
 
 # Create Cluster
@@ -456,9 +436,7 @@ virtual_machines = [
     {"name": "test104-vm", "cluster": test_cluster2.id, "status": "active"},
     {"name": "Test VM With Spaces", "cluster": test_cluster2.id, "status": "active"},
 ]
-created_virtual_machines = make_nautobot_calls(
-    nb.virtualization.virtual_machines, virtual_machines
-)
+created_virtual_machines = make_nautobot_calls(nb.virtualization.virtual_machines, virtual_machines)
 test100_vm = nb.virtualization.virtual_machines.get(name="test100-vm")
 test101_vm = nb.virtualization.virtual_machines.get(name="test101-vm")
 test_spaces_vm = nb.virtualization.virtual_machines.get(name="Test VM With Spaces")
@@ -481,9 +459,7 @@ virtual_machines_intfs = [
     {"name": "Eth0", "virtual_machine": test_spaces_vm.id},
     {"name": "Eth1", "virtual_machine": test_spaces_vm.id},
 ]
-created_virtual_machines_intfs = make_nautobot_calls(
-    nb.virtualization.interfaces, virtual_machines_intfs
-)
+created_virtual_machines_intfs = make_nautobot_calls(nb.virtualization.interfaces, virtual_machines_intfs)
 
 
 # Create Services
@@ -545,9 +521,7 @@ circuit_terms = [
         "site": test_site.id,
     }
 ]
-created_circuit_terms = make_nautobot_calls(
-    nb.circuits.circuit_terminations, circuit_terms
-)
+created_circuit_terms = make_nautobot_calls(nb.circuits.circuit_terminations, circuit_terms)
 
 route_targets = [
     {"name": "4000:4000"},
@@ -557,6 +531,4 @@ route_targets = [
 created_route_targets = make_nautobot_calls(nb.ipam.route_targets, route_targets)
 
 if ERRORS:
-    sys.exit(
-        "Errors have occurred when creating objects, and should have been printed out. Check previous output."
-    )
+    sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

@@ -300,9 +300,7 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    device_interface = NautobotDcimModule(
-        module, NB_INTERFACES, remove_keys=["update_vc_child"]
-    )
+    device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
 
 

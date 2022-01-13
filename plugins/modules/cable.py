@@ -319,9 +319,7 @@ def main():
             label=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
             length=dict(required=False, type="int"),
-            length_unit=dict(
-                required=False, choices=["m", "cm", "ft", "in"], type="str"
-            ),
+            length_unit=dict(required=False, choices=["m", "cm", "ft", "in"], type="str"),
         )
     )
 
@@ -349,9 +347,7 @@ def main():
         ),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     cable = NautobotDcimModule(module, NB_CABLES)
     cable.run()

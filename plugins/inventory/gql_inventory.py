@@ -177,9 +177,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def add_ipv4_address(self, device):
         """Add primary IPv4 address to host."""
         if device["primary_ip4"]:
-            self.add_variable(
-                device["name"], device["primary_ip4"]["address"], "ansible_host"
-            )
+            self.add_variable(device["name"], device["primary_ip4"]["address"], "ansible_host")
         else:
             self.add_variable(device["name"], device["name"], "ansible_host")
 
@@ -188,9 +186,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if device["platform"] and "napalm_driver" in device["platform"]:
             self.add_variable(
                 device["name"],
-                ANSIBLE_LIB_MAPPER_REVERSE.get(
-                    NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])
-                ),  # Convert napalm_driver to ansible_network_os value
+                ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
 
@@ -207,9 +203,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             parent_attr, *chain = group_by_path.split(".")
             device_attr = device.get(parent_attr)
             if device_attr is None:
-                self.display.display(
-                    f"Could not find value for {parent_attr} on device {device_name}"
-                )
+                self.display.display(f"Could not find value for {parent_attr} on device {device_name}")
                 continue
 
             if not chain:
@@ -224,9 +218,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     try:
                         group_name = device_attr[group_name]
                     except KeyError:
-                        self.display.display(
-                            f"Could not find value for {group_name} in {group_by_path} on device {device_name}."
-                        )
+                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}.")
                         break
 
             if isinstance(group_name, Mapping):
@@ -235,9 +227,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 elif "slug" in group_name:
                     group_name = group_name["slug"]
                 else:
-                    self.display.display(
-                        f"No slug or name value for {group_name} in {group_by_path} on device {device_name}."
-                    )
+                    self.display.display(f"No slug or name value for {group_name} in {group_by_path} on device {device_name}.")
 
             if isinstance(group_name, str):
                 self.inventory.add_group(group_name)
@@ -250,9 +240,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def main(self):
         """Main function."""
         if not HAS_NETUTILS:
-            raise AnsibleError(
-                "networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils."
-            )
+            raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
         file_loader = FileSystemLoader(f"{PATH}/../templates")
         env = Environment(loader=file_loader, autoescape=True)
@@ -278,9 +266,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(
-                        self.api_endpoint + "/"
-                    ),
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
                     color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
@@ -299,9 +285,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(
-                    json_data["errors"][0]["message"]
-                ),
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
                 color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
@@ -326,8 +310,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
         self.headers = {
-            "User-Agent": "ansible %s Python %s"
-            % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
             "Content-type": "application/json",
         }
         if token:

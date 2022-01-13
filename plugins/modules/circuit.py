@@ -218,9 +218,7 @@ def main():
         ("state", "absent", ["cid"]),
     ]
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
 
     circuit = NautobotCircuitsModule(module, NB_CIRCUITS)
     circuit.run()
