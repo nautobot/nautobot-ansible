@@ -117,7 +117,7 @@ class ActionModule(ActionBase):
                 PYNAUTOBOT_IMPORT_ERROR,
             )
 
-        self._supports_check_mode = False
+        self._supports_check_mode = True
         self._supports_async = False
 
         result = super(ActionModule, self).run(tmp, task_vars)
