@@ -11,6 +11,18 @@
 .. role:: ansible-attribute-support-partial
 .. role:: ansible-attribute-support-none
 .. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
 
 .. Anchors
 
@@ -24,13 +36,13 @@
 
 .. Title
 
-networktocode.nautobot.cable -- Create, update or delete cables within Nautobot
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.cable module -- Create, update or delete cables within Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -76,332 +88,638 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-.. raw:: html
+.. rst-class:: ansible-option-table
 
-    <table  border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Parameter</th>
-            <th>Choices/<font color="blue">Defaults</font></th>
-                        <th width="100%">Comments</th>
-        </tr>
-                    <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-color"></div>
-                    <b>color</b>
-                    <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The color of the cable</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-label"></div>
-                    <b>label</b>
-                    <a class="ansibleOptionLink" href="#parameter-label" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The label of the cable</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-length"></div>
-                    <b>length</b>
-                    <a class="ansibleOptionLink" href="#parameter-length" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The length of the cable</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-length_unit"></div>
-                    <b>length_unit</b>
-                    <a class="ansibleOptionLink" href="#parameter-length_unit" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>m</li>
-                                                                                                                                                                                                <li>cm</li>
-                                                                                                                                                                                                <li>ft</li>
-                                                                                                                                                                                                <li>in</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>The unit in which the length of the cable is measured</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
-                    <b>query_params</b>
-                    <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined</div>
-                                            <div>in plugins/module_utils/utils.py and provides control to users on what may make</div>
-                                            <div>an object unique in their environment.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
-                    <b>state</b>
-                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>absent</li>
-                                                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>Use <code>present</code> or <code>absent</code> for adding or removing.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-status"></div>
-                    <b>status</b>
-                    <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The status of the cable</div>
-                                            <div>Required if <em>state=present</em> and does not exist yet</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-termination_a"></div>
-                    <b>termination_a</b>
-                    <a class="ansibleOptionLink" href="#parameter-termination_a" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The termination a</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-termination_a_type"></div>
-                    <b>termination_a_type</b>
-                    <a class="ansibleOptionLink" href="#parameter-termination_a_type" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>circuits.circuittermination</li>
-                                                                                                                                                                                                <li>dcim.consoleport</li>
-                                                                                                                                                                                                <li>dcim.consoleserverport</li>
-                                                                                                                                                                                                <li>dcim.frontport</li>
-                                                                                                                                                                                                <li>dcim.interface</li>
-                                                                                                                                                                                                <li>dcim.powerfeed</li>
-                                                                                                                                                                                                <li>dcim.poweroutlet</li>
-                                                                                                                                                                                                <li>dcim.powerport</li>
-                                                                                                                                                                                                <li>dcim.rearport</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>The type of the termination a</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-termination_b"></div>
-                    <b>termination_b</b>
-                    <a class="ansibleOptionLink" href="#parameter-termination_b" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The termination b</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-termination_b_type"></div>
-                    <b>termination_b_type</b>
-                    <a class="ansibleOptionLink" href="#parameter-termination_b_type" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>circuits.circuittermination</li>
-                                                                                                                                                                                                <li>dcim.consoleport</li>
-                                                                                                                                                                                                <li>dcim.consoleserverport</li>
-                                                                                                                                                                                                <li>dcim.frontport</li>
-                                                                                                                                                                                                <li>dcim.interface</li>
-                                                                                                                                                                                                <li>dcim.powerfeed</li>
-                                                                                                                                                                                                <li>dcim.poweroutlet</li>
-                                                                                                                                                                                                <li>dcim.powerport</li>
-                                                                                                                                                                                                <li>dcim.rearport</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>The type of the termination b</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-token"></div>
-                    <b>token</b>
-                    <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The token created within Nautobot to authorize API access</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-type"></div>
-                    <b>type</b>
-                    <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>cat3</li>
-                                                                                                                                                                                                <li>cat5</li>
-                                                                                                                                                                                                <li>cat5e</li>
-                                                                                                                                                                                                <li>cat6</li>
-                                                                                                                                                                                                <li>cat6a</li>
-                                                                                                                                                                                                <li>cat7</li>
-                                                                                                                                                                                                <li>dac-active</li>
-                                                                                                                                                                                                <li>dac-passive</li>
-                                                                                                                                                                                                <li>mrj21-trunk</li>
-                                                                                                                                                                                                <li>coaxial</li>
-                                                                                                                                                                                                <li>mmf</li>
-                                                                                                                                                                                                <li>mmf-om1</li>
-                                                                                                                                                                                                <li>mmf-om2</li>
-                                                                                                                                                                                                <li>mmf-om3</li>
-                                                                                                                                                                                                <li>mmf-om4</li>
-                                                                                                                                                                                                <li>smf</li>
-                                                                                                                                                                                                <li>smf-os1</li>
-                                                                                                                                                                                                <li>smf-os2</li>
-                                                                                                                                                                                                <li>aoc</li>
-                                                                                                                                                                                                <li>power</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>The type of the cable</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-url"></div>
-                    <b>url</b>
-                    <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>URL of the Nautobot instance resolvable by Ansible control host</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                    <b>validate_certs</b>
-                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">"yes"</div>
-                                    </td>
-                                                                <td>
-                                            <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.</div>
-                                                        </td>
-            </tr>
-                        </table>
-    <br/>
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-color"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-color:
+
+      .. rst-class:: ansible-option-title
+
+      **color**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The color of the cable
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-label"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-label:
+
+      .. rst-class:: ansible-option-title
+
+      **label**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-label" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The label of the cable
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-length"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-length:
+
+      .. rst-class:: ansible-option-title
+
+      **length**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-length" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The length of the cable
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-length_unit"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-length_unit:
+
+      .. rst-class:: ansible-option-title
+
+      **length_unit**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-length_unit" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The unit in which the length of the cable is measured
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`m`
+      - :ansible-option-choices-entry:`cm`
+      - :ansible-option-choices-entry:`ft`
+      - :ansible-option-choices-entry:`in`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-query_params:
+
+      .. rst-class:: ansible-option-title
+
+      **query_params**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
+
+      in plugins/module_utils/utils.py and provides control to users on what may make
+
+      an object unique in their environment.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Use \ :literal:`present`\  or \ :literal:`absent`\  for adding or removing.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`absent`
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The status of the cable
+
+      Required if \ :emphasis:`state=present`\  and does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-termination_a"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-termination_a:
+
+      .. rst-class:: ansible-option-title
+
+      **termination_a**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-termination_a" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The termination a
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-termination_a_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-termination_a_type:
+
+      .. rst-class:: ansible-option-title
+
+      **termination_a_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-termination_a_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The type of the termination a
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`circuits.circuittermination`
+      - :ansible-option-choices-entry:`dcim.consoleport`
+      - :ansible-option-choices-entry:`dcim.consoleserverport`
+      - :ansible-option-choices-entry:`dcim.frontport`
+      - :ansible-option-choices-entry:`dcim.interface`
+      - :ansible-option-choices-entry:`dcim.powerfeed`
+      - :ansible-option-choices-entry:`dcim.poweroutlet`
+      - :ansible-option-choices-entry:`dcim.powerport`
+      - :ansible-option-choices-entry:`dcim.rearport`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-termination_b"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-termination_b:
+
+      .. rst-class:: ansible-option-title
+
+      **termination_b**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-termination_b" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The termination b
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-termination_b_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-termination_b_type:
+
+      .. rst-class:: ansible-option-title
+
+      **termination_b_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-termination_b_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The type of the termination b
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`circuits.circuittermination`
+      - :ansible-option-choices-entry:`dcim.consoleport`
+      - :ansible-option-choices-entry:`dcim.consoleserverport`
+      - :ansible-option-choices-entry:`dcim.frontport`
+      - :ansible-option-choices-entry:`dcim.interface`
+      - :ansible-option-choices-entry:`dcim.powerfeed`
+      - :ansible-option-choices-entry:`dcim.poweroutlet`
+      - :ansible-option-choices-entry:`dcim.powerport`
+      - :ansible-option-choices-entry:`dcim.rearport`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-token"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-token:
+
+      .. rst-class:: ansible-option-title
+
+      **token**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The token created within Nautobot to authorize API access
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-type:
+
+      .. rst-class:: ansible-option-title
+
+      **type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The type of the cable
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`cat3`
+      - :ansible-option-choices-entry:`cat5`
+      - :ansible-option-choices-entry:`cat5e`
+      - :ansible-option-choices-entry:`cat6`
+      - :ansible-option-choices-entry:`cat6a`
+      - :ansible-option-choices-entry:`cat7`
+      - :ansible-option-choices-entry:`dac-active`
+      - :ansible-option-choices-entry:`dac-passive`
+      - :ansible-option-choices-entry:`mrj21-trunk`
+      - :ansible-option-choices-entry:`coaxial`
+      - :ansible-option-choices-entry:`mmf`
+      - :ansible-option-choices-entry:`mmf-om1`
+      - :ansible-option-choices-entry:`mmf-om2`
+      - :ansible-option-choices-entry:`mmf-om3`
+      - :ansible-option-choices-entry:`mmf-om4`
+      - :ansible-option-choices-entry:`smf`
+      - :ansible-option-choices-entry:`smf-os1`
+      - :ansible-option-choices-entry:`smf-os2`
+      - :ansible-option-choices-entry:`aoc`
+      - :ansible-option-choices-entry:`power`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-url"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Nautobot instance resolvable by Ansible control host
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"yes"`
+
+      .. raw:: html
+
+        </div>
+
 
 .. Attributes
 
@@ -413,7 +731,7 @@ Notes
 
 .. note::
    - Tags should be defined as a YAML list
-   - This should be ran with connection ``local`` and hosts ``localhost``
+   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
 
@@ -493,46 +811,96 @@ Return Values
 -------------
 Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
 
-.. raw:: html
+.. rst-class:: ansible-option-table
 
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-                    <tr>
-                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-cable"></div>
-                    <b>cable</b>
-                    <a class="ansibleOptionLink" href="#return-cable" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                                          </div>
-                                    </td>
-                <td>success (when <em>state=present</em>)</td>
-                <td>
-                                            <div>Serialized object as created or already existent within Nautobot</div>
-                                        <br/>
-                                                        </td>
-            </tr>
-                                <tr>
-                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-msg"></div>
-                    <b>msg</b>
-                    <a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                                          </div>
-                                    </td>
-                <td>always</td>
-                <td>
-                                            <div>Message indicating failure or info about what has been achieved</div>
-                                        <br/>
-                                                        </td>
-            </tr>
-                        </table>
-    <br/><br/>
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-cable"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__return-cable:
+
+      .. rst-class:: ansible-option-title
+
+      **cable**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-cable" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-msg"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cable_module__return-msg:
+
+      .. rst-class:: ansible-option-title
+
+      **msg**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Message indicating failure or info about what has been achieved
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` always
+
+
+      .. raw:: html
+
+        </div>
+
+
 
 ..  Status (Presently only deprecated)
 
