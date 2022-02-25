@@ -285,3 +285,11 @@ releases:
       - (#110) Allow users to define any path for defining GroupBy Group names
     release_summary: GraphQL Inventory Group Customization
     release_date: '2021-12-17'
+  3.3.1:
+    changes:
+      bugfixes:
+        - (#119) Documentation fixes
+        - (#120) Documentation permission fixes
+        - (#116) Fix graphql action plugin to support check mode
+    release_summary: Documentation updates & check mode fix for GraphQL action plugin
+    release_date: "2021-02-25"
