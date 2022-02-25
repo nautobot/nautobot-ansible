@@ -11,6 +11,18 @@
 .. role:: ansible-attribute-support-partial
 .. role:: ansible-attribute-support-none
 .. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
 
 .. Anchors
 
@@ -24,13 +36,13 @@
 
 .. Title
 
-networktocode.nautobot.device -- Create, update or delete devices within Nautobot
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.device module -- Create, update or delete devices within Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -76,504 +88,1029 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-.. raw:: html
+.. rst-class:: ansible-option-table
 
-    <table  border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Parameter</th>
-            <th>Choices/<font color="blue">Defaults</font></th>
-                        <th width="100%">Comments</th>
-        </tr>
-                    <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-asset_tag"></div>
-                    <b>asset_tag</b>
-                    <a class="ansibleOptionLink" href="#parameter-asset_tag" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Asset tag that is associated to the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cluster"></div>
-                    <b>cluster</b>
-                    <a class="ansibleOptionLink" href="#parameter-cluster" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Cluster that the device will be assigned to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-comments"></div>
-                    <b>comments</b>
-                    <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Comments that may include additional information in regards to the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
-                    <b>custom_fields</b>
-                    <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>must exist in Nautobot</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-device_role"></div>
-                    <b>device_role</b>
-                    <a class="ansibleOptionLink" href="#parameter-device_role" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Required if <em>state=present</em> and the device does not exist yet</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-device_type"></div>
-                    <b>device_type</b>
-                    <a class="ansibleOptionLink" href="#parameter-device_type" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Required if <em>state=present</em> and the device does not exist yet</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-face"></div>
-                    <b>face</b>
-                    <a class="ansibleOptionLink" href="#parameter-face" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>Front</li>
-                                                                                                                                                                                                <li>front</li>
-                                                                                                                                                                                                <li>Rear</li>
-                                                                                                                                                                                                <li>rear</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>Required if <em>rack</em> is defined</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-local_context_data"></div>
-                    <b>local_context_data</b>
-                    <a class="ansibleOptionLink" href="#parameter-local_context_data" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Arbitrary JSON data to define the devices configuration variables.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-name"></div>
-                    <b>name</b>
-                    <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The name of the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-platform"></div>
-                    <b>platform</b>
-                    <a class="ansibleOptionLink" href="#parameter-platform" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The platform of the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-position"></div>
-                    <b>position</b>
-                    <a class="ansibleOptionLink" href="#parameter-position" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The position of the device in the rack defined above</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-primary_ip4"></div>
-                    <b>primary_ip4</b>
-                    <a class="ansibleOptionLink" href="#parameter-primary_ip4" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Primary IPv4 address assigned to the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-primary_ip6"></div>
-                    <b>primary_ip6</b>
-                    <a class="ansibleOptionLink" href="#parameter-primary_ip6" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Primary IPv6 address assigned to the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
-                    <b>query_params</b>
-                    <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined</div>
-                                            <div>in plugins/module_utils/utils.py and provides control to users on what may make</div>
-                                            <div>an object unique in their environment.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-rack"></div>
-                    <b>rack</b>
-                    <a class="ansibleOptionLink" href="#parameter-rack" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The name of the rack to assign the device to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-serial"></div>
-                    <b>serial</b>
-                    <a class="ansibleOptionLink" href="#parameter-serial" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Serial number of the device</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-site"></div>
-                    <b>site</b>
-                    <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Required if <em>state=present</em> and the device does not exist yet</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-state"></div>
-                    <b>state</b>
-                    <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>absent</li>
-                                                                                                                                                                                                <li><div style="color: blue"><b>present</b>&nbsp;&larr;</div></li>
-                                                                                    </ul>
-                                                                            </td>
-                                                                <td>
-                                            <div>Use <code>present</code> or <code>absent</code> for adding or removing.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-status"></div>
-                    <b>status</b>
-                    <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The status of the device</div>
-                                            <div>Required if <em>state=present</em> and the device does not exist yet</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-tags"></div>
-                    <b>tags</b>
-                    <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=raw</span>                                            </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Any tags that the device may need to be associated with</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
-                    <b>tenant</b>
-                    <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The tenant that the device will be assigned to</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-token"></div>
-                    <b>token</b>
-                    <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>The token created within Nautobot to authorize API access</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-url"></div>
-                    <b>url</b>
-                    <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>URL of the Nautobot instance resolvable by Ansible control host</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                    <b>validate_certs</b>
-                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                                                                <b>Default:</b><br/><div style="color: blue">"yes"</div>
-                                    </td>
-                                                                <td>
-                                            <div>If <code>no</code>, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-vc_position"></div>
-                    <b>vc_position</b>
-                    <a class="ansibleOptionLink" href="#parameter-vc_position" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Position in the assigned virtual chassis</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-vc_priority"></div>
-                    <b>vc_priority</b>
-                    <a class="ansibleOptionLink" href="#parameter-vc_priority" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Priority in the assigned virtual chassis</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-virtual_chassis"></div>
-                    <b>virtual_chassis</b>
-                    <a class="ansibleOptionLink" href="#parameter-virtual_chassis" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">raw</span>
-                                                                    </div>
-                                          <div style="font-style: italic; font-size: small; color: darkgreen">
-                        added in 3.0.0 of networktocode.nautobot
-                      </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                                <td>
-                                            <div>Virtual chassis the device will be assigned to</div>
-                                                        </td>
-            </tr>
-                        </table>
-    <br/>
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-asset_tag"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-asset_tag:
+
+      .. rst-class:: ansible-option-title
+
+      **asset_tag**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-asset_tag" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Asset tag that is associated to the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-cluster"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-cluster:
+
+      .. rst-class:: ansible-option-title
+
+      **cluster**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-cluster" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Cluster that the device will be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-comments"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-comments:
+
+      .. rst-class:: ansible-option-title
+
+      **comments**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Comments that may include additional information in regards to the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-custom_fields:
+
+      .. rst-class:: ansible-option-title
+
+      **custom_fields**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      must exist in Nautobot
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-device_role"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_role:
+
+      .. rst-class:: ansible-option-title
+
+      **device_role**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-device_role" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-device_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_type:
+
+      .. rst-class:: ansible-option-title
+
+      **device_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-device_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-face"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-face:
+
+      .. rst-class:: ansible-option-title
+
+      **face**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-face" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`rack`\  is defined
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`Front`
+      - :ansible-option-choices-entry:`front`
+      - :ansible-option-choices-entry:`Rear`
+      - :ansible-option-choices-entry:`rear`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-local_context_data"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-local_context_data:
+
+      .. rst-class:: ansible-option-title
+
+      **local_context_data**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-local_context_data" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Arbitrary JSON data to define the devices configuration variables.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-name:
+
+      .. rst-class:: ansible-option-title
+
+      **name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-platform"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-platform:
+
+      .. rst-class:: ansible-option-title
+
+      **platform**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-platform" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The platform of the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-position"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-position:
+
+      .. rst-class:: ansible-option-title
+
+      **position**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-position" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The position of the device in the rack defined above
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-primary_ip4"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-primary_ip4:
+
+      .. rst-class:: ansible-option-title
+
+      **primary_ip4**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-primary_ip4" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Primary IPv4 address assigned to the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-primary_ip6"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-primary_ip6:
+
+      .. rst-class:: ansible-option-title
+
+      **primary_ip6**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-primary_ip6" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Primary IPv6 address assigned to the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-query_params:
+
+      .. rst-class:: ansible-option-title
+
+      **query_params**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
+
+      in plugins/module_utils/utils.py and provides control to users on what may make
+
+      an object unique in their environment.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-rack"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-rack:
+
+      .. rst-class:: ansible-option-title
+
+      **rack**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-rack" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the rack to assign the device to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-serial"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-serial:
+
+      .. rst-class:: ansible-option-title
+
+      **serial**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-serial" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serial number of the device
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-site"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-site:
+
+      .. rst-class:: ansible-option-title
+
+      **site**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-state"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-state:
+
+      .. rst-class:: ansible-option-title
+
+      **state**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Use \ :literal:`present`\  or \ :literal:`absent`\  for adding or removing.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`absent`
+      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The status of the device
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-tags:
+
+      .. rst-class:: ansible-option-title
+
+      **tags**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Any tags that the device may need to be associated with
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-tenant:
+
+      .. rst-class:: ansible-option-title
+
+      **tenant**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The tenant that the device will be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-token"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-token:
+
+      .. rst-class:: ansible-option-title
+
+      **token**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The token created within Nautobot to authorize API access
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-url"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-url:
+
+      .. rst-class:: ansible-option-title
+
+      **url**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      URL of the Nautobot instance resolvable by Ansible control host
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"yes"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-vc_position"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-vc_position:
+
+      .. rst-class:: ansible-option-title
+
+      **vc_position**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-vc_position" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Position in the assigned virtual chassis
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-vc_priority"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-vc_priority:
+
+      .. rst-class:: ansible-option-title
+
+      **vc_priority**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-vc_priority" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Priority in the assigned virtual chassis
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-virtual_chassis"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-virtual_chassis:
+
+      .. rst-class:: ansible-option-title
+
+      **virtual_chassis**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-virtual_chassis" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`raw`
+
+      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Virtual chassis the device will be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
 
 .. Attributes
 
@@ -585,7 +1122,7 @@ Notes
 
 .. note::
    - Tags should be defined as a YAML list
-   - This should be ran with connection ``local`` and hosts ``localhost``
+   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
 
@@ -670,46 +1207,96 @@ Return Values
 -------------
 Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
 
-.. raw:: html
+.. rst-class:: ansible-option-table
 
-    <table border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Key</th>
-            <th>Returned</th>
-            <th width="100%">Description</th>
-        </tr>
-                    <tr>
-                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-device"></div>
-                    <b>device</b>
-                    <a class="ansibleOptionLink" href="#return-device" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">dictionary</span>
-                                          </div>
-                                    </td>
-                <td>success (when <em>state=present</em>)</td>
-                <td>
-                                            <div>Serialized object as created or already existent within Nautobot</div>
-                                        <br/>
-                                                        </td>
-            </tr>
-                                <tr>
-                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="return-msg"></div>
-                    <b>msg</b>
-                    <a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a>
-                    <div style="font-size: small">
-                      <span style="color: purple">string</span>
-                                          </div>
-                                    </td>
-                <td>always</td>
-                <td>
-                                            <div>Message indicating failure or info about what has been achieved</div>
-                                        <br/>
-                                                        </td>
-            </tr>
-                        </table>
-    <br/><br/>
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-device"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__return-device:
+
+      .. rst-class:: ansible-option-title
+
+      **device**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-device" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-msg"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__return-msg:
+
+      .. rst-class:: ansible-option-title
+
+      **msg**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Message indicating failure or info about what has been achieved
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` always
+
+
+      .. raw:: html
+
+        </div>
+
+
 
 ..  Status (Presently only deprecated)
 
