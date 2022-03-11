@@ -134,7 +134,8 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
-from jinja2 import Environment, FileSystemLoader
+# from jinja2 import Environment, FileSystemLoader
+from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -242,10 +243,20 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if not HAS_NETUTILS:
             raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
-        file_loader = FileSystemLoader(f"{PATH}/../templates")
-        env = Environment(loader=file_loader, autoescape=True)
-        template = env.get_template("graphql_default_query.j2")
-        query = template.render(query=self.gql_query, filters=self.filters)
+        base_query = {
+            "devices": {
+                "name": None,
+                "platform": "napalm_driver",
+                "status": "name",
+                "primary_ip4": "address",
+                "device_role": "name",
+                "site": "name",
+
+            }
+        }
+        base_query["devices"].update(self.gql_query)
+        base_query["devices"]["filters"] = self.filters
+        query = convert_to_graphql_string(base_query)
         data = {"query": "query {%s}" % query}
 
         try:
@@ -272,6 +283,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
             else:
+                self.display.display(f"{e.code}", color="red")
                 self.display.display(
                     "Something went wrong while executing the query.\nReason: {reason}".format(
                         reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
@@ -295,7 +307,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.inventory.add_host(device["name"])
             self.add_ipv4_address(device)
             self.add_ansible_platform(device)
-            self.populate_variables(device)
+            if self.variables:
+                self.populate_variables(device)
             self.create_groups(device)
 
     def parse(self, inventory, loader, path, cache=True):
