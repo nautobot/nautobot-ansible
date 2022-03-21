@@ -133,7 +133,7 @@ def test_add_ipv4(inventory_fixture, device_data):
     inventory_fixture.create_groups(device_data)
     inventory_fixture.add_ipv4_address(device_data)
     mydevice_host = inventory_fixture.inventory.get_host("mydevice")
-    assert mydevice_host.vars.get("ansible_host") == "10.10.10.10/32"
+    assert mydevice_host.vars.get("ansible_host") == "10.10.10.10"
 
 
 def test_ansible_platform(inventory_fixture, device_data):

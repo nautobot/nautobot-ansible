@@ -177,7 +177,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def add_ipv4_address(self, device):
         """Add primary IPv4 address to host."""
         if device["primary_ip4"]:
-            self.add_variable(device["name"], device["primary_ip4"]["address"], "ansible_host")
+            self.add_variable(device["name"], device["primary_ip4"]["host"], "ansible_host")
         else:
             self.add_variable(device["name"], device["name"], "ansible_host")
 
