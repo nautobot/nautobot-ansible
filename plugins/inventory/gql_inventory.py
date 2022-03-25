@@ -82,12 +82,22 @@ EXAMPLES = """
 # inventory.yml file in YAML format
 # Example command line: ansible-inventory -v --list -i inventory.yml
 
-# Add additional query parameter with query key
+# Add additional query parameter with query key and use filters
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 query:
   tags: name
+  serial:
+  site:
+    filters:
+      tenant: "den"
+    name:
+    description:
+    contact_name:
+    description:
+    region:
+        name:
 
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
@@ -134,6 +144,7 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
+
 # from jinja2 import Environment, FileSystemLoader
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
@@ -251,7 +262,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 "primary_ip4": "address",
                 "device_role": "name",
                 "site": "name",
-
             }
         }
         base_query["devices"].update(self.gql_query)
