@@ -36,6 +36,7 @@ def convert_to_graphql_string(query: dict, start=0) -> str:
 
     Args:
         query (dict): A dictionary mapping to the graphQL call to be made.
+        start (int): The starting indentation when compiling string.
 
     Returns:
         str: GraphQL query string

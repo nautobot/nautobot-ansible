@@ -258,7 +258,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 "name": None,
                 "platform": "napalm_driver",
                 "status": "name",
-                "primary_ip4": "address",
+                "primary_ip4": "host",
                 "device_role": "name",
                 "site": "name",
             }
