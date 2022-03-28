@@ -254,19 +254,23 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
         base_query = {
-            "devices": {
-                "name": None,
-                "platform": "napalm_driver",
-                "status": "name",
-                "primary_ip4": "host",
-                "device_role": "name",
-                "site": "name",
+            "query": {
+                "devices": {
+                    "name": None,
+                    "platform": "napalm_driver",
+                    "status": "name",
+                    "primary_ip4": "host",
+                    "device_role": "name",
+                    "site": "name",
+                }
             }
         }
-        base_query["devices"].update(self.gql_query)
-        base_query["devices"]["filters"] = self.filters
+        base_query["query"]["devices"].update(self.gql_query)
+        if self.filters:
+            base_query["query"]["devices"]["filters"] = self.filters
         query = convert_to_graphql_string(base_query)
-        data = {"query": "query {%s}" % query}
+        data = {"query": query}
+        self.display.display(query)
 
         try:
             response = open_url(
@@ -316,8 +320,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.inventory.add_host(device["name"])
             self.add_ipv4_address(device)
             self.add_ansible_platform(device)
-            if self.variables:
-                self.populate_variables(device)
+            self.populate_variables(device)
             self.create_groups(device)
 
     def parse(self, inventory, loader, path, cache=True):
