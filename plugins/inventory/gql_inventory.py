@@ -270,7 +270,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             base_query["query"]["devices"]["filters"] = self.filters
         query = convert_to_graphql_string(base_query)
         data = {"query": query}
-        self.display.display(query)
 
         try:
             response = open_url(
