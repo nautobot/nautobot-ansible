@@ -8,6 +8,17 @@
     },
     {
         "query": {
+            "query": {
+                "devices": {
+                    "serial": null,
+                    "asset_tag": null
+                }
+            }
+        },
+        "expected": "query {\n  devices {\n    serial\n    asset_tag\n  }\n}"
+    },
+    {
+        "query": {
             "serial": null,
             "asset_tag": null,
             "site": {
