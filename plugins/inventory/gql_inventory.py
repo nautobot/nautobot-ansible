@@ -82,12 +82,22 @@ EXAMPLES = """
 # inventory.yml file in YAML format
 # Example command line: ansible-inventory -v --list -i inventory.yml
 
-# Add additional query parameter with query key
+# Add additional query parameter with query key and use filters
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 query:
   tags: name
+  serial:
+  site:
+    filters:
+      tenant: "den"
+    name:
+    description:
+    contact_name:
+    description:
+    region:
+        name:
 
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
@@ -134,7 +144,8 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
-from jinja2 import Environment, FileSystemLoader
+
+from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -242,11 +253,23 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if not HAS_NETUTILS:
             raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
-        file_loader = FileSystemLoader(f"{PATH}/../templates")
-        env = Environment(loader=file_loader, autoescape=True)
-        template = env.get_template("graphql_default_query.j2")
-        query = template.render(query=self.gql_query, filters=self.filters)
-        data = {"query": "query {%s}" % query}
+        base_query = {
+            "query": {
+                "devices": {
+                    "name": None,
+                    "platform": "napalm_driver",
+                    "status": "name",
+                    "primary_ip4": "host",
+                    "device_role": "name",
+                    "site": "name",
+                }
+            }
+        }
+        base_query["query"]["devices"].update(self.gql_query)
+        if self.filters:
+            base_query["query"]["devices"]["filters"] = self.filters
+        query = convert_to_graphql_string(base_query)
+        data = {"query": query}
 
         try:
             response = open_url(
@@ -272,6 +295,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
             else:
+                self.display.display(f"{e.code}", color="red")
                 self.display.display(
                     "Something went wrong while executing the query.\nReason: {reason}".format(
                         reason=json.loads(e.fp.read().decode())["errors"][0]["message"],

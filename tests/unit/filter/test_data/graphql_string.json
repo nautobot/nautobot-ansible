@@ -1,0 +1,76 @@
+[
+    {
+        "query": {
+            "serial": null,
+            "asset_tag": null
+        },
+        "expected": "serial\nasset_tag"
+    },
+    {
+        "query": {
+            "query": {
+                "devices": {
+                    "serial": null,
+                    "asset_tag": null
+                }
+            }
+        },
+        "expected": "query {\n  devices {\n    serial\n    asset_tag\n  }\n}"
+    },
+    {
+        "query": {
+            "serial": null,
+            "asset_tag": null,
+            "site": {
+                "name": null,
+                "contact_name": null,
+                "description": null,
+                "region": {
+                    "name": null,
+                    "parent": {
+                        "name": null
+                    }
+                }
+            }
+        },
+        "expected": "serial\nasset_tag\nsite {\n  name\n  contact_name\n  description\n  region {\n    name\n    parent {\n      name\n    }\n  }\n}"
+    },
+    {
+        "query": {
+            "serial": null,
+            "asset_tag": null,
+            "site": {
+                "filters": {
+                    "role": "core",
+                    "tenant": "den"
+                },
+                "name": null,
+                "contact_name": null,
+                "description": null,
+                "region": {
+                    "filters": {
+                        "$tenant": "den"
+                    },
+                    "name": null,
+                    "parent": {
+                        "name": null
+                    }
+                }
+            }
+        },
+        "expected": "serial\nasset_tag\nsite (role: \"core\", tenant: \"den\") {\n  name\n  contact_name\n  description\n  region ($tenant: den) {\n    name\n    parent {\n      name\n    }\n  }\n}"
+    },
+    {
+        "query": {
+            "device": {
+                "name": null,
+                "platform": "napalm_driver",
+                "status": "name",
+                "primary_ip4": "address",
+                "device_role": "name",
+                "site": "name"
+            }
+        },
+        "expected": "device {\n  name\n  platform {\n    napalm_driver\n  }\n  status {\n    name\n  }\n  primary_ip4 {\n    address\n  }\n  device_role {\n    name\n  }\n  site {\n    name\n  }\n}"
+    }
+]
