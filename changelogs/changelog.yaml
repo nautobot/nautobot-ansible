@@ -2,294 +2,309 @@ ancestor: null
 releases:
   1.0.0:
     changes:
-      release_summary: 'This is the first official release of an Ansible Collection
+      release_summary:
+        "This is the first official release of an Ansible Collection
         for Nautobot.
 
-        This project is forked from the ``netbox.netbox`` Ansible Collection.'
+        This project is forked from the ``netbox.netbox`` Ansible Collection."
     fragments:
-    - release-v1.0.0.yml
+      - release-v1.0.0.yml
     modules:
-    - description: Creates or removes aggregates from Nautobot
-      name: aggregate
-      namespace: ''
-    - description: Create, update or delete cables within Nautobot
-      name: cable
-      namespace: ''
-    - description: Create, update or delete circuits within Nautobot
-      name: circuit
-      namespace: ''
-    - description: Create, update or delete circuit terminations within Nautobot
-      name: circuit_termination
-      namespace: ''
-    - description: Create, update or delete circuit types within Nautobot
-      name: circuit_type
-      namespace: ''
-    - description: Create, update or delete clusters within Nautobot
-      name: cluster
-      namespace: ''
-    - description: Create, update or delete cluster groups within Nautobot
-      name: cluster_group
-      namespace: ''
-    - description: Create, update or delete cluster types within Nautobot
-      name: cluster_type
-      namespace: ''
-    - description: Create, update or delete console ports within Nautobot
-      name: console_port
-      namespace: ''
-    - description: Create, update or delete console port templates within Nautobot
-      name: console_port_template
-      namespace: ''
-    - description: Create, update or delete console server ports within Nautobot
-      name: console_server_port
-      namespace: ''
-    - description: Create, update or delete console server port templates within Nautobot
-      name: console_server_port_template
-      namespace: ''
-    - description: Create, update or delete devices within Nautobot
-      name: device
-      namespace: ''
-    - description: Create, update or delete device bays within Nautobot
-      name: device_bay
-      namespace: ''
-    - description: Create, update or delete device bay templates within Nautobot
-      name: device_bay_template
-      namespace: ''
-    - description: Creates or removes interfaces on devices from Nautobot
-      name: device_interface
-      namespace: ''
-    - description: Creates or removes interfaces on devices from Nautobot
-      name: device_interface_template
-      namespace: ''
-    - description: Create, update or delete devices roles within Nautobot
-      name: device_role
-      namespace: ''
-    - description: Create, update or delete device types within Nautobot
-      name: device_type
-      namespace: ''
-    - description: Create, update or delete front ports within Nautobot
-      name: front_port
-      namespace: ''
-    - description: Create, update or delete front port templates within Nautobot
-      name: front_port_template
-      namespace: ''
-    - description: Creates or removes inventory items from Nautobot
-      name: inventory_item
-      namespace: ''
-    - description: Creates or removes IP addresses from Nautobot
-      name: ip_address
-      namespace: ''
-    - description: Creates or removes ipam roles from Nautobot
-      name: ipam_role
-      namespace: ''
-    - description: Create or delete manufacturers within Nautobot
-      name: manufacturer
-      namespace: ''
-    - description: Create or delete platforms within Nautobot
-      name: platform
-      namespace: ''
-    - description: Create, update or delete power feeds within Nautobot
-      name: power_feed
-      namespace: ''
-    - description: Create, update or delete power outlets within Nautobot
-      name: power_outlet
-      namespace: ''
-    - description: Create, update or delete power outlet templates within Nautobot
-      name: power_outlet_template
-      namespace: ''
-    - description: Create, update or delete power panels within Nautobot
-      name: power_panel
-      namespace: ''
-    - description: Create, update or delete power ports within Nautobot
-      name: power_port
-      namespace: ''
-    - description: Create, update or delete power port templates within Nautobot
-      name: power_port_template
-      namespace: ''
-    - description: Creates or removes prefixes from Nautobot
-      name: prefix
-      namespace: ''
-    - description: Create, update or delete providers within Nautobot
-      name: provider
-      namespace: ''
-    - description: Create, update or delete racks within Nautobot
-      name: rack
-      namespace: ''
-    - description: Create, update or delete racks groups within Nautobot
-      name: rack_group
-      namespace: ''
-    - description: Create, update or delete racks roles within Nautobot
-      name: rack_role
-      namespace: ''
-    - description: Create, update or delete rear ports within Nautobot
-      name: rear_port
-      namespace: ''
-    - description: Create, update or delete rear port templates within Nautobot
-      name: rear_port_template
-      namespace: ''
-    - description: Creates or removes regions from Nautobot
-      name: region
-      namespace: ''
-    - description: Create, update or delete RIRs within Nautobot
-      name: rir
-      namespace: ''
-    - description: Creates or removes route targets from Nautobot
-      name: route_target
-      namespace: ''
-    - description: Creates or removes service from Nautobot
-      name: service
-      namespace: ''
-    - description: Creates or removes sites from Nautobot
-      name: site
-      namespace: ''
-    - description: Creates or removes status from Nautobot
-      name: status
-      namespace: ''
-    - description: Creates or removes tags from Nautobot
-      name: tag
-      namespace: ''
-    - description: Creates or removes tenants from Nautobot
-      name: tenant
-      namespace: ''
-    - description: Creates or removes tenant groups from Nautobot
-      name: tenant_group
-      namespace: ''
-    - description: Create, update or delete virtual chassis within Nautobot
-      name: virtual_chassis
-      namespace: ''
-    - description: Create, update or delete virtual_machines within Nautobot
-      name: virtual_machine
-      namespace: ''
-    - description: Create, update or delete vlans within Nautobot
-      name: vlan
-      namespace: ''
-    - description: Create, update or delete vlans groups within Nautobot
-      name: vlan_group
-      namespace: ''
-    - description: Creates or removes interfaces from virtual machines in Nautobot
-      name: vm_interface
-      namespace: ''
-    - description: Create, update or delete vrfs within Nautobot
-      name: vrf
-      namespace: ''
+      - description: Creates or removes aggregates from Nautobot
+        name: aggregate
+        namespace: ""
+      - description: Create, update or delete cables within Nautobot
+        name: cable
+        namespace: ""
+      - description: Create, update or delete circuits within Nautobot
+        name: circuit
+        namespace: ""
+      - description: Create, update or delete circuit terminations within Nautobot
+        name: circuit_termination
+        namespace: ""
+      - description: Create, update or delete circuit types within Nautobot
+        name: circuit_type
+        namespace: ""
+      - description: Create, update or delete clusters within Nautobot
+        name: cluster
+        namespace: ""
+      - description: Create, update or delete cluster groups within Nautobot
+        name: cluster_group
+        namespace: ""
+      - description: Create, update or delete cluster types within Nautobot
+        name: cluster_type
+        namespace: ""
+      - description: Create, update or delete console ports within Nautobot
+        name: console_port
+        namespace: ""
+      - description: Create, update or delete console port templates within Nautobot
+        name: console_port_template
+        namespace: ""
+      - description: Create, update or delete console server ports within Nautobot
+        name: console_server_port
+        namespace: ""
+      - description: Create, update or delete console server port templates within Nautobot
+        name: console_server_port_template
+        namespace: ""
+      - description: Create, update or delete devices within Nautobot
+        name: device
+        namespace: ""
+      - description: Create, update or delete device bays within Nautobot
+        name: device_bay
+        namespace: ""
+      - description: Create, update or delete device bay templates within Nautobot
+        name: device_bay_template
+        namespace: ""
+      - description: Creates or removes interfaces on devices from Nautobot
+        name: device_interface
+        namespace: ""
+      - description: Creates or removes interfaces on devices from Nautobot
+        name: device_interface_template
+        namespace: ""
+      - description: Create, update or delete devices roles within Nautobot
+        name: device_role
+        namespace: ""
+      - description: Create, update or delete device types within Nautobot
+        name: device_type
+        namespace: ""
+      - description: Create, update or delete front ports within Nautobot
+        name: front_port
+        namespace: ""
+      - description: Create, update or delete front port templates within Nautobot
+        name: front_port_template
+        namespace: ""
+      - description: Creates or removes inventory items from Nautobot
+        name: inventory_item
+        namespace: ""
+      - description: Creates or removes IP addresses from Nautobot
+        name: ip_address
+        namespace: ""
+      - description: Creates or removes ipam roles from Nautobot
+        name: ipam_role
+        namespace: ""
+      - description: Create or delete manufacturers within Nautobot
+        name: manufacturer
+        namespace: ""
+      - description: Create or delete platforms within Nautobot
+        name: platform
+        namespace: ""
+      - description: Create, update or delete power feeds within Nautobot
+        name: power_feed
+        namespace: ""
+      - description: Create, update or delete power outlets within Nautobot
+        name: power_outlet
+        namespace: ""
+      - description: Create, update or delete power outlet templates within Nautobot
+        name: power_outlet_template
+        namespace: ""
+      - description: Create, update or delete power panels within Nautobot
+        name: power_panel
+        namespace: ""
+      - description: Create, update or delete power ports within Nautobot
+        name: power_port
+        namespace: ""
+      - description: Create, update or delete power port templates within Nautobot
+        name: power_port_template
+        namespace: ""
+      - description: Creates or removes prefixes from Nautobot
+        name: prefix
+        namespace: ""
+      - description: Create, update or delete providers within Nautobot
+        name: provider
+        namespace: ""
+      - description: Create, update or delete racks within Nautobot
+        name: rack
+        namespace: ""
+      - description: Create, update or delete racks groups within Nautobot
+        name: rack_group
+        namespace: ""
+      - description: Create, update or delete racks roles within Nautobot
+        name: rack_role
+        namespace: ""
+      - description: Create, update or delete rear ports within Nautobot
+        name: rear_port
+        namespace: ""
+      - description: Create, update or delete rear port templates within Nautobot
+        name: rear_port_template
+        namespace: ""
+      - description: Creates or removes regions from Nautobot
+        name: region
+        namespace: ""
+      - description: Create, update or delete RIRs within Nautobot
+        name: rir
+        namespace: ""
+      - description: Creates or removes route targets from Nautobot
+        name: route_target
+        namespace: ""
+      - description: Creates or removes service from Nautobot
+        name: service
+        namespace: ""
+      - description: Creates or removes sites from Nautobot
+        name: site
+        namespace: ""
+      - description: Creates or removes status from Nautobot
+        name: status
+        namespace: ""
+      - description: Creates or removes tags from Nautobot
+        name: tag
+        namespace: ""
+      - description: Creates or removes tenants from Nautobot
+        name: tenant
+        namespace: ""
+      - description: Creates or removes tenant groups from Nautobot
+        name: tenant_group
+        namespace: ""
+      - description: Create, update or delete virtual chassis within Nautobot
+        name: virtual_chassis
+        namespace: ""
+      - description: Create, update or delete virtual_machines within Nautobot
+        name: virtual_machine
+        namespace: ""
+      - description: Create, update or delete vlans within Nautobot
+        name: vlan
+        namespace: ""
+      - description: Create, update or delete vlans groups within Nautobot
+        name: vlan_group
+        namespace: ""
+      - description: Creates or removes interfaces from virtual machines in Nautobot
+        name: vm_interface
+        namespace: ""
+      - description: Create, update or delete vrfs within Nautobot
+        name: vrf
+        namespace: ""
     plugins:
       lookup:
-      - description: Queries and returns elements from Nautobot
-        name: lookup
-        namespace: null
-    release_date: '2021-02-20'
+        - description: Queries and returns elements from Nautobot
+          name: lookup
+          namespace: null
+    release_date: "2021-02-20"
   1.0.1:
     changes:
-      release_summary: Removes dependency on ansible.netcommon and uses builtin ipaddress
+      release_summary:
+        Removes dependency on ansible.netcommon and uses builtin ipaddress
         module
     fragments:
-    - v1.0.1.yml
-    release_date: '2021-03-03'
+      - v1.0.1.yml
+    release_date: "2021-03-03"
   1.0.2:
     changes:
       bugfixes:
-      - Remove code related to fetching secrets due to secrets not existing in Nautobot.
-    release_date: '2021-03-07'
+        - Remove code related to fetching secrets due to secrets not existing in Nautobot.
+    release_date: "2021-03-07"
   1.0.3:
     changes:
       bugfixes:
-      - Validate if value is already a UUID, return UUID and do not attempt to resolve
-        [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+        - Validate if value is already a UUID, return UUID and do not attempt to resolve
+          [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
     fragments:
-    - v1.0.3.yml
-    release_date: '2021-03-13'
+      - v1.0.3.yml
+    release_date: "2021-03-13"
   1.0.4:
     changes:
       bugfixes:
-      - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
-      - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+        - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+        - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
     fragments:
-    - v1.0.4.yml
-    release_date: '2021-03-14'
+      - v1.0.4.yml
+    release_date: "2021-03-14"
   1.1.0:
     fragments:
-    - v1.1.0.yml
+      - v1.1.0.yml
     modules:
-    - description: Lookup plugin to query Nautobot GraphQL API endpoint
-      name: lookup_graphql
-      namespace: networktocode.nautobot
-    - description: Action plugin to query Nautobot GraphQL API endpoint
-      name: query_graphql
-      namespace: networktocode.nautobot
-    release_date: '2021-04-12'
+      - description: Lookup plugin to query Nautobot GraphQL API endpoint
+        name: lookup_graphql
+        namespace: networktocode.nautobot
+      - description: Action plugin to query Nautobot GraphQL API endpoint
+        name: query_graphql
+        namespace: networktocode.nautobot
+    release_date: "2021-04-12"
   2.0.0:
     changes:
       bugfixes:
-      - (#26) Add missing description to tenant_group
-      - (#29) Add missing field to vlan_group
-      - (#32) Fixed query on Virtual Chassis
-      - (#35) Add Site, Device Tracebacks due to changes in Nautobot
+        - (#26) Add missing description to tenant_group
+        - (#29) Add missing field to vlan_group
+        - (#32) Fixed query on Virtual Chassis
+        - (#35) Add Site, Device Tracebacks due to changes in Nautobot
       major_changes:
-      - (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+        - (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
       release_summary: Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
   2.0.1:
     changes:
       bugfixes:
-      - (#44) Add Interface Label Support
-      - (#45) SSL Verify Keyword Consistency Update
+        - (#44) Add Interface Label Support
+        - (#45) SSL Verify Keyword Consistency Update
       release_summary: Bug fix updates for label support and SSL version consistency
   3.0.0:
     changes:
       major_changes:
-      - (#66) Remove data sub-dictionary from modules
+        - (#66) Remove data sub-dictionary from modules
       minor_changes:
-      - (#57) Adds nautobot-server module
-      - (#75) Device Interface module supports custom_fields
-      release_summary: Updates format for modules to support Ansible 4 / ansible-core
+        - (#57) Adds nautobot-server module
+        - (#75) Device Interface module supports custom_fields
+      release_summary:
+        Updates format for modules to support Ansible 4 / ansible-core
         2.11 arg spec verification changes
-    release_date: '2021-09-06'
+    release_date: "2021-09-06"
   3.1.0:
     changes:
       minor_changes:
-      - (#53) Adds inventory plugin using GraphQL API
+        - (#53) Adds inventory plugin using GraphQL API
       release_summary: Adds inventory plugin leveraging Nautobot's GraphQL API
     modules:
-    - description: Inventory plugin leveraging Nautobot's GraphQL API
-      name: gql_inventory
-      namespace: networktocode.nautobot
-    release_date: '2021-09-22'
+      - description: Inventory plugin leveraging Nautobot's GraphQL API
+        name: gql_inventory
+        namespace: networktocode.nautobot
+    release_date: "2021-09-22"
   3.1.1:
     changes:
       bugfixes:
-      - (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID
-        for a resolvable field
-      release_summary: Quick bugfix release for not attempting to resolve IDs for
+        - (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID
+          for a resolvable field
+      release_summary:
+        Quick bugfix release for not attempting to resolve IDs for
         fields that a user has passed in an ID/UUID for
-    release_date: '2021-10-15'
+    release_date: "2021-10-15"
   3.2.0:
     changes:
       minor_changes:
-      - (#105) Documentation updates
-      - (#107) Add `tenant_group` to `group_by` to `inventory` plugin
-      - (#108) Add choices to `group_by` in `gql_inventory` plugin
-      - (#109) token is explicitly required within `gql_inventory` plugin. (This was
-        always true, but never enforced.)
-      release_summary: A few updates to the inventory plugins to support new options
+        - (#105) Documentation updates
+        - (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+        - (#108) Add choices to `group_by` in `gql_inventory` plugin
+        - (#109) token is explicitly required within `gql_inventory` plugin. (This was
+          always true, but never enforced.)
+      release_summary:
+        A few updates to the inventory plugins to support new options
         or require existing parameters.
-    release_date: '2021-11-10'
+    release_date: "2021-11-10"
   3.2.1:
     changes:
       bugfixes:
-      - Remove bad code in plugins/inventory/inventory.yml when locally built to publish
-        that prevented it from grabbing all hosts
+        - Remove bad code in plugins/inventory/inventory.yml when locally built to publish
+          that prevented it from grabbing all hosts
       release_summary: Unbreak plugins/inventory/inventory.yml
-    release_date: '2021-11-18'
+    release_date: "2021-11-18"
   3.3.0:
     changes:
       minor_changes:
-      - (#115) Documentation fixes
-      - (#110) Allow users to define any path for defining GroupBy Group names
-    release_summary: GraphQL Inventory Group Customization
-    release_date: '2021-12-17'
+        - (#110) Allow users to define any path for defining GroupBy Group names
+        - (#115) Documentation fixes
+    release_date: "2021-12-17"
   3.3.1:
     changes:
       bugfixes:
+        - (#116) Fix graphql action plugin to support check mode
         - (#119) Documentation fixes
         - (#120) Documentation permission fixes
-        - (#116) Fix graphql action plugin to support check mode
-    release_summary: Documentation updates & check mode fix for GraphQL action plugin
     release_date: "2021-02-25"
+  3.4.0:
+    changes:
+      bugfixes:
+        - (124) Removes CIDR from the ansible_host variable.
+      minor_changes:
+        - (122) Add ability to add nested GraphQL relationships and non-relationship
+          fields such as serial, asset_tag, etc.
+      release_summary:
+        "This release only changes the GraphQL inventory plugin. It
+        fixes the ansible_host by removing the CIDR. The last change is the ability
+        to specify nested relationships as well as fields that don't have a relationship
+        to other Nautobot objects such as serial, asset_tag, etc."
