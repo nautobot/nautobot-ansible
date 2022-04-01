@@ -24,9 +24,9 @@ namespace = Collection("nautobot_ansible")
 namespace.configure(
     {
         "nautobot_ansible": {
-            "nautobot_ver": "1.0.3",
+            "nautobot_ver": "1.2.10",
             "project_name": "nautobot_ansible",
-            "python_ver": "3.6",
+            "python_ver": "3.7",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],

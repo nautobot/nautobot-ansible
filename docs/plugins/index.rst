@@ -5,7 +5,29 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 3.3.1
+Collection version 3.4.0
+
+.. contents::
+   :local:
+   :depth: 1
+
+Description
+-----------
+
+This is a collection of Nautobot Ansible modules
+
+**Author:**
+
+* Network to Code <opensource@networktocode.com>
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
+
+
 
 .. toctree::
     :maxdepth: 1
