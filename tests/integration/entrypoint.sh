@@ -32,6 +32,7 @@ function main {
 
     echo "# Running..."
     # shellcheck disable=SC2086
+    ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory "$@"
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" regression-latest "$@"
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report

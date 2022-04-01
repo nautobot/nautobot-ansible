@@ -63,7 +63,12 @@ def get_bin_path(self, arg, required=False):
 
 class TestNautobotServer(unittest.TestCase):
     def setUp(self):
-        self.mock_module_helper = patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json, get_bin_path=get_bin_path,)
+        self.mock_module_helper = patch.multiple(
+            basic.AnsibleModule,
+            exit_json=exit_json,
+            fail_json=fail_json,
+            get_bin_path=get_bin_path,
+        )
         self.mock_module_helper.start()
         self.addCleanup(self.mock_module_helper.stop)
 

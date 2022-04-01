@@ -8,12 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: device_interface_template
@@ -143,7 +137,10 @@ def main():
         dict(
             device_type=dict(required=True, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(required=True, type="str",),
+            type=dict(
+                required=True,
+                type="str",
+            ),
             mgmt_only=dict(required=False, type="bool"),
         )
     )

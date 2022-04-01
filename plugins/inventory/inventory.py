@@ -116,6 +116,7 @@ DOCUMENTATION = """
                 - site
                 - tenants
                 - tenant
+                - tenant_group
                 - racks
                 - rack
                 - rack_group
@@ -289,7 +290,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.display.v("Fetching: " + url)
             try:
                 response = open_url(
-                    url, headers=self.headers, timeout=self.timeout, validate_certs=self.validate_certs, follow_redirects=self.follow_redirects,
+                    url,
+                    headers=self.headers,
+                    timeout=self.timeout,
+                    validate_certs=self.validate_certs,
+                    follow_redirects=self.follow_redirects,
                 )
             except urllib_error.HTTPError as e:
                 """This will return the response body when we encounter an error.
@@ -299,7 +304,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
                 if e.code == 403:
                     self.display.display(
-                        "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(url), color="red",
+                        "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(url),
+                        color="red",
                     )
                     # Need to return mock response data that is empty to prevent any failures downstream
                     return {"results": [], "next": None}
@@ -396,6 +402,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "is_virtual": self.extract_is_virtual,
             self._pluralize_group_by("site"): self.extract_site,
             self._pluralize_group_by("tenant"): self.extract_tenant,
+            "tenant_group": self.extract_tenant_group,
             self._pluralize_group_by("rack"): self.extract_rack,
             "rack_group": self.extract_rack_group,
             "rack_role": self.extract_rack_role,
@@ -519,7 +526,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return None
 
         return self._objects_array_following_parents(
-            initial_object_id=self.racks_group_lookup[rack_id], object_lookup=self.rack_groups_lookup, object_parent_lookup=self.rack_group_parent_lookup,
+            initial_object_id=self.racks_group_lookup[rack_id],
+            object_lookup=self.rack_groups_lookup,
+            object_parent_lookup=self.rack_group_parent_lookup,
         )
 
     def extract_rack_role(self, host):
@@ -537,6 +546,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def extract_tenant(self, host):
         try:
             return self._pluralize(self.tenants_lookup[host["tenant"]["id"]])
+        except Exception:
+            return
+
+    def extract_tenant_group(self, host):
+        try:
+            return self.tenant_group_lookup[host["tenant"]["id"]]
         except Exception:
             return
 
@@ -657,7 +672,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return []
 
         return self._objects_array_following_parents(
-            initial_object_id=self.sites_region_lookup[site_id], object_lookup=self.regions_lookup, object_parent_lookup=self.regions_parent_lookup,
+            initial_object_id=self.sites_region_lookup[site_id],
+            object_lookup=self.regions_lookup,
+            object_parent_lookup=self.regions_parent_lookup,
         )
 
     def extract_cluster(self, host):
@@ -742,6 +759,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         tenants = self.get_resource_list(api_url=url)
         self.tenants_lookup = dict((tenant["id"], tenant["slug"]) for tenant in tenants)
 
+        def get_group_for_tenant(tenant):
+            try:
+                return (tenant["id"], tenant["group"]["slug"])
+            except Exception:
+                return (tenant["id"], None)
+
+        self.tenant_group_lookup = dict(map(get_group_for_tenant, tenants))
+
     def refresh_racks_lookup(self):
         url = self.api_endpoint + "/api/dcim/racks/?limit=0"
         racks = self.get_resource_list(api_url=url)
@@ -819,8 +844,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if self.fetch_all:
             services = self.get_resource_list(url)
         else:
-            device_services = self.get_resource_list_chunked(api_url=url, query_key="device_id", query_values=self.devices_lookup.keys(),)
-            vm_services = self.get_resource_list_chunked(api_url=url, query_key="virtual_machine_id", query_values=self.vms_lookup.keys(),)
+            device_services = self.get_resource_list_chunked(
+                api_url=url,
+                query_key="device_id",
+                query_values=self.devices_lookup.keys(),
+            )
+            vm_services = self.get_resource_list_chunked(
+                api_url=url,
+                query_key="virtual_machine_id",
+                query_values=self.vms_lookup.keys(),
+            )
             services = chain(device_services, vm_services)
 
         # Construct a dictionary of dictionaries, separately for devices and vms.
@@ -849,8 +882,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             device_interfaces = self.get_resource_list(url_device_interfaces)
             vm_interfaces = self.get_resource_list(url_vm_interfaces)
         else:
-            device_interfaces = self.get_resource_list_chunked(api_url=url_device_interfaces, query_key="device_id", query_values=self.devices_lookup.keys(),)
-            vm_interfaces = self.get_resource_list_chunked(api_url=url_vm_interfaces, query_key="virtual_machine_id", query_values=self.vms_lookup.keys(),)
+            device_interfaces = self.get_resource_list_chunked(
+                api_url=url_device_interfaces,
+                query_key="device_id",
+                query_values=self.devices_lookup.keys(),
+            )
+            vm_interfaces = self.get_resource_list_chunked(
+                api_url=url_vm_interfaces,
+                query_key="virtual_machine_id",
+                query_values=self.vms_lookup.keys(),
+            )
 
         # Construct a dictionary of dictionaries, separately for devices and vms.
         # For a given device id or vm id, get a lookup of interface id to interface
@@ -896,8 +937,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if self.fetch_all:
             ipaddresses = self.get_resource_list(url)
         else:
-            device_ips = self.get_resource_list_chunked(api_url=url, query_key="device_id", query_values=list(self.devices_with_ips),)
-            vm_ips = self.get_resource_list_chunked(api_url=url, query_key="virtual_machine_id", query_values=self.vms_lookup.keys(),)
+            device_ips = self.get_resource_list_chunked(
+                api_url=url,
+                query_key="device_id",
+                query_values=list(self.devices_with_ips),
+            )
+            vm_ips = self.get_resource_list_chunked(
+                api_url=url,
+                query_key="virtual_machine_id",
+                query_values=self.vms_lookup.keys(),
+            )
 
             ipaddresses = chain(device_ips, vm_ips)
 
@@ -1034,7 +1083,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         v = tuple(parameter.values())[0]
 
         if not (k in allowed_query_parameters or k.startswith("cf_")):
-            msg = "Warning: %s not in %s or starting with cf (Custom field)" % (k, allowed_query_parameters,)
+            msg = "Warning: %s not in %s or starting with cf (Custom field)" % (
+                k,
+                allowed_query_parameters,
+            )
             self.display.warning(msg=msg)
             return None
         return k, v
@@ -1045,7 +1097,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # For each element of query_filters, test if it's allowed
             map(
                 # Create a partial function with the device-specific list of query parameters
-                partial(self.validate_query_parameter, allowed_query_parameters=allowed_query_parameters,),
+                partial(
+                    self.validate_query_parameter,
+                    allowed_query_parameters=allowed_query_parameters,
+                ),
                 parameters,
             ),
         )
@@ -1351,7 +1406,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.services = self.get_option("services")
         self.fetch_all = self.get_option("fetch_all")
         self.headers = {
-            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ")[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
             "Content-type": "application/json",
         }
         if token:

@@ -70,7 +70,10 @@ class NautobotIpamModule(NautobotModule):
         if attached_ips:
             self.nb_object = attached_ips[-1].serialize()
             self.result["changed"] = False
-            self.result["msg"] = "%s %s already attached" % (endpoint_name, self.nb_object["address"],)
+            self.result["msg"] = "%s %s already attached" % (
+                endpoint_name,
+                self.nb_object["address"],
+            )
         else:
             self._get_new_available_ip_address(nb_app, data, endpoint_name)
 
@@ -84,7 +87,10 @@ class NautobotIpamModule(NautobotModule):
             self.nb_object, diff = self._create_object(prefix.available_ips, data)
             self.nb_object = self.nb_object.serialize()
             self.result["changed"] = True
-            self.result["msg"] = "%s %s created" % (endpoint_name, self.nb_object["address"],)
+            self.result["msg"] = "%s %s created" % (
+                endpoint_name,
+                self.nb_object["address"],
+            )
             self.result["diff"] = diff
         else:
             self.result["changed"] = False
@@ -103,7 +109,10 @@ class NautobotIpamModule(NautobotModule):
             self.nb_object, diff = self._create_object(self.nb_object.available_prefixes, data)
             self.nb_object = self.nb_object.serialize()
             self.result["changed"] = True
-            self.result["msg"] = "%s %s created" % (endpoint_name, self.nb_object["prefix"],)
+            self.result["msg"] = "%s %s created" % (
+                endpoint_name,
+                self.nb_object["prefix"],
+            )
             self.result["diff"] = diff
         else:
             self.result["changed"] = False

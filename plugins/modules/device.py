@@ -8,12 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: device
@@ -301,7 +295,11 @@ def main():
             site=dict(required=False, type="raw"),
             rack=dict(required=False, type="raw"),
             position=dict(required=False, type="int"),
-            face=dict(required=False, type="str", choices=["Front", "front", "Rear", "rear"],),
+            face=dict(
+                required=False,
+                type="str",
+                choices=["Front", "front", "Rear", "rear"],
+            ),
             status=dict(required=False, type="raw"),
             primary_ip4=dict(required=False, type="raw"),
             primary_ip6=dict(required=False, type="raw"),

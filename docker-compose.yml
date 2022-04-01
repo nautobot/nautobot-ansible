@@ -1,13 +1,16 @@
 ---
 version: "3.4"
-x-args: &args
+x-args:
+  &args
   PYTHON_VER: ${PYTHON_VER}
 # Build block with context and target default
-x-build: &build
+x-build:
+  &build
   args: *args
   context: .
   target: unittests
-x-service: &service
+x-service:
+  &service
   environment:
     ANSIBLE_INTEGRATION_ARGS: ${ANSIBLE_INTEGRATION_ARGS:-}
     ANSIBLE_SANITY_ARGS: ${ANSIBLE_SANITY_ARGS:-}
@@ -30,9 +33,10 @@ services:
     build:
       <<: *build
       target: integration
+    networks:
+      - integration_network
 
 # Attach these services to the Nautobot network that gets spun up from invoke start
 networks:
-  default:
-    external:
-      name: nautobot_ansible_default
+  integration_network:
+    name: nautobot_ansible_default

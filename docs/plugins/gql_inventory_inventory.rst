@@ -2,6 +2,28 @@
 
 :orphan:
 
+.. |antsibull-internal-nbsp| unicode:: 0xA0
+    :trim:
+
+.. role:: ansible-attribute-support-label
+.. role:: ansible-attribute-support-property
+.. role:: ansible-attribute-support-full
+.. role:: ansible-attribute-support-partial
+.. role:: ansible-attribute-support-none
+.. role:: ansible-attribute-support-na
+.. role:: ansible-option-type
+.. role:: ansible-option-elements
+.. role:: ansible-option-required
+.. role:: ansible-option-versionadded
+.. role:: ansible-option-aliases
+.. role:: ansible-option-choices
+.. role:: ansible-option-choices-entry
+.. role:: ansible-option-default
+.. role:: ansible-option-default-bold
+.. role:: ansible-option-configuration
+.. role:: ansible-option-returned-bold
+.. role:: ansible-option-sample-bold
+
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory:
@@ -14,15 +36,19 @@
 
 .. Title
 
-networktocode.nautobot.gql_inventory -- Nautobot inventory source using GraphQL capability
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source using GraphQL capability
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
 .. note::
-    This plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.1.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.0).
 
-    To install it use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You might already have this collection installed if you are using the ``ansible`` package.
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+
+    To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.gql_inventory`.
 
@@ -61,421 +87,456 @@ The below requirements are needed on the local controller node that executes thi
 Parameters
 ----------
 
-.. raw:: html
+.. rst-class:: ansible-option-table
 
-    <table  border=0 cellpadding=0 class="documentation-table">
-        <tr>
-            <th colspan="1">Parameter</th>
-            <th>Choices/<font color="blue">Defaults</font></th>
-                            <th>Configuration</th>
-                        <th width="100%">Comments</th>
-        </tr>
-                    <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-additional_variables"></div>
-                    <b>additional_variables</b>
-                    <a class="ansibleOptionLink" href="#parameter-additional_variables" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Variable types and values to use while making the call</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-api_endpoint"></div>
-                    <b>api_endpoint</b>
-                    <a class="ansibleOptionLink" href="#parameter-api_endpoint" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                    <td>
-                                                                            <div>
-                                env:NAUTOBOT_URL
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Endpoint of the Nautobot API</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cache"></div>
-                    <b>cache</b>
-                    <a class="ansibleOptionLink" href="#parameter-cache" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                                <li>yes</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                    <td>
-                                                    <div> ini entries:
-                                                                    <p>
-                                        [inventory]<br>cache = no
-                                                                                                                    </p>
-                                                            </div>
-                                                                            <div>
-                                env:ANSIBLE_INVENTORY_CACHE
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Toggle to enable/disable the caching of the inventory&#x27;s source data, requires a cache plugin setup to work.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cache_connection"></div>
-                    <b>cache_connection</b>
-                    <a class="ansibleOptionLink" href="#parameter-cache_connection" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                    <td>
-                                                    <div> ini entries:
-                                                                    <p>
-                                        [defaults]<br>fact_caching_connection = None
-                                                                                                                    </p>
-                                                                    <p>
-                                        [inventory]<br>cache_connection = None
-                                                                                                                    </p>
-                                                            </div>
-                                                                            <div>
-                                env:ANSIBLE_CACHE_PLUGIN_CONNECTION
-                                                                                            </div>
-                                                    <div>
-                                env:ANSIBLE_INVENTORY_CACHE_CONNECTION
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Cache connection data or path, read cache plugin documentation for specifics.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cache_plugin"></div>
-                    <b>cache_plugin</b>
-                    <a class="ansibleOptionLink" href="#parameter-cache_plugin" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"memory"</div>
-                                    </td>
-                                                    <td>
-                                                    <div> ini entries:
-                                                                    <p>
-                                        [defaults]<br>fact_caching = memory
-                                                                                                                    </p>
-                                                                    <p>
-                                        [inventory]<br>cache_plugin = memory
-                                                                                                                    </p>
-                                                            </div>
-                                                                            <div>
-                                env:ANSIBLE_CACHE_PLUGIN
-                                                                                            </div>
-                                                    <div>
-                                env:ANSIBLE_INVENTORY_CACHE_PLUGIN
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Cache plugin to use for the inventory&#x27;s source data.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cache_prefix"></div>
-                    <b>cache_prefix</b>
-                    <a class="ansibleOptionLink" href="#parameter-cache_prefix" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">"ansible_inventory_"</div>
-                                    </td>
-                                                    <td>
-                                                    <div> ini entries:
-                                                                    <p>
-                                        [default]<br>fact_caching_prefix = ansible_inventory_
-                                                                                                                    </p>
-                                                                    <p>
-                                        [inventory]<br>cache_prefix = ansible_inventory_
-                                                                                                                    </p>
-                                                            </div>
-                                                                            <div>
-                                env:ANSIBLE_CACHE_PLUGIN_PREFIX
-                                                                                            </div>
-                                                    <div>
-                                env:ANSIBLE_INVENTORY_CACHE_PLUGIN_PREFIX
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Prefix to use for cache plugin files/tables</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-cache_timeout"></div>
-                    <b>cache_timeout</b>
-                    <a class="ansibleOptionLink" href="#parameter-cache_timeout" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">3600</div>
-                                    </td>
-                                                    <td>
-                                                    <div> ini entries:
-                                                                    <p>
-                                        [defaults]<br>fact_caching_timeout = 3600
-                                                                                                                    </p>
-                                                                    <p>
-                                        [inventory]<br>cache_timeout = 3600
-                                                                                                                    </p>
-                                                            </div>
-                                                                            <div>
-                                env:ANSIBLE_CACHE_PLUGIN_TIMEOUT
-                                                                                            </div>
-                                                    <div>
-                                env:ANSIBLE_INVENTORY_CACHE_TIMEOUT
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Cache duration in seconds</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-compose"></div>
-                    <b>compose</b>
-                    <a class="ansibleOptionLink" href="#parameter-compose" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">{}</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Create vars from jinja2 expressions.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-filters"></div>
-                    <b>filters</b>
-                    <a class="ansibleOptionLink" href="#parameter-filters" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">{}</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Granular device search query</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-group_by"></div>
-                    <b>group_by</b>
-                    <a class="ansibleOptionLink" href="#parameter-group_by" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>List of group names to group the hosts</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-groups"></div>
-                    <b>groups</b>
-                    <a class="ansibleOptionLink" href="#parameter-groups" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">{}</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Add hosts to group based on Jinja2 conditionals.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-keyed_groups"></div>
-                    <b>keyed_groups</b>
-                    <a class="ansibleOptionLink" href="#parameter-keyed_groups" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">list</span>
-                         / <span style="color: purple">elements=string</span>                                            </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">[]</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Add hosts to group based on the values of a variable.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
-                    <b>plugin</b>
-                    <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                 / <span style="color: red">required</span>                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                            <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>networktocode.nautobot.gql_inventory</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Setting that ensures this is a source file for the &#x27;networktocode.nautobot&#x27; plugin.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-query"></div>
-                    <b>query</b>
-                    <a class="ansibleOptionLink" href="#parameter-query" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">dictionary</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">{}</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>GraphQL query to send to Nautobot to obtain desired data</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-strict"></div>
-                    <b>strict</b>
-                    <a class="ansibleOptionLink" href="#parameter-strict" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li><div style="color: blue"><b>no</b>&nbsp;&larr;</div></li>
-                                                                                                                                                                                                <li>yes</li>
-                                                                                    </ul>
-                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>If <code>yes</code> make invalid entries a fatal error, otherwise skip and continue.</div>
-                                            <div>Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-timeout"></div>
-                    <b>timeout</b>
-                    <a class="ansibleOptionLink" href="#parameter-timeout" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">integer</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                    <b>Default:</b><br/><div style="color: blue">60</div>
-                                    </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Timeout for Nautobot requests in seconds</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-token"></div>
-                    <b>token</b>
-                    <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">string</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                            </td>
-                                                    <td>
-                                                                            <div>
-                                env:NAUTOBOT_TOKEN
-                                                                                            </div>
-                                                                    </td>
-                                                <td>
-                                            <div>Nautobot API token to be able to read against Nautobot.</div>
-                                            <div>This may not be required depending on the Nautobot setup.</div>
-                                                        </td>
-            </tr>
-                                <tr>
-                                                                <td colspan="1">
-                    <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
-                    <b>validate_certs</b>
-                    <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
-                    <div style="font-size: small">
-                        <span style="color: purple">boolean</span>
-                                                                    </div>
-                                                        </td>
-                                <td>
-                                                                                                                                                                                                                    <ul style="margin: 0; padding: 0"><b>Choices:</b>
-                                                                                                                                                                <li>no</li>
-                                                                                                                                                                                                <li><div style="color: blue"><b>yes</b>&nbsp;&larr;</div></li>
-                                                                                    </ul>
-                                                                            </td>
-                                                    <td>
-                                                                                            </td>
-                                                <td>
-                                            <div>Allows connection when SSL certificates are not valid. Set to <code>false</code> when certificates are not trusted.</div>
-                                                        </td>
-            </tr>
-                        </table>
-    <br/>
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-additional_variables"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-additional_variables:
+
+      .. rst-class:: ansible-option-title
+
+      **additional_variables**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-additional_variables" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Variable types and values to use while making the call
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_endpoint"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-api_endpoint:
+
+      .. rst-class:: ansible-option-title
+
+      **api_endpoint**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_endpoint" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Endpoint of the Nautobot API
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: NAUTOBOT\_URL
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-filters"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-filters:
+
+      .. rst-class:: ansible-option-title
+
+      **filters**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-filters" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Granular device search query
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-follow_redirects"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-follow_redirects:
+
+      .. rst-class:: ansible-option-title
+
+      **follow_redirects**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-follow_redirects" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Determine how redirects are followed.
+
+      By default, \ :emphasis:`follow\_redirects`\  is set to uses urllib2 default behavior.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-default-bold:`urllib2` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`all`
+      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`safe`
+      - :ansible-option-choices-entry:`none`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-group_by"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-group_by:
+
+      .. rst-class:: ansible-option-title
+
+      **group_by**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-group_by" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)
+
+      The final value returned by each path is used to derive group names and then group the devices into these groups.
+
+      Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
+
+      If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-plugin:
+
+      .. rst-class:: ansible-option-title
+
+      **plugin**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Setting that ensures this is a source file for the 'networktocode.nautobot' plugin.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`networktocode.nautobot.gql\_inventory`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-query"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-query:
+
+      .. rst-class:: ansible-option-title
+
+      **query**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-query" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      GraphQL query to send to Nautobot to obtain desired data
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-timeout"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-timeout:
+
+      .. rst-class:: ansible-option-title
+
+      **timeout**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-timeout" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Timeout for Nautobot requests in seconds
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`60`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-token"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-token:
+
+      .. rst-class:: ansible-option-title
+
+      **token**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Nautobot API token to be able to read against Nautobot.
+
+      This may not be required depending on the Nautobot setup.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - Environment variable: NAUTOBOT\_TOKEN
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-validate_certs:
+
+      .. rst-class:: ansible-option-title
+
+      **validate_certs**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Allows connection when SSL certificates are not valid. Set to \ :literal:`false`\  when certificates are not trusted.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`no`
+      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+
+      .. raw:: html
+
+        </div>
+
+
+.. Attributes
+
 
 .. Notes
 
@@ -494,29 +555,31 @@ Examples
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
 
-    # Add additional query parameter with query key
+    # Add additional query parameter with query key and use filters
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
     query:
       tags: name
+      serial:
+      site:
+        filters:
+          tenant: "den"
+        name:
+        description:
+        contact_name:
+        description:
+        region:
+            name:
 
     # To group by use group_by key
-    # Supported inputs are platform, status, device_role, site
+    # Specify the full path to the data you would like to use to group by.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
     group_by:
-      - platform
-
-    # To group by use group_by key
-    # Supported inputs are platform, status, device_role, site
-    plugin: networktocode.nautobot.gql_inventory
-    api_endpoint: http://localhost:8000
-    validate_certs: True
-    group_by:
-      - platform
-
+      - tenant.name
+      - status.slug
 
     # Add additional variables
     plugin: networktocode.nautobot.gql_inventory
@@ -563,6 +626,20 @@ Authors
 - Armen Martirosyan
 
 
+.. hint::
+    Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
 
 .. Parsing errors
 

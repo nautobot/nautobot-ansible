@@ -7,12 +7,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: rack_role
@@ -127,7 +121,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(dict(name=dict(required=True, type="str"), slug=dict(required=False, type="str"), color=dict(required=False, type="str"),))
+    argument_spec.update(
+        dict(
+            name=dict(required=True, type="str"),
+            slug=dict(required=False, type="str"),
+            color=dict(required=False, type="str"),
+        )
+    )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 

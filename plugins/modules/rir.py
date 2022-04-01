@@ -7,12 +7,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: rir
@@ -134,7 +128,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(dict(name=dict(required=True, type="str"), slug=dict(required=False, type="str"), is_private=dict(required=False, type="bool"),))
+    argument_spec.update(
+        dict(
+            name=dict(required=True, type="str"),
+            slug=dict(required=False, type="str"),
+            is_private=dict(required=False, type="bool"),
+        )
+    )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 

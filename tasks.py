@@ -24,9 +24,9 @@ namespace = Collection("nautobot_ansible")
 namespace.configure(
     {
         "nautobot_ansible": {
-            "nautobot_ver": "1.0.3",
+            "nautobot_ver": "1.2.10",
             "project_name": "nautobot_ansible",
-            "python_ver": "3.6",
+            "python_ver": "3.7",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
@@ -194,18 +194,18 @@ def post_upgrade(context):
 @task
 def lint(context):
     """Run linting tools"""
-    start(context)
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from lint lint", env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from lint lint",
+        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
 
 @task
 def unit(context):
     """Run unit tests"""
-    start(context)
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from unit unit", env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from unit unit",
+        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
 

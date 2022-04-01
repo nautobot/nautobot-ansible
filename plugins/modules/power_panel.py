@@ -8,12 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: power_panel
@@ -137,7 +131,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(dict(site=dict(required=True, type="raw"), rack_group=dict(required=False, type="raw"), name=dict(required=True, type="str"),))
+    argument_spec.update(
+        dict(
+            site=dict(required=True, type="raw"),
+            rack_group=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
+        )
+    )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 

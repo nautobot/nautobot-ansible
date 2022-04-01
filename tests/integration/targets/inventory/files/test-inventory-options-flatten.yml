@@ -23,6 +23,7 @@ group_names_raw: True
 group_by:
   - site
   - tenant
+  - tenant_group
   - rack
   - rack_group
   - rack_role

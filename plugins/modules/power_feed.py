@@ -8,12 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: power_feed
@@ -221,10 +215,17 @@ def main():
             power_panel=dict(required=True, type="raw"),
             rack=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
-            status=dict(required=False, type="str",),
+            status=dict(
+                required=False,
+                type="str",
+            ),
             type=dict(required=False, choices=["primary", "redundant"], type="str"),
             supply=dict(required=False, choices=["ac", "dc"], type="str"),
-            phase=dict(required=False, choices=["single-phase", "three-phase"], type="str",),
+            phase=dict(
+                required=False,
+                choices=["single-phase", "three-phase"],
+                type="str",
+            ),
             voltage=dict(required=False, type="int"),
             amperage=dict(required=False, type="int"),
             max_utilization=dict(required=False, type="int"),

@@ -9,13 +9,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.0",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
-
 DOCUMENTATION = r"""
 ---
 module: nautobot_server
@@ -215,8 +208,15 @@ def main():
             args=dict(type="dict", default={}),
             positional_args=dict(type="list", default=[], elements="str"),
             flags=dict(type="list", default=[], elements="str"),
-            project_path=dict(default="/opt/nautobot", type="path", aliases=["app_path", "chdir"],),
-            settings=dict(required=False, type="path",),
+            project_path=dict(
+                default="/opt/nautobot",
+                type="path",
+                aliases=["app_path", "chdir"],
+            ),
+            settings=dict(
+                required=False,
+                type="path",
+            ),
             pythonpath=dict(required=False, type="path", aliases=["python_path"]),
             virtualenv=dict(required=False, type="path", aliases=["virtual_env"]),
             db_username=dict(required=False, type="str"),
@@ -285,7 +285,10 @@ def main():
                 _fail(module, cmd, err, "Unknown django command: %s" % command)
             elif "fe_sendauth: no password supplied" in err:
                 _fail(
-                    module, cmd, err, "No DB password available in the nautobot-server, you must supply 'db_password' for this command",
+                    module,
+                    cmd,
+                    err,
+                    "No DB password available in the nautobot-server, you must supply 'db_password' for this command",
                 )
             _fail(module, cmd, out, err, path=os.environ["PATH"], syspath=sys.path)
 

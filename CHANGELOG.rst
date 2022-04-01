@@ -5,6 +5,73 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.4.0
+======
+
+Release Summary
+---------------
+
+This release only changes the GraphQL inventory plugin. It fixes the ansible_host by removing the CIDR. The last change is the ability to specify nested relationships as well as fields that don't have a relationship to other Nautobot objects such as serial, asset_tag, etc.
+
+
+Minor Changes
+-------------
+
+- (122) Add ability to add nested GraphQL relationships and non-relationship fields such as serial, asset_tag, etc.
+
+Bugfixes
+--------
+
+- (124) Removes CIDR from the ansible_host variable.
+
+v3.3.1
+======
+
+Bugfixes
+--------
+
+- (#116) Fix graphql action plugin to support check mode
+- (#119) Documentation fixes
+- (#120) Documentation permission fixes
+
+v3.3.0
+======
+
+Minor Changes
+-------------
+
+- (#110) Allow users to define any path for defining GroupBy Group names
+- (#115) Documentation fixes
+
+v3.2.1
+======
+
+Release Summary
+---------------
+
+Unbreak plugins/inventory/inventory.yml
+
+Bugfixes
+--------
+
+- Remove bad code in plugins/inventory/inventory.yml when locally built to publish that prevented it from grabbing all hosts
+
+v3.2.0
+======
+
+Release Summary
+---------------
+
+A few updates to the inventory plugins to support new options or require existing parameters.
+
+Minor Changes
+-------------
+
+- (#105) Documentation updates
+- (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+- (#108) Add choices to `group_by` in `gql_inventory` plugin
+- (#109) token is explicitly required within `gql_inventory` plugin. (This was always true, but never enforced.)
+
 v3.1.1
 ======
 

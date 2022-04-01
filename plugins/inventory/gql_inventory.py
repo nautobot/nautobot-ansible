@@ -2,6 +2,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+from collections.abc import Mapping
 
 __metaclass__ = type
 
@@ -13,9 +14,6 @@ DOCUMENTATION = """
     short_description: Nautobot inventory source using GraphQL capability
     description:
       - Get inventory hosts from Nautobot using GraphQL queries
-    extends_documentation_fragment:
-      - constructed
-      - inventory_cache
     requirements:
       - netutils
     options:
@@ -32,13 +30,19 @@ DOCUMENTATION = """
           description: Timeout for Nautobot requests in seconds
           type: int
           default: 60
+      follow_redirects:
+          description:
+              - Determine how redirects are followed.
+              - By default, I(follow_redirects) is set to uses urllib2 default behavior.
+          default: urllib2
+          choices: ['urllib2', 'all', 'yes', 'safe', 'none']
       validate_certs:
           description:
               - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
           default: True
           type: boolean
       token:
-          required: False
+          required: True
           description:
             - Nautobot API token to be able to read against Nautobot.
             - This may not be required depending on the Nautobot setup.
@@ -60,7 +64,10 @@ DOCUMENTATION = """
       group_by:
           required: False
           description:
-            - List of group names to group the hosts
+            - List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)
+            - The final value returned by each path is used to derive group names and then group the devices into these groups.
+            - Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
+            - If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
           type: list
           default: []
       filters:
@@ -75,29 +82,31 @@ EXAMPLES = """
 # inventory.yml file in YAML format
 # Example command line: ansible-inventory -v --list -i inventory.yml
 
-# Add additional query parameter with query key
+# Add additional query parameter with query key and use filters
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 query:
   tags: name
+  serial:
+  site:
+    filters:
+      tenant: "den"
+    name:
+    description:
+    contact_name:
+    description:
+    region:
+        name:
 
 # To group by use group_by key
-# Supported inputs are platform, status, device_role, site
+# Specify the full path to the data you would like to use to group by.
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 validate_certs: True
 group_by:
-  - platform
-
-# To group by use group_by key
-# Supported inputs are platform, status, device_role, site
-plugin: networktocode.nautobot.gql_inventory
-api_endpoint: http://localhost:8000
-validate_certs: True
-group_by:
-  - platform
-
+  - tenant.name
+  - status.slug
 
 # Add additional variables
 plugin: networktocode.nautobot.gql_inventory
@@ -135,7 +144,8 @@ from ansible.module_utils._text import to_native
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
-from jinja2 import Environment, FileSystemLoader
+
+from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -165,16 +175,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         return False
 
-    def create_inventory(self, group: str, host: str):
-        """Creates Ansible inventory.
-
-        Args:
-            group (str): Name of the group
-            host (str): Hostname
-        """
-        self.inventory.add_group(group)
-        self.inventory.add_host(host, group)
-
     def add_variable(self, host: str, var: str, var_type: str):
         """Adds variables to group or host.
 
@@ -185,20 +185,95 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
+    def add_ipv4_address(self, device):
+        """Add primary IPv4 address to host."""
+        if device["primary_ip4"]:
+            self.add_variable(device["name"], device["primary_ip4"]["host"], "ansible_host")
+        else:
+            self.add_variable(device["name"], device["name"], "ansible_host")
+
+    def add_ansible_platform(self, device):
+        """Add network platform to host"""
+        if device["platform"] and "napalm_driver" in device["platform"]:
+            self.add_variable(
+                device["name"],
+                ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
+                "ansible_network_os",
+            )
+
+    def populate_variables(self, device):
+        """Add specified variables to device."""
+        for var in self.variables:
+            if var in device and device[var]:
+                self.add_variable(device["name"], device[var], var)
+
+    def create_groups(self, device):
+        """Create groups specified and add device to group."""
+        device_name = device["name"]
+        for group_by_path in self.group_by:
+            parent_attr, *chain = group_by_path.split(".")
+            device_attr = device.get(parent_attr)
+            if device_attr is None:
+                self.display.display(f"Could not find value for {parent_attr} on device {device_name}")
+                continue
+
+            if not chain:
+                group_name = device_attr
+
+            while chain:
+                group_name = chain.pop(0)
+                if isinstance(device_attr.get(group_name), Mapping):
+                    device_attr = device_attr.get(group_name)
+                    continue
+                else:
+                    try:
+                        group_name = device_attr[group_name]
+                    except KeyError:
+                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}.")
+                        break
+
+            if isinstance(group_name, Mapping):
+                if "name" in group_name:
+                    group_name = group_name["name"]
+                elif "slug" in group_name:
+                    group_name = group_name["slug"]
+                else:
+                    self.display.display(f"No slug or name value for {group_name} in {group_by_path} on device {device_name}.")
+
+            if isinstance(group_name, str):
+                self.inventory.add_group(group_name)
+                self.inventory.add_child(group_name, device_name)
+            else:
+                self.display.display(
+                    f"Groups must be a string. {group_name} is not a string. Please make sure your group_by path specified resolves to a string value."
+                )
+
     def main(self):
         """Main function."""
         if not HAS_NETUTILS:
             raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
-        file_loader = FileSystemLoader(f"{PATH}/../templates")
-        env = Environment(loader=file_loader, autoescape=True)
-        template = env.get_template("graphql_default_query.j2")
-        query = template.render(query=self.gql_query, filters=self.filters)
-        data = {"query": "query {%s}" % query}
+        base_query = {
+            "query": {
+                "devices": {
+                    "name": None,
+                    "platform": "napalm_driver",
+                    "status": "name",
+                    "primary_ip4": "host",
+                    "device_role": "name",
+                    "site": "name",
+                }
+            }
+        }
+        base_query["query"]["devices"].update(self.gql_query)
+        if self.filters:
+            base_query["query"]["devices"]["filters"] = self.filters
+        query = convert_to_graphql_string(base_query)
+        data = {"query": query}
 
         try:
             response = open_url(
-                self.api_endpoint + "/",
+                self.api_endpoint + "/api/graphql/",
                 method="post",
                 data=json.dumps(data),
                 headers=self.headers,
@@ -214,11 +289,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
             if e.code == 403:
                 self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"), color="red",
+                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
+                    color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
                 return {"results": [], "next": None}
             else:
+                self.display.display(f"{e.code}", color="red")
                 self.display.display(
                     "Something went wrong while executing the query.\nReason: {reason}".format(
                         reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
@@ -232,55 +309,18 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]), color="red",
+                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
+                color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
             return {"results": [], "next": None}
 
-        groups = {}
-        if self.group_by:
-            for group_by in self.group_by:
-                if not GROUP_BY.get(group_by):
-                    self.display.display(
-                        "WARNING: '{0}' is not supported as a 'group_by' option. Supported options are: {1} ".format(
-                            group_by, " ".join("'{0}',".format(str(x)) for x in GROUP_BY.keys()),
-                        ),
-                        color="yellow",
-                    )
-                    continue
-                for device in json_data["data"]["devices"]:
-                    groups[device["site"]["name"]] = "site"
-                    if device.get(group_by) and GROUP_BY.get(group_by):
-                        groups[device[group_by][GROUP_BY.get(group_by)]] = group_by
-                    else:
-                        groups["unknown"] = "unknown"
-
-        else:
-            for device in json_data["data"]["devices"]:
-                groups[device["site"]["name"]] = "site"
-
-        for key, value in groups.items():
-            for device in json_data["data"]["devices"]:
-                if device.get(value) and key == device[value][GROUP_BY[value]]:
-                    self.create_inventory(key, device["name"])
-                    if device["primary_ip4"]:
-                        self.add_variable(
-                            device["name"], device["primary_ip4"]["address"], "ansible_host",
-                        )
-                    else:
-                        self.add_variable(device["name"], device["name"], "ansible_host")
-                    if device["platform"] and "napalm_driver" in device["platform"]:
-                        self.add_variable(
-                            device["name"],
-                            ANSIBLE_LIB_MAPPER_REVERSE.get(
-                                NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])  # Convert napalm_driver to ansible_network_os value
-                            ),
-                            "ansible_network_os",
-                        )
-
-                    for var in self.variables:
-                        if var in device and device[var]:
-                            self.add_variable(device["name"], device[var], var)
+        for device in json_data["data"]["devices"]:
+            self.inventory.add_host(device["name"])
+            self.add_ipv4_address(device)
+            self.add_ansible_platform(device)
+            self.populate_variables(device)
+            self.create_groups(device)
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
@@ -294,7 +334,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
         self.headers = {
-            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ")[0]),
+            "User-Agent": "ansible %s Python %s" % (ansible_version, python_version.split(" ", maxsplit=1)[0]),
             "Content-type": "application/json",
         }
         if token:
@@ -304,5 +344,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_by = self.get_option("group_by")
         self.filters = self.get_option("filters")
         self.variables = self.get_option("additional_variables")
+        self.follow_redirects = self.get_option("follow_redirects")
 
         self.main()

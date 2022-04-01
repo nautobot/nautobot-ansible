@@ -7,20 +7,15 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
-
 DOCUMENTATION = r"""
 ---
 module: service
 short_description: Creates or removes service from Nautobot
 description:
-  - Creates or removes service from Nautobot
+  - Creates or removes service from Nautobot.
 notes:
-  - This should be ran with connection C(local) and hosts C(localhost)
+  - This should be ran with connection C(local) and hosts C(localhost).
+  - The module supports C(check_mode).
 author:
   - Kulakov Ilya (@TawR1024)
 requirements:
@@ -29,41 +24,41 @@ version_added: "1.0.0"
 options:
   url:
     description:
-      - URL of the Nautobot instance resolvable by Ansible control host
+      - URL of the Nautobot instance resolvable by Ansible control host.
     required: true
     type: str
   token:
     description:
-      - The token created within Nautobot to authorize API access
+      - The token created within Nautobot to authorize API access.
     required: true
     type: str
   device:
     description:
-      - Specifies on which device the service is running
+      - Specifies on which device the service is running.
     required: false
     type: raw
     version_added: "3.0.0"
   virtual_machine:
     description:
-      - Specifies on which virtual machine the service is running
+      - Specifies on which virtual machine the service is running.
     required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
-      - Name of the region to be created
+      - Name of the region to be created.
     required: true
     type: str
     version_added: "3.0.0"
   ports:
     description:
-      - Specifies which ports used by service (Nautobot 2.10 and newer)
+      - Specifies which ports used by service (Nautobot 2.10 and newer).
     type: list
     elements: int
     version_added: "3.0.0"
   protocol:
     description:
-      - Specifies which protocol used by service
+      - Specifies which protocol used by service.
     required: true
     type: raw
     version_added: "3.0.0"
@@ -75,20 +70,20 @@ options:
     version_added: "3.0.0"
   description:
     description:
-      - Service description
+      - Service description.
     required: false
     type: str
     version_added: "3.0.0"
   tags:
     description:
-      - What tags to add/update
+      - What tags to add/update.
     required: false
     type: list
     elements: raw
     version_added: "3.0.0"
   custom_fields:
     description:
-      - Must exist in Nautobot and in key/value format
+      - Must exist in Nautobot and in key/value format.
     required: false
     type: dict
     version_added: "3.0.0"
@@ -183,7 +178,11 @@ def main():
     )
     required_one_of = [["device", "virtual_machine"]]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_one_of=required_one_of,)
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+    )
 
     service = NautobotIpamModule(module, NB_SERVICES)
 

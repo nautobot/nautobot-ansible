@@ -283,11 +283,13 @@ class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"), PYNAUTOBOT_IMPORT_ERROR,
+                AnsibleError("pynautobot must be installed to use this plugin"),
+                PYNAUTOBOT_IMPORT_ERROR,
             )
         if REQUESTS_IMPORT_ERROR:
             raise_from(
-                AnsibleError("requests must be installed to use this plugin"), REQUESTS_IMPORT_ERROR,
+                AnsibleError("requests must be installed to use this plugin"),
+                REQUESTS_IMPORT_ERROR,
             )
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
@@ -303,7 +305,10 @@ class LookupModule(LookupBase):
         session = requests.Session()
         session.verify = ssl_verify
 
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None,)
+        nautobot = pynautobot.api(
+            api_endpoint,
+            token=api_token if api_token else None,
+        )
         nautobot.http_session = session
 
         results = []
