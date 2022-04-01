@@ -42,7 +42,7 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.3.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -555,12 +555,22 @@ Examples
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
 
-    # Add additional query parameter with query key
+    # Add additional query parameter with query key and use filters
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
     validate_certs: True
     query:
       tags: name
+      serial:
+      site:
+        filters:
+          tenant: "den"
+        name:
+        description:
+        contact_name:
+        description:
+        region:
+            name:
 
     # To group by use group_by key
     # Specify the full path to the data you would like to use to group by.
@@ -616,6 +626,20 @@ Authors
 - Armen Martirosyan
 
 
+.. hint::
+    Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
+
+.. Extra links
+
+Collection links
+~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+  <p class="ansible-links">
+    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
+    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
+  </p>
 
 .. Parsing errors
 
