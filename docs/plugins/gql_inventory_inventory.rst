@@ -309,6 +309,7 @@ Parameters
       Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
 
       If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
+          
 
 
       .. rst-class:: ansible-option-line
