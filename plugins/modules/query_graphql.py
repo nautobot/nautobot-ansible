@@ -80,11 +80,11 @@ EXAMPLES = """
   # Example with variables
   - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
     set_fact:
-      variables:
-        site_name: den
+      graph_variables:
+        site_name: AMS01
       query_string: |
-        query ($site_name:String!) {
-          sites (name: $site_name) {
+        query ($site_name: String!) {
+          sites (slug: $site_name) {
             id
             name
             region {
@@ -99,8 +99,8 @@ EXAMPLES = """
       url: http://nautobot.local
       token: thisIsMyToken
       query: "{{ query_string }}"
-      variables: "{{ variables }}"
-      update_hostvars: "yes"
+      graph_variables: "{{ graph_variables }}"
+      update_hostvars: yes
 """
 
 RETURN = """
@@ -130,18 +130,11 @@ from ansible.module_utils.basic import AnsibleModule
 
 def main():
     """Main definition of Action Plugin for query_graphql."""
-    # seed the result dict in the object
-    # we primarily care about changed and state
-    # change is if this module effectively modified the target
-    # state will include any data that you want your module to pass back
-    # for consumption, for example, in a subsequent task
-    result = dict(changed=False, original_message="", message="")
-
     # the AnsibleModule object will be our abstraction working with Ansible
     # this includes instantiation, a couple of common attr would be the
     # args/params passed to the execution, as well as if the module
     # supports check mode
-    module = AnsibleModule(
+    AnsibleModule(
         argument_spec=dict(
             graph_variables=dict(required=False, type="dict", default={}),
             query=dict(required=True, type="str"),
