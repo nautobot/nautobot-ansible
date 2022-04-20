@@ -78,11 +78,10 @@ def nautobot_action_graphql(args):
     nautobot_graph_obj = NautobotGraphQL(query_str=query, api=nautobot_api, variables=graph_variables)
 
     # Get the response from the object
-    nautobot_response = nautobot_graph_obj.query()
-
-    # Check for errors in the response
-    if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLException):
-        raise AnsibleError("Error in the query to the Nautobot host. Errors: %s" % (nautobot_response.errors))
+    try:
+        nautobot_response = nautobot_graph_obj.query()
+    except pynautobot.core.graphql.GraphQLException as graphql_exception:
+        raise AnsibleError("Error in the query to the Nautobot host. Errors: %s" % (graphql_exception.errors))
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
