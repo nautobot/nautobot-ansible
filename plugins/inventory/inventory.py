@@ -1071,8 +1071,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
 
         self.api_version = openapi["info"]["version"]
-        self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"]["/dcim/devices/"]["get"]["parameters"]]
-        self.allowed_vm_query_parameters = [p["name"] for p in openapi["paths"]["/virtualization/virtual-machines/"]["get"]["parameters"]]
+        self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"]["/api/dcim/devices/"]["get"]["parameters"]]
+        self.allowed_vm_query_parameters = [p["name"] for p in openapi["paths"]["/api/virtualization/virtual-machines/"]["get"]["parameters"]]
 
     def validate_query_parameter(self, parameter, allowed_query_parameters):
         if not (isinstance(parameter, dict) and len(parameter) == 1):
