@@ -50,19 +50,19 @@ jobs:
         # ansible-release: ["base", "core"]
         include:
           - python-version: "3.7"
-            nautobot-version: "1.0.3"
+            nautobot-version: "1.1.6"
             ansible-release: "base" # Ansible 2.10
           - python-version: "3.8"
-            nautobot-version: "1.1.1"
+            nautobot-version: "1.2"
             ansible-release: "2.11"
           - python-version: "3.8"
-            nautobot-version: "1.1.1"
+            nautobot-version: "1.2"
             ansible-release: "2.9"
           - python-version: "3.8"
-            nautobot-version: "1.1.3"
+            nautobot-version: "1.3"
             ansible-release: "2.10"
           - python-version: "3.8"
-            nautobot-version: "1.1.3"
+            nautobot-version: "1.3"
             ansible-release: "2.12"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
