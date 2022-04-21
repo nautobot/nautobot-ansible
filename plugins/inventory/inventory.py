@@ -1073,7 +1073,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.api_version = openapi["info"]["version"]
 
         device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
-        vm_path = "/api/virtualization/virtual-machines/" if "/api/virtualization/virtual-machines/" in openapi["paths"] else "/virtualization/virtual-machines"
+        vm_path = (
+            "/api/virtualization/virtual-machines/" if "/api/virtualization/virtual-machines/" in openapi["paths"] else "/virtualization/virtual-machines/"
+        )
 
         self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"][device_path]["get"]["parameters"]]
         self.allowed_vm_query_parameters = [p["name"] for p in openapi["paths"][vm_path]["get"]["parameters"]]
