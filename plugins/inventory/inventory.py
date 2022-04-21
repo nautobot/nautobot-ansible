@@ -1071,7 +1071,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
 
         self.api_version = openapi["info"]["version"]
-        
+
         device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
         vm_path = "/api/virtualization/virtual-machines/" if "/api/virtualization/virtual-machines/" in openapi["paths"] else "/virtualization/virtual-machines"
 
