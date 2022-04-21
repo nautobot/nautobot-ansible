@@ -5,6 +5,22 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v3.4.1
+======
+
+Release Summary
+---------------
+
+This release adds a deprecation notice for the GraphQL Inventory Plugin. There will be changes to the structure requiring changes to the inventory file.
+
+Minor Changes
+-------------
+
+- (#132) Adds deprecation notice on GraphQL Inventory Plugin
+- (#133) Update documentation for query_graphql module and add try/except for HTTP call.
+- (#135) Account for bug in networktocode.nautobot.inventory for API bug in Nautobot 1.3.1 due to OpenAPI paths changing.
+- Sanity tests and updates requested by Ansible for collection inclusion.
+
 v3.4.0
 ======
 
@@ -13,16 +29,15 @@ Release Summary
 
 This release only changes the GraphQL inventory plugin. It fixes the ansible_host by removing the CIDR. The last change is the ability to specify nested relationships as well as fields that don't have a relationship to other Nautobot objects such as serial, asset_tag, etc.
 
-
 Minor Changes
 -------------
 
-- (122) Add ability to add nested GraphQL relationships and non-relationship fields such as serial, asset_tag, etc.
+- (#122) Add ability to add nested GraphQL relationships and non-relationship fields such as serial, asset_tag, etc.
 
 Bugfixes
 --------
 
-- (124) Removes CIDR from the ansible_host variable.
+- (#124) Removes CIDR from the ansible_host variable.
 
 v3.3.1
 ======
