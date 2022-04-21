@@ -308,3 +308,10 @@ releases:
         fixes the ansible_host by removing the CIDR. The last change is the ability
         to specify nested relationships as well as fields that don't have a relationship
         to other Nautobot objects such as serial, asset_tag, etc."
+  3.4.1:
+    changes:
+      minor_changes:
+        - (132) Adds deprecation notice on GraphQL Inventory Plugin
+      release_summary:
+        "This release adds a deprecation notice for the GraphQL Inventory Plugin. There will be changes to the structure
+        requiring changes to the inventory file."
