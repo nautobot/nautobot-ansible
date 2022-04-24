@@ -57,6 +57,43 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  content_types:
+    - circuits.circuit
+    - circuits.circuit termination
+    - circuits.provider
+    - circuits.provider network
+    - dcim.cable
+    - dcim.console port
+    - dcim.console server port
+    - dcim.device
+    - dcim.device bay
+    - dcim.device type
+    - dcim.front port
+    - dcim.interface
+    - dcim.inventory item
+    - dcim.power feed
+    - dcim.power outlet
+    - dcim.power panel
+    - dcim.power port
+    - dcim.rack
+    - dcim.rack reservation
+    - dcim.rear port
+    - dcim.site
+    - dcim.virtual chassis
+    - extras.Git repository
+    - extras.job
+    - extras.secret
+    - ipam.aggregate
+    - ipam.IP address
+    - ipam.prefix
+    - ipam.route target
+    - ipam.service
+    - ipam.VLAN
+    - ipam.VRF
+    - tenancy.tenant
+    - virtualization.cluster
+    - virtualization.virtual machine
+    - virtualization.VM interface
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -139,6 +176,7 @@ def main():
             color=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             slug=dict(required=False, type="str"),
+            content_types=dict(required=False, type="list"),
         )
     )
 
