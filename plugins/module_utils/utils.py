@@ -419,6 +419,7 @@ NAUTOBOT_ARG_SPEC = dict(
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
+    api_version=dict(type="str", required=False),
 )
 
 
@@ -444,10 +445,11 @@ class NautobotModule:
         url = self.module.params["url"]
         token = self.module.params["token"]
         ssl_verify = self.module.params["validate_certs"]
+        api_version = self.module.params["api_version"]
 
         # Attempt to initiate connection to Nautobot
         if client is None:
-            self.nb = self._connect_api(url, token, ssl_verify)
+            self.nb = self._connect_api(url, token, ssl_verify, api_version)
         else:
             self.nb = client
             self.version = self.nb.version
@@ -504,12 +506,17 @@ class NautobotModule:
         elif g_major == l_major and g_minor > l_minor:
             return True
 
-    def _connect_api(self, url, token, ssl_verify):
+    def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            nb = pynautobot.api(url, token=token)
+            nb = pynautobot.api(url, token=token, api_version=api_version)
             nb.http_session.verify = ssl_verify
             try:
                 self.version = nb.version
+            except pynautobot.RequestError as e:
+                # Better error reporting
+                # An error might be: Invalid version in \"Accept\" header. Supported versions are 1.2, 1.3
+                # This way error returned is less verbose
+                self._handle_errors(msg=e.error)
             except Exception:
                 self.module.fail_json(msg="Failed to establish connection to Nautobot API")
             return nb
@@ -925,7 +932,7 @@ class NautobotModule:
             nb_obj = data
         else:
             try:
-                nb_obj = nb_endpoint.create(data)
+                nb_obj = nb_endpoint.create(**data)
             except pynautobot.RequestError as e:
                 self._handle_errors(msg=e.error)
 
