@@ -51,6 +51,7 @@ def fixture_arg_spec():
             "asset_tag": "1001",
         },
         "state": "present",
+        "api_version": "1.3",
         "validate_certs": False,
     }
 
