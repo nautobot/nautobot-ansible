@@ -102,7 +102,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
