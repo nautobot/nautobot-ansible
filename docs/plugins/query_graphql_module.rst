@@ -127,7 +127,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The Nautobot Rest API version
+      API Version Nautobot REST Api
 
 
       .. raw:: html
@@ -395,11 +395,11 @@ Examples
       # Example with variables
       - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
         set_fact:
-          variables:
-            site_name: den
+          graph_variables:
+            site_name: AMS01
           query_string: |
-            query ($site_name:String!) {
-              sites (name: $site_name) {
+            query ($site_name: String!) {
+              sites (slug: $site_name) {
                 id
                 name
                 region {
@@ -414,8 +414,8 @@ Examples
           url: http://nautobot.local
           token: thisIsMyToken
           query: "{{ query_string }}"
-          variables: "{{ variables }}"
-          update_hostvars: "yes"
+          graph_variables: "{{ graph_variables }}"
+          update_hostvars: yes
 
 
 

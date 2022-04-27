@@ -63,42 +63,12 @@ options:
     type: str
     version_added: "3.0.0"
   content_types:
-    - circuits.circuit
-    - circuits.circuit termination
-    - circuits.provider
-    - circuits.provider network
-    - dcim.cable
-    - dcim.console port
-    - dcim.console server port
-    - dcim.device
-    - dcim.device bay
-    - dcim.device type
-    - dcim.front port
-    - dcim.interface
-    - dcim.inventory item
-    - dcim.power feed
-    - dcim.power outlet
-    - dcim.power panel
-    - dcim.power port
-    - dcim.rack
-    - dcim.rack reservation
-    - dcim.rear port
-    - dcim.site
-    - dcim.virtual chassis
-    - extras.Git repository
-    - extras.job
-    - extras.secret
-    - ipam.aggregate
-    - ipam.IP address
-    - ipam.prefix
-    - ipam.route target
-    - ipam.service
-    - ipam.VLAN
-    - ipam.VRF
-    - tenancy.tenant
-    - virtualization.cluster
-    - virtualization.virtual machine
-    - virtualization.VM interface
+    description:
+      - content type(s). These match app.endpoint and the endpoint is singular.
+      - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+    required: false
+    type: list
+    elements: str
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.

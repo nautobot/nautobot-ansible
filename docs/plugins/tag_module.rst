@@ -125,7 +125,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The Nautobot Rest API version
+      API Version Nautobot REST Api
 
 
       .. raw:: html
@@ -163,6 +163,42 @@ Parameters
         <div class="ansible-option-cell">
 
       Tag color
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_types"></div>
+
+      .. _ansible_collections.networktocode.nautobot.tag_module__parameter-content_types:
+
+      .. rst-class:: ansible-option-title
+
+      **content_types**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_types" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      content type(s). These match app.endpoint and the endpoint is singular.
+
+      e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
 
 
       .. raw:: html

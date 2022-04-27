@@ -28,6 +28,11 @@ options:
             - The GraphQL formatted query string, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more details.
         required: True
         type: str
+    api_version:
+        description:
+          - API Version Nautobot REST Api
+        required: false
+        type: str
     token:
         description:
             - The API token created through Nautobot, optional env=NAUTOBOT_TOKEN
