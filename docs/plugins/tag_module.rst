@@ -543,9 +543,47 @@ Examples
             token: thisIsMyToken
             name: "{{ item.name }}"
             description: "{{ item.description }}"
+            content_types:
+              - circuits.circuit
+              - circuits.circuit termination
+              - circuits.provider
+              - circuits.provider network
+              - dcim.cable
+              - dcim.console port
+              - dcim.console server port
+              - dcim.device
+              - dcim.device bay
+              - dcim.device type
+              - dcim.front port
+              - dcim.interface
+              - dcim.inventory item
+              - dcim.power feed
+              - dcim.power outlet
+              - dcim.power panel
+              - dcim.power port
+              - dcim.rack
+              - dcim.rack reservation
+              - dcim.rear port
+              - dcim.site
+              - dcim.virtual chassis
+              - extras.Git repository
+              - extras.job
+              - extras.secret
+              - ipam.aggregate
+              - ipam.IP address
+              - ipam.prefix
+              - ipam.route target
+              - ipam.service
+              - ipam.VLAN
+              - ipam.VRF
+              - tenancy.tenant
+              - virtualization.cluster
+              - virtualization.virtual machine
+              - virtualization.VM interface
           loop:
             - { name: mgmt, description: "management" }
             - { name: tun, description: "tunnel" }
+          
 
         - name: Delete tags
           networktocode.nautobot.tag:

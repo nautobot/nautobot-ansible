@@ -64,7 +64,7 @@ options:
     version_added: "3.0.0"
   content_types:
     description:
-      - content type(s). These match app.endpoint and the endpoint is singular.
+      - Tags content type(s). These match app.endpoint and the endpoint is singular.
       - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
     required: false
     type: list
@@ -105,9 +105,47 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: "{{ item.name }}"
         description: "{{ item.description }}"
+        content_types:
+          - circuits.circuit
+          - circuits.circuit termination
+          - circuits.provider
+          - circuits.provider network
+          - dcim.cable
+          - dcim.console port
+          - dcim.console server port
+          - dcim.device
+          - dcim.device bay
+          - dcim.device type
+          - dcim.front port
+          - dcim.interface
+          - dcim.inventory item
+          - dcim.power feed
+          - dcim.power outlet
+          - dcim.power panel
+          - dcim.power port
+          - dcim.rack
+          - dcim.rack reservation
+          - dcim.rear port
+          - dcim.site
+          - dcim.virtual chassis
+          - extras.Git repository
+          - extras.job
+          - extras.secret
+          - ipam.aggregate
+          - ipam.IP address
+          - ipam.prefix
+          - ipam.route target
+          - ipam.service
+          - ipam.VLAN
+          - ipam.VRF
+          - tenancy.tenant
+          - virtualization.cluster
+          - virtualization.virtual machine
+          - virtualization.VM interface
       loop:
         - { name: mgmt, description: "management" }
         - { name: tun, description: "tunnel" }
+      
 
     - name: Delete tags
       networktocode.nautobot.tag:
@@ -151,7 +189,7 @@ def main():
             color=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             slug=dict(required=False, type="str"),
-            content_types=dict(required=False, type="list"),
+            content_types=dict(required=False, type="list", elements="str"),
         )
     )
 

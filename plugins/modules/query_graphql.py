@@ -145,6 +145,7 @@ def main():
             query=dict(required=True, type="str"),
             token=dict(required=False, type="str", no_log=True, default=None),
             url=dict(required=False, type="str", default=None),
+            api_version=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
             update_hostvars=dict(required=False, type="bool", default=False),
         ),
