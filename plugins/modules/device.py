@@ -24,6 +24,11 @@ requirements:
   - pynautobot
 version_added: "1.0.0"
 options:
+  api_version:
+    description:
+      - API Version Nautobot REST Api
+    required: false
+    type: str
   url:
     description:
       - URL of the Nautobot instance resolvable by Ansible control host
