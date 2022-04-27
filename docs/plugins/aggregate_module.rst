@@ -98,7 +98,6 @@ Parameters
   * - Parameter
     - Comments
 
-
   * - .. raw:: html
 
         <div class="ansible-option-cell">
@@ -126,7 +125,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The Nautobot Rest API version
+      API Version Nautobot REST Api
 
 
       .. raw:: html

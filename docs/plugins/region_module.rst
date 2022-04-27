@@ -125,7 +125,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The Nautobot Rest API version
+      API Version Nautobot REST Api
 
 
       .. raw:: html
