@@ -100,81 +100,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
-
-      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-api_version:
-
-      .. rst-class:: ansible-option-title
-
-      **api_version**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The Nautobot Rest API version
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-additional_variables"></div>
-
-      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-additional_variables:
-
-      .. rst-class:: ansible-option-title
-
-      **additional_variables**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-additional_variables" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Variable types and values to use while making the call
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_endpoint"></div>
 
       .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-api_endpoint:
@@ -211,47 +136,6 @@ Parameters
 
       - Environment variable: NAUTOBOT\_URL
 
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-filters"></div>
-
-      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-filters:
-
-      .. rst-class:: ansible-option-title
-
-      **filters**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-filters" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Granular device search query
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
 
       .. raw:: html
 
@@ -427,7 +311,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      GraphQL query to send to Nautobot to obtain desired data
+      GraphQL query parameters or filters to send to Nautobot to obtain desired data
 
 
       .. rst-class:: ansible-option-line
@@ -437,6 +321,81 @@ Parameters
       .. raw:: html
 
         </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-query/devices"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-query/devices:
+
+      .. rst-class:: ansible-option-title
+
+      **devices**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-query/devices" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Additional query parameters or filters for devices
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-query/virtual_machines"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-query/virtual_machines:
+
+      .. rst-class:: ansible-option-title
+
+      **virtual_machines**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-query/virtual_machines" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Additional query parameters or filters for VMs
+
+
+      .. raw:: html
+
+        </div>
+
 
   * - .. raw:: html
 
@@ -589,57 +548,105 @@ Examples
     
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
+    # Add -vvv to the command to also see the GraphQL query that gets sent in the debug output.
+    # Add -vvvv to the command to also see the JSON response that comes back in the debug output.
 
-    # Add additional query parameter with query key and use filters
+    # Minimum required parameters
+    plugin: networktocode.nautobot.gql_inventory
+    api_endpoint: http://localhost:8000  # Can be omitted if the NAUTOBOT_URL environment variable is set
+    token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN environment variable is set
+
+    # This will send the default GraphQL query of:
+    # query {
+    #   devices {
+    #     name
+    #     primary_ip4 {
+    #       host
+    #     }
+    #     platform {
+    #       napalm_driver
+    #     }
+    #   }
+    #   virtual_machines {
+    #     name
+    #     primary_ip4 {
+    #       host
+    #     }
+    #     platform {
+    #       name
+    #     }
+    #   }
+    # }
+
+    # This module will automatically add the ansible_host key and set it equal to primary_ip4.host
+    # as well as the ansible_network_os key and set it to platform.napalm_driver
+    # if the primary_ip4.host and platform.napalm_driver are present on the device in Nautobot.
+
+    # Add additional query parameters with the query key.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
-    validate_certs: True
     query:
-      tags: name
-      serial:
-      site:
-        filters:
-          tenant: "den"
-        name:
-        description:
-        contact_name:
-        description:
-        region:
-            name:
+      devices:
+        tags: name
+        serial:
+        tenant: name
+        site:
+          name:
+          contact_name:
+          description:
+          region: name
+      virtual_machines:
+        tags: name
+        tenant: name
 
     # To group by use group_by key
     # Specify the full path to the data you would like to use to group by.
+    # Ensure all paths are also included in the query.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
-    validate_certs: True
+    query:
+      devices:
+        tags: name
+        serial:
+        tenant: name
+        status: slug
+        site:
+          name:
+          contact_name:
+          description:
+          region: name
+      virtual_machines:
+        tags: name
+        tenant: name
+        status: slug
     group_by:
       - tenant.name
       - status.slug
 
-    # Add additional variables
+    # Filter output using any supported parameters.
+    # To get supported parameters check the api/docs page for devices.
+    # Add `filters` to any level of the dictionary and a filter will be added to the GraphQL query at that level.
+    # (use -vvv to see the underlying GraphQL query being sent)
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
-    validate_certs: True
-    additional_variables:
-      - device_role
-
-    # Add additional variables combined with additional query
-    plugin: networktocode.nautobot.gql_inventory
-    api_endpoint: http://localhost:8000
-    validate_certs: True
     query:
-      interfaces: name
-    additional_variables:
-      - interfaces
+      devices:
+        filters:
+          name__ic: ams
+        interfaces:
+          filters:
+            name__ic: ethernet
+          name:
+          ip_addresses: address
 
-    # Filter output using any supported parameters
-    # To get supported parameters check the api/docs page for devices
+    # You can filter to just devices/virtual_machines by filtering the opposite type to a name that doesn't exist.
+    # For example, to only get devices:
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
-    validate_certs: True
-    filters:
-      name__ic: nym01-leaf-01
-      site: nym01
+    query:
+      virtual_machines:
+        filters:
+          name: EXCLUDE ALL
 
 
 
