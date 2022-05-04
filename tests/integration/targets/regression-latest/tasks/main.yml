@@ -286,4 +286,4 @@
     - name: Assert that api_version fails
       assert:
         that:
-          - 'test_invalid_api_version["msg"]  == "{\"detail\":\"Invalid version in \\\"Accept\\\" header. Supported versions are 1.2, 1.3\"}"'
+          - '"Invalid version" in test_invalid_api_version["msg"]'

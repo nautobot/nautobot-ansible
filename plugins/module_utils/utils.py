@@ -932,7 +932,10 @@ class NautobotModule:
             nb_obj = data
         else:
             try:
-                nb_obj = nb_endpoint.create(**data)
+                if isinstance(nb_endpoint, pynautobot.core.endpoint.DetailEndpoint):
+                    nb_obj = nb_endpoint.create(data)
+                else:
+                    nb_obj = nb_endpoint.create(**data)
             except pynautobot.RequestError as e:
                 self._handle_errors(msg=e.error)
 
