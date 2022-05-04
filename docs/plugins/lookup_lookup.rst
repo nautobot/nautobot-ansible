@@ -219,6 +219,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.lookup_lookup__parameter-api_version:
+
+      .. rst-class:: ansible-option-title
+
+      **api_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The Nautobot Rest Api version to use.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
 
       .. _ansible_collections.networktocode.nautobot.lookup_lookup__parameter-plugin:
@@ -404,6 +441,7 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
+                        api_version='1.3',
                         token='<redacted>') }}"
 
     # This example uses an API Filter
@@ -416,6 +454,7 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
+                        api_version='1.3',
                         api_filter='role=management tag=Dell'),
                         token='<redacted>') }}"
 
@@ -426,6 +465,7 @@ Examples
           msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
                          api_filter='device=R1-Device',
                          api_endpoint='http://localhost/',
+                         api_version='1.3',
                          token='<redacted>',
                          plugin='mycustomstuff') }}"
 

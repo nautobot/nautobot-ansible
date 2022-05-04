@@ -196,7 +196,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      content type(s). These match app.endpoint and the endpoint is singular.
+      Tags content type(s). These match app.endpoint and the endpoint is singular.
 
       e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
 

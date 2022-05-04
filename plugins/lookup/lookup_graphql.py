@@ -41,6 +41,10 @@ DOCUMENTATION = """
     description:
         - Queries Nautobot via its GraphQL API through pynautobot
     options:
+        api_version:
+            description:
+                - The Nautobot Rest API Version to use
+            required: False
         query:
             description:
                 - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
@@ -147,12 +151,13 @@ def nautobot_lookup_graphql(**kwargs):
 
     token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
     ssl_verify = kwargs.get("validate_certs", True)
+    api_version = kwargs.get("api_version")
     Display().vv("Validate certs: %s" % ssl_verify)
 
     if not isinstance(ssl_verify, bool):
         raise AnsibleLookupError("validate_certs must be a boolean")
 
-    nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
+    nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify, api_version=api_version)
     graph_variables = kwargs.get("graph_variables")
     Display().v("Graph Variables: %s" % graph_variables)
 
