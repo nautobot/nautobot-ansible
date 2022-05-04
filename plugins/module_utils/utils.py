@@ -1038,9 +1038,10 @@ class NautobotApiBase:
         self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         self.ssl_verify = kwargs.get("ssl_verify", True)
+        self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls
-        self.api = pynautobot.api(url=self.url, token=self.token)
+        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version)
         self.api.http_session.verify = self.ssl_verify
 
 

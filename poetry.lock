@@ -543,7 +543,7 @@ testutil = ["gitpython (>3)"]
 
 [[package]]
 name = "pynautobot"
-version = "1.0.4"
+version = "1.1.1"
 description = "Nautobot API client library"
 category = "dev"
 optional = false
@@ -898,7 +898,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "d4152d0ed5d7f9434eb13f63374e7cf71e5156e6742f86ffa2d2c8b40d0ad65e"
+content-hash = "b856680481f216e508b36a89184eb941e436c68345018b7e4fd831cb9f2b2a10"
 
 [metadata.files]
 alabaster = [
@@ -1291,8 +1291,8 @@ pylint = [
     {file = "pylint-2.13.4.tar.gz", hash = "sha256:7cc6d0c4f61dff440f9ed8b657f4ecd615dcfe35345953eb7b1dc74afe901d7a"},
 ]
 pynautobot = [
-    {file = "pynautobot-1.0.4-py3-none-any.whl", hash = "sha256:e30b667cd0e5df91c93453234dc5920b7633ed1c9dcce1bb9d507072c4ae23ed"},
-    {file = "pynautobot-1.0.4.tar.gz", hash = "sha256:193b5989f42254eff71655623fa2255a8c97920f28faab14360566816e29d78a"},
+    {file = "pynautobot-1.1.1-py3-none-any.whl", hash = "sha256:38f8e9e27433220c335cbd06b841a0d6cb8878ed8ed1f11272d4ad9591d6e75a"},
+    {file = "pynautobot-1.1.1.tar.gz", hash = "sha256:fa8cbf3a62215ffa3754dde3ead941f62763f73816d97da366524b88abd2fefa"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:a6c06a88f252e6c322f65faf8f418b16213b51bdfaece0524c1c1bc30c63c484"},
