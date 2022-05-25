@@ -455,7 +455,7 @@ Examples
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
                         api_version='1.3',
-                        api_filter='role=management tag=Dell'),
+                        api_filter='role=management tag=Dell',
                         token='<redacted>') }}"
 
     # Fetch bgp sessions for R1-device
