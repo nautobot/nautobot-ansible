@@ -25,7 +25,7 @@ version_added: "1.0.0"
 options:
   api_version:
     description:
-      - API Version Nautobot REST Api
+      - API Version Nautobot REST API
     required: false
     type: str
   url:

@@ -30,7 +30,7 @@ options:
         type: str
     api_version:
         description:
-          - API Version Nautobot REST Api
+          - API Version Nautobot REST API
         required: false
         type: str
     token:

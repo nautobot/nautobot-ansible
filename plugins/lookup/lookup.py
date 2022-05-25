@@ -63,7 +63,7 @@ DOCUMENTATION = """
             required: False
         api_version:
             description:
-                - The Nautobot Rest Api version to use.
+                - The Nautobot Rest API version to use.
             required: False
         plugin:
             description:
