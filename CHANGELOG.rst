@@ -5,6 +5,19 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v4.0.0
+======
+
+Release Summary
+---------------
+
+This release refactors the GraphQL inventory plugin to allow fetching virtual machines and a more flexible approach to allow users to use most of GraphQL's native capabilities.
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- (#130) Refactors GraphQL Inventory plugin to allow custom GraphQL queries with nested levels. Allows virtual machines to be fetched as well. The following options; additonal_variables (all top level keys are now set as host_vars) and filters (these are set within the query now).
+
 v3.4.1
 ======
 
