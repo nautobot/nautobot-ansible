@@ -65,6 +65,7 @@ DOCUMENTATION = """
             description:
                 - The Nautobot Rest API version to use.
             required: False
+            version_added: "4.0.1"
         plugin:
             description:
                 - The Nautobot plugin to query

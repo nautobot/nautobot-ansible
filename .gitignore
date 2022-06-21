@@ -10,6 +10,7 @@ docs/_build/*
 pb.*.yml
 .DS_Store
 .env
+.idea
 
 # https://github.com/ansible/ansible/issues/68499
 # ansible_collections/

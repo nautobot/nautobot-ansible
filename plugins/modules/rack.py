@@ -28,6 +28,7 @@ options:
       - API Version Nautobot REST API
     required: false
     type: str
+    version_added: "4.0.1"
   url:
     description:
       - URL of the Nautobot instance resolvable by Ansible control host.
