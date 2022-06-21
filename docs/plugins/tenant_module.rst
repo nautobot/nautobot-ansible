@@ -83,10 +83,15 @@ The below requirements are needed on the host that executes this module.
 - pynautobot
 
 
+
+
+
+
 .. Options
 
 Parameters
 ----------
+
 
 .. rst-class:: ansible-option-table
 
@@ -116,6 +121,9 @@ Parameters
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
+
 
       .. raw:: html
 
@@ -416,7 +424,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=raw`
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -453,7 +461,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -558,7 +566,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       .. raw:: html
 

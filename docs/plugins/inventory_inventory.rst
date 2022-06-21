@@ -76,10 +76,15 @@ Synopsis
 .. Requirements
 
 
+
+
+
+
 .. Options
 
 Parameters
 ----------
+
 
 .. rst-class:: ansible-option-table
 

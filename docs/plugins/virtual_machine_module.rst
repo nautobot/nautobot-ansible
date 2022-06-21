@@ -83,10 +83,15 @@ The below requirements are needed on the host that executes this module.
 - pynautobot
 
 
+
+
+
+
 .. Options
 
 Parameters
 ----------
+
 
 .. rst-class:: ansible-option-table
 
@@ -116,6 +121,9 @@ Parameters
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
+
 
       .. raw:: html
 
@@ -149,7 +157,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -405,7 +413,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -442,7 +450,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -479,7 +487,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -557,7 +565,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -635,7 +643,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -674,7 +682,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=raw`
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -711,7 +719,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -816,7 +824,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       .. raw:: html
 
@@ -891,7 +899,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`raw`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
 
@@ -1044,7 +1052,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-virtual machine"></div>
+        <div class="ansibleOptionAnchor" id="return-virtual%20machine"></div>
 
       .. _ansible_collections.networktocode.nautobot.virtual_machine_module__return-virtual machine:
 
@@ -1054,7 +1062,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-virtual machine" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-virtual%20machine" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 

@@ -83,10 +83,12 @@ The below requirements are needed on the local controller node that executes thi
 - pynautobot
 
 
-.. Options
 
-Parameters
-----------
+
+.. Terms
+
+Terms
+-----
 
 .. rst-class:: ansible-option-table
 
@@ -107,7 +109,7 @@ Parameters
 
       .. rst-class:: ansible-option-title
 
-      **_terms**
+      **Terms**
 
       .. raw:: html
 
@@ -134,6 +136,26 @@ Parameters
       .. raw:: html
 
         </div>
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
 
   * - .. raw:: html
 
@@ -234,6 +256,9 @@ Parameters
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
+
 
 
 
@@ -477,9 +502,8 @@ Examples
 
 .. Return values
 
-Return Values
--------------
-Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this lookup:
+Return Value
+------------
 
 .. rst-class:: ansible-option-table
 
@@ -500,7 +524,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-title
 
-      **_list**
+      **Return value**
 
       .. raw:: html
 

@@ -83,10 +83,15 @@ The below requirements are needed on the local controller node that executes thi
 - pynautobot
 
 
+
+
+
+
 .. Options
 
 Parameters
 ----------
+
 
 .. rst-class:: ansible-option-table
 
@@ -407,9 +412,8 @@ Examples
 
 .. Return values
 
-Return Values
--------------
-Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this lookup:
+Return Value
+------------
 
 .. rst-class:: ansible-option-table
 
