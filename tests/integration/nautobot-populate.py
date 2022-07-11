@@ -399,5 +399,11 @@ route_targets = [
 ]
 created_route_targets = make_nautobot_calls(nb.ipam.route_targets, route_targets)
 
+# Create Relationship
+relationships = [
+    {"name": "VLAN to Device", "slug": "vlan-to-device", "type": "one-to-one", "source_type": "ipam.vlan", "destination_type": "dcim.device"},
+]
+created_relationships = make_nautobot_calls(nb.extras.relationships, relationships)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

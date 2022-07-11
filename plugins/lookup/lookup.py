@@ -186,6 +186,8 @@ def get_endpoint(nautobot, term):
         "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
         "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
         "regions": {"endpoint": nautobot.dcim.regions},
+        "relationships": {"endpoint": nautobot.extras.relationships},
+        "relationship_associations": {"endpoint": nautobot.extras.relationship_associations},
         "reports": {"endpoint": nautobot.extras.reports},
         "rirs": {"endpoint": nautobot.ipam.rirs},
         "roles": {"endpoint": nautobot.ipam.roles},
