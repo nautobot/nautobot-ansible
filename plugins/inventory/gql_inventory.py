@@ -8,9 +8,8 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 name: gql_inventory
-plugin_type: inventory
 author:
-  - Armen Martirosyan
+  - Network to Code (@networktocode)
 short_description: Nautobot inventory source using GraphQL capability
 description:
   - Get inventory hosts from Nautobot using GraphQL queries
@@ -76,6 +75,7 @@ options:
           If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field.
           (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
     type: list
+    elements: str
     default: []
 """
 
@@ -181,6 +181,13 @@ query:
   virtual_machines:
     filters:
       name: EXCLUDE ALL
+"""
+
+RETURN = """
+  _list:
+    description:
+      - list of composed dictionaries with key and value
+    type: list
 """
 
 import json
