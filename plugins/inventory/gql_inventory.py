@@ -2,7 +2,6 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-from collections.abc import Mapping
 
 __metaclass__ = type
 
@@ -189,7 +188,7 @@ RETURN = """
       - list of composed dictionaries with key and value
     type: list
 """
-
+from collections.abc import Mapping
 import json
 import os
 from sys import version as python_version
