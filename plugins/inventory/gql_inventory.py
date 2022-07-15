@@ -9,6 +9,7 @@ DOCUMENTATION = """
 name: gql_inventory
 author:
   - Network to Code (@networktocode)
+  - Armen Martirosyan (@armartirosyan)
 short_description: Nautobot inventory source using GraphQL capability
 description:
   - Get inventory hosts from Nautobot using GraphQL queries
