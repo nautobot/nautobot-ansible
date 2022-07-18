@@ -11,35 +11,10 @@ A lookup function designed to return data from the Nautobot application
 
 from __future__ import absolute_import, division, print_function
 
-import os
-import functools
-from pprint import pformat
-
-from ansible.errors import AnsibleError
-from ansible.plugins.lookup import LookupBase
-from ansible.parsing.splitter import parse_kv, split_args
-from ansible.utils.display import Display
-from ansible.module_utils.six import raise_from
-
-try:
-    import pynautobot
-except ImportError as imp_exc:
-    PYNAUTOBOT_IMPORT_ERROR = imp_exc
-else:
-    PYNAUTOBOT_IMPORT_ERROR = None
-
-try:
-    import requests
-except ImportError as imp_exc:
-    REQUESTS_IMPORT_ERROR = imp_exc
-else:
-    REQUESTS_IMPORT_ERROR = None
-
-
 __metaclass__ = type
 
 DOCUMENTATION = """
-    lookup: lookup
+    name: lookup
     author: Chris Mills (@cpmills1975)
     version_added: "1.0.0"
     short_description: Queries and returns elements from Nautobot
@@ -129,6 +104,30 @@ RETURN = """
     type: list
 """
 
+import os
+import functools
+from pprint import pformat
+
+from ansible.errors import AnsibleError
+from ansible.plugins.lookup import LookupBase
+from ansible.parsing.splitter import parse_kv, split_args
+from ansible.utils.display import Display
+from ansible.module_utils.six import raise_from
+
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
+
+try:
+    import requests
+except ImportError as imp_exc:
+    REQUESTS_IMPORT_ERROR = imp_exc
+else:
+    REQUESTS_IMPORT_ERROR = None
+
 
 def get_endpoint(nautobot, term):
     """
@@ -186,6 +185,8 @@ def get_endpoint(nautobot, term):
         "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
         "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
         "regions": {"endpoint": nautobot.dcim.regions},
+        "relationships": {"endpoint": nautobot.extras.relationships},
+        "relationship_associations": {"endpoint": nautobot.extras.relationship_associations},
         "reports": {"endpoint": nautobot.extras.reports},
         "rirs": {"endpoint": nautobot.ipam.rirs},
         "roles": {"endpoint": nautobot.ipam.roles},
