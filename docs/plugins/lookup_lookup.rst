@@ -42,7 +42,7 @@ networktocode.nautobot.lookup lookup -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -83,10 +83,12 @@ The below requirements are needed on the local controller node that executes thi
 - pynautobot
 
 
-.. Options
 
-Parameters
-----------
+
+.. Terms
+
+Terms
+-----
 
 .. rst-class:: ansible-option-table
 
@@ -107,7 +109,7 @@ Parameters
 
       .. rst-class:: ansible-option-title
 
-      **_terms**
+      **Terms**
 
       .. raw:: html
 
@@ -134,6 +136,26 @@ Parameters
       .. raw:: html
 
         </div>
+
+
+
+
+
+.. Options
+
+Parameters
+----------
+
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Parameter
+    - Comments
 
   * - .. raw:: html
 
@@ -437,9 +459,8 @@ Examples
 
 .. Return values
 
-Return Values
--------------
-Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this lookup:
+Return Value
+------------
 
 .. rst-class:: ansible-option-table
 
@@ -460,7 +481,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-title
 
-      **_list**
+      **Return value**
 
       .. raw:: html
 
