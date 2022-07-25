@@ -28,9 +28,6 @@ COPY pyproject.toml poetry.lock ./
 # Install only package Dependencies
 RUN poetry install --no-dev
 
-# Copy in the application source and everything not explicitly banned by .dockerignore
-COPY . .
-
 #########
 # Linting
 #
@@ -39,6 +36,9 @@ FROM base AS lint
 
 # Install dev dependencies
 RUN poetry install
+
+# Copy in the application source and everything not explicitly banned by .dockerignore
+COPY . .
 
 RUN echo 'Running Black' && \
     black --check --diff . && \

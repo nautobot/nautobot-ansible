@@ -42,7 +42,7 @@ networktocode.nautobot.query_graphql module -- Queries and returns elements from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -85,10 +85,15 @@ The below requirements are needed on the host that executes this module.
 - pynautobot
 
 
+
+
+
+
 .. Options
 
 Parameters
 ----------
+
 
 .. rst-class:: ansible-option-table
 
@@ -361,11 +366,11 @@ Examples
       # Example with variables
       - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
         set_fact:
-          variables:
-            site_name: den
+          graph_variables:
+            site_name: AMS01
           query_string: |
-            query ($site_name:String!) {
-              sites (name: $site_name) {
+            query ($site_name: String!) {
+              sites (slug: $site_name) {
                 id
                 name
                 region {
@@ -380,8 +385,8 @@ Examples
           url: http://nautobot.local
           token: thisIsMyToken
           query: "{{ query_string }}"
-          variables: "{{ variables }}"
-          update_hostvars: "yes"
+          graph_variables: "{{ graph_variables }}"
+          update_hostvars: yes
 
 
 

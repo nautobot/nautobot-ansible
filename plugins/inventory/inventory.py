@@ -7,7 +7,6 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: inventory
-    plugin_type: inventory
     author:
         - Remy Leone (@sieben)
         - Anthony Ruhier (@Anthony25)
@@ -111,6 +110,7 @@ DOCUMENTATION = """
         group_by:
             description: Keys used to create groups. The I(plurals) option controls which of these are valid.
             type: list
+            elements: str
             choices:
                 - sites
                 - site
@@ -147,14 +147,17 @@ DOCUMENTATION = """
         query_filters:
             description: List of parameters passed to the query string for both devices and VMs (Multiple values may be separated by commas)
             type: list
+            elements: str
             default: []
         device_query_filters:
             description: List of parameters passed to the query string for devices (Multiple values may be separated by commas)
             type: list
+            elements: str
             default: []
         vm_query_filters:
             description: List of parameters passed to the query string for VMs (Multiple values may be separated by commas)
             type: list
+            elements: str
             default: []
         timeout:
             description: Timeout for Nautobot requests in seconds
