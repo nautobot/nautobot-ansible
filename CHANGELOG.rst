@@ -18,6 +18,11 @@ Breaking Changes / Porting Guide
 
 - (#130) Refactors GraphQL Inventory plugin to allow custom GraphQL queries with nested levels. Allows virtual machines to be fetched as well. The following options; additonal_variables (all top level keys are now set as host_vars) and filters (these are set within the query now).
 
+New Modules
+-----------
+
+- networktocode.nautobot.relationship_association - Creates or removes a relationship association from Nautobot
+
 v3.4.1
 ======
 
