@@ -7,34 +7,10 @@ A lookup function designed to return data from the Nautobot GraphQL endpoint
 
 from __future__ import absolute_import, division, print_function
 
-import os
-
-from ansible.plugins.lookup import LookupBase
-from ansible.errors import AnsibleLookupError, AnsibleError
-from ansible.module_utils.six import raise_from
-
-try:
-    import pynautobot
-except ImportError as imp_exc:
-    PYNAUTOBOT_IMPORT_ERROR = imp_exc
-else:
-    PYNAUTOBOT_IMPORT_ERROR = None
-
-try:
-    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-        NautobotApiBase,
-        NautobotGraphQL,
-    )
-except ModuleNotFoundError:
-    # For testing
-    from plugins.module_utils.utils import NautobotApiBase, NautobotGraphQL
-
-from ansible.utils.display import Display
-
 __metaclass__ = type
 
 DOCUMENTATION = """
-    lookup: lookup_graphql
+    name: lookup_graphql
     author: Josh VanDeraa (@jvanderaa)
     version_added: "1.1.0"
     short_description: Queries and returns elements from Nautobot GraphQL endpoint
@@ -122,6 +98,30 @@ RETURN = """
       - Data result from the GraphQL endpoint
     type: dict
 """
+
+import os
+
+from ansible.plugins.lookup import LookupBase
+from ansible.errors import AnsibleLookupError, AnsibleError
+from ansible.module_utils.six import raise_from
+
+try:
+    import pynautobot
+except ImportError as imp_exc:
+    PYNAUTOBOT_IMPORT_ERROR = imp_exc
+else:
+    PYNAUTOBOT_IMPORT_ERROR = None
+
+try:
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+        NautobotApiBase,
+        NautobotGraphQL,
+    )
+except ModuleNotFoundError:
+    # For testing
+    from plugins.module_utils.utils import NautobotApiBase, NautobotGraphQL
+
+from ansible.utils.display import Display
 
 
 def nautobot_lookup_graphql(**kwargs):
