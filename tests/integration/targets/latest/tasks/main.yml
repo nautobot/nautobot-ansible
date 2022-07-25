@@ -484,3 +484,12 @@
         - route_target
   tags:
     - route_target
+
+- name: "PYNAUTOBOT_RELATIONSHIP_ASSOCIATION_TESTS"
+  include_tasks:
+    file: "relationship_association.yml"
+    apply:
+      tags:
+        - relationship_association
+  tags:
+    - relationship_association
