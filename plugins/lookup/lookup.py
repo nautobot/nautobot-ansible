@@ -40,7 +40,7 @@ DOCUMENTATION = """
             description:
                 - The Nautobot Rest API version to use.
             required: False
-            version_added: "4.0.1"
+            version_added: "4.1.0"
         plugin:
             description:
                 - The Nautobot plugin to query

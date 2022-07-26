@@ -29,6 +29,10 @@ DOCUMENTATION = """
             required: True
             env:
                 - name: NAUTOBOT_URL
+        api_version:
+            description: The version of the Nautobot REST API.
+            required: False
+            version_added: "4.1.0"
         validate_certs:
             description:
                 - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
@@ -1402,6 +1406,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         token = self.get_option("token")
         # Handle extra "/" from api_endpoint configuration and trim if necessary, see PR#49943
         self.api_endpoint = self.get_option("api_endpoint").strip("/")
+        api_version = self.get_option("api_version")
         self.timeout = self.get_option("timeout")
         self.max_uri_length = self.get_option("max_uri_length")
         self.validate_certs = self.get_option("validate_certs")
@@ -1420,6 +1425,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         }
         if token:
             self.headers.update({"Authorization": "Token %s" % token})
+        if api_version:
+            self.headers.update({"Accept": f"application/json; version={api_version}"})
 
         # Filter and group_by options
         self.group_by = self.get_option("group_by")

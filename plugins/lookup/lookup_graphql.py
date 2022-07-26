@@ -21,6 +21,7 @@ DOCUMENTATION = """
             description:
                 - The Nautobot Rest API Version to use
             required: False
+            version_added: "4.1.0"
         query:
             description:
                 - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
