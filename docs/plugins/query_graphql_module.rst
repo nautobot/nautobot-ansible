@@ -42,7 +42,7 @@ networktocode.nautobot.query_graphql module -- Queries and returns elements from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -104,40 +104,6 @@ Parameters
 
   * - Parameter
     - Comments
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
-
-      .. _ansible_collections.networktocode.nautobot.query_graphql_module__parameter-api_version:
-
-      .. rst-class:: ansible-option-title
-
-      **api_version**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      API Version Nautobot REST API
-
-
-      .. raw:: html
-
-        </div>
 
   * - .. raw:: html
 

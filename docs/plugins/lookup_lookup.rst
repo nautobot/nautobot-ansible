@@ -42,7 +42,7 @@ networktocode.nautobot.lookup lookup -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -241,46 +241,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
-
-      .. _ansible_collections.networktocode.nautobot.lookup_lookup__parameter-api_version:
-
-      .. rst-class:: ansible-option-title
-
-      **api_version**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
-
-
-
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The Nautobot Rest API version to use.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-plugin"></div>
 
       .. _ansible_collections.networktocode.nautobot.lookup_lookup__parameter-plugin:
@@ -466,7 +426,6 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
-                        api_version='1.3',
                         token='<redacted>') }}"
 
     # This example uses an API Filter
@@ -479,8 +438,7 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
-                        api_version='1.3',
-                        api_filter='role=management tag=Dell',
+                        api_filter='role=management tag=Dell'),
                         token='<redacted>') }}"
 
     # Fetch bgp sessions for R1-device
@@ -490,7 +448,6 @@ Examples
           msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
                          api_filter='device=R1-Device',
                          api_endpoint='http://localhost/',
-                         api_version='1.3',
                          token='<redacted>',
                          plugin='mycustomstuff') }}"
 

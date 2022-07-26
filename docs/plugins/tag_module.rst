@@ -42,7 +42,7 @@ networktocode.nautobot.tag module -- Creates or removes tags from Nautobot
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -106,43 +106,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tag_module__parameter-api_version:
-
-      .. rst-class:: ansible-option-title
-
-      **api_version**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      API Version Nautobot REST API
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-color"></div>
 
       .. _ansible_collections.networktocode.nautobot.tag_module__parameter-color:
@@ -171,42 +134,6 @@ Parameters
         <div class="ansible-option-cell">
 
       Tag color
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-content_types"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tag_module__parameter-content_types:
-
-      .. rst-class:: ansible-option-title
-
-      **content_types**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-content_types" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Tags content type(s). These match app.endpoint and the endpoint is singular.
-
-      e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
 
 
       .. raw:: html
@@ -551,47 +478,9 @@ Examples
             token: thisIsMyToken
             name: "{{ item.name }}"
             description: "{{ item.description }}"
-            content_types:
-              - circuits.circuit
-              - circuits.circuit termination
-              - circuits.provider
-              - circuits.provider network
-              - dcim.cable
-              - dcim.console port
-              - dcim.console server port
-              - dcim.device
-              - dcim.device bay
-              - dcim.device type
-              - dcim.front port
-              - dcim.interface
-              - dcim.inventory item
-              - dcim.power feed
-              - dcim.power outlet
-              - dcim.power panel
-              - dcim.power port
-              - dcim.rack
-              - dcim.rack reservation
-              - dcim.rear port
-              - dcim.site
-              - dcim.virtual chassis
-              - extras.Git repository
-              - extras.job
-              - extras.secret
-              - ipam.aggregate
-              - ipam.IP address
-              - ipam.prefix
-              - ipam.route target
-              - ipam.service
-              - ipam.VLAN
-              - ipam.VRF
-              - tenancy.tenant
-              - virtualization.cluster
-              - virtualization.virtual machine
-              - virtualization.VM interface
           loop:
             - { name: mgmt, description: "management" }
             - { name: tun, description: "tunnel" }
-          
 
         - name: Delete tags
           networktocode.nautobot.tag:

@@ -42,7 +42,7 @@ networktocode.nautobot.power_port module -- Create, update or delete power ports
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 3.4.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -134,43 +134,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The allocated draw of the power port in watt
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_port_module__parameter-api_version:
-
-      .. rst-class:: ansible-option-title
-
-      **api_version**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in 4.0.1 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      API Version Nautobot REST API
 
 
       .. raw:: html
