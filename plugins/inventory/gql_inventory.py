@@ -2,15 +2,14 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
-from collections.abc import Mapping
 
 __metaclass__ = type
 
 DOCUMENTATION = """
 name: gql_inventory
-plugin_type: inventory
 author:
-  - Armen Martirosyan
+  - Network to Code (@networktocode)
+  - Armen Martirosyan (@armartirosyan)
 short_description: Nautobot inventory source using GraphQL capability
 description:
   - Get inventory hosts from Nautobot using GraphQL queries
@@ -76,6 +75,7 @@ options:
           If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field.
           (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
     type: list
+    elements: str
     default: []
 """
 
@@ -183,6 +183,13 @@ query:
       name: EXCLUDE ALL
 """
 
+RETURN = """
+  _list:
+    description:
+      - list of composed dictionaries with key and value
+    type: list
+"""
+from collections.abc import Mapping
 import json
 import os
 from sys import version as python_version

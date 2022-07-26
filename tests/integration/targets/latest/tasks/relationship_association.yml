@@ -1,0 +1,98 @@
+---
+##
+##
+### PYNAUTOBOT_RELATIONSHIP_ASSOCIATION
+##
+##
+
+- set_fact:
+    relationship: "{{ lookup('networktocode.nautobot.lookup', 'relationships', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"VLAN to Device\"') }}"
+    vlan: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VLAN\"') }}"
+    device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
+
+- name: "RELATIONSHIP ASSOCIATION 1: Necessary info creation"
+  networktocode.nautobot.relationship_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    relationship: "{{ relationship['key'] }}"
+    source_type: "{{ relationship['value']['source_type'] }}"
+    source_id: "{{ vlan['key'] }}"
+    destination_type: "{{ relationship['value']['destination_type'] }}"
+    destination_id: "{{ device['key'] }}"
+    state: present
+  register: test_one
+
+- name: "RELATIONSHIP ASSOCIATION 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['relationship_associations']['relationship'] == relationship['key']
+      - test_one['relationship_associations']['source_type'] == relationship['value']['source_type']
+      - test_one['relationship_associations']['source_id'] == vlan['key']
+      - test_one['relationship_associations']['destination_type'] == relationship['value']['destination_type']
+      - test_one['relationship_associations']['destination_id'] == device['key']
+      - test_one['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} created"
+
+- name: "RELATIONSHIP ASSOCIATION 2: Test duplication association (Idempotency)"
+  networktocode.nautobot.relationship_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    relationship: "{{ relationship['key'] }}"
+    source_type: "{{ relationship['value']['source_type'] }}"
+    source_id: "{{ vlan['key'] }}"
+    destination_type: "{{ relationship['value']['destination_type'] }}"
+    destination_id: "{{ device['key'] }}"
+    state: present
+  register: test_two
+
+- name: "RELATIONSHIP ASSOCIATION 2: ASSERT - Item already exists (Idempotency)"
+  assert:
+    that:
+      - test_two is not changed
+      - test_two['relationship_associations']['relationship'] == relationship['key']
+      - test_two['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} already exists"
+
+- name: "RELATIONSHIP ASSOCIATION 3: Test absent state"
+  networktocode.nautobot.relationship_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    relationship: "{{ relationship['key'] }}"
+    source_type: "{{ relationship['value']['source_type'] }}"
+    source_id: "{{ vlan['key'] }}"
+    destination_type: "{{ relationship['value']['destination_type'] }}"
+    destination_id: "{{ device['key'] }}"
+    state: absent
+  register: test_three
+
+- name: "RELATIONSHIP ASSOCIATION 3: ASSERT - Item removed"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['state'] == "present"
+      - test_three['diff']['after']['state'] == "absent"
+      - test_three['relationship_associations']['relationship'] == relationship['key']
+      - test_three['relationship_associations']['source_type'] == relationship['value']['source_type']
+      - test_three['relationship_associations']['source_id'] == vlan['key']
+      - test_three['relationship_associations']['destination_type'] == relationship['value']['destination_type']
+      - test_three['relationship_associations']['destination_id'] == device['key']
+      - test_three['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} deleted"
+
+- name: "RELATIONSHIP ASSOCIATION 4: Test absent state (Idempotent)"
+  networktocode.nautobot.relationship_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    relationship: "{{ relationship['key'] }}"
+    source_type: "{{ relationship['value']['source_type'] }}"
+    source_id: "{{ vlan['key'] }}"
+    destination_type: "{{ relationship['value']['destination_type'] }}"
+    destination_id: "{{ device['key'] }}"
+    state: absent
+  register: test_four
+
+- name: "RELATIONSHIP ASSOCIATION 4: ASSERT - Item not removed (Idempotent)"
+  assert:
+    that:
+      - test_four is not changed
+      - test_four['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} already absent"

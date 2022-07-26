@@ -13,6 +13,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 NB_TAGS = "tags"
 NB_STATUS = "statuses"
+NB_RELATIONSHIP_ASSOCIATIONS = "relationship_associations"
 
 
 class NautobotExtrasModule(NautobotModule):
@@ -23,6 +24,7 @@ class NautobotExtrasModule(NautobotModule):
         Supported endpoints:
         - tags
         - statuses
+        - relationship_associations
         """
         # Used to dynamically set key when returning results
         endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]
@@ -41,6 +43,8 @@ class NautobotExtrasModule(NautobotModule):
             name = data["name"]
         elif data.get("slug"):
             name = data["slug"]
+        elif endpoint_name == "relationship_associations":
+            name = f"{data['source_type']} -> {data['destination_type']}"
 
         if self.endpoint in SLUG_REQUIRED:
             if not data.get("slug"):
