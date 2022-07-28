@@ -128,6 +128,14 @@ def test_group_name_dict(mock_display, inventory_fixture, device_data):
     mock_display.assert_any_call("No slug or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
 
 
+def test_group_by_empty_string(inventory_fixture, device_data):
+    device_data["platform"]["napalm_driver"] = ""
+    inventory_fixture.group_by = ["platform.napalm_driver"]
+    inventory_fixture.create_groups(device_data)
+    inventory_groups = list(inventory_fixture.inventory.groups.keys())
+    assert ["all", "ungrouped"] == inventory_groups
+
+
 def test_add_ipv4(inventory_fixture, device_data):
     inventory_fixture.group_by = ["site"]
     inventory_fixture.create_groups(device_data)
