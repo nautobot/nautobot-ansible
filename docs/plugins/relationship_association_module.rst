@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.route_target_module:
+.. _ansible_collections.networktocode.nautobot.relationship_association_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.route_target module -- Creates or removes route targets from Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.relationship_association module -- Creates or removes a relationship association from Nautobot
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -50,11 +50,11 @@ networktocode.nautobot.route_target module -- Creates or removes route targets f
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.route_target`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.relationship_association`.
 
 .. version_added
 
-.. versionadded:: 1.0.0 of networktocode.nautobot
+.. versionadded:: 4.0.0 of networktocode.nautobot
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes route targets from Nautobot
+- Creates or removes a relationship association from Nautobot
 
 
 .. Aliases
@@ -106,91 +106,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+        <div class="ansibleOptionAnchor" id="parameter-destination_id"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-custom_fields:
-
-      .. rst-class:: ansible-option-title
-
-      **custom_fields**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      must exist in Nautobot
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
-
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-destination_id:
 
       .. rst-class:: ansible-option-title
 
-      **description**
+      **destination_id**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Tag description
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-name"></div>
-
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-name:
-
-      .. rst-class:: ansible-option-title
-
-      **name**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-destination_id" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -204,7 +130,41 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Route target name
+      The UUID of the destination of the relationship
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-destination_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-destination_type:
+
+      .. rst-class:: ansible-option-title
+
+      **destination_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-destination_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The app_label.model for the destination of the relationship
 
 
       .. raw:: html
@@ -216,7 +176,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -229,9 +189,6 @@ Parameters
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
-
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
-
 
       .. raw:: html
 
@@ -255,9 +212,111 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-relationship"></div>
+
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-relationship:
+
+      .. rst-class:: ansible-option-title
+
+      **relationship**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-relationship" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The Relationship UUID to add the association to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-source_id"></div>
+
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-source_id:
+
+      .. rst-class:: ansible-option-title
+
+      **source_id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-source_id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The UUID of the source of the relationship
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-source_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-source_type:
+
+      .. rst-class:: ansible-option-title
+
+      **source_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-source_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The app_label.model for the source of the relationship
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -296,83 +355,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
-
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-tags:
-
-      .. rst-class:: ansible-option-title
-
-      **tags**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
-
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Any tags that the device may need to be associated with
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
-
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-tenant:
-
-      .. rst-class:: ansible-option-title
-
-      **tenant**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The tenant that the route target will be assigned to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -406,7 +391,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -440,7 +425,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -481,12 +466,6 @@ Parameters
 
 .. Notes
 
-Notes
------
-
-.. note::
-   - Tags should be defined as a YAML list
-   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
 
@@ -499,45 +478,31 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test route target creation/deletion"
+    - name: "Test relationship association creation/deletion"
       connection: local
       hosts: localhost
       gather_facts: False
       tasks:
-        - name: Create Route Targets
-          networktocode.nautobot.route_target:
+        - name: Create relationship association
+          networktocode.nautobot.relationship_association:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: "{{ item.name }}"
-            tenant: "Test Tenant"
-            tags:
-              - Schnozzberry
-          loop:
-            - { name: "65000:65001", description: "management" }
-            - { name: "65000:65002", description: "tunnel" }
+            relationship: 01234567-abcd-0123-abcd-012345678901
+            source_type: dcim.device
+            source_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+            destination_type: ipam.vrf
+            destination_id: 01234567-abcd-0123-abcd-123456789012
 
-        - name: Update Description on Route Targets
-          networktocode.nautobot.route_target:
+        - name: Delete relationship association
+          networktocode.nautobot.relationship_association:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: "{{ item.name }}"
-            tenant: "Test Tenant"
-            description: "{{ item.description }}"
-            tags:
-              - Schnozzberry
-          loop:
-            - { name: "65000:65001", description: "management" }
-            - { name: "65000:65002", description: "tunnel" }
-
-        - name: Delete Route Targets
-          networktocode.nautobot.route_target:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: "{{ item }}"
+            relationship: 01234567-abcd-0123-abcd-012345678901
+            source_type: dcim.device
+            source_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+            destination_type: ipam.vrf
+            destination_id: 01234567-abcd-0123-abcd-123456789012
             state: absent
-          loop:
-            - "65000:65001"
-            - "65000:65002"
 
 
 
@@ -566,7 +531,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -604,17 +569,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-route_target"></div>
+        <div class="ansibleOptionAnchor" id="return-relationship_associations"></div>
 
-      .. _ansible_collections.networktocode.nautobot.route_target_module__return-route_target:
+      .. _ansible_collections.networktocode.nautobot.relationship_association_module__return-relationship_associations:
 
       .. rst-class:: ansible-option-title
 
-      **route_target**
+      **relationship_associations**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-route_target" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-relationship_associations" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -650,7 +615,8 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Mikhail Yohman (@FragmentedPacket)
+- Network to Code (@networktocode)
+- Joe Wesch (@joewesch)
 
 
 
