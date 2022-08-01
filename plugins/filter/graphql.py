@@ -20,7 +20,11 @@ def build_graphql_filter_string(filter: dict) -> str:
     loop_filters = []
     for key, value in filter.items():
         temp_string = f"{key}: "
-        value_string = f"{value}"
+        if isinstance(value, bool):
+            # Convert Python booleans to lowercase
+            value_string = str(value).lower()
+        else:
+            value_string = f"{value}"
 
         # GraphQL variables do not need quotes (This isn't completely support with inventory yet, but code added here)
         if isinstance(value, str) and not key.startswith("$"):

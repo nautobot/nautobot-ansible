@@ -72,5 +72,16 @@
             }
         },
         "expected": "device {\n  name\n  platform {\n    napalm_driver\n  }\n  status {\n    name\n  }\n  primary_ip4 {\n    address\n  }\n  device_role {\n    name\n  }\n  site {\n    name\n  }\n}"
+    },
+    {
+        "query": {
+            "devices": {
+                "filters": {
+                    "has_primary_ip": true
+                },
+                "name": null
+            }
+        },
+        "expected": "devices (has_primary_ip: true) {\n  name\n}"
     }
 ]
