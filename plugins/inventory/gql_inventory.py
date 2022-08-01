@@ -313,8 +313,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if not HAS_NETUTILS:
             raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
 
-        self.display.display(msg="In 4.0 the GQL inventory will require changes. Please see release notes for 4.0.0 when available.")
-
         base_query = {
             "query": {
                 "devices": {
