@@ -5,7 +5,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 4.0.0
+Collection version 4.0.1
 
 .. contents::
    :local:
@@ -84,6 +84,7 @@ Modules
 * :ref:`rear_port module <ansible_collections.networktocode.nautobot.rear_port_module>` -- Create, update or delete rear ports within Nautobot
 * :ref:`rear_port_template module <ansible_collections.networktocode.nautobot.rear_port_template_module>` -- Create, update or delete rear port templates within Nautobot
 * :ref:`region module <ansible_collections.networktocode.nautobot.region_module>` -- Creates or removes regions from Nautobot
+* :ref:`relationship_association module <ansible_collections.networktocode.nautobot.relationship_association_module>` -- Creates or removes a relationship association from Nautobot
 * :ref:`rir module <ansible_collections.networktocode.nautobot.rir_module>` -- Create, update or delete RIRs within Nautobot
 * :ref:`route_target module <ansible_collections.networktocode.nautobot.route_target_module>` -- Creates or removes route targets from Nautobot
 * :ref:`service module <ansible_collections.networktocode.nautobot.service_module>` -- Creates or removes service from Nautobot
@@ -169,6 +170,7 @@ Lookup Plugins
     rear_port_module
     rear_port_template_module
     region_module
+    relationship_association_module
     rir_module
     route_target_module
     service_module

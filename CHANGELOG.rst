@@ -5,6 +5,21 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v4.0.1
+======
+
+Release Summary
+---------------
+
+Fixes GraphQL inventory plugin bugs and RTD builds.
+
+Bugfixes
+--------
+
+- (#150) GraphQL inventory plugin - boolean filters are invalid
+- (#151) GraphQL inventory plugin - using group_by can crash if there are empty values
+- (#154) Fixes antsibull import for RTD builds
+
 v4.0.0
 ======
 

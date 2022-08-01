@@ -327,3 +327,10 @@ releases:
       - description: Creates or removes a relationship association from Nautobot
         name: relationship_association
         namespace: ""
+  4.0.1:
+    changes:
+      bugfixes:
+        - (#150) GraphQL inventory plugin - boolean filters are invalid
+        - (#151) GraphQL inventory plugin - using group_by can crash if there are empty values
+        - (#154) Fixes antsibull import for RTD builds
+      release_summary: "Fixes GraphQL inventory plugin bugs and RTD builds."
