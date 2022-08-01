@@ -299,6 +299,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 else:
                     self.display.display(f"No slug or name value for {group_name} in {group_by_path} on device {device_name}.")
 
+            if not group_name:
+                # If the value is empty, it can't be grouped
+                continue
+
             if isinstance(group_name, str):
                 # If using force_valid_group_names=always in ansible.cfg, hyphens in Nautobot slugs will be converted to underscores
                 group = self.inventory.add_group(group_name)
