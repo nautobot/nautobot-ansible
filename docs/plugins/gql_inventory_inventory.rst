@@ -42,7 +42,7 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
 
     You might already have this collection installed if you are using the ``ansible`` package.
     It is not included in ``ansible-core``.
@@ -661,6 +661,60 @@ Examples
 
 .. Return values
 
+Return Values
+-------------
+Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this inventory:
+
+.. rst-class:: ansible-option-table
+
+.. list-table::
+  :width: 100%
+  :widths: auto
+  :header-rows: 1
+
+  * - Key
+    - Description
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-_list"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__return-_list:
+
+      .. rst-class:: ansible-option-title
+
+      **_list**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-_list" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      list of composed dictionaries with key and value
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success
+
+
+      .. raw:: html
+
+        </div>
+
+
 
 ..  Status (Presently only deprecated)
 
@@ -670,7 +724,8 @@ Examples
 Authors
 ~~~~~~~
 
-- Armen Martirosyan
+- Network to Code (@networktocode)
+- Armen Martirosyan (@armartirosyan)
 
 
 .. hint::
