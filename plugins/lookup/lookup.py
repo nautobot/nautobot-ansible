@@ -330,7 +330,7 @@ class LookupModule(LookupBase):
                 if "id" in filter:
                     Display().vvvv("Filter is: %s and includes id, will use .get instead of .filter" % (filter))
                     try:
-                        id = int(filter["id"][0])
+                        id = filter["id"][0]
                         data = endpoint.get(id)
                         data = dict(data)
                         Display().vvvvv(pformat(data))
