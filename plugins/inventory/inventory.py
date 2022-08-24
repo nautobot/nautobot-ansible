@@ -1077,8 +1077,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def fetch_api_docs(self):
         openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
 
-        self.api_version = openapi["info"]["version"]
-
         device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
         vm_path = (
             "/api/virtualization/virtual-machines/" if "/api/virtualization/virtual-machines/" in openapi["paths"] else "/virtualization/virtual-machines/"
@@ -1361,6 +1359,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Get info about the API - version, allowed query parameters
         self.fetch_api_docs()
 
+        if self.api_version:
+            self.headers.update({"Accept": f"application/json; version={self.api_version}"})
+
         self.fetch_hosts()
 
         # Interface, and Service lookup will depend on hosts, if option fetch_all is false
@@ -1406,7 +1407,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         token = self.get_option("token")
         # Handle extra "/" from api_endpoint configuration and trim if necessary, see PR#49943
         self.api_endpoint = self.get_option("api_endpoint").strip("/")
-        api_version = self.get_option("api_version")
+        self.api_version = self.get_option("api_version")
         self.timeout = self.get_option("timeout")
         self.max_uri_length = self.get_option("max_uri_length")
         self.validate_certs = self.get_option("validate_certs")
@@ -1425,8 +1426,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         }
         if token:
             self.headers.update({"Authorization": "Token %s" % token})
-        if api_version:
-            self.headers.update({"Accept": f"application/json; version={api_version}"})
 
         # Filter and group_by options
         self.group_by = self.get_option("group_by")
