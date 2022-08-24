@@ -8,15 +8,20 @@ networktocode.nautobot Release Notes
 v4.1.0
 ======
 
+Release Summary
+---------------
+
+Fix minor bugs and add API versioning to collection.
+
 Minor Changes
 -------------
 
-- (#139) - Add API versioning to the necessary plugins (modules, inventory, lookup, etc.).
+- (#139) - Add API versioning to compatible plugins.
 
 Bugfixes
 --------
 
-- (#159) - Lookup plugin - Fix `api_filter` to not conver ID to integer as they're UUIDs
+- (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers from legacy forked code.
 
 v4.0.1
 ======
