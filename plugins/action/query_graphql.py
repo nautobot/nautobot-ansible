@@ -38,6 +38,7 @@ def nautobot_action_graphql(args):
         raise AnsibleError("Missing URL of Nautobot")
 
     token = args.get("token") or os.getenv("NAUTOBOT_TOKEN")
+    api_version = args.get("api_version")
     ssl_verify = args.get("validate_certs", True)
     Display().vv("Verify Certificates: %s" % ssl_verify)
 
@@ -52,7 +53,7 @@ def nautobot_action_graphql(args):
     if not isinstance(update_hostvars, bool):
         raise AnsibleError("update_hostvars must be a boolean")
 
-    nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify)
+    nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify, api_version=api_version)
     query = args.get("query")
     Display().v("Query String: %s" % query)
 

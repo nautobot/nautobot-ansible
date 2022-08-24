@@ -36,6 +36,11 @@ DOCUMENTATION = """
             description:
                 - The api_filter to use.
             required: False
+        api_version:
+            description:
+                - The Nautobot Rest API version to use.
+            required: False
+            version_added: "4.1.0"
         plugin:
             description:
                 - The Nautobot plugin to query
@@ -71,6 +76,7 @@ tasks:
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
+                    api_version='1.3',
                     token='<redacted>') }}"
 
 # This example uses an API Filter
@@ -83,7 +89,8 @@ tasks:
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
-                    api_filter='role=management tag=Dell'),
+                    api_version='1.3',
+                    api_filter='role=management tag=Dell',
                     token='<redacted>') }}"
 
 # Fetch bgp sessions for R1-device
@@ -93,6 +100,7 @@ tasks:
       msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
                      api_filter='device=R1-Device',
                      api_endpoint='http://localhost/',
+                     api_version='1.3',
                      token='<redacted>',
                      plugin='mycustomstuff') }}"
 """
@@ -299,6 +307,7 @@ class LookupModule(LookupBase):
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
+        api_version = kwargs.get("api_version")
 
         if not isinstance(terms, list):
             terms = [terms]
@@ -309,6 +318,7 @@ class LookupModule(LookupBase):
         nautobot = pynautobot.api(
             api_endpoint,
             token=api_token if api_token else None,
+            api_version=api_version,
         )
         nautobot.http_session = session
 
