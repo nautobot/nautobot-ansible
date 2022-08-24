@@ -1,11 +1,12 @@
 
 
+
 .. _plugins_in_networktocode.nautobot:
 
 Networktocode.Nautobot
 ======================
 
-Collection version 4.0.1
+Collection version 4.1.0
 
 .. contents::
    :local:
@@ -94,7 +95,7 @@ Modules
 * :ref:`tenant module <ansible_collections.networktocode.nautobot.tenant_module>` -- Creates or removes tenants from Nautobot
 * :ref:`tenant_group module <ansible_collections.networktocode.nautobot.tenant_group_module>` -- Creates or removes tenant groups from Nautobot
 * :ref:`virtual_chassis module <ansible_collections.networktocode.nautobot.virtual_chassis_module>` -- Create, update or delete virtual chassis within Nautobot
-* :ref:`virtual_machine module <ansible_collections.networktocode.nautobot.virtual_machine_module>` -- Create, update or delete virtual_machines within Nautobot
+* :ref:`virtual_machine module <ansible_collections.networktocode.nautobot.virtual_machine_module>` -- Create, update or delete virtual\_machines within Nautobot
 * :ref:`vlan module <ansible_collections.networktocode.nautobot.vlan_module>` -- Create, update or delete vlans within Nautobot
 * :ref:`vlan_group module <ansible_collections.networktocode.nautobot.vlan_group_module>` -- Create, update or delete vlans groups within Nautobot
 * :ref:`vm_interface module <ansible_collections.networktocode.nautobot.vm_interface_module>` -- Creates or removes interfaces from virtual machines in Nautobot

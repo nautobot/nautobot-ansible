@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -42,13 +43,11 @@ networktocode.nautobot.device_type module -- Create, update or delete device typ
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.device_type_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.device_type`.
 
@@ -75,6 +74,8 @@ Synopsis
 
 
 .. Requirements
+
+.. _ansible_collections.networktocode.nautobot.device_type_module_requirements:
 
 Requirements
 ------------
@@ -106,6 +107,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_type_module__parameter-api_version:
+
+      .. rst-class:: ansible-option-title
+
+      **api_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-comments"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_type_module__parameter-comments:
@@ -133,7 +171,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Comments that may include additional information in regards to the device_type
+      Comments that may include additional information in regards to the device\_type
 
 
       .. raw:: html
@@ -214,8 +252,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -362,9 +400,9 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
+      This can be used to override the specified values in ALLOWED\_QUERY\_PARAMS that is defined
 
-      in plugins/module_utils/utils.py and provides control to users on what may make
+      in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
 
@@ -675,7 +713,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"yes"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
 
       .. raw:: html
 

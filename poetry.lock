@@ -636,7 +636,7 @@ python-versions = "*"
 
 [[package]]
 name = "netutils"
-version = "0.2.5"
+version = "1.2.0"
 description = "Common helper functions useful in network automation."
 category = "main"
 optional = false
@@ -1199,7 +1199,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "12e95ea393d71f7c79cd9f7a6eab3c6ebb337d0c7c416f8d11c2f071f9a7a617"
+content-hash = "7d3b21ef1e3745f301377f1145f5317e0807d748862a440b4649470b930c1c7a"
 
 [metadata.files]
 aiocontextvars = [
@@ -1769,10 +1769,7 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
-netutils = [
-    {file = "netutils-0.2.5-py3-none-any.whl", hash = "sha256:6715b0e1175051f5db7685bf057ede68c7dafc56cf705a1ca3896e24980b22ce"},
-    {file = "netutils-0.2.5.tar.gz", hash = "sha256:bdfd8e454c4aeacf59c1537bfd434e1d944ce69032fed533f0171c2532c91751"},
-]
+netutils = []
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},

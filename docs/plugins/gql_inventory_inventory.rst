@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -42,13 +43,11 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You need further requirements to be able to use this inventory plugin,
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.gql_inventory_inventory_requirements>` for details.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.gql_inventory`.
 
@@ -74,6 +73,8 @@ Synopsis
 
 
 .. Requirements
+
+.. _ansible_collections.networktocode.nautobot.gql_inventory_inventory_requirements:
 
 Requirements
 ------------
@@ -225,13 +226,13 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)
+      List of dot-sparated paths to index graphql query results (e.g. \`platform.slug\`)
 
       The final value returned by each path is used to derive group names and then group the devices into these groups.
 
-      Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
+      Valid group names must be string, so indexing the dotted path should return a string (i.e. \`platform.slug\` instead of \`platform\`)
 
-      If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
+      If value returned by the defined path is a dictionary, an attempt will first be made to access the \`name\` field, and then the \`slug\` field. (i.e. \`platform\` would attempt to lookup \`platform.name\`, and if that data was not returned, it would then try \`platform.slug\`)
           
 
 
@@ -526,8 +527,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 

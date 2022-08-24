@@ -5,6 +5,19 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v4.1.0
+======
+
+Minor Changes
+-------------
+
+- (#139) - Add API versioning to the necessary plugins (modules, inventory, lookup, etc.).
+
+Bugfixes
+--------
+
+- (#159) - Lookup plugin - Fix `api_filter` to not conver ID to integer as they're UUIDs
+
 v4.0.1
 ======
 
