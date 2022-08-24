@@ -30,6 +30,7 @@
       networktocode.nautobot.prefix:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
+        api_version:
         parent: "10.10.0.0/16"
         prefix_length: 24
         first_available: yes
@@ -271,3 +272,18 @@
         that:
           - test_results | json_query('results[?ip_address.address==`1.121.121.121/32`]') | length == 2
           - test_results | json_query('results[?ip_address.address==`121.121.121.121/32`]') | length == 2
+
+    - name: "Invalid API version"
+      networktocode.nautobot.tag:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        api_version: 0.0
+        name: "Test Tag 5"
+        slug: "test-tag-five"
+      ignore_errors: True
+      register: "test_invalid_api_version"
+
+    - name: Assert that api_version fails
+      assert:
+        that:
+          - '"Invalid version" in test_invalid_api_version["msg"]'
