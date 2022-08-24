@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -36,19 +37,17 @@
 
 .. Title
 
-networktocode.nautobot.virtual_machine module -- Create, update or delete virtual_machines within Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.virtual_machine module -- Create, update or delete virtual\_machines within Nautobot
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.virtual_machine_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.virtual_machine`.
 
@@ -68,13 +67,15 @@ Synopsis
 
 .. Description
 
-- Creates, updates or removes virtual_machines from Nautobot
+- Creates, updates or removes virtual\_machines from Nautobot
 
 
 .. Aliases
 
 
 .. Requirements
+
+.. _ansible_collections.networktocode.nautobot.virtual_machine_module_requirements:
 
 Requirements
 ------------
@@ -102,6 +103,43 @@ Parameters
 
   * - Parameter
     - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-api_version:
+
+      .. rst-class:: ansible-option-title
+
+      **api_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
 
   * - .. raw:: html
 
@@ -500,9 +538,9 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
+      This can be used to override the specified values in ALLOWED\_QUERY\_PARAMS that is defined
 
-      in plugins/module_utils/utils.py and provides control to users on what may make
+      in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
 
@@ -802,7 +840,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"yes"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
 
       .. raw:: html
 

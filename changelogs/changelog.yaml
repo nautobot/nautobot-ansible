@@ -334,3 +334,11 @@ releases:
         - (#151) GraphQL inventory plugin - using group_by can crash if there are empty values
         - (#154) Fixes antsibull import for RTD builds
       release_summary: "Fixes GraphQL inventory plugin bugs and RTD builds."
+
+  4.1.0:
+    changes:
+      bugfixes:
+        - (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers from legacy forked code.
+      minor_changes:
+        - (#139) - Add API versioning to compatible plugins.
+      release_summary: "Fix minor bugs and add API versioning to collection."

@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -42,13 +43,11 @@ networktocode.nautobot.query_graphql module -- Queries and returns elements from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.query_graphql_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.query_graphql`.
 
@@ -78,6 +77,8 @@ Synopsis
 
 .. Requirements
 
+.. _ansible_collections.networktocode.nautobot.query_graphql_module_requirements:
+
 Requirements
 ------------
 The below requirements are needed on the host that executes this module.
@@ -104,6 +105,40 @@ Parameters
 
   * - Parameter
     - Comments
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.query_graphql_module__parameter-api_version:
+
+      .. rst-class:: ansible-option-title
+
+      **api_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
 
   * - .. raw:: html
 
@@ -200,7 +235,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The API token created through Nautobot, optional env=NAUTOBOT_TOKEN
+      The API token created through Nautobot, optional env=NAUTOBOT\_TOKEN
 
 
       .. raw:: html
@@ -234,15 +269,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the 'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
+      Whether or not to populate data in the in the root (e.g. hostvars[inventory\_hostname]) or within the 'data' key (e.g. hostvars[inventory\_hostname]['data']). Beware, that the root keys provided by the query will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -275,7 +310,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The URL to the Nautobot instance to query (http://nautobot.example.com:8000), optional env=NAUTOBOT_URL
+      The URL to the Nautobot instance to query (http://nautobot.example.com:8000), optional env=NAUTOBOT\_URL
 
 
       .. raw:: html
@@ -316,8 +351,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 

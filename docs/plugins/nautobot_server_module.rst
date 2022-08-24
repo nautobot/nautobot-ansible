@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -42,13 +43,11 @@ networktocode.nautobot.nautobot_server module -- Manages Nautobot Server applica
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.1).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
+    You need further requirements to be able to use this module,
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.nautobot_server_module_requirements>` for details.
 
     To use it in a playbook, specify: :code:`networktocode.nautobot.nautobot_server`.
 
@@ -76,6 +75,8 @@ Synopsis
 
 
 .. Requirements
+
+.. _ansible_collections.networktocode.nautobot.nautobot_server_module_requirements:
 
 Requirements
 ------------
@@ -132,7 +133,7 @@ Parameters
         <div class="ansible-option-cell">
 
       A dictionary of the optional arguments and their values used together with the command.
-          This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
+          This translates {"name\_arg": "value\_arg"} to "--name\_arg value\_arg".
           
 
 
@@ -486,8 +487,8 @@ Notes
 -----
 
 .. note::
-   - Inspired from Django_manage (\ https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py\ ).
-   - To be able to use the \ :literal:`collectstatic`\  command, you must have enabled staticfiles in your nautbot_config.py.
+   - Inspired from Django\_manage (\ https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py\ ).
+   - To be able to use the \ :literal:`collectstatic`\  command, you must have enabled staticfiles in your nautbot\_config.py.
    - Your \ :literal:`nautobot-server`\  application must be executable (rwxr-xr-x), and must have a valid shebang.
 
 .. Seealso
