@@ -289,9 +289,9 @@ ALLOWED_QUERY_PARAMS = {
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ip_addresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ipaddresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
+    "ip_address": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "lag": set(["name"]),
     "manufacturer": set(["slug"]),
     "master": set(["name"]),
@@ -337,7 +337,7 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "tenant"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine"])
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine", "vminterface"])
 
 REQUIRED_ID_FIND = {
     "cables": set(["status", "type", "length_unit"]),
