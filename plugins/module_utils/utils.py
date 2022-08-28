@@ -713,7 +713,7 @@ class NautobotModule:
             else:
                 query_dict.update({"device": module_data["device"]})
 
-        elif parent == "ip_address" and "assigned_object" in matches and module_data.get("assigned_object_type"):
+        elif parent == "ip_address" and module_data.get("assigned_object_type"):
             if module_data["assigned_object_type"] == "virtualization.vminterface":
                 query_dict.update({"vminterface_id": module_data.get("assigned_object_id")})
             elif module_data["assigned_object_type"] == "dcim.interface":
