@@ -294,11 +294,11 @@ ip_addresses = [
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
 # Grab first two IPs
-ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24", assigned_object_id=test100_gi1.id)
-ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64", assigned_object_id=test100_gi2.id)
+ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24", interface_id=test100_gi1.id)
+ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64", interface_id=test100_gi2.id)
 
 # Assign Primary IP
-nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24", assigned_object_id=nexus_eth1.id)
+nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24", interface_id=nexus_eth1.id)
 nexus.update({"primary_ip4": nexus_eth1_ip})
 
 # Create RIRs
