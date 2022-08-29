@@ -32,7 +32,7 @@ function main {
 
     echo "# Running..."
     # shellcheck disable=SC2086
-    if [[ "${INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER:-}" == "1.4" ]]; then
+    if [[ "${NAUTOBOT_VER:-}" == "1.4" ]]; then
       ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory-1.4 "$@"
     else
       ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory "$@"

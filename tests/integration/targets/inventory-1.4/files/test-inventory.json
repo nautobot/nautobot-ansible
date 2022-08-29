@@ -43,7 +43,7 @@
                             "display": "Test Nexus Child One",
                             "id": "826c7412-355a-428a-aa0c-5f8de7e52278",
                             "name": "Test Nexus Child One",
-                            "url": "http://localhost:8000/api/dcim/devices/826c7412-355a-428a-aa0c-5f8de7e52278/"
+                            "url": "http://nautobot:8000/api/dcim/devices/826c7412-355a-428a-aa0c-5f8de7e52278/"
                         },
                         "display": "Ethernet2/1",
                         "enabled": true,
@@ -64,7 +64,7 @@
                                 "last_updated": "2022-08-28T23:33:11.884357Z",
                                 "nat_inside": null,
                                 "nat_outside": null,
-                                "notes_url": "http://localhost:8000/api/ipam/ip-addresses/189c61fc-a377-42e9-9741-624937e47831/notes/",
+                                "notes_url": "http://nautobot:8000/api/ipam/ip-addresses/189c61fc-a377-42e9-9741-624937e47831/notes/",
                                 "role": null,
                                 "status": {
                                     "label": "Active",
@@ -72,7 +72,7 @@
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/189c61fc-a377-42e9-9741-624937e47831/",
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/189c61fc-a377-42e9-9741-624937e47831/",
                                 "vrf": null
                             }
                         ],
@@ -83,7 +83,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet2/1",
-                        "notes_url": "http://localhost:8000/api/dcim/interfaces/fd6c659e-ef94-46f1-8abd-cbf37dba2489/notes/",
+                        "notes_url": "http://nautobot:8000/api/dcim/interfaces/fd6c659e-ef94-46f1-8abd-cbf37dba2489/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
@@ -92,7 +92,7 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/dcim/interfaces/fd6c659e-ef94-46f1-8abd-cbf37dba2489/"
+                        "url": "http://nautobot:8000/api/dcim/interfaces/fd6c659e-ef94-46f1-8abd-cbf37dba2489/"
                     },
                     {
                         "bridge": null,
@@ -109,7 +109,7 @@
                             "display": "Test Nexus One",
                             "id": "c24cb495-e40c-4d37-94e5-4d8295e57a5d",
                             "name": "Test Nexus One",
-                            "url": "http://localhost:8000/api/dcim/devices/c24cb495-e40c-4d37-94e5-4d8295e57a5d/"
+                            "url": "http://nautobot:8000/api/dcim/devices/c24cb495-e40c-4d37-94e5-4d8295e57a5d/"
                         },
                         "display": "Ethernet1/1",
                         "enabled": true,
@@ -130,7 +130,7 @@
                                 "last_updated": "2022-08-28T23:33:11.855930Z",
                                 "nat_inside": null,
                                 "nat_outside": null,
-                                "notes_url": "http://localhost:8000/api/ipam/ip-addresses/e5c6bb9b-3def-4ec4-ab17-24e37a171474/notes/",
+                                "notes_url": "http://nautobot:8000/api/ipam/ip-addresses/e5c6bb9b-3def-4ec4-ab17-24e37a171474/notes/",
                                 "role": null,
                                 "status": {
                                     "label": "Active",
@@ -138,7 +138,7 @@
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/e5c6bb9b-3def-4ec4-ab17-24e37a171474/",
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/e5c6bb9b-3def-4ec4-ab17-24e37a171474/",
                                 "vrf": null
                             }
                         ],
@@ -149,7 +149,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet1/1",
-                        "notes_url": "http://localhost:8000/api/dcim/interfaces/cd26d821-d853-42e9-a7ff-5673685dd8ca/notes/",
+                        "notes_url": "http://nautobot:8000/api/dcim/interfaces/cd26d821-d853-42e9-a7ff-5673685dd8ca/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
@@ -158,7 +158,7 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/dcim/interfaces/cd26d821-d853-42e9-a7ff-5673685dd8ca/"
+                        "url": "http://nautobot:8000/api/dcim/interfaces/cd26d821-d853-42e9-a7ff-5673685dd8ca/"
                     }
                 ],
                 "is_virtual": false,
@@ -178,14 +178,14 @@
                             "display": "Test Nexus One",
                             "id": "c24cb495-e40c-4d37-94e5-4d8295e57a5d",
                             "name": "Test Nexus One",
-                            "url": "http://localhost:8000/api/dcim/devices/c24cb495-e40c-4d37-94e5-4d8295e57a5d/"
+                            "url": "http://nautobot:8000/api/dcim/devices/c24cb495-e40c-4d37-94e5-4d8295e57a5d/"
                         },
                         "display": "telnet (TCP/23)",
                         "id": "48bde449-b83e-4ba6-873d-7ad148244c65",
                         "ipaddresses": [],
                         "last_updated": "2022-08-28T23:33:24.456719Z",
                         "name": "telnet",
-                        "notes_url": "http://localhost:8000/api/ipam/services/48bde449-b83e-4ba6-873d-7ad148244c65/notes/",
+                        "notes_url": "http://nautobot:8000/api/ipam/services/48bde449-b83e-4ba6-873d-7ad148244c65/notes/",
                         "ports": [
                             23
                         ],
@@ -194,7 +194,7 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://localhost:8000/api/ipam/services/48bde449-b83e-4ba6-873d-7ad148244c65/",
+                        "url": "http://nautobot:8000/api/ipam/services/48bde449-b83e-4ba6-873d-7ad148244c65/",
                         "virtual_machine": null
                     }
                 ],
@@ -223,17 +223,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/0267a81f-5d99-46bc-a185-18b5eb844af7/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/0267a81f-5d99-46bc-a185-18b5eb844af7/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/0267a81f-5d99-46bc-a185-18b5eb844af7/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/0267a81f-5d99-46bc-a185-18b5eb844af7/",
                         "virtual_machine": {
                             "display": "Test VM With Spaces",
                             "id": "f27d1706-c951-41b8-bcdb-d14ebba937a8",
                             "name": "Test VM With Spaces",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
                         }
                     },
                     {
@@ -248,17 +248,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/68c14c1b-f74e-485c-9efb-fd84424ca49b/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/68c14c1b-f74e-485c-9efb-fd84424ca49b/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/68c14c1b-f74e-485c-9efb-fd84424ca49b/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/68c14c1b-f74e-485c-9efb-fd84424ca49b/",
                         "virtual_machine": {
                             "display": "Test VM With Spaces",
                             "id": "f27d1706-c951-41b8-bcdb-d14ebba937a8",
                             "name": "Test VM With Spaces",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
                         }
                     }
                 ],
@@ -275,7 +275,7 @@
                         "ipaddresses": [],
                         "last_updated": "2022-08-28T23:33:24.486357Z",
                         "name": "ssh",
-                        "notes_url": "http://localhost:8000/api/ipam/services/50c766b7-5b72-464f-afbc-559578da01b2/notes/",
+                        "notes_url": "http://nautobot:8000/api/ipam/services/50c766b7-5b72-464f-afbc-559578da01b2/notes/",
                         "ports": [
                             22
                         ],
@@ -284,12 +284,12 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://localhost:8000/api/ipam/services/50c766b7-5b72-464f-afbc-559578da01b2/",
+                        "url": "http://nautobot:8000/api/ipam/services/50c766b7-5b72-464f-afbc-559578da01b2/",
                         "virtual_machine": {
                             "display": "Test VM With Spaces",
                             "id": "f27d1706-c951-41b8-bcdb-d14ebba937a8",
                             "name": "Test VM With Spaces",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/f27d1706-c951-41b8-bcdb-d14ebba937a8/"
                         }
                     }
                 ],
@@ -348,7 +348,7 @@
                             "display": "test100",
                             "id": "b4c68cb5-55aa-4227-98c5-ca6b25131f08",
                             "name": "test100",
-                            "url": "http://localhost:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
+                            "url": "http://nautobot:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
                         },
                         "display": "GigabitEthernet1",
                         "enabled": true,
@@ -369,7 +369,7 @@
                                 "last_updated": "2022-08-28T23:33:11.795106Z",
                                 "nat_inside": null,
                                 "nat_outside": null,
-                                "notes_url": "http://localhost:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/notes/",
+                                "notes_url": "http://nautobot:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/notes/",
                                 "role": null,
                                 "status": {
                                     "label": "Active",
@@ -377,7 +377,7 @@
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/",
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/",
                                 "vrf": null
                             }
                         ],
@@ -388,7 +388,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet1",
-                        "notes_url": "http://localhost:8000/api/dcim/interfaces/544a82b1-9eb9-4c01-aea1-f4688add868a/notes/",
+                        "notes_url": "http://nautobot:8000/api/dcim/interfaces/544a82b1-9eb9-4c01-aea1-f4688add868a/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
@@ -397,7 +397,7 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/dcim/interfaces/544a82b1-9eb9-4c01-aea1-f4688add868a/"
+                        "url": "http://nautobot:8000/api/dcim/interfaces/544a82b1-9eb9-4c01-aea1-f4688add868a/"
                     },
                     {
                         "bridge": null,
@@ -414,7 +414,7 @@
                             "display": "test100",
                             "id": "b4c68cb5-55aa-4227-98c5-ca6b25131f08",
                             "name": "test100",
-                            "url": "http://localhost:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
+                            "url": "http://nautobot:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
                         },
                         "display": "GigabitEthernet2",
                         "enabled": true,
@@ -435,7 +435,7 @@
                                 "last_updated": "2022-08-28T23:33:11.826990Z",
                                 "nat_inside": null,
                                 "nat_outside": null,
-                                "notes_url": "http://localhost:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/notes/",
+                                "notes_url": "http://nautobot:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/notes/",
                                 "role": null,
                                 "status": {
                                     "label": "Active",
@@ -443,7 +443,7 @@
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/",
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/",
                                 "vrf": null
                             }
                         ],
@@ -454,7 +454,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet2",
-                        "notes_url": "http://localhost:8000/api/dcim/interfaces/6c10dbed-bf8a-4a57-982f-c599b4282d17/notes/",
+                        "notes_url": "http://nautobot:8000/api/dcim/interfaces/6c10dbed-bf8a-4a57-982f-c599b4282d17/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
@@ -463,7 +463,7 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/dcim/interfaces/6c10dbed-bf8a-4a57-982f-c599b4282d17/"
+                        "url": "http://nautobot:8000/api/dcim/interfaces/6c10dbed-bf8a-4a57-982f-c599b4282d17/"
                     }
                 ],
                 "is_virtual": false,
@@ -487,14 +487,14 @@
                             "display": "test100",
                             "id": "b4c68cb5-55aa-4227-98c5-ca6b25131f08",
                             "name": "test100",
-                            "url": "http://localhost:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
+                            "url": "http://nautobot:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
                         },
                         "display": "ssh (TCP/22)",
                         "id": "9e15c6e8-5d6f-4e8b-a0c7-648b8a4f59e5",
                         "ipaddresses": [],
                         "last_updated": "2022-08-28T23:33:24.351724Z",
                         "name": "ssh",
-                        "notes_url": "http://localhost:8000/api/ipam/services/9e15c6e8-5d6f-4e8b-a0c7-648b8a4f59e5/notes/",
+                        "notes_url": "http://nautobot:8000/api/ipam/services/9e15c6e8-5d6f-4e8b-a0c7-648b8a4f59e5/notes/",
                         "ports": [
                             22
                         ],
@@ -503,7 +503,7 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://localhost:8000/api/ipam/services/9e15c6e8-5d6f-4e8b-a0c7-648b8a4f59e5/",
+                        "url": "http://nautobot:8000/api/ipam/services/9e15c6e8-5d6f-4e8b-a0c7-648b8a4f59e5/",
                         "virtual_machine": null
                     },
                     {
@@ -514,7 +514,7 @@
                             "display": "test100",
                             "id": "b4c68cb5-55aa-4227-98c5-ca6b25131f08",
                             "name": "test100",
-                            "url": "http://localhost:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
+                            "url": "http://nautobot:8000/api/dcim/devices/b4c68cb5-55aa-4227-98c5-ca6b25131f08/"
                         },
                         "display": "http (TCP/80)",
                         "id": "77753d00-67f6-45a9-b925-0670a77e588e",
@@ -524,19 +524,19 @@
                                 "display": "2001::1:1/64",
                                 "family": 6,
                                 "id": "237072d8-c4c6-480d-9ec1-7afd4078953b",
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/"
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/237072d8-c4c6-480d-9ec1-7afd4078953b/"
                             },
                             {
                                 "address": "172.16.180.1/24",
                                 "display": "172.16.180.1/24",
                                 "family": 4,
                                 "id": "dc329d10-8339-4364-acb3-e915fe3cca64",
-                                "url": "http://localhost:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/"
+                                "url": "http://nautobot:8000/api/ipam/ip-addresses/dc329d10-8339-4364-acb3-e915fe3cca64/"
                             }
                         ],
                         "last_updated": "2022-08-28T23:33:24.387974Z",
                         "name": "http",
-                        "notes_url": "http://localhost:8000/api/ipam/services/77753d00-67f6-45a9-b925-0670a77e588e/notes/",
+                        "notes_url": "http://nautobot:8000/api/ipam/services/77753d00-67f6-45a9-b925-0670a77e588e/notes/",
                         "ports": [
                             80
                         ],
@@ -545,7 +545,7 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://localhost:8000/api/ipam/services/77753d00-67f6-45a9-b925-0670a77e588e/",
+                        "url": "http://nautobot:8000/api/ipam/services/77753d00-67f6-45a9-b925-0670a77e588e/",
                         "virtual_machine": null
                     }
                 ],
@@ -577,17 +577,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/d4599190-22b6-4a45-b4fe-8b5d8aa703e4/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/d4599190-22b6-4a45-b4fe-8b5d8aa703e4/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/d4599190-22b6-4a45-b4fe-8b5d8aa703e4/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/d4599190-22b6-4a45-b4fe-8b5d8aa703e4/",
                         "virtual_machine": {
                             "display": "test100-vm",
                             "id": "e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93",
                             "name": "test100-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
                         }
                     },
                     {
@@ -602,17 +602,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/63f64464-d41d-4096-acab-5ff6836d8835/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/63f64464-d41d-4096-acab-5ff6836d8835/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/63f64464-d41d-4096-acab-5ff6836d8835/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/63f64464-d41d-4096-acab-5ff6836d8835/",
                         "virtual_machine": {
                             "display": "test100-vm",
                             "id": "e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93",
                             "name": "test100-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
                         }
                     },
                     {
@@ -627,17 +627,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/3b7b8f11-e385-43db-8623-0f0cc0074915/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/3b7b8f11-e385-43db-8623-0f0cc0074915/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/3b7b8f11-e385-43db-8623-0f0cc0074915/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/3b7b8f11-e385-43db-8623-0f0cc0074915/",
                         "virtual_machine": {
                             "display": "test100-vm",
                             "id": "e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93",
                             "name": "test100-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
                         }
                     },
                     {
@@ -652,17 +652,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/748b1ca3-c44d-4a06-8ca9-ebb9cc381991/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/748b1ca3-c44d-4a06-8ca9-ebb9cc381991/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/748b1ca3-c44d-4a06-8ca9-ebb9cc381991/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/748b1ca3-c44d-4a06-8ca9-ebb9cc381991/",
                         "virtual_machine": {
                             "display": "test100-vm",
                             "id": "e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93",
                             "name": "test100-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
                         }
                     },
                     {
@@ -677,17 +677,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/98448048-9bff-4743-a906-5c9ea00f35da/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/98448048-9bff-4743-a906-5c9ea00f35da/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/98448048-9bff-4743-a906-5c9ea00f35da/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/98448048-9bff-4743-a906-5c9ea00f35da/",
                         "virtual_machine": {
                             "display": "test100-vm",
                             "id": "e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93",
                             "name": "test100-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/e8c5ca06-b80f-4ef4-b3c1-24f28a74ad93/"
                         }
                     }
                 ],
@@ -723,17 +723,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/8fe7f17c-ab17-423b-a754-f1c152cd2224/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/8fe7f17c-ab17-423b-a754-f1c152cd2224/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/8fe7f17c-ab17-423b-a754-f1c152cd2224/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/8fe7f17c-ab17-423b-a754-f1c152cd2224/",
                         "virtual_machine": {
                             "display": "test101-vm",
                             "id": "13d6b3d1-9a9c-448b-b4dd-7aa22459da3b",
                             "name": "test101-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
                         }
                     },
                     {
@@ -748,17 +748,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/62daab82-fafb-4391-8ca1-87ebf484d9cc/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/62daab82-fafb-4391-8ca1-87ebf484d9cc/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/62daab82-fafb-4391-8ca1-87ebf484d9cc/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/62daab82-fafb-4391-8ca1-87ebf484d9cc/",
                         "virtual_machine": {
                             "display": "test101-vm",
                             "id": "13d6b3d1-9a9c-448b-b4dd-7aa22459da3b",
                             "name": "test101-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
                         }
                     },
                     {
@@ -773,17 +773,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/b33b7a3c-8789-436a-8306-4412da75fe33/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/b33b7a3c-8789-436a-8306-4412da75fe33/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/b33b7a3c-8789-436a-8306-4412da75fe33/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/b33b7a3c-8789-436a-8306-4412da75fe33/",
                         "virtual_machine": {
                             "display": "test101-vm",
                             "id": "13d6b3d1-9a9c-448b-b4dd-7aa22459da3b",
                             "name": "test101-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
                         }
                     },
                     {
@@ -798,17 +798,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/5f4bc783-bfa1-4d4c-aa3b-b50f0d411dcc/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/5f4bc783-bfa1-4d4c-aa3b-b50f0d411dcc/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/5f4bc783-bfa1-4d4c-aa3b-b50f0d411dcc/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/5f4bc783-bfa1-4d4c-aa3b-b50f0d411dcc/",
                         "virtual_machine": {
                             "display": "test101-vm",
                             "id": "13d6b3d1-9a9c-448b-b4dd-7aa22459da3b",
                             "name": "test101-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
                         }
                     },
                     {
@@ -823,17 +823,17 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
-                        "notes_url": "http://localhost:8000/api/virtualization/interfaces/fef883f1-ef61-433f-a15c-97ee8777deea/notes/",
+                        "notes_url": "http://nautobot:8000/api/virtualization/interfaces/fef883f1-ef61-433f-a15c-97ee8777deea/notes/",
                         "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://localhost:8000/api/virtualization/interfaces/fef883f1-ef61-433f-a15c-97ee8777deea/",
+                        "url": "http://nautobot:8000/api/virtualization/interfaces/fef883f1-ef61-433f-a15c-97ee8777deea/",
                         "virtual_machine": {
                             "display": "test101-vm",
                             "id": "13d6b3d1-9a9c-448b-b4dd-7aa22459da3b",
                             "name": "test101-vm",
-                            "url": "http://localhost:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
+                            "url": "http://nautobot:8000/api/virtualization/virtual-machines/13d6b3d1-9a9c-448b-b4dd-7aa22459da3b/"
                         }
                     }
                 ],

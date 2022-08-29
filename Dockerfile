@@ -100,6 +100,8 @@ FROM unittests AS integration
 
 ARG ANSIBLE_INTEGRATION_ARGS
 ENV ANSIBLE_INTEGRATION_ARGS=${ANSIBLE_INTEGRATION_ARGS}
+ARG NAUTOBOT_VER
+ENV NAUTOBOT_VER=${NAUTOBOT_VER}
 
 # Integration test entrypoint
 ENTRYPOINT ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot/tests/integration/entrypoint.sh
