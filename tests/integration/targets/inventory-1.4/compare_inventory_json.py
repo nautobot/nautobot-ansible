@@ -16,7 +16,7 @@ from operator import itemgetter
 # Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port
 # Remove these from files saved in git as test data
-KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url"])
+KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url", "notes"])
 
 # Ignore these when performing diffs as they will be different for each test run
 KEYS_IGNORE = frozenset()
