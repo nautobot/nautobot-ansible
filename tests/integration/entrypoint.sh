@@ -38,7 +38,7 @@ function main {
       ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory "$@"
     fi
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" regression-latest "$@"
-    ansible-test integration $ANSIBLE_INTEGRATION_ARGS -vvv --coverage --python "$PYTHON_VERSION" latest "$@"
+    ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report
 }
 
