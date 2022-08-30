@@ -79,7 +79,7 @@ RUN ansible-galaxy collection install community.general
 RUN ansible-galaxy collection build --output-path ./dist/ .
 
 # Install built library
-RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz
+RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz -p ${ANSIBLE_COLLECTIONS_PATH}
 
 # Switch to the collection path for tests
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
