@@ -284,7 +284,7 @@ ALLOWED_QUERY_PARAMS = {
     "device_role": set(["slug"]),
     "device_type": set(["slug"]),
     "front_port": set(["name", "device", "rear_port"]),
-    "front_port_template": set(["name", "device_type", "rear_port"]),
+    "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "installed_device": set(["name"]),
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
