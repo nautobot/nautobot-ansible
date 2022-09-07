@@ -27,6 +27,6 @@ services:
     image: "redis:6-alpine"
     command:
       - "sh"
-      - "-c"  # this is to evaluate the $REDIS_PASSWORD from the env
-      - "redis-server --appendonly yes --requirepass $$REDIS_PASSWORD"  ## $$ because of docker-compose
+      - "-c" # this is to evaluate the $REDIS_PASSWORD from the env
+      - "redis-server --appendonly yes --requirepass $$REDIS_PASSWORD" ## $$ because of docker-compose
     env_file: "./dev.env"

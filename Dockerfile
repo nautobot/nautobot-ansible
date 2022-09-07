@@ -79,7 +79,7 @@ RUN ansible-galaxy collection install community.general
 RUN ansible-galaxy collection build --output-path ./dist/ .
 
 # Install built library
-RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz
+RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz -p ${ANSIBLE_COLLECTIONS_PATH}
 
 # Switch to the collection path for tests
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
@@ -100,6 +100,8 @@ FROM unittests AS integration
 
 ARG ANSIBLE_INTEGRATION_ARGS
 ENV ANSIBLE_INTEGRATION_ARGS=${ANSIBLE_INTEGRATION_ARGS}
+ARG NAUTOBOT_VER
+ENV NAUTOBOT_VER=${NAUTOBOT_VER}
 
 # Integration test entrypoint
 ENTRYPOINT ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot/tests/integration/entrypoint.sh

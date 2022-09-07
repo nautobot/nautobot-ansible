@@ -284,14 +284,14 @@ ALLOWED_QUERY_PARAMS = {
     "device_role": set(["slug"]),
     "device_type": set(["slug"]),
     "front_port": set(["name", "device", "rear_port"]),
-    "front_port_template": set(["name", "device_type", "rear_port"]),
+    "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "installed_device": set(["name"]),
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ip_addresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ipaddresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
+    "ip_address": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "lag": set(["name"]),
     "manufacturer": set(["slug"]),
     "master": set(["name"]),
@@ -337,7 +337,7 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "tenant"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine"])
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine", "vminterface"])
 
 REQUIRED_ID_FIND = {
     "cables": set(["status", "type", "length_unit"]),
@@ -713,7 +713,7 @@ class NautobotModule:
             else:
                 query_dict.update({"device": module_data["device"]})
 
-        elif parent == "ip_address" and "assigned_object" in matches and module_data.get("assigned_object_type"):
+        elif parent == "ip_address" and module_data.get("assigned_object_type"):
             if module_data["assigned_object_type"] == "virtualization.vminterface":
                 query_dict.update({"vminterface_id": module_data.get("assigned_object_id")})
             elif module_data["assigned_object_type"] == "dcim.interface":

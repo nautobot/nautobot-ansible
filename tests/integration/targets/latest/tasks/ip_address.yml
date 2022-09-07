@@ -134,7 +134,7 @@
 
 - set_fact:
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''"name=Test VRF"'') }}'
+    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test VRF"'') }}'
     tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
 
 - name: "7 - ASSERT"
