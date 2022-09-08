@@ -209,7 +209,6 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        family: 4
         address: 192.168.1.20
         vrf: Test
         tenant: Test Tenant
@@ -223,7 +222,6 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        family: 4
         address: 192.168.1.30
         vrf: Test
         nat_inside:

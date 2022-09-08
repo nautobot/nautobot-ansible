@@ -342,3 +342,9 @@ releases:
       minor_changes:
         - (#139) - Add API versioning to compatible plugins.
       release_summary: "Fix minor bugs and add API versioning to collection."
+
+  4.1.1:
+    changes:
+      bugfixes:
+        - (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
+      release_summary: "Fix incorrect filter parameters"
