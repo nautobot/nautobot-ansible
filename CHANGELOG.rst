@@ -5,6 +5,19 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v4.1.1
+======
+
+Release Summary
+---------------
+
+Fix incorrect filter parameters
+
+Bugfixes
+--------
+
+- (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
+
 v4.1.0
 ======
 

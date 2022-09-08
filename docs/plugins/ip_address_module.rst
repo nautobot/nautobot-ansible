@@ -43,7 +43,7 @@ networktocode.nautobot.ip_address module -- Creates or removes IP addresses from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -964,7 +964,6 @@ Examples
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            family: 4
             address: 192.168.1.20
             vrf: Test
             tenant: Test Tenant
@@ -978,7 +977,6 @@ Examples
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            family: 4
             address: 192.168.1.30
             vrf: Test
             nat_inside:
