@@ -352,5 +352,5 @@ releases:
   4.2.0:
     changes:
       minor_changes:
-        - (#172) Add description to manufacturer
         - (#171) Add provider_network to circuit_termination module
+        - (#172) Add description to manufacturer
