@@ -218,3 +218,13 @@ def integration(context):
         "docker-compose up --build --force-recreate --quiet-pull --exit-code-from integration integration",
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
+
+@task
+def galaxy_build(context):
+    """Build the collection."""
+    context.run("ansible-galaxy collection build .")
+
+@task
+def galaxy_build_force(context):
+    """Force build the collection."""
+    context.run("ansible-galaxy collection build . --force")
