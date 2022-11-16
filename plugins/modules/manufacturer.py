@@ -51,7 +51,7 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  manufacturer:
+  description:
     description:
       - Applies to the description field for Nautobot Manufacturer
     required: false
