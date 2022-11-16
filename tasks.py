@@ -219,10 +219,12 @@ def integration(context):
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
+
 @task
 def galaxy_build(context):
     """Build the collection."""
     context.run("ansible-galaxy collection build .")
+
 
 @task
 def galaxy_build_force(context):
