@@ -104,6 +104,40 @@
       - test_four['circuit_termination']['port_speed'] == 10000
       - test_four['msg'] == "circuit_termination test_circuit_z created"
 
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Disconnect previously connected Z Side"
+  networktocode.nautobot.circuit_termination:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    circuit: Test Circuit
+    term_side: Z
+    site: "Test Site"
+    port_speed: 10000
+    state: absent
+  register: test_five_disconnect
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Create connection to provider_network within Nautobot with only required information"
+  networktocode.nautobot.circuit_termination:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    circuit: Test Circuit
+    term_side: Z
+    provider_network: "Test Provider Network"
+    port_speed: 10000
+    state: present
+  register: test_five
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "absent"
+      - test_five['diff']['after']['state'] == "present"
+      - test_five['circuit_termination']['circuit'] == circuit['key']
+      - test_five['circuit_termination']['term_side'] == "Z"
+      - test_five['circuit_termination']['provider_network'] == "Test Provider Network"
+      - test_five['circuit_termination']['port_speed'] == 10000
+      - test_five['msg'] == "circuit_termination test_circuit_a created"
+
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Delete provider within nautobot"
   networktocode.nautobot.circuit_termination:
     url: "{{ nautobot_url }}"

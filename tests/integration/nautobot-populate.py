@@ -375,6 +375,10 @@ providers = [{"name": "Test Provider", "slug": "test-provider"}]
 created_providers = make_nautobot_calls(nb.circuits.providers, providers)
 test_provider = nb.circuits.providers.get(slug="test-provider")
 
+# Create Provider Networks
+provider_networks = [{"name": "Test Provider Network", "provider": created_providers[0]}]
+created_provider_networks = make_nautobot_calls(nb.circuits.provider_networks, provider_networks)
+
 # Create Circuit Type
 circuit_types = [{"name": "Test Circuit Type", "slug": "test-circuit-type"}]
 created_circuit_types = make_nautobot_calls(nb.circuits.circuit_types, circuit_types)
