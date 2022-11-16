@@ -130,7 +130,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Tenant ABC
-        group: Very Special Tenants
+        tenant_group: Very Special Tenants
         description: ABC Incorporated
         comments: '### This tenant is super cool'
         slug: tenant_abc
