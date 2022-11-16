@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.cable module -- Create, update or delete cables within Na
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -53,7 +52,9 @@ networktocode.nautobot.cable module -- Create, update or delete cables within Na
 
 .. version_added
 
-.. versionadded:: 1.0.0 of networktocode.nautobot
+.. rst-class:: ansible-version-added
+
+New in networktocode.nautobot 1.0.0
 
 .. contents::
    :local:
@@ -123,7 +124,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
 
       .. raw:: html
@@ -160,7 +161,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -197,7 +198,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -234,7 +235,7 @@ Parameters
 
       :ansible-option-type:`integer`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -271,7 +272,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -289,10 +290,11 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`m`
-      - :ansible-option-choices-entry:`cm`
-      - :ansible-option-choices-entry:`ft`
-      - :ansible-option-choices-entry:`in`
+      - :ansible-option-choices-entry:`"m"`
+      - :ansible-option-choices-entry:`"cm"`
+      - :ansible-option-choices-entry:`"ft"`
+      - :ansible-option-choices-entry:`"in"`
+
 
       .. raw:: html
 
@@ -317,7 +319,7 @@ Parameters
 
       :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -373,8 +375,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`absent`
-      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`"absent"`
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -399,7 +402,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -438,7 +441,7 @@ Parameters
 
       :ansible-option-type:`any` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -475,7 +478,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -493,15 +496,16 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`circuits.circuittermination`
-      - :ansible-option-choices-entry:`dcim.consoleport`
-      - :ansible-option-choices-entry:`dcim.consoleserverport`
-      - :ansible-option-choices-entry:`dcim.frontport`
-      - :ansible-option-choices-entry:`dcim.interface`
-      - :ansible-option-choices-entry:`dcim.powerfeed`
-      - :ansible-option-choices-entry:`dcim.poweroutlet`
-      - :ansible-option-choices-entry:`dcim.powerport`
-      - :ansible-option-choices-entry:`dcim.rearport`
+      - :ansible-option-choices-entry:`"circuits.circuittermination"`
+      - :ansible-option-choices-entry:`"dcim.consoleport"`
+      - :ansible-option-choices-entry:`"dcim.consoleserverport"`
+      - :ansible-option-choices-entry:`"dcim.frontport"`
+      - :ansible-option-choices-entry:`"dcim.interface"`
+      - :ansible-option-choices-entry:`"dcim.powerfeed"`
+      - :ansible-option-choices-entry:`"dcim.poweroutlet"`
+      - :ansible-option-choices-entry:`"dcim.powerport"`
+      - :ansible-option-choices-entry:`"dcim.rearport"`
+
 
       .. raw:: html
 
@@ -526,7 +530,7 @@ Parameters
 
       :ansible-option-type:`any` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -563,7 +567,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -581,15 +585,16 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`circuits.circuittermination`
-      - :ansible-option-choices-entry:`dcim.consoleport`
-      - :ansible-option-choices-entry:`dcim.consoleserverport`
-      - :ansible-option-choices-entry:`dcim.frontport`
-      - :ansible-option-choices-entry:`dcim.interface`
-      - :ansible-option-choices-entry:`dcim.powerfeed`
-      - :ansible-option-choices-entry:`dcim.poweroutlet`
-      - :ansible-option-choices-entry:`dcim.powerport`
-      - :ansible-option-choices-entry:`dcim.rearport`
+      - :ansible-option-choices-entry:`"circuits.circuittermination"`
+      - :ansible-option-choices-entry:`"dcim.consoleport"`
+      - :ansible-option-choices-entry:`"dcim.consoleserverport"`
+      - :ansible-option-choices-entry:`"dcim.frontport"`
+      - :ansible-option-choices-entry:`"dcim.interface"`
+      - :ansible-option-choices-entry:`"dcim.powerfeed"`
+      - :ansible-option-choices-entry:`"dcim.poweroutlet"`
+      - :ansible-option-choices-entry:`"dcim.powerport"`
+      - :ansible-option-choices-entry:`"dcim.rearport"`
+
 
       .. raw:: html
 
@@ -648,7 +653,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -666,26 +671,27 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`cat3`
-      - :ansible-option-choices-entry:`cat5`
-      - :ansible-option-choices-entry:`cat5e`
-      - :ansible-option-choices-entry:`cat6`
-      - :ansible-option-choices-entry:`cat6a`
-      - :ansible-option-choices-entry:`cat7`
-      - :ansible-option-choices-entry:`dac-active`
-      - :ansible-option-choices-entry:`dac-passive`
-      - :ansible-option-choices-entry:`mrj21-trunk`
-      - :ansible-option-choices-entry:`coaxial`
-      - :ansible-option-choices-entry:`mmf`
-      - :ansible-option-choices-entry:`mmf-om1`
-      - :ansible-option-choices-entry:`mmf-om2`
-      - :ansible-option-choices-entry:`mmf-om3`
-      - :ansible-option-choices-entry:`mmf-om4`
-      - :ansible-option-choices-entry:`smf`
-      - :ansible-option-choices-entry:`smf-os1`
-      - :ansible-option-choices-entry:`smf-os2`
-      - :ansible-option-choices-entry:`aoc`
-      - :ansible-option-choices-entry:`power`
+      - :ansible-option-choices-entry:`"cat3"`
+      - :ansible-option-choices-entry:`"cat5"`
+      - :ansible-option-choices-entry:`"cat5e"`
+      - :ansible-option-choices-entry:`"cat6"`
+      - :ansible-option-choices-entry:`"cat6a"`
+      - :ansible-option-choices-entry:`"cat7"`
+      - :ansible-option-choices-entry:`"dac-active"`
+      - :ansible-option-choices-entry:`"dac-passive"`
+      - :ansible-option-choices-entry:`"mrj21-trunk"`
+      - :ansible-option-choices-entry:`"coaxial"`
+      - :ansible-option-choices-entry:`"mmf"`
+      - :ansible-option-choices-entry:`"mmf-om1"`
+      - :ansible-option-choices-entry:`"mmf-om2"`
+      - :ansible-option-choices-entry:`"mmf-om3"`
+      - :ansible-option-choices-entry:`"mmf-om4"`
+      - :ansible-option-choices-entry:`"smf"`
+      - :ansible-option-choices-entry:`"smf-os1"`
+      - :ansible-option-choices-entry:`"smf-os2"`
+      - :ansible-option-choices-entry:`"aoc"`
+      - :ansible-option-choices-entry:`"power"`
+
 
       .. raw:: html
 
@@ -757,7 +763,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`true`
 
       .. raw:: html
 
