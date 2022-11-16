@@ -4,6 +4,19 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v4.2.0
+======
+
+Release Summary
+---------------
+
+Update missing keys on module updates.
+
+Bugfixes
+--------
+
+- (#171) Add provider_network to circuit_termination module
+- (#172) Add description to manufacturer
 
 v4.1.1
 ======
