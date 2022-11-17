@@ -7,6 +7,7 @@
 - set_fact:
     test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
+    circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
@@ -104,22 +105,11 @@
       - test_four['circuit_termination']['port_speed'] == 10000
       - test_four['msg'] == "circuit_termination test_circuit_z created"
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Disconnect previously connected Z Side"
-  networktocode.nautobot.circuit_termination:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    circuit: Test Circuit
-    term_side: Z
-    site: "Test Site"
-    port_speed: 10000
-    state: absent
-  register: test_five_disconnect
-
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Create connection to provider_network within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    circuit: Test Circuit
+    circuit: Test Circuit Two
     term_side: Z
     provider_network: "Test Provider Network"
     port_speed: 10000
