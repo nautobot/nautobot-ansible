@@ -18,15 +18,15 @@ WORKDIR /usr/src/app
 RUN python -m pip install -U pip
 
 # Install poetry for dep management
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
-ENV PATH="$PATH:/root/.poetry/bin"
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="$PATH:/root/.local/bin"
 RUN poetry config virtualenvs.create false
 
 # Bring in Poetry related files needed for other stages
 COPY pyproject.toml poetry.lock ./
 
 # Install only package Dependencies
-RUN poetry install --no-dev
+RUN poetry install --only main
 
 #########
 # Linting
@@ -55,7 +55,7 @@ RUN echo 'Running Black' && \
 FROM lint AS unittests
 
 # Remove black from dev dependencies to prevent conflicts with Ansible
-RUN poetry remove black --dev
+RUN poetry remove black --group dev
 
 # Set a custom collection path for all ansible commands
 # Note: This only allows for one path, not colon-separated, because we use it
@@ -79,7 +79,7 @@ RUN ansible-galaxy collection install community.general
 RUN ansible-galaxy collection build --output-path ./dist/ .
 
 # Install built library
-RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz
+RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz -p ${ANSIBLE_COLLECTIONS_PATH}
 
 # Switch to the collection path for tests
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
@@ -100,6 +100,8 @@ FROM unittests AS integration
 
 ARG ANSIBLE_INTEGRATION_ARGS
 ENV ANSIBLE_INTEGRATION_ARGS=${ANSIBLE_INTEGRATION_ARGS}
+ARG NAUTOBOT_VER
+ENV NAUTOBOT_VER=${NAUTOBOT_VER}
 
 # Integration test entrypoint
 ENTRYPOINT ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot/tests/integration/entrypoint.sh

@@ -1,3 +1,4 @@
+
 .. Document meta
 
 :orphan:
@@ -42,11 +43,7 @@ networktocode.nautobot.inventory inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.0.0).
-
-    You might already have this collection installed if you are using the ``ansible`` package.
-    It is not included in ``ansible-core``.
-    To check whether it is installed, run :code:`ansible-galaxy collection list`.
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -126,15 +123,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If True, sets DNS Name (fetched from primary_ip) to be used in ansible_host variable, instead of IP Address.
+      If True, sets DNS Name (fetched from primary\_ip) to be used in ansible\_host variable, instead of IP Address.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -187,6 +184,46 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-api_version:
+
+      .. rst-class:: ansible-option-title
+
+      **api_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The version of the Nautobot REST API.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-cache"></div>
 
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-cache:
@@ -221,8 +258,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. rst-class:: ansible-option-line
 
@@ -233,7 +270,7 @@ Parameters
         .. code-block::
 
           [inventory]
-          cache = no
+          cache = false
 
 
       - Environment variable: ANSIBLE\_INVENTORY\_CACHE
@@ -570,7 +607,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If True, it adds config_context in host vars.
+      If True, it adds config\_context in host vars.
 
       Config-context enables the association of arbitrary data to devices and virtual machines grouped by region, site, role, platform, and/or tenant. Please check official nautobot docs for more info.
 
@@ -579,8 +616,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -657,17 +694,17 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Force IP Addresses to be fetched so that the dns_name for the primary_ip of each device or VM is set as a host_var.
+      Force IP Addresses to be fetched so that the dns\_name for the primary\_ip of each device or VM is set as a host\_var.
 
-      Setting interfaces will also fetch IP addresses and the dns_name host_var will be set.
+      Setting interfaces will also fetch IP addresses and the dns\_name host\_var will be set.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -706,25 +743,25 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.
+      By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query\_filters applied to devices and VMs.
 
-      When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device_id and virtual_machine_id.
+      When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device\_id and virtual\_machine\_id.
 
-      If you are using the various query_filters options to reduce the number of devices, querying Nautobot may be faster with fetch_all False.
+      If you are using the various query\_filters options to reduce the number of devices, querying Nautobot may be faster with fetch\_all False.
 
-      For efficiency, when False, these requests will be batched, for example /api/dcim/interfaces?limit=0&device_id=1&device_id=2&device_id=3
+      For efficiency, when False, these requests will be batched, for example /api/dcim/interfaces?limit=0&device\_id=1&device\_id=2&device\_id=3
 
       These GET request URIs can become quite large for a large number of devices.
 
-      If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.
+      If you run into HTTP 414 errors, you can adjust the max\_uri\_length option to suit your web server.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -763,17 +800,17 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :emphasis:`config\_context`\  is enabled, by default it's added as a host var named config_context.
+      If \ :emphasis:`config\_context`\  is enabled, by default it's added as a host var named config\_context.
 
-      If flatten_config_context is set to True, the config context variables will be added directly to the host instead.
+      If flatten\_config\_context is set to True, the config context variables will be added directly to the host instead.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -812,17 +849,17 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      By default, host custom fields are added as a dictionary host var named custom_fields.
+      By default, host custom fields are added as a dictionary host var named custom\_fields.
 
-      If flatten_custom_fields is set to True, the fields will be added directly to the host instead.
+      If flatten\_custom\_fields is set to True, the fields will be added directly to the host instead.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -861,17 +898,17 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :emphasis:`local\_context\_data`\  is enabled, by default it's added as a host var named local_context_data.
+      If \ :emphasis:`local\_context\_data`\  is enabled, by default it's added as a host var named local\_context\_data.
 
-      If flatten_local_context_data is set to True, the config context variables will be added directly to the host instead.
+      If flatten\_local\_context\_data is set to True, the config context variables will be added directly to the host instead.
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1031,15 +1068,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Will not add the group_by choice name to the group names
+      Will not add the group\_by choice name to the group names
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1126,8 +1163,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1207,7 +1244,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).
+      When fetch\_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).
 
       You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.
 
@@ -1298,7 +1335,7 @@ Parameters
 
       If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
 
-      Group names will be plural (ie. "sites_mysite" instead of "site_mysite")
+      Group names will be plural (ie. "sites\_mysite" instead of "site\_mysite")
 
       The choices of \ :emphasis:`group\_by`\  will be changed by this option.
 
@@ -1307,8 +1344,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1395,8 +1432,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1441,8 +1478,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 
@@ -1572,8 +1609,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`no`
-      - :ansible-option-default-bold:`yes` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
 
       .. raw:: html
 
@@ -1618,8 +1655,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`no` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`yes`
+      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`true`
 
       .. raw:: html
 

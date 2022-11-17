@@ -32,7 +32,11 @@ function main {
 
     echo "# Running..."
     # shellcheck disable=SC2086
-    ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory "$@"
+    if [[ "${NAUTOBOT_VER:-}" == "1.4" ]]; then
+      ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory-1.4 "$@"
+    else
+      ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" inventory "$@"
+    fi
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" regression-latest "$@"
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report

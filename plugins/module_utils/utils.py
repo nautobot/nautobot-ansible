@@ -284,14 +284,14 @@ ALLOWED_QUERY_PARAMS = {
     "device_role": set(["slug"]),
     "device_type": set(["slug"]),
     "front_port": set(["name", "device", "rear_port"]),
-    "front_port_template": set(["name", "device_type", "rear_port"]),
+    "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "installed_device": set(["name"]),
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ip_addresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
-    "ipaddresses": set(["address", "vrf", "device", "interface", "assigned_object"]),
+    "ip_address": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "lag": set(["name"]),
     "manufacturer": set(["slug"]),
     "master": set(["name"]),
@@ -337,7 +337,7 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "tenant"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine"])
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine", "vminterface"])
 
 REQUIRED_ID_FIND = {
     "cables": set(["status", "type", "length_unit"]),
@@ -421,6 +421,7 @@ NAUTOBOT_ARG_SPEC = dict(
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
+    api_version=dict(type="str", required=False),
 )
 
 
@@ -446,10 +447,11 @@ class NautobotModule:
         url = self.module.params["url"]
         token = self.module.params["token"]
         ssl_verify = self.module.params["validate_certs"]
+        api_version = self.module.params["api_version"]
 
         # Attempt to initiate connection to Nautobot
         if client is None:
-            self.nb = self._connect_api(url, token, ssl_verify)
+            self.nb = self._connect_api(url, token, ssl_verify, api_version)
         else:
             self.nb = client
             self.version = self.nb.version
@@ -506,12 +508,17 @@ class NautobotModule:
         elif g_major == l_major and g_minor > l_minor:
             return True
 
-    def _connect_api(self, url, token, ssl_verify):
+    def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            nb = pynautobot.api(url, token=token)
+            nb = pynautobot.api(url, token=token, api_version=api_version)
             nb.http_session.verify = ssl_verify
             try:
                 self.version = nb.version
+            except pynautobot.RequestError as e:
+                # Better error reporting
+                # An error might be: Invalid version in \"Accept\" header. Supported versions are 1.2, 1.3
+                # This way error returned is less verbose
+                self._handle_errors(msg=e.error)
             except Exception:
                 self.module.fail_json(msg="Failed to establish connection to Nautobot API")
             return nb
@@ -706,7 +713,7 @@ class NautobotModule:
             else:
                 query_dict.update({"device": module_data["device"]})
 
-        elif parent == "ip_address" and "assigned_object" in matches and module_data.get("assigned_object_type"):
+        elif parent == "ip_address" and module_data.get("assigned_object_type"):
             if module_data["assigned_object_type"] == "virtualization.vminterface":
                 query_dict.update({"vminterface_id": module_data.get("assigned_object_id")})
             elif module_data["assigned_object_type"] == "dcim.interface":
@@ -927,7 +934,10 @@ class NautobotModule:
             nb_obj = data
         else:
             try:
-                nb_obj = nb_endpoint.create(data)
+                if isinstance(nb_endpoint, pynautobot.core.endpoint.DetailEndpoint):
+                    nb_obj = nb_endpoint.create(data)
+                else:
+                    nb_obj = nb_endpoint.create(**data)
             except pynautobot.RequestError as e:
                 self._handle_errors(msg=e.error)
 
@@ -1033,9 +1043,10 @@ class NautobotApiBase:
         self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         self.ssl_verify = kwargs.get("ssl_verify", True)
+        self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls
-        self.api = pynautobot.api(url=self.url, token=self.token)
+        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version)
         self.api.http_session.verify = self.ssl_verify
 
 

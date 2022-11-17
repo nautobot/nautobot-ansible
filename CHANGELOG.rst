@@ -5,6 +5,52 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v4.1.1
+======
+
+Release Summary
+---------------
+
+Fix incorrect filter parameters
+
+Bugfixes
+--------
+
+- (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
+
+v4.1.0
+======
+
+Release Summary
+---------------
+
+Fix minor bugs and add API versioning to collection.
+
+Minor Changes
+-------------
+
+- (#139) - Add API versioning to compatible plugins.
+
+Bugfixes
+--------
+
+- (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers from legacy forked code.
+
+v4.0.1
+======
+
+Release Summary
+---------------
+
+Fixes GraphQL inventory plugin bugs and RTD builds.
+
+Bugfixes
+--------
+
+- (#150) GraphQL inventory plugin - boolean filters are invalid
+- (#151) GraphQL inventory plugin - using group_by can crash if there are empty values
+- (#154) Fixes antsibull import for RTD builds
+
 v4.0.0
 ======
 

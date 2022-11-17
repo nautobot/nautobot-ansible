@@ -22,6 +22,12 @@ requirements:
   - pynautobot
 version_added: "1.0.0"
 options:
+  api_version:
+    description:
+      - API Version Nautobot REST API
+    required: false
+    type: str
+    version_added: "4.1.0"
   url:
     description:
       - URL of the Nautobot instance resolvable by Ansible control host
@@ -124,7 +130,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Tenant ABC
-        group: Very Special Tenants
+        tenant_group: Very Special Tenants
         description: ABC Incorporated
         comments: '### This tenant is super cool'
         slug: tenant_abc

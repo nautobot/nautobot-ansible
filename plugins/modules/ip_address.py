@@ -23,6 +23,12 @@ requirements:
   - pynautobot
 version_added: "1.0.0"
 options:
+  api_version:
+    description:
+      - API Version Nautobot REST API
+    required: false
+    type: str
+    version_added: "4.1.0"
   url:
     description:
       - URL of the Nautobot instance resolvable by Ansible control host
@@ -203,7 +209,6 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        family: 4
         address: 192.168.1.20
         vrf: Test
         tenant: Test Tenant
@@ -217,7 +222,6 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        family: 4
         address: 192.168.1.30
         vrf: Test
         nat_inside:

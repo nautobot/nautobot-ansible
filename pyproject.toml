@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "3.3.2"
+version = "4.1.1"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com"]
 license = "Apache 2.0"
@@ -8,7 +8,8 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = "^3.6.2"
 ansible-base = "^2.10.0"
-netutils = "^0.2.2"
+netutils = "^1.2"
+pynautobot = "1.1.2"
 
 [tool.poetry.dev-dependencies]
 black = "^21.10b0"
@@ -27,7 +28,7 @@ importlib-metadata = "1.7.0"
 pylint = "^2.6.0"
 sphinx_rtd_theme = "*"
 hypothesis = "^6.8.0"
-pynautobot = "^1.0.2"
+pynautobot = "^1.1.2"
 pytest-pythonpath = "^0.7.3"
 parameterized = "^0.8.1"
 invoke = "^1.6.0"
