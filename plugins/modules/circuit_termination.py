@@ -140,7 +140,8 @@ EXAMPLES = r"""
         token: thisIsMyToken
         circuit: Test Circuit
         term_side: Z
-        provider_network: Provider A
+        provider_network: 
+          name: "Provider A"
         port_speed: 10000
         state: present
 
