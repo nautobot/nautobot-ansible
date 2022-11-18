@@ -125,7 +125,7 @@
       - test_five['diff']['after']['state'] == "present"
       - test_five['circuit_termination']['circuit'] == circuit2['key']
       - test_five['circuit_termination']['term_side'] == "Z"
-      - test_five['circuit_termination']['provider_network'] == "Test Provider Network"
+      - test_five['circuit_termination']['provider_network']['name'] == "Test Provider Network"
       - test_five['circuit_termination']['port_speed'] == 10000
       - test_five['msg'] == "circuit_termination test_circuit_a created"
 
