@@ -123,7 +123,7 @@
       - test_five is changed
       - test_five['diff']['before']['state'] == "absent"
       - test_five['diff']['after']['state'] == "present"
-      - test_five['circuit_termination']['circuit'] == circuit['key']
+      - test_five['circuit_termination']['circuit'] == circuit2['key']
       - test_five['circuit_termination']['term_side'] == "Z"
       - test_five['circuit_termination']['provider_network'] == "Test Provider Network"
       - test_five['circuit_termination']['port_speed'] == 10000
