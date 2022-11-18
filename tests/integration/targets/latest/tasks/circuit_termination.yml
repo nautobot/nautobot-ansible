@@ -111,7 +111,8 @@
     token: "{{ nautobot_token }}"
     circuit: Test Circuit Two
     term_side: Z
-    provider_network: "Test Provider Network"
+    provider_network:
+      name: "Test Provider Network"
     port_speed: 10000
     state: present
   register: test_five
