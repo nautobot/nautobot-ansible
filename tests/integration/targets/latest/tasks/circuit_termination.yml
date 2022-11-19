@@ -117,6 +117,10 @@
     state: present
   register: test_five
 
+- name: "Debug Test Five output"
+  debug:
+    msg: "{{ test_five }}"
+
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Necessary info creation"
   assert:
     that:
@@ -129,25 +133,25 @@
       - test_five['circuit_termination']['port_speed'] == 10000
       - test_five['msg'] == "circuit_termination test_circuit_a created"
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Delete provider within nautobot"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: Delete provider within nautobot"
   networktocode.nautobot.circuit_termination:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: A
     state: absent
-  register: test_five
+  register: test_six
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Delete"
   assert:
     that:
-      - test_five is changed
-      - test_five['circuit_termination']['circuit'] == circuit['key']
-      - test_five['circuit_termination']['term_side'] == "A"
-      - test_five['circuit_termination']['site'] == test_site['key']
-      - test_five['circuit_termination']['port_speed'] == 10000
-      - test_five['circuit_termination']['upstream_speed'] == 1000
-      - test_five['circuit_termination']['xconnect_id'] == "10X100"
-      - test_five['circuit_termination']['pp_info'] == "PP10-24"
-      - test_five['circuit_termination']['description'] == "Test description"
-      - test_five['msg'] == "circuit_termination test_circuit_a deleted"
+      - test_six is changed
+      - test_six['circuit_termination']['circuit'] == circuit['key']
+      - test_six['circuit_termination']['term_side'] == "A"
+      - test_six['circuit_termination']['site'] == test_site['key']
+      - test_six['circuit_termination']['port_speed'] == 10000
+      - test_six['circuit_termination']['upstream_speed'] == 1000
+      - test_six['circuit_termination']['xconnect_id'] == "10X100"
+      - test_six['circuit_termination']['pp_info'] == "PP10-24"
+      - test_six['circuit_termination']['description'] == "Test description"
+      - test_six['msg'] == "circuit_termination test_circuit_a deleted"
