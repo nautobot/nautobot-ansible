@@ -132,7 +132,7 @@
       - test_five['circuit_termination']['term_side'] == "Z"
       - test_five['circuit_termination']['provider_network'] == provider_network['key']  # Use Key as that is the ID
       - test_five['circuit_termination']['port_speed'] == 10000
-      - test_five['msg'] == "circuit_termination test_circuit_a created"
+      - test_five['msg'] == "circuit_termination test_circuit_two_z created"
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: Delete provider within nautobot"
   networktocode.nautobot.circuit_termination:
