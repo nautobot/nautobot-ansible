@@ -17,6 +17,8 @@ Bugfixes
 
 - (#171) Add provider_network to circuit_termination module
 - (#172) Add description to manufacturer
+- (#171) Drop testing for Python 3.6 & Python 3.7 (may still work, just no longer tested)
+- (#171) Adds provider_networks to lookup plugin filter
 
 v4.1.1
 ======
