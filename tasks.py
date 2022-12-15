@@ -220,13 +220,14 @@ def integration(context):
     )
 
 
-@task
-def galaxy_build(context):
+@task(
+    help={
+        "force": "Force the build command to create a new collection, overwriting any existing files.",
+    },
+)
+def galaxy_build(context, force=False):
     """Build the collection."""
-    context.run("ansible-galaxy collection build .")
-
-
-@task
-def galaxy_build_force(context):
-    """Force build the collection."""
-    context.run("ansible-galaxy collection build . --force")
+    command = "ansible-galaxy collection build ."
+    if force:
+        command += " --force"
+    context.run(command)
