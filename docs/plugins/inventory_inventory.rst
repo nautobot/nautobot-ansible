@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.inventory inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -130,8 +129,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -200,7 +200,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
 
 
@@ -258,8 +258,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. rst-class:: ansible-option-line
 
@@ -322,14 +323,14 @@ Parameters
         .. code-block::
 
           [defaults]
-          fact_caching_connection = None
+          fact_caching_connection = VALUE
 
 
 
         .. code-block::
 
           [inventory]
-          cache_connection = None
+          cache_connection = VALUE
 
 
       - Environment variable: ANSIBLE\_CACHE\_PLUGIN\_CONNECTION
@@ -616,8 +617,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -703,8 +705,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -729,7 +732,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -761,7 +764,8 @@ Parameters
       :ansible-option-choices:`Choices:`
 
       - :ansible-option-choices-entry:`false`
-      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -786,7 +790,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -809,8 +813,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -835,7 +840,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -858,8 +863,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -884,7 +890,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -907,8 +913,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -953,11 +960,12 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`urllib2` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`all`
-      - :ansible-option-choices-entry:`yes`
-      - :ansible-option-choices-entry:`safe`
-      - :ansible-option-choices-entry:`none`
+      - :ansible-option-choices-entry-default:`"urllib2"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"all"`
+      - :ansible-option-choices-entry:`"yes"`
+      - :ansible-option-choices-entry:`"safe"`
+      - :ansible-option-choices-entry:`"none"`
+
 
       .. raw:: html
 
@@ -1000,32 +1008,33 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`sites`
-      - :ansible-option-choices-entry:`site`
-      - :ansible-option-choices-entry:`tenants`
-      - :ansible-option-choices-entry:`tenant`
-      - :ansible-option-choices-entry:`tenant\_group`
-      - :ansible-option-choices-entry:`racks`
-      - :ansible-option-choices-entry:`rack`
-      - :ansible-option-choices-entry:`rack\_group`
-      - :ansible-option-choices-entry:`rack\_role`
-      - :ansible-option-choices-entry:`tags`
-      - :ansible-option-choices-entry:`tag`
-      - :ansible-option-choices-entry:`device\_roles`
-      - :ansible-option-choices-entry:`role`
-      - :ansible-option-choices-entry:`device\_types`
-      - :ansible-option-choices-entry:`device\_type`
-      - :ansible-option-choices-entry:`manufacturers`
-      - :ansible-option-choices-entry:`manufacturer`
-      - :ansible-option-choices-entry:`platforms`
-      - :ansible-option-choices-entry:`platform`
-      - :ansible-option-choices-entry:`region`
-      - :ansible-option-choices-entry:`cluster`
-      - :ansible-option-choices-entry:`cluster\_type`
-      - :ansible-option-choices-entry:`cluster\_group`
-      - :ansible-option-choices-entry:`is\_virtual`
-      - :ansible-option-choices-entry:`services`
-      - :ansible-option-choices-entry:`status`
+      - :ansible-option-choices-entry:`"sites"`
+      - :ansible-option-choices-entry:`"site"`
+      - :ansible-option-choices-entry:`"tenants"`
+      - :ansible-option-choices-entry:`"tenant"`
+      - :ansible-option-choices-entry:`"tenant\_group"`
+      - :ansible-option-choices-entry:`"racks"`
+      - :ansible-option-choices-entry:`"rack"`
+      - :ansible-option-choices-entry:`"rack\_group"`
+      - :ansible-option-choices-entry:`"rack\_role"`
+      - :ansible-option-choices-entry:`"tags"`
+      - :ansible-option-choices-entry:`"tag"`
+      - :ansible-option-choices-entry:`"device\_roles"`
+      - :ansible-option-choices-entry:`"role"`
+      - :ansible-option-choices-entry:`"device\_types"`
+      - :ansible-option-choices-entry:`"device\_type"`
+      - :ansible-option-choices-entry:`"manufacturers"`
+      - :ansible-option-choices-entry:`"manufacturer"`
+      - :ansible-option-choices-entry:`"platforms"`
+      - :ansible-option-choices-entry:`"platform"`
+      - :ansible-option-choices-entry:`"region"`
+      - :ansible-option-choices-entry:`"cluster"`
+      - :ansible-option-choices-entry:`"cluster\_type"`
+      - :ansible-option-choices-entry:`"cluster\_group"`
+      - :ansible-option-choices-entry:`"is\_virtual"`
+      - :ansible-option-choices-entry:`"services"`
+      - :ansible-option-choices-entry:`"status"`
+
 
       .. rst-class:: ansible-option-line
 
@@ -1054,7 +1063,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -1075,8 +1084,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -1142,7 +1152,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -1163,8 +1173,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -1230,7 +1241,7 @@ Parameters
 
       :ansible-option-type:`integer`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -1294,7 +1305,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`networktocode.nautobot.inventory`
+      - :ansible-option-choices-entry:`"networktocode.nautobot.inventory"`
+
 
       .. raw:: html
 
@@ -1319,7 +1331,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -1345,7 +1357,8 @@ Parameters
       :ansible-option-choices:`Choices:`
 
       - :ansible-option-choices-entry:`false`
-      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -1411,7 +1424,7 @@ Parameters
 
       :ansible-option-type:`boolean`
 
-      :ansible-option-versionadded:`added in 1.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
 
 
@@ -1433,7 +1446,8 @@ Parameters
       :ansible-option-choices:`Choices:`
 
       - :ansible-option-choices-entry:`false`
-      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -1478,8 +1492,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -1610,7 +1625,8 @@ Parameters
       :ansible-option-choices:`Choices:`
 
       - :ansible-option-choices-entry:`false`
-      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -1655,8 +1671,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`false` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
       - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 

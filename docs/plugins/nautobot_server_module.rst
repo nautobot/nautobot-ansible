@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.nautobot_server module -- Manages Nautobot Server applica
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -53,7 +52,9 @@ networktocode.nautobot.nautobot_server module -- Manages Nautobot Server applica
 
 .. version_added
 
-.. versionadded:: 3.0.0 of networktocode.nautobot
+.. rst-class:: ansible-version-added
+
+New in networktocode.nautobot 3.0.0
 
 .. contents::
    :local:
@@ -590,7 +591,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
       .. rst-class:: ansible-option-line
       .. rst-class:: ansible-option-sample
 
-      :ansible-option-sample-bold:`Sample:` true
+      :ansible-option-sample-bold:`Sample:` :ansible-rv-sample-value:`true`
 
 
       .. raw:: html
@@ -635,7 +636,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
       .. rst-class:: ansible-option-line
       .. rst-class:: ansible-option-sample
 
-      :ansible-option-sample-bold:`Sample:` "nautobot-server createsuperuser --noinput --email=admin33@example.com --username=superadmin"
+      :ansible-option-sample-bold:`Sample:` :ansible-rv-sample-value:`"nautobot-server createsuperuser --noinput --email=admin33@example.com --username=superadmin"`
 
 
       .. raw:: html
@@ -680,7 +681,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
       .. rst-class:: ansible-option-line
       .. rst-class:: ansible-option-sample
 
-      :ansible-option-sample-bold:`Sample:` "superadmin user already exists."
+      :ansible-option-sample-bold:`Sample:` :ansible-rv-sample-value:`"superadmin user already exists."`
 
 
       .. raw:: html
@@ -725,7 +726,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
       .. rst-class:: ansible-option-line
       .. rst-class:: ansible-option-sample
 
-      :ansible-option-sample-bold:`Sample:` "/opt/nautobot"
+      :ansible-option-sample-bold:`Sample:` :ansible-rv-sample-value:`"/opt/nautobot"`
 
 
       .. raw:: html

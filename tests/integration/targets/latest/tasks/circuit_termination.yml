@@ -7,6 +7,8 @@
 - set_fact:
     test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
+    circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
+    provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider_networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
@@ -104,25 +106,53 @@
       - test_four['circuit_termination']['port_speed'] == 10000
       - test_four['msg'] == "circuit_termination test_circuit_z created"
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Delete provider within nautobot"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: Create connection to provider_network within Nautobot with only required information"
+  networktocode.nautobot.circuit_termination:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    circuit: Test Circuit Two
+    term_side: Z
+    provider_network:
+      name: "Test Provider Network"
+    port_speed: 10000
+    state: present
+  register: test_five
+
+- name: "Debug Test Five output"
+  debug:
+    msg: "{{ test_five }}"
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "absent"
+      - test_five['diff']['after']['state'] == "present"
+      - test_five['circuit_termination']['circuit'] == circuit2['key']
+      - test_five['circuit_termination']['term_side'] == "Z"
+      - test_five['circuit_termination']['provider_network'] == provider_network['key']  # Use Key as that is the ID
+      - test_five['circuit_termination']['port_speed'] == 10000
+      - test_five['msg'] == "circuit_termination test_circuit_two_z created"
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: Delete provider within nautobot"
   networktocode.nautobot.circuit_termination:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: A
     state: absent
-  register: test_five
+  register: test_six
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Delete"
   assert:
     that:
-      - test_five is changed
-      - test_five['circuit_termination']['circuit'] == circuit['key']
-      - test_five['circuit_termination']['term_side'] == "A"
-      - test_five['circuit_termination']['site'] == test_site['key']
-      - test_five['circuit_termination']['port_speed'] == 10000
-      - test_five['circuit_termination']['upstream_speed'] == 1000
-      - test_five['circuit_termination']['xconnect_id'] == "10X100"
-      - test_five['circuit_termination']['pp_info'] == "PP10-24"
-      - test_five['circuit_termination']['description'] == "Test description"
-      - test_five['msg'] == "circuit_termination test_circuit_a deleted"
+      - test_six is changed
+      - test_six['circuit_termination']['circuit'] == circuit['key']
+      - test_six['circuit_termination']['term_side'] == "A"
+      - test_six['circuit_termination']['site'] == test_site['key']
+      - test_six['circuit_termination']['port_speed'] == 10000
+      - test_six['circuit_termination']['upstream_speed'] == 1000
+      - test_six['circuit_termination']['xconnect_id'] == "10X100"
+      - test_six['circuit_termination']['pp_info'] == "PP10-24"
+      - test_six['circuit_termination']['description'] == "Test description"
+      - test_six['msg'] == "circuit_termination test_circuit_a deleted"

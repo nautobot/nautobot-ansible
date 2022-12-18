@@ -24,7 +24,7 @@ namespace = Collection("nautobot_ansible")
 namespace.configure(
     {
         "nautobot_ansible": {
-            "nautobot_ver": "1.2.10",
+            "nautobot_ver": "1.3.10",
             "project_name": "nautobot_ansible",
             "python_ver": "3.7",
             "local": False,
@@ -218,3 +218,16 @@ def integration(context):
         "docker-compose up --build --force-recreate --quiet-pull --exit-code-from integration integration",
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
+
+
+@task(
+    help={
+        "force": "Force the build command to create a new collection, overwriting any existing files.",
+    },
+)
+def galaxy_build(context, force=False):
+    """Build the collection."""
+    command = "ansible-galaxy collection build ."
+    if force:
+        command += " --force"
+    context.run(command)

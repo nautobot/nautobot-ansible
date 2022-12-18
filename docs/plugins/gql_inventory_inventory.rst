@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this inventory plugin,
@@ -186,11 +185,12 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-default-bold:`urllib2` :ansible-option-default:`← (default)`
-      - :ansible-option-choices-entry:`all`
-      - :ansible-option-choices-entry:`yes`
-      - :ansible-option-choices-entry:`safe`
-      - :ansible-option-choices-entry:`none`
+      - :ansible-option-choices-entry-default:`"urllib2"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"all"`
+      - :ansible-option-choices-entry:`"yes"`
+      - :ansible-option-choices-entry:`"safe"`
+      - :ansible-option-choices-entry:`"none"`
+
 
       .. raw:: html
 
@@ -281,7 +281,8 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`networktocode.nautobot.gql\_inventory`
+      - :ansible-option-choices-entry:`"networktocode.nautobot.gql\_inventory"`
+
 
       .. raw:: html
 
@@ -528,7 +529,8 @@ Parameters
       :ansible-option-choices:`Choices:`
 
       - :ansible-option-choices-entry:`false`
-      - :ansible-option-default-bold:`true` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 

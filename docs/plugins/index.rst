@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 4.1.1
+Collection version 4.2.0
 
 .. contents::
    :local:
@@ -20,6 +20,10 @@ This is a collection of Nautobot Ansible modules
 **Author:**
 
 * Network to Code <opensource@networktocode.com>
+
+**Supported ansible-core versions:**
+
+* 2.9.10 or newer
 
 .. raw:: html
 
