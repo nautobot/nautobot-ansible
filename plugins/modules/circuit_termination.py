@@ -89,6 +89,12 @@ options:
       - Description of the circuit termination
     required: false
     type: str
+  provider_network:
+    version_added: "4.2.0"
+    description:
+      - Connection to a provider_network type
+    type: raw
+    required: false
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -125,6 +131,17 @@ EXAMPLES = r"""
         circuit: Test Circuit
         term_side: A
         site: Test Site
+        port_speed: 10000
+        state: present
+
+    - name: Create circuit termination to Provider Network
+      networktocode.nautobot.circuit_termination:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        circuit: Test Circuit
+        term_side: Z
+        provider_network: 
+          name: "Provider A"
         port_speed: 10000
         state: present
 
@@ -184,6 +201,7 @@ def main():
             xconnect_id=dict(required=False, type="str"),
             pp_info=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            provider_network=dict(required=False, type="raw"),
         )
     )
 

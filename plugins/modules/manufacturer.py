@@ -51,6 +51,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  description:
+    description:
+      - Applies to the description field for Nautobot Manufacturer
+    required: false
+    type: str
+    version_added: "4.2.0"
   state:
     description:
       - Use C(present) or C(absent) for adding or removing.
@@ -86,6 +92,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Manufacturer
         state: present
+        description: The test manufacturer
 
     - name: Delete manufacturer within nautobot
       networktocode.nautobot.manufacturer:
@@ -124,6 +131,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             slug=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
         )
     )
 

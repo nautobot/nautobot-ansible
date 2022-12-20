@@ -348,3 +348,9 @@ releases:
       bugfixes:
         - (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
       release_summary: "Fix incorrect filter parameters"
+
+  4.2.0:
+    changes:
+      minor_changes:
+        - (#171) Add provider_network to circuit_termination module
+        - (#172) Add description to manufacturer

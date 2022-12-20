@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.lookup_graphql lookup -- Queries and returns elements fro
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this lookup plugin,
@@ -53,7 +52,9 @@ networktocode.nautobot.lookup_graphql lookup -- Queries and returns elements fro
 
 .. version_added
 
-.. versionadded:: 1.1.0 of networktocode.nautobot
+.. rst-class:: ansible-version-added
+
+New in networktocode.nautobot 1.1.0
 
 .. contents::
    :local:
@@ -123,7 +124,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
 
 
@@ -343,7 +344,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`true`
 
       .. raw:: html
 

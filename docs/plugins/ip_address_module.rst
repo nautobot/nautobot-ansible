@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.ip_address module -- Creates or removes IP addresses from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -53,7 +52,9 @@ networktocode.nautobot.ip_address module -- Creates or removes IP addresses from
 
 .. version_added
 
-.. versionadded:: 1.0.0 of networktocode.nautobot
+.. rst-class:: ansible-version-added
+
+New in networktocode.nautobot 1.0.0
 
 .. contents::
    :local:
@@ -123,7 +124,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -160,7 +161,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
 
       .. raw:: html
@@ -197,7 +198,7 @@ Parameters
 
       :ansible-option-type:`dictionary`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -337,7 +338,7 @@ Parameters
 
       :ansible-option-type:`dictionary`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -374,7 +375,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -411,7 +412,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -448,7 +449,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -485,7 +486,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -531,7 +532,7 @@ Parameters
 
       :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -572,7 +573,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -590,14 +591,15 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`Loopback`
-      - :ansible-option-choices-entry:`Secondary`
-      - :ansible-option-choices-entry:`Anycast`
-      - :ansible-option-choices-entry:`VIP`
-      - :ansible-option-choices-entry:`VRRP`
-      - :ansible-option-choices-entry:`HSRP`
-      - :ansible-option-choices-entry:`GLBP`
-      - :ansible-option-choices-entry:`CARP`
+      - :ansible-option-choices-entry:`"Loopback"`
+      - :ansible-option-choices-entry:`"Secondary"`
+      - :ansible-option-choices-entry:`"Anycast"`
+      - :ansible-option-choices-entry:`"VIP"`
+      - :ansible-option-choices-entry:`"VRRP"`
+      - :ansible-option-choices-entry:`"HSRP"`
+      - :ansible-option-choices-entry:`"GLBP"`
+      - :ansible-option-choices-entry:`"CARP"`
+
 
       .. raw:: html
 
@@ -641,9 +643,10 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`absent`
-      - :ansible-option-choices-entry:`new`
-      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`"absent"`
+      - :ansible-option-choices-entry:`"new"`
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -668,7 +671,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -707,7 +710,7 @@ Parameters
 
       :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -744,7 +747,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -862,7 +865,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`true`
 
       .. raw:: html
 
@@ -887,7 +890,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html

@@ -18,8 +18,7 @@
 .. role:: ansible-option-versionadded
 .. role:: ansible-option-aliases
 .. role:: ansible-option-choices
-.. role:: ansible-option-choices-entry
-.. role:: ansible-option-default
+.. role:: ansible-option-choices-default-mark
 .. role:: ansible-option-default-bold
 .. role:: ansible-option-configuration
 .. role:: ansible-option-returned-bold
@@ -43,7 +42,7 @@ networktocode.nautobot.power_port_template module -- Create, update or delete po
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -53,7 +52,9 @@ networktocode.nautobot.power_port_template module -- Create, update or delete po
 
 .. version_added
 
-.. versionadded:: 1.0.0 of networktocode.nautobot
+.. rst-class:: ansible-version-added
+
+New in networktocode.nautobot 1.0.0
 
 .. contents::
    :local:
@@ -123,7 +124,7 @@ Parameters
 
       :ansible-option-type:`integer`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -160,7 +161,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 4.1.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
 
       .. raw:: html
@@ -197,7 +198,7 @@ Parameters
 
       :ansible-option-type:`any` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -234,7 +235,7 @@ Parameters
 
       :ansible-option-type:`integer`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -271,7 +272,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -308,7 +309,7 @@ Parameters
 
       :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -364,8 +365,9 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`absent`
-      - :ansible-option-default-bold:`present` :ansible-option-default:`← (default)`
+      - :ansible-option-choices-entry:`"absent"`
+      - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -424,7 +426,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in 3.0.0 of networktocode.nautobot`
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
 
       .. raw:: html
@@ -442,60 +444,61 @@ Parameters
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`iec-60320-c6`
-      - :ansible-option-choices-entry:`iec-60320-c8`
-      - :ansible-option-choices-entry:`iec-60320-c14`
-      - :ansible-option-choices-entry:`iec-60320-c16`
-      - :ansible-option-choices-entry:`iec-60320-c20`
-      - :ansible-option-choices-entry:`iec-60309-p-n-e-4h`
-      - :ansible-option-choices-entry:`iec-60309-p-n-e-6h`
-      - :ansible-option-choices-entry:`iec-60309-p-n-e-9h`
-      - :ansible-option-choices-entry:`iec-60309-2p-e-4h`
-      - :ansible-option-choices-entry:`iec-60309-2p-e-6h`
-      - :ansible-option-choices-entry:`iec-60309-2p-e-9h`
-      - :ansible-option-choices-entry:`iec-60309-3p-e-4h`
-      - :ansible-option-choices-entry:`iec-60309-3p-e-6h`
-      - :ansible-option-choices-entry:`iec-60309-3p-e-9h`
-      - :ansible-option-choices-entry:`iec-60309-3p-n-e-4h`
-      - :ansible-option-choices-entry:`iec-60309-3p-n-e-6h`
-      - :ansible-option-choices-entry:`iec-60309-3p-n-e-9h`
-      - :ansible-option-choices-entry:`nema-5-15p`
-      - :ansible-option-choices-entry:`nema-5-20p`
-      - :ansible-option-choices-entry:`nema-5-30p`
-      - :ansible-option-choices-entry:`nema-5-50p`
-      - :ansible-option-choices-entry:`nema-6-15p`
-      - :ansible-option-choices-entry:`nema-6-20p`
-      - :ansible-option-choices-entry:`nema-6-30p`
-      - :ansible-option-choices-entry:`nema-6-50p`
-      - :ansible-option-choices-entry:`nema-l5-15p`
-      - :ansible-option-choices-entry:`nema-l5-20p`
-      - :ansible-option-choices-entry:`nema-l5-30p`
-      - :ansible-option-choices-entry:`nema-l5-50p`
-      - :ansible-option-choices-entry:`nema-l6-20p`
-      - :ansible-option-choices-entry:`nema-l6-30p`
-      - :ansible-option-choices-entry:`nema-l6-50p`
-      - :ansible-option-choices-entry:`nema-l14-20p`
-      - :ansible-option-choices-entry:`nema-l14-30p`
-      - :ansible-option-choices-entry:`nema-l21-20p`
-      - :ansible-option-choices-entry:`nema-l21-30p`
-      - :ansible-option-choices-entry:`cs6361c`
-      - :ansible-option-choices-entry:`cs6365c`
-      - :ansible-option-choices-entry:`cs8165c`
-      - :ansible-option-choices-entry:`cs8265c`
-      - :ansible-option-choices-entry:`cs8365c`
-      - :ansible-option-choices-entry:`cs8465c`
-      - :ansible-option-choices-entry:`ita-e`
-      - :ansible-option-choices-entry:`ita-f`
-      - :ansible-option-choices-entry:`ita-ef`
-      - :ansible-option-choices-entry:`ita-g`
-      - :ansible-option-choices-entry:`ita-h`
-      - :ansible-option-choices-entry:`ita-i`
-      - :ansible-option-choices-entry:`ita-j`
-      - :ansible-option-choices-entry:`ita-k`
-      - :ansible-option-choices-entry:`ita-l`
-      - :ansible-option-choices-entry:`ita-m`
-      - :ansible-option-choices-entry:`ita-n`
-      - :ansible-option-choices-entry:`ita-o`
+      - :ansible-option-choices-entry:`"iec-60320-c6"`
+      - :ansible-option-choices-entry:`"iec-60320-c8"`
+      - :ansible-option-choices-entry:`"iec-60320-c14"`
+      - :ansible-option-choices-entry:`"iec-60320-c16"`
+      - :ansible-option-choices-entry:`"iec-60320-c20"`
+      - :ansible-option-choices-entry:`"iec-60309-p-n-e-4h"`
+      - :ansible-option-choices-entry:`"iec-60309-p-n-e-6h"`
+      - :ansible-option-choices-entry:`"iec-60309-p-n-e-9h"`
+      - :ansible-option-choices-entry:`"iec-60309-2p-e-4h"`
+      - :ansible-option-choices-entry:`"iec-60309-2p-e-6h"`
+      - :ansible-option-choices-entry:`"iec-60309-2p-e-9h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-e-4h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-e-6h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-e-9h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-4h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-6h"`
+      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-9h"`
+      - :ansible-option-choices-entry:`"nema-5-15p"`
+      - :ansible-option-choices-entry:`"nema-5-20p"`
+      - :ansible-option-choices-entry:`"nema-5-30p"`
+      - :ansible-option-choices-entry:`"nema-5-50p"`
+      - :ansible-option-choices-entry:`"nema-6-15p"`
+      - :ansible-option-choices-entry:`"nema-6-20p"`
+      - :ansible-option-choices-entry:`"nema-6-30p"`
+      - :ansible-option-choices-entry:`"nema-6-50p"`
+      - :ansible-option-choices-entry:`"nema-l5-15p"`
+      - :ansible-option-choices-entry:`"nema-l5-20p"`
+      - :ansible-option-choices-entry:`"nema-l5-30p"`
+      - :ansible-option-choices-entry:`"nema-l5-50p"`
+      - :ansible-option-choices-entry:`"nema-l6-20p"`
+      - :ansible-option-choices-entry:`"nema-l6-30p"`
+      - :ansible-option-choices-entry:`"nema-l6-50p"`
+      - :ansible-option-choices-entry:`"nema-l14-20p"`
+      - :ansible-option-choices-entry:`"nema-l14-30p"`
+      - :ansible-option-choices-entry:`"nema-l21-20p"`
+      - :ansible-option-choices-entry:`"nema-l21-30p"`
+      - :ansible-option-choices-entry:`"cs6361c"`
+      - :ansible-option-choices-entry:`"cs6365c"`
+      - :ansible-option-choices-entry:`"cs8165c"`
+      - :ansible-option-choices-entry:`"cs8265c"`
+      - :ansible-option-choices-entry:`"cs8365c"`
+      - :ansible-option-choices-entry:`"cs8465c"`
+      - :ansible-option-choices-entry:`"ita-e"`
+      - :ansible-option-choices-entry:`"ita-f"`
+      - :ansible-option-choices-entry:`"ita-ef"`
+      - :ansible-option-choices-entry:`"ita-g"`
+      - :ansible-option-choices-entry:`"ita-h"`
+      - :ansible-option-choices-entry:`"ita-i"`
+      - :ansible-option-choices-entry:`"ita-j"`
+      - :ansible-option-choices-entry:`"ita-k"`
+      - :ansible-option-choices-entry:`"ita-l"`
+      - :ansible-option-choices-entry:`"ita-m"`
+      - :ansible-option-choices-entry:`"ita-n"`
+      - :ansible-option-choices-entry:`"ita-o"`
+
 
       .. raw:: html
 
@@ -567,7 +570,7 @@ Parameters
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-default-bold:`Default:` :ansible-option-default:`"true"`
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`true`
 
       .. raw:: html
 
