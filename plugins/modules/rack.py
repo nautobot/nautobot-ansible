@@ -19,26 +19,12 @@ notes:
   - The module supports C(check_mode).
 author:
   - NMikhail Yohman (@FragmentedPacket)
-requirements:
-  - pynautobot
 version_added: "1.0.0"
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  api_version:
-    description:
-      - API Version Nautobot REST API
-    required: false
-    type: str
-    version_added: "4.1.0"
-  url:
-    description:
-      - URL of the Nautobot instance resolvable by Ansible control host.
-    required: true
-    type: str
-  token:
-    description:
-      - The token created within Nautobot to authorize API access.
-    required: true
-    type: str
   name:
     description:
       - The name of the rack.
@@ -156,39 +142,6 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  tags:
-    description:
-      - Any tags that the rack may need to be associated with.
-    required: false
-    type: list
-    elements: raw
-    version_added: "3.0.0"
-  custom_fields:
-    description:
-      - Must exist in Nautobot.
-    required: false
-    type: dict
-    version_added: "3.0.0"
-  state:
-    description:
-      - Use C(present) or C(absent) for adding or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
-  query_params:
-    description:
-      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
-      - in plugins/module_utils/utils.py and provides control to users on what may make
-      - an object unique in their environment.
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
-  validate_certs:
-    description:
-      - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-    default: true
-    type: raw
 """
 
 EXAMPLES = r"""
@@ -254,7 +207,13 @@ def main():
             type=dict(
                 required=False,
                 type="str",
-                choices=["2-post frame", "4-post frame", "4-post cabinet", "Wall-mounted frame", "Wall-mounted cabinet"],
+                choices=[
+                    "2-post frame",
+                    "4-post frame",
+                    "4-post cabinet",
+                    "Wall-mounted frame",
+                    "Wall-mounted cabinet",
+                ],
             ),
             width=dict(required=False, type="int", choices=[10, 19, 21, 23]),
             u_height=dict(required=False, type="int"),
