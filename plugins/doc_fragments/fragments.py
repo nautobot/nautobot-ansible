@@ -6,7 +6,9 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-BASE = r"""
+
+class ModuleDocFragment(object):
+    BASE = r"""
 requirements:
   - pynautobot
 options:
@@ -49,7 +51,7 @@ options:
     type: str
 """
 
-TAGS = r"""
+    TAGS = r"""
 options:
   tags:
     description:
@@ -60,7 +62,7 @@ options:
     version_added: "3.0.0"
 """
 
-CUSTOM_FIELDS = r"""
+    CUSTOM_FIELDS = r"""
 options:
   custom_fields:
     description:
@@ -69,9 +71,3 @@ options:
     type: dict
     version_added: "3.0.0"
 """
-
-
-class ModuleDocFragment(object):
-    BASE = BASE
-    TAGS = TAGS
-    CUSTOM_FIELDS = CUSTOM_FIELDS
