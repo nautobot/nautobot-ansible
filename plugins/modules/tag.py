@@ -67,6 +67,7 @@ options:
     description:
       - Tags content type(s). These match app.endpoint and the endpoint is singular.
       - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+      - Requires `api_version >= 1.3`
     required: false
     type: list
     elements: str
@@ -104,6 +105,7 @@ EXAMPLES = r"""
       networktocode.nautobot.tag:
         url: http://nautobot.local
         token: thisIsMyToken
+        api_version: "1.3"
         name: "{{ item.name }}"
         description: "{{ item.description }}"
         content_types:
