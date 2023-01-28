@@ -67,7 +67,7 @@ options:
     description:
       - Tags content type(s). These match app.endpoint and the endpoint is singular.
       - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
-      - Requires `api_version >= 1.3`
+      - Requires C(api_version >= 1.3)
     required: false
     type: list
     elements: str
