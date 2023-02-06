@@ -18,26 +18,12 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Mikhail Yohman (@FragmentedPacket)
-requirements:
-  - pynautobot
 version_added: "1.0.0"
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  api_version:
-    description:
-      - API Version Nautobot REST API
-    required: false
-    type: str
-    version_added: "4.1.0"
-  url:
-    description:
-      - URL of the Nautobot instance resolvable by Ansible control host
-    required: true
-    type: str
-  token:
-    description:
-      - The token created within Nautobot to authorize API access
-    required: true
-    type: str
   device:
     description:
       - Name of the device the interface will be associated with (case-sensitive)
@@ -119,19 +105,6 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  tags:
-    description:
-      - Any tags that the interface may need to be associated with
-    required: false
-    type: list
-    elements: raw
-    version_added: "3.0.0"
-  custom_fields:
-    description:
-      - Allows modification of any custom tags on the interface. The custom field must already exist in the model
-    required: false
-    type: dict
-    version_added: "3.0.0"
   update_vc_child:
     type: bool
     default: False
@@ -140,28 +113,6 @@ options:
         Use when master device is specified for C(device) and the specified interface exists on a child device
         and needs updated
     version_added: "3.0.0"
-  state:
-    description:
-      - Use C(present) or C(absent) for adding or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
-  query_params:
-    description:
-      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
-      - in plugins/module_utils/utils.py and provides control to users on what may make
-      - an object unique in their environment.
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
-  validate_certs:
-    description:
-      - |
-        If C(no), SSL certificates will not be validated.
-        This should only be used on personally controlled sites using self-signed certificates.
-    default: true
-    type: raw
 """
 
 EXAMPLES = r"""
