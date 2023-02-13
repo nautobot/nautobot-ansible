@@ -1,0 +1,131 @@
+---
+##
+##
+### PYNAUTOBOT_LOCATION_TYPE
+##
+##
+- block:
+  - name: "1 - Create location type within Nautobot with only required information"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type
+    register: test_create_min
+
+  - name: "1 - ASSERT"
+    assert:
+      that:
+        - test_create_min is changed
+        - test_create_min['diff']['before']['state'] == "absent"
+        - test_create_min['diff']['after']['state'] == "present"
+        - test_create_min['location_type']['name'] == "Test Location Type"
+        - test_create_min['msg'] == "location_type Test Location Type created"
+
+  - name: "2 - Duplicate"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type
+    register: test_create_idem
+
+  - name: "2 - ASSERT"
+    assert:
+      that:
+        - not test_create_idem['changed']
+        - test_create_idem['msg'] == "location_type Test Location Type already exists"
+        - test_create_idem['location_type']['name'] == "Test Location Type"
+
+  - name: "3 - Update location type"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type
+      description: Test Location Type Description
+    register: test_update
+
+  - name: "3 - ASSERT"
+    assert:
+      that:
+        - test_update is changed
+        - test_update['diff']['before']['description'] == ""
+        - test_update['diff']['after']['description'] == "Test Location Type Description"
+
+  - name: "4 - Create location type with all parameters"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type 2
+      description: Test Location Type 2 Description
+      parent: "{{ test_create_min['location_type']['id'] }}"
+      nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
+      content_types:
+        - "dcim.device"
+      state: present
+    register: test_create_max
+
+  - name: "4 - ASSERT"
+    assert:
+      that:
+        - test_create_max is changed
+        - test_create_max['diff']['before']['state'] == "absent"
+        - test_create_max['diff']['after']['state'] == "present"
+        - test_create_max['location_type']['name'] == "Test Location Type 2"
+        - test_create_max['msg'] == "location_type Test Location Type 2 created"
+        - test_create_max['location_type']['description'] == "Test Location Type 2 Description"
+        - test_create_max['location_type']['parent'] == test_create_min['location_type']['id']
+        - test_create_max['location_type']['content_types'] == ["dcim.device"]
+
+  - name: "5 - Duplicate create with all parameters"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type 2
+      description: Test Location Type 2 Description
+      parent: "{{ test_create_min['location_type']['id'] }}"
+      nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
+      content_types:
+        - "dcim.device"
+      state: present
+    register: test_create_max_idem
+
+  - name: "5 - ASSERT"
+    assert:
+      that:
+        - not test_create_max_idem['changed']
+        - test_create_max_idem['msg'] == "location_type Test Location Type 2 already exists"
+        - test_create_max_idem['location_type']['name'] == "Test Location Type 2"
+
+  - name: "6 - Delete location type"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type 2
+      state: absent
+    register: test_delete
+
+  - name: "6 - ASSERT"
+    assert:
+      that:
+        - test_delete is changed
+        - test_delete['diff']['before']['state'] == "present"
+        - test_delete['diff']['after']['state'] == "absent"
+        - test_delete['location_type']['name'] == "Test Location Type 2"
+        - test_delete['msg'] == "location_type Test Location Type 2 deleted"
+
+  - name: "7 - Delete duplicate"
+    networktocode.nautobot.location_type:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Location Type 2
+      state: absent
+    register: test_delete_idem
+
+  - name: "7 - ASSERT"
+    assert:
+      that:
+        - not test_delete_idem['changed']
+        - test_delete_idem['msg'] == "location_type Test Location Type 2 already absent"
+
+  when:
+    # Location Types are only available on Nautobot 1.4+
+    - "nautobot_version is version('1.4', '>=')"
