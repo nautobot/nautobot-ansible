@@ -176,6 +176,8 @@ def get_endpoint(nautobot, term):
         "interfaces": {"endpoint": nautobot.dcim.interfaces},
         "inventory-items": {"endpoint": nautobot.dcim.inventory_items},
         "ip-addresses": {"endpoint": nautobot.ipam.ip_addresses},
+        "locations": {"endpoint": nautobot.dcim.locations},
+        "location_types": {"endpoint": nautobot.dcim.location_types},
         "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
         "object-changes": {"endpoint": nautobot.extras.object_changes},
         "platforms": {"endpoint": nautobot.dcim.platforms},

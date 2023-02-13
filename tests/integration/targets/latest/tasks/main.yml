@@ -53,6 +53,24 @@
   tags:
     - site
 
+- name: "PYNAUTOBOT_LOCATION TESTS"
+  include_tasks:
+    file: "location.yml"
+    apply:
+      tags:
+        - location
+  tags:
+    - location
+
+- name: "PYNAUTOBOT_LOCATION_TYPE TESTS"
+  include_tasks:
+    file: "location_type.yml"
+    apply:
+      tags:
+        - location_type
+  tags:
+    - location_type
+
 - name: "PYNAUTOBOT_TENTANT TESTS"
   include_tasks:
     file: "tenant.yml"
