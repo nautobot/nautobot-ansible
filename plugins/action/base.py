@@ -1,4 +1,3 @@
-#!/usr/bin/python
 """Base Action Plugin utilities."""
 # Make coding more python3-ish, this is required for contributions to Ansible
 from __future__ import absolute_import, division, print_function

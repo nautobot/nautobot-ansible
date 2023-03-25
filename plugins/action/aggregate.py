@@ -5,7 +5,7 @@
 
 from __future__ import absolute_import, division, print_function
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.action import NBActionModule
+from ansible_collections.networktocode.nautobot.plugins.action.base import NBActionModule
 
 
 class ActionModule(NBActionModule):
