@@ -7,6 +7,8 @@ from __future__ import absolute_import, division, print_function
 
 from ansible_collections.networktocode.nautobot.plugins.plugin_utils.action import NBActionModule
 
+__metaclass__ = type
+
 
 class ActionModule(NBActionModule):
     pass
