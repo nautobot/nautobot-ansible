@@ -54,9 +54,10 @@ jobs:
           - python-version: "3.9"
             nautobot-version: "1.4"
             ansible-release: "2.13"
-          - python-version: "3.10"
-            nautobot-version: "1.4"
-            ansible-release: "2.14"
+          # Commenting out for now due to ordering issues with ansible-core 2.14
+          # - python-version: "3.10"
+          #   nautobot-version: "1.4"
+          #   ansible-release: "2.14"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
       INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ matrix.nautobot-version }}"
