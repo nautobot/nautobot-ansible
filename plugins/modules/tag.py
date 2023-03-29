@@ -18,26 +18,10 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Pavel Korovin (@pkorovin)
-requirements:
-  - pynautobot
 version_added: "1.0.0"
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
 options:
-  api_version:
-    description:
-      - API Version Nautobot REST API
-    required: false
-    type: str
-    version_added: "4.1.0"
-  url:
-    description:
-      - URL of the Nautobot instance resolvable by Ansible control host
-    required: true
-    type: str
-  token:
-    description:
-      - The token created within Nautobot to authorize API access
-    required: true
-    type: str
   name:
     description:
       - Tag name
@@ -67,31 +51,10 @@ options:
     description:
       - Tags content type(s). These match app.endpoint and the endpoint is singular.
       - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+      - Requires C(api_version >= 1.3)
     required: false
     type: list
     elements: str
-  state:
-    description:
-      - Use C(present) or C(absent) for adding or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
-  query_params:
-    description:
-      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
-      - in plugins/module_utils/utils.py and provides control to users on what may make
-      - an object unique in their environment.
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
-  validate_certs:
-    description:
-      - |
-        If C(no), SSL certificates will not be validated.
-        This should only be used on personally controlled sites using self-signed certificates.
-    default: true
-    type: raw
 """
 
 EXAMPLES = r"""
@@ -104,6 +67,7 @@ EXAMPLES = r"""
       networktocode.nautobot.tag:
         url: http://nautobot.local
         token: thisIsMyToken
+        api_version: "1.3"
         name: "{{ item.name }}"
         description: "{{ item.description }}"
         content_types:

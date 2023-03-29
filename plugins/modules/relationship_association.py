@@ -16,26 +16,10 @@ description:
 author:
   - Network to Code (@networktocode)
   - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
 version_added: "4.0.0"
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
 options:
-  api_version:
-    description:
-      - API Version Nautobot REST API
-    required: false
-    type: str
-    version_added: "4.1.0"
-  url:
-    description:
-      - URL of the Nautobot instance resolvable by Ansible control host
-    required: true
-    type: str
-  token:
-    description:
-      - The token created within Nautobot to authorize API access
-    required: true
-    type: str
   relationship:
     description:
       - The Relationship UUID to add the association to
@@ -61,27 +45,6 @@ options:
       - The UUID of the destination of the relationship
     required: true
     type: str
-  query_params:
-    description:
-      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
-      - in plugins/module_utils/utils.py and provides control to users on what may make
-      - an object unique in their environment.
-    required: false
-    type: list
-    elements: str
-  state:
-    description:
-      - Use C(present) or C(absent) for adding or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
-  validate_certs:
-    description:
-      - |
-        If C(no), SSL certificates will not be validated.
-        This should only be used on personally controlled sites using self-signed certificates.
-    default: true
-    type: raw
 """
 
 EXAMPLES = r"""

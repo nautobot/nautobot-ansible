@@ -50,6 +50,8 @@ API_APPS_ENDPOINTS = dict(
         "interfaces",
         "interface_templates",
         "inventory_items",
+        "locations",
+        "location_types",
         "manufacturers",
         "platforms",
         "power_feeds",
@@ -90,6 +92,7 @@ QUERY_TYPES = dict(
     installed_device="name",
     import_targets="name",
     manufacturer="slug",
+    master="name",
     nat_inside="address",
     nat_outside="address",
     parent_rack_group="slug",
@@ -222,6 +225,8 @@ ENDPOINT_NAME_MAPPING = {
     "interface_templates": "interface_template",
     "inventory_items": "inventory_item",
     "ip_addresses": "ip_address",
+    "locations": "location",
+    "location_types": "location_type",
     "manufacturers": "manufacturer",
     "platforms": "platform",
     "power_feeds": "power_feed",
@@ -293,6 +298,8 @@ ALLOWED_QUERY_PARAMS = {
     "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "lag": set(["name"]),
+    "location": set(["name"]),
+    "location_type": set(["name"]),
     "manufacturer": set(["slug"]),
     "master": set(["name"]),
     "nat_inside": set(["vrf", "address"]),
@@ -353,6 +360,7 @@ REQUIRED_ID_FIND = {
     "interfaces": set(["form_factor", "mode", "type"]),
     "interface_templates": set(["type"]),
     "ip_addresses": set(["status", "role"]),
+    "locations": set(["status"]),
     "prefixes": set(["status"]),
     "power_feeds": set(["status", "type", "supply", "phase"]),
     "power_outlets": set(["type", "feed_leg"]),
@@ -845,6 +853,8 @@ class NautobotModule:
                             id_list.append(list_item)
                             continue
                         else:
+                            # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
+                            # of approved query types, then it defaults to a q search
                             temp_dict = {QUERY_TYPES.get(k, "q"): search}
 
                         query_id = self._nb_endpoint_get(nb_endpoint, temp_dict, k)
@@ -856,6 +866,8 @@ class NautobotModule:
                     if k in ["lag", "rear_port", "rear_port_template"]:
                         query_params = self._build_query_params(k, data, user_query_params)
                     else:
+                        # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
+                        # of approved query types, then it defaults to a q search
                         query_params = {QUERY_TYPES.get(k, "q"): search}
                     query_id = self._nb_endpoint_get(nb_endpoint, query_params, k)
 

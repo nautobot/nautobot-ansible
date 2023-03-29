@@ -95,6 +95,10 @@ created_sites = make_nautobot_calls(nb.dcim.sites, sites)
 test_site = nb.dcim.sites.get(slug="test-site")
 test_site2 = nb.dcim.sites.get(slug="test-site2")
 
+# Create location type
+location_types = [{"name": "My Location Type", "slug": "my-location-type"}]
+created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
+
 # Create power panel
 power_panels = [{"name": "Test Power Panel", "site": test_site.id}]
 created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)

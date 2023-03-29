@@ -18,26 +18,10 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Mikhail Yohman (@FragmentedPacket)
-requirements:
-  - pynautobot
 version_added: "1.0.0"
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
 options:
-  api_version:
-    description:
-      - API Version Nautobot REST API
-    required: false
-    type: str
-    version_added: "4.1.0"
-  url:
-    description:
-      - URL of the Nautobot instance resolvable by Ansible control host
-    required: true
-    type: str
-  token:
-    description:
-      - The token created within Nautobot to authorize API access
-    required: true
-    type: str
   name:
     description:
       - The name of the RIR
@@ -57,26 +41,6 @@ options:
     required: false
     type: bool
     version_added: "3.0.0"
-  state:
-    description:
-      - Use C(present) or C(absent) for adding or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
-  query_params:
-    description:
-      - This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined
-      - in plugins/module_utils/utils.py and provides control to users on what may make
-      - an object unique in their environment.
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
-  validate_certs:
-    description:
-      - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
-    default: true
-    type: raw
 """
 
 EXAMPLES = r"""

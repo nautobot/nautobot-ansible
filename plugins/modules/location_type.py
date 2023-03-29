@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket)
+# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,79 +9,92 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: tenant_group
-short_description: Creates or removes tenant groups from Nautobot
+module: location_type
+short_description: Creates or removes location types from Nautobot
 description:
-  - Creates or removes tenant groups from Nautobot
+  - Creates or removes location types from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Joe Wesch (@joewesch)
+requirements:
+  - pynautobot
+version_added: "4.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
-      - Name of the tenant group to be created
+      - Name of the location type to be created
     required: true
     type: str
-    version_added: "3.0.0"
   slug:
     description:
       - URL-friendly unique shorthand
     required: false
     type: str
-    version_added: "3.0.0"
   description:
     description:
-      - The description of the tenant
+      - Location Type description
     required: false
     type: str
-    version_added: "3.0.0"
-  parent_tenant_group:
+  parent:
     description:
-      - Name of the parent tenant group
+      - The parent location type this location type should be tied to
     required: false
     type: raw
-    version_added: "3.1.0"
+  nestable:
+    description:
+      - Allow Locations of this type to be parents/children of other Locations of this same type
+      - Requires C(nautobot >= 1.5)
+    type: bool
+  content_types:
+    description:
+      - Location Type content type(s). These match app.endpoint and the endpoint is singular.
+      - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+    required: false
+    type: list
+    elements: str
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot tenant group module"
+- name: "Test Nautobot location type module"
   connection: local
   hosts: localhost
   gather_facts: False
   tasks:
-    - name: Create tenant within Nautobot with only required information
-      networktocode.nautobot.tenant_group:
+    - name: Create location type
+      networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Tenant Group ABC
-        slug: "tenant_group_abc"
+        name: My Location Type
         state: present
 
-    - name: Delete tenant within Nautobot
-      networktocode.nautobot.tenant_group:
+    - name: Delete location type
+      networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Tenant ABC
+        name: My Location Type
         state: absent
 
-    - name: Update tenant within Nautobot with a parent tenant group
-      networktocode.nautobot.tenant_group:
+    - name: Create location type with all parameters
+      networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Tenant Group ABC
-        parent_tenant_group: Customer Tenants
-        slug: "tenant_group_abc"
+        name: My Nested Location Type
+        description: My Nested Location Type Description
+        parent:
+          name: My Location Type
+        nestable: false
+        content_types:
+          - "dcim.device"
         state: present
-
 """
 
 RETURN = r"""
-tenant_group:
+location_type:
   description: Serialized object as created or already existent within Nautobot
   returned: on creation
   type: dict
@@ -92,9 +105,9 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.tenancy import (
-    NautobotTenancyModule,
-    NB_TENANT_GROUPS,
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NautobotDcimModule,
+    NB_LOCATION_TYPES,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -110,14 +123,17 @@ def main():
             name=dict(required=True, type="str"),
             slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            parent_tenant_group=dict(required=False, type="raw"),
+            parent=dict(required=False, type="raw"),
+            nestable=dict(required=False, type="bool"),
+            content_types=dict(required=False, type="list", elements="str"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    tenant_group = NautobotTenancyModule(module, NB_TENANT_GROUPS)
-    tenant_group.run()
+    location_type = NautobotDcimModule(module, NB_LOCATION_TYPES)
+    location_type.run()
 
 
 if __name__ == "__main__":  # pragma: no cover
