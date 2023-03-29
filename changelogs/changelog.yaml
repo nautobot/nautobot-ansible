@@ -361,3 +361,8 @@ releases:
         - (#185) Updated Doc Fragments
         - (#187) Updated Tag documentation
         - (#191) Added locations and location_type modules
+
+  4.3.1:
+    changes:
+      bugfixes:
+        - (#196) Virtual Chassis return multiple result at times
