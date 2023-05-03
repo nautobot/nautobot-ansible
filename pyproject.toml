@@ -13,7 +13,6 @@ pynautobot = "1.1.2"
 
 [tool.poetry.dev-dependencies]
 black = "^21.10b0"
-codecov = "*"
 coverage = "^4.0"
 cryptography = "*"
 jinja2 = "*"
