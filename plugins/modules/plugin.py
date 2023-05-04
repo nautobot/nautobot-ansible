@@ -18,7 +18,7 @@ notes:
 author:
   - Network to Code (@networktocode)
   - Patryk Szulczewski (@pszulczewski)
-version_added: "4.3.2"
+version_added: "4.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
@@ -27,25 +27,25 @@ options:
       - Plugin API base url
     required: true
     type: str
-    version_added: "4.3.2"
+    version_added: "4.4.0"
   endpoint:
     description:
       - Plugin object API endpoint
     required: true
     type: str
-    version_added: "4.3.2"
+    version_added: "4.4.0"
   id:
     description:
       - Plugin object identifier(s) like name, slug, etc.
     required: true
     type: dict
-    version_added: "4.3.2"
+    version_added: "4.4.0"
   attrs:
     description:
       - Object attributes other than identifier to create or update an object, like description, etc.
     required: false
     type: dict
-    version_added: "4.3.2"
+    version_added: "4.4.0"
 """
 
 EXAMPLES = r"""
