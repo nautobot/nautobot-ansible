@@ -36,7 +36,7 @@ options:
     version_added: "4.3.2"
   id:
     description:
-      - Plugin object identifier like {"name": "object_name"}, {"slug": "object_slug"}, etc.
+      - Plugin object identifier(s) like name, slug, etc.
     required: true
     type: dict
     version_added: "4.3.2"
