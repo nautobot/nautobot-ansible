@@ -218,17 +218,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-id"></div>
+        <div class="ansibleOptionAnchor" id="parameter-identifiers"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ids"></div>
 
-      .. _ansible_collections.networktocode.nautobot.plugin_module__parameter-id:
+      .. _ansible_collections.networktocode.nautobot.plugin_module__parameter-identifiers:
+      .. _ansible_collections.networktocode.nautobot.plugin_module__parameter-ids:
 
       .. rst-class:: ansible-option-title
 
-      **id**
+      **identifiers**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-id" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-identifiers" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: ids`
 
       .. rst-class:: ansible-option-type-line
 
@@ -512,7 +518,7 @@ Examples
             token: thisIsMyToken
             plugin: nautobot-device-lifecycle-mgmt
             endpoint: cve
-            id:
+            identifiers:
               name: CVE-2020-7777
             attrs:
               published_date: 2020-09-25
@@ -525,7 +531,7 @@ Examples
             token: thisIsMyToken
             plugin: nautobot-device-lifecycle-mgmt
             endpoint: cve
-            id:
+            identifiers:
               name: CVE-2020-7777
             attrs:
               published_date: 2020-09-25
@@ -538,7 +544,7 @@ Examples
             token: thisIsMyToken
             plugin: nautobot-device-lifecycle-mgmt
             endpoint: cve
-            id:
+            identifiers:
               name: CVE-2020-7777
             state: absent
 
@@ -548,7 +554,7 @@ Examples
             token: thisIsMyToken
             plugin: golden-config
             endpoint: compliance-feature
-            id:
+            ids:
               name: AAA
             attrs:
               description: "Authentication Administration Accounting"
@@ -560,7 +566,7 @@ Examples
             token: thisIsMyToken
             plugin: firewall
             endpoint: address-object
-            id:
+            ids:
               name: access-point
             attrs:
               ip_address:
@@ -573,7 +579,7 @@ Examples
             token: thisIsMyToken
             plugin: firewall
             endpoint: address-object
-            id:
+            ids:
               name: access-point
             state: absent
 
