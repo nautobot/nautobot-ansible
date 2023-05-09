@@ -511,3 +511,12 @@
         - relationship_association
   tags:
     - relationship_association
+
+- name: "PYNAUTOBOT_PLUGIN_BGP_ASN_TESTS"
+  include_tasks:
+    file: "plugin_bgp_asn.yml"
+    apply:
+      tags:
+        - plugin_bgp_ans
+  tags:
+    - plugin_bgp_ans

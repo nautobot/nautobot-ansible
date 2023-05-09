@@ -18,7 +18,7 @@ class NautobotPluginModule(NautobotModule):
         data = self.data
         plugin_name = self.data["plugin"]
         endpoint_name = data["endpoint"]
-        object_name = self.data["id"]
+        object_name = ", ".join(f"{key}:{value}" for key, value in self.data["id"].items())
 
         plugins_api = getattr(self.nb, self.endpoint)
         plugin_app = getattr(plugins_api, plugin_name)
