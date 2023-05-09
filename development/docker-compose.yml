@@ -28,8 +28,6 @@ services:
     entrypoint: "nautobot-server rqworker"
     depends_on:
       - "nautobot"
-    env_file:
-      - "./dev.env"
     <<: *nautobot-base
   postgres:
     image: "postgres:13"

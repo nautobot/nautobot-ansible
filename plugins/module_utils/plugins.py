@@ -18,13 +18,13 @@ class NautobotPluginModule(NautobotModule):
         data = self.data
         plugin_name = self.data["plugin"]
         endpoint_name = data["endpoint"]
-        object_name = ", ".join(f"{key}:{value}" for key, value in self.data["id"].items())
+        object_name = ", ".join(f"{key}:{value}" for key, value in self.data["identifiers"].items())
 
         plugins_api = getattr(self.nb, self.endpoint)
         plugin_app = getattr(plugins_api, plugin_name)
         plugin_endpoint = getattr(plugin_app, endpoint_name)
 
-        query_params = self.module.params.get("id")
+        query_params = self.module.params.get("identifiers")
         self.nb_object = self._nb_endpoint_get(plugin_endpoint, query_params, plugin_name)
 
         if self.module.params.get("attrs"):

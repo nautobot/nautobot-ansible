@@ -34,7 +34,8 @@ options:
     required: true
     type: str
     version_added: "4.4.0"
-  id:
+  identifiers:
+    aliases: [ids]
     description:
       - Plugin object identifier(s) like name, slug, etc.
     required: true
@@ -60,7 +61,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: nautobot-device-lifecycle-mgmt
         endpoint: cve
-        id:
+        identifiers:
           name: CVE-2020-7777
         attrs:
           published_date: 2020-09-25
@@ -73,7 +74,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: nautobot-device-lifecycle-mgmt
         endpoint: cve
-        id:
+        identifiers:
           name: CVE-2020-7777
         attrs:
           published_date: 2020-09-25
@@ -86,7 +87,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: nautobot-device-lifecycle-mgmt
         endpoint: cve
-        id:
+        identifiers:
           name: CVE-2020-7777
         state: absent
 
@@ -96,7 +97,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: golden-config
         endpoint: compliance-feature
-        id:
+        ids:
           name: AAA
         attrs:
           description: "Authentication Administration Accounting"
@@ -108,7 +109,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: firewall
         endpoint: address-object
-        id:
+        ids:
           name: access-point
         attrs:
           ip_address:
@@ -121,7 +122,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         plugin: firewall
         endpoint: address-object
-        id:
+        ids:
           name: access-point
         state: absent
 """
@@ -154,14 +155,14 @@ def main():
         dict(
             plugin=dict(required=True, type="str"),
             endpoint=dict(required=True, type="str"),
-            id=dict(required=True, type="dict"),
+            identifiers=dict(required=True, type="dict", aliases=["ids"]),
             attrs=dict(required=False, type="dict"),
         )
     )
 
     required_if = [
-        ("state", "present", ["plugin", "endpoint", "id"]),
-        ("state", "absent", ["plugin", "endpoint", "id"]),
+        ("state", "present", ["plugin", "endpoint", "identifiers"]),
+        ("state", "absent", ["plugin", "endpoint", "identifiers"]),
     ]
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)

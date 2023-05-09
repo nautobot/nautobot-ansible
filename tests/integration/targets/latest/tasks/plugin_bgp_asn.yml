@@ -69,7 +69,26 @@
       - test_three['diff']['after']['status'] == "planned"
       - test_three['msg'] == "autonomous-systems asn:65001 updated"
 
-- name: "BGP ASN 4: Delete"
+- name: "BGP ASN 4: Update Idempotent"
+  networktocode.nautobot.plugin:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    plugin: bgp
+    endpoint: autonomous-systems
+    id:
+      asn: 65001
+    attrs:
+      status: planned
+    state: present
+  register: test_four
+
+- name: "BGP ASN 4: ASSERT - Update Idempotent"
+  assert:
+    that:
+      - test_four is not changed
+      - test_four['msg'] == "autonomous-systems asn:65001 already exists"
+
+- name: "BGP ASN 5: Delete"
   networktocode.nautobot.plugin:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -78,12 +97,29 @@
     id:
       asn: 65001
     state: absent
-  register: test_four
+  register: test_five
 
-- name: "BGP ASN 4: ASSERT - Delete"
+- name: "BGP ASN 5: ASSERT - Delete"
   assert:
     that:
-      - test_four is changed
-      - test_four['diff']['before']['state'] == "present"
-      - test_four['diff']['after']['state'] == "absent"
-      - test_four['msg'] == "autonomous-systems asn:65001 deleted"
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "autonomous-systems asn:65001 deleted"
+
+- name: "BGP ASN 6: Delete non-existing"
+  networktocode.nautobot.plugin:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    plugin: bgp
+    endpoint: autonomous-systems
+    id:
+      asn: 65001
+    state: absent
+  register: test_six
+
+- name: "BGP ASN 6: ASSERT - non-existing"
+  assert:
+    that:
+      - test_six is not changed
+      - test_six['msg'] == "autonomous-systems asn:65001 already absent"
