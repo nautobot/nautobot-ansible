@@ -1,12 +1,4 @@
 ---
-x-nautobot-build: &nautobot-build
-  build:
-    args:
-      NAUTOBOT_VER: "${NAUTOBOT_VER}"
-      PYTHON_VER: "${PYTHON_VER}"
-    context: "../"
-    target: "nautobot"
-    dockerfile: "development/Dockerfile"
 x-nautobot-base: &nautobot-base
   image: "nautobot/nautobot:local"
   env_file:
@@ -16,13 +8,19 @@ x-nautobot-base: &nautobot-base
 version: "3.8"
 services:
   nautobot:
+    build:
+      args:
+        NAUTOBOT_VER: "${NAUTOBOT_VER}"
+        PYTHON_VER: "${PYTHON_VER}"
+      context: "../"
+      target: "nautobot"
+      dockerfile: "development/Dockerfile"
     command: "nautobot-server runserver 0.0.0.0:8000 --insecure"
     ports:
       - "8000:8000"
     depends_on:
       - "postgres"
       - "redis"
-    <<: *nautobot-build
     <<: *nautobot-base
   worker:
     entrypoint: "nautobot-server rqworker"
