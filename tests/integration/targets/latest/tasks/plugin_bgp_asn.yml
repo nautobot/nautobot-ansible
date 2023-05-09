@@ -10,7 +10,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     attrs:
       status: active
@@ -33,7 +33,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     attrs:
       status: active
@@ -54,7 +54,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     attrs:
       status: planned
@@ -75,7 +75,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     attrs:
       status: planned
@@ -94,7 +94,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     state: absent
   register: test_five
@@ -113,7 +113,7 @@
     token: "{{ nautobot_token }}"
     plugin: bgp
     endpoint: autonomous-systems
-    id:
+    ids:
       asn: 65001
     state: absent
   register: test_six
