@@ -517,6 +517,6 @@
     file: "plugin_bgp_asn.yml"
     apply:
       tags:
-        - plugin_bgp_ans
+        - plugin_bgp_asn
   tags:
-    - plugin_bgp_ans
+    - plugin_bgp_asn
