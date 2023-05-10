@@ -160,12 +160,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "present", ["plugin", "endpoint", "identifiers"]),
-        ("state", "absent", ["plugin", "endpoint", "identifiers"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     plugin = NautobotPluginModule(module, "plugins")
     plugin.run()
