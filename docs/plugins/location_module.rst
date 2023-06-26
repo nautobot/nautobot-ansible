@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.tenant_group_module:
+.. _ansible_collections.networktocode.nautobot.location_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.tenant_group module -- Creates or removes tenant groups from Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.location module -- Creates or removes locations from Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.tenant_group module -- Creates or removes tenant groups f
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.tenant_group_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.location_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.tenant_group`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.location`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 4.3.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes tenant groups from Nautobot
+- Creates or removes locations from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.tenant_group_module_requirements:
+.. _ansible_collections.networktocode.nautobot.location_module_requirements:
 
 Requirements
 ------------
@@ -110,7 +110,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -145,9 +145,46 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-custom_fields:
+
+      .. rst-class:: ansible-option-title
+
+      **custom_fields**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Must exist in Nautobot and in key/value format
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-description:
 
       .. rst-class:: ansible-option-title
 
@@ -161,8 +198,39 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      .. raw:: html
 
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Location description
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location_type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-location_type:
+
+      .. rst-class:: ansible-option-title
+
+      **location_type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
 
       .. raw:: html
 
@@ -172,7 +240,9 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the tenant
+      The type of location
+
+      Required if \ :emphasis:`state=present`\  and does not exist yet
 
 
       .. raw:: html
@@ -184,7 +254,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -198,9 +268,6 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
       .. raw:: html
 
         </div>
@@ -209,7 +276,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Name of the tenant group to be created
+      Name of the location to be created
 
 
       .. raw:: html
@@ -219,24 +286,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-parent_tenant_group"></div>
+        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-parent_tenant_group:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-parent:
 
       .. rst-class:: ansible-option-title
 
-      **parent_tenant_group**
+      **parent**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-parent_tenant_group" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.1.0`
-
 
       .. raw:: html
 
@@ -246,7 +310,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Name of the parent tenant group
+      The parent location this location should be tied to
 
 
       .. raw:: html
@@ -258,7 +322,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -297,9 +361,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-site"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-site:
+
+      .. rst-class:: ansible-option-title
+
+      **site**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The site this location should be tied to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-slug"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-slug:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-slug:
 
       .. rst-class:: ansible-option-title
 
@@ -312,9 +410,6 @@ Parameters
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
 
       .. raw:: html
 
@@ -336,7 +431,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -376,9 +471,45 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Status of the location
+
+      Required if \ :emphasis:`state=present`\  and does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -412,7 +543,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -446,7 +577,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -503,35 +634,42 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot tenant group module"
+    - name: "Test Nautobot location module"
       connection: local
       hosts: localhost
       gather_facts: False
       tasks:
-        - name: Create tenant within Nautobot with only required information
-          networktocode.nautobot.tenant_group:
+        - name: Create location
+          networktocode.nautobot.location:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant Group ABC
-            slug: "tenant_group_abc"
+            name: My Location
+            status: active
+            location_type:
+              name: My Location Type
             state: present
 
-        - name: Delete tenant within Nautobot
-          networktocode.nautobot.tenant_group:
+        - name: Delete location
+          networktocode.nautobot.location:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant ABC
+            name: My Location
             state: absent
 
-        - name: Update tenant within Nautobot with a parent tenant group
-          networktocode.nautobot.tenant_group:
+        - name: Create location with all parameters
+          networktocode.nautobot.location:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant Group ABC
-            parent_tenant_group: Customer Tenants
-            slug: "tenant_group_abc"
+            name: My Nested Location
+            status: active
+            location_type:
+              name: My Location Type
+            description: My Nested Location Description
+            parent:
+              name: My Location
+            site:
+              name: My Site
             state: present
-
 
 
 
@@ -558,9 +696,49 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__return-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-location" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` on creation
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.location_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -595,46 +773,6 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </div>
 
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-tenant_group"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__return-tenant_group:
-
-      .. rst-class:: ansible-option-title
-
-      **tenant_group**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#return-tenant_group" title="Permalink to this return value"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Serialized object as created or already existent within Nautobot
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-returned-bold:`Returned:` on creation
-
-
-      .. raw:: html
-
-        </div>
-
-
 
 ..  Status (Presently only deprecated)
 
@@ -644,7 +782,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Mikhail Yohman (@FragmentedPacket)
+- Joe Wesch (@joewesch)
 
 
 

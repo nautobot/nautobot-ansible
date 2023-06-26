@@ -42,7 +42,7 @@ networktocode.nautobot.device_interface_template module -- Creates or removes in
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.3.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -445,7 +445,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      URL of the Nautobot instance resolvable by Ansible control host
+      The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
 
       .. raw:: html
@@ -479,9 +479,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :literal:`no`\ , SSL certificates will not be validated.
-          This should only be used on personally controlled sites using self-signed certificates.
-          
+      If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
 
       .. rst-class:: ansible-option-line
