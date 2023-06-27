@@ -42,7 +42,7 @@ networktocode.nautobot.tag module -- Creates or removes tags from Nautobot
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.3.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -209,6 +209,8 @@ Parameters
       Tags content type(s). These match app.endpoint and the endpoint is singular.
 
       e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+
+      Requires \ :literal:`api\_version \>= 1.3`\ 
 
 
       .. raw:: html
@@ -472,7 +474,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      URL of the Nautobot instance resolvable by Ansible control host
+      The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
 
       .. raw:: html
@@ -506,9 +508,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :literal:`no`\ , SSL certificates will not be validated.
-          This should only be used on personally controlled sites using self-signed certificates.
-          
+      If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
 
       .. rst-class:: ansible-option-line
@@ -552,6 +552,7 @@ Examples
           networktocode.nautobot.tag:
             url: http://nautobot.local
             token: thisIsMyToken
+            api_version: "1.3"
             name: "{{ item.name }}"
             description: "{{ item.description }}"
             content_types:

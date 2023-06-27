@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 4.2.0
+Collection version 4.3.1
 
 .. contents::
    :local:
@@ -71,9 +71,12 @@ Modules
 * :ref:`inventory_item module <ansible_collections.networktocode.nautobot.inventory_item_module>` -- Creates or removes inventory items from Nautobot
 * :ref:`ip_address module <ansible_collections.networktocode.nautobot.ip_address_module>` -- Creates or removes IP addresses from Nautobot
 * :ref:`ipam_role module <ansible_collections.networktocode.nautobot.ipam_role_module>` -- Creates or removes ipam roles from Nautobot
+* :ref:`location module <ansible_collections.networktocode.nautobot.location_module>` -- Creates or removes locations from Nautobot
+* :ref:`location_type module <ansible_collections.networktocode.nautobot.location_type_module>` -- Creates or removes location types from Nautobot
 * :ref:`manufacturer module <ansible_collections.networktocode.nautobot.manufacturer_module>` -- Create or delete manufacturers within Nautobot
 * :ref:`nautobot_server module <ansible_collections.networktocode.nautobot.nautobot_server_module>` -- Manages Nautobot Server application.
 * :ref:`platform module <ansible_collections.networktocode.nautobot.platform_module>` -- Create or delete platforms within Nautobot
+* :ref:`plugin module <ansible_collections.networktocode.nautobot.plugin_module>` -- CRUD operation on plugin objects
 * :ref:`power_feed module <ansible_collections.networktocode.nautobot.power_feed_module>` -- Create, update or delete power feeds within Nautobot
 * :ref:`power_outlet module <ansible_collections.networktocode.nautobot.power_outlet_module>` -- Create, update or delete power outlets within Nautobot
 * :ref:`power_outlet_template module <ansible_collections.networktocode.nautobot.power_outlet_template_module>` -- Create, update or delete power outlet templates within Nautobot
@@ -157,9 +160,12 @@ Lookup Plugins
     inventory_item_module
     ip_address_module
     ipam_role_module
+    location_module
+    location_type_module
     manufacturer_module
     nautobot_server_module
     platform_module
+    plugin_module
     power_feed_module
     power_outlet_module
     power_outlet_template_module
