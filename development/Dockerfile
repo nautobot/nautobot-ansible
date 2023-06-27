@@ -3,5 +3,11 @@ ARG PYTHON_VER
 
 FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VER}-py${PYTHON_VER} as nautobot
 
-RUN pip install nautobot-bgp-models
+# Copy in the requirements file
+COPY ./development/requirements${NAUTOBOT_VER}.txt /opt/nautobot/requirements.txt
+
+# Install the requirements
+RUN pip install -r /opt/nautobot/requirements.txt
+
+# Copy in the development configuration file
 COPY ./development/nautobot_config.py /opt/nautobot/nautobot_config.py
