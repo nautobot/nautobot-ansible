@@ -91,6 +91,29 @@ def run_command(context, command, **kwargs):
 
 
 # ------------------------------------------------------------------------------
+# BUILD
+# ------------------------------------------------------------------------------
+@task(
+    help={
+        "force_rm": "Always remove intermediate containers",
+        "cache": "Whether to use Docker's cache when building the image (defaults to enabled)",
+    }
+)
+def build(context, force_rm=False, cache=True):
+    """Build Nautobot docker image."""
+    command = "build"
+
+    if not cache:
+        command += " --no-cache"
+    if force_rm:
+        command += " --force-rm"
+
+    print(f"Building Nautobot with Python {context.nautobot_ansible.python_ver}...")
+    print(f"Nautobot Version: {context.nautobot_ansible.nautobot_ver}")
+    docker_compose(context, command)
+
+
+# ------------------------------------------------------------------------------
 # START / STOP / DEBUG
 # ------------------------------------------------------------------------------
 @task
