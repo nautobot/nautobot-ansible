@@ -42,7 +42,7 @@ networktocode.nautobot.ip_address module -- Creates or removes IP addresses from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.3.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -349,7 +349,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      must exist in Nautobot
+      Must exist in Nautobot and in key/value format
 
 
       .. raw:: html
@@ -721,7 +721,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Any tags that the IP address may need to be associated with
+      Any tags that this item may need to be associated with
 
 
       .. raw:: html
@@ -826,7 +826,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      URL of the Nautobot instance resolvable by Ansible control host
+      The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
 
       .. raw:: html

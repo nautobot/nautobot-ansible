@@ -366,3 +366,10 @@ releases:
     changes:
       bugfixes:
         - (#196) Virtual Chassis return multiple result at times
+
+  4.4.0:
+    changes:
+      minor_changes:
+        - (#211) Removes codecov from dev dependencies
+        - (#203) Adds plugin module
+        - (#209) Catches HTTPError for GraphQL query and enables Ansible retries

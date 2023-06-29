@@ -17,7 +17,11 @@ from packaging import version
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
 nb_token = os.getenv("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
 nb = pynautobot.api(nb_host, nb_token)
-nb_version = version.parse(nb.version)
+api_version = version.parse(nb.version)
+
+# Set the nautobot version for conditional population of data
+nb_status = nb.status()
+nautobot_version = version.parse(nb_status["nautobot-version"])
 
 ERRORS = False
 
@@ -95,9 +99,23 @@ created_sites = make_nautobot_calls(nb.dcim.sites, sites)
 test_site = nb.dcim.sites.get(slug="test-site")
 test_site2 = nb.dcim.sites.get(slug="test-site2")
 
-# Create location type
-location_types = [{"name": "My Location Type", "slug": "my-location-type"}]
-created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
+# Locations are only available in Nautobot 1.4+
+if nautobot_version >= version.parse("1.4"):
+    # Create location types
+    location_types = [{"name": "My Parent Location Type", "slug": "my-parent-location-type", "nestable": True}]
+    created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
+    parent_location_type = nb.dcim.location_types.get(slug="my-parent-location-type")
+
+    # Create child location types
+    child_location_types = [
+        {
+            "name": "My Child Location Type",
+            "slug": "my-child-location-type",
+            "nestable": True,
+            "parent": parent_location_type.id,
+        }
+    ]
+    created_child_location_types = make_nautobot_calls(nb.dcim.location_types, child_location_types)
 
 # Create power panel
 power_panels = [{"name": "Test Power Panel", "site": test_site.id}]
@@ -131,7 +149,14 @@ vlans = [
     {"name": "Wireless", "vid": 100, "site": test_site.id, "status": "active"},
     {"name": "Data", "vid": 200, "site": test_site.id, "status": "active"},
     {"name": "VoIP", "vid": 300, "site": test_site.id, "status": "active"},
-    {"name": "Test VLAN", "vid": 400, "site": test_site.id, "tenant": test_tenant.id, "group": test_vlan_group.id, "status": "active"},
+    {
+        "name": "Test VLAN",
+        "vid": 400,
+        "site": test_site.id,
+        "tenant": test_tenant.id,
+        "group": test_vlan_group.id,
+        "status": "active",
+    },
 ]
 created_vlans = make_nautobot_calls(nb.ipam.vlans, vlans)
 
@@ -157,8 +182,20 @@ arista_manu = nb.dcim.manufacturers.get(slug="arista")
 device_types = [
     {"model": "Cisco Test", "slug": "cisco-test", "manufacturer": cisco_manu.id},
     {"model": "Arista Test", "slug": "arista-test", "manufacturer": arista_manu.id},
-    {"model": "Nexus Parent", "slug": "nexus-parent", "u_height": 0, "manufacturer": cisco_manu.id, "subdevice_role": "parent"},
-    {"model": "Nexus Child", "slug": "nexus-child", "u_height": 0, "manufacturer": cisco_manu.id, "subdevice_role": "child"},
+    {
+        "model": "Nexus Parent",
+        "slug": "nexus-parent",
+        "u_height": 0,
+        "manufacturer": cisco_manu.id,
+        "subdevice_role": "parent",
+    },
+    {
+        "model": "Nexus Child",
+        "slug": "nexus-child",
+        "u_height": 0,
+        "manufacturer": cisco_manu.id,
+        "subdevice_role": "child",
+    },
     {"model": "1841", "slug": "1841", "manufacturer": cisco_manu.id},
 ]
 
@@ -223,10 +260,36 @@ devices = [
         "local_context_data": {"ntp_servers": ["pool.ntp.org"]},
         "status": "active",
     },
-    {"name": "TestDeviceR1", "device_type": cisco_test.id, "device_role": core_switch.id, "site": test_site.id, "rack": test_rack.id, "status": "active"},
-    {"name": "R1-Device", "device_type": cisco_test.id, "device_role": core_switch.id, "site": test_site2.id, "rack": test_rack_site2.id, "status": "active"},
-    {"name": "Test Nexus One", "device_type": nexus_parent.id, "device_role": core_switch.id, "site": test_site.id, "status": "active"},
-    {"name": "Test Nexus Child One", "device_type": nexus_child.id, "device_role": core_switch.id, "site": test_site.id, "status": "active"},
+    {
+        "name": "TestDeviceR1",
+        "device_type": cisco_test.id,
+        "device_role": core_switch.id,
+        "site": test_site.id,
+        "rack": test_rack.id,
+        "status": "active",
+    },
+    {
+        "name": "R1-Device",
+        "device_type": cisco_test.id,
+        "device_role": core_switch.id,
+        "site": test_site2.id,
+        "rack": test_rack_site2.id,
+        "status": "active",
+    },
+    {
+        "name": "Test Nexus One",
+        "device_type": nexus_parent.id,
+        "device_role": core_switch.id,
+        "site": test_site.id,
+        "status": "active",
+    },
+    {
+        "name": "Test Nexus Child One",
+        "device_type": nexus_child.id,
+        "device_role": core_switch.id,
+        "site": test_site.id,
+        "status": "active",
+    },
 ]
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
@@ -277,8 +340,18 @@ test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.
 
 # Create IP Addresses
 ip_addresses = [
-    {"address": "172.16.180.1/24", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi1.id, "status": "active"},
-    {"address": "2001::1:1/64", "assigned_object_type": "dcim.interface", "assigned_object_id": test100_gi2.id, "status": "active"},
+    {
+        "address": "172.16.180.1/24",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": test100_gi1.id,
+        "status": "active",
+    },
+    {
+        "address": "2001::1:1/64",
+        "assigned_object_type": "dcim.interface",
+        "assigned_object_id": test100_gi2.id,
+        "status": "active",
+    },
     {
         "address": "172.16.180.11/24",
         "dns_name": "nexus.example.com",
@@ -409,7 +482,13 @@ created_route_targets = make_nautobot_calls(nb.ipam.route_targets, route_targets
 
 # Create Relationship
 relationships = [
-    {"name": "VLAN to Device", "slug": "vlan-to-device", "type": "one-to-one", "source_type": "ipam.vlan", "destination_type": "dcim.device"},
+    {
+        "name": "VLAN to Device",
+        "slug": "vlan-to-device",
+        "type": "one-to-one",
+        "source_type": "ipam.vlan",
+        "destination_type": "dcim.device",
+    },
 ]
 created_relationships = make_nautobot_calls(nb.extras.relationships, relationships)
 

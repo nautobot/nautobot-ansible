@@ -18,6 +18,13 @@ except ImportError as imp_exc:
 else:
     PYNAUTOBOT_IMPORT_ERROR = None
 
+try:
+    import requests
+except ImportError as imp_exc:
+    REQUESTS_IMPORT_ERROR = imp_exc
+else:
+    REQUESTS_IMPORT_ERROR = None
+
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotApiBase,
     NautobotGraphQL,
@@ -116,6 +123,11 @@ class ActionModule(ActionBase):
                 AnsibleError("pynautobot must be installed to use this plugin"),
                 PYNAUTOBOT_IMPORT_ERROR,
             )
+        if REQUESTS_IMPORT_ERROR:
+            raise_from(
+                AnsibleError("requests must be installed to use this plugin"),
+                REQUESTS_IMPORT_ERROR,
+            )
 
         self._supports_check_mode = True
         self._supports_async = False
@@ -134,7 +146,13 @@ class ActionModule(ActionBase):
         # do work!
         # Get the arguments from the module definition
         args = self._task.args
-        results = nautobot_action_graphql(args=args)
+        try:
+            results = nautobot_action_graphql(args=args)
+        except requests.exceptions.HTTPError as http_error:
+            return {
+                "failed": True,
+                "msg": f"Request failed: {http_error}",
+            }
 
         # Results should be the data response of the query to be returned as a lookup
         return results
