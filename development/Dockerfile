@@ -3,6 +3,9 @@ ARG PYTHON_VER
 
 FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VER}-py${PYTHON_VER} as nautobot
 
+# Capture the argument again
+ARG NAUTOBOT_VER
+
 # Copy in the requirements file
 COPY ./development/requirements${NAUTOBOT_VER}.txt /opt/nautobot/requirements.txt
 
