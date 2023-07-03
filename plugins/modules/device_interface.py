@@ -33,7 +33,7 @@ options:
   status:
     description:
       - The status of the interface
-      - Required if I(state=present) and the interface does not exist yet
+      - Required if I(state=present) and using I(api_version) 1.4+
     required: false
     type: raw
     version_added: "4.4.0"
