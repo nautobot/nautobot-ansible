@@ -30,6 +30,13 @@ options:
     required: true
     type: raw
     version_added: "3.0.0"
+  status:
+    description:
+      - The status of the interface
+      - Required if I(state=present) and the interface does not exist yet
+    required: false
+    type: raw
+    version_added: "3.0.0"
   name:
     description:
       - Name of the interface to be created
@@ -230,6 +237,7 @@ def main():
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
             device=dict(required=True, type="raw"),
+            status=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
             type=dict(required=False, type="str"),
