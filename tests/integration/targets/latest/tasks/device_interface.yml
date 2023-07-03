@@ -295,10 +295,14 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
+    api_version: 1.5
     name: GigabitEthernet4
-    status: active
+    status: planned
     type: "1000Base-T (1GE)"
   register: test_twelve
+  when:
+    # Status is mandatory only on Nautobot 1.4+
+    - "nautobot_version is version('1.4', '>=')"
 
 - name: "12 - ASSERT"
   assert:
@@ -308,5 +312,8 @@
       - test_twelve['diff']['before']['state'] == 'absent'
       - test_twelve['diff']['after']['state'] == 'present'
       - test_twelve['interface']['name'] == "GigabitEthernet4"
-      - test_twelve['interface']['status'] == "active"
+      - test_twelve['interface']['status'] == "planned"
       - test_twelve['interface']['device'] == test100['key']
+  when:
+    # Status is mandatory only on Nautobot 1.4+
+    - "nautobot_version is version('1.4', '>=')"
