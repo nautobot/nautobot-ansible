@@ -303,10 +303,10 @@
 - name: "12 - ASSERT"
   assert:
     that:
-      - test_one is changed
-      - test_one['msg'] == "interface GigabitEthernet4 created"
-      - test_one['diff']['before']['state'] == 'absent'
-      - test_one['diff']['after']['state'] == 'present'
-      - test_one['interface']['name'] == "GigabitEthernet4"
-      - test_one['interface']['status'] == "active"
-      - test_one['interface']['device'] == test100['key']
+      - test_twelve is changed
+      - test_twelve['msg'] == "interface GigabitEthernet4 created"
+      - test_twelve['diff']['before']['state'] == 'absent'
+      - test_twelve['diff']['after']['state'] == 'present'
+      - test_twelve['interface']['name'] == "GigabitEthernet4"
+      - test_twelve['interface']['status'] == "active"
+      - test_twelve['interface']['device'] == test100['key']
