@@ -288,3 +288,25 @@
     that:
       - test_eleven is failed
       - test_eleven['msg'] == "Must set update_vc_child to True to allow child device interface modification"
+
+
+- name: "12 - Interface with status"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: test100
+    name: GigabitEthernet4
+    status: active
+    type: "1000Base-T (1GE)"
+  register: test_twelve
+
+- name: "12 - ASSERT"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['msg'] == "interface GigabitEthernet4 created"
+      - test_one['diff']['before']['state'] == 'absent'
+      - test_one['diff']['after']['state'] == 'present'
+      - test_one['interface']['name'] == "GigabitEthernet4"
+      - test_one['interface']['status'] == "active"
+      - test_one['interface']['device'] == test100['key']

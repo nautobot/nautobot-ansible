@@ -4,6 +4,13 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
+from copy import deepcopy
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NautobotDcimModule,
+    NB_INTERFACES,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 __metaclass__ = type
 
@@ -36,7 +43,7 @@ options:
       - Required if I(state=present) and the interface does not exist yet
     required: false
     type: raw
-    version_added: "3.0.0"
+    version_added: "4.4.0"
   name:
     description:
       - Name of the interface to be created
@@ -219,14 +226,6 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_INTERFACES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
-
 
 def main():
     """
@@ -255,9 +254,11 @@ def main():
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec,
+                           supports_check_mode=True)
 
-    device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
+    device_interface = NautobotDcimModule(
+        module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
 
 
