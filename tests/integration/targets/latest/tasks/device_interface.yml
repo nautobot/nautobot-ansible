@@ -295,8 +295,8 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    api_version: 1.5
-    name: GigabitEthernet4
+    api_version: "{{ nautobot_version }}"
+    name: GigabitEthernet9999
     status: planned
     type: "1000Base-T (1GE)"
   register: test_twelve
@@ -308,10 +308,10 @@
   assert:
     that:
       - test_twelve is changed
-      - test_twelve['msg'] == "interface GigabitEthernet4 created"
+      - test_twelve['msg'] == "interface GigabitEthernet9999 created"
       - test_twelve['diff']['before']['state'] == 'absent'
       - test_twelve['diff']['after']['state'] == 'present'
-      - test_twelve['interface']['name'] == "GigabitEthernet4"
+      - test_twelve['interface']['name'] == "GigabitEthernet9999"
       - test_twelve['interface']['status'] == "planned"
       - test_twelve['interface']['device'] == test100['key']
   when:
