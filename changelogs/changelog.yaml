@@ -354,3 +354,9 @@ releases:
       minor_changes:
         - (#171) Add provider_network to circuit_termination module
         - (#172) Add description to manufacturer
+
+  4.3.0:
+    changes:
+      bugfixes:
+        - (#223) Inventory Hosts Empty On Error
+ 

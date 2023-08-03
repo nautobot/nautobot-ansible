@@ -260,7 +260,7 @@ from ipaddress import ip_interface
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.module_utils.ansible_release import __version__ as ansible_version
-from ansible.errors import AnsibleError
+from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils._text import to_text, to_native
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib import error as urllib_error
@@ -315,7 +315,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                         color="red",
                     )
                     # Need to return mock response data that is empty to prevent any failures downstream
-                    return {"results": [], "next": None}
+                    raise AnsibleParserError("Permission denied error.")
 
                 raise AnsibleError(to_native(e.fp.read()))
 

@@ -195,7 +195,7 @@ import os
 from sys import version as python_version
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.module_utils.ansible_release import __version__ as ansible_version
-from ansible.errors import AnsibleError
+from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
@@ -361,7 +361,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
-                return {"results": [], "next": None}
+                raise AnsibleParserError("Permission denied error.")
             else:
                 self.display.display(f"{e.code}", color="red")
                 self.display.display(
@@ -371,7 +371,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     color="red",
                 )
                 # Need to return mock response data that is empty to prevent any failures downstream
-                return {"results": [], "next": None}
+                raise AnsibleParserError("Something went wrong while executing the query.")
         json_data = json.loads(response.read())
         self.display.vvvv(f"JSON response: {json_data}")
 
@@ -382,7 +382,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 color="red",
             )
             # Need to return mock response data that is empty to prevent any failures downstream
-            return {"results": [], "next": None}
+            raise AnsibleParserError("Error in the GraphQL query.")
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             self.inventory.add_host(device["name"])
