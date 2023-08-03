@@ -92,6 +92,7 @@ QUERY_TYPES = dict(
     installed_device="name",
     import_targets="name",
     manufacturer="slug",
+    master="name",
     nat_inside="address",
     nat_outside="address",
     parent_rack_group="slug",
@@ -852,6 +853,8 @@ class NautobotModule:
                             id_list.append(list_item)
                             continue
                         else:
+                            # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
+                            # of approved query types, then it defaults to a q search
                             temp_dict = {QUERY_TYPES.get(k, "q"): search}
 
                         query_id = self._nb_endpoint_get(nb_endpoint, temp_dict, k)
@@ -863,6 +866,8 @@ class NautobotModule:
                     if k in ["lag", "rear_port", "rear_port_template"]:
                         query_params = self._build_query_params(k, data, user_query_params)
                     else:
+                        # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
+                        # of approved query types, then it defaults to a q search
                         query_params = {QUERY_TYPES.get(k, "q"): search}
                     query_id = self._nb_endpoint_get(nb_endpoint, query_params, k)
 

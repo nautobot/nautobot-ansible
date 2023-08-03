@@ -356,7 +356,25 @@ releases:
         - (#172) Add description to manufacturer
 
   4.3.0:
+    changes: 
+      minor_changes:
+        - (#185) Updated Doc Fragments
+        - (#187) Updated Tag documentation
+        - (#191) Added locations and location_type modules
+
+  4.3.1:
+    changes:
+      bugfixes:
+        - (#196) Virtual Chassis return multiple result at times
+
+  4.4.0:
+    changes:
+      minor_changes:
+        - (#211) Removes codecov from dev dependencies
+        - (#203) Adds plugin module
+        - (#209) Catches HTTPError for GraphQL query and enables Ansible retries
+
+  4.5.0:
     changes:
       bugfixes:
         - (#223) Inventory Hosts Empty On Error
- 

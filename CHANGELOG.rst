@@ -4,6 +4,37 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v4.4.0
+======
+
+Release Summary
+---------------
+
+Adds plugin module and makes updates to HTTP handling on GraphQL
+
+Minor Changes
+-------------
+- (#211) Removes codecov from dev dependencies
+- (#203) Adds plugin module
+- (#209) Catches HTTPError for GraphQL query and enables Ansible retries
+
+v4.3.1
+======
+
+Release Summary
+---------------
+
+Adds Location and Location Type modules.
+
+Bugfixes
+--------
+- (#170) Updates incorrect key name
+- (#175) Adds additional key options for circuit termination and manufacturer
+
+Minor Changes
+-------------
+- (#191) Added Location and Location Type modules
+
 v4.2.0
 ======
 

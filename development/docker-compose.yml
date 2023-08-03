@@ -1,24 +1,32 @@
-version: "3"
+---
+x-nautobot-base: &nautobot-base
+  image: "nautobot/nautobot:local"
+  env_file:
+    - "dev.env"
+  tty: true
+
+version: "3.8"
 services:
   nautobot:
-    image: "ghcr.io/nautobot/nautobot:${NAUTOBOT_VER}-py${PYTHON_VER}"
-    command: "nautobot-server runserver 0.0.0.0:8000"
+    build:
+      args:
+        NAUTOBOT_VER: "${NAUTOBOT_VER}"
+        PYTHON_VER: "${PYTHON_VER}"
+      context: "../"
+      target: "nautobot"
+      dockerfile: "development/Dockerfile"
+    command: "nautobot-server runserver 0.0.0.0:8000 --insecure"
     ports:
       - "8000:8000"
     depends_on:
       - "postgres"
       - "redis"
-    env_file:
-      - "./dev.env"
-    tty: true
+    <<: *nautobot-base
   worker:
-    image: "ghcr.io/nautobot/nautobot:${NAUTOBOT_VER}-py${PYTHON_VER}"
     entrypoint: "nautobot-server rqworker"
     depends_on:
       - "nautobot"
-    env_file:
-      - "./dev.env"
-    tty: true
+    <<: *nautobot-base
   postgres:
     image: "postgres:13"
     env_file:

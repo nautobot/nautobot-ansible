@@ -42,7 +42,7 @@ networktocode.nautobot.manufacturer module -- Create or delete manufacturers wit
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.2.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.3.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -145,17 +145,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-manufacturer"></div>
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-manufacturer:
+      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-description:
 
       .. rst-class:: ansible-option-title
 
-      **manufacturer**
+      **description**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-manufacturer" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -399,7 +399,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      URL of the Nautobot instance resolvable by Ansible control host
+      The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
 
       .. raw:: html

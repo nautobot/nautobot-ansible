@@ -7,7 +7,8 @@
 - block:
   - set_fact:
       site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-      location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=my-location-type') }}"
+      parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=my-parent-location-type') }}"
+      child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=my-child-location-type') }}"
 
   - name: "1 - Create location within Nautobot with only required information"
     networktocode.nautobot.location:
@@ -15,7 +16,7 @@
       token: "{{ nautobot_token }}"
       name: Test Location
       status: Active
-      location_type: "{{ location_type['key'] }}"
+      location_type: "{{ parent_location_type['key'] }}"
       site: "{{ site['key'] }}"
     register: test_create_min
 
@@ -28,7 +29,7 @@
         - test_create_min['location']['name'] == "Test Location"
         - test_create_min['location']['status'] == "active"
         - test_create_min['location']['site'] == site["key"]
-        - test_create_min['location']['location_type'] == location_type["key"]
+        - test_create_min['location']['location_type'] == parent_location_type["key"]
         - test_create_min['msg'] == "location Test Location created"
 
   - name: "2 - Duplicate"
@@ -37,7 +38,7 @@
       token: "{{ nautobot_token }}"
       name: Test Location
       status: Active
-      location_type: "{{ location_type['key'] }}"
+      location_type: "{{ parent_location_type['key'] }}"
       site: "{{ site['key'] }}"
     register: test_create_idem
 
@@ -54,7 +55,7 @@
       token: "{{ nautobot_token }}"
       name: Test Location
       status: Active
-      location_type: "{{ location_type['key'] }}"
+      location_type: "{{ parent_location_type['key'] }}"
       site: "{{ site['key'] }}"
       description: Test Location Description
     register: test_update
@@ -73,8 +74,7 @@
       name: Test Location 2
       status: Active
       description: Test Location 2 Description
-      location_type: "{{ location_type['key'] }}"
-      site: "{{ site['key'] }}"
+      location_type: "{{ child_location_type['key'] }}"
       parent: "{{ test_create_min['location']['id'] }}"
       state: present
     register: test_create_max
@@ -89,8 +89,7 @@
         - test_create_max['location']['status'] == "active"
         - test_create_max['msg'] == "location Test Location 2 created"
         - test_create_max['location']['description'] == "Test Location 2 Description"
-        - test_create_max['location']['site'] == site["key"]
-        - test_create_max['location']['location_type'] == location_type["key"]
+        - test_create_max['location']['location_type'] == child_location_type["key"]
         - test_create_max['location']['parent'] == test_create_min['location']['id']
 
   - name: "5 - Duplicate create with all parameters"
@@ -100,8 +99,7 @@
       name: Test Location 2
       status: Active
       description: Test Location 2 Description
-      location_type: "{{ location_type['key'] }}"
-      site: "{{ site['key'] }}"
+      location_type: "{{ child_location_type['key'] }}"
       parent: "{{ test_create_min['location']['id'] }}"
       state: present
     register: test_create_max_idem

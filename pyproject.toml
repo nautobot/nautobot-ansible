@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "4.3.0"
+version = "4.5.0"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com"]
 license = "Apache 2.0"
@@ -13,7 +13,6 @@ pynautobot = "1.1.2"
 
 [tool.poetry.dev-dependencies]
 black = "^21.10b0"
-codecov = "*"
 coverage = "^4.0"
 cryptography = "*"
 jinja2 = "*"
