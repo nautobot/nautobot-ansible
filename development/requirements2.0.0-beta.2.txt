@@ -1,0 +1,1 @@
+nautobot-bgp-models @ git+https://github.com/nautobot/nautobot-plugin-bgp-models@v2
