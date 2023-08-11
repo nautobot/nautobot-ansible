@@ -75,13 +75,13 @@ options:
       - Interface that will be the parent of the interface being created
     required: false
     type: raw
-    version_added: "4.4.1"
+    version_added: "4.5.0"
   bridge:
     description:
       - Interface that will be the bridge of the interface being created
     required: false
     type: raw
-    version_added: "4.4.1"
+    version_added: "4.5.0"
   mtu:
     description:
       - The MTU of the interface
