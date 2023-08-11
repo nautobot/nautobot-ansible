@@ -70,6 +70,18 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
+  parent_interface:
+    description:
+      - Interface that will be the parent of the interface being created
+    required: false
+    type: raw
+    version_added: "4.4.1"
+  bridge:
+    description:
+      - Interface that will be the bridge of the interface being created
+    required: false
+    type: raw
+    version_added: "4.4.1"
   mtu:
     description:
       - The MTU of the interface
@@ -206,6 +218,23 @@ EXAMPLES = r"""
         enabled: false
         custom_fields:
           monitored: True
+    - name: Create child interface
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: GigabitEthernet1/1/1
+        type: Virtual
+        parent_interface:
+          name: GigabitEthernet1/1
+    - name: Create bridge interface
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: Bridge1
+        bridge:
+          name: GigabitEthernet1/1
 """
 
 RETURN = r"""
@@ -243,6 +272,8 @@ def main():
             type=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
             lag=dict(required=False, type="raw"),
+            parent_interface=dict(required=False, type="raw"),
+            bridge=dict(required=False, type="raw"),
             mtu=dict(required=False, type="int"),
             mac_address=dict(required=False, type="str"),
             mgmt_only=dict(required=False, type="bool"),
