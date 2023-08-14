@@ -289,31 +289,81 @@
       - test_eleven is failed
       - test_eleven['msg'] == "Must set update_vc_child to True to allow child device interface modification"
 
+##
+##
+### Nautobot 1.4+ tests
+##
+##
+- block:
+  - name: "12 - Interface with status"
+    networktocode.nautobot.device_interface:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      device: test100
+      api_version: "{{ nautobot_version }}"
+      name: GigabitEthernet9999
+      status: planned
+      type: "1000Base-T (1GE)"
+    register: test_twelve
 
-- name: "12 - Interface with status"
-  networktocode.nautobot.device_interface:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    device: test100
-    api_version: "{{ nautobot_version }}"
-    name: GigabitEthernet9999
-    status: planned
-    type: "1000Base-T (1GE)"
-  register: test_twelve
-  when:
-    # Status is mandatory only on Nautobot 1.4+
-    - "nautobot_version is version('1.4', '>=')"
+  - name: "12 - ASSERT"
+    assert:
+      that:
+        - test_twelve is changed
+        - test_twelve['msg'] == "interface GigabitEthernet9999 created"
+        - test_twelve['diff']['before']['state'] == 'absent'
+        - test_twelve['diff']['after']['state'] == 'present'
+        - test_twelve['interface']['name'] == "GigabitEthernet9999"
+        - test_twelve['interface']['status'] == "planned"
+        - test_twelve['interface']['device'] == test100['key']
 
-- name: "12 - ASSERT"
-  assert:
-    that:
-      - test_twelve is changed
-      - test_twelve['msg'] == "interface GigabitEthernet9999 created"
-      - test_twelve['diff']['before']['state'] == 'absent'
-      - test_twelve['diff']['after']['state'] == 'present'
-      - test_twelve['interface']['name'] == "GigabitEthernet9999"
-      - test_twelve['interface']['status'] == "planned"
-      - test_twelve['interface']['device'] == test100['key']
+  - name: "13 - Create child interface"
+    networktocode.nautobot.device_interface:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      device: test100
+      api_version: "{{ nautobot_version }}"
+      name: GigabitEthernet9999/1
+      status: active
+      type: "Virtual"
+      parent_interface:
+        name: GigabitEthernet9999
+    register: test_thirteen
+
+  - name: "13 - ASSERT"
+    assert:
+      that:
+        - test_thirteen is changed
+        - test_thirteen['msg'] == "interface GigabitEthernet9999/1 created"
+        - test_thirteen['diff']['before']['state'] == 'absent'
+        - test_thirteen['diff']['after']['state'] == 'present'
+        - test_thirteen['interface']['name'] == "GigabitEthernet9999/1"
+        - test_thirteen['interface']['device'] == test100['key']
+        - test_thirteen['interface']['parent_interface'] == test_twelve['interface']['id']
+
+  - name: "14 - Create bridge interface"
+    networktocode.nautobot.device_interface:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      device: test100
+      api_version: "{{ nautobot_version }}"
+      name: Bridge1
+      status: active
+      type: "1000Base-T (1GE)"
+      bridge:
+        name: GigabitEthernet9999
+    register: test_fourteen
+
+  - name: "14 - ASSERT"
+    assert:
+      that:
+        - test_fourteen is changed
+        - test_fourteen['msg'] == "interface Bridge1 created"
+        - test_fourteen['diff']['before']['state'] == 'absent'
+        - test_fourteen['diff']['after']['state'] == 'present'
+        - test_fourteen['interface']['name'] == "Bridge1"
+        - test_fourteen['interface']['device'] == test100['key']
+        - test_fourteen['interface']['bridge'] == test_twelve['interface']['id']
+
   when:
-    # Status is mandatory only on Nautobot 1.4+
     - "nautobot_version is version('1.4', '>=')"
