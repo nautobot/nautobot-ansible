@@ -276,6 +276,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.display.display(f"Could not find value for {parent_attr} on device {device_name}")
                 continue
 
+            if parent_attr == "tags":
+                if not chain or len(chain) > 1:
+                    self.display.display(f"Tags must be grouped by name or slug. {group_by_path} is not a valid path.")
+                    continue
+                self.create_tag_groups(device, chain[0])
+                continue
+
             if not chain:
                 group_name = device_attr
 
@@ -311,6 +318,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.display.display(
                     f"Groups must be a string. {group_name} is not a string. Please make sure your group_by path specified resolves to a string value."
                 )
+
+    def create_tag_groups(self, device, tag_attr):
+        """Create groups based on tags."""
+        device_name = device["name"]
+        for tag in device.get("tags", []):
+            if tag.get(tag_attr):
+                group_name = f"tags_{tag[tag_attr]}"
+                group = self.inventory.add_group(group_name)
+                self.inventory.add_child(group, device_name)
+            else:
+                self.display.display(f"Could not find value for tags.{tag_attr} on device {device_name}")
 
     def main(self):
         """Main function."""
