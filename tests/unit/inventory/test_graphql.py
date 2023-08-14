@@ -150,3 +150,46 @@ def test_ansible_platform(inventory_fixture, device_data):
     inventory_fixture.add_ansible_platform(device_data)
     mydevice_host = inventory_fixture.inventory.get_host("mydevice")
     assert mydevice_host.vars.get("ansible_network_os") == "cisco.asa.asa"
+
+
+def test_ansible_group_by_tags_slug(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags.slug"]
+    inventory_fixture.create_groups(device_data)
+    inventory_groups = list(inventory_fixture.inventory.groups.keys())
+    mytag_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_mytag")
+    mytag2_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_mytag2")
+    assert ["all", "ungrouped", "tags_mytag", "tags_mytag2"] == inventory_groups
+    assert ["mydevice"] == mytag_inventory_hosts
+    assert ["mydevice"] == mytag2_inventory_hosts
+
+
+def test_ansible_group_by_tags_name(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags.name"]
+    inventory_fixture.create_groups(device_data)
+    inventory_groups = list(inventory_fixture.inventory.groups.keys())
+    mytag_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_MyTag")
+    mytag2_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_MyTag2")
+    assert ["all", "ungrouped", "tags_MyTag", "tags_MyTag2"] == inventory_groups
+    assert ["mydevice"] == mytag_inventory_hosts
+    assert ["mydevice"] == mytag2_inventory_hosts
+
+
+@patch.object(Display, "display")
+def test_ansible_group_by_tags_invalid(mock_display, inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags"]
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("Tags must be grouped by name or slug. tags is not a valid path.")
+
+
+@patch.object(Display, "display")
+def test_ansible_group_by_tags_invalid_path(mock_display, inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags.foo"]
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("Could not find value for tags.foo on device mydevice")
+
+
+@patch.object(Display, "display")
+def test_ansible_group_by_tags_invalid_nested_path(mock_display, inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags.slug.name"]
+    inventory_fixture.create_groups(device_data)
+    mock_display.assert_any_call("Tags must be grouped by name or slug. tags.slug.name is not a valid path.")
