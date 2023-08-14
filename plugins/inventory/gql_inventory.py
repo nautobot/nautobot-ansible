@@ -375,7 +375,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         # Error handling in case of a malformed query
         if "errors" in json_data:
-            # Need to return mock response data that is empty to prevent any failures downstream
             raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
