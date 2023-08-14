@@ -303,21 +303,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     validate_certs=self.validate_certs,
                     follow_redirects=self.follow_redirects,
                 )
-            except urllib_error.HTTPError as e:
-                """This will return the response body when we encounter an error.
-                This is to help determine what might be the issue when encountering an error.
-                Please check issue #294 for more info.
-                """
-                # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
-                if e.code == 403:
-                    self.display.display(
-                        "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(url),
-                        color="red",
-                    )
-                    # Need to return mock response data that is empty to prevent any failures downstream
-                    raise AnsibleParserError("Permission denied error.")
-
-                raise AnsibleError(to_native(e.fp.read()))
+            except urllib_error.HTTPError as err:
+                raise AnsibleParserError(to_native(err.fp.read()))
 
             try:
                 raw_data = to_text(response.read(), errors="surrogate_or_strict")

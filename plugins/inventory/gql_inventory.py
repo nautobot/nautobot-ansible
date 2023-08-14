@@ -199,6 +199,7 @@ from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.common.text.converters import to_native
 
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
@@ -367,40 +368,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 validate_certs=self.validate_certs,
                 follow_redirects=self.follow_redirects,
             )
-        except urllib_error.HTTPError as e:
-            """This will return the response body when we encounter an error.
-            This is to help determine what might be the issue when encountering an error.
-            Please check issue #294 for more info.
-            """
-            # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
-            if e.code == 403:
-                self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
-                    color="red",
-                )
-                # Need to return mock response data that is empty to prevent any failures downstream
-                raise AnsibleParserError("Permission denied error.")
-            else:
-                self.display.display(f"{e.code}", color="red")
-                self.display.display(
-                    "Something went wrong while executing the query.\nReason: {reason}".format(
-                        reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
-                    ),
-                    color="red",
-                )
-                # Need to return mock response data that is empty to prevent any failures downstream
-                raise AnsibleParserError("Something went wrong while executing the query.")
+        except urllib_error.HTTPError as err:
+            raise AnsibleParserError(to_native(err.fp.read()))
         json_data = json.loads(response.read())
         self.display.vvvv(f"JSON response: {json_data}")
 
         # Error handling in case of a malformed query
         if "errors" in json_data:
-            self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
-                color="red",
-            )
             # Need to return mock response data that is empty to prevent any failures downstream
-            raise AnsibleParserError("Error in the GraphQL query.")
+            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             self.inventory.add_host(device["name"])
