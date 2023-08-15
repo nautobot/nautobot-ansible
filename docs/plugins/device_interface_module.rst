@@ -42,7 +42,7 @@ networktocode.nautobot.device_interface module -- Creates or removes interfaces 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.3.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -136,6 +136,43 @@ Parameters
         <div class="ansible-option-cell">
 
       API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-bridge"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_interface_module__parameter-bridge:
+
+      .. rst-class:: ansible-option-title
+
+      **bridge**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-bridge" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.5.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Interface that will be the bridge of the interface being created
 
 
       .. raw:: html
@@ -568,6 +605,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parent_interface"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_interface_module__parameter-parent_interface:
+
+      .. rst-class:: ansible-option-title
+
+      **parent_interface**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-parent_interface" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.5.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Interface that will be the parent of the interface being created
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_interface_module__parameter-query_params:
@@ -642,6 +716,45 @@ Parameters
 
       - :ansible-option-choices-entry:`"absent"`
       - :ansible-option-choices-entry-default:`"present"` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_interface_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.4.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The status of the interface
+
+      Required if \ :emphasis:`state=present`\  and using \ :emphasis:`api\_version`\  1.4+
 
 
       .. raw:: html
@@ -1059,6 +1172,23 @@ Examples
             enabled: false
             custom_fields:
               monitored: True
+        - name: Create child interface
+          networktocode.nautobot.device_interface:
+            url: http://nautobot.local
+            token: thisIsMyToken
+            device: test100
+            name: GigabitEthernet1/1/1
+            type: Virtual
+            parent_interface:
+              name: GigabitEthernet1/1
+        - name: Create bridge interface
+          networktocode.nautobot.device_interface:
+            url: http://nautobot.local
+            token: thisIsMyToken
+            device: test100
+            name: Bridge1
+            bridge:
+              name: GigabitEthernet1/1
 
 
 
