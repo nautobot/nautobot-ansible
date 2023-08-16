@@ -13,7 +13,7 @@ fetch_all: True
 group_names_raw: True
 
 group_by:
-  - sites
+  - locations
   - tenants
   - racks
   - rack_group
@@ -23,7 +23,6 @@ group_by:
   - device_types
   - manufacturers
   - platforms
-  - region
   - cluster
   - cluster_group
   - cluster_type
