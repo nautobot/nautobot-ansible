@@ -36,7 +36,7 @@ options:
       - Required if I(state=present) and using I(api_version) 1.4+
     required: false
     type: raw
-    version_added: "4.4.0"
+    version_added: "4.5.0"
   name:
     description:
       - Name of the interface to be created
