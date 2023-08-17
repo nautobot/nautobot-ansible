@@ -195,10 +195,11 @@ import os
 from sys import version as python_version
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.module_utils.ansible_release import __version__ as ansible_version
-from ansible.errors import AnsibleError
+from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils.urls import open_url
 
 from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.common.text.converters import to_native
 
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
 
@@ -276,6 +277,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.display.display(f"Could not find value for {parent_attr} on device {device_name}")
                 continue
 
+            if parent_attr == "tags":
+                if not chain or len(chain) > 1:
+                    self.display.display(f"Tags must be grouped by name or slug. {group_by_path} is not a valid path.")
+                    continue
+                self.create_tag_groups(device, chain[0])
+                continue
+
             if not chain:
                 group_name = device_attr
 
@@ -311,6 +319,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.display.display(
                     f"Groups must be a string. {group_name} is not a string. Please make sure your group_by path specified resolves to a string value."
                 )
+
+    def create_tag_groups(self, device, tag_attr):
+        """Create groups based on tags."""
+        device_name = device["name"]
+        for tag in device.get("tags", []):
+            if tag.get(tag_attr):
+                group_name = f"tags_{tag[tag_attr]}"
+                group = self.inventory.add_group(group_name)
+                self.inventory.add_child(group, device_name)
+            else:
+                self.display.display(f"Could not find value for tags.{tag_attr} on device {device_name}")
 
     def main(self):
         """Main function."""
@@ -349,40 +368,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 validate_certs=self.validate_certs,
                 follow_redirects=self.follow_redirects,
             )
-        except urllib_error.HTTPError as e:
-            """This will return the response body when we encounter an error.
-            This is to help determine what might be the issue when encountering an error.
-            Please check issue #294 for more info.
-            """
-            # Prevent inventory from failing completely if the token does not have the proper permissions for specific URLs
-            if e.code == 403:
-                self.display.display(
-                    "Permission denied: {0}. This may impair functionality of the inventory plugin.".format(self.api_endpoint + "/"),
-                    color="red",
-                )
-                # Need to return mock response data that is empty to prevent any failures downstream
-                return {"results": [], "next": None}
-            else:
-                self.display.display(f"{e.code}", color="red")
-                self.display.display(
-                    "Something went wrong while executing the query.\nReason: {reason}".format(
-                        reason=json.loads(e.fp.read().decode())["errors"][0]["message"],
-                    ),
-                    color="red",
-                )
-                # Need to return mock response data that is empty to prevent any failures downstream
-                return {"results": [], "next": None}
+        except urllib_error.HTTPError as err:
+            raise AnsibleParserError(to_native(err.fp.read()))
         json_data = json.loads(response.read())
         self.display.vvvv(f"JSON response: {json_data}")
 
         # Error handling in case of a malformed query
         if "errors" in json_data:
-            self.display.display(
-                "Query returned an error.\nReason: {0}".format(json_data["errors"][0]["message"]),
-                color="red",
-            )
-            # Need to return mock response data that is empty to prevent any failures downstream
-            return {"results": [], "next": None}
+            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             self.inventory.add_host(device["name"])

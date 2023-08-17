@@ -24,7 +24,7 @@ options:
     description:
       - The Relationship UUID to add the association to
     required: true
-    type: str
+    type: raw
   source_type:
     description:
       - The app_label.model for the source of the relationship
@@ -102,7 +102,7 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            relationship=dict(required=True, type="str"),
+            relationship=dict(required=True, type="raw"),
             source_type=dict(required=True, type="str"),
             source_id=dict(required=True, type="str"),
             destination_type=dict(required=True, type="str"),

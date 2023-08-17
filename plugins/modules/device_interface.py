@@ -30,6 +30,13 @@ options:
     required: true
     type: raw
     version_added: "3.0.0"
+  status:
+    description:
+      - The status of the interface
+      - Required if I(state=present) and using I(api_version) 1.4+
+    required: false
+    type: raw
+    version_added: "4.5.0"
   name:
     description:
       - Name of the interface to be created
@@ -63,6 +70,18 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
+  parent_interface:
+    description:
+      - Interface that will be the parent of the interface being created
+    required: false
+    type: raw
+    version_added: "4.5.0"
+  bridge:
+    description:
+      - Interface that will be the bridge of the interface being created
+    required: false
+    type: raw
+    version_added: "4.5.0"
   mtu:
     description:
       - The MTU of the interface
@@ -199,6 +218,23 @@ EXAMPLES = r"""
         enabled: false
         custom_fields:
           monitored: True
+    - name: Create child interface
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: GigabitEthernet1/1/1
+        type: Virtual
+        parent_interface:
+          name: GigabitEthernet1/1
+    - name: Create bridge interface
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        device: test100
+        name: Bridge1
+        bridge:
+          name: GigabitEthernet1/1
 """
 
 RETURN = r"""
@@ -230,11 +266,14 @@ def main():
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
             device=dict(required=True, type="raw"),
+            status=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
             type=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
             lag=dict(required=False, type="raw"),
+            parent_interface=dict(required=False, type="raw"),
+            bridge=dict(required=False, type="raw"),
             mtu=dict(required=False, type="int"),
             mac_address=dict(required=False, type="str"),
             mgmt_only=dict(required=False, type="bool"),

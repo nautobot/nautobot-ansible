@@ -21,5 +21,15 @@
     "tenant": {
         "slug": "mytenant",
         "type": "local"
-    }
+    },
+    "tags": [
+        {
+            "name": "MyTag",
+            "slug": "mytag"
+        },
+        {
+            "name": "MyTag2",
+            "slug": "mytag2"
+        }
+    ]
 }
