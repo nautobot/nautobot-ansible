@@ -142,14 +142,12 @@ class NautobotDcimModule(NautobotModule):
             data["color"] = data["color"].lower()
 
         if self.endpoint == "cables":
-            cables = [
-                cable
-                for cable in nb_endpoint.all()
-                if cable.termination_a_type == data["termination_a_type"]
-                and cable.termination_a_id == data["termination_a_id"]
-                and cable.termination_b_type == data["termination_b_type"]
-                and cable.termination_b_id == data["termination_b_id"]
-            ]
+            cables = nb_endpoint.filter(
+                    termination_a_type=data["termination_a_type"],
+                    termination_a_id=data["termination_a_id"],
+                    termination_b_type=data["termination_b_type"],
+                    termination_b_id=data["termination_b_id"],
+            )
             if len(cables) == 0:
                 self.nb_object = None
             elif len(cables) == 1:
