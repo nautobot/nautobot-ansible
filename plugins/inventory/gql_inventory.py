@@ -77,6 +77,11 @@ options:
     type: list
     elements: str
     default: []
+  group_names_raw:
+      description: Will not add the group_by choice name to the group names
+      default: False
+      type: boolean
+      version_added: "4.6.0"
 """
 
 EXAMPLES = """
@@ -325,7 +330,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         device_name = device["name"]
         for tag in device.get("tags", []):
             if tag.get(tag_attr):
-                group_name = f"tags_{tag[tag_attr]}"
+                group_name = f"tags_{tag[tag_attr]}" if not self.group_names_raw else tag[tag_attr]
                 group = self.inventory.add_group(group_name)
                 self.inventory.add_child(group, device_name)
             else:
@@ -405,5 +410,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.gql_query = self.get_option("query")
         self.group_by = self.get_option("group_by")
         self.follow_redirects = self.get_option("follow_redirects")
+        self.group_names_raw = self.get_option("group_names_raw")
 
         self.main()

@@ -41,6 +41,7 @@ def inventory_fixture():
     inventory = InventoryModule()
     inventory.inventory = InventoryData()
     inventory.inventory.add_host("mydevice")
+    inventory.group_names_raw = False
 
     return inventory
 
@@ -170,6 +171,18 @@ def test_ansible_group_by_tags_name(inventory_fixture, device_data):
     mytag_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_MyTag")
     mytag2_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("tags_MyTag2")
     assert ["all", "ungrouped", "tags_MyTag", "tags_MyTag2"] == inventory_groups
+    assert ["mydevice"] == mytag_inventory_hosts
+    assert ["mydevice"] == mytag2_inventory_hosts
+
+
+def test_ansible_group_by_tags_raw(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["tags.name"]
+    inventory_fixture.group_names_raw = True
+    inventory_fixture.create_groups(device_data)
+    inventory_groups = list(inventory_fixture.inventory.groups.keys())
+    mytag_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("MyTag")
+    mytag2_inventory_hosts = inventory_fixture.inventory.get_groups_dict().get("MyTag2")
+    assert ["all", "ungrouped", "MyTag", "MyTag2"] == inventory_groups
     assert ["mydevice"] == mytag_inventory_hosts
     assert ["mydevice"] == mytag2_inventory_hosts
 
