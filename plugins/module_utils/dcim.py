@@ -143,10 +143,10 @@ class NautobotDcimModule(NautobotModule):
 
         if self.endpoint == "cables":
             cables = nb_endpoint.filter(
-                    termination_a_type=data["termination_a_type"],
-                    termination_a_id=data["termination_a_id"],
-                    termination_b_type=data["termination_b_type"],
-                    termination_b_id=data["termination_b_id"],
+                termination_a_type=data["termination_a_type"],
+                termination_a_id=data["termination_a_id"],
+                termination_b_type=data["termination_b_type"],
+                termination_b_id=data["termination_b_id"],
             )
             if len(cables) == 0:
                 self.nb_object = None
