@@ -268,22 +268,6 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 
 
-def slugify(value, allow_unicode=False):
-    """
-    Convert to ASCII if 'allow_unicode' is False. Convert spaces or repeated
-    dashes to single dashes. Remove characters that aren't alphanumerics,
-    underscores, or hyphens. Convert to lowercase. Also strip leading and
-    trailing whitespace, dashes, and underscores.
-    """
-    value = str(value)
-    if allow_unicode:
-        value = unicodedata.normalize("NFKC", value)
-    else:
-        value = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
-    value = re.sub(r"[^\w\s-]", "", value.lower())
-    return re.sub(r"[-\s]+", "-", value).strip("-_")
-
-
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
 
@@ -618,7 +602,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Check the type of the first element in the "tags" array.
             # If a dictionary (Nautobot >= 2.9), return an array of tags' names.
             if isinstance(tag_zero, dict):
-                return list(slugify(sub["name"]) for sub in host["tags"])
+                return list(sub["name"] for sub in host["tags"])
             # If a string (Nautobot <= 2.8), return the original "tags" array.
             elif isinstance(tag_zero, str):
                 return host["tags"]
@@ -726,12 +710,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_platforms_lookup(self):
         url = self.api_endpoint + "/api/dcim/platforms/?limit=0"
         platforms = self.get_resource_list(api_url=url)
-        self.platforms_lookup = dict((platform["id"], slugify(platform["name"])) for platform in platforms)
+        self.platforms_lookup = dict((platform["id"], platform["name"]) for platform in platforms)
 
     def refresh_locations_lookup(self):
         url = self.api_endpoint + "/api/dcim/locations/?limit=0"
         locations = self.get_resource_list(api_url=url)
-        self.locations_lookup = dict((location["id"], slugify(location["name"])) for location in locations)
+        self.locations_lookup = dict((location["id"], location["name"]) for location in locations)
 
         def get_location_parent(location):
             # Will fail if location does not have a parent location
@@ -746,11 +730,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_tenants_lookup(self):
         url = self.api_endpoint + "/api/tenancy/tenants/?limit=0&depth=1"
         tenants = self.get_resource_list(api_url=url)
-        self.tenants_lookup = dict((tenant["id"], slugify(tenant["name"])) for tenant in tenants)
+        self.tenants_lookup = dict((tenant["id"], tenant["name"]) for tenant in tenants)
 
         def get_group_for_tenant(tenant):
             try:
-                return (tenant["id"], slugify(tenant["tenant_group"]["name"]))
+                return (tenant["id"], tenant["tenant_group"]["name"])
             except Exception:
                 return (tenant["id"], None)
 
@@ -769,7 +753,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         def get_role_for_rack(rack):
             try:
-                return (rack["id"], slugify(rack["role"]["name"]))
+                return (rack["id"], rack["role"]["name"])
             except Exception:
                 return (rack["id"], None)
 
@@ -779,7 +763,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_rack_groups_lookup(self):
         url = self.api_endpoint + "/api/dcim/rack-groups/?limit=0&depth=1"
         rack_groups = self.get_resource_list(api_url=url)
-        self.rack_groups_lookup = dict((rack_group["id"], slugify(rack_group["name"])) for rack_group in rack_groups)
+        self.rack_groups_lookup = dict((rack_group["id"], rack_group["name"]) for rack_group in rack_groups)
 
         def get_rack_group_parent(rack_group):
             try:
@@ -793,17 +777,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_device_roles_lookup(self):
         url = self.api_endpoint + "/api/extras/roles/?limit=0"
         roles = self.get_resource_list(api_url=url)
-        self.device_roles_lookup = dict((role["id"], slugify(role["name"])) for role in roles if "dcim.device" in role["content_types"])
+        self.device_roles_lookup = dict((role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"])
 
     def refresh_device_types_lookup(self):
         url = self.api_endpoint + "/api/dcim/device-types/?limit=0"
         device_types = self.get_resource_list(api_url=url)
-        self.device_types_lookup = dict((device_type["id"], slugify(device_type["model"])) for device_type in device_types)
+        self.device_types_lookup = dict((device_type["id"], device_type["model"]) for device_type in device_types)
 
     def refresh_manufacturers_lookup(self):
         url = self.api_endpoint + "/api/dcim/manufacturers/?limit=0"
         manufacturers = self.get_resource_list(api_url=url)
-        self.manufacturers_lookup = dict((manufacturer["id"], slugify(manufacturer["name"])) for manufacturer in manufacturers)
+        self.manufacturers_lookup = dict((manufacturer["id"], manufacturer["name"]) for manufacturer in manufacturers)
 
     def refresh_clusters_lookup(self):
         url = self.api_endpoint + "/api/virtualization/clusters/?limit=0&depth=1"
@@ -812,14 +796,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         def get_cluster_type(cluster):
             # Will fail if cluster does not have a type (required property so should always be true)
             try:
-                return (cluster["id"], slugify(cluster["cluster_type"]["name"]))
+                return (cluster["id"], cluster["cluster_type"]["name"])
             except Exception:
                 return (cluster["id"], None)
 
         def get_cluster_group(cluster):
             # Will fail if cluster does not have a group (group is optional)
             try:
-                return (cluster["id"], slugify(cluster["cluster_group"]["name"]))
+                return (cluster["id"], cluster["cluster_group"]["name"])
             except Exception:
                 return (cluster["id"], None)
 
@@ -1195,9 +1179,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             group = group["display"]
 
         if self.group_names_raw:
-            return slugify(group)
+            return group
         else:
-            return "_".join([grouping, slugify(group)])
+            return "_".join([grouping, group])
 
     def add_host_to_groups(self, host, hostname):
 

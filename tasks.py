@@ -238,7 +238,7 @@ def integration(context):
     destroy(context)
     start(context)
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from integration integration",
+        "docker-compose up --build --force-recreate --exit-code-from integration integration",
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
