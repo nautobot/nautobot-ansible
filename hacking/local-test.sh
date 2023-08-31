@@ -9,5 +9,5 @@
 ansible-galaxy collection install networktocode-nautobot-*.tar.gz -p .
 
 # You can now cd into the installed version and run tests
-(cd ansible_collections/networktocode/nautobot/ && ansible-test units -v --python 3.8 && ansible-test sanity --requirements -v --python 3.8 --skip-test pep8 plugins/)
+(cd ansible_collections/networktocode/nautobot/ && ansible-test units -v --python 3.9 && ansible-test sanity --requirements -v --python 3.9 --skip-test pep8 plugins/)
 rm -rf ansible_collections

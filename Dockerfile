@@ -3,11 +3,11 @@
 #
 #  This base stage just installs the dependencies required for production
 #  without any development deps.
-ARG PYTHON_VER=3.8
+ARG PYTHON_VER=3.9
 FROM python:${PYTHON_VER} AS base
 
 # Allow for flexible Python versions, for broader testing
-ARG PYTHON_VER=3.8
+ARG PYTHON_VER=3.9
 ENV PYTHON_VERSION=${PYTHON_VER}
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -yqq && apt-get install -yqq shellcheck && apt-get clean
@@ -54,16 +54,13 @@ RUN echo 'Running Black' && \
 # into an image with docker-compose for running the full test suite.
 FROM lint AS unittests
 
-# Remove black from dev dependencies to prevent conflicts with Ansible
-RUN poetry remove black --group dev
-
 # Set a custom collection path for all ansible commands
 # Note: This only allows for one path, not colon-separated, because we use it
 # elsewhere
 ARG ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections
 ENV ANSIBLE_COLLECTIONS_PATH=${ANSIBLE_COLLECTIONS_PATH}
 
-ARG PYTHON_VER=3.8
+ARG PYTHON_VER=3.9
 ENV PYTHON_VERSION=${PYTHON_VER}
 
 # Allows for custom command line arguments to be passed to ansible-test (like -vvv)
