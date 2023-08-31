@@ -99,23 +99,21 @@ created_sites = make_nautobot_calls(nb.dcim.sites, sites)
 test_site = nb.dcim.sites.get(slug="test-site")
 test_site2 = nb.dcim.sites.get(slug="test-site2")
 
-# Locations are only available in Nautobot 1.4+
-if nautobot_version >= version.parse("1.4"):
-    # Create location types
-    location_types = [{"name": "My Parent Location Type", "slug": "my-parent-location-type", "nestable": True}]
-    created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
-    parent_location_type = nb.dcim.location_types.get(slug="my-parent-location-type")
+# Create location types
+location_types = [{"name": "My Parent Location Type", "slug": "my-parent-location-type", "nestable": True}]
+created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
+parent_location_type = nb.dcim.location_types.get(slug="my-parent-location-type")
 
-    # Create child location types
-    child_location_types = [
-        {
-            "name": "My Child Location Type",
-            "slug": "my-child-location-type",
-            "nestable": True,
-            "parent": parent_location_type.id,
-        }
-    ]
-    created_child_location_types = make_nautobot_calls(nb.dcim.location_types, child_location_types)
+# Create child location types
+child_location_types = [
+    {
+        "name": "My Child Location Type",
+        "slug": "my-child-location-type",
+        "nestable": True,
+        "parent": parent_location_type.id,
+    }
+]
+created_child_location_types = make_nautobot_calls(nb.dcim.location_types, child_location_types)
 
 # Create power panel
 power_panels = [{"name": "Test Power Panel", "site": test_site.id}]
