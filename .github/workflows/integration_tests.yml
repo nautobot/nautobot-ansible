@@ -1,0 +1,47 @@
+---
+name: "Integration Tests"
+on: # yamllint disable
+  workflow_call:
+    inputs:
+      runs-on:
+        description: "The OS to run the job on"
+        required: false
+        default: "ubuntu-22.04"
+        type: string
+      python-version:
+        description: "The Python version to use"
+        required: true
+        type: string
+      nautobot-version:
+        description: "The Nautobot version to use"
+        required: true
+        type: string
+      ansible-version:
+        description: "The Ansible version to use"
+        required: true
+        type: string
+
+jobs:
+  integration:
+    runs-on: "${{ inputs.runs-on }}"
+    env:
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ inputs.python-version }}"
+      INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ inputs.nautobot-version }}"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v3"
+      - name: "Set up Python"
+        uses: "actions/setup-python@v3"
+        with:
+          python-version: "${{ inputs.python-version }}"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke"
+      - name: "Install poetry"
+        run: "curl -sSL https://install.python-poetry.org | python3 -"
+      - name: "Install ansible-core"
+        # This ensures that even if the poetry.lock file updates we still test the right version
+        run: "poetry add ansible-core@~${{ inputs.ansible-version }}"
+      - name: "Start containers"
+        run: "invoke start"
+      - name: "Tests"
+        run: "invoke integration"
