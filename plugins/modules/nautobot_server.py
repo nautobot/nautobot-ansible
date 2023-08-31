@@ -38,6 +38,7 @@ options:
         This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
     type: dict
     required: false
+    default: {}
   positional_args:
     description:
       - A list of additional arguments to append to the end of the command that is passed to C(nautobot-server).
@@ -45,12 +46,14 @@ options:
     type: list
     required: false
     elements: str
+    default: []
   flags:
     description:
       - A list of flags to append to the command that is passed to C(nautobot-server), so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
     type: list
     required: false
     elements: str
+    default: []
   project_path:
     description:
       - The path to the root of the Nautobot application where B(nautobot-server) lives.
@@ -189,7 +192,6 @@ def collectstatic_changed(line):
 
 
 def main():
-
     # Commands that are known to use the --noinput flag
     commands_with_noinput = {
         "createsuperuser",
