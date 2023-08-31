@@ -377,7 +377,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     @property
     def group_extractors(self):
-
         # List of group_by options and hostvars to extract
 
         # Some keys are different depending on plurals option
@@ -621,7 +620,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_interfaces(self, host):
         try:
-
             interfaces_lookup = self.vm_interfaces_lookup if host["is_virtual"] else self.device_interfaces_lookup
 
             interfaces = list(interfaces_lookup[host["id"]].values())
@@ -865,7 +863,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.vm_services_lookup[service["virtual_machine"]["id"]][service_id] = service
 
     def refresh_interfaces(self):
-
         url_device_interfaces = self.api_endpoint + "/api/dcim/interfaces/?limit=0"
         url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0"
 
@@ -1024,7 +1021,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return lookups
 
     def refresh_lookups(self, lookups):
-
         # Exceptions that occur in threads by default are printed to stderr, and ignored by the main thread
         # They need to be caught, and raised in the main thread to prevent further execution of this plugin
 
@@ -1182,7 +1178,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return host["name"] or str(uuid.uuid4())
 
     def generate_group_name(self, grouping, group):
-
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
         if isinstance(group, bool):
@@ -1206,7 +1201,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return "_".join([grouping, group])
 
     def add_host_to_groups(self, host, hostname):
-
         # If we're grouping by regions, hosts are not added to region groups
         # - the site groups are added as sub-groups of regions
         # So, we need to make sure we're also grouping by sites if regions are enabled
@@ -1218,7 +1212,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.group_by.append(site_group_by)
 
         for grouping in self.group_by:
-
             # Don't handle regions here - that will happen in main()
             if grouping == "region":
                 continue
@@ -1249,7 +1242,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.inventory.add_host(group=transformed_group_name, host=hostname)
 
     def _add_region_groups(self):
-
         # Mapping of region id to group name
         region_transformed_group_names = dict()
 
@@ -1359,7 +1351,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.refresh_lookups(self.lookup_processes_secondary)
 
         for host in chain(self.devices_list, self.vms_list):
-
             virtual_chassis_master = self._get_host_virtual_chassis_master(host)
             if virtual_chassis_master is not None and virtual_chassis_master != host["id"]:
                 # Device is part of a virtual chassis, but is not the master
