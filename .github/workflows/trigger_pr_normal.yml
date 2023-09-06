@@ -1,0 +1,15 @@
+---
+name: "Pull Requests (normal)"
+concurrency:  # Cancel any existing runs of this workflow for this same PR
+  group: "${{ '{{ github.workflow }}' }}-${{ '{{ github.ref }}' }}"
+  cancel-in-progress: true
+on: # yamllint disable
+  pull_request:
+    branches-ignore:
+      - "main"
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      full-integration: false

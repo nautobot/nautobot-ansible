@@ -1,17 +1,15 @@
 ---
-name: "CI"
+name: "Pull Requests (main)"
 concurrency:  # Cancel any existing runs of this workflow for this same PR
   group: "${{ '{{ github.workflow }}' }}-${{ '{{ github.ref }}' }}"
   cancel-in-progress: true
 on: # yamllint disable
-  push:
-    branches:
-      - "develop"
-      - "main"
   pull_request:
-  release:
-    types: [published]
+    branches:
+      - "main"
 
 jobs:
-  ci:
-    uses: ./.github/workflows/jobs.yml
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      full-integration: true

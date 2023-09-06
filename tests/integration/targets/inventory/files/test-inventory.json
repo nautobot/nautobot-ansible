@@ -29,6 +29,7 @@
                 "dns_name": "nexus.example.com",
                 "interfaces": [
                     {
+                        "bridge": null,
                         "cable": null,
                         "cable_peer": null,
                         "cable_peer_type": null,
@@ -74,6 +75,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet1/1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
@@ -83,6 +85,7 @@
                         "untagged_vlan": null
                     },
                     {
+                        "bridge": null,
                         "cable": null,
                         "cable_peer": null,
                         "cable_peer_type": null,
@@ -128,6 +131,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet2/1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
@@ -181,6 +185,8 @@
                 "custom_fields": {},
                 "interfaces": [
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
@@ -189,6 +195,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -198,6 +205,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
@@ -206,6 +215,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -280,6 +290,7 @@
                 "device_type": "cisco-test",
                 "interfaces": [
                     {
+                        "bridge": null,
                         "cable": null,
                         "cable_peer": null,
                         "cable_peer_type": null,
@@ -325,6 +336,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
@@ -334,6 +346,7 @@
                         "untagged_vlan": null
                     },
                     {
+                        "bridge": null,
                         "cable": null,
                         "cable_peer": null,
                         "cable_peer_type": null,
@@ -379,6 +392,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet2",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
@@ -470,6 +484,8 @@
                 "custom_fields": {},
                 "interfaces": [
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
@@ -478,6 +494,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -487,6 +504,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
@@ -495,6 +514,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -504,6 +524,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth2",
                         "enabled": true,
@@ -512,6 +534,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -521,6 +544,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth3",
                         "enabled": true,
@@ -529,6 +554,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -538,6 +564,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth4",
                         "enabled": true,
@@ -546,6 +574,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -576,6 +605,8 @@
                 "custom_fields": {},
                 "interfaces": [
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
@@ -584,6 +615,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -593,6 +625,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
@@ -601,6 +635,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -610,6 +645,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth2",
                         "enabled": true,
@@ -618,6 +655,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -627,6 +665,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth3",
                         "enabled": true,
@@ -635,6 +675,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
@@ -644,6 +685,8 @@
                         }
                     },
                     {
+                        "bridge": null,
+                        "custom_fields": {},
                         "description": "",
                         "display": "Eth4",
                         "enabled": true,
@@ -652,6 +695,7 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
+                        "parent_interface": null,
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
