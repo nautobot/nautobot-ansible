@@ -249,8 +249,6 @@ keyed_groups:
 import json
 import uuid
 import math
-import re
-import unicodedata
 from functools import partial
 from sys import version as python_version
 from threading import Thread
@@ -378,7 +376,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     @property
     def group_extractors(self):
-
         # List of group_by options and hostvars to extract
 
         # Some keys are different depending on plurals option
@@ -612,7 +609,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_interfaces(self, host):
         try:
-
             interfaces_lookup = self.vm_interfaces_lookup if host["is_virtual"] else self.device_interfaces_lookup
 
             interfaces = list(interfaces_lookup[host["id"]].values())
@@ -710,7 +706,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_platforms_lookup(self):
         url = self.api_endpoint + "/api/dcim/platforms/?limit=0"
         platforms = self.get_resource_list(api_url=url)
-        self.platforms_lookup = dict((platform["id"], platform["name"]) for platform in platforms)
+        self.platforms_lookup = dict((platform["id"], platform["network_driver"]) for platform in platforms)
 
     def refresh_locations_lookup(self):
         url = self.api_endpoint + "/api/dcim/locations/?limit=0"
@@ -1002,7 +998,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return lookups
 
     def refresh_lookups(self, lookups):
-
         # Exceptions that occur in threads by default are printed to stderr, and ignored by the main thread
         # They need to be caught, and raised in the main thread to prevent further execution of this plugin
 
@@ -1160,7 +1155,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return host["name"] or str(uuid.uuid4())
 
     def generate_group_name(self, grouping, group):
-
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
         if isinstance(group, bool):
@@ -1307,7 +1301,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.refresh_lookups(self.lookup_processes_secondary)
 
         for host in chain(self.devices_list, self.vms_list):
-
             virtual_chassis_master = self._get_host_virtual_chassis_master(host)
             if virtual_chassis_master is not None and virtual_chassis_master != host["id"]:
                 # Device is part of a virtual chassis, but is not the master
@@ -1324,6 +1317,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             # Complex groups based on jinja2 conditionals, hosts that meet the conditional are added to group
             self._add_host_to_composed_groups(self.get_option("groups"), host, hostname, strict=strict)
+
             # Create groups based on variable values and add the corresponding hosts to it
             self._add_host_to_keyed_groups(self.get_option("keyed_groups"), host, hostname, strict=strict)
             self.add_host_to_groups(host=host, hostname=hostname)

@@ -1,0 +1,55 @@
+---
+name: "Release"
+on: # yamllint disable
+  release:
+    types: [published]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      full-integration: true
+  publish_github:
+    name: "Publish to GitHub"
+    runs-on: "${{ inputs.runs-on }}"
+    if: "startsWith(github.ref, 'refs/tags/v')"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v3"
+      - name: "Set up Python"
+        uses: "actions/setup-python@v3"
+        with:
+          python-version: "3.9"
+      - name: "Install Python Packages"
+        run: "pip install ansible-core"
+      - name: "Build the collection"
+        run: "ansible-galaxy collection build --output-path build"
+      - name: "Upload binaries to release"
+        uses: "svenstaro/upload-release-action@v2"
+        with:
+          repo_token: "${{ secrets.GH_NAUTOBOT_BOT_TOKEN }}"
+          file: "build/*"
+          tag: "${{ github.ref }}"
+          overwrite: true
+          file_glob: true
+    needs:
+      - "tests"
+  publish_galaxy:
+    name: "Publish to Ansible Galaxy"
+    runs-on: "${{ inputs.runs-on }}"
+    if: "startsWith(github.ref, 'refs/tags/v')"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v3"
+      - name: "Set up Python"
+        uses: "actions/setup-python@v3"
+        with:
+          python-version: "3.9"
+      - name: "Install Python Packages"
+        run: "pip install ansible-core"
+      - name: "Build the collection"
+        run: "ansible-galaxy collection build --output-path build"
+      - name: "Publish the collection"
+        run: "ansible-galaxy collection publish build/* --api-key=${{ secrets.GALAXY_API_TOKEN }}"
+    needs:
+      - "tests"

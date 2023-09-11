@@ -23,6 +23,7 @@ options:
             - Dictionary of keys/values to pass into the GraphQL query, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more info
         required: False
         type: dict
+        default: {}
     query:
         description:
             - The GraphQL formatted query string, see (U(https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html)) for more details.

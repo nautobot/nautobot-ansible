@@ -195,7 +195,7 @@ class LookupModule(LookupBase):
     LookupModule(LookupBase) is defined by Ansible
     """
 
-    def run(self, query, variables=None, graph_variables=None, **kwargs):
+    def run(self, terms, variables=None, graph_variables=None, **kwargs):
         """Runs Ansible Lookup Plugin for using Nautobot GraphQL endpoint
 
         Raises:
@@ -210,8 +210,8 @@ class LookupModule(LookupBase):
                 PYNAUTOBOT_IMPORT_ERROR,
             )
 
-        # Query comes in as a list, this needs to be moved to string for pynautobot
-        lookup_info = nautobot_lookup_graphql(query=query[0], variables=variables, graph_variables=graph_variables, **kwargs)
+        # Terms comes in as a list, this needs to be moved to string for pynautobot
+        lookup_info = nautobot_lookup_graphql(query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs)
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info
