@@ -840,7 +840,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.vm_services_lookup[service["virtual_machine"]["id"]][service_id] = service
 
     def refresh_interfaces(self):
-
         url_device_interfaces = self.api_endpoint + "/api/dcim/interfaces/?limit=0&depth=1"
         url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0&depth=1"
 
@@ -1178,9 +1177,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return "_".join([grouping, group])
 
     def add_host_to_groups(self, host, hostname):
-
         for grouping in self.group_by:
-
             if grouping not in self.group_extractors:
                 raise AnsibleError(
                     'group_by option "%s" is not valid. (Maybe check the plurals option? It can determine what group_by options are valid)' % grouping
@@ -1207,7 +1204,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.inventory.add_host(group=transformed_group_name, host=hostname)
 
     def _add_location_groups(self):
-
         # Mapping of location id to group name
         location_transformed_group_names = dict()
 
