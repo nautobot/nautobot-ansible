@@ -138,7 +138,7 @@
             "description": "Test Prefix",
             "vlan": {
                 "name": "Test VLAN",
-                "site": "Test Site",
+                "location": "Test Location",
                 "tenant": "Test Tenant",
                 "vid": 1,
                 "vlan_group": "Test VLAN group"
@@ -146,14 +146,14 @@
         },
         "child": {
             "name": "Test VLAN",
-            "site": "Test Site",
+            "location": "Test Location",
             "tenant": "Test Tenant",
             "vid": 1,
             "vlan_group": "Test VLAN group"
         },
         "expected": {
             "name": "Test VLAN",
-            "site_id": 1,
+            "location_id": 1,
             "tenant_id": 1,
             "vid": 1,
             "group": "Test VLAN group"
@@ -167,17 +167,16 @@
             "vlan_group": {
                 "name": "Test VLAN Group",
                 "slug": "test-vlan-group",
-                "site": "Test Site"
+                "location": "Test Location"
             }
         },
         "child": {
             "name": "Test VLAN Group",
-            "slug": "test-vlan-group",
-            "site": "Test Site"
+            "location": "Test Location"
         },
         "expected": {
-            "slug": "test-vlan-group",
-            "site_id": 1
+            "name": "Test VLAN Group",
+            "location_id": 1
         }
     },
     {
@@ -187,18 +186,18 @@
             "description": "Test Prefix",
             "untagged_vlan": {
                 "name": "Test VLAN",
-                "site": "Test Site",
+                "location": "Test Location",
                 "vid": 1
             }
         },
         "child": {
             "name": "Test VLAN",
-            "site": "Test Site",
+            "location": "Test Location",
             "vid": 1
         },
         "expected": {
             "name": "Test VLAN",
-            "site_id": 1,
+            "location_id": 1,
             "vid": 1
         }
     },

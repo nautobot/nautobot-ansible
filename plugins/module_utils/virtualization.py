@@ -51,8 +51,8 @@ class NautobotVirtualizationModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("slug"):
-            name = data["slug"]
+        elif data.get("display"):
+            name = data["display"]
 
         if self.endpoint in SLUG_REQUIRED:
             if not data.get("slug"):

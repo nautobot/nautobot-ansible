@@ -8,7 +8,7 @@
         "expected": true
     },
     {
-        "parameter": "region",
+        "parameter": "location",
         "expected": true
     },
     {

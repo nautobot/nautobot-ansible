@@ -219,8 +219,8 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 GROUP_BY = {
     "platform": "napalm_driver",
     "status": "name",
-    "device_role": "name",
-    "site": "name",
+    "role": "name",
+    "location": "id",
 }
 
 
@@ -284,7 +284,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if parent_attr == "tags":
                 if not chain or len(chain) > 1:
-                    self.display.display(f"Tags must be grouped by name or slug. {group_by_path} is not a valid path.")
+                    self.display.display(f"Tags must be grouped by name or display. {group_by_path} is not a valid path.")
                     continue
                 self.create_tag_groups(device, chain[0])
                 continue

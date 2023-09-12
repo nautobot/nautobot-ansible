@@ -1,41 +1,28 @@
 [
     {
-        "endpoint": "circuits",
+        "endpoint": "cables",
         "data": {
-            "status": "Active"
+            "type": "cat5"
         },
         "expected": {
-            "status": "temp"
-        }
-    },
-    {
-        "endpoint": "circuits",
-        "data": {
-            "status": 1
-        },
-        "expected": {
-            "status": 1
+            "type": "temp"
         }
     },
     {
         "endpoint": "devices",
         "data": {
-            "status": "Active",
             "face": "Front"
         },
         "expected": {
-            "status": "temp",
             "face": "temp"
         }
     },
     {
         "endpoint": "devices",
         "data": {
-            "status": 5,
             "face": 1
         },
         "expected": {
-            "status": 5,
             "face": 1
         }
     },
@@ -80,52 +67,28 @@
     {
         "endpoint": "ip_addresses",
         "data": {
-            "status": "Active",
-            "role": "Loopback"
+            "type": "dhcp"
         },
         "expected": {
-            "status": "temp",
-            "role": "temp"
+            "type": "temp"
         }
     },
     {
         "endpoint": "ip_addresses",
         "data": {
-            "status": 1,
-            "role": 30
+            "type": 30
         },
         "expected": {
-            "status": 1,
-            "role": 30
-        }
-    },
-    {
-        "endpoint": "prefixes",
-        "data": {
-            "status": "Active"
-        },
-        "expected": {
-            "status": "temp"
-        }
-    },
-    {
-        "endpoint": "prefixes",
-        "data": {
-            "status": 2
-        },
-        "expected": {
-            "status": 2
+            "type": 30
         }
     },
     {
         "endpoint": "racks",
         "data": {
-            "status": "Active",
             "outer_unit": "Inches",
             "type": "2-post Frame"
         },
         "expected": {
-            "status": "temp",
             "outer_unit": "temp",
             "type": "temp"
         }
@@ -133,70 +96,28 @@
     {
         "endpoint": "racks",
         "data": {
-            "status": 0,
             "type": 1100
         },
         "expected": {
-            "status": 0,
             "type": 1100
-        }
-    },
-    {
-        "endpoint": "sites",
-        "data": {
-            "status": "Active"
-        },
-        "expected": {
-            "status": "temp"
-        }
-    },
-    {
-        "endpoint": "sites",
-        "data": {
-            "status": 2
-        },
-        "expected": {
-            "status": 2
         }
     },
     {
         "endpoint": "virtual_machines",
         "data": {
-            "status": "Offline",
             "face": "Front"
         },
         "expected": {
-            "status": "temp",
             "face": "temp"
         }
     },
     {
         "endpoint": "virtual_machines",
         "data": {
-            "status": 1,
             "face": 0
         },
         "expected": {
-            "status": 1,
             "face": 0
-        }
-    },
-    {
-        "endpoint": "vlans",
-        "data": {
-            "status": "Active"
-        },
-        "expected": {
-            "status": "temp"
-        }
-    },
-    {
-        "endpoint": "vlans",
-        "data": {
-            "status": 2
-        },
-        "expected": {
-            "status": 2
         }
     }
 ]

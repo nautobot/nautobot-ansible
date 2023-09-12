@@ -44,8 +44,8 @@ class NautobotCircuitsModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("slug"):
-            name = data["slug"]
+        elif data.get("display"):
+            name = data["display"]
         elif data.get("cid"):
             name = data["cid"]
         elif data.get("circuit") and data.get("term_side"):
@@ -53,8 +53,7 @@ class NautobotCircuitsModule(NautobotModule):
             name = "{0}_{1}".format(circuit["cid"].replace(" ", "_"), data["term_side"]).lower()
 
         if self.endpoint in SLUG_REQUIRED:
-            if not data.get("slug"):
-                data["slug"] = self._to_slug(name)
+            data["slug"] = self._to_slug(name)
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)

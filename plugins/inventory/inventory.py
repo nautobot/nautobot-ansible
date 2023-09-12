@@ -127,7 +127,7 @@ DOCUMENTATION = """
                 - rack_role
                 - tags
                 - tag
-                - device_roles
+                - roles
                 - role
                 - device_types
                 - device_type
@@ -205,7 +205,7 @@ api_endpoint: http://localhost:8000
 validate_certs: True
 config_context: False
 group_by:
-  - device_roles
+  - roles
 query_filters:
   - role: network-edge-router
 device_query_filters:
@@ -396,7 +396,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "tenant_group": self.extract_tenant_group,
             self._pluralize_group_by("rack"): self.extract_rack,
             "rack_group": self.extract_rack_group,
-            "rack_role": self.extract_rack_role,
             self._pluralize_group_by("tag"): self.extract_tags,
             self._pluralize_group_by("role"): self.extract_device_role,
             self._pluralize_group_by("platform"): self.extract_platform,
@@ -421,7 +420,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "tenant": "tenants",
             "rack": "racks",
             "tag": "tags",
-            "role": "device_roles",
+            "role": "roles",
             "platform": "platforms",
             "device_type": "device_types",
             "manufacturer": "manufacturers",

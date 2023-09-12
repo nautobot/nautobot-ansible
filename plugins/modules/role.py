@@ -9,7 +9,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: device_role
+module: role
 short_description: Create, update or delete devices roles within Nautobot
 description:
   - Creates, updates or removes devices roles from Nautobot
@@ -62,7 +62,7 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create device role within Nautobot with only required information
-      networktocode.nautobot.device_role:
+      networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test device role
@@ -70,7 +70,7 @@ EXAMPLES = r"""
         state: present
 
     - name: Delete device role within nautobot
-      networktocode.nautobot.device_role:
+      networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Rack role
@@ -78,7 +78,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-device_role:
+role:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -90,7 +90,7 @@ msg:
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
-    NB_DEVICE_ROLES,
+    NB_ROLES,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -113,8 +113,8 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    device_role = NautobotDcimModule(module, NB_DEVICE_ROLES)
-    device_role.run()
+    role = NautobotDcimModule(module, NB_ROLES)
+    role.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

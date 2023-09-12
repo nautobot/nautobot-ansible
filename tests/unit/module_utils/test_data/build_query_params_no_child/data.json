@@ -26,11 +26,10 @@
     {
         "parent": "circuit_type",
         "module_data": {
-            "name": "Test Circuit Type",
-            "slug": "test-circuit-type"
+            "name": "Test Circuit Type"
         },
         "expected": {
-            "slug": "test-circuit-type"
+            "name": "Test Circuit Type"
         }
     },
     {
@@ -60,21 +59,19 @@
     {
         "parent": "cluster_group",
         "module_data": {
-            "name": "Test Cluster Group",
-            "slug": "test-cluster-group"
+            "name": "Test Cluster Group"
         },
         "expected": {
-            "slug": "test-cluster-group"
+            "name": "Test Cluster Group"
         }
     },
     {
         "parent": "cluster_type",
         "module_data": {
-            "name": "Test Cluster Type",
-            "slug": "test-cluster-type"
+            "name": "Test Cluster Type"
         },
         "expected": {
-            "slug": "test-cluster-type"
+            "name": "Test Cluster Type"
         }
     },
     {
@@ -99,25 +96,23 @@
         }
     },
     {
-        "parent": "device_role",
+        "parent": "role",
         "module_data": {
             "name": "Test Device Role",
-            "slug": "test-device-role",
             "status": "Active"
         },
         "expected": {
-            "slug": "test-device-role"
+            "name": "Test Device Role"
         }
     },
     {
         "parent": "device_type",
         "module_data": {
             "name": "Test Device Type",
-            "slug": "test-device-type",
             "status": "Active"
         },
         "expected": {
-            "slug": "test-device-type"
+            "name": "Test Device Type"
         }
     },
     {
@@ -204,107 +199,80 @@
         "parent": "provider",
         "module_data": {
             "name": "Test Provider",
-            "slug": "test-provider",
             "asn": 65001
         },
         "expected": {
-            "slug": "test-provider"
+            "name": "Test Provider"
         }
     },
     {
         "parent": "rack",
         "module_data": {
             "name": "Test Rack",
-            "slug": "test-rack",
-            "site": "Test Site"
+            "location": "Test Site"
         },
         "expected": {
             "name": "Test Rack",
-            "site_id": 1
+            "location_id": 1
         }
     },
     {
         "parent": "rack_group",
         "module_data": {
-            "name": "Test Rack Group",
-            "slug": "test-rack-group"
+            "name": "Test Rack Group"
         },
         "expected": {
-            "slug": "test-rack-group"
+            "name": "Test Rack Group"
         }
     },
     {
-        "parent": "rack_role",
+        "parent": "role",
         "module_data": {
-            "name": "Test Rack Role",
-            "slug": "test-rack-role"
+            "name": "Test Rack Role"
         },
         "expected": {
-            "slug": "test-rack-role"
-        }
-    },
-    {
-        "parent": "region",
-        "module_data": {
-            "name": "Test Region",
-            "slug": "test-region"
-        },
-        "expected": {
-            "slug": "test-region"
-        }
-    },
-    {
-        "parent": "parent_region",
-        "module_data": {
-            "name": "Parent Region",
-            "slug": "parent-region"
-        },
-        "expected": {
-            "slug": "parent-region"
+            "name": "Test Rack Role"
         }
     },
     {
         "parent": "rir",
         "module_data": {
-            "name": "Test RIR One",
-            "slug": "test-rir-one"
+            "name": "Test RIR One"
         },
         "expected": {
-            "slug": "test-rir-one"
+            "name": "Test RIR One"
         }
     },
     {
-        "parent": "site",
+        "parent": "location",
         "module_data": {
-            "name": "Test Site",
-            "slug": "test-site",
+            "id": "1",
+            "name": "Test Location",
             "asn": 65000,
             "contact_name": "John Smith"
         },
         "expected": {
-            "slug": "test-site"
+            "id": "1"
         }
     },
     {
         "parent": "tenant",
         "module_data": {
             "name": "Test Tenant",
-            "description": "Test Description",
-            "slug": "test-tenant"
+            "description": "Test Description"
         },
         "expected": {
-            "slug": "test-tenant"
+            "name": "Test Tenant"
         }
     },
     {
         "parent": "tenant_group",
         "module_data": {
             "name": "Test Tenant Group",
-            "description": "Test Description",
-            "slug": "test-tenant-group"
+            "description": "Test Description"
         },
         "expected": {
-            "slug": "test-tenant-group"
+            "name": "Test Tenant Group"
         }
     },
     {

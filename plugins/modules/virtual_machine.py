@@ -97,7 +97,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  local_context_data:
+  local_config_context_data:
     description:
       - configuration context of the virtual machine
     required: false
@@ -198,7 +198,7 @@ def main():
             status=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
-            local_context_data=dict(required=False, type="dict"),
+            local_config_context_data=dict(required=False, type="dict"),
             comments=dict(required=False, type="str"),
         )
     )

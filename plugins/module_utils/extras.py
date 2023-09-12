@@ -41,14 +41,13 @@ class NautobotExtrasModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("slug"):
-            name = data["slug"]
+        elif data.get("display"):
+            name = data["display"]
         elif endpoint_name == "relationship_associations":
             name = f"{data['source_type']} -> {data['destination_type']}"
 
         if self.endpoint in SLUG_REQUIRED:
-            if not data.get("slug"):
-                data["slug"] = self._to_slug(name)
+            data["slug"] = self._to_slug(name)
 
         # Make color params lowercase
         if data.get("color"):

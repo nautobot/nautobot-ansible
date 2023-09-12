@@ -156,8 +156,7 @@ class NautobotIpamModule(NautobotModule):
             name = data.get("name")
 
         if self.endpoint in SLUG_REQUIRED:
-            if not data.get("slug"):
-                data["slug"] = self._to_slug(name)
+            data["slug"] = self._to_slug(name)
 
         if self.module.params.get("first_available"):
             first_available = True

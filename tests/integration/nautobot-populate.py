@@ -13,7 +13,7 @@ from packaging import version
 # os.environ["INTEGRATION_TESTS"]
 
 
-# Set nb variable to connect to Nautobot and use the veriable in future calls
+# Set nb variable to connect to Nautobot and use the variable in future calls
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
 nb_token = os.getenv("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
 nb = pynautobot.api(nb_host, nb_token)

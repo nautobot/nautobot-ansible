@@ -10,7 +10,6 @@ __metaclass__ = type
 
 # Import necessary packages
 import traceback
-import re
 import json
 import os
 
@@ -43,7 +42,6 @@ API_APPS_ENDPOINTS = dict(
         "device_bays",
         "device_bay_templates",
         "devices",
-        "device_roles",
         "device_types",
         "front_ports",
         "front_port_templates",
@@ -62,15 +60,12 @@ API_APPS_ENDPOINTS = dict(
         "power_port_templates",
         "racks",
         "rack_groups",
-        "rack_roles",
         "rear_ports",
         "rear_port_templates",
-        "regions",
-        "sites",
         "virtual_chassis",
     ],
-    extras=["tags", "statuses", "relationship_associations"],
-    ipam=["aggregates", "ip_addresses", "prefixes", "rirs", "roles", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
+    extras=["tags", "statuses", "relationship_associations", "roles"],
+    ipam=["aggregates", "ip_addresses", "prefixes", "rirs", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
@@ -80,52 +75,46 @@ API_APPS_ENDPOINTS = dict(
 QUERY_TYPES = dict(
     circuit="cid",
     circuit_termination="circuit",
-    circuit_type="slug",
+    circuit_type="name",
     cluster="name",
-    cluster_group="slug",
-    cluster_type="slug",
+    cluster_group="name",
+    cluster_type="name",
     device="name",
-    device_role="slug",
-    device_type="slug",
+    role="name",
+    device_type="model",
     export_targets="name",
-    group="slug",
+    group="name",
     installed_device="name",
     import_targets="name",
-    manufacturer="slug",
+    location="id",
+    manufacturer="name",
     master="name",
     nat_inside="address",
     nat_outside="address",
-    parent_rack_group="slug",
-    parent_region="slug",
-    parent_tenant_group="slug",
+    parent_rack_group="name",
+    parent_tenant_group="name",
     power_panel="name",
     power_port="name",
     power_port_template="name",
-    platform="slug",
-    prefix_role="slug",
+    platform="name",
     primary_ip="address",
     primary_ip4="address",
     primary_ip6="address",
-    provider="slug",
+    provider="name",
     rack="name",
-    rack_group="slug",
-    rack_role="slug",
+    rack_group="name",
     rear_port="name",
     rear_port_template="name",
-    region="slug",
-    rir="slug",
+    rir="name",
     route_targets="name",
-    slug="slug",
-    site="slug",
-    tenant="slug",
-    tenant_group="slug",
+    status="name",
+    tenant="name",
+    tenant_group="name",
     time_zone="timezone",
     virtual_chassis="name",
     virtual_machine="name",
-    virtual_machine_role="slug",
     vlan="name",
-    vlan_group="slug",
-    vlan_role="name",
+    vlan_group="name",
     vrf="name",
 )
 
@@ -148,7 +137,6 @@ CONVERT_TO_ID = {
     "dcim.powerport": "power_ports",
     "dcim.rearport": "rear_ports",
     "device": "devices",
-    "device_role": "device_roles",
     "device_type": "device_types",
     "export_targets": "route_targets",
     "group": "tenant_groups",
@@ -159,32 +147,31 @@ CONVERT_TO_ID = {
     "ip_addresses": "ip_addresses",
     "ipaddresses": "ip_addresses",
     "lag": "interfaces",
+    "location": "locations",
     "manufacturer": "manufacturers",
     "master": "devices",
     "nat_inside": "ip_addresses",
     "nat_outside": "ip_addresses",
     "platform": "platforms",
     "parent_rack_group": "rack_groups",
-    "parent_region": "regions",
+    "parent_location": "locations",
     "parent_tenant_group": "tenant_groups",
     "power_panel": "power_panels",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
-    "prefix_role": "roles",
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
     "primary_ip6": "ip_addresses",
     "provider": "providers",
     "rack": "racks",
     "rack_group": "rack_groups",
-    "rack_role": "rack_roles",
-    "region": "regions",
     "rear_port": "rear_ports",
     "rear_port_template": "rear_port_templates",
     "rir": "rirs",
+    "role": "roles",
     "route_targets": "route_targets",
     "services": "services",
-    "site": "sites",
+    "status": "statuses",
     "tags": "tags",
     "tagged_vlans": "vlans",
     "tenant": "tenants",
@@ -194,10 +181,8 @@ CONVERT_TO_ID = {
     "untagged_vlan": "vlans",
     "virtual_chassis": "virtual_chassis",
     "virtual_machine": "virtual_machines",
-    "virtual_machine_role": "device_roles",
     "vlan": "vlans",
     "vlan_group": "vlan_groups",
-    "vlan_role": "roles",
     "vrf": "vrfs",
 }
 
@@ -217,7 +202,6 @@ ENDPOINT_NAME_MAPPING = {
     "device_bays": "device_bay",
     "device_bay_templates": "device_bay_template",
     "devices": "device",
-    "device_roles": "device_role",
     "device_types": "device_type",
     "front_ports": "front_port",
     "front_port_templates": "front_port_template",
@@ -239,16 +223,13 @@ ENDPOINT_NAME_MAPPING = {
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
-    "rack_roles": "rack_role",
     "rear_ports": "rear_port",
     "rear_port_templates": "rear_port_template",
-    "regions": "region",
     "relationship_associations": "relationship_associations",
     "rirs": "rir",
     "roles": "role",
     "route_targets": "route_target",
     "services": "services",
-    "sites": "site",
     "statuses": "statuses",
     "tags": "tags",
     "tenants": "tenant",
@@ -265,12 +246,12 @@ ALLOWED_QUERY_PARAMS = {
     "aggregate": set(["prefix", "rir"]),
     "assigned_object": set(["name", "device", "virtual_machine"]),
     "circuit": set(["cid"]),
-    "circuit_type": set(["slug"]),
+    "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
     "cluster": set(["name", "type"]),
-    "cluster_group": set(["slug"]),
-    "cluster_type": set(["slug"]),
+    "cluster_group": set(["name"]),
+    "cluster_type": set(["name"]),
     "console_port": set(["name", "device"]),
     "console_port_template": set(["name", "device_type"]),
     "console_server_port": set(["name", "device"]),
@@ -286,8 +267,7 @@ ALLOWED_QUERY_PARAMS = {
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
     "device": set(["name"]),
-    "device_role": set(["slug"]),
-    "device_type": set(["slug"]),
+    "device_type": set(["name"]),
     "front_port": set(["name", "device", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "installed_device": set(["name"]),
@@ -298,82 +278,74 @@ ALLOWED_QUERY_PARAMS = {
     "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "lag": set(["name"]),
-    "location": set(["name"]),
+    "location": set(["id"]),
     "location_type": set(["name"]),
-    "manufacturer": set(["slug"]),
+    "manufacturer": set(["name"]),
     "master": set(["name"]),
     "nat_inside": set(["vrf", "address"]),
-    "parent_rack_group": set(["slug"]),
-    "parent_region": set(["slug"]),
-    "parent_tenant_group": set(["slug"]),
-    "platform": set(["slug"]),
+    "parent_rack_group": set(["name"]),
+    "parent_tenant_group": set(["name"]),
+    "platform": set(["name"]),
     "power_feed": set(["name", "power_panel"]),
     "power_outlet": set(["name", "device"]),
     "power_outlet_template": set(["name", "device_type"]),
-    "power_panel": set(["name", "site"]),
+    "power_panel": set(["name", "location"]),
     "power_port": set(["name", "device"]),
     "power_port_template": set(["name", "device_type"]),
-    "prefix": set(["prefix", "vrf"]),
+    "prefix": set(["prefix", "vrf", "namespace"]),
     "primary_ip4": set(["address", "vrf"]),
     "primary_ip6": set(["address", "vrf"]),
-    "provider": set(["slug"]),
-    "rack": set(["name", "site"]),
-    "rack_group": set(["slug"]),
-    "rack_role": set(["slug"]),
-    "region": set(["slug"]),
+    "provider": set(["name"]),
+    "rack": set(["name", "location"]),
+    "rack_group": set(["name"]),
     "rear_port": set(["name", "device"]),
     "rear_port_template": set(["name", "device_type"]),
     "relationship_associations": set(["source_id", "destination_id"]),
-    "rir": set(["slug"]),
-    "role": set(["slug"]),
+    "rir": set(["name"]),
+    "role": set(["name"]),
     "route_target": set(["name"]),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
-    "site": set(["slug"]),
     "statuses": set(["name"]),
-    "tags": set(["slug"]),
-    "tagged_vlans": set(["group", "name", "site", "vid", "vlan_group", "tenant"]),
-    "tenant": set(["slug"]),
-    "tenant_group": set(["slug"]),
+    "tags": set(["name"]),
+    "tagged_vlans": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
+    "tenant": set(["name"]),
+    "tenant_group": set(["name"]),
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
-    "untagged_vlan": set(["group", "name", "site", "vid", "vlan_group", "tenant"]),
+    "untagged_vlan": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "virtual_chassis": set(["name", "device"]),
     "virtual_machine": set(["name", "cluster"]),
-    "vlan": set(["group", "name", "site", "tenant", "vid", "vlan_group"]),
-    "vlan_group": set(["slug", "site"]),
-    "vrf": set(["name", "tenant"]),
+    "vlan": set(["group", "name", "location", "tenant", "vid", "vlan_group"]),
+    "vlan_group": set(["name", "location"]),
+    "vrf": set(["name", "tenant", "namespace"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "site", "tenant", "type", "virtual_machine", "vminterface"])
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "location", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
 
 REQUIRED_ID_FIND = {
-    "cables": set(["status", "type", "length_unit"]),
-    "circuits": set(["status"]),
+    "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),
     "console_ports": set(["type"]),
     "console_port_templates": set(["type"]),
     "console_server_ports": set(["type"]),
     "console_server_port_templates": set(["type"]),
-    "devices": set(["status", "face"]),
+    "devices": set(["face"]),
     "device_types": set(["subdevice_role"]),
     "front_ports": set(["type"]),
     "front_port_templates": set(["type"]),
     "interfaces": set(["form_factor", "mode", "type"]),
     "interface_templates": set(["type"]),
-    "ip_addresses": set(["status", "role"]),
-    "locations": set(["status"]),
-    "prefixes": set(["status"]),
-    "power_feeds": set(["status", "type", "supply", "phase"]),
+    "ip_addresses": set(["type"]),
+    "prefixes": set(["type"]),
+    "power_feeds": set(["type", "supply", "phase"]),
     "power_outlets": set(["type", "feed_leg"]),
     "power_outlet_templates": set(["type", "feed_leg"]),
     "power_ports": set(["type"]),
     "power_port_templates": set(["type"]),
-    "racks": set(["status", "outer_unit", "type"]),
+    "racks": set(["outer_unit", "type"]),
     "rear_ports": set(["type"]),
     "rear_port_templates": set(["type"]),
     "services": set(["protocol"]),
-    "sites": set(["status"]),
-    "virtual_machines": set(["status", "face"]),
-    "vlans": set(["status"]),
+    "virtual_machines": set(["face"]),
 }
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
@@ -383,45 +355,20 @@ CONVERT_KEYS = {
     "cluster_type": "type",
     "cluster_group": "group",
     "parent_rack_group": "parent",
-    "parent_region": "parent",
+    "parent_location": "parent",
     "parent_tenant_group": "parent",
     "power_port_template": "power_port",
-    "prefix_role": "role",
     "rack_group": "group",
-    "rack_role": "role",
     "rear_port_template": "rear_port",
     "rear_port_template_position": "rear_port_position",
     "tenant_group": "group",
     "termination_a": "termination_a_id",
     "termination_b": "termination_b_id",
-    "virtual_machine_role": "role",
-    "vlan_role": "role",
     "vlan_group": "group",
 }
 
 # This is used to dynamically convert name to slug on endpoints requiring a slug
-SLUG_REQUIRED = {
-    "circuit_types",
-    "cluster_groups",
-    "cluster_types",
-    "device_roles",
-    "device_types",
-    "ipam_roles",
-    "rack_groups",
-    "rack_roles",
-    "regions",
-    "rirs",
-    "roles",
-    "sites",
-    "statuses",
-    "tags",
-    "tenants",
-    "tenant_groups",
-    "manufacturers",
-    "platforms",
-    "providers",
-    "vlan_groups",
-}
+SLUG_REQUIRED = {}
 
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True),
@@ -842,9 +789,9 @@ class NautobotModule:
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
-                            temp_dict = {"slug": self._to_slug(list_item)}
-                        elif isinstance(list_item, dict):
+                        # if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
+                        #     temp_dict = {"slug": self._to_slug(list_item)}  # TODO check this (fixme)
+                        if isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
                             temp_dict = self._build_query_params(k, data, child=norm_data)
                         # If user passes in an integer, add to ID list to id_list as user
@@ -880,20 +827,6 @@ class NautobotModule:
 
         return data
 
-    def _to_slug(self, value):
-        """
-        :returns slug (str): Slugified value
-        :params value (str): Value that needs to be changed to slug format
-        """
-        if value is None:
-            return value
-        elif isinstance(value, int) or self.is_valid_uuid(value):
-            return value
-        else:
-            removed_chars = re.sub(r"[^\-\.\w\s]", "", value)
-            convert_chars = re.sub(r"[\-\.\s]+", "-", removed_chars)
-            return convert_chars.strip().lower()
-
     def _normalize_data(self, data):
         """
         :returns data (dict): Normalized module data to formats accepted by Nautobot searches
@@ -910,15 +843,9 @@ class NautobotModule:
                     else:
                         self._handle_errors(f"Invalid ID passed for {k}: {v['id']}")
 
-                for subk, subv in v.items():
-                    sub_data_type = QUERY_TYPES.get(subk, "q")
-                    if sub_data_type == "slug":
-                        data[k][subk] = self._to_slug(subv)
             else:
                 data_type = QUERY_TYPES.get(k, "q")
-                if data_type == "slug":
-                    data[k] = self._to_slug(v)
-                elif data_type == "timezone":
+                if data_type == "timezone":
                     if " " in v:
                         data[k] = v.replace(" ", "_")
             if k == "description":
