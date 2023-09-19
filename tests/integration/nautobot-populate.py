@@ -339,30 +339,22 @@ test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.
 ip_addresses = [
     {
         "address": "172.16.180.1/24",
-        # "assigned_object_type": "dcim.interface",  # TODO find a way to update that via API, looks like M2M is read-only
-        # "assigned_object_id": test100_gi1.id,
         "namespace": {"name": "Global"},
         "status": {"name": "Active"},
     },
     {
         "address": "2001::1:1/64",
-        # "assigned_object_type": "dcim.interface",  # TODO as above
-        # "assigned_object_id": test100_gi2.id,
         "namespace": {"name": "Global"},
         "status": {"name": "Active"},
     },
     {
         "address": "172.16.180.11/24",
         "dns_name": "nexus.example.com",
-        # "assigned_object_type": "dcim.interface",  # TODO as above
-        # "assigned_object_id": nexus_eth1.id,
         "namespace": {"name": "Global"},
         "status": {"name": "Active"},
     },
     {
         "address": "172.16.180.12/24",
-        # "assigned_object_type": "dcim.interface",  # TODO as above
-        # "assigned_object_id": nexus_child_eth1.id,
         "namespace": {"name": "Global"},
         "dns_name": "nexus.example.com",
         "status": {"name": "Active"},
@@ -371,13 +363,40 @@ ip_addresses = [
 ]
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
-# Grab first two IPs
-ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24")  # , interface_id=test100_gi1.id) TODO as above
-ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64")  # , interface_id=test100_gi2.id) TODO as above
+# Grab IPs
+ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24")
+ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64")
+ip3 = nb.ipam.ip_addresses.get(address="172.16.180.11/24")
+ip4 = nb.ipam.ip_addresses.get(address="172.16.180.12/24")
+
+# Assign IP to interfaces
+ip_to_intf = [
+    {
+        "ip_address": ip1.id,
+        "interface": test100_gi1.id,
+        "vm_interface": None,
+    },
+    {
+        "ip_address": ip2.id,
+        "interface": test100_gi2.id,
+        "vm_interface": None,
+    },
+    {
+        "ip_address": ip3.id,
+        "interface": nexus_eth1.id,
+        "vm_interface": None,
+    },
+    {
+        "ip_address": ip4.id,
+        "interface": nexus_child_eth1.id,
+        "vm_interface": None,
+    },
+]
+created_ip_to_intf = make_nautobot_calls(nb.ipam.ip_address_to_interface, ip_to_intf)
 
 # Assign Primary IP
-nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24")  # , interface_id=nexus_eth1.id) TODO as above
-# nexus.update({"primary_ip4": nexus_eth1_ip})  # TODO as above
+nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24", interfaces=[nexus_eth1.id])
+nexus.update({"primary_ip4": nexus_eth1_ip})
 
 # Create RIRs
 rirs = [{"name": "Example RIR"}]
