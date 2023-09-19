@@ -368,7 +368,7 @@ CONVERT_KEYS = {
 }
 
 # This is used to dynamically convert name to slug on endpoints requiring a slug
-SLUG_REQUIRED = {}
+SLUG_REQUIRED = {}  # TODO (fixme) remove and remove imports
 
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True),
@@ -467,16 +467,11 @@ class NautobotModule:
         try:
             nb = pynautobot.api(url, token=token, api_version=api_version)
             nb.http_session.verify = ssl_verify
-            try:
-                self.version = nb.version
-            except pynautobot.RequestError as e:
-                # Better error reporting
-                # An error might be: Invalid version in \"Accept\" header. Supported versions are 1.2, 1.3
-                # This way error returned is less verbose
-                self._handle_errors(msg=e.error)
-            except Exception:
-                self.module.fail_json(msg="Failed to establish connection to Nautobot API")
+            self.version = nb.version
             return nb
+        except pynautobot.RequestError as e:
+            # pynautobot 2.0 does version constraint on init, handle errors if versions doesn't match.
+            self._handle_errors(msg=e.error)
         except Exception:
             self.module.fail_json(msg="Failed to establish connection to Nautobot API")
 
