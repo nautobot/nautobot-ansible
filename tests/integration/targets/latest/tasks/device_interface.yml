@@ -13,6 +13,7 @@
     token: "{{ nautobot_token }}"
     device: test100
     name: GigabitEthernet3
+    status: Active
     type: "1000Base-T (1GE)"
   register: test_one
 
@@ -32,6 +33,7 @@
     token: "{{ nautobot_token }}"
     device: test100
     name: GigabitEthernet3
+    status: Active
     mtu: 1600
     enabled: false
   register: test_two
@@ -75,6 +77,7 @@
     mtu: 1600
     mgmt_only: false
     mode: Access
+    status: Active
     state: present
   register: test_four
 
@@ -109,6 +112,7 @@
     mtu: 1600
     mgmt_only: false
     mode: Access
+    status: Active
     state: present
   register: test_five
 
@@ -147,6 +151,7 @@
     mtu: 1600
     mgmt_only: true
     mode: Tagged
+    status: Active
     state: present
   register: test_six
 
@@ -175,6 +180,7 @@
     token: "{{ nautobot_token }}"
     device: test100
     name: GigabitEthernet1
+    status: Active
   register: test_seven
 
 - name: "7 - ASSERT"
@@ -192,6 +198,7 @@
     device: "R1-Device"
     name: "port-channel1"
     type: "Link Aggregation Group (LAG)"
+    status: Active
 
 - name: "8 - Create interface and assign it to parent LAG - non dict"
   networktocode.nautobot.device_interface:
@@ -205,6 +212,7 @@
     mtu: 1600
     mgmt_only: false
     mode: Access
+    status: Active
     state: present
   register: test_eight
 
@@ -231,6 +239,7 @@
     device: Test Nexus Child One
     name: Ethernet2/2
     type: 1000Base-T (1GE)
+    status: Active
     state: present
   register: test_nine
 
@@ -257,6 +266,7 @@
     name: Ethernet2/2
     description: "Updated child interface from parent device"
     update_vc_child: True
+    status: Active
     state: present
   register: test_ten
 
@@ -279,6 +289,7 @@
     device: Test Nexus One
     name: Ethernet2/2
     description: "Updated child interface from parent device - test"
+    status: Active
     state: present
   ignore_errors: yes
   register: test_eleven
@@ -296,7 +307,7 @@
     device: test100
     api_version: "{{ nautobot_version }}"
     name: GigabitEthernet9999
-    status: planned
+    status: Planned
     type: "1000Base-T (1GE)"
   register: test_twelve
 
@@ -308,8 +319,10 @@
       - test_twelve['diff']['before']['state'] == 'absent'
       - test_twelve['diff']['after']['state'] == 'present'
       - test_twelve['interface']['name'] == "GigabitEthernet9999"
-      - test_twelve['interface']['status'] == "planned"
+      - test_twelve['interface']['status'] == planned['key']
       - test_twelve['interface']['device'] == test100['key']
+  vars:
+    planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
 
 - name: "13 - Create child interface"
   networktocode.nautobot.device_interface:
@@ -318,7 +331,7 @@
     device: test100
     api_version: "{{ nautobot_version }}"
     name: GigabitEthernet9999/1
-    status: active
+    status: Active
     type: "Virtual"
     parent_interface:
       name: GigabitEthernet9999
@@ -342,7 +355,7 @@
     device: test100
     api_version: "{{ nautobot_version }}"
     name: Bridge1
-    status: active
+    status: Active
     type: "1000Base-T (1GE)"
     bridge:
       name: GigabitEthernet9999
