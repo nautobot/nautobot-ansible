@@ -5,10 +5,13 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
-    device_role: "{{ lookup('networktocode.nautobot.lookup', 'device-roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=core-switch') }}"
+    parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
+    child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+    role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Core Switch\"') }}"
     vc1: "{{ lookup('networktocode.nautobot.lookup', 'virtual-chassis', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=VC1') }}"
+    staged: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Staged') }}"
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
 
 - name: "1 - Device with required information"
   networktocode.nautobot.device:
@@ -17,8 +20,9 @@
     name: "R1"
     device_type:
       id: "{{ device_type['key'] }}"
-    device_role: "Core Switch"
-    site: "Test Site"
+    role: "Core Switch"
+    location:
+      id: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_one
@@ -30,10 +34,10 @@
       - test_one['diff']['before']['state'] == 'absent'
       - test_one['diff']['after']['state'] == 'present'
       - test_one['device']['name'] == "R1"
-      - test_one['device']['device_role'] == device_role['key']
+      - test_one['device']['role'] == role['key']
       - test_one['device']['device_type'] == device_type['key']
-      - test_one['device']['site'] == test_site['key']
-      - test_one['device']['status'] == "staged"
+      - test_one['device']['location'] == parent_location['key']
+      - test_one['device']['status'] == staged['key']
       - test_one['device']['name'] == "R1"
       - test_one['msg'] == "device R1 created"
 
@@ -43,8 +47,9 @@
     token: "{{ nautobot_token }}"
     name: "R1"
     device_type: "Cisco Test"
-    device_role: "Core Switch"
-    site: "Test Site"
+    role: "Core Switch"
+    location:
+      id: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_two
@@ -54,10 +59,10 @@
     that:
       - not test_two['changed']
       - test_two['device']['name'] == "R1"
-      - test_two['device']['device_role'] == device_role['key']
+      - test_two['device']['role'] == role['key']
       - test_two['device']['device_type'] == device_type['key']
-      - test_two['device']['site'] == test_site['key']
-      - test_two['device']['status'] == "staged"
+      - test_two['device']['location'] == parent_location['key']
+      - test_two['device']['status'] == staged['key']
       - test_two['msg'] == "device R1 already exists"
 
 - name: "3 - Update device"
@@ -67,7 +72,7 @@
     name: "R1"
     serial: "FXS1001"
     status: "Staged"
-    local_context_data:
+    local_config_context_data:
       bgp_as: "65412"
     virtual_chassis: "VC1"
     vc_position: 3
@@ -80,17 +85,17 @@
     that:
       - test_three is changed
       - test_three['diff']['after']['serial'] == "FXS1001"
-      - test_three['diff']['after']['local_context_data']["bgp_as"] == "65412"
+      - test_three['diff']['after']['local_config_context_data']["bgp_as"] == "65412"
       - test_three['diff']['after']['virtual_chassis'] == vc1['key']
       - test_three['diff']['after']['vc_position'] == 3
       - test_three['diff']['after']['vc_priority'] == 15
       - test_three['device']['name'] == "R1"
-      - test_three['device']['device_role'] == device_role['key']
+      - test_three['device']['role'] == role['key']
       - test_three['device']['device_type'] == device_type['key']
-      - test_three['device']['site'] == test_site['key']
-      - test_three['device']['status'] == "staged"
+      - test_three['device']['location'] == parent_location['key']
+      - test_three['device']['status'] == staged['key']
       - test_three['device']['serial'] == "FXS1001"
-      - test_three['device']['local_context_data']["bgp_as"] == "65412"
+      - test_three['device']['local_config_context_data']["bgp_as"] == "65412"
       - test_three['device']['virtual_chassis'] == vc1['key']
       - test_three['device']['vc_position'] == 3
       - test_three['device']['vc_priority'] == 15
@@ -113,13 +118,19 @@
     that:
       - test_three_dot_one is changed
       - test_three_dot_one['diff']['after']['name'] == "R1-changed-name"
-      - test_three_dot_one['device']['device_role'] == device_role['key']
+      - test_three_dot_one['device']['role'] == role['key']
       - test_three_dot_one['device']['device_type'] == device_type['key']
-      - test_three_dot_one['device']['site'] == test_site['key']
-      - test_three_dot_one['device']['status'] == "staged"
+      - test_three_dot_one['device']['location'] == parent_location['key']
+      - test_three_dot_one['device']['status'] == staged['key']
       - test_three_dot_one['device']['serial'] == "FXS1001"
-      - test_three_dot_one['device']['local_context_data']["bgp_as"] == "65412"
       - test_three_dot_one['msg'] == "device R1-changed-name updated"
+
+- name: "3.11 - ASSERT"
+  assert:
+    that:
+      - device['value']['local_config_context_data']["bgp_as"] == "65412"
+  vars:
+    device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=R1-changed-name') }}"
 
 - name: "4 - Create device with tags and assign to rack"
   networktocode.nautobot.device:
@@ -127,14 +138,15 @@
     token: "{{ nautobot_token }}"
     name: "TestR1"
     device_type: "1841"
-    device_role: "Core Switch"
-    site: "Test Site2"
+    role: "Core Switch"
+    location:
+      id: "{{ child_location['key'] }}"
     rack: "Test Rack Site 2"
     status: "Active"
     position: 35
     face: "Front"
     tags:
-      - "schnozzberry"
+      - "Schnozzberry"
     tenant: "Test Tenant"
     asset_tag: "1234"
     state: present
@@ -147,21 +159,20 @@
       - test_four['diff']['before']['state'] == "absent"
       - test_four['diff']['after']['state'] == "present"
       - test_four['device']['name'] == "TestR1"
-      - test_four['device']['device_role'] == device_role['key']
+      - test_four['device']['role'] == role['key']
       - test_four['device']['device_type'] == type['key']
-      - test_four['device']['site'] == site['key']
-      - test_four['device']['status'] == "active"
+      - test_four['device']['location'] == child_location['key']
+      - test_four['device']['status'] == active['key']
       - test_four['device']['rack'] == rack['key']
       - test_four['device']['tags'][0] == schnozzberry['key']
       - test_four['device']['tenant'] == tenant['key']
       - test_four['device']['asset_tag'] == '1234'
       - test_four['msg'] == "device TestR1 created"
   vars:
-    site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site2') }}"
     rack: '{{ lookup(''networktocode.nautobot.lookup'', ''racks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Rack Site 2"'') }}'
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=1841') }}"
-    schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=1841') }}"
+    schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
 
 - name: "5 - Delete previous device"
   networktocode.nautobot.device:
@@ -219,10 +230,10 @@
       - test_seven['diff']['after']['primary_ip4'] == ip4['key']
       - test_seven['diff']['after']['primary_ip6'] == ip6['key']
       - test_seven['device']['name'] == "test100"
-      - test_seven['device']['device_role'] == device_role['key']
+      - test_seven['device']['role'] == role['key']
       - test_seven['device']['device_type'] == device_type['key']
-      - test_seven['device']['site'] == test_site['key']
-      - test_seven['device']['status'] == "active"
+      - test_seven['device']['location'] == parent_location['key']
+      - test_seven['device']['status'] == active['key']
       - test_seven['device']['primary_ip4'] == ip4['key']
       - test_seven['device']['primary_ip6'] == ip6['key']
       - test_seven['msg'] == "device test100 updated"
@@ -234,8 +245,9 @@
     name: ""
     device_type:
       id: "{{ device_type['key'] }}"
-    device_role: "Core Switch"
-    site: "Test Site"
+    role: "Core Switch"
+    location:
+      id: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_eight
@@ -246,9 +258,9 @@
       - test_eight is changed
       - test_eight['diff']['before']['state'] == 'absent'
       - test_eight['diff']['after']['state'] == 'present'
-      - test_eight['device']['device_role'] == device_role['key']
+      - test_eight['device']['role'] == role['key']
       - test_eight['device']['device_type'] == device_type['key']
-      - test_eight['device']['site'] == test_site['key']
-      - test_eight['device']['status'] == "staged"
+      - test_eight['device']['location'] == parent_location['key']
+      - test_eight['device']['status'] == staged['key']
       - "'-' in test_eight['device']['name']"
       - "test_eight['device']['name'] | length == 36"
