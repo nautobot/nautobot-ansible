@@ -67,7 +67,7 @@ created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_gro
 test_tenant_group = nb.tenancy.tenant_groups.get(name="Test Tenant Group")
 
 # Create TENANTS
-tenants = [{"name": "Test Tenant", "group": test_tenant_group.id}]
+tenants = [{"name": "Test Tenant", "tenant_group": test_tenant_group.id}]
 created_tenants = make_nautobot_calls(nb.tenancy.tenants, tenants)
 # Test Tenant to be used later on
 test_tenant = nb.tenancy.tenants.get(name="Test Tenant")
@@ -114,6 +114,11 @@ child_location_attrs = [
 make_nautobot_calls(nb.dcim.locations, child_location_attrs)
 location_child = nb.dcim.locations.get(name="Child Test Location")
 
+child_child_location_attrs = [
+    {"name": "Child-Child Test Location", "location_type": child_location_type.id, "parent": location_child.id, "status": {"name": "Active"}},
+]
+make_nautobot_calls(nb.dcim.locations, child_child_location_attrs)
+location_child_child = nb.dcim.locations.get(name="Child-Child Test Location")
 # Create power panel
 power_panels = [{"name": "Test Power Panel", "location": location_parent.id}]
 created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)
@@ -135,8 +140,8 @@ created_prefixes = make_nautobot_calls(nb.ipam.prefixes, prefixes)
 
 # Create VLAN GROUPS
 vlan_groups = [
-    {"name": "Test Vlan Group", "location": location_parent.id, "tenant": test_tenant.id},
-    {"name": "Test Vlan Group 2", "location": location_parent.id, "tenant": test_tenant.id},
+    {"name": "Test Vlan Group", "location": location_child.id, "tenant": test_tenant.id},
+    {"name": "Test Vlan Group 2", "location": location_child.id, "tenant": test_tenant.id},
 ]
 created_vlan_groups = make_nautobot_calls(nb.ipam.vlan_groups, vlan_groups)
 # VLAN Group variables to be used later on
@@ -145,13 +150,13 @@ test_vlan_group = nb.ipam.vlan_groups.get(name="Test Vlan Group")
 
 # Create VLANS
 vlans = [
-    {"name": "Wireless", "vid": 100, "location": location_parent.id, "status": {"name": "Active"}},
-    {"name": "Data", "vid": 200, "location": location_parent.id, "status": {"name": "Active"}},
-    {"name": "VoIP", "vid": 300, "location": location_parent.id, "status": {"name": "Active"}},
+    {"name": "Wireless", "vid": 100, "location": location_child.id, "status": {"name": "Active"}},
+    {"name": "Data", "vid": 200, "location": location_child.id, "status": {"name": "Active"}},
+    {"name": "VoIP", "vid": 300, "location": location_child.id, "status": {"name": "Active"}},
     {
         "name": "Test VLAN",
         "vid": 400,
-        "location": location_parent.id,
+        "location": location_child.id,
         "tenant": test_tenant.id,
         "group": test_vlan_group.id,
         "status": {"name": "Active"},
@@ -220,16 +225,16 @@ core_switch = nb.extras.roles.get(name="Core Switch")
 
 # Create Rack Groups
 rack_groups = [
-    {"name": "Test Rack Group", "location": location_parent.id},
-    {"name": "Parent Rack Group", "location": location_parent.id},
+    {"name": "Parent Rack Group", "location": location_child.id},
+    {"name": "Child Rack Group", "location": location_child_child.id},
 ]
 created_rack_groups = make_nautobot_calls(nb.dcim.rack_groups, rack_groups)
 
-rack_group1 = nb.dcim.rack_groups.get(name="Test Rack Group")
-rack_group2 = nb.dcim.rack_groups.get(name="Parent Rack Group")
+rack_group_parent = nb.dcim.rack_groups.get(name="Parent Rack Group")
+rack_group_child = nb.dcim.rack_groups.get(name="Child Rack Group")
 # Create Rack Group Parent relationship
-rack_group1.parent = rack_group2.id
-rack_group1.save()
+rack_group_child.parent = rack_group_parent.id
+rack_group_child.save()
 
 # Create Rack Roles
 rack_roles = [{"name": "Test Rack Role", "color": "4287f5", "content_types": ["dcim.rack"]}]
@@ -238,12 +243,12 @@ rack_role1 = nb.extras.roles.get(name="Test Rack Role")
 
 # Create Racks
 racks = [
-    {"name": "Test Rack Site 2", "rack_group": rack_group2.id, "location": location_child.id, "role": rack_role1.id, "status": {"name": "Active"}},
-    {"name": "Test Rack", "location": location_parent.id, "rack_group": rack_group1.id, "role": rack_role1.id, "status": {"name": "Active"}},
+    {"name": "Sub Test Rack", "location": location_child_child.id, "rack_group": rack_group_child.id, "status": {"name": "Active"}},
+    {"name": "Main Test Rack", "location": location_child.id, "rack_group": rack_group_parent.id, "role": rack_role1.id, "status": {"name": "Active"}},
 ]
 created_racks = make_nautobot_calls(nb.dcim.racks, racks)
-test_rack = nb.dcim.racks.get(name="Test Rack")
-test_rack_site2 = nb.dcim.racks.get(name="Test Rack Site 2")
+main_test_rack = nb.dcim.racks.get(name="Main Test Rack")
+sub_test_rack = nb.dcim.racks.get(name="Sub Test Rack")
 
 
 # Create Devices
@@ -252,7 +257,7 @@ devices = [
         "name": "test100",
         "device_type": cisco_test.id,
         "role": core_switch.id,
-        "location": location_parent.id,
+        "location": location_child.id,
         "tenant": test_tenant.id,
         "local_config_context_data": {"ntp_servers": ["pool.ntp.org"]},
         "status": {"name": "Active"},
@@ -261,8 +266,8 @@ devices = [
         "name": "TestDeviceR1",
         "device_type": cisco_test.id,
         "role": core_switch.id,
-        "location": location_parent.id,
-        "rack": test_rack.id,
+        "location": location_child_child.id,
+        "rack": sub_test_rack.id,
         "status": {"name": "Active"},
     },
     {
@@ -270,21 +275,21 @@ devices = [
         "device_type": cisco_test.id,
         "role": core_switch.id,
         "location": location_child.id,
-        "rack": test_rack_site2.id,
+        "rack": main_test_rack.id,
         "status": {"name": "Active"},
     },
     {
         "name": "Test Nexus One",
         "device_type": nexus_parent.id,
         "role": core_switch.id,
-        "location": location_parent.id,
+        "location": location_child.id,
         "status": {"name": "Active"},
     },
     {
         "name": "Test Nexus Child One",
         "device_type": nexus_child.id,
         "role": core_switch.id,
-        "location": location_parent.id,
+        "location": location_child.id,
         "status": {"name": "Active"},
     },
 ]
@@ -414,7 +419,7 @@ test_cluster_type = nb.virtualization.cluster_types.get(name="Test Cluster Type"
 
 # Create Cluster
 clusters = [
-    {"name": "Test Cluster", "cluster_type": test_cluster_type.id, "cluster_group": test_cluster_group.id, "location": location_parent.id},
+    {"name": "Test Cluster", "cluster_type": test_cluster_type.id, "cluster_group": test_cluster_group.id, "location": location_child.id},
     {"name": "Test Cluster 2", "cluster_type": test_cluster_type.id},
 ]
 created_clusters = make_nautobot_calls(nb.virtualization.clusters, clusters)
@@ -459,7 +464,7 @@ created_virtual_machines_intfs = make_nautobot_calls(nb.virtualization.interface
 # Create Services
 services = [
     {"device": test100.id, "name": "ssh", "ports": [22], "protocol": "tcp"},
-    {"device": test100.id, "name": "http", "ports": [80], "protocol": "tcp", "ipaddresses": [ip1.id, ip2.id]},
+    {"device": test100.id, "name": "http", "ports": [80], "protocol": "tcp", "ip_addresses": [ip1.id, ip2.id]},
     {"device": nexus.id, "name": "telnet", "ports": [23], "protocol": "tcp"},
     {"virtual_machine": test_spaces_vm.id, "name": "ssh", "ports": [22], "protocol": "tcp"},
 ]

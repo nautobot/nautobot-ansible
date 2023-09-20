@@ -127,7 +127,7 @@ DOCUMENTATION = """
                 - rack_role
                 - tags
                 - tag
-                - roles
+                - device_roles
                 - role
                 - device_types
                 - device_type
@@ -205,7 +205,7 @@ api_endpoint: http://localhost:8000
 validate_certs: True
 config_context: False
 group_by:
-  - roles
+  - device_roles
 query_filters:
   - role: network-edge-router
 device_query_filters:
@@ -255,7 +255,6 @@ from threading import Thread
 from typing import Iterable
 from itertools import chain
 from collections import defaultdict
-from ipaddress import ip_interface
 
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.module_utils.ansible_release import __version__ as ansible_version
@@ -396,6 +395,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "tenant_group": self.extract_tenant_group,
             self._pluralize_group_by("rack"): self.extract_rack,
             "rack_group": self.extract_rack_group,
+            "rack_role": self.extract_rack_role,
             self._pluralize_group_by("tag"): self.extract_tags,
             self._pluralize_group_by("role"): self.extract_device_role,
             self._pluralize_group_by("platform"): self.extract_platform,
@@ -420,7 +420,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "tenant": "tenants",
             "rack": "racks",
             "tag": "tags",
-            "role": "roles",
+            "role": "device_roles",
             "platform": "platforms",
             "device_type": "device_types",
             "manufacturer": "manufacturers",
@@ -572,23 +572,22 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             return
 
     def extract_primary_ip(self, host):
-        try:
-            address = host["primary_ip"]["address"]
-            return str(ip_interface(address).ip)
-        except Exception:
-            return
+        address_v4 = self.extract_primary_ip4(host)
+        address_v6 = self.extract_primary_ip6(host)
+        if address_v4:
+            return address_v4
+        elif address_v6:
+            return address_v6
 
     def extract_primary_ip4(self, host):
         try:
-            address = host["primary_ip4"]["address"]
-            return str(ip_interface(address).ip)
+            return host["primary_ip4"]
         except Exception:
             return
 
     def extract_primary_ip6(self, host):
         try:
-            address = host["primary_ip6"]["address"]
-            return str(ip_interface(address).ip)
+            return host["primary_ip6"]
         except Exception:
             return
 
@@ -634,6 +633,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         except Exception:
             return
 
+    def _extract_location_from_host(self, host):
+        if host.get("object_type") == "virtualization.virtualmachine":
+            return host.get("cluster", {}).get("location")
+        else:
+            return host.get("location", None)
+
+    def extract_location(self, host):
+        location = self._extract_location_from_host(host)
+        if isinstance(location, dict):
+            return self.locations_lookup.get(location["id"])
+
     def extract_locations(self, host):
         # A host may have a location. A location may have a parent location.
         # Produce a list of locations:
@@ -641,10 +651,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # - it will have 1 element if the location has no parent
         # - it will have multiple elements if the location has a parent location
 
-        if host.get("object_type") == "virtualization.virtualmachine":
-            location = host.get("cluster", {}).get("location")
-        else:
-            location = host.get("location", None)
+        location = self._extract_location_from_host(host)
 
         if not isinstance(location, dict):
             # Device has no location
@@ -683,18 +690,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return host.get("is_virtual")
 
     def extract_dns_name(self, host):
+        primary_ip = self.extract_primary_ip(host)
         # No primary IP assigned
-        if not host.get("primary_ip"):
+        if not primary_ip:
             return None
 
-        before_v29 = bool(self.ipaddresses_lookup)
-        if before_v29:
-            ip_address = self.ipaddresses_lookup.get(host["primary_ip"]["id"])
-        else:
-            if host["is_virtual"]:
-                ip_address = self.vm_ipaddresses_lookup.get(host["primary_ip"]["id"])
-            else:
-                ip_address = self.device_ipaddresses_lookup.get(host["primary_ip"]["id"])
+        ip_address = self.ipaddresses_lookup.get(primary_ip["id"])
 
         # Don"t assign a host_var for empty dns_name
         if ip_address.get("dns_name") == "":
@@ -898,7 +899,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     # Note: depends on the result of refresh_interfaces for self.devices_with_ips
     def refresh_ipaddresses(self):
-        url = self.api_endpoint + "/api/ipam/ip-addresses/?limit=0&has_interface_assignments=true"
+        # setting depth=2 to fetch information about namespaces under parent prefixes.
+        url = self.api_endpoint + "/api/ipam/ip-addresses/?limit=0&depth=2&has_interface_assignments=true"
         ipaddresses = []
 
         if self.fetch_all:
@@ -929,39 +931,25 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.device_ipaddresses_lookup = defaultdict(dict)
 
         for ipaddress in ipaddresses:
-            # As of Nautobot v2.9 "assigned_object_x" replaces "interface"
-            if ipaddress.get("assigned_object_id"):
-                interface_id = ipaddress["assigned_object_id"]
-                ip_id = ipaddress["id"]
-                # We need to copy the ipaddress entry to preserve the original in case caching is used.
-                ipaddress_copy = ipaddress.copy()
-
-                if ipaddress["assigned_object_type"] == "virtualization.vminterface":
-                    self.vm_ipaddresses_lookup[ip_id] = ipaddress_copy
-                    self.vm_ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
-                else:
-                    self.device_ipaddresses_lookup[ip_id] = ipaddress_copy
-                    self.device_ipaddresses_intf_lookup[interface_id][
-                        ip_id
-                    ] = ipaddress_copy  # Remove "assigned_object_X" attributes, as that's redundant when ipaddress is added to an interface
-
-                del ipaddress_copy["assigned_object_id"]
-                del ipaddress_copy["assigned_object_type"]
-                del ipaddress_copy["assigned_object"]
-                continue
-
-            if not ipaddress.get("interface"):
-                continue
-            interface_id = ipaddress["interface"]["id"]
-            ip_id = ipaddress["id"]
-
             # We need to copy the ipaddress entry to preserve the original in case caching is used.
             ipaddress_copy = ipaddress.copy()
+            ip_id = ipaddress["id"]
+            for interface in ipaddress["interfaces"]:
+                interface_id = interface["id"]
+                self.device_ipaddresses_lookup[ip_id] = ipaddress_copy
+                self.device_ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
+                self.ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
+                self.ipaddresses_lookup[ip_id] = ipaddress_copy
 
-            self.ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
-            self.ipaddresses_lookup[ip_id] = ipaddress_copy
+            for interface in ipaddress["vm_interfaces"]:
+                interface_id = interface["id"]
+                self.vm_ipaddresses_lookup[ip_id] = ipaddress_copy
+                self.vm_ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
+                self.ipaddresses_intf_lookup[interface_id][ip_id] = ipaddress_copy
+                self.ipaddresses_lookup[ip_id] = ipaddress_copy
             # Remove "interface" attribute, as that's redundant when ipaddress is added to an interface
-            del ipaddress_copy["interface"]
+            del ipaddress_copy["interfaces"]
+            del ipaddress_copy["vm_interfaces"]
 
     @property
     def lookup_processes(self):
@@ -1113,9 +1101,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Include config_context if required
         if self.config_context:
             if device_url:
-                device_url = device_url + "&include=config_context"
+                device_url = f"{device_url}&include=config_context"
             if vm_url:
-                vm_url = vm_url + "&include=config_context"
+                vm_url = f"{vm_url}&include=config_context"
 
         return device_url, vm_url
 
@@ -1152,6 +1140,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         else:
             return host["name"] or str(uuid.uuid4())
 
+    @staticmethod
+    def _remove_invalid_group_chars(group):
+        # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
+        return group.replace("-", "_").replace(" ", "_").lower()
+
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
@@ -1170,10 +1163,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if grouping == "status":
             group = group["display"]
 
-        if self.group_names_raw:
-            return group
-        else:
-            return "_".join([grouping, group])
+        group = self._remove_invalid_group_chars(group)
+        return group if self.group_names_raw else "_".join([grouping, group])
 
     def add_host_to_groups(self, host, hostname):
         for grouping in self.group_by:
@@ -1222,7 +1213,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
-            self.inventory.set_variable(hostname, "ansible_host", extracted_primary_ip)
+            self.inventory.set_variable(hostname, "ansible_host", extracted_primary_ip["host"])
 
         if self.ansible_host_dns_name:
             extracted_dns_name = self.extract_dns_name(host=host)
@@ -1231,11 +1222,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         extracted_primary_ip4 = self.extract_primary_ip4(host=host)
         if extracted_primary_ip4:
-            self.inventory.set_variable(hostname, "primary_ip4", extracted_primary_ip4)
+            self.inventory.set_variable(hostname, "primary_ip4", extracted_primary_ip4["host"])
 
         extracted_primary_ip6 = self.extract_primary_ip6(host=host)
         if extracted_primary_ip6:
-            self.inventory.set_variable(hostname, "primary_ip6", extracted_primary_ip6)
+            self.inventory.set_variable(hostname, "primary_ip6", extracted_primary_ip6["host"])
+
+        location = self.extract_location(host=host)
+        if location:
+            self.inventory.set_variable(hostname, "location", location)
 
         for attribute, extractor in self.group_extractors.items():
             extracted_value = extractor(host)
@@ -1318,7 +1313,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.add_host_to_groups(host=host, hostname=hostname)
 
             # Create groups for parent locations, containing child locations
-            if "location" in self.group_by:
+            if "locations" in self.group_by:
                 self._add_location_groups()
 
     def parse(self, inventory, loader, path, cache=True):

@@ -1,142 +1,142 @@
 {
-    "Test_Cluster": {
-        "hosts": [
-            "test100-vm",
-            "test101-vm",
-            "test102-vm",
-            "test103-vm"
-        ]
-    },
-    "Test_Cluster_2": {
-        "hosts": [
-            "Test VM With Spaces",
-            "test104-vm"
-        ]
-    },
-    "Test_Rack": {
-        "hosts": [
-            "TestDeviceR1"
-        ]
-    },
-    "Test_Rack_Site_2": {
-        "hosts": [
-            "R1-Device"
-        ]
-    },
     "_meta": {
         "hostvars": {
             "R1-Device": {
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
-                "rack_groups": [],
-                "rack_role": "test-rack-role",
+                "rack_groups": [
+                    "Parent Rack Group"
+                ],
+                "rack_role": "Test Rack Role",
                 "racks": [
-                    "Test Rack Site 2"
-                ],
-                "regions": [],
-                "sites": [
-                    "test-site2"
+                    "Main Test Rack"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "nexus-parent"
+                    "Nexus Parent"
                 ],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
                 "primary_ip4": "172.16.180.11",
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "Test VM With Spaces": {
                 "cluster": "Test Cluster 2",
-                "cluster_type": "test-cluster-type",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [],
+                "locations": [],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "TestDeviceR1": {
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child-Child Test Location",
+                "locations": [
+                    "Child-Child Test Location",
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
                 "rack_groups": [
-                    "test-rack-group",
-                    "parent-rack-group"
+                    "Child Rack Group",
+                    "Parent Rack Group"
                 ],
                 "racks": [
-                    "Test Rack"
-                ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
+                    "Sub Test Rack"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test100": {
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "is_virtual": false,
                 "local_context_data": [
@@ -146,124 +146,150 @@
                         ]
                     }
                 ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
                 "ntp_servers": [
                     "pool.ntp.org"
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": [],
-                "tenant_group": "test-tenant-group",
+                "tenant_group": "Test Tenant Group",
                 "tenants": [
-                    "test-tenant"
+                    "Test Tenant"
                 ]
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test101-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test102-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test103-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
-                "sites": [
-                    "test-site"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test104-vm": {
                 "cluster": "Test Cluster 2",
-                "cluster_type": "test-cluster-type",
+                "cluster_type": "Test Cluster Type",
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [],
+                "locations": [],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "composite_key": "Active",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_aabd",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             }
@@ -285,26 +311,49 @@
     },
     "all": {
         "children": [
-            "Test_Cluster",
-            "Test_Cluster_2",
-            "Test_Rack",
-            "Test_Rack_Site_2",
             "active",
+            "child_rack_group",
             "cisco",
             "cisco_test",
             "core_switch",
             "is_virtual",
+            "main_test_rack",
             "nexus_parent",
-            "other_region",
             "parent_rack_group",
-            "parent_region",
+            "parent_test_location",
+            "sub_test_rack",
+            "test_cluster",
+            "test_cluster_2",
             "test_cluster_group",
             "test_cluster_type",
-            "test_rack_group",
             "test_rack_role",
-            "test_site2",
             "test_tenant",
             "ungrouped"
+        ]
+    },
+    "child_child_test_location": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "child_rack_group": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "child_test_location": {
+        "children": [
+            "child_child_test_location"
+        ],
+        "hosts": [
+            "R1-Device",
+            "test100",
+            "TestDeviceR1",
+            "Test Nexus One",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
         ]
     },
     "cisco": {
@@ -340,6 +389,11 @@
             "test104-vm"
         ]
     },
+    "main_test_rack": {
+        "hosts": [
+            "R1-Device"
+        ]
+    },
     "nexus_parent": {
         "hosts": [
             "Test Nexus One"
@@ -347,12 +401,42 @@
     },
     "parent_rack_group": {
         "hosts": [
+            "R1-Device",
             "TestDeviceR1"
         ]
     },
-    "parent_region": {
+    "parent_test_location": {
         "children": [
-            "test_region"
+            "child_test_location"
+        ],
+        "hosts": [
+            "R1-Device",
+            "test100",
+            "TestDeviceR1",
+            "Test Nexus One",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "sub_test_rack": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "test_cluster": {
+        "hosts": [
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "test_cluster_2": {
+        "hosts": [
+            "Test VM With Spaces",
+            "test104-vm"
         ]
     },
     "test_cluster_group": {
@@ -373,33 +457,7 @@
             "test104-vm"
         ]
     },
-    "test_rack_group": {
-        "hosts": [
-            "TestDeviceR1"
-        ]
-    },
     "test_rack_role": {
-        "hosts": [
-            "R1-Device"
-        ]
-    },
-    "test_region": {
-        "children": [
-            "test_site"
-        ]
-    },
-    "test_site": {
-        "hosts": [
-            "Test Nexus One",
-            "TestDeviceR1",
-            "test100",
-            "test100-vm",
-            "test101-vm",
-            "test102-vm",
-            "test103-vm"
-        ]
-    },
-    "test_site2": {
         "hosts": [
             "R1-Device"
         ]

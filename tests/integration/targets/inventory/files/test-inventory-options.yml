@@ -39,10 +39,10 @@ group_by:
 query_filters:
 
 device_query_filters:
-  - role: core-switch
+  - role: "Core Switch"
 
 vm_query_filters:
-  - cluster_type: test-cluster-type
+  - cluster_type: "Test Cluster Type"
 
 # See Constructed for details
 # https://docs.ansible.com/ansible/latest/plugins/inventory/constructed.html
