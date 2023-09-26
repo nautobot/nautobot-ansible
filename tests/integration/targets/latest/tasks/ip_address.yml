@@ -9,7 +9,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.1.10/30
-    status: "active"
+    status: "Active"
     state: present
   register: test_one
 
@@ -27,7 +27,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.1.10/30
-    status: "active"
+    status: "Active"
     description: "Updated ip address"
     tags:
       - "Updated"
@@ -45,7 +45,7 @@
       - test_two['ip_address']['tags'][0] == tag_updated['key']
       - test_two['ip_address']['description'] == "Updated ip address"
   vars:
-    tag_updated: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=updated') }}"
+    tag_updated: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Updated') }}"
 
 - name: "3 - Delete IP - 192.168.1.10 - State: Absent"
   networktocode.nautobot.ip_address:
@@ -63,12 +63,12 @@
       - test_three['diff']['after']['state'] == "absent"
       - test_three['msg'] == "ip_address 192.168.1.10/30 deleted"
 
-- name: "4 - Create IP in global VRF - 192.168.1.20/30 - State: Present"
+- name: "4 - Create IP in global namespace - 192.168.1.20/30 - State: Present"
   networktocode.nautobot.ip_address:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.1.20/30
-    status: "active"
+    status: "Active"
     state: present
   register: test_four
 
@@ -81,30 +81,30 @@
       - test_four['msg'] == "ip_address 192.168.1.20/30 created"
       - test_four['ip_address']['address'] == "192.168.1.20/30"
 
-- name: "5 - Create IP in global VRF - 192.168.1.20/30 - State: New"
+- name: "5 - Duplicate IP in global namespace - 192.168.1.20/30 - State: New"
   networktocode.nautobot.ip_address:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.1.20/30
-    status: "active"
+    status: "Active"
     state: new
   register: test_five
+  ignore_errors: true
 
 - name: "5 - ASSERT"
   assert:
     that:
-      - test_five is changed
-      - test_five['diff']['before']['state'] == "absent"
-      - test_five['diff']['after']['state'] == "present"
-      - test_five['msg'] == "ip_address 192.168.1.20/30 created"
-      - test_five['ip_address']['address'] == "192.168.1.20/30"
+      - test_five is not changed
+      - expected_msg in test_five['msg']
+  vars:
+    expected_msg: "duplicate key value violates unique constraint"
 
-- name: "6 - Create new address with only prefix specified - State: new"
+- name: "6 - Create new address with only parent specified - State: new"
   networktocode.nautobot.ip_address:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    prefix: 192.168.100.0/24
-    status: "active"
+    parent: 192.168.0.0/16
+    status: "Active"
     state: new
   register: test_six
 
@@ -114,8 +114,8 @@
       - test_six is changed
       - test_six['diff']['before']['state'] == "absent"
       - test_six['diff']['after']['state'] == "present"
-      - test_six['msg'] == "ip_address 192.168.100.1/24 created"
-      - test_six['ip_address']['address'] == "192.168.100.1/24"
+      - test_six['msg'] == "ip_address 192.168.0.1/16 created"
+      - test_six['ip_address']['address'] == "192.168.0.1/16"
 
 - name: "7 - Create IP address with several specified"
   networktocode.nautobot.ip_address:
@@ -126,6 +126,7 @@
     tenant: Test Tenant
     status: Reserved
     role: Loopback
+    type: Host
     description: Test description
     tags:
       - "Schnozzberry"
@@ -133,9 +134,9 @@
   register: test_seven
 
 - set_fact:
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test VRF"'') }}'
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
+    vrf: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
 
 - name: "7 - ASSERT"
   assert:
@@ -159,7 +160,7 @@
     token: "{{ nautobot_token }}"
     address: 10.10.1.30/16
     vrf: Test VRF
-    status: "active"
+    status: "Active"
     nat_inside:
       address: 172.16.1.20
       vrf: Test VRF
@@ -184,7 +185,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 10.10.200.30/16
-    status: "active"
+    status: "Active"
     assigned_object:
       name: GigabitEthernet2
       device: test100
@@ -210,7 +211,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.10.0.0/16
-    status: "active"
+    status: "Active"
     assigned_object:
       name: GigabitEthernet2
       device: test100
@@ -234,7 +235,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 192.168.100.0/24
-    status: "active"
+    status: "Active"
     assigned_object:
       name: GigabitEthernet2
       device: test100
@@ -255,7 +256,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.100.2/24
-    status: "active"
+    status: "Active"
     assigned_object:
       name: GigabitEthernet2
       device: test100
@@ -276,7 +277,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 192.168.100.2/24
-    status: "active"
+    status: "Active"
     state: present
   register: test_thirteen
 
@@ -292,7 +293,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 10.188.1.100/24
-    status: "active"
+    status: "Active"
     assigned_object:
       name: Eth0
       virtual_machine: test100-vm
@@ -317,7 +318,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 10.188.1.100/24
-    status: "active"
+    status: "Active"
     assigned_object:
       name: Eth0
       virtual_machine: test101-vm
@@ -343,7 +344,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 10.120.10.1
-    status: "active"
+    status: "Active"
     state: present
   register: test_sixteen
 

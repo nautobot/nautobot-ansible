@@ -12,7 +12,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    name: GigabitEthernet3
+    name: GigabitEthernet4
     status: Active
     type: "1000Base-T (1GE)"
   register: test_one
@@ -21,10 +21,10 @@
   assert:
     that:
       - test_one is changed
-      - test_one['msg'] == "interface GigabitEthernet3 created"
+      - test_one['msg'] == "interface GigabitEthernet4 created"
       - test_one['diff']['before']['state'] == 'absent'
       - test_one['diff']['after']['state'] == 'present'
-      - test_one['interface']['name'] == "GigabitEthernet3"
+      - test_one['interface']['name'] == "GigabitEthernet4"
       - test_one['interface']['device'] == test100['key']
 
 - name: "2 - Update test100 - GigabitEthernet3"
@@ -32,7 +32,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    name: GigabitEthernet3
+    name: GigabitEthernet4
     status: Active
     mtu: 1600
     enabled: false
@@ -42,20 +42,20 @@
   assert:
     that:
       - test_two is changed
-      - test_two['msg'] == "interface GigabitEthernet3 updated"
+      - test_two['msg'] == "interface GigabitEthernet4 updated"
       - test_two['diff']['after']['enabled'] == false
       - test_two['diff']['after']['mtu'] == 1600
-      - test_two['interface']['name'] == "GigabitEthernet3"
+      - test_two['interface']['name'] == "GigabitEthernet4"
       - test_two['interface']['device'] == test100['key']
       - test_two['interface']['enabled'] == false
       - test_two['interface']['mtu'] == 1600
 
-- name: "3 - Delete interface test100 - GigabitEthernet3"
+- name: "3 - Delete interface test100 - GigabitEthernet4"
   networktocode.nautobot.device_interface:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    name: GigabitEthernet3
+    name: GigabitEthernet4
     state: absent
   register: test_three
 
@@ -63,7 +63,7 @@
   assert:
     that:
       - test_three is changed
-      - test_three['msg'] == "interface GigabitEthernet3 deleted"
+      - test_three['msg'] == "interface GigabitEthernet4 deleted"
       - test_three['diff']['before']['state'] == "present"
       - test_three['diff']['after']['state'] == "absent"
 
@@ -104,7 +104,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    name: GigabitEthernet3
+    name: GigabitEthernet4
     enabled: false
     type: 1000Base-T (1GE)
     lag:
@@ -120,10 +120,10 @@
   assert:
     that:
       - test_five is changed
-      - test_five['msg'] == "interface GigabitEthernet3 created"
+      - test_five['msg'] == "interface GigabitEthernet4 created"
       - test_five['diff']['before']['state'] == 'absent'
       - test_five['diff']['after']['state'] == 'present'
-      - test_five['interface']['name'] == "GigabitEthernet3"
+      - test_five['interface']['name'] == "GigabitEthernet4"
       - test_five['interface']['device'] == test100['key']
       - test_five['interface']['enabled'] == false
       - test_five['interface']['type'] == "1000base-t"
@@ -205,7 +205,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    name: GigabitEthernet4
+    name: GigabitEthernet5
     enabled: false
     type: 1000Base-T (1GE)
     lag: "port-channel1"
@@ -220,10 +220,10 @@
   assert:
     that:
       - test_eight is changed
-      - test_eight['msg'] == "interface GigabitEthernet4 created"
+      - test_eight['msg'] == "interface GigabitEthernet5 created"
       - test_eight['diff']['before']['state'] == 'absent'
       - test_eight['diff']['after']['state'] == 'present'
-      - test_eight['interface']['name'] == "GigabitEthernet4"
+      - test_eight['interface']['name'] == "GigabitEthernet5"
       - test_eight['interface']['device'] == test100['key']
       - test_eight['interface']['enabled'] == false
       - test_eight['interface']['type'] == "1000base-t"

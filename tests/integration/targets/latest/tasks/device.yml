@@ -166,7 +166,7 @@
       - test_four['device']['asset_tag'] == '1234'
       - test_four['msg'] == "device TestR1 created"
   vars:
-    rack: '{{ lookup(''networktocode.nautobot.lookup'', ''racks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Rack Site 2"'') }}'
+    rack: "{{ lookup('networktocode.nautobot.lookup', 'racks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Main Test Rack\"') }}"
     tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
     type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=1841') }}"
     schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
@@ -229,7 +229,7 @@
       - test_seven['device']['name'] == "test100"
       - test_seven['device']['role'] == role['key']
       - test_seven['device']['device_type'] == device_type['key']
-      - test_seven['device']['location'] == parent_location['key']
+      - test_seven['device']['location'] == child_location['key']
       - test_seven['device']['status'] == active['key']
       - test_seven['device']['primary_ip4'] == ip4['key']
       - test_seven['device']['primary_ip6'] == ip6['key']

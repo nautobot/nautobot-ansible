@@ -31,16 +31,19 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  prefix:
+  namespace:
     description:
       - |
-        With state C(present), if an interface is given, it will ensure
-        that an IP inside this prefix (and vrf, if given) is attached
-        to this interface. Otherwise, it will get the next available IP
-        of this prefix and attach it.
+        namespace that IP address is associated with. IPs are unique per namespaces.
+    required: false
+    default: Global
+    type: str
+    version_added: "5.0.0"
+  parent:
+    description:
+      - |
         With state C(new), it will force to get the next available IP in
-        this prefix. If an interface is given, it will also force to attach
-        it.
+        this prefix.
         Required if state is C(present) or C(new) when no address is given.
         Unused if an address is specified.
     required: false
@@ -80,6 +83,16 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  type:
+    description:
+      - The type of the IP address
+    choices:
+      - DHCP
+      - Host
+      - SLAAC
+    required: false
+    type: str
+    version_added: "5.0.0"
   description:
     description:
       - The description of the interface
@@ -97,28 +110,6 @@ options:
       - Hostname or FQDN
     required: false
     type: str
-    version_added: "3.0.0"
-  assigned_object:
-    description:
-      - Definition of the assigned object.
-    required: false
-    type: dict
-    suboptions:
-      name:
-        description:
-          - The name of the interface
-        type: str
-        required: False
-      device:
-        description:
-          - The device the interface is attached to.
-        type: str
-        required: False
-      virtual_machine:
-        description:
-          - The virtual machine the interface is attached to.
-        type: str
-        required: False
     version_added: "3.0.0"
   state:
     description:
@@ -152,11 +143,18 @@ EXAMPLES = r"""
         token: thisIsMyToken
         address: 192.168.1.10
         state: new
+    - name: Create the same IP under another namespace
+      networktocode.nautobot.ip_address:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        address: 192.168.1.10
+        namespace: MyNewNamespace
+        state: new
     - name: Get a new available IP inside 192.168.1.0/24
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        prefix: 192.168.1.0/24
+        parent: 192.168.1.0/24
         state: new
     - name: Delete IP address within nautobot
       networktocode.nautobot.ip_address:
@@ -186,29 +184,6 @@ EXAMPLES = r"""
         nat_inside:
           address: 192.168.1.20
           vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-    - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 192.168.1.0/24
-        vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-        state: present
-    - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 192.168.1.0/24
-        vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-        state: new
 """
 
 RETURN = r"""
@@ -241,7 +216,7 @@ def main():
     argument_spec.update(
         dict(
             address=dict(required=False, type="str"),
-            prefix=dict(required=False, type="raw"),
+            parent=dict(required=False, type="raw"),
             vrf=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
@@ -250,36 +225,31 @@ def main():
                 type="str",
                 choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],
             ),
+            type=dict(
+                required=False,
+                type="str",
+                choices=["DHCP", "Host", "SLAAC"],
+                default="Host",
+            ),
             description=dict(required=False, type="str"),
             nat_inside=dict(required=False, type="raw"),
             dns_name=dict(required=False, type="str"),
-            assigned_object=dict(  # TODO remove in favor od new module
-                required=False,
-                type="dict",
-                options=dict(
-                    name=dict(required=False, type="str"),
-                    device=dict(required=False, type="str"),
-                    virtual_machine=dict(required=False, type="str"),
-                ),
-            ),
-            namespace=dict(required=False, type="str", default="Global"),  # TODO Update docs above
+            namespace=dict(required=False, type="str", default="Global"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )
 
     required_if = [
-        ("state", "present", ["address", "prefix", "status"], True),
+        ("state", "present", ["address", "parent", "status"], True),
         ("state", "absent", ["address"]),
-        ("state", "new", ["address", "prefix"], True),
+        ("state", "new", ["address", "parent"], True),
     ]
-    mutually_exclusive = [["address", "prefix"]]
 
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
         required_if=required_if,
-        mutually_exclusive=mutually_exclusive,
     )
 
     ip_address = NautobotIpamModule(module, NB_IP_ADDRESSES)

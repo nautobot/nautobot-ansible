@@ -324,7 +324,11 @@ ALLOWED_QUERY_PARAMS = {
 
 QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "location", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
 
-IGNORE_ADDING_IDS = set(["ip_address_to_interface", ])
+IGNORE_ADDING_IDS = set(
+    [
+        "ip_address_to_interface",
+    ]
+)
 
 REQUIRED_ID_FIND = {
     "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),

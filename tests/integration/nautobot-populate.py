@@ -50,13 +50,13 @@ create_tags = make_nautobot_calls(
         {"name": "First", "content_types": ["dcim.device"]},
         {"name": "Second", "content_types": ["dcim.device"]},
         {"name": "Third", "content_types": ["dcim.device"]},
-        {"name": "Schnozzberry", "content_types": ["dcim.device"]},
+        {"name": "Schnozzberry", "content_types": ["dcim.device", "ipam.ipaddress"]},
         {"name": "Lookup", "content_types": ["dcim.device"]},
         {"name": "Nolookup", "content_types": ["dcim.device"]},
         {"name": "tagA", "content_types": ["dcim.device"]},
         {"name": "tagB", "content_types": ["dcim.device"]},
         {"name": "tagC", "content_types": ["dcim.device"]},
-        {"name": "Updated", "content_types": ["dcim.device"]},
+        {"name": "Updated", "content_types": ["dcim.device", "ipam.ipaddress"]},
     ],
 )
 
@@ -124,7 +124,7 @@ power_panels = [{"name": "Test Power Panel", "location": location_parent.id}]
 created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)
 
 # Create VRFs
-vrfs = [{"name": "test-vrf", "rd": "1:1", "namespace": {"name": "Global"}}]
+vrfs = [{"name": "Test VRF", "rd": "1:1", "namespace": {"name": "Global"}}]
 created_vrfs = make_nautobot_calls(nb.ipam.vrfs, vrfs)
 
 
