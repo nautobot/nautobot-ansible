@@ -36,7 +36,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -89,7 +89,7 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "Test Nexus One",
-                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_2622",
+                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_0c1f",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -117,7 +117,7 @@
                         "display": "telnet (TCP/23)",
                         "ip_addresses": [],
                         "name": "telnet",
-                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_733a",
+                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_a6f3",
                         "object_type": "ipam.service",
                         "ports": [
                             23
@@ -137,7 +137,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -160,7 +160,7 @@
                         "display": "ssh (TCP/22)",
                         "ip_addresses": [],
                         "name": "ssh",
-                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_e2bd",
+                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_4cc7",
                         "object_type": "ipam.service",
                         "ports": [
                             22
@@ -185,7 +185,7 @@
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "Test VM With Spaces",
-                            "natural_slug": "test-cluster-2__test-vm-with-spaces_7afe",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_b567",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -206,7 +206,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -247,7 +247,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -306,7 +306,7 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_c10a",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_e08f",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -348,7 +348,7 @@
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-1_54cf",
+                                "natural_slug": "global_172-16-180-1_bf50",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "object_type": "ipam.prefix"
@@ -378,7 +378,7 @@
                                 "mask_length": 64,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_2001-1-1_9768",
+                                "natural_slug": "global_2001-1-1_9efc",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "object_type": "ipam.prefix"
@@ -393,7 +393,7 @@
                             }
                         ],
                         "name": "http",
-                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_6045",
+                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_4f6f",
                         "object_type": "ipam.service",
                         "ports": [
                             80
@@ -434,7 +434,7 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_c10a",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_e08f",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -460,7 +460,7 @@
                         "display": "ssh (TCP/22)",
                         "ip_addresses": [],
                         "name": "ssh",
-                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_ed27",
+                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_7ff6",
                         "object_type": "ipam.service",
                         "ports": [
                             22
@@ -480,7 +480,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": [],
@@ -511,7 +511,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -538,7 +538,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -565,7 +565,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -592,7 +592,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -614,7 +614,7 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_aabd",
+                    "natural_slug": "active_efb4",
                     "object_type": "extras.status"
                 },
                 "tags": []
