@@ -17,8 +17,7 @@
         name: "R1"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location:
-          id: "{{ location['key'] }}"
+        location: "{{ location['key'] }}"
         status: "Staged"
         state: present
       register: test_one
@@ -56,8 +55,7 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location:
-          id: "{{ location['key'] }}"
+        location: "{{ location['key'] }}"
         status: "Staged"
         tags:
           - name: First
@@ -70,8 +68,7 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location:
-          id: "{{ location['key'] }}"
+        location: "{{ location['key'] }}"
         status: "Staged"
         tags:
           - name: Second
@@ -91,8 +88,7 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location:
-          id: "{{ location['key'] }}"
+        location: "{{ location['key'] }}"
         status: "Staged"
         asset_tag: "1234"
         tags:
@@ -152,8 +148,7 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location:
-          id: "{{ location['key'] }}"
+        location: "{{ location['key'] }}"
         status: "Staged"
         asset_tag: "Null"
         tags:

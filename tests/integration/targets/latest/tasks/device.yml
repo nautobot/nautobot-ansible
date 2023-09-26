@@ -21,8 +21,7 @@
     device_type:
       id: "{{ device_type['key'] }}"
     role: "Core Switch"
-    location:
-      id: "{{ parent_location['key'] }}"
+    location: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_one
@@ -48,8 +47,7 @@
     name: "R1"
     device_type: "Cisco Test"
     role: "Core Switch"
-    location:
-      id: "{{ parent_location['key'] }}"
+    location: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_two
@@ -139,9 +137,8 @@
     name: "TestR1"
     device_type: "1841"
     role: "Core Switch"
-    location:
-      id: "{{ child_location['key'] }}"
-    rack: "Test Rack Site 2"
+    location: "{{ child_location['key'] }}"
+    rack: "Main Test Rack"
     status: "Active"
     position: 35
     face: "Front"
@@ -246,8 +243,7 @@
     device_type:
       id: "{{ device_type['key'] }}"
     role: "Core Switch"
-    location:
-      id: "{{ parent_location['key'] }}"
+    location: "{{ parent_location['key'] }}"
     status: "Staged"
     state: present
   register: test_eight
