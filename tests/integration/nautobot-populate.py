@@ -132,6 +132,7 @@ created_vrfs = make_nautobot_calls(nb.ipam.vrfs, vrfs)
 prefixes = [
     {"prefix": "192.168.0.0/16", "location": location_parent.id, "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "10.0.0.0/8", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
+    {"prefix": "10.10.0.0/16", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "2001::1:0/64", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
 ]
@@ -330,6 +331,7 @@ created_nexus_interfaces = make_nautobot_calls(nb.dcim.interfaces, nexus_interfa
 dev_interfaces = [
     {"name": "GigabitEthernet1", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
     {"name": "GigabitEthernet2", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
+    {"name": "GigabitEthernet3", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
 ]
 created_interfaces = make_nautobot_calls(nb.dcim.interfaces, dev_interfaces)
 nexus_eth1 = nb.dcim.interfaces.get(device_id=nexus.id, name="Ethernet1/1")

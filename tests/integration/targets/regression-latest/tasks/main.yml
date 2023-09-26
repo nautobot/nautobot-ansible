@@ -4,6 +4,9 @@
 ### TEST PYNAUTOBOT CONNECTION FAILURE
 ##
 ##
+- set_fact:
+    location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+
 - name: "TEST PYNAUTOBOT CONNECTION FAILURE"
   connection: local
   block:
@@ -13,8 +16,9 @@
         token: "{{ nautobot_token }}"
         name: "R1"
         device_type: "Cisco Test"
-        device_role: "Core Switch"
-        site: "Test Site"
+        role: "Core Switch"
+        location:
+          id: "{{ location['key'] }}"
         status: "Staged"
         state: present
       register: test_one
@@ -34,7 +38,7 @@
         parent: "10.10.0.0/16"
         prefix_length: 24
         first_available: yes
-        status: "active"
+        status: "Active"
         state: present
       register: test_two
       check_mode: yes
@@ -51,12 +55,13 @@
         token: "{{ nautobot_token }}"
         name: "issue-242"
         device_type: "Cisco Test"
-        device_role: "Core Switch"
-        site: "Test Site"
+        role: "Core Switch"
+        location:
+          id: "{{ location['key'] }}"
         status: "Staged"
         tags:
-          - slug: first
-          - slug: second
+          - name: First
+          - name: Second
 
     - name: "4 - Add device with tags out of order - shouldn't change - Tests #242 is fixed"
       networktocode.nautobot.device:
@@ -64,12 +69,13 @@
         token: "{{ nautobot_token }}"
         name: "issue-242"
         device_type: "Cisco Test"
-        device_role: "Core Switch"
-        site: "Test Site"
+        role: "Core Switch"
+        location:
+          id: "{{ location['key'] }}"
         status: "Staged"
         tags:
-          - slug: second
-          - slug: first
+          - name: Second
+          - name: First
       register: test_four
       diff: yes
 
@@ -84,14 +90,15 @@
         token: "{{ nautobot_token }}"
         name: "issue-242"
         device_type: "Cisco Test"
-        device_role: "Core Switch"
-        site: "Test Site"
+        role: "Core Switch"
+        location:
+          id: "{{ location['key'] }}"
         status: "Staged"
         asset_tag: "1234"
         tags:
-          - slug: second
-          - slug: third
-          - slug: first
+          - name: Second
+          - name: Third
+          - name: First
       register: test_five
       diff: yes
 
@@ -132,10 +139,10 @@
           - test_six.results[3]["diff"]["after"]["state"] == "present"
           - test_six.results[3]["interface_template"]["device_type"] == nexus_parent['key']
       vars:
-        cisco: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
-        arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=arista-test') }}"
-        nexus_child: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=nexus-child') }}"
-        nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=nexus-parent') }}"
+        cisco: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+        arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Arista Test\"') }}"
+        nexus_child: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Nexus Child\"') }}"
+        nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Nexus Parent\"') }}"
 
     # Commented out due to not know the IDs, but I'm sure we can re-enable with lookup plugin
     - name: "7 - Don't prevent updates to other params if tags are specified"
@@ -144,15 +151,16 @@
         token: "{{ nautobot_token }}"
         name: "issue-242"
         device_type: "Cisco Test"
-        device_role: "Core Switch"
-        site: "Test Site"
+        role: "Core Switch"
+        location:
+          id: "{{ location['key'] }}"
         status: "Staged"
         asset_tag: "Null"
         tags:
           # Changed these for issue #407 to be UUIDs
-          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=second')['key'] }}"
-          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=third')['key'] }}"
-          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=first')['key'] }}"
+          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Second')['key'] }}"
+          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Third')['key'] }}"
+          - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=First')['key'] }}"
       register: test_seven
 
     - name: "5 - Assert added tag - Tests #242 is fixed"
@@ -167,37 +175,33 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         address: 10.255.255.1/24
-        status: "active"
+        status: "Active"
         query_params:
           - address
           - vrf
         state: present
+      register: ip_address
 
-    - name: Update same ip address to attach to a device interface (Issue 372)
-      networktocode.nautobot.ip_address:
+    - name: Attach same ip address to a device interface (Issue 372)
+      networktocode.nautobot.ip_address_to_interface:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
-        address: 10.255.255.1/24
-        status: "active"
-        assigned_object:
+        ip_address: "{{ ip_address['ip_address']['id'] }}"
+        interface:
           device: test100
-          name: GigabitEthernet1
-        query_params:
-          - address
-          - vrf
+          name: GigabitEthernet3
         state: present
-      register: query_params_372
+      register: ip_to_intf
 
-    - name: Assert ip address was updated and added to device interface
+    - name: Assert ip address was added to device interface
       assert:
         that:
-          - query_params_372 is changed
-          - query_params_372['msg'] == 'ip_address 10.255.255.1/24 updated'
-          - query_params_372['diff']['after']['assigned_object'] == interface['key']
-          - query_params_372['diff']['after']['assigned_object_id'] == interface['key']
-          - query_params_372['diff']['after']['assigned_object_type'] == 'dcim.interface'
+          - ip_to_intf is changed
+          - ip_to_intf['msg'] == 'ip_address_to_interface None created'
+          - ip_to_intf['ip_address_to_interface']['interface'] == interface['key']
+          - ip_to_intf['ip_address_to_interface']['ip_address'] == ip_address['ip_address']['id']
       vars:
-        interface: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100 name=GigabitEthernet1') }}"
+        interface: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100 name=GigabitEthernet3') }}"
 
     - name: "Validate failure due to invalid child params provided by user"
       networktocode.nautobot.cable:
@@ -220,58 +224,58 @@
           - test_results is failed
           - 'test_results["msg"] == "One or more of the kwargs provided are invalid for circuits.circuittermination, provided kwargs: name. Acceptable kwargs: circuit, term_side"'
 
-    - name: "Issue #432 - Make sure same IPs get assigned to different device interfaces"
-      networktocode.nautobot.ip_address:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        address: "{{ item['address'] }}"
-        assigned_object: "{{ item['assigned_object'] }}"
-        description: "{{ item['description'] }}"
-        dns_name: "{{ item['dns_name'] }}"
-        role: "{{ item['role'] }}"
-        status: "{{ item['status'] }}"
-      loop: "{{ data }}"
-      register: "test_results"
-      vars:
-        data:
-          - address: 121.121.121.121/32
-            assigned_object:
-              device: "Test Nexus One"
-              name: "Ethernet1/1"
-            description: ansible-nautobot-1.2.1
-            dns_name: ansible-nautobot-1.2.1
-            role: HSRP
-            status: active
-          - address: 121.121.121.121/32
-            assigned_object:
-              device: "Test Nexus Child One"
-              name: "Ethernet2/1"
-            description: ansible-nautobot-1.2.1
-            dns_name: ansible-nautobot-1.2.1
-            role: HSRP
-            status: active
-          - address: 1.121.121.121/32
-            assigned_object:
-              device: "Test Nexus One"
-              name: "Ethernet1/1"
-            description: ansible-nautobot-1.2.1
-            dns_name: ansible-nautobot-1.2.1
-            role: HSRP
-            status: active
-          - address: 1.121.121.121/32
-            assigned_object:
-              device: "Test Nexus Child One"
-              name: "Ethernet2/1"
-            description: ansible-nautobot-1.2.1
-            dns_name: ansible-nautobot-1.2.1
-            role: HSRP
-            status: active
-
-    - name: "ASSERT Issue #432 changes reflect correct device"
-      assert:
-        that:
-          - test_results | json_query('results[?ip_address.address==`1.121.121.121/32`]') | length == 2
-          - test_results | json_query('results[?ip_address.address==`121.121.121.121/32`]') | length == 2
+#    - name: "Issue #432 - Make sure same IPs get assigned to different device interfaces"  # TODO Add later if still required.
+#      networktocode.nautobot.ip_address:
+#        url: "{{ nautobot_url }}"
+#        token: "{{ nautobot_token }}"
+#        address: "{{ item['address'] }}"
+#        assigned_object: "{{ item['assigned_object'] }}"
+#        description: "{{ item['description'] }}"
+#        dns_name: "{{ item['dns_name'] }}"
+#        role: "{{ item['role'] }}"
+#        status: "{{ item['status'] }}"
+#      loop: "{{ data }}"
+#      register: "test_results"
+#      vars:
+#        data:
+#          - address: 121.121.121.121/32
+#            assigned_object:
+#              device: "Test Nexus One"
+#              name: "Ethernet1/1"
+#            description: ansible-nautobot-1.2.1
+#            dns_name: ansible-nautobot-1.2.1
+#            role: HSRP
+#            status: active
+#          - address: 121.121.121.121/32
+#            assigned_object:
+#              device: "Test Nexus Child One"
+#              name: "Ethernet2/1"
+#            description: ansible-nautobot-1.2.1
+#            dns_name: ansible-nautobot-1.2.1
+#            role: HSRP
+#            status: active
+#          - address: 1.121.121.121/32
+#            assigned_object:
+#              device: "Test Nexus One"
+#              name: "Ethernet1/1"
+#            description: ansible-nautobot-1.2.1
+#            dns_name: ansible-nautobot-1.2.1
+#            role: HSRP
+#            status: active
+#          - address: 1.121.121.121/32
+#            assigned_object:
+#              device: "Test Nexus Child One"
+#              name: "Ethernet2/1"
+#            description: ansible-nautobot-1.2.1
+#            dns_name: ansible-nautobot-1.2.1
+#            role: HSRP
+#            status: active
+#
+#    - name: "ASSERT Issue #432 changes reflect correct device"
+#      assert:
+#        that:
+#          - test_results | json_query('results[?ip_address.address==`1.121.121.121/32`]') | length == 2
+#          - test_results | json_query('results[?ip_address.address==`121.121.121.121/32`]') | length == 2
 
     - name: "Invalid API version"
       networktocode.nautobot.tag:
@@ -279,7 +283,6 @@
         token: "{{ nautobot_token }}"
         api_version: 0.0
         name: "Test Tag 5"
-        slug: "test-tag-five"
       ignore_errors: True
       register: "test_invalid_api_version"
 

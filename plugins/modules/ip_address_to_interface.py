@@ -6,13 +6,13 @@
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
-
+# TODO update docs
 DOCUMENTATION = r"""
 ---
-module: ip_address
-short_description: Creates or removes IP addresses from Nautobot
+module: ip_address_to_interface
+short_description: Creates or removes IP address to interface association from Nautobot
 description:
-  - Creates or removes IP addresses from Nautobot
+  - Creates or removes IP address to interface association from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -225,7 +225,7 @@ msg:
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
     NautobotIpamModule,
-    NB_IP_ADDRESSES,
+    NB_IP_ADDRESS_TO_INTERFACE,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -236,53 +236,27 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    # state choices present, absent, new
-    argument_spec["state"] = dict(required=False, default="present", choices=["present", "absent", "new"])
     argument_spec.update(
         dict(
-            address=dict(required=False, type="str"),
-            prefix=dict(required=False, type="raw"),
-            vrf=dict(required=False, type="raw"),
-            tenant=dict(required=False, type="raw"),
-            status=dict(required=False, type="raw"),
-            role=dict(
-                required=False,
-                type="str",
-                choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],
-            ),
-            description=dict(required=False, type="str"),
-            nat_inside=dict(required=False, type="raw"),
-            dns_name=dict(required=False, type="str"),
-            assigned_object=dict(  # TODO remove in favor od new module
-                required=False,
-                type="dict",
-                options=dict(
-                    name=dict(required=False, type="str"),
-                    device=dict(required=False, type="str"),
-                    virtual_machine=dict(required=False, type="str"),
-                ),
-            ),
-            namespace=dict(required=False, type="str", default="Global"),  # TODO Update docs above
-            tags=dict(required=False, type="list", elements="raw"),
-            custom_fields=dict(required=False, type="dict"),
+            ip_address=dict(required=True, type="raw"),
+            interface=dict(required=False, type="raw", default=None),
+            vm_interface=dict(required=False, type="raw", default=None),
         )
     )
-
-    required_if = [
-        ("state", "present", ["address", "prefix", "status"], True),
-        ("state", "absent", ["address"]),
-        ("state", "new", ["address", "prefix"], True),
-    ]
-    mutually_exclusive = [["address", "prefix"]]
-
+    # required_one_of = [  # TODO Enable when NB 2.0 fixes that.
+    #     ("interface", "vm_interface"),
+    # ]
+    # mutually_exclusive = [
+    #     ("interface", "vm_interface"),
+    # ]
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        required_if=required_if,
-        mutually_exclusive=mutually_exclusive,
+        # required_one_of=required_one_of,  # TODO Enable when NB 2.0 fixes that.
+        # mutually_exclusive=mutually_exclusive,
     )
 
-    ip_address = NautobotIpamModule(module, NB_IP_ADDRESSES)
+    ip_address = NautobotIpamModule(module, NB_IP_ADDRESS_TO_INTERFACE)
     ip_address.run()
 
 

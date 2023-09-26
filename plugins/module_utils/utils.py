@@ -65,7 +65,7 @@ API_APPS_ENDPOINTS = dict(
         "virtual_chassis",
     ],
     extras=["tags", "statuses", "relationship_associations", "roles"],
-    ipam=["aggregates", "ip_addresses", "prefixes", "rirs", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
+    ipam=["aggregates", "ip_addresses", "ip_address_to_interface", "prefixes", "rirs", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
@@ -209,6 +209,7 @@ ENDPOINT_NAME_MAPPING = {
     "interface_templates": "interface_template",
     "inventory_items": "inventory_item",
     "ip_addresses": "ip_address",
+    "ip_address_to_interface": "ip_address_to_interface",
     "locations": "location",
     "location_types": "location_type",
     "manufacturers": "manufacturer",
@@ -267,7 +268,7 @@ ALLOWED_QUERY_PARAMS = {
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
     "device": set(["name"]),
-    "device_type": set(["name"]),
+    "device_type": set(["model"]),
     "front_port": set(["name", "device", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "installed_device": set(["name"]),
@@ -277,6 +278,7 @@ ALLOWED_QUERY_PARAMS = {
     "ip_address": set(["address", "vrf", "device", "interface", "vminterface"]),
     "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
     "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ip_address_to_interface": set(["ip_address", "interface", "vm_interface"]),
     "lag": set(["name"]),
     "location": set(["id"]),
     "location_type": set(["name"]),
@@ -321,6 +323,8 @@ ALLOWED_QUERY_PARAMS = {
 }
 
 QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "location", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
+
+IGNORE_ADDING_IDS = set(["ip_address_to_interface", ])
 
 REQUIRED_ID_FIND = {
     "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),
@@ -544,7 +548,7 @@ class NautobotModule:
                 temp_dict[key] = data[key]
             elif key in CONVERT_KEYS:
                 # This will keep the original key for assigned_object, but also convert to assigned_object_id
-                if key == "assigned_object":
+                if key == "assigned_object":  # TODO chnage in favor of new module
                     temp_dict[key] = data[key]
                 new_key = CONVERT_KEYS[key]
                 temp_dict[new_key] = data[key]
@@ -561,6 +565,8 @@ class NautobotModule:
         for k, v in data.items():
             if isinstance(v, dict):
                 v = self._remove_arg_spec_default(v)
+                new_dict[k] = v
+            elif v is None and "ip_address_to_interface" in self.endpoint:  # TODO remove this elif, this is a workaround for 'ip-address-to-interface'
                 new_dict[k] = v
             elif v is not None:
                 new_dict[k] = v
@@ -627,7 +633,7 @@ class NautobotModule:
             matches = query_params.intersection(set(module_data.keys()))
 
         for match in matches:
-            if match in QUERY_PARAMS_IDS:
+            if match in QUERY_PARAMS_IDS and parent not in IGNORE_ADDING_IDS:
                 if child:
                     query_id = self._get_query_param_id(match, child)
                 else:
@@ -680,14 +686,14 @@ class NautobotModule:
         elif parent == "rear_port_template" and self.endpoint == "front_port_templates":
             if isinstance(module_data.get("rear_port_template"), str):
                 rear_port_template = {
-                    "devicetype_id": module_data.get("device_type"),
+                    # "devicetype_id": module_data.get("device_type"),
                     "name": module_data.get("rear_port_template"),
                 }
                 query_dict.update(rear_port_template)
 
-        elif "_template" in parent:
-            if query_dict.get("device_type"):
-                query_dict["devicetype_id"] = query_dict.pop("device_type")
+        # elif "_template" in parent:
+        #     if query_dict.get("device_type"):
+        #         query_dict["devicetype_id"] = query_dict.pop("device_type")
 
         if not query_dict:
             provided_kwargs = child.keys() if child else module_data.keys()
@@ -766,7 +772,7 @@ class NautobotModule:
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
                     endpoint = CONVERT_TO_ID[data.get("termination_b_type")]
-                elif k == "assigned_object":
+                elif k == "assigned_object":  # TODO remove in favour of custom endpoint
                     endpoint = "interfaces"
                 else:
                     endpoint = CONVERT_TO_ID[k]

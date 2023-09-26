@@ -12,12 +12,12 @@ from ansible.module_utils._text import to_text
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotModule,
     ENDPOINT_NAME_MAPPING,
-    SLUG_REQUIRED,
 )
 
 
 NB_AGGREGATES = "aggregates"
 NB_IP_ADDRESSES = "ip_addresses"
+NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
 NB_PREFIXES = "prefixes"
 NB_IPAM_ROLES = "roles"
 NB_RIRS = "rirs"
@@ -49,7 +49,7 @@ class NautobotIpamModule(NautobotModule):
             "parent": data["prefix"],
         }
 
-        if not data.get("assigned_object_id") or not data.get("prefix"):
+        if not data.get("assigned_object_id") or not data.get("prefix"):  # TODO Update me!
             self._handle_errors("A prefix and assigned_object is required")
         data_intf_key = "assigned_object_id"
 
@@ -124,6 +124,7 @@ class NautobotIpamModule(NautobotModule):
         - aggregates
         - ipam_roles
         - ip_addresses
+        - ip_address_to_interface
         - prefixes
         - rirs
         - route_targets
@@ -142,7 +143,6 @@ class NautobotIpamModule(NautobotModule):
         user_query_params = self.module.params.get("query_params")
 
         data = self.data
-
         if self.endpoint == "ip_addresses":
             if data.get("address"):
                 try:
@@ -155,14 +155,10 @@ class NautobotIpamModule(NautobotModule):
         else:
             name = data.get("name")
 
-        if self.endpoint in SLUG_REQUIRED:
-            data["slug"] = self._to_slug(name)
-
         if self.module.params.get("first_available"):
             first_available = True
         else:
             first_available = False
-
         if data.get("prefix") and self.endpoint == "ip_addresses":
             object_query_params = self._build_query_params("prefix", data)
             self.nb_object = self._nb_endpoint_get(nb_app.prefixes, object_query_params, name)
