@@ -44,15 +44,6 @@
   tags:
     - prefix
 
-- name: "PYNAUTOBOT_SITE TESTS"
-  include_tasks:
-    file: "site.yml"
-    apply:
-      tags:
-        - site
-  tags:
-    - site
-
 - name: "PYNAUTOBOT_LOCATION TESTS"
   include_tasks:
     file: "location.yml"

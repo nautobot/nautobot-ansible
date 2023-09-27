@@ -28,12 +28,6 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - URL-friendly unique shorthand
-    required: false
-    type: str
-    version_added: "3.0.0"
   description:
     description:
       - The description of the tenant
@@ -59,7 +53,6 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Tenant Group ABC
-        slug: "tenant_group_abc"
         state: present
 
     - name: Delete tenant within Nautobot
@@ -75,7 +68,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Tenant Group ABC
         parent_tenant_group: Customer Tenants
-        slug: "tenant_group_abc"
         state: present
 
 """
@@ -108,7 +100,6 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             parent_tenant_group=dict(required=False, type="raw"),
         )

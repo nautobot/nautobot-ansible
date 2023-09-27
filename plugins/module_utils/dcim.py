@@ -102,7 +102,9 @@ class NautobotDcimModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("model") and not data.get("slug"):
+        elif data.get("id"):
+            name = data["id"]
+        elif data.get("model"):
             name = data["model"]
         elif data.get("master"):
             name = self.module.params["data"]["master"]
@@ -133,9 +135,6 @@ class NautobotDcimModule(NautobotModule):
                 data.get("termination_b_type"),
                 termination_b_name,
             )
-
-        # if self.endpoint in SLUG_REQUIRED:
-        #     data["slug"] = self._to_slug(name)
 
         # Make color params lowercase
         if data.get("color"):

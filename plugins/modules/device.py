@@ -72,7 +72,7 @@ options:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
-    type: str (UUID)
+    type: str
     version_added: "3.0.0"
   rack:
     description:
@@ -257,7 +257,7 @@ def main():
             platform=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
-            location=dict(required=False, type="raw"),
+            location=dict(required=False, type="str"),
             rack=dict(required=False, type="raw"),
             position=dict(required=False, type="int"),
             face=dict(

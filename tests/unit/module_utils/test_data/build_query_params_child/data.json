@@ -6,17 +6,14 @@
             "serial": "FXS1001",
             "comments": "Temp device",
             "primary_ip4": {
-                "address": "172.16.180.1/24",
-                "vrf": "Test VRF"
+                "address": "172.16.180.1/24"
             }
         },
         "child": {
-            "address": "172.16.180.1/24",
-            "vrf": "Test VRF"
+            "address": "172.16.180.1/24"
         },
         "expected": {
-            "address": "172.16.180.1/24",
-            "vrf_id": 1
+            "address": "172.16.180.1/24"
         }
     },
     {
@@ -26,17 +23,14 @@
             "serial": "FXS1001",
             "comments": "Temp device",
             "primary_ip4": {
-                "address": "2001::1:1/64",
-                "vrf": "Test VRF"
+                "address": "2001::1:1/64"
             }
         },
         "child": {
-            "address": "2001::1:1/64",
-            "vrf": "Test VRF"
+            "address": "2001::1:1/64"
         },
         "expected": {
-            "address": "2001::1:1/64",
-            "vrf_id": 1
+            "address": "2001::1:1/64"
         }
     },
     {
@@ -118,17 +112,14 @@
         "module_data": {
             "address": "10.10.10.1/24",
             "nat_inside": {
-                "address": "192.168.1.1/24",
-                "vrf": "Test VRF"
+                "address": "192.168.1.1/24"
             }
         },
         "child": {
-            "address": "192.168.1.1/24",
-            "vrf": "Test VRF"
+            "address": "192.168.1.1/24"
         },
         "expected": {
-            "address": "192.168.1.1/24",
-            "vrf_id": 1
+            "address": "192.168.1.1/24"
         }
     },
     {
@@ -153,10 +144,10 @@
         },
         "expected": {
             "name": "Test VLAN",
-            "location_id": 1,
+            "location": "Test Location",
             "tenant_id": 1,
             "vid": 1,
-            "group": "Test VLAN group"
+            "vlan_group": "Test VLAN group"
         }
     },
     {
@@ -176,7 +167,7 @@
         },
         "expected": {
             "name": "Test VLAN Group",
-            "location_id": 1
+            "location": "Test Location"
         }
     },
     {
@@ -197,7 +188,7 @@
         },
         "expected": {
             "name": "Test VLAN",
-            "location_id": 1,
+            "location": "Test Location",
             "vid": 1
         }
     },

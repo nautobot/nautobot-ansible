@@ -22,197 +22,51 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.tags
-  - networktocode.nautobot.fragments.custom_fields
 options:
-  address:
+  ip_address:
     description:
-      - Required if state is C(present)
-    required: false
-    type: str
-    version_added: "3.0.0"
-  prefix:
+      - IP address to associate with an interface.
+    required: true
+    type: raw
+    version_added: "5.0.0"
+  interface:
     description:
-      - |
-        With state C(present), if an interface is given, it will ensure
-        that an IP inside this prefix (and vrf, if given) is attached
-        to this interface. Otherwise, it will get the next available IP
-        of this prefix and attach it.
-        With state C(new), it will force to get the next available IP in
-        this prefix. If an interface is given, it will also force to attach
-        it.
-        Required if state is C(present) or C(new) when no address is given.
-        Unused if an address is specified.
+      - Device interface to associate with an IP.
     required: false
     type: raw
-    version_added: "3.0.0"
-  vrf:
+    version_added: "5.0.0"
+  vm_interface:
     description:
-      - VRF that IP address is associated with
+      - VM interface to associate with an IP.
     required: false
     type: raw
-    version_added: "3.0.0"
-  tenant:
-    description:
-      - The tenant that the device will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  status:
-    description:
-      - The status of the IP address
-      - Required if I(state=present) and does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  role:
-    description:
-      - The role of the IP address
-    choices:
-      - Loopback
-      - Secondary
-      - Anycast
-      - VIP
-      - VRRP
-      - HSRP
-      - GLBP
-      - CARP
-    required: false
-    type: str
-    version_added: "3.0.0"
-  description:
-    description:
-      - The description of the interface
-    required: false
-    type: str
-    version_added: "3.0.0"
-  nat_inside:
-    description:
-      - The inside IP address this IP is assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  dns_name:
-    description:
-      - Hostname or FQDN
-    required: false
-    type: str
-    version_added: "3.0.0"
-  assigned_object:
-    description:
-      - Definition of the assigned object.
-    required: false
-    type: dict
-    suboptions:
-      name:
-        description:
-          - The name of the interface
-        type: str
-        required: False
-      device:
-        description:
-          - The device the interface is attached to.
-        type: str
-        required: False
-      virtual_machine:
-        description:
-          - The virtual machine the interface is attached to.
-        type: str
-        required: False
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   state:
     description:
-      - |
-        Use C(present), C(new) or C(absent) for adding, force adding or removing.
-        C(present) will check if the IP is already created, and return it if
-        true. C(new) will force to create it anyway (useful for anycasts, for
-        example).
-    choices: [ absent, new, present ]
+      - Use C(present) or C(absent) for adding, or removing.
+    choices: [ absent, present ]
     default: present
     type: str
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot IP address module"
+- name: "Test Nautobot IP address to interface module"
   connection: local
   hosts: localhost
   gather_facts: False
 
   tasks:
-    - name: Create IP address within Nautobot with only required information
+    - name: Create IP address to interface
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
         address: 192.168.1.10
-        status: active
+        interface: UUID
         state: present
-    - name: Force to create (even if it already exists) the IP
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        address: 192.168.1.10
-        state: new
-    - name: Get a new available IP inside 192.168.1.0/24
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 192.168.1.0/24
-        state: new
-    - name: Delete IP address within nautobot
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        address: 192.168.1.10
-        state: absent
-    - name: Create IP address with several specified options
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        address: 192.168.1.20
-        vrf: Test
-        tenant: Test Tenant
-        status: Reserved
-        role: Loopback
-        description: Test description
-        tags:
-          - Schnozzberry
-        state: present
-    - name: Create IP address and assign a nat_inside IP
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        address: 192.168.1.30
-        vrf: Test
-        nat_inside:
-          address: 192.168.1.20
-          vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-    - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 192.168.1.0/24
-        vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-        state: present
-    - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 192.168.1.0/24
-        vrf: Test
-        assigned_object:
-          name: GigabitEthernet1
-          device: test100
-        state: new
-"""
+"""  # TODO ADD more examples
 
 RETURN = r"""
-ip_address:
+ip_address_to_interface:
   description: Serialized object as created or already existent within Nautobot
   returned: on creation
   type: dict

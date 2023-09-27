@@ -65,17 +65,8 @@ options:
   role:
     description:
       - The role of the IP address
-    choices:
-      - Loopback
-      - Secondary
-      - Anycast
-      - VIP
-      - VRRP
-      - HSRP
-      - GLBP
-      - CARP
     required: false
-    type: str
+    type: raw
     version_added: "3.0.0"
   type:
     description:
@@ -211,16 +202,11 @@ def main():
             parent=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
-            role=dict(
-                required=False,
-                type="str",
-                choices=["Loopback", "Secondary", "Anycast", "VIP", "VRRP", "HSRP", "GLBP", "CARP"],
-            ),
+            role=dict(required=False, type="raw"),
             type=dict(
                 required=False,
                 type="str",
                 choices=["DHCP", "Host", "SLAAC"],
-                default="Host",
             ),
             description=dict(required=False, type="str"),
             nat_inside=dict(required=False, type="raw"),

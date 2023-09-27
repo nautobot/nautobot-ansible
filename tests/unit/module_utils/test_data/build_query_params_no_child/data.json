@@ -166,24 +166,20 @@
         "parent": "ip_address",
         "module_data": {
             "address": "192.168.1.1/24",
-            "vrf": "Test VRF",
             "description": "Test description"
         },
         "expected": {
-            "address": "192.168.1.1/24",
-            "vrf_id": 1
+            "address": "192.168.1.1/24"
         }
     },
     {
         "parent": "prefix",
         "module_data": {
             "prefix": "10.10.10.0/24",
-            "vrf": "Test VRF",
             "status": "Reserved"
         },
         "expected": {
-            "prefix": "10.10.10.0/24",
-            "vrf_id": 1
+            "prefix": "10.10.10.0/24"
         }
     },
     {
@@ -213,7 +209,7 @@
         },
         "expected": {
             "name": "Test Rack",
-            "location_id": 1
+            "location": "Test Site"
         }
     },
     {
@@ -252,7 +248,8 @@
             "contact_name": "John Smith"
         },
         "expected": {
-            "id": "1"
+            "id": "1",
+            "name": "Test Location"
         }
     },
     {

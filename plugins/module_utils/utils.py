@@ -65,7 +65,19 @@ API_APPS_ENDPOINTS = dict(
         "virtual_chassis",
     ],
     extras=["tags", "statuses", "relationship_associations", "roles"],
-    ipam=["aggregates", "ip_addresses", "ip_address_to_interface", "prefixes", "rirs", "route_targets", "vlans", "vlan_groups", "vrfs", "services"],
+    ipam=[
+        "aggregates",
+        "ip_addresses",
+        "ip_address_to_interface",
+        "namespaces",
+        "prefixes",
+        "rirs",
+        "route_targets",
+        "vlans",
+        "vlan_groups",
+        "vrfs",
+        "services",
+    ],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
@@ -152,6 +164,7 @@ CONVERT_TO_ID = {
     "master": "devices",
     "nat_inside": "ip_addresses",
     "nat_outside": "ip_addresses",
+    "namespace": "namespaces",
     "platform": "platforms",
     "parent_rack_group": "rack_groups",
     "parent_location": "locations",
@@ -213,6 +226,7 @@ ENDPOINT_NAME_MAPPING = {
     "locations": "location",
     "location_types": "location_type",
     "manufacturers": "manufacturer",
+    "namespaces": "namespace",
     "platforms": "platform",
     "power_feeds": "power_feed",
     "power_outlets": "power_outlet",
@@ -275,16 +289,17 @@ ALLOWED_QUERY_PARAMS = {
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "vrf", "device", "interface", "vminterface"]),
-    "ip_addresses": set(["address", "vrf", "device", "interface", "vminterface"]),
-    "ipaddresses": set(["address", "vrf", "device", "interface", "vminterface"]),
+    "ip_address": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
+    "ip_addresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
+    "ipaddresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
     "ip_address_to_interface": set(["ip_address", "interface", "vm_interface"]),
     "lag": set(["name"]),
-    "location": set(["id"]),
+    "location": set(["name", "id"]),
     "location_type": set(["name"]),
     "manufacturer": set(["name"]),
     "master": set(["name"]),
-    "nat_inside": set(["vrf", "address"]),
+    "namespace": set(["name"]),
+    "nat_inside": set(["namespace", "address"]),
     "parent_rack_group": set(["name"]),
     "parent_tenant_group": set(["name"]),
     "platform": set(["name"]),
@@ -294,9 +309,9 @@ ALLOWED_QUERY_PARAMS = {
     "power_panel": set(["name", "location"]),
     "power_port": set(["name", "device"]),
     "power_port_template": set(["name", "device_type"]),
-    "prefix": set(["prefix", "vrf", "namespace"]),
-    "primary_ip4": set(["address", "vrf"]),
-    "primary_ip6": set(["address", "vrf"]),
+    "prefix": set(["prefix", "namespace"]),
+    "primary_ip4": set(["address", "namespace"]),
+    "primary_ip6": set(["address", "namespace"]),
     "provider": set(["name"]),
     "rack": set(["name", "location"]),
     "rack_group": set(["name"]),
@@ -322,7 +337,7 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "tenant", "namespace"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "location", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
+QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
 
 IGNORE_ADDING_IDS = set(
     [
@@ -358,25 +373,17 @@ REQUIRED_ID_FIND = {
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
-    "assigned_object": "assigned_object_id",
-    "circuit_type": "type",
-    "cluster_type": "type",
-    "cluster_group": "group",
+    "assigned_object": "assigned_object_id",  # TODO check if still required
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_tenant_group": "parent",
     "power_port_template": "power_port",
-    "rack_group": "group",
     "rear_port_template": "rear_port",
     "rear_port_template_position": "rear_port_position",
-    "tenant_group": "group",
     "termination_a": "termination_a_id",
     "termination_b": "termination_b_id",
-    "vlan_group": "group",
 }
 
-# This is used to dynamically convert name to slug on endpoints requiring a slug
-SLUG_REQUIRED = {}  # TODO (fixme) remove and remove imports
 
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True),
@@ -794,9 +801,9 @@ class NautobotModule:
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        # if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
-                        #     temp_dict = {"slug": self._to_slug(list_item)}  # TODO check this (fixme)
-                        if isinstance(list_item, dict):
+                        if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
+                            temp_dict = {"name": list_item}
+                        elif isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
                             temp_dict = self._build_query_params(k, data, child=norm_data)
                         # If user passes in an integer, add to ID list to id_list as user
@@ -835,8 +842,6 @@ class NautobotModule:
     def _normalize_data(self, data):
         """
         :returns data (dict): Normalized module data to formats accepted by Nautobot searches
-        such as changing from user specified value to slug
-        ex. Test Rack -> test-rack
         :params data (dict): Original data from Nautobot module
         """
         for k, v in data.items():
@@ -861,7 +866,7 @@ class NautobotModule:
 
         # We need to assign the correct type for the assigned object so the user doesn't have to worry about this.
         # We determine it by whether or not they pass in a device or virtual_machine
-        if data.get("assigned_object"):
+        if data.get("assigned_object"):  # TODO check if required
             if data["assigned_object"].get("device"):
                 data["assigned_object_type"] = "dcim.interface"
             if data["assigned_object"].get("virtual_machine"):

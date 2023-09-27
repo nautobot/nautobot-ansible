@@ -8,7 +8,6 @@ __metaclass__ = type
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotModule,
     ENDPOINT_NAME_MAPPING,
-    SLUG_REQUIRED,
 )
 
 
@@ -51,9 +50,6 @@ class NautobotCircuitsModule(NautobotModule):
         elif data.get("circuit") and data.get("term_side"):
             circuit = self.nb.circuits.circuits.get(data["circuit"]).serialize()
             name = "{0}_{1}".format(circuit["cid"].replace(" ", "_"), data["term_side"]).lower()
-
-        if self.endpoint in SLUG_REQUIRED:
-            data["slug"] = self._to_slug(name)
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)

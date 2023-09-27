@@ -164,6 +164,7 @@
           - test_seven is changed
           - test_seven["diff"]["after"]["asset_tag"] == "Null"
           - test_seven["device"]["asset_tag"] == "Null"
+          - test_seven["device"]['tags'] | length == 3
 
     - name: Add ip address to nautobot and don't assign it to a device (Issue 372)
       networktocode.nautobot.ip_address:

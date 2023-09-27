@@ -18,6 +18,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 NB_AGGREGATES = "aggregates"
 NB_IP_ADDRESSES = "ip_addresses"
 NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
+NB_NAMESPACES = "namespaces"
 NB_PREFIXES = "prefixes"
 NB_IPAM_ROLES = "roles"
 NB_RIRS = "rirs"
@@ -33,7 +34,7 @@ class NautobotIpamModule(NautobotModule):
         if data.get("address"):
             if self.state == "present":
                 if self.nb_object and endpoint_name == "ip_address":
-                    # namespace is only used for querying in ip_address endpoint, don't pass to update methods.
+                    # namespace is only used for querying in ip_address endpoint, don't pass it to update methods.
                     data.pop("namespace")
                 self._ensure_object_exists(nb_endpoint, endpoint_name, name, data)
             elif self.state == "new":
@@ -73,6 +74,7 @@ class NautobotIpamModule(NautobotModule):
             self.result["changed"] = False
             self.result["msg"] = "%s does not exist - please create first" % (data["parent"])
         elif prefix.available_ips.list():
+            # Convert 'parent' to 'prefix' key when calling prefix endpoint
             data["prefix"] = data.pop("parent")
             self.nb_object, diff = self._create_object(prefix.available_ips, data)
             self.nb_object = self.nb_object.serialize()
@@ -95,7 +97,8 @@ class NautobotIpamModule(NautobotModule):
                 self.result["changed"] = True
                 self.result["msg"] = "New prefix created within %s" % (data["parent"])
                 self.module.exit_json(**self.result)
-
+            # Convert parent to prefix key when calling prefix endpoint
+            data["prefix"] = data.pop("parent")
             self.nb_object, diff = self._create_object(self.nb_object.available_prefixes, data)
             self.nb_object = self.nb_object.serialize()
             self.result["changed"] = True
