@@ -127,6 +127,9 @@ created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)
 vrfs = [{"name": "Test VRF", "rd": "1:1", "namespace": {"name": "Global"}}]
 created_vrfs = make_nautobot_calls(nb.ipam.vrfs, vrfs)
 
+# Create namespace
+namespaces = [{"name": "Private"}]
+created_namespaces = make_nautobot_calls(nb.ipam.namespaces, namespaces)
 
 # Create PREFIXES
 prefixes = [
@@ -134,6 +137,7 @@ prefixes = [
     {"prefix": "10.0.0.0/8", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "10.10.0.0/16", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
+    {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Private"}},
     {"prefix": "2001::1:0/64", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
 ]
 created_prefixes = make_nautobot_calls(nb.ipam.prefixes, prefixes)

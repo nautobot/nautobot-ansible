@@ -108,11 +108,11 @@
     {
         "parent": "device_type",
         "module_data": {
-            "name": "Test Device Type",
+            "model": "Test Device Type",
             "status": "Active"
         },
         "expected": {
-            "name": "Test Device Type"
+            "model": "Test Device Type"
         }
     },
     {
@@ -284,7 +284,7 @@
         },
         "expected": {
             "name": "SFP+ (10GBE)",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -295,7 +295,7 @@
         },
         "expected": {
             "name": "Bay 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -306,7 +306,7 @@
         },
         "expected": {
             "name": "CP 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -317,7 +317,7 @@
         },
         "expected": {
             "name": "CP - Server 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -328,7 +328,7 @@
         },
         "expected": {
             "name": "Dev Intf 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -339,7 +339,7 @@
         },
         "expected": {
             "name": "FP 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -350,7 +350,7 @@
         },
         "expected": {
             "name": "PO 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {
@@ -361,7 +361,7 @@
         },
         "expected": {
             "name": "PP 1",
-            "devicetype_id": 1
+            "device_type": 1
         }
     },
     {

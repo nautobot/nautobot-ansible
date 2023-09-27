@@ -117,12 +117,12 @@
       - test_six['msg'] == "ip_address 192.168.0.1/16 created"
       - test_six['ip_address']['address'] == "192.168.0.1/16"
 
-- name: "7 - Create IP address with several specified"
+- name: "7 - Create IP address with several specified in namespace Private"
   networktocode.nautobot.ip_address:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 172.16.1.20/24
-    vrf: Test VRF
+    namespace: Private
     tenant: Test Tenant
     status: Reserved
     role: Loopback
@@ -135,7 +135,9 @@
 
 - set_fact:
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
-    vrf: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
+    reserved: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Reserved') }}"
+    loopback: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Loopback') }}"
+    parent_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=172.16.0.0/12 namespace=Private') }}"
     tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
 
 - name: "7 - ASSERT"
@@ -147,23 +149,21 @@
       - test_seven['msg'] == "ip_address 172.16.1.20/24 created"
       - test_seven['ip_address']['address'] == "172.16.1.20/24"
       - test_seven['ip_address']['description'] == "Test description"
-      - test_seven['ip_address']['family'] == 4
-      - test_seven['ip_address']['role'] == "loopback"
-      - test_seven['ip_address']['status'] == "reserved"
+      - test_seven['ip_address']['ip_version'] == 4
+      - test_seven['ip_address']['parent'] == parent_prefix['key']
+      - test_seven['ip_address']['role'] == loopback['key']
+      - test_seven['ip_address']['status'] == reserved['key']
       - test_seven['ip_address']['tags'][0] == tag_schnozzberry['key']
       - test_seven['ip_address']['tenant'] == tenant['key']
-      - test_seven['ip_address']['vrf'] == vrf['key']
 
 - name: "8 - Create IP address and assign a nat_inside IP"
   networktocode.nautobot.ip_address:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     address: 10.10.1.30/16
-    vrf: Test VRF
     status: "Active"
     nat_inside:
       address: 172.16.1.20
-      vrf: Test VRF
   register: test_eight
 
 - name: "8 - ASSERT"
@@ -174,185 +174,7 @@
       - test_eight['diff']['after']['state'] == "present"
       - test_eight['msg'] == "ip_address 10.10.1.30/16 created"
       - test_eight['ip_address']['address'] == "10.10.1.30/16"
-      - test_eight['ip_address']['family'] == 4
+      - test_eight['ip_address']['ip_version'] == 4
       - test_eight['ip_address']['nat_inside'] == nat_inside['key']
-      - test_eight['ip_address']['vrf'] == vrf['key']
   vars:
-    nat_inside: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.1.20/24 vrf_id=' ~ vrf['key']) }}"
-
-- name: "9 - Create IP address on GigabitEthernet2 - test100 - State: present"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 10.10.200.30/16
-    status: "Active"
-    assigned_object:
-      name: GigabitEthernet2
-      device: test100
-  register: test_nine
-
-- set_fact:
-    test100_gi2: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=GigabitEthernet2 device=test100') }}"
-
-- name: "9 - ASSERT"
-  assert:
-    that:
-      - test_nine is changed
-      - test_nine['diff']['before']['state'] == "absent"
-      - test_nine['diff']['after']['state'] == "present"
-      - test_nine['msg'] == "ip_address 10.10.200.30/16 created"
-      - test_nine['ip_address']['address'] == "10.10.200.30/16"
-      - test_nine['ip_address']['family'] == 4
-      - test_nine['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_nine['ip_address']['assigned_object_id'] == test100_gi2['key']
-
-- name: "10 - Create IP address on GigabitEthernet2 - test100 - State: new"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    prefix: 10.10.0.0/16
-    status: "Active"
-    assigned_object:
-      name: GigabitEthernet2
-      device: test100
-    state: new
-  register: test_ten
-
-- name: "10 - ASSERT"
-  assert:
-    that:
-      - test_ten is changed
-      - test_ten['diff']['before']['state'] == "absent"
-      - test_ten['diff']['after']['state'] == "present"
-      - test_ten['msg'] == "ip_address 10.10.0.1/16 created"
-      - test_ten['ip_address']['address'] == "10.10.0.1/16"
-      - test_ten['ip_address']['family'] == 4
-      - test_ten['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_ten['ip_address']['assigned_object_id'] == test100_gi2['key']
-
-- name: "11 - Create IP address on GigabitEthernet2 - test100 - State: present"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    prefix: 192.168.100.0/24
-    status: "Active"
-    assigned_object:
-      name: GigabitEthernet2
-      device: test100
-    state: present
-  register: test_eleven
-
-- name: "11 - ASSERT"
-  assert:
-    that:
-      - test_eleven is changed
-      - test_eleven['diff']['before']['state'] == "absent"
-      - test_eleven['diff']['after']['state'] == "present"
-      - test_eleven['msg'] == "ip_address 192.168.100.2/24 created"
-      - test_eleven['ip_address']['address'] == "192.168.100.2/24"
-
-- name: "12 - Duplicate - 192.168.100.2/24 on interface"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 192.168.100.2/24
-    status: "Active"
-    assigned_object:
-      name: GigabitEthernet2
-      device: test100
-    state: present
-  register: test_twelve
-
-- name: "12 - ASSERT"
-  assert:
-    that:
-      - not test_twelve['changed']
-      - test_twelve['msg'] == "ip_address 192.168.100.2/24 already exists"
-      - test_twelve['ip_address']['address'] == "192.168.100.2/24"
-      - test_twelve['ip_address']['assigned_object_type'] == "dcim.interface"
-      - test_twelve['ip_address']['assigned_object_id'] == test100_gi2['key']
-
-- name: "13 - Duplicate - 192.168.100.2/24"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 192.168.100.2/24
-    status: "Active"
-    state: present
-  register: test_thirteen
-
-- name: "13 - ASSERT"
-  assert:
-    that:
-      - not test_thirteen['changed']
-      - test_thirteen['msg'] == "ip_address 192.168.100.2/24 already exists"
-      - test_thirteen['ip_address']['address'] == "192.168.100.2/24"
-
-- name: "14 - Create IP address on Eth0 - test100-vm - State: present"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 10.188.1.100/24
-    status: "Active"
-    assigned_object:
-      name: Eth0
-      virtual_machine: test100-vm
-  register: test_fourteen
-
-- name: "14 - ASSERT"
-  assert:
-    that:
-      - test_fourteen is changed
-      - test_fourteen['diff']['before']['state'] == "absent"
-      - test_fourteen['diff']['after']['state'] == "present"
-      - test_fourteen['msg'] == "ip_address 10.188.1.100/24 created"
-      - test_fourteen['ip_address']['address'] == "10.188.1.100/24"
-      - test_fourteen['ip_address']['family'] == 4
-      - test_fourteen['ip_address']['assigned_object_type'] == "virtualization.vminterface"
-      - test_fourteen['ip_address']['assigned_object_id'] == interface['key']
-  vars:
-    interface: "{{ lookup('networktocode.nautobot.lookup', 'virtualization-interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Eth0 virtual_machine=test100-vm') }}"
-
-- name: "15 - Create same IP address on Eth0 - test101-vm - State: present"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 10.188.1.100/24
-    status: "Active"
-    assigned_object:
-      name: Eth0
-      virtual_machine: test101-vm
-    state: "present"
-  register: test_fifteen
-
-- name: "15 - ASSERT"
-  assert:
-    that:
-      - test_fifteen is changed
-      - test_fifteen['diff']['before']['state'] == "absent"
-      - test_fifteen['diff']['after']['state'] == "present"
-      - test_fifteen['msg'] == "ip_address 10.188.1.100/24 created"
-      - test_fifteen['ip_address']['address'] == "10.188.1.100/24"
-      - test_fifteen['ip_address']['family'] == 4
-      - test_fifteen['ip_address']['assigned_object_type'] == "virtualization.vminterface"
-      - test_fifteen['ip_address']['assigned_object_id'] == interface['key']
-  vars:
-    interface: "{{ lookup('networktocode.nautobot.lookup', 'virtualization-interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Eth0 virtual_machine=test101-vm') }}"
-
-- name: "16 - Create IP address with no mask - State: Present"
-  networktocode.nautobot.ip_address:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    address: 10.120.10.1
-    status: "Active"
-    state: present
-  register: test_sixteen
-
-- name: "16 - ASSERT"
-  assert:
-    that:
-      - test_sixteen is changed
-      - test_sixteen['diff']['before']['state'] == "absent"
-      - test_sixteen['diff']['after']['state'] == "present"
-      - test_sixteen['msg'] == "ip_address 10.120.10.1/32 created"
-      - test_sixteen['ip_address']['address'] == "10.120.10.1/32"
+    nat_inside: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.1.20/24') }}"

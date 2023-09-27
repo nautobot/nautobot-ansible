@@ -49,12 +49,6 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  vrf:
-    description:
-      - VRF that IP address is associated with
-    required: false
-    type: raw
-    version_added: "3.0.0"
   tenant:
     description:
       - The tenant that the device will be assigned to
@@ -162,14 +156,14 @@ EXAMPLES = r"""
         token: thisIsMyToken
         address: 192.168.1.10
         state: absent
-    - name: Create IP address with several specified options
+    - name: Create IP address with several specified options in namespace Private
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
         address: 192.168.1.20
-        vrf: Test
         tenant: Test Tenant
         status: Reserved
+        namespace: Private
         role: Loopback
         description: Test description
         tags:
@@ -180,10 +174,8 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         address: 192.168.1.30
-        vrf: Test
         nat_inside:
           address: 192.168.1.20
-          vrf: Test
 """
 
 RETURN = r"""
@@ -217,7 +209,6 @@ def main():
         dict(
             address=dict(required=False, type="str"),
             parent=dict(required=False, type="raw"),
-            vrf=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
             role=dict(
