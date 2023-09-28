@@ -30,10 +30,17 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
+  namespace:
+    description:
+      - namespace that IP address is associated with. VRFs are unique per namespaces.
+    required: false
+    default: Global
+    type: str
+    version_added: "5.0.0"
   rd:
     description:
       - The RD of the VRF. Must be quoted to pass as a string.
-    required: false
+    required: true
     type: str
     version_added: "3.0.0"
   tenant:
@@ -41,12 +48,6 @@ options:
       - The tenant that the vrf will be assigned to
     required: false
     type: raw
-    version_added: "3.0.0"
-  enforce_unique:
-    description:
-      - Prevent duplicate prefixes/IP addresses within this VRF
-    required: false
-    type: bool
     version_added: "3.0.0"
   import_targets:
     description:
@@ -98,7 +99,6 @@ EXAMPLES = r"""
         name: Test VRF
         rd: "65000:1"
         tenant: Test Tenant
-        enforce_unique: true
         import_targets:
           - "65000:65001"
         export_targets:
@@ -137,9 +137,9 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            rd=dict(required=False, type="str"),
+            namespace=dict(required=False, type="str", default="Global"),
+            rd=dict(required=True, type="str"),
             tenant=dict(required=False, type="raw"),
-            enforce_unique=dict(required=False, type="bool"),
             import_targets=dict(required=False, type="list", elements="str"),
             export_targets=dict(required=False, type="list", elements="str"),
             description=dict(required=False, type="str"),

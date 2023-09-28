@@ -24,9 +24,9 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  site:
+  location:
     description:
-      - The site the VLAN will be associated to
+      - The location the VLAN will be associated to
     required: false
     type: raw
     version_added: "3.0.0"
@@ -61,7 +61,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  vlan_role:
+  role:
     description:
       - The role of the VLAN.
     required: false
@@ -106,11 +106,11 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VLAN
         vid: 400
-        site: Test Site
+        location: Test Site
         group: Test VLAN Group
         tenant: Test Tenant
         status: Deprecated
-        vlan_role: Test VLAN Role
+        role: Test VLAN Role
         description: Just a test
         tags:
           - Schnozzberry
@@ -144,13 +144,13 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             vlan_group=dict(required=False, type="raw"),
             vid=dict(required=False, type="int"),
             name=dict(required=True, type="str"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
-            vlan_role=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),

@@ -93,21 +93,21 @@ def main():
     argument_spec.update(
         dict(
             ip_address=dict(required=True, type="raw"),
-            interface=dict(required=False, type="raw", default=None),
-            vm_interface=dict(required=False, type="raw", default=None),
+            interface=dict(required=False, type="raw"),
+            vm_interface=dict(required=False, type="raw"),
         )
     )
-    # required_one_of = [  # TODO Enable when NB 2.0 fixes that.
-    #     ("interface", "vm_interface"),
-    # ]
-    # mutually_exclusive = [
-    #     ("interface", "vm_interface"),
-    # ]
+    required_one_of = [
+        ("interface", "vm_interface"),
+    ]
+    mutually_exclusive = [
+        ("interface", "vm_interface"),
+    ]
     module = AnsibleModule(
         argument_spec=argument_spec,
         supports_check_mode=True,
-        # required_one_of=required_one_of,  # TODO Enable when NB 2.0 fixes that.
-        # mutually_exclusive=mutually_exclusive,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
     )
 
     ip_address = NautobotIpamModule(module, NB_IP_ADDRESS_TO_INTERFACE)

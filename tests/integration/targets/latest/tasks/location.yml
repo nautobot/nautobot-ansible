@@ -124,9 +124,7 @@
       - test_delete['diff']['before']['state'] == "present"
       - test_delete['diff']['after']['state'] == "absent"
       - test_delete['location']['name'] == "Test Location 2"
-      - deleted_str in test_delete['msg']
-  vars:
-    deleted_str: "deleted"
+      - "'deleted' in test_delete['msg']"
 
 - name: "7 - Delete duplicate"
   networktocode.nautobot.location:
@@ -140,6 +138,4 @@
   assert:
     that:
       - not test_delete_idem['changed']
-      - absent_str in test_delete_idem['msg']
-  vars:
-    absent_str: "already absent"
+      - "'already absent' in test_delete_idem['msg']"

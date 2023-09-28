@@ -50,7 +50,7 @@ create_tags = make_nautobot_calls(
         {"name": "First", "content_types": ["dcim.device"]},
         {"name": "Second", "content_types": ["dcim.device"]},
         {"name": "Third", "content_types": ["dcim.device"]},
-        {"name": "Schnozzberry", "content_types": ["dcim.device", "ipam.ipaddress", "ipam.prefix"]},
+        {"name": "Schnozzberry", "content_types": ["dcim.device", "dcim.rack", "ipam.ipaddress", "ipam.prefix", "ipam.vlan", "ipam.vrf"]},
         {"name": "Lookup", "content_types": ["dcim.device"]},
         {"name": "Nolookup", "content_types": ["dcim.device"]},
         {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
@@ -171,7 +171,7 @@ created_vlans = make_nautobot_calls(nb.ipam.vlans, vlans)
 
 
 # Create IPAM Roles
-ipam_roles = [{"name": "Network of care", "content_types": ["ipam.prefix"]}]
+ipam_roles = [{"name": "Network of care", "content_types": ["ipam.prefix", "ipam.vlan"]}]
 create_ipam_roles = make_nautobot_calls(nb.extras.roles, ipam_roles)
 
 
@@ -179,7 +179,7 @@ create_ipam_roles = make_nautobot_calls(nb.extras.roles, ipam_roles)
 manufacturers = [
     {"name": "Cisco"},
     {"name": "Arista"},
-    {"name": "Test Manufactuer"},
+    {"name": "Test Manufacturer"},
 ]
 created_manufacturers = make_nautobot_calls(nb.dcim.manufacturers, manufacturers)
 # Manufacturer variables to be used later on
@@ -336,6 +336,7 @@ dev_interfaces = [
     {"name": "GigabitEthernet1", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
     {"name": "GigabitEthernet2", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
     {"name": "GigabitEthernet3", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
+    {"name": "GigabitEthernet4", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
 ]
 created_interfaces = make_nautobot_calls(nb.dcim.interfaces, dev_interfaces)
 nexus_eth1 = nb.dcim.interfaces.get(device_id=nexus.id, name="Ethernet1/1")
@@ -371,6 +372,8 @@ ip_addresses = [
         "status": {"name": "Active"},
     },
     {"address": "172.16.180.254/24", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
+    {"address": "10.100.0.1/32", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
+    {"address": "10.100.10.1/32", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
 ]
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
@@ -385,22 +388,18 @@ ip_to_intf = [
     {
         "ip_address": ip1.id,
         "interface": test100_gi1.id,
-        "vm_interface": None,
     },
     {
         "ip_address": ip2.id,
         "interface": test100_gi2.id,
-        "vm_interface": None,
     },
     {
         "ip_address": ip3.id,
         "interface": nexus_eth1.id,
-        "vm_interface": None,
     },
     {
         "ip_address": ip4.id,
         "interface": nexus_child_eth1.id,
-        "vm_interface": None,
     },
 ]
 created_ip_to_intf = make_nautobot_calls(nb.ipam.ip_address_to_interface, ip_to_intf)

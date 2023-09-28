@@ -40,10 +40,10 @@ class NautobotExtrasModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("display"):
-            name = data["display"]
         elif endpoint_name == "relationship_associations":
             name = f"{data['source_type']} -> {data['destination_type']}"
+        else:
+            name = data.get("id")
 
         # Make color params lowercase
         if data.get("color"):

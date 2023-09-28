@@ -196,6 +196,7 @@ CONVERT_TO_ID = {
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
     "vlan_group": "vlan_groups",
+    "vm_interface": "interfaces",
     "vrf": "vrfs",
 }
 
@@ -332,9 +333,10 @@ ALLOWED_QUERY_PARAMS = {
     "untagged_vlan": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "virtual_chassis": set(["name", "device"]),
     "virtual_machine": set(["name", "cluster"]),
-    "vlan": set(["group", "name", "location", "tenant", "vid", "vlan_group"]),
+    "vlan": set(["name", "location", "tenant", "vid", "vlan_group"]),
     "vlan_group": set(["name", "location"]),
-    "vrf": set(["name", "tenant", "namespace"]),
+    "vm_interface": set(["name", "virtual_machine"]),
+    "vrf": set(["name", "namespace", "rd"]),
 }
 
 QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
@@ -577,8 +579,6 @@ class NautobotModule:
             if isinstance(v, dict):
                 v = self._remove_arg_spec_default(v)
                 new_dict[k] = v
-            elif v is None and "ip_address_to_interface" in self.endpoint:  # TODO remove this elif, this is a workaround for 'ip-address-to-interface'
-                new_dict[k] = v
             elif v is not None:
                 new_dict[k] = v
 
@@ -783,7 +783,7 @@ class NautobotModule:
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
                     endpoint = CONVERT_TO_ID[data.get("termination_b_type")]
-                elif k == "assigned_object":  # TODO remove in favour of custom endpoint
+                elif k == "assigned_object":  # TODO remove in favour of custom endpoint search for 'assigned_object'
                     endpoint = "interfaces"
                 else:
                     endpoint = CONVERT_TO_ID[k]
@@ -793,7 +793,7 @@ class NautobotModule:
                 nb_endpoint = getattr(nb_app, endpoint)
 
                 if isinstance(v, dict):
-                    if (k == "interface" or k == "assigned_object") and v.get("virtual_machine"):
+                    if (k == "vm_interface" or k == "assigned_object") and v.get("virtual_machine"):
                         nb_app = getattr(self.nb, "virtualization")
                         nb_endpoint = getattr(nb_app, endpoint)
                     query_params = self._build_query_params(k, data, child=v)
@@ -959,7 +959,7 @@ class NautobotModule:
         else:
             self.nb_object, diff = self._update_object(data)
             if self.nb_object is False:
-                self._handle_errors(msg="Request failed, couldn't update device: %s" % name)
+                self._handle_errors(msg="Request failed, couldn't update object: %s" % name)
             if diff:
                 self.result["msg"] = "%s %s updated" % (endpoint_name, name)
                 self.result["changed"] = True

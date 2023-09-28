@@ -93,7 +93,7 @@
   networktocode.nautobot.prefix:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    family: 4
+    ip_version: 4
     prefix: 10.156.32.0/19
     location: "{{ test_child_location['key'] }}"
     tenant: Test Tenant

@@ -34,14 +34,7 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
-  site:
+  location:
     description:
       - Required if I(state=present) and the rack does not exist yet
     required: false
@@ -50,12 +43,6 @@ options:
   parent_rack_group:
     description:
       - The parent rack-group the rack group will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  region:
-    description:
-      - The region the rack group will be assigned to
     required: false
     type: raw
     version_added: "3.0.0"
@@ -73,7 +60,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test rack group
-        site: Test Site
+        location: Test Location
         state: present
 
     - name: Delete rack group within nautobot
@@ -81,7 +68,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Rack group
-        site: Test Site
+        location: Test Location
         state: absent
 """
 
@@ -113,10 +100,8 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            site=dict(required=False, type="raw"),
-            region=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             parent_rack_group=dict(required=False, type="raw"),
         )
     )

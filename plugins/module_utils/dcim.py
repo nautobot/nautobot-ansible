@@ -102,14 +102,12 @@ class NautobotDcimModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("id"):
-            name = data["id"]
         elif data.get("model"):
             name = data["model"]
         elif data.get("master"):
             name = self.module.params["data"]["master"]
-        elif data.get("display"):
-            name = data["display"]
+        elif data.get("id"):
+            name = data["id"]
         elif endpoint_name == "cable":
             if self.module.params["termination_a"].get("name"):
                 termination_a_name = self.module.params["termination_a"]["name"]

@@ -199,16 +199,18 @@
             "description": "Test Prefix",
             "vrf": {
                 "name": "Test VRF",
+                "rd": "1:1",
                 "tenant": "Test Tenant"
             }
         },
         "child": {
             "name": "Test VRF",
-            "tenant": "Test Tenant"
+            "tenant": "Test Tenant",
+            "rd": "1:1"
         },
         "expected": {
             "name": "Test VRF",
-            "tenant_id": 1
+            "rd": "1:1"
         }
     },
     {
