@@ -132,7 +132,6 @@ QUERY_TYPES = dict(
 
 # Specifies keys within data that need to be converted to ID and the endpoint to be used when queried
 CONVERT_TO_ID = {
-    "assigned_object": "assigned_object",
     "circuit": "circuits",
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
@@ -258,7 +257,6 @@ ENDPOINT_NAME_MAPPING = {
 
 # What makes the search unique
 ALLOWED_QUERY_PARAMS = {
-    "assigned_object": set(["name", "device", "virtual_machine"]),
     "circuit": set(["cid"]),
     "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
@@ -385,7 +383,6 @@ REQUIRED_ID_FIND = {
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
-    "assigned_object": "assigned_object_id",  # TODO check if still required
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_tenant_group": "parent",
@@ -568,9 +565,6 @@ class NautobotModule:
             if self.endpoint == "power_panels" and key == "rack_group":
                 temp_dict[key] = data[key]
             elif key in CONVERT_KEYS:
-                # This will keep the original key for assigned_object, but also convert to assigned_object_id
-                if key == "assigned_object":  # TODO chnage in favor of new module
-                    temp_dict[key] = data[key]
                 new_key = CONVERT_KEYS[key]
                 temp_dict[new_key] = data[key]
             else:
@@ -688,12 +682,6 @@ class NautobotModule:
             else:
                 query_dict.update({"device": module_data["device"]})
 
-        elif parent == "ip_address" and module_data.get("assigned_object_type"):
-            if module_data["assigned_object_type"] == "virtualization.vminterface":
-                query_dict.update({"vminterface_id": module_data.get("assigned_object_id")})
-            elif module_data["assigned_object_type"] == "dcim.interface":
-                query_dict.update({"interface_id": module_data.get("assigned_object_id")})
-
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
                 rear_port = {
@@ -786,8 +774,6 @@ class NautobotModule:
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
                     endpoint = CONVERT_TO_ID[data.get("termination_b_type")]
-                elif k == "assigned_object":  # TODO remove in favour of custom endpoint search for 'assigned_object'
-                    endpoint = "interfaces"
                 else:
                     endpoint = CONVERT_TO_ID[k]
                 search = v
@@ -796,7 +782,7 @@ class NautobotModule:
                 nb_endpoint = getattr(nb_app, endpoint)
 
                 if isinstance(v, dict):
-                    if (k == "vm_interface" or k == "assigned_object") and v.get("virtual_machine"):
+                    if k == "vm_interface" and v.get("virtual_machine"):
                         nb_app = getattr(self.nb, "virtualization")
                         nb_endpoint = getattr(nb_app, endpoint)
                     query_params = self._build_query_params(k, data, child=v)
@@ -866,14 +852,6 @@ class NautobotModule:
 
             if k == "mac_address":
                 data[k] = v.upper()
-
-        # We need to assign the correct type for the assigned object so the user doesn't have to worry about this.
-        # We determine it by whether or not they pass in a device or virtual_machine
-        if data.get("assigned_object"):  # TODO check if required
-            if data["assigned_object"].get("device"):
-                data["assigned_object_type"] = "dcim.interface"
-            if data["assigned_object"].get("virtual_machine"):
-                data["assigned_object_type"] = "virtualization.vminterface"
 
         return data
 

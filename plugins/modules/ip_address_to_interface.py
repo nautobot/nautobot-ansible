@@ -6,7 +6,7 @@
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
-# TODO update docs
+
 DOCUMENTATION = r"""
 ---
 module: ip_address_to_interface
@@ -56,14 +56,30 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create IP address to interface
-      networktocode.nautobot.ip_address:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        address: 192.168.1.10
-        interface: UUID
-        state: present
-"""  # TODO ADD more examples
+    - name: "Add IP address on GigabitEthernet4 - test100"
+      networktocode.nautobot.ip_address_to_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        ip_address: "{{ ip_address['key'] }}"
+        interface:
+          name: GigabitEthernet4
+          device: test100
+      vars:
+        ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
+
+    - name: "Delete IP address on GigabitEthernet4 - test100"
+      networktocode.nautobot.ip_address_to_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        ip_address: "{{ ip_address['key'] }}"
+        interface:
+          name: GigabitEthernet4
+          device: test100
+        state: absent
+      vars:
+        ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
+
+"""
 
 RETURN = r"""
 ip_address_to_interface:

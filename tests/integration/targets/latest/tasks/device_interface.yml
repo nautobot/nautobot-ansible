@@ -306,7 +306,6 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    api_version: "{{ nautobot_version }}"
     name: GigabitEthernet9999
     status: Planned
     type: "1000Base-T (1GE)"
@@ -330,7 +329,6 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    api_version: "{{ nautobot_version }}"
     name: GigabitEthernet9999/1
     status: Active
     type: "Virtual"
@@ -354,7 +352,6 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     device: test100
-    api_version: "{{ nautobot_version }}"
     name: Bridge1
     status: Active
     type: "1000Base-T (1GE)"
