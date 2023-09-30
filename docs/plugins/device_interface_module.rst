@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -741,7 +740,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 4.4.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.5.0`
 
 
       .. raw:: html

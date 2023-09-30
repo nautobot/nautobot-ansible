@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -293,17 +292,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-local_context_data"></div>
+        <div class="ansibleOptionAnchor" id="parameter-local_config_context_data"></div>
 
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-local_context_data:
+      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-local_config_context_data:
 
       .. rst-class:: ansible-option-title
 
-      **local_context_data**
+      **local_config_context_data**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-local_context_data" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-local_config_context_data" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -547,6 +546,43 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-role"></div>
+
+      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-role:
+
+      .. rst-class:: ansible-option-title
+
+      **role**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The role of the virtual machine
 
 
       .. raw:: html
@@ -882,43 +918,6 @@ Parameters
         <div class="ansible-option-cell">
 
       Number of vcpus of the virtual machine
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-virtual_machine_role"></div>
-
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-virtual_machine_role:
-
-      .. rst-class:: ansible-option-title
-
-      **virtual_machine_role**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-virtual_machine_role" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The role of the virtual machine
 
 
       .. raw:: html

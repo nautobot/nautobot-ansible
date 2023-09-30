@@ -20,12 +20,11 @@
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -39,12 +38,11 @@
                 "locations": [],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -69,12 +67,11 @@
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -96,12 +93,11 @@
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -125,12 +121,11 @@
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": [],
@@ -151,12 +146,11 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -175,12 +169,11 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -199,12 +192,11 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -223,12 +215,11 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -242,12 +233,11 @@
                 "locations": [],
                 "status": {
                     "color": "4caf50",
-                    "composite_key": "Active",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_efb4",
+                    "natural_slug": "active_efb8",
                     "object_type": "extras.status"
                 },
                 "tags": []

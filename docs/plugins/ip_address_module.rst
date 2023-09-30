@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -178,146 +177,6 @@ Parameters
       .. raw:: html
 
         </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-assigned_object"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-assigned_object:
-
-      .. rst-class:: ansible-option-title
-
-      **assigned_object**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-assigned_object" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Definition of the assigned object.
-
-
-      .. raw:: html
-
-        </div>
-    
-  * - .. raw:: html
-
-        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-assigned_object/device"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-assigned_object/device:
-
-      .. rst-class:: ansible-option-title
-
-      **device**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-assigned_object/device" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
-
-      The device the interface is attached to.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-assigned_object/name"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-assigned_object/name:
-
-      .. rst-class:: ansible-option-title
-
-      **name**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-assigned_object/name" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
-
-      The name of the interface
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-assigned_object/virtual_machine"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-assigned_object/virtual_machine:
-
-      .. rst-class:: ansible-option-title
-
-      **virtual_machine**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-assigned_object/virtual_machine" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
-
-      The virtual machine the interface is attached to.
-
-
-      .. raw:: html
-
-        </div>
-
 
   * - .. raw:: html
 
@@ -433,6 +292,48 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-namespace"></div>
+
+      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-namespace:
+
+      .. rst-class:: ansible-option-title
+
+      **namespace**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-namespace" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      namespace that IP address is associated with. IPs are unique per namespaces.
+          
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"Global"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-nat_inside"></div>
 
       .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-nat_inside:
@@ -470,17 +371,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-prefix"></div>
+        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-prefix:
+      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-parent:
 
       .. rst-class:: ansible-option-title
 
-      **prefix**
+      **parent**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-prefix" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -497,13 +398,8 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      With state \ :literal:`present`\ , if an interface is given, it will ensure
-          that an IP inside this prefix (and vrf, if given) is attached
-          to this interface. Otherwise, it will get the next available IP
-          of this prefix and attach it.
-          With state \ :literal:`new`\ , it will force to get the next available IP in
-          this prefix. If an interface is given, it will also force to attach
-          it.
+      With state \ :literal:`new`\ , it will force to get the next available IP in
+          this prefix.
           Required if state is \ :literal:`present`\  or \ :literal:`new`\  when no address is given.
           Unused if an address is specified.
           
@@ -571,7 +467,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -585,20 +481,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The role of the IP address
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"Loopback"`
-      - :ansible-option-choices-entry:`"Secondary"`
-      - :ansible-option-choices-entry:`"Anycast"`
-      - :ansible-option-choices-entry:`"VIP"`
-      - :ansible-option-choices-entry:`"VRRP"`
-      - :ansible-option-choices-entry:`"HSRP"`
-      - :ansible-option-choices-entry:`"GLBP"`
-      - :ansible-option-choices-entry:`"CARP"`
 
 
       .. raw:: html
@@ -802,6 +684,52 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-type:
+
+      .. rst-class:: ansible-option-title
+
+      **type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The type of the IP address
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"DHCP"`
+      - :ansible-option-choices-entry:`"Host"`
+      - :ansible-option-choices-entry:`"SLAAC"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
       .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-url:
@@ -871,43 +799,6 @@ Parameters
 
         </div>
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-vrf"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ip_address_module__parameter-vrf:
-
-      .. rst-class:: ansible-option-title
-
-      **vrf**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-vrf" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      VRF that IP address is associated with
-
-
-      .. raw:: html
-
-        </div>
-
 
 .. Attributes
 
@@ -951,11 +842,18 @@ Examples
             token: thisIsMyToken
             address: 192.168.1.10
             state: new
+        - name: Create the same IP under another namespace
+          networktocode.nautobot.ip_address:
+            url: http://nautobot.local
+            token: thisIsMyToken
+            address: 192.168.1.10
+            namespace: MyNewNamespace
+            state: new
         - name: Get a new available IP inside 192.168.1.0/24
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
-            prefix: 192.168.1.0/24
+            parent: 192.168.1.0/24
             state: new
         - name: Delete IP address within nautobot
           networktocode.nautobot.ip_address:
@@ -963,14 +861,14 @@ Examples
             token: thisIsMyToken
             address: 192.168.1.10
             state: absent
-        - name: Create IP address with several specified options
+        - name: Create IP address with several specified options in namespace Private
           networktocode.nautobot.ip_address:
             url: http://nautobot.local
             token: thisIsMyToken
             address: 192.168.1.20
-            vrf: Test
             tenant: Test Tenant
             status: Reserved
+            namespace: Private
             role: Loopback
             description: Test description
             tags:
@@ -981,33 +879,8 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             address: 192.168.1.30
-            vrf: Test
             nat_inside:
               address: 192.168.1.20
-              vrf: Test
-            assigned_object:
-              name: GigabitEthernet1
-              device: test100
-        - name: Ensure that an IP inside 192.168.1.0/24 is attached to GigabitEthernet1
-          networktocode.nautobot.ip_address:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            prefix: 192.168.1.0/24
-            vrf: Test
-            assigned_object:
-              name: GigabitEthernet1
-              device: test100
-            state: present
-        - name: Attach a new available IP of 192.168.1.0/24 to GigabitEthernet1
-          networktocode.nautobot.ip_address:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            prefix: 192.168.1.0/24
-            vrf: Test
-            assigned_object:
-              name: GigabitEthernet1
-              device: test100
-            state: new
 
 
 

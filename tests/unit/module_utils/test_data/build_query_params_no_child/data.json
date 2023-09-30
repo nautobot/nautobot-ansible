@@ -19,7 +19,7 @@
             "port_speed": 10000
         },
         "expected": {
-            "circuit_id": 1,
+            "circuit": "Test Circuit",
             "term_side": "A"
         }
     },
@@ -30,18 +30,6 @@
         },
         "expected": {
             "name": "Test Circuit Type"
-        }
-    },
-    {
-        "parent": "aggregate",
-        "module_data": {
-            "prefix": "192.168.0.0/16",
-            "rir": "Example RIR",
-            "date_added": "2019-01-18"
-        },
-        "expected": {
-            "prefix": "192.168.0.0/16",
-            "rir_id": 1
         }
     },
     {
@@ -92,7 +80,7 @@
         },
         "expected": {
             "name": "Device Bay #1",
-            "device_id": 1
+            "device": "test100"
         }
     },
     {
@@ -159,7 +147,7 @@
         },
         "expected": {
             "name": "10G-SFP+",
-            "device_id": 1
+            "device": "test100"
         }
     },
     {

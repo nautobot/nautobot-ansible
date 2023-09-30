@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -297,43 +296,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      URL-friendly unique shorthand
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
       .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-state:
@@ -513,7 +475,6 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Tenant Group ABC
-            slug: "tenant_group_abc"
             state: present
 
         - name: Delete tenant within Nautobot
@@ -529,7 +490,6 @@ Examples
             token: thisIsMyToken
             name: Tenant Group ABC
             parent_tenant_group: Customer Tenants
-            slug: "tenant_group_abc"
             state: present
 
 

@@ -37,10 +37,10 @@ options:
       - Z
     required: true
     type: str
-  site:
+  location:
     version_added: "3.0.0"
     description:
-      - The site the circuit termination will be assigned to
+      - The location the circuit termination will be assigned to
     required: false
     type: raw
   port_speed:
@@ -94,7 +94,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         circuit: Test Circuit
         term_side: A
-        site: Test Site
+        location: "{{ location['key'] }}"
         port_speed: 10000
         state: present
 
@@ -159,7 +159,7 @@ def main():
         dict(
             circuit=dict(required=True, type="raw"),
             term_side=dict(required=True, choices=["A", "Z"]),
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             port_speed=dict(required=False, type="int"),
             upstream_speed=dict(required=False, type="int"),
             xconnect_id=dict(required=False, type="str"),

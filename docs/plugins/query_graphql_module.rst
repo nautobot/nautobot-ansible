@@ -96,7 +96,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -170,6 +169,10 @@ Parameters
 
       Dictionary of keys/values to pass into the GraphQL query, see (\ https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html\ ) for more info
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
 
       .. raw:: html
 

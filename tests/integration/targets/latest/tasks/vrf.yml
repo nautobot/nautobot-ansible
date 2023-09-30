@@ -136,7 +136,7 @@
     state: absent
   register: test_six
 
-- name: "VRF 6: ASSERT - Delete"
+- name: "VRF 6: ASSERT - Delete VRF Private"
   assert:
     that:
       - test_six is changed

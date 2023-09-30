@@ -40,6 +40,26 @@
       - test_one['device']['name'] == "R1"
       - test_one['msg'] == "device R1 created"
 
+- name: "1.1 - Device with location not as UUID"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R11"
+    device_type:
+      id: "{{ device_type['key'] }}"
+    role: "Core Switch"
+    location: Parent Test Location
+    status: "Staged"
+    state: present
+  register: test_one_one
+  ignore_errors: true
+
+- name: "1.1 - ASSERT"
+  assert:
+    that:
+      - test_one_one is failed
+      - test_one_one['msg'] == "Location needs a valid UUID"
+
 - name: "2 - Duplicate device"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"

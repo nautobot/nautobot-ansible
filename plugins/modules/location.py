@@ -54,7 +54,7 @@ options:
       - Required if I(state=present) and does not exist yet
     required: false
     type: raw
-  parent:
+  parent_location:
     description:
       - The parent location this location should be tied to
     required: false
@@ -84,7 +84,7 @@ EXAMPLES = r"""
         id: "{{ location_to_delete['key'] }}"
         state: absent
       vars:
-        location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\" parent=\"Location Parent\" location_type=\"Main Type\"') }}"
+        location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\" parent_location=\"Location Parent\" location_type=\"Main Type\"') }}"
 
     - name: Create location with all parameters
       networktocode.nautobot.location:
@@ -95,7 +95,7 @@ EXAMPLES = r"""
         location_type:
           name: My Location Type
         description: My Nested Location Description
-        parent:
+        parent_location:
           name: My Location
         state: present
 """
@@ -132,7 +132,7 @@ def main():
             status=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             location_type=dict(required=False, type="raw"),
-            parent=dict(required=False, type="raw"),
+            parent_location=dict(required=False, type="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

@@ -52,10 +52,6 @@
         "app": "extras"
     },
     {
-        "endpoint": "aggregates",
-        "app": "ipam"
-    },
-    {
         "endpoint": "ip_addresses",
         "app": "ipam"
     },

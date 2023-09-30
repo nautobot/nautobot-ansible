@@ -47,10 +47,26 @@ def make_nautobot_calls(endpoint, payload):
 create_tags = make_nautobot_calls(
     nb.extras.tags,
     [
-        {"name": "First", "content_types": ["dcim.device"]},
-        {"name": "Second", "content_types": ["dcim.device"]},
+        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+        {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Third", "content_types": ["dcim.device"]},
-        {"name": "Schnozzberry", "content_types": ["dcim.device", "dcim.rack", "ipam.ipaddress", "ipam.prefix", "ipam.vlan", "ipam.vrf"]},
+        {
+            "name": "Schnozzberry",
+            "content_types": [
+                "dcim.device",
+                "dcim.rack",
+                "ipam.ipaddress",
+                "ipam.prefix",
+                "ipam.service",
+                "ipam.vlan",
+                "ipam.vrf",
+                "dcim.devicebay",
+                "dcim.inventoryitem",
+                "virtualization.virtualmachine",
+                "virtualization.cluster",
+                "virtualization.vminterface",
+            ],
+        },
         {"name": "Lookup", "content_types": ["dcim.device"]},
         {"name": "Nolookup", "content_types": ["dcim.device"]},
         {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
@@ -220,8 +236,8 @@ created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, r
 # Create Device Roles
 device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
-    {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["dcim.device"]},
-    {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device"]},
+    {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
+    {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
 ]
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 # Device role variables to be used later on

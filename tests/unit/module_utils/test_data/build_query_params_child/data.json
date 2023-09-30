@@ -227,7 +227,7 @@
             "term_side": "A"
         },
         "expected": {
-            "circuit_id": 1,
+            "circuit": "Circuit1",
             "term_side": "A"
         }
     },

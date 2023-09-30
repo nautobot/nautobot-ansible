@@ -66,7 +66,6 @@ API_APPS_ENDPOINTS = dict(
     ],
     extras=["tags", "statuses", "relationship_associations", "roles"],
     ipam=[
-        "aggregates",
         "ip_addresses",
         "ip_address_to_interface",
         "namespaces",
@@ -78,6 +77,7 @@ API_APPS_ENDPOINTS = dict(
         "vrfs",
         "services",
     ],
+    plugins=[],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
@@ -201,7 +201,6 @@ CONVERT_TO_ID = {
 }
 
 ENDPOINT_NAME_MAPPING = {
-    "aggregates": "aggregate",
     "cables": "cable",
     "circuit_terminations": "circuit_termination",
     "circuit_types": "circuit_type",
@@ -259,7 +258,6 @@ ENDPOINT_NAME_MAPPING = {
 
 # What makes the search unique
 ALLOWED_QUERY_PARAMS = {
-    "aggregate": set(["prefix", "rir"]),
     "assigned_object": set(["name", "device", "virtual_machine"]),
     "circuit": set(["cid"]),
     "circuit_type": set(["name"]),
@@ -341,11 +339,23 @@ ALLOWED_QUERY_PARAMS = {
 
 QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
 
-IGNORE_ADDING_IDS = set(
-    [
-        "ip_address_to_interface",
-    ]
-)
+# Some API endpoints dropped '_id' in filter fields in 2.0, ignore them here.
+IGNORE_ADDING_IDS = {
+    "ip_address_to_interface",
+    "device_bay",
+    "inventory_item",
+    "circuit_termination",
+    "rear_port",
+    "front_port",
+    "console_port",
+    "console_server_port",
+    "power_port",
+    "power_outlet",
+    "dcim.consoleport",
+    "dcim.consoleserverport",
+    "circuits.circuittermination",
+    "services",
+}
 
 REQUIRED_ID_FIND = {
     "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),
@@ -379,8 +389,6 @@ CONVERT_KEYS = {
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_tenant_group": "parent",
-    "power_port_template": "power_port",
-    "rear_port_template": "rear_port",
     "rear_port_template_position": "rear_port_position",
     "termination_a": "termination_a_id",
     "termination_b": "termination_b_id",
@@ -689,7 +697,6 @@ class NautobotModule:
         elif parent == "rear_port" and self.endpoint == "front_ports":
             if isinstance(module_data.get("rear_port"), str):
                 rear_port = {
-                    "device_id": module_data.get("device"),
                     "name": module_data.get("rear_port"),
                 }
                 query_dict.update(rear_port)
@@ -697,14 +704,9 @@ class NautobotModule:
         elif parent == "rear_port_template" and self.endpoint == "front_port_templates":
             if isinstance(module_data.get("rear_port_template"), str):
                 rear_port_template = {
-                    # "devicetype_id": module_data.get("device_type"),
                     "name": module_data.get("rear_port_template"),
                 }
                 query_dict.update(rear_port_template)
-
-        # elif "_template" in parent:
-        #     if query_dict.get("device_type"):
-        #         query_dict["devicetype_id"] = query_dict.pop("device_type")
 
         if not query_dict:
             provided_kwargs = child.keys() if child else module_data.keys()
@@ -777,9 +779,10 @@ class NautobotModule:
                 # Do not attempt to resolve if already ID/UUID is provided
                 if isinstance(v, int) or self.is_valid_uuid(v):
                     continue
-
+                elif k == "location":
+                    self._handle_errors(msg="Location needs a valid UUID")
                 # Special circumstances to set endpoint to search within
-                if k == "termination_a":
+                elif k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
                     endpoint = CONVERT_TO_ID[data.get("termination_b_type")]

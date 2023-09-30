@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -293,43 +292,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-device_role"></div>
-
-      .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_role:
-
-      .. rst-class:: ansible-option-title
-
-      **device_role**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-device_role" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-device_type"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_type:
@@ -414,17 +376,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-local_context_data"></div>
+        <div class="ansibleOptionAnchor" id="parameter-local_config_context_data"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_module__parameter-local_context_data:
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-local_config_context_data:
 
       .. rst-class:: ansible-option-title
 
-      **local_context_data**
+      **local_config_context_data**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-local_context_data" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-local_config_context_data" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -442,6 +404,43 @@ Parameters
         <div class="ansible-option-cell">
 
       Arbitrary JSON data to define the devices configuration variables.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
 
 
       .. raw:: html
@@ -714,6 +713,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-role"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-role:
+
+      .. rst-class:: ansible-option-title
+
+      **role**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-serial"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_module__parameter-serial:
@@ -742,43 +778,6 @@ Parameters
         <div class="ansible-option-cell">
 
       Serial number of the device
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.device_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
 
 
       .. raw:: html
@@ -1193,10 +1192,12 @@ Examples
             token: thisIsMyToken
             name: Test Device
             device_type: C9410R
-            device_role: Core Switch
-            site: Main
+            role: Core Switch
+            location: "{{ my_location['key'] }}"
             status: active
             state: present
+          vars:
+            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Create device within Nautobot with empty string name to generate UUID
           networktocode.nautobot.device:
@@ -1204,10 +1205,12 @@ Examples
             token: thisIsMyToken
             name: ""
             device_type: C9410R
-            device_role: Core Switch
-            site: Main
+            role: Core Switch
+            location: "{{ my_location['key'] }}"
             status: active
             state: present
+          vars:
+            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Delete device within nautobot
           networktocode.nautobot.device:
@@ -1222,14 +1225,16 @@ Examples
             token: thisIsMyToken
             name: Another Test Device
             device_type: C9410R
-            device_role: Core Switch
-            site: Main
+            role: Core Switch
+            location: "{{ my_location['key'] }}"
             status: active
-            local_context_data:
+            local_config_context_data:
               bgp: "65000"
             tags:
               - Schnozzberry
             state: present
+          vars:
+            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Update the rack and position of an existing device
           networktocode.nautobot.device:

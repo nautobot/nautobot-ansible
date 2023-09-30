@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -256,17 +255,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-ipaddresses"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ip_addresses"></div>
 
-      .. _ansible_collections.networktocode.nautobot.service_module__parameter-ipaddresses:
+      .. _ansible_collections.networktocode.nautobot.service_module__parameter-ip_addresses:
 
       .. rst-class:: ansible-option-title
 
-      **ipaddresses**
+      **ip_addresses**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-ipaddresses" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-ip_addresses" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -703,7 +702,7 @@ Examples
             ports:
               - 9100
             protocol: TCP
-            ipaddresses:
+            ip_addresses:
               - address: 127.0.0.1
             tags:
               - prometheus

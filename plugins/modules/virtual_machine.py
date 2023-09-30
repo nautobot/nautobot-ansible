@@ -42,7 +42,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  virtual_machine_role:
+  role:
     description:
       - The role of the virtual machine
     required: false
@@ -187,7 +187,7 @@ def main():
             name=dict(required=True, type="str"),
             site=dict(required=False, type="raw"),
             cluster=dict(required=False, type="raw"),
-            virtual_machine_role=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
             vcpus=dict(required=False, type="int"),
             tenant=dict(required=False, type="raw"),
             platform=dict(required=False, type="raw"),

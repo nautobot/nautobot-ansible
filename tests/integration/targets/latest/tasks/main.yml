@@ -1,165 +1,165 @@
 ---
-#- name: "PYNAUTOBOT_DEVICE TESTS"
-#  include_tasks:
-#    file: "device.yml"
-#    apply:
-#      tags:
-#        - device
-#  tags:
-#    - device
-#
-#- name: "PYNAUTOBOT_DEVICE_INTERFACE TESTS"
-#  include_tasks:
-#    file: "device_interface.yml"
-#    apply:
-#      tags:
-#        - device_interface
-#  tags:
-#    - device_interface
-#
-#- name: "PYNAUTOBOT_DEVICE_INTERFACE_TEMPLATE TESTS"
-#  include_tasks:
-#    file: "device_interface_template.yml"
-#    apply:
-#      tags:
-#        - device_interface_template
-#  tags:
-#    - device_interface_template
-#
-#- name: "PYNAUTOBOT_IP_ADDRESS TESTS"
-#  include_tasks:
-#    file: "ip_address.yml"
-#    apply:
-#      tags:
-#        - ip_address
-#  tags:
-#    - ip_address
-#
-#- name: "PYNAUTOBOT_IP_ADDRESS_TO_INTERFACE TESTS"
-#  include_tasks:
-#    file: "ip_address_to_interface.yml"
-#    apply:
-#      tags:
-#        - ip_address_to_interface
-#  tags:
-#    - ip_address_to_interface
-#
-#- name: "PYNAUTOBOT_PREFIX TESTS"
-#  include_tasks:
-#    file: "prefix.yml"
-#    apply:
-#      tags:
-#        - prefix
-#  tags:
-#    - prefix
-#
-#- name: "PYNAUTOBOT_LOCATION TESTS"
-#  include_tasks:
-#    file: "location.yml"
-#    apply:
-#      tags:
-#        - location
-#  tags:
-#    - location
-#
-#- name: "PYNAUTOBOT_LOCATION_TYPE TESTS"
-#  include_tasks:
-#    file: "location_type.yml"
-#    apply:
-#      tags:
-#        - location_type
-#  tags:
-#    - location_type
-#
-#- name: "PYNAUTOBOT_TENTANT TESTS"
-#  include_tasks:
-#    file: "tenant.yml"
-#    apply:
-#      tags:
-#        - tenant
-#  tags:
-#    - tenant
-#
-#- name: "PYNAUTOBOT_TENTANT_GROUP TESTS"
-#  include_tasks:
-#    file: "tenant_group.yml"
-#    apply:
-#      tags:
-#        - tenant_group
-#  tags:
-#    - tenant_group
-#
-#- name: "PYNAUTOBOT_RACK TESTS"
-#  include_tasks:
-#    file: "rack.yml"
-#    apply:
-#      tags:
-#        - rack
-#  tags:
-#    - rack
-#
-#- name: "PYNAUTOBOT_RACK_GROUP TESTS"
-#  include_tasks:
-#    file: "rack_group.yml"
-#    apply:
-#      tags:
-#        - rack_group
-#  tags:
-#    - rack_group
-#
-#- name: "PYNAUTOBOT_MANUFACTURER TESTS"
-#  include_tasks:
-#    file: "manufacturer.yml"
-#    apply:
-#      tags:
-#        - manufacturer
-#  tags:
-#    - manufacturer
-#
-#- name: "PYNAUTOBOT_PLATFORM TESTS"
-#  include_tasks:
-#    file: "platform.yml"
-#    apply:
-#      tags:
-#        - platform
-#  tags:
-#    - platform
-#
-#- name: "PYNAUTOBOT_DEVICE_TYPE TESTS"
-#  include_tasks:
-#    file: "device_type.yml"
-#    apply:
-#      tags:
-#        - device_type
-#  tags:
-#    - device_type
-#
-#- name: "PYNAUTOBOT ROLE TESTS"
-#  include_tasks:
-#    file: "role.yml"
-#    apply:
-#      tags:
-#        - role
-#  tags:
-#    - role
-#
-#- name: "PYNAUTOBOT_VLAN_GROUP TESTS"
-#  include_tasks:
-#    file: "vlan_group.yml"
-#    apply:
-#      tags:
-#        - vlan_group
-#  tags:
-#    - vlan_group
-#
-#- name: "PYNAUTOBOT_VLAN TESTS"
-#  include_tasks:
-#    file: "vlan.yml"
-#    apply:
-#      tags:
-#        - vlan
-#  tags:
-#    - vlan
+- name: "PYNAUTOBOT_DEVICE TESTS"
+  include_tasks:
+    file: "device.yml"
+    apply:
+      tags:
+        - device
+  tags:
+    - device
+
+- name: "PYNAUTOBOT_DEVICE_INTERFACE TESTS"
+  include_tasks:
+    file: "device_interface.yml"
+    apply:
+      tags:
+        - device_interface
+  tags:
+    - device_interface
+
+- name: "PYNAUTOBOT_DEVICE_INTERFACE_TEMPLATE TESTS"
+  include_tasks:
+    file: "device_interface_template.yml"
+    apply:
+      tags:
+        - device_interface_template
+  tags:
+    - device_interface_template
+
+- name: "PYNAUTOBOT_IP_ADDRESS TESTS"
+  include_tasks:
+    file: "ip_address.yml"
+    apply:
+      tags:
+        - ip_address
+  tags:
+    - ip_address
+
+- name: "PYNAUTOBOT_IP_ADDRESS_TO_INTERFACE TESTS"
+  include_tasks:
+    file: "ip_address_to_interface.yml"
+    apply:
+      tags:
+        - ip_address_to_interface
+  tags:
+    - ip_address_to_interface
+
+- name: "PYNAUTOBOT_PREFIX TESTS"
+  include_tasks:
+    file: "prefix.yml"
+    apply:
+      tags:
+        - prefix
+  tags:
+    - prefix
+
+- name: "PYNAUTOBOT_LOCATION TESTS"
+  include_tasks:
+    file: "location.yml"
+    apply:
+      tags:
+        - location
+  tags:
+    - location
+
+- name: "PYNAUTOBOT_LOCATION_TYPE TESTS"
+  include_tasks:
+    file: "location_type.yml"
+    apply:
+      tags:
+        - location_type
+  tags:
+    - location_type
+
+- name: "PYNAUTOBOT_TENTANT TESTS"
+  include_tasks:
+    file: "tenant.yml"
+    apply:
+      tags:
+        - tenant
+  tags:
+    - tenant
+
+- name: "PYNAUTOBOT_TENTANT_GROUP TESTS"
+  include_tasks:
+    file: "tenant_group.yml"
+    apply:
+      tags:
+        - tenant_group
+  tags:
+    - tenant_group
+
+- name: "PYNAUTOBOT_RACK TESTS"
+  include_tasks:
+    file: "rack.yml"
+    apply:
+      tags:
+        - rack
+  tags:
+    - rack
+
+- name: "PYNAUTOBOT_RACK_GROUP TESTS"
+  include_tasks:
+    file: "rack_group.yml"
+    apply:
+      tags:
+        - rack_group
+  tags:
+    - rack_group
+
+- name: "PYNAUTOBOT_MANUFACTURER TESTS"
+  include_tasks:
+    file: "manufacturer.yml"
+    apply:
+      tags:
+        - manufacturer
+  tags:
+    - manufacturer
+
+- name: "PYNAUTOBOT_PLATFORM TESTS"
+  include_tasks:
+    file: "platform.yml"
+    apply:
+      tags:
+        - platform
+  tags:
+    - platform
+
+- name: "PYNAUTOBOT_DEVICE_TYPE TESTS"
+  include_tasks:
+    file: "device_type.yml"
+    apply:
+      tags:
+        - device_type
+  tags:
+    - device_type
+
+- name: "PYNAUTOBOT ROLE TESTS"
+  include_tasks:
+    file: "role.yml"
+    apply:
+      tags:
+        - role
+  tags:
+    - role
+
+- name: "PYNAUTOBOT_VLAN_GROUP TESTS"
+  include_tasks:
+    file: "vlan_group.yml"
+    apply:
+      tags:
+        - vlan_group
+  tags:
+    - vlan_group
+
+- name: "PYNAUTOBOT_VLAN TESTS"
+  include_tasks:
+    file: "vlan.yml"
+    apply:
+      tags:
+        - vlan
+  tags:
+    - vlan
 
 - name: "PYNAUTOBOT_VRF TESTS"
   include_tasks:
@@ -178,24 +178,6 @@
         - rir
   tags:
     - rir
-
-- name: "PYNAUTOBOT_AGGREGATE TESTS"
-  include_tasks:
-    file: "aggregate.yml"
-    apply:
-      tags:
-        - aggregate
-  tags:
-    - aggregate
-
-- name: "PYNAUTOBOT_REGION TESTS"
-  include_tasks:
-    file: "region.yml"
-    apply:
-      tags:
-        - region
-  tags:
-    - region
 
 - name: "PYNAUTOBOT_DEVICE_BAY TESTS"
   include_tasks:

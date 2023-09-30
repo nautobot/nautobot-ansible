@@ -4,11 +4,11 @@
 ### PYNAUTOBOT_LOOKUP
 ##
 ##
-- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly two sites"
+- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly three locations"
   assert:
     that: "{{ query_result|count }} == 3"
   vars:
-    query_result: "{{ query('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token) }}"
+    query_result: "{{ query('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token) }}"
 
 - name: "PYNAUTOBOT_LOOKUP 2: Query doesn't return Wibble (sanity check json_query)"
   assert:
@@ -28,17 +28,21 @@
   vars:
     query_result: "{{ query('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token) }}"
 
+- set_fact:
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    child_test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child-Child Test Location\"') }}"
+
 - name: "PYNAUTOBOT_LOOKUP 5: Add one of two devices for lookup filter test."
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "L1"
     device_type: "Cisco Test"
-    device_role: "Core Switch"
-    site: "Test Site"
+    role: "Core Switch"
+    location: "{{ test_location['key'] }}"
     status: "Staged"
     tags:
-      - "nolookup"
+      - "Nolookup"
     state: present
 
 - name: "PYNAUTOBOT_LOOKUP 6: Add two of two devices for lookup filter test."
@@ -47,29 +51,29 @@
     token: "{{ nautobot_token }}"
     name: "L2"
     device_type: "Cisco Test"
-    device_role: "Core Switch"
-    site: "Test Site2"
+    role: "Core Switch"
+    location: "{{ child_test_location['key'] }}"
     status: "Staged"
     tags:
-      - "lookup"
+      - "Lookup"
     state: present
 
 - name: "PYNAUTOBOT_LOOKUP 7: Device query returns exactly the L2 device"
   assert:
     that: "{{ query_result|json_query('[?value.display==`L2`]')|count }} == 1"
   vars:
-    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=core-switch tag=lookup', api_endpoint=nautobot_url, token=nautobot_token) }}"
+    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=\"Core Switch\" tags=Lookup', api_endpoint=nautobot_url, token=nautobot_token) }}"
 
 - name: "PYNAUTOBOT_LOOKUP 8: Device query specifying raw data returns payload without key/value dict"
   assert:
     that: "{{ query_result|json_query('[?display==`L2`]')|count }} == 1"
   vars:
-    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=core-switch tag=lookup', api_endpoint=nautobot_url, token=nautobot_token, raw_data=True) }}"
+    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=\"Core Switch\" tags=Lookup', api_endpoint=nautobot_url, token=nautobot_token, raw_data=True) }}"
 
-- name: "PYNAUTOBOT_LOOKUP 9: Device query specifying multiple sites, Make sure L1 and L2 are in the results"
+- name: "PYNAUTOBOT_LOOKUP 9: Device query specifying multiple locations, Make sure L1 and L2 are in the results"
   assert:
     that:
       - "'L1' in {{ query_result |json_query('[*].display') }}"
       - "'L2' in {{ query_result |json_query('[*].display') }}"
   vars:
-    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=core-switch site=test-site site=test-site2', api_endpoint=nautobot_url, token=nautobot_token, raw_data=True) }}"
+    query_result: "{{ query('networktocode.nautobot.lookup', 'devices', api_filter='role=\"Core Switch\" location=\"Child Test Location\" location=\"Child-Child Test Location\"', api_endpoint=nautobot_url, token=nautobot_token, raw_data=True) }}"

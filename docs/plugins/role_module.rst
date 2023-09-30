@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.ipam_role_module:
+.. _ansible_collections.networktocode.nautobot.role_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.ipam_role module -- Creates or removes ipam roles from Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.role module -- Create, update or delete roles within Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,9 +46,9 @@ networktocode.nautobot.ipam_role module -- Creates or removes ipam roles from Na
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.ipam_role_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.role_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.ipam_role`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.role`.
 
 .. version_added
 
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes ipam roles from Nautobot
+- Creates, updates or removes roles from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.ipam_role_module_requirements:
+.. _ansible_collections.networktocode.nautobot.role_module_requirements:
 
 Requirements
 ------------
@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -110,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -145,9 +144,120 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-color"></div>
+
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-color:
+
+      .. rst-class:: ansible-option-title
+
+      **color**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Hexidecimal code for a color, ex. FFFFFF
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-content_types"></div>
+
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-content_types:
+
+      .. rst-class:: ansible-option-title
+
+      **content_types**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-content_types" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Model names which the role can be related to.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-description:
+
+      .. rst-class:: ansible-option-title
+
+      **description**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The description of the device role
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -172,7 +282,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Name of the ipam role to be created
+      The name of the device role
 
 
       .. raw:: html
@@ -184,7 +294,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -223,48 +333,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The slugified version of the name or custom slug.
-
-      This is auto-generated following Nautobot rules if not provided
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -306,7 +377,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -340,7 +411,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -374,7 +445,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -412,7 +483,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-weight"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__parameter-weight:
+      .. _ansible_collections.networktocode.nautobot.role_module__parameter-weight:
 
       .. rst-class:: ansible-option-title
 
@@ -426,7 +497,7 @@ Parameters
 
       :ansible-option-type:`integer`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -437,7 +508,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The weight of the ipam role to be created
+      Weight assigned to the role.
 
 
       .. raw:: html
@@ -468,23 +539,27 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot module"
+    - name: "Test Nautobot modules"
       connection: local
       hosts: localhost
       gather_facts: False
+
       tasks:
-        - name: Create ipam role within Nautobot with only required information
-          networktocode.nautobot.ipam_role:
+        - name: Create device role within Nautobot with only required information
+          networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test IPAM Role
+            name: Test device role
+            color: FFFFFF
+            content_types:
+              - "dcim.device"
             state: present
 
-        - name: Delete ipam role within nautobot
-          networktocode.nautobot.ipam_role:
+        - name: Delete device role within nautobot
+          networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test IPAM Role
+            name: Test device role
             state: absent
 
 
@@ -514,7 +589,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.role_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -554,7 +629,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-role"></div>
 
-      .. _ansible_collections.networktocode.nautobot.ipam_role_module__return-role:
+      .. _ansible_collections.networktocode.nautobot.role_module__return-role:
 
       .. rst-class:: ansible-option-title
 
@@ -581,7 +656,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` on creation
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
 
 
       .. raw:: html

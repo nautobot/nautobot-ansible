@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -216,6 +215,44 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-id"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-id:
+
+      .. rst-class:: ansible-option-title
+
+      **id**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-id" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Primary Key of the location, used to delete the location.
+
+      Because of hierarchical nature of locations and name being not unique across locations,
+
+      it's a user responsibility to query location and pass its id(PK) to the task to delete the location.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-location_type"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-location_type:
@@ -266,7 +303,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+      :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -286,17 +323,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
+        <div class="ansibleOptionAnchor" id="parameter-parent_location"></div>
 
-      .. _ansible_collections.networktocode.nautobot.location_module__parameter-parent:
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-parent_location:
 
       .. rst-class:: ansible-option-title
 
-      **parent**
+      **parent_location**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-parent_location" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -352,74 +389,6 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.location_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The site this location should be tied to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.location_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      URL-friendly unique shorthand
 
 
       .. raw:: html
@@ -644,7 +613,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: My Location
-            status: active
+            status: Active
             location_type:
               name: My Location Type
             state: present
@@ -653,22 +622,22 @@ Examples
           networktocode.nautobot.location:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: My Location
+            id: "{{ location_to_delete['key'] }}"
             state: absent
+          vars:
+            location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\" parent_location=\"Location Parent\" location_type=\"Main Type\"') }}"
 
         - name: Create location with all parameters
           networktocode.nautobot.location:
             url: http://nautobot.local
             token: thisIsMyToken
             name: My Nested Location
-            status: active
+            status: Active
             location_type:
               name: My Location Type
             description: My Nested Location Description
-            parent:
+            parent_location:
               name: My Location
-            site:
-              name: My Site
             state: present
 
 

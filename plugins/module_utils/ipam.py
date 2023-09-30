@@ -15,7 +15,6 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 )
 
 
-NB_AGGREGATES = "aggregates"
 NB_IP_ADDRESSES = "ip_addresses"
 NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
 NB_NAMESPACES = "namespaces"
@@ -116,8 +115,6 @@ class NautobotIpamModule(NautobotModule):
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
-        - aggregates
-        - ipam_roles
         - ip_addresses
         - ip_address_to_interface
         - prefixes
@@ -145,7 +142,7 @@ class NautobotIpamModule(NautobotModule):
                 except ValueError:
                     pass
             name = data.get("address")
-        elif self.endpoint in ["aggregates", "prefixes"]:
+        elif self.endpoint in ["prefixes"]:
             name = data.get("prefix")
         else:
             name = data.get("name")
