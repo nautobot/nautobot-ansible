@@ -54,7 +54,7 @@ networktocode.nautobot.role module -- Create, update or delete roles within Naut
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.0.0
 
 .. contents::
    :local:
@@ -160,7 +160,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -234,7 +234,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -271,7 +271,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html

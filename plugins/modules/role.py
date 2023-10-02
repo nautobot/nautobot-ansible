@@ -18,7 +18,7 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
@@ -27,19 +27,19 @@ options:
       - The name of the device role
     required: true
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   description:
     description:
       - The description of the device role
     required: false
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   color:
     description:
       - Hexidecimal code for a color, ex. FFFFFF
     required: false
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   content_types:
     description:
       - Model names which the role can be related to.
