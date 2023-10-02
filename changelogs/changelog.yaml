@@ -389,7 +389,7 @@ releases:
     changes:
       breaking_changes:
         - (#234) Updates for Nautobot 2.0 Compatibility
-      release_summary: "This release updates collection code for compatibility code with Nautobot 2.0, where API has braking changes.
+      release_summary: "This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
 "
     modules:
       - description:  Creates or removes associations between IP and interface.
