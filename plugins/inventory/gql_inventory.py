@@ -129,11 +129,11 @@ query:
     tags: name
     serial:
     tenant: name
-    site:
+    location:
       name:
       contact_name:
       description:
-      region: name
+      parent: name
   virtual_machines:
     tags: name
     tenant: name
@@ -149,11 +149,11 @@ query:
     serial:
     tenant: name
     status: display
-    site:
+    location:
       name:
       contact_name:
       description:
-      region: name
+      parent: name
   virtual_machines:
     tags: name
     tenant: name

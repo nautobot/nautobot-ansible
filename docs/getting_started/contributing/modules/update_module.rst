@@ -99,7 +99,7 @@ Now that we have that taken care of, let's move onto the ``utils``.
   QUERY_TYPES = dict(
       ...
       export_targets="name",
-      group="slug",
+      group="name",
       installed_device="name",
       import_targets="name",
       ...

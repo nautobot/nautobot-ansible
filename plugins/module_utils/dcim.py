@@ -38,12 +38,9 @@ NB_POWER_PANELS = "power_panels"
 NB_POWER_PORTS = "power_ports"
 NB_POWER_PORT_TEMPLATES = "power_port_templates"
 NB_RACKS = "racks"
-NB_RACK_ROLES = "roles"
 NB_RACK_GROUPS = "rack_groups"
 NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
-NB_REGIONS = "regions"
-NB_SITES = "sites"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
@@ -75,12 +72,10 @@ class NautobotDcimModule(NautobotModule):
         - power_panels
         - power_ports
         - power_port_templates
-        - sites
         - racks
         - rack_groups
         - rear_ports
         - rear_port_templates
-        - regions
         - virtual_chassis
         """
         # Used to dynamically set key when returning results

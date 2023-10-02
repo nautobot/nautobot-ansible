@@ -1667,7 +1667,7 @@ Parameters
 
       If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
 
-      Group names will be plural (ie. "sites\_mysite" instead of "site\_mysite")
+      Group names will be plural (ie. "locations\_mylocation" instead of "location\_mylocation")
 
       The choices of \ :emphasis:`group\_by`\  will be changed by this option.
 

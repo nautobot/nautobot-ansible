@@ -30,12 +30,6 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  site:
-    description:
-      - The name of the site attach to the virtual machine
-    required: false
-    type: raw
-    version_added: "3.0.0"
   cluster:
     description:
       - The name of the cluster attach to the virtual machine
@@ -139,7 +133,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Another Test Virtual Machine
         cluster: test cluster
-        site: Test Site
         status: active
         tags:
           - Schnozzberry
@@ -185,7 +178,6 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            site=dict(required=False, type="raw"),
             cluster=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             vcpus=dict(required=False, type="int"),

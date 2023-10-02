@@ -404,40 +404,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.location_type_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      URL-friendly unique shorthand
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_type_module__parameter-state:

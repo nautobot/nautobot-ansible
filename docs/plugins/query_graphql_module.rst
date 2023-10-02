@@ -387,17 +387,17 @@ Examples
         set_fact:
           query_string: |
             query {
-              sites {
+              locations {
                 id
                 name
-                region {
+                parent {
                   name
                 }
               }
             }
 
       # Make query to GraphQL Endpoint
-      - name: Obtain list of sites from Nautobot
+      - name: Obtain list of locations from Nautobot
         networktocode.nautobot.query_graphql:
           url: http://nautobot.local
           token: thisIsMyToken
@@ -408,20 +408,20 @@ Examples
       - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
         set_fact:
           graph_variables:
-            site_name: AMS01
+            $location_name: AMS01
           query_string: |
-            query ($site_name: String!) {
-              sites (slug: $site_name) {
+            query ($location_name: String!) {
+              locations (name: $location_name) {
                 id
                 name
-                region {
+                parent {
                     name
                 }
               }
             }
 
       # Get Response with variables and set to root keys
-      - name: Obtain list of devices at site in variables from Nautobot
+      - name: Obtain list of devices at location in variables from Nautobot
         networktocode.nautobot.query_graphql:
           url: http://nautobot.local
           token: thisIsMyToken

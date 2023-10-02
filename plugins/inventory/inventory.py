@@ -83,7 +83,7 @@ DOCUMENTATION = """
         plurals:
             description:
                 - If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
-                - Group names will be plural (ie. "sites_mysite" instead of "site_mysite")
+                - Group names will be plural (ie. "locations_mylocation" instead of "location_mylocation")
                 - The choices of I(group_by) will be changed by this option.
             default: True
             type: boolean

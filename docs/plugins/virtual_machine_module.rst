@@ -592,43 +592,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The name of the site attach to the virtual machine
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
       .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-state:
@@ -975,7 +938,6 @@ Examples
             token: thisIsMyToken
             name: Another Test Virtual Machine
             cluster: test cluster
-            site: Test Site
             status: active
             tags:
               - Schnozzberry

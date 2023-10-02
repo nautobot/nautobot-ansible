@@ -415,47 +415,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.device_type_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The slug of the device type. Must follow slug formatting (URL friendly)
-
-      If not specified, it will slugify the model
-
-      ex. test-device-type
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_type_module__parameter-state:
@@ -756,7 +715,6 @@ Examples
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            slug: test-device-type
             model: ws-test-3750
             manufacturer: Test Manufacturer
             state: present
@@ -765,7 +723,6 @@ Examples
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            slug: test-device-type
             model: ws-test-3750
             manufacturer: Test Manufacturer
             part_number: ws-3750g-v2
@@ -778,7 +735,7 @@ Examples
           networktocode.nautobot.device_type:
             url: http://nautobot.local
             token: thisIsMyToken
-            slug: test-device-type
+            model: ws-test-3750
             state: absent
 
 

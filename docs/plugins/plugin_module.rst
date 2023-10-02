@@ -251,7 +251,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Plugin object identifier(s) like name, slug, etc.
+      Plugin object identifier(s) like name, model, etc.
 
 
       .. raw:: html

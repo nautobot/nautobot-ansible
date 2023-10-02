@@ -67,8 +67,8 @@ Open ``plugins/module_utils/utils.py`` and update the following.
   # Used to normalize data for the respective query types used to find endpoints
   QUERY_TYPES = dict(
       ...
-      region="slug",
-      rir="slug",
+      device="name",
+      rir="name",
       route_targets="name",
       ...
 
@@ -76,7 +76,7 @@ Open ``plugins/module_utils/utils.py`` and update the following.
 
   ENDPOINT_NAME_MAPPING = {
       ...
-      "regions": "region",
+      "locations": "location",
       "rirs": "rir",
       "roles": "role",
       "route_targets": "route_target",
@@ -86,11 +86,11 @@ Open ``plugins/module_utils/utils.py`` and update the following.
 
   ALLOWED_QUERY_PARAMS = {
       ...
-      "region": set(["slug"]),
+      "location": set(["name, "id"]),
       "rear_port": set(["name", "device"]),
       "rear_port_template": set(["name", "device_type"]),
-      "rir": set(["slug"]),
-      "role": set(["slug"]),
+      "rir": set(["name"]),
+      "role": set(["name"]),
       "route_target": set(["name"]),
       ...
 
@@ -377,7 +377,6 @@ They're stored in ``tests/integration/targets`` and each target corresponds with
       ├── latest
       │   └── tasks
       │       ├── main.yml
-      │       ├── aggregate.yml
       │       ├── cable.yml
       ├── regression-latest
       │   └── tasks
@@ -388,7 +387,6 @@ They're stored in ``tests/integration/targets`` and each target corresponds with
       └── v2.9
           └── tasks
               ├── main.yml
-              ├── aggregate.yml
               ├── cable.yml
 
 This isn't all the directories or files, but since we only support the two latest Nautobot releases, we have a folder for the  **latest** and the second latest version of Nautobot, in this case v2.9.

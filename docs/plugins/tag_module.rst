@@ -536,7 +536,6 @@ Examples
               - dcim.rack
               - dcim.rack reservation
               - dcim.rear port
-              - dcim.site
               - dcim.virtual chassis
               - extras.Git repository
               - extras.job
