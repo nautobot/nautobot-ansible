@@ -10,7 +10,7 @@ v5.0.0
 Release Summary
 ---------------
 
-This release updates collection code for compatibility code with Nautobot 2.0, where API has braking changes.
+This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
 
 Breaking Changes / Porting Guide
 --------------------------------
@@ -20,7 +20,7 @@ Breaking Changes / Porting Guide
 New Modules
 -----------
 
-- networktocode.nautobot.ip_address_to_interface - Creates or removes a associations between IP and interface.
+- networktocode.nautobot.ip_address_to_interface - Creates or removes associations between IP and interface.
 - networktocode.nautobot.role - Creates or removes a role.
 
 Removed Modules

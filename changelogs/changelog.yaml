@@ -389,9 +389,10 @@ releases:
     changes:
       breaking_changes:
         - (#234) Updates for Nautobot 2.0 Compatibility
-      release_summary: "This release refactors the GraphQL inventory plugin to allow fetching virtual machines and a more flexible approach to allow users to use most of GraphQL's native capabilities."
+      release_summary: "This release updates collection code for compatibility code with Nautobot 2.0, where API has braking changes.
+"
     modules:
-      - description:  Creates or removes a associations between IP and interface.
+      - description:  Creates or removes associations between IP and interface.
         name: ip_address_to_interface
         namespace: ""
       - description: Creates or removes a role. Collapsed from several role modules in DCIM and IPAM.
