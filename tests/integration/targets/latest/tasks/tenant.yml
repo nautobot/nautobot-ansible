@@ -18,7 +18,6 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['tenant']['name'] == "Tenant ABC"
-      - test_one['tenant']['slug'] == "tenant-abc"
       - test_one['msg'] == "tenant Tenant ABC created"
 
 - name: "Test duplicate tenant"
@@ -33,7 +32,6 @@
     that:
       - not test_two['changed']
       - test_two['tenant']['name'] == "Tenant ABC"
-      - test_two['tenant']['slug'] == "tenant-abc"
       - test_two['msg'] == "tenant Tenant ABC already exists"
 
 - name: "3 - Test update"
@@ -50,7 +48,6 @@
       - test_three is changed
       - test_three['diff']['after']['description'] == "Updated description"
       - test_three['tenant']['name'] == "Tenant ABC"
-      - test_three['tenant']['slug'] == "tenant-abc"
       - test_three['tenant']['description'] == "Updated description"
       - test_three['msg'] == "tenant Tenant ABC updated"
 
@@ -78,7 +75,6 @@
     description: "ABC Incorporated"
     comments: "### This tenant is super cool"
     tenant_group: "Test Tenant Group"
-    slug: "tenant_abc"
     tags:
       - "tagA"
       - "tagB"
@@ -93,11 +89,10 @@
       - test_five['diff']['before']['state'] == "absent"
       - test_five['diff']['after']['state'] == "present"
       - test_five['tenant']['name'] == "Tenant ABC"
-      - test_five['tenant']['slug'] == "tenant_abc"
       - test_five['tenant']['description'] == "ABC Incorporated"
       - test_five['tenant']['comments'] == "### This tenant is super cool"
-      - test_five['tenant']['group'] == group['key']
+      - test_five['tenant']['tenant_group'] == tenant_group['key']
       - test_five['tenant']['tags'] | length == 3
       - test_five['msg'] == "tenant Tenant ABC created"
   vars:
-    group: "{{ lookup('networktocode.nautobot.lookup', 'tenant-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant-group') }}"
+    tenant_group: "{{ lookup('networktocode.nautobot.lookup', 'tenant-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant Group\"') }}"

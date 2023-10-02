@@ -5,11 +5,12 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vlan-group') }}"
-    vlan_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=network-of-care') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
+    vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Vlan Group\"') }}"
+    role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Network of care\"') }}"
+    reserved: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Reserved') }}"
 
 - name: "VLAN 1: Necessary info creation"
   networktocode.nautobot.vlan:
@@ -49,20 +50,20 @@
       - test_two['vlan']['vid'] == 500
       - test_two['msg'] == "vlan Test VLAN 500 already exists"
 
-- name: "VLAN 3: Create VLAN with same name, but different site"
+- name: "VLAN 3: Create VLAN with same name, but different location"
   networktocode.nautobot.vlan:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test VLAN 500
     vid: 500
-    site: Test Site
+    location: "{{ test_location['key'] }}"
     tenant: Test Tenant
-    vlan_group: "Test VLAN Group"
+    vlan_group: "Test Vlan Group"
     status: "Active"
     state: present
   register: test_three
 
-- name: "VLAN 3: ASSERT - Create VLAN with same name, but different site"
+- name: "VLAN 3: ASSERT - Create VLAN with same name, but different location"
   assert:
     that:
       - test_three is changed
@@ -70,23 +71,23 @@
       - test_three['diff']['after']['state'] == "present"
       - test_three['vlan']['name'] == "Test VLAN 500"
       - test_three['vlan']['vid'] == 500
-      - test_three['vlan']['site'] == test_site['key']
-      - test_three['vlan']['group'] == vlan_group['key']
+      - test_three['vlan']['location'] == test_location['key']
+      - test_three['vlan']['vlan_group'] == vlan_group['key']
       - test_three['vlan']['tenant'] == tenant['key']
       - test_three['msg'] == "vlan Test VLAN 500 created"
 
-- name: "VLAN 4: ASSERT - Update"
+- name: "VLAN 4: Update"
   networktocode.nautobot.vlan:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test VLAN 500"
     vid: 500
     tenant: "Test Tenant"
-    vlan_group: "Test VLAN Group"
+    vlan_group: "Test Vlan Group"
     status: Reserved
-    vlan_role: Network of care
+    role: Network of care
     description: Updated description
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
     tags:
       - "Schnozzberry"
     state: present
@@ -96,16 +97,16 @@
   assert:
     that:
       - test_four is changed
-      - test_four['diff']['after']['status'] == "reserved"
-      - test_four['diff']['after']['role'] == vlan_role['key']
+      - test_four['diff']['after']['status'] == reserved['key']
+      - test_four['diff']['after']['role'] == role['key']
       - test_four['diff']['after']['description'] == "Updated description"
       - test_four['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_four['vlan']['name'] == "Test VLAN 500"
       - test_four['vlan']['tenant'] == tenant['key']
-      - test_four['vlan']['site'] == test_site['key']
-      - test_four['vlan']['group'] == vlan_group['key']
-      - test_four['vlan']['status'] == "reserved"
-      - test_four['vlan']['role'] == vlan_role['key']
+      - test_four['vlan']['location'] == test_location['key']
+      - test_four['vlan']['vlan_group'] == vlan_group['key']
+      - test_four['vlan']['status'] == reserved['key']
+      - test_four['vlan']['role'] == role['key']
       - test_four['vlan']['description'] == "Updated description"
       - test_four['vlan']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "vlan Test VLAN 500 updated"
@@ -117,11 +118,11 @@
     name: "Test VLAN 500"
     vid: 500
     tenant: "Test Tenant"
-    vlan_group: "Test VLAN Group"
+    vlan_group: "Test Vlan Group"
     status: Reserved
-    vlan_role: Network of care
+    role: Network of care
     description: Updated description
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
     tags:
       - "Schnozzberry"
     state: present
@@ -138,10 +139,10 @@
     token: "{{ nautobot_token }}"
     name: Test VLAN 500
     vid: 500
-    site: Test Site
+    location: "{{ test_location['key'] }}"
     tenant: Test Tenant
     status: "Active"
-    vlan_group: "Test VLAN Group 2"
+    vlan_group: "Test Vlan Group 2"
     state: present
   register: new_vlan_group
 
@@ -153,12 +154,12 @@
       - new_vlan_group['diff']['after']['state'] == "present"
       - new_vlan_group['vlan']['name'] == "Test VLAN 500"
       - new_vlan_group['vlan']['vid'] == 500
-      - new_vlan_group['vlan']['site'] == test_site['key']
+      - new_vlan_group['vlan']['location'] == test_location['key']
       - new_vlan_group['vlan']['tenant'] == tenant['key']
-      - new_vlan_group['vlan']['group'] == vlan_group2['key']
+      - new_vlan_group['vlan']['vlan_group'] == vlan_group2['key']
       - new_vlan_group['msg'] == "vlan Test VLAN 500 created"
   vars:
-    vlan_group2: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vlan-group-2') }}"
+    vlan_group2: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Vlan Group 2\"') }}"
 
 - name: "VLAN 5: ASSERT - Delete more than one result"
   networktocode.nautobot.vlan:
@@ -180,8 +181,8 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test VLAN 500"
-    site: Test Site
-    vlan_group: "Test VLAN Group"
+    location: "{{ test_location['key'] }}"
+    vlan_group: "Test Vlan Group"
     state: absent
   register: test_six
 
@@ -191,10 +192,10 @@
       - test_six is changed
       - test_six['vlan']['name'] == "Test VLAN 500"
       - test_six['vlan']['tenant'] == tenant['key']
-      - test_six['vlan']['site'] == test_site['key']
-      - test_six['vlan']['group'] == vlan_group['key']
-      - test_six['vlan']['status'] == "reserved"
-      - test_six['vlan']['role'] == vlan_role['key']
+      - test_six['vlan']['location'] == test_location['key']
+      - test_six['vlan']['vlan_group'] == vlan_group['key']
+      - test_six['vlan']['status'] == reserved['key']
+      - test_six['vlan']['role'] == role['key']
       - test_six['vlan']['description'] == "Updated description"
       - test_six['vlan']['tags'][0] == tag_schnozzberry['key']
       - test_six['msg'] == "vlan Test VLAN 500 deleted"

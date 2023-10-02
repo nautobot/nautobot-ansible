@@ -42,7 +42,7 @@ networktocode.nautobot.rack module -- Create, update or delete racks within Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -338,6 +337,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.rack_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Required if \ :emphasis:`state=present`\  and the rack does not exist yet.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
       .. _ansible_collections.networktocode.nautobot.rack_module__parameter-name:
@@ -572,17 +608,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-rack_role"></div>
+        <div class="ansibleOptionAnchor" id="parameter-role"></div>
 
-      .. _ansible_collections.networktocode.nautobot.rack_module__parameter-rack_role:
+      .. _ansible_collections.networktocode.nautobot.rack_module__parameter-role:
 
       .. rst-class:: ansible-option-title
 
-      **rack_role**
+      **role**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-rack_role" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -637,43 +673,6 @@ Parameters
         <div class="ansible-option-cell">
 
       Serial number of the rack.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.rack_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Required if \ :emphasis:`state=present`\  and the rack does not exist yet.
 
 
       .. raw:: html
@@ -1109,7 +1108,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test rack
-            site: Test Site
+            location: Test Location
             status: active
             state: present
 

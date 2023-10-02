@@ -28,13 +28,6 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
   description:
     description:
       - The description of the platform
@@ -122,7 +115,6 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             manufacturer=dict(required=False, type="raw"),
             napalm_driver=dict(required=False, type="str"),

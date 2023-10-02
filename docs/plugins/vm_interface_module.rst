@@ -42,7 +42,7 @@ networktocode.nautobot.vm_interface module -- Creates or removes interfaces from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -458,6 +457,45 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.vm_interface_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The status of the interface.
+
+      Required if \ :emphasis:`state=present`\  and does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-tagged_vlans"></div>
 
       .. _ansible_collections.networktocode.nautobot.vm_interface_module__parameter-tagged_vlans:
@@ -763,12 +801,12 @@ Examples
             enabled: false
             untagged_vlan:
               name: Wireless
-              site: Test Site
+              location: "{{ test_location['key'] }}"
             tagged_vlans:
               - name: Data
-                site: Test Site
+                location: "{{ test_location['key'] }}"
               - name: VoIP
-                site: Test Site
+                location: "{{ test_location['key'] }}"
             mtu: 1600
             mode: Tagged
             state: present

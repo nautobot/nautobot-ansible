@@ -5,19 +5,21 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    rack_role: "{{ lookup('networktocode.nautobot.lookup', 'rack-roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-rack-role') }}"
-    rack_group: "{{ lookup('networktocode.nautobot.lookup', 'rack-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-rack-group') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
+    rack_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Rack Role\"') }}"
+    rack_group: "{{ lookup('networktocode.nautobot.lookup', 'rack-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Rack Group\"') }}"
+    available: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Available') }}"
 
 - name: "1 - Test rack creation"
   networktocode.nautobot.rack:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test rack one"
+    rack_group: "Parent Rack Group"
     status: "Available"
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -27,13 +29,15 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['rack']['name'] == "Test rack one"
-      - test_one['rack']['site'] == test_site['key']
+      - test_one['rack']['location'] == test_location['key']
+      - test_one['rack']['rack_group'] == rack_group['key']
 
 - name: "Test duplicate rack"
   networktocode.nautobot.rack:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test rack one"
+    rack_group: "Parent Rack Group"
     status: "Available"
   register: test_two
 
@@ -42,15 +46,17 @@
     that:
       - not test_two['changed']
       - test_two['rack']['name'] == "Test rack one"
-      - test_two['rack']['site'] == test_site['key']
+      - test_two['rack']['location'] == test_location['key']
+      - test_two['rack']['rack_group'] == rack_group['key']
       - test_two['msg'] == "rack Test rack one already exists"
 
 - name: "3 - Create new rack with similar name"
   networktocode.nautobot.rack:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test rack - Test Site
-    site: Test Site
+    name: Test rack - Child Test Location
+    location: "{{ test_location['key'] }}"
+    rack_group: "Parent Rack Group"
     status: "Available"
     state: present
   register: test_three
@@ -61,16 +67,18 @@
       - test_three is changed
       - test_three['diff']['before']['state'] == "absent"
       - test_three['diff']['after']['state'] == "present"
-      - test_three['rack']['name'] == "Test rack - Test Site"
-      - test_three['rack']['site'] == test_site['key']
-      - test_three['msg'] == "rack Test rack - Test Site created"
+      - test_three['rack']['name'] == "Test rack - Child Test Location"
+      - test_three['rack']['location'] == test_location['key']
+      - test_three['rack']['rack_group'] == rack_group['key']
+      - test_three['msg'] == "rack Test rack - Child Test Location created"
 
 - name: "4 - Attempt to create Test rack one again"
   networktocode.nautobot.rack:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test rack one
-    site: Test Site
+    location: "{{ test_location['key'] }}"
+    rack_group: "Parent Rack Group"
     status: "Available"
     state: present
   register: test_four
@@ -80,7 +88,8 @@
     that:
       - not test_four['changed']
       - test_four['rack']['name'] == "Test rack one"
-      - test_four['rack']['site'] == test_site['key']
+      - test_four['rack']['location'] == test_location['key']
+      - test_four['rack']['rack_group'] == rack_group['key']
       - test_four['msg'] == "rack Test rack one already exists"
 
 - name: "5 - Update Test rack one with more options"
@@ -88,9 +97,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test rack one
-    site: Test Site
-    rack_role: "Test Rack Role"
-    rack_group: "Test Rack Group"
+    location: "{{ test_location['key'] }}"
+    role: "Test Rack Role"
+    rack_group: "Parent Rack Group"
     facility_id: "EQUI10291"
     tenant: "Test Tenant"
     status: Available
@@ -115,7 +124,6 @@
       - test_five['diff']['after']['asset_tag'] == "1234"
       - test_five['diff']['after']['comments'] == "Just testing rack module"
       - test_five['diff']['after']['facility_id'] == "EQUI10291"
-      - test_five['diff']['after']['group'] == rack_group['key']
       - test_five['diff']['after']['outer_depth'] == 24
       - test_five['diff']['after']['outer_unit'] == "in"
       - test_five['diff']['after']['outer_width'] == 32
@@ -127,17 +135,17 @@
       - test_five['diff']['after']['u_height'] == 48
       - test_five['diff']['after']['width'] == 23
       - test_five['rack']['name'] == "Test rack one"
-      - test_five['rack']['site'] == test_site['key']
+      - test_five['rack']['location'] == test_location['key']
       - test_five['rack']['asset_tag'] == "1234"
       - test_five['rack']['comments'] == "Just testing rack module"
       - test_five['rack']['facility_id'] == "EQUI10291"
-      - test_five['rack']['group'] == rack_group['key']
+      - test_five['rack']['rack_group'] == rack_group['key']
       - test_five['rack']['outer_depth'] == 24
       - test_five['rack']['outer_unit'] == "in"
       - test_five['rack']['outer_width'] == 32
       - test_five['rack']['role'] == rack_role['key']
       - test_five['rack']['serial'] == "FXS10001"
-      - test_five['rack']['status'] == "available"
+      - test_five['rack']['status'] == available['key']
       - test_five['rack']['tenant'] == tenant['key']
       - test_five['rack']['tags'][0] == tag_schnozzberry['key']
       - test_five['rack']['type'] == "2-post-frame"
@@ -150,9 +158,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test rack one
-    site: Test Site
-    rack_role: "Test Rack Role"
-    rack_group: "Test Rack Group"
+    location: "{{ test_location['key'] }}"
+    role: "Test Rack Role"
+    rack_group: "Parent Rack Group"
     facility_id: "EQUI10291"
     tenant: "Test Tenant"
     status: Available
@@ -175,17 +183,17 @@
     that:
       - test_six is not changed
       - test_six['rack']['name'] == "Test rack one"
-      - test_six['rack']['site'] == test_site['key']
+      - test_six['rack']['location'] == test_location['key']
       - test_six['rack']['asset_tag'] == "1234"
       - test_six['rack']['comments'] == "Just testing rack module"
       - test_six['rack']['facility_id'] == "EQUI10291"
-      - test_six['rack']['group'] == rack_group['key']
+      - test_six['rack']['rack_group'] == rack_group['key']
       - test_six['rack']['outer_depth'] == 24
       - test_six['rack']['outer_unit'] == "in"
       - test_six['rack']['outer_width'] == 32
       - test_six['rack']['role'] == rack_role['key']
       - test_six['rack']['serial'] == "FXS10001"
-      - test_six['rack']['status'] == "available"
+      - test_six['rack']['status'] == available['key']
       - test_six['rack']['tenant'] == tenant['key']
       - test_six['rack']['tags'][0] == tag_schnozzberry['key']
       - test_six['rack']['type'] == "2-post-frame"
@@ -197,7 +205,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test rack two
-    site: Test Site
+    location: "{{ test_location['key'] }}"
     serial: "FXS10001"
     asset_tag: "1234"
     status: Available

@@ -6,17 +6,14 @@
             "serial": "FXS1001",
             "comments": "Temp device",
             "primary_ip4": {
-                "address": "172.16.180.1/24",
-                "vrf": "Test VRF"
+                "address": "172.16.180.1/24"
             }
         },
         "child": {
-            "address": "172.16.180.1/24",
-            "vrf": "Test VRF"
+            "address": "172.16.180.1/24"
         },
         "expected": {
-            "address": "172.16.180.1/24",
-            "vrf_id": 1
+            "address": "172.16.180.1/24"
         }
     },
     {
@@ -26,55 +23,14 @@
             "serial": "FXS1001",
             "comments": "Temp device",
             "primary_ip4": {
-                "address": "2001::1:1/64",
-                "vrf": "Test VRF"
+                "address": "2001::1:1/64"
             }
         },
         "child": {
-            "address": "2001::1:1/64",
-            "vrf": "Test VRF"
+            "address": "2001::1:1/64"
         },
         "expected": {
-            "address": "2001::1:1/64",
-            "vrf_id": 1
-        }
-    },
-    {
-        "parent": "assigned_object",
-        "module_data": {
-            "address": "10.10.10.1/24",
-            "description": "Test description",
-            "assigned_object": {
-                "device": "test100",
-                "name": "Ethernet1/1"
-            }
-        },
-        "child": {
-            "device": "test100",
-            "name": "Ethernet1/1"
-        },
-        "expected": {
-            "device_id": 1,
-            "name": "Ethernet1/1"
-        }
-    },
-    {
-        "parent": "assigned_object",
-        "module_data": {
-            "address": "10.10.10.1/24",
-            "description": "Test description",
-            "assigned_object": {
-                "virtual_machine": "test100-vm",
-                "name": "Ethernet1/1"
-            }
-        },
-        "child": {
-            "virtual_machine": "test100-vm",
-            "name": "Ethernet1/1"
-        },
-        "expected": {
-            "virtual_machine_id": 1,
-            "name": "Ethernet1/1"
+            "address": "2001::1:1/64"
         }
     },
     {
@@ -118,17 +74,14 @@
         "module_data": {
             "address": "10.10.10.1/24",
             "nat_inside": {
-                "address": "192.168.1.1/24",
-                "vrf": "Test VRF"
+                "address": "192.168.1.1/24"
             }
         },
         "child": {
-            "address": "192.168.1.1/24",
-            "vrf": "Test VRF"
+            "address": "192.168.1.1/24"
         },
         "expected": {
-            "address": "192.168.1.1/24",
-            "vrf_id": 1
+            "address": "192.168.1.1/24"
         }
     },
     {
@@ -138,7 +91,7 @@
             "description": "Test Prefix",
             "vlan": {
                 "name": "Test VLAN",
-                "site": "Test Site",
+                "location": "Test Location",
                 "tenant": "Test Tenant",
                 "vid": 1,
                 "vlan_group": "Test VLAN group"
@@ -146,17 +99,17 @@
         },
         "child": {
             "name": "Test VLAN",
-            "site": "Test Site",
+            "location": "Test Location",
             "tenant": "Test Tenant",
             "vid": 1,
             "vlan_group": "Test VLAN group"
         },
         "expected": {
             "name": "Test VLAN",
-            "site_id": 1,
+            "location": "Test Location",
             "tenant_id": 1,
             "vid": 1,
-            "group": "Test VLAN group"
+            "vlan_group": "Test VLAN group"
         }
     },
     {
@@ -167,17 +120,16 @@
             "vlan_group": {
                 "name": "Test VLAN Group",
                 "slug": "test-vlan-group",
-                "site": "Test Site"
+                "location": "Test Location"
             }
         },
         "child": {
             "name": "Test VLAN Group",
-            "slug": "test-vlan-group",
-            "site": "Test Site"
+            "location": "Test Location"
         },
         "expected": {
-            "slug": "test-vlan-group",
-            "site_id": 1
+            "name": "Test VLAN Group",
+            "location": "Test Location"
         }
     },
     {
@@ -187,18 +139,18 @@
             "description": "Test Prefix",
             "untagged_vlan": {
                 "name": "Test VLAN",
-                "site": "Test Site",
+                "location": "Test Location",
                 "vid": 1
             }
         },
         "child": {
             "name": "Test VLAN",
-            "site": "Test Site",
+            "location": "Test Location",
             "vid": 1
         },
         "expected": {
             "name": "Test VLAN",
-            "site_id": 1,
+            "location": "Test Location",
             "vid": 1
         }
     },
@@ -209,16 +161,18 @@
             "description": "Test Prefix",
             "vrf": {
                 "name": "Test VRF",
+                "rd": "1:1",
                 "tenant": "Test Tenant"
             }
         },
         "child": {
             "name": "Test VRF",
-            "tenant": "Test Tenant"
+            "tenant": "Test Tenant",
+            "rd": "1:1"
         },
         "expected": {
             "name": "Test VRF",
-            "tenant_id": 1
+            "rd": "1:1"
         }
     },
     {
@@ -235,7 +189,7 @@
             "term_side": "A"
         },
         "expected": {
-            "circuit_id": 1,
+            "circuit": "Circuit1",
             "term_side": "A"
         }
     },

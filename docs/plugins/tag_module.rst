@@ -42,7 +42,7 @@ networktocode.nautobot.tag module -- Creates or removes tags from Nautobot
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -210,7 +209,7 @@ Parameters
 
       e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
 
-      Requires \ :literal:`api\_version \>= 1.3`\ 
+      Required if \ :emphasis:`state=present`\  and the tag does not exist yet
 
 
       .. raw:: html
@@ -326,45 +325,6 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tag_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The slugified version of the name or custom slug.
-
-      This is auto-generated following Nautobot rules if not provided
 
 
       .. raw:: html
@@ -576,7 +536,6 @@ Examples
               - dcim.rack
               - dcim.rack reservation
               - dcim.rear port
-              - dcim.site
               - dcim.virtual chassis
               - extras.Git repository
               - extras.job

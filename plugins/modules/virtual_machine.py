@@ -30,19 +30,13 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  site:
-    description:
-      - The name of the site attach to the virtual machine
-    required: false
-    type: raw
-    version_added: "3.0.0"
   cluster:
     description:
       - The name of the cluster attach to the virtual machine
     required: false
     type: raw
     version_added: "3.0.0"
-  virtual_machine_role:
+  role:
     description:
       - The role of the virtual machine
     required: false
@@ -97,7 +91,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  local_context_data:
+  local_config_context_data:
     description:
       - configuration context of the virtual machine
     required: false
@@ -139,7 +133,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Another Test Virtual Machine
         cluster: test cluster
-        site: Test Site
         status: active
         tags:
           - Schnozzberry
@@ -185,9 +178,8 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            site=dict(required=False, type="raw"),
             cluster=dict(required=False, type="raw"),
-            virtual_machine_role=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
             vcpus=dict(required=False, type="int"),
             tenant=dict(required=False, type="raw"),
             platform=dict(required=False, type="raw"),
@@ -198,7 +190,7 @@ def main():
             status=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
-            local_context_data=dict(required=False, type="dict"),
+            local_config_context_data=dict(required=False, type="dict"),
             comments=dict(required=False, type="str"),
         )
     )

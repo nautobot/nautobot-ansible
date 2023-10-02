@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=nexus-parent') }}"
+    nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Nexus Parent\"') }}"
 
 - name: "DEVICE_BAY_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.device_bay_template:

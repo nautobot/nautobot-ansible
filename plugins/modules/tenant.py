@@ -48,12 +48,6 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - URL-friendly unique shorthand
-    required: false
-    type: str
-    version_added: "3.0.0"
 """
 
 EXAMPLES = r"""
@@ -84,7 +78,6 @@ EXAMPLES = r"""
         tenant_group: Very Special Tenants
         description: ABC Incorporated
         comments: '### This tenant is super cool'
-        slug: tenant_abc
         tags:
           - tagA
           - tagB
@@ -123,7 +116,6 @@ def main():
             tenant_group=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
-            slug=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )

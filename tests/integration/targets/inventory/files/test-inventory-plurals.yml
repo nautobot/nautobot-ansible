@@ -18,7 +18,7 @@ max_uri_length: 80
 fetch_all: False
 
 group_by:
-  - sites
+  - locations
   - tenants
   - tenant_group
   - racks
@@ -29,7 +29,6 @@ group_by:
   - device_types
   - manufacturers
   - platforms
-  - region
   - cluster
   - cluster_group
   - cluster_type

@@ -35,13 +35,6 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
   color:
     description:
       - Status color
@@ -75,7 +68,6 @@ EXAMPLES = r"""
           - dcim.cable
           - dcim.powerfeed
           - dcim.rack
-          - dcim.site
           - circuits.circuit
           - virtualization.virtualmachine
           - ipam.prefix
@@ -122,7 +114,6 @@ def main():
             content_types=dict(required=False, type="list", elements="str"),
             color=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            slug=dict(required=False, type="str"),
         )
     )
 

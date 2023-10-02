@@ -16,7 +16,7 @@
     state: present
 
 - set_fact:
-    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=device-type-power-tests') }}"
+    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Device Type Power Tests\"') }}"
 
 - name: "POWER_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.power_port_template:

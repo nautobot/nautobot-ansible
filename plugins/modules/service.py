@@ -54,7 +54,7 @@ options:
     required: true
     type: raw
     version_added: "3.0.0"
-  ipaddresses:
+  ip_addresses:
     description:
       - Specifies which IPaddresses to associate with service.
     required: false
@@ -84,7 +84,7 @@ EXAMPLES = r"""
         ports:
           - 9100
         protocol: TCP
-        ipaddresses:
+        ip_addresses:
           - address: 127.0.0.1
         tags:
           - prometheus
@@ -129,7 +129,7 @@ def main():
             name=dict(required=True, type="str"),
             ports=dict(required=False, type="list", elements="int"),
             protocol=dict(required=True, type="raw"),
-            ipaddresses=dict(required=False, type="raw"),
+            ip_addresses=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),

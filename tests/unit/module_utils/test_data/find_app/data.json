@@ -16,10 +16,6 @@
         "app": "circuits"
     },
     {
-        "endpoint": "device_roles",
-        "app": "dcim"
-    },
-    {
         "endpoint": "device_types",
         "app": "dcim"
     },
@@ -29,6 +25,10 @@
     },
     {
         "endpoint": "interfaces",
+        "app": "dcim"
+    },
+    {
+        "endpoint": "locations",
         "app": "dcim"
     },
     {
@@ -47,21 +47,9 @@
         "endpoint": "rack_groups",
         "app": "dcim"
     },
-    {
-        "endpoint": "rack_roles",
-        "app": "dcim"
-    },
-    {
-        "endpoint": "regions",
-        "app": "dcim"
-    },
-    {
-        "endpoint": "sites",
-        "app": "dcim"
-    },
-    {
-        "endpoint": "aggregates",
-        "app": "ipam"
+        {
+        "endpoint": "roles",
+        "app": "extras"
     },
     {
         "endpoint": "ip_addresses",
@@ -69,10 +57,6 @@
     },
     {
         "endpoint": "prefixes",
-        "app": "ipam"
-    },
-    {
-        "endpoint": "roles",
         "app": "ipam"
     },
     {

@@ -11,6 +11,8 @@
     name: "Test Tag 1"
     description: "Tag 1 test"
     color: "0000ff"
+    content_types:
+      - "dcim.device"
     state: present
   register: test_one
 
@@ -23,7 +25,7 @@
       - test_one['tags']['color'] == "0000ff"
       - test_one['tags']['description'] == "Tag 1 test"
       - test_one['tags']['name'] == "Test Tag 1"
-      - test_one['tags']['slug'] == "test-tag-1"
+      - test_one['tags']['content_types'] == ["dcim.device"]
       - test_one['msg'] == "tags Test Tag 1 created"
 
 - name: "TAG 2: Create duplicate"
@@ -33,6 +35,8 @@
     name: "Test Tag 1"
     description: "Tag 1 test"
     color: "0000ff"
+    content_types:
+      - "dcim.device"
     state: present
   register: test_two
 
@@ -62,6 +66,7 @@
       - test_three['tags']['name'] == "Test Tag 1"
       - test_three['tags']['description'] == "Tag 1 update test"
       - test_three['tags']['color'] == "00ff00"
+      - test_three['tags']['content_types'] == ["dcim.device"]
       - test_three['msg'] == "tags Test Tag 1 updated"
 
 - name: "TAG 4: ASSERT - Delete"
@@ -78,28 +83,4 @@
       - test_four is changed
       - test_four['diff']['after']['state'] == "absent"
       - test_four['tags']['name'] == "Test Tag 1"
-      - test_four['tags']['slug'] == "test-tag-1"
       - test_four['msg'] == "tags Test Tag 1 deleted"
-
-- name: "TAG 5: ASSERT - Necessary info creation"
-  networktocode.nautobot.tag:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "Test Tag 5"
-    slug: "test-tag-five"
-    description: "Tag 5 test"
-    color: "0000ff"
-    state: present
-  register: test_five
-
-- name: "TAG 5: ASSERT - Necessary info creation"
-  assert:
-    that:
-      - test_five is changed
-      - test_five['diff']['before']['state'] == "absent"
-      - test_five['diff']['after']['state'] == "present"
-      - test_five['tags']['color'] == "0000ff"
-      - test_five['tags']['description'] == "Tag 5 test"
-      - test_five['tags']['name'] == "Test Tag 5"
-      - test_five['tags']['slug'] == "test-tag-five"
-      - test_five['msg'] == "tags Test Tag 5 created"

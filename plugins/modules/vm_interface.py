@@ -59,6 +59,13 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  status:
+    description:
+      - The status of the interface.
+      - Required if I(state=present) and does not exist yet
+    required: false
+    type: raw
+    version_added: "3.0.0"
   mode:
     description:
       - The mode of the interface
@@ -110,12 +117,12 @@ EXAMPLES = r"""
         enabled: false
         untagged_vlan:
           name: Wireless
-          site: Test Site
+          location: "{{ test_location['key'] }}"
         tagged_vlans:
           - name: Data
-            site: Test Site
+            location: "{{ test_location['key'] }}"
           - name: VoIP
-            site: Test Site
+            location: "{{ test_location['key'] }}"
         mtu: 1600
         mode: Tagged
         state: present
@@ -154,6 +161,7 @@ def main():
             mtu=dict(required=False, type="int"),
             mac_address=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            status=dict(required=False, type="raw"),
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
@@ -161,7 +169,12 @@ def main():
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_if = [
+        ("state", "present", ["name", "status"]),
+        ("state", "absent", ["name"]),
+    ]
+
+    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
 
     vm_interface = NautobotVirtualizationModule(module, NB_VM_INTERFACES)
     vm_interface.run()

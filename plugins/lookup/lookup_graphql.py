@@ -60,17 +60,17 @@ EXAMPLES = """
     set_fact:
       query_string: |
         query {
-          sites {
+          locations {
             id
             name
-            region {
+            parent {
               name
             }
           }
         }
 
   # Make query to GraphQL Endpoint
-  - name: Obtain list of sites from Nautobot
+  - name: Obtain list of locations from Nautobot
     set_fact:
       query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
@@ -78,13 +78,13 @@ EXAMPLES = """
   - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
     set_fact:
       graph_variables:
-        site_name: DEN
+        location_name: DEN
       query_string: |
-        query ($site_name:String!) {
-            sites (name: $site_name) {
+        query ($location_name:String!) {
+            locations (name: $location_name) {
             id
             name
-            region {
+            parent {
                 name
             }
             }
@@ -195,7 +195,7 @@ class LookupModule(LookupBase):
     LookupModule(LookupBase) is defined by Ansible
     """
 
-    def run(self, query, variables=None, graph_variables=None, **kwargs):
+    def run(self, terms, variables=None, graph_variables=None, **kwargs):
         """Runs Ansible Lookup Plugin for using Nautobot GraphQL endpoint
 
         Raises:
@@ -210,8 +210,8 @@ class LookupModule(LookupBase):
                 PYNAUTOBOT_IMPORT_ERROR,
             )
 
-        # Query comes in as a list, this needs to be moved to string for pynautobot
-        lookup_info = nautobot_lookup_graphql(query=query[0], variables=variables, graph_variables=graph_variables, **kwargs)
+        # Terms comes in as a list, this needs to be moved to string for pynautobot
+        lookup_info = nautobot_lookup_graphql(query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs)
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info

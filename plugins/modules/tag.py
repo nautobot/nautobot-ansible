@@ -28,13 +28,6 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
   color:
     description:
       - Tag color
@@ -51,7 +44,7 @@ options:
     description:
       - Tags content type(s). These match app.endpoint and the endpoint is singular.
       - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
-      - Requires C(api_version >= 1.3)
+      - Required if I(state=present) and the tag does not exist yet
     required: false
     type: list
     elements: str
@@ -91,7 +84,6 @@ EXAMPLES = r"""
           - dcim.rack
           - dcim.rack reservation
           - dcim.rear port
-          - dcim.site
           - dcim.virtual chassis
           - extras.Git repository
           - extras.job
@@ -153,7 +145,6 @@ def main():
             name=dict(required=True, type="str"),
             color=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            slug=dict(required=False, type="str"),
             content_types=dict(required=False, type="list", elements="str"),
         )
     )

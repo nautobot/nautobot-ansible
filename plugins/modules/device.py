@@ -38,7 +38,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  device_role:
+  role:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
@@ -68,11 +68,11 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  site:
+  location:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
-    type: raw
+    type: str
     version_added: "3.0.0"
   rack:
     description:
@@ -146,7 +146,7 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  local_context_data:
+  local_config_context_data:
     description:
       - Arbitrary JSON data to define the devices configuration variables.
     required: false
@@ -167,10 +167,12 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Device
         device_type: C9410R
-        device_role: Core Switch
-        site: Main
+        role: Core Switch
+        location: "{{ my_location['key'] }}"
         status: active
         state: present
+      vars:
+        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Create device within Nautobot with empty string name to generate UUID
       networktocode.nautobot.device:
@@ -178,10 +180,12 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: ""
         device_type: C9410R
-        device_role: Core Switch
-        site: Main
+        role: Core Switch
+        location: "{{ my_location['key'] }}"
         status: active
         state: present
+      vars:
+        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Delete device within nautobot
       networktocode.nautobot.device:
@@ -196,14 +200,16 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Another Test Device
         device_type: C9410R
-        device_role: Core Switch
-        site: Main
+        role: Core Switch
+        location: "{{ my_location['key'] }}"
         status: active
-        local_context_data:
+        local_config_context_data:
           bgp: "65000"
         tags:
           - Schnozzberry
         state: present
+      vars:
+        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Update the rack and position of an existing device
       networktocode.nautobot.device:
@@ -246,12 +252,12 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             device_type=dict(required=False, type="raw"),
-            device_role=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             platform=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="str"),
             rack=dict(required=False, type="raw"),
             position=dict(required=False, type="int"),
             face=dict(
@@ -268,7 +274,7 @@ def main():
             vc_priority=dict(required=False, type="int"),
             comments=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
-            local_context_data=dict(required=False, type="dict"),
+            local_config_context_data=dict(required=False, type="dict"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

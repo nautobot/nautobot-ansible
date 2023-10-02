@@ -42,7 +42,7 @@ networktocode.nautobot.query_graphql module -- Queries and returns elements from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -95,7 +95,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -170,6 +169,10 @@ Parameters
 
       Dictionary of keys/values to pass into the GraphQL query, see (\ https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html\ ) for more info
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
 
       .. raw:: html
 
@@ -384,17 +387,17 @@ Examples
         set_fact:
           query_string: |
             query {
-              sites {
+              locations {
                 id
                 name
-                region {
+                parent {
                   name
                 }
               }
             }
 
       # Make query to GraphQL Endpoint
-      - name: Obtain list of sites from Nautobot
+      - name: Obtain list of locations from Nautobot
         networktocode.nautobot.query_graphql:
           url: http://nautobot.local
           token: thisIsMyToken
@@ -405,20 +408,20 @@ Examples
       - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
         set_fact:
           graph_variables:
-            site_name: AMS01
+            $location_name: AMS01
           query_string: |
-            query ($site_name: String!) {
-              sites (slug: $site_name) {
+            query ($location_name: String!) {
+              locations (name: $location_name) {
                 id
                 name
-                region {
+                parent {
                     name
                 }
               }
             }
 
       # Get Response with variables and set to root keys
-      - name: Obtain list of devices at site in variables from Nautobot
+      - name: Obtain list of devices at location in variables from Nautobot
         networktocode.nautobot.query_graphql:
           url: http://nautobot.local
           token: thisIsMyToken

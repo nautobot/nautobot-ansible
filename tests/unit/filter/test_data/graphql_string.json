@@ -21,7 +21,7 @@
         "query": {
             "serial": null,
             "asset_tag": null,
-            "site": {
+            "location": {
                 "name": null,
                 "contact_name": null,
                 "description": null,
@@ -33,13 +33,13 @@
                 }
             }
         },
-        "expected": "serial\nasset_tag\nsite {\n  name\n  contact_name\n  description\n  region {\n    name\n    parent {\n      name\n    }\n  }\n}"
+        "expected": "serial\nasset_tag\nlocation {\n  name\n  contact_name\n  description\n  region {\n    name\n    parent {\n      name\n    }\n  }\n}"
     },
     {
         "query": {
             "serial": null,
             "asset_tag": null,
-            "site": {
+            "location": {
                 "filters": {
                     "role": "core",
                     "tenant": "den"
@@ -58,7 +58,7 @@
                 }
             }
         },
-        "expected": "serial\nasset_tag\nsite (role: \"core\", tenant: \"den\") {\n  name\n  contact_name\n  description\n  region ($tenant: den) {\n    name\n    parent {\n      name\n    }\n  }\n}"
+        "expected": "serial\nasset_tag\nlocation (role: \"core\", tenant: \"den\") {\n  name\n  contact_name\n  description\n  region ($tenant: den) {\n    name\n    parent {\n      name\n    }\n  }\n}"
     },
     {
         "query": {
@@ -67,11 +67,11 @@
                 "platform": "napalm_driver",
                 "status": "name",
                 "primary_ip4": "address",
-                "device_role": "name",
-                "site": "name"
+                "role": "name",
+                "location": "name"
             }
         },
-        "expected": "device {\n  name\n  platform {\n    napalm_driver\n  }\n  status {\n    name\n  }\n  primary_ip4 {\n    address\n  }\n  device_role {\n    name\n  }\n  site {\n    name\n  }\n}"
+        "expected": "device {\n  name\n  platform {\n    napalm_driver\n  }\n  status {\n    name\n  }\n  primary_ip4 {\n    address\n  }\n  role {\n    name\n  }\n  location {\n    name\n  }\n}"
     },
     {
         "query": {

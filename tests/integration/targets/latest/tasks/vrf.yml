@@ -5,14 +5,17 @@
 ##
 ##
 - set_fact:
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    ns_global: "{{ lookup('networktocode.nautobot.lookup', 'namespaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Global') }}"
+    ns_private: "{{ lookup('networktocode.nautobot.lookup', 'namespaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Private') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
 
 - name: "VRF 1: Necessary info creation"
   networktocode.nautobot.vrf:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test VRF One
+    rd: "65001:1"
     state: present
   register: test_one
 
@@ -23,6 +26,8 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['vrf']['name'] == "Test VRF One"
+      - test_one['vrf']['rd'] == "65001:1"
+      - test_one['vrf']['namespace'] == ns_global['key']
       - test_one['msg'] == "vrf Test VRF One created"
 
 - name: "VRF 2: Create duplicate"
@@ -30,6 +35,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test VRF One
+    rd: "65001:1"
     state: present
   register: test_two
 
@@ -38,34 +44,37 @@
     that:
       - not test_two['changed']
       - test_two['vrf']['name'] == "Test VRF One"
+      - test_two['vrf']['rd'] == "65001:1"
+      - test_two['vrf']['namespace'] == ns_global['key']
       - test_two['msg'] == "vrf Test VRF One already exists"
 
-- name: "VRF 3: Create VRF with same name, but different tenant"
+- name: "VRF 3: Create VRF with same name, but different namespace"
   networktocode.nautobot.vrf:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test VRF One
-    tenant: Test Tenant
+    rd: "65001:1"
+    namespace: Private
     state: present
   register: test_three
 
-- name: "VRF 3: ASSERT - Create VRF with same name, but different site"
+- name: "VRF 3: ASSERT - Create VRF with same name, but different namespace"
   assert:
     that:
       - test_three is changed
       - test_three['diff']['before']['state'] == "absent"
       - test_three['diff']['after']['state'] == "present"
       - test_three['vrf']['name'] == "Test VRF One"
-      - test_three['vrf']['tenant'] == tenant['key']
+      - test_three['vrf']['namespace'] == ns_private['key']
+      - test_three['vrf']['rd'] == "65001:1"
       - test_three['msg'] == "vrf Test VRF One created"
 
-- name: "VRF 4: ASSERT - Update"
+- name: "VRF 4: Update VRF Global"
   networktocode.nautobot.vrf:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test VRF One"
     rd: "65001:1"
-    enforce_unique: False
     tenant: "Test Tenant"
     description: Updated description
     import_targets:
@@ -77,58 +86,61 @@
     state: present
   register: test_four
 
-- name: "VRF 4: ASSERT - Updated"
+- name: "VRF 4: ASSERT - Update VRF Global"
   assert:
     that:
       - test_four is changed
-      - test_four['diff']['after']['rd'] == "65001:1"
-      - test_four['diff']['after']['enforce_unique'] == false
       - test_four['diff']['after']['description'] == "Updated description"
       - test_four['diff']['after']['tags'][0] == tag_schnozzberry['key']
+      - test_four['diff']['after']['tenant'] == tenant['key']
       - test_four['diff']['after']['import_targets'] | length == 1
       - test_four['diff']['after']['export_targets'] | length == 1
       - test_four['vrf']['name'] == "Test VRF One"
+      - test_four['vrf']['namespace'] == ns_global['key']
       - test_four['vrf']['tenant'] == tenant['key']
       - test_four['vrf']['rd'] == "65001:1"
-      - test_four['vrf']['enforce_unique'] == false
       - test_four['vrf']['description'] == "Updated description"
       - test_four['vrf']['tags'][0] == tag_schnozzberry['key']
       - test_four['vrf']['import_targets'] | length == 1
       - test_four['vrf']['export_targets'] | length == 1
       - test_four['msg'] == "vrf Test VRF One updated"
 
-- name: "VRF 5: ASSERT - Delete more than one result"
+- name: "VRF 5: Delete VRF Global"
   networktocode.nautobot.vrf:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test VRF One"
+    rd: "65001:1"
     state: absent
-  ignore_errors: yes
   register: test_five
 
-- name: "VRF 5: ASSERT - Delete more than one result"
+- name: "VRF 5: ASSERT - Delete VRF Global"
   assert:
     that:
-      - test_five is failed
-      - test_five['msg'] == "More than one result returned for Test VRF One"
+      - test_five is changed
+      - test_five['vrf']['name'] == "Test VRF One"
+      - test_five['vrf']['tenant'] == tenant['key']
+      - test_five['vrf']['namespace'] == ns_global['key']
+      - test_five['vrf']['rd'] == "65001:1"
+      - test_five['vrf']['description'] == "Updated description"
+      - test_five['vrf']['tags'][0] == tag_schnozzberry['key']
+      - test_five['msg'] == "vrf Test VRF One deleted"
 
-- name: "VRF 6: ASSERT - Delete"
+- name: "VRF 6: ASSERT - Delete VRF Private"
   networktocode.nautobot.vrf:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test VRF One"
-    tenant: Test Tenant
+    rd: "65001:1"
+    namespace: Private
     state: absent
   register: test_six
 
-- name: "VRF 6: ASSERT - Delete"
+- name: "VRF 6: ASSERT - Delete VRF Private"
   assert:
     that:
       - test_six is changed
       - test_six['vrf']['name'] == "Test VRF One"
-      - test_six['vrf']['tenant'] == tenant['key']
+      - test_six['vrf']['namespace'] == ns_private['key']
       - test_six['vrf']['rd'] == "65001:1"
-      - test_six['vrf']['enforce_unique'] == false
-      - test_six['vrf']['description'] == "Updated description"
-      - test_six['vrf']['tags'][0] == tag_schnozzberry['key']
       - test_six['msg'] == "vrf Test VRF One deleted"
