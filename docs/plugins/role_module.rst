@@ -245,7 +245,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the device role
+      The description of the role
 
 
       .. raw:: html
@@ -282,7 +282,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the device role
+      The name of the role
 
 
       .. raw:: html
@@ -545,21 +545,21 @@ Examples
       gather_facts: False
 
       tasks:
-        - name: Create device role within Nautobot with only required information
+        - name: Create role within Nautobot with only required information
           networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test device role
+            name: Test role
             color: FFFFFF
             content_types:
               - "dcim.device"
             state: present
 
-        - name: Delete device role within nautobot
+        - name: Delete role within nautobot
           networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test device role
+            name: Test role
             state: absent
 
 
