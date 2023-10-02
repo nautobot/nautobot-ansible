@@ -2,7 +2,7 @@
 #
 # ADD (CHECK MODE)
 - set_fact:
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Check Mode - Add all fields except description"
   networktocode.nautobot.route_target:
@@ -11,8 +11,8 @@
     name: "65000:65001"
     tenant: "Test Tenant"
     tags:
-      - first
-      - second
+      - First
+      - Second
   check_mode: yes
   register: test_results
 
@@ -35,8 +35,8 @@
     name: "65000:65001"
     tenant: "Test Tenant"
     tags:
-      - first
-      - second
+      - First
+      - Second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: (ASSERT) Add all fields except description"
@@ -58,8 +58,8 @@
     name: "65000:65001"
     tenant: "Test Tenant"
     tags:
-      - first
-      - second
+      - First
+      - Second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
@@ -81,8 +81,8 @@
     description: "NEW DESCRIPTION"
     tenant: "Test Tenant"
     tags:
-      - first
-      - second
+      - First
+      - Second
   check_mode: yes
   register: test_results
 
@@ -107,8 +107,8 @@
     tenant: "Test Tenant"
     description: "NEW DESCRIPTION"
     tags:
-      - first
-      - second
+      - First
+      - Second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: (ASSERT) Update description"
@@ -132,8 +132,8 @@
     tenant: "Test Tenant"
     description: "NEW DESCRIPTION"
     tags:
-      - first
-      - second
+      - First
+      - Second
   register: test_results
 
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"

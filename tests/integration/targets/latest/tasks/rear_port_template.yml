@@ -8,8 +8,8 @@
 ##
 ##
 - set_fact:
-    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
-    arista_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=arista-test') }}"
+    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+    arista_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Arista Test\"') }}"
 
 - name: "REAR_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.rear_port_template:

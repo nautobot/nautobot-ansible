@@ -13,6 +13,7 @@ from hypothesis import given, settings, HealthCheck, strategies as st
 from functools import partial
 from unittest.mock import patch, MagicMock, Mock
 from ansible.module_utils.basic import AnsibleModule
+import pynautobot
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotModule
@@ -44,14 +45,14 @@ def fixture_arg_spec():
         "token": "0123456789",
         "data": {
             "name": "Test Device1",
-            "device_role": "Core Switch",
+            "role": "Core Switch",
             "device_type": "Cisco Switch",
             "manufacturer": "Cisco",
-            "site": "Test Site",
+            "location": "Test Location",
             "asset_tag": "1001",
         },
         "state": "present",
-        "api_version": "1.3",
+        "api_version": "2.0",
         "validate_certs": False,
     }
 
@@ -60,10 +61,10 @@ def fixture_arg_spec():
 def normalized_data():
     return {
         "name": "Test Device1",
-        "device_role": "core-switch",
+        "role": "core-switch",
         "device_type": "cisco-switch",
         "manufacturer": "cisco",
-        "site": "test-site",
+        "location": "test-location",
         "asset_tag": "1001",
     }
 
@@ -81,10 +82,10 @@ def mock_ansible_module(fixture_arg_spec):
 def find_ids_return():
     return {
         "name": "Test Device1",
-        "device_role": 1,
+        "role": 1,
         "device_type": 1,
         "manufacturer": 1,
-        "site": 1,
+        "location": 1,
         "asset_tag": "1001",
     }
 
@@ -159,13 +160,6 @@ def test_remove_arg_spec_defaults(mock_module, data, expected):
     new_data = mock_module._remove_arg_spec_default(data)
 
     assert new_data == expected
-
-
-@pytest.mark.parametrize("non_slug, expected", load_relative_test_data("slug"))
-def test_to_slug_returns_valid_slug(mock_module, non_slug, expected):
-    got_slug = mock_module._to_slug(non_slug)
-
-    assert got_slug == expected
 
 
 @pytest.mark.parametrize("endpoint, app", load_relative_test_data("find_app"))
@@ -330,3 +324,11 @@ def test_get_query_param_id_return_uuid(mock_module, value):
 def test_get_query_param_id_return_int(mock_module, value):
     data = mock_module._get_query_param_id("test", {"test": value})
     assert data == value
+
+
+@pytest.mark.parametrize("api_version, obj_type", [("1.6", type(None)), ("2.0", pynautobot.core.api.Api)])
+def test_invalid_api_version_error_handling(mock_ansible_module, monkeypatch, api_version, obj_type):
+    """Test if pynautobot raises ValueError when Nautobot version is lower than 2.0 and returns None from _connect_api."""
+    monkeypatch.setattr(pynautobot.api, "version", api_version)
+    module = NautobotModule(mock_ansible_module, "devices")
+    assert isinstance(module.nb, obj_type)

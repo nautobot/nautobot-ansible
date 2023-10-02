@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -136,6 +135,43 @@ Parameters
         <div class="ansible-option-cell">
 
       API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.power_panel_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The location the power panel is located in
 
 
       .. raw:: html
@@ -251,43 +287,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The rack group the power panel is assigned to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_panel_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The site the power panel is located in
 
 
       .. raw:: html
@@ -477,7 +476,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            site: Test Site
+            location: Test location
             state: present
 
         - name: Update power panel with other fields
@@ -485,7 +484,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            site: Test Site
+            location: Test location
             rack_group: Test Rack Group
             state: present
 
@@ -494,7 +493,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            site: Test Site
+            location: Test location
             state: absent
 
 

@@ -57,7 +57,6 @@ Let's take a look at some of the code within ``dcim.py``.
   from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
       NautobotModule,
       ENDPOINT_NAME_MAPPING,
-      SLUG_REQUIRED,
   )
   
   NB_CABLES = "cables"
@@ -65,7 +64,7 @@ Let's take a look at some of the code within ``dcim.py``.
   NB_CONSOLE_PORT_TEMPLATES = "console_port_templates"
   ...
 
-The top of the code is importing the ``NautobotModule`` class, ``ENDPOINT_NAME_MAPPING``, and ``SLUG_REQUIRED`` from ``utils.py``. 
+The top of the code is importing the ``NautobotModule`` class, ``ENDPOINT_NAME_MAPPING``, and from ``utils.py``.
 
 After the imports, we define constants to define the endpoints that are supported as well as these being passed into the initialization of ``NautobotModule``. We'll see these within the actual modules themselves when we take a look later.
 
@@ -159,12 +158,10 @@ Let's take a look at the next block of code.
       # Used for msg output
       if data.get("name"):
           name = data["name"]
-      elif data.get("model") and not data.get("slug"):
+      elif data.get("model"):
           name = data["model"]
       elif data.get("master"):
           name = self.module.params["data"]["master"]
-      elif data.get("slug"):
-          name = data["slug"]
       ...
 
 We then assign the data instance to ``data`` that will be used throughout the end of the ``run`` method. Next wee need to assign the name variable for future use when attempting
@@ -176,16 +173,11 @@ Now we move onto some more data manipulation to prepare the payload for Nautobot
 
   def run(self):
       ...
-      if self.endpoint in SLUG_REQUIRED:
-          if not data.get("slug"):
-              data["slug"] = self._to_slug(name)
-
       # Make color params lowercase
       if data.get("color"):
           data["color"] = data["color"].lower()
 
-We're using the ``SLUG_REQUIRED`` constant that we imported above from ``utils`` to determine if the endpoint requires a slug when creating it. If the endpoint requires a **slug** and the user has not provided
-a slug then we set it for the user by using the ``_to_slug`` method on ``NautobotModule`` that uses the same logic Nautobot does. We also make sure that **color** is lowercase if provided.
+We make sure that **color** is lowercase if provided.
 
 Here is some more endpoint specific logic that we aren't going to cover, but provides a good example of what some modules may implement when the normal flow does not work for the endpoint.
 

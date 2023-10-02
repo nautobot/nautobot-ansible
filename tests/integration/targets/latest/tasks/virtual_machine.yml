@@ -6,9 +6,10 @@
 ##
 - set_fact:
     test_cluster: '{{ lookup(''networktocode.nautobot.lookup'', ''clusters'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Cluster"'') }}'
-    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    role: "{{ lookup('networktocode.nautobot.lookup', 'device-roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vm-role') }}"
+    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
+    role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VM Role\"') }}"
+    planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
 
 - name: "VIRTUAL_MACHINE 1: Necessary info creation"
   networktocode.nautobot.virtual_machine:
@@ -57,7 +58,7 @@
     vcpus: 8
     memory: 8
     status: "Planned"
-    virtual_machine_role: "Test VM Role"
+    role: "Test VM Role"
     tags:
       - "Schnozzberry"
     state: present
@@ -69,14 +70,14 @@
       - test_three is changed
       - test_three['diff']['after']['vcpus'] == 8
       - test_three['diff']['after']['memory'] == 8
-      - test_three['diff']['after']['status'] == "planned"
+      - test_three['diff']['after']['status'] == planned['key']
       - test_three['diff']['after']['role'] == role['key']
       - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_three['virtual_machine']['name'] == "Test VM One"
       - test_three['virtual_machine']['cluster'] == test_cluster['key']
       - test_three['virtual_machine']['vcpus'] == 8
       - test_three['virtual_machine']['memory'] == 8
-      - test_three['virtual_machine']['status'] == "planned"
+      - test_three['virtual_machine']['status'] == planned['key']
       - test_three['virtual_machine']['role'] == role['key']
       - test_three['virtual_machine']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "virtual_machine Test VM One updated"
@@ -97,7 +98,7 @@
       - test_four['virtual_machine']['cluster'] == test_cluster['key']
       - test_four['virtual_machine']['vcpus'] == 8
       - test_four['virtual_machine']['memory'] == 8
-      - test_four['virtual_machine']['status'] == "planned"
+      - test_four['virtual_machine']['status'] == planned['key']
       - test_four['virtual_machine']['role'] == role['key']
       - test_four['virtual_machine']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "virtual_machine Test VM One deleted"

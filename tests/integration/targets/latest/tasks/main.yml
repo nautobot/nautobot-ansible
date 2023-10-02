@@ -35,6 +35,15 @@
   tags:
     - ip_address
 
+- name: "PYNAUTOBOT_IP_ADDRESS_TO_INTERFACE TESTS"
+  include_tasks:
+    file: "ip_address_to_interface.yml"
+    apply:
+      tags:
+        - ip_address_to_interface
+  tags:
+    - ip_address_to_interface
+
 - name: "PYNAUTOBOT_PREFIX TESTS"
   include_tasks:
     file: "prefix.yml"
@@ -43,15 +52,6 @@
         - prefix
   tags:
     - prefix
-
-- name: "PYNAUTOBOT_SITE TESTS"
-  include_tasks:
-    file: "site.yml"
-    apply:
-      tags:
-        - site
-  tags:
-    - site
 
 - name: "PYNAUTOBOT_LOCATION TESTS"
   include_tasks:
@@ -98,15 +98,6 @@
   tags:
     - rack
 
-- name: "PYNAUTOBOT_RACK_ROLE TESTS"
-  include_tasks:
-    file: "rack_role.yml"
-    apply:
-      tags:
-        - rack_role
-  tags:
-    - rack_role
-
 - name: "PYNAUTOBOT_RACK_GROUP TESTS"
   include_tasks:
     file: "rack_group.yml"
@@ -143,23 +134,14 @@
   tags:
     - device_type
 
-- name: "PYNAUTOBOT_DEVICE_ROLE TESTS"
+- name: "PYNAUTOBOT ROLE TESTS"
   include_tasks:
-    file: "device_role.yml"
+    file: "role.yml"
     apply:
       tags:
-        - device_role
+        - role
   tags:
-    - device_role
-
-- name: "PYNAUTOBOT_IPAM_ROLE TESTS"
-  include_tasks:
-    file: "ipam_role.yml"
-    apply:
-      tags:
-        - ipam_role
-  tags:
-    - ipam_role
+    - role
 
 - name: "PYNAUTOBOT_VLAN_GROUP TESTS"
   include_tasks:
@@ -196,24 +178,6 @@
         - rir
   tags:
     - rir
-
-- name: "PYNAUTOBOT_AGGREGATE TESTS"
-  include_tasks:
-    file: "aggregate.yml"
-    apply:
-      tags:
-        - aggregate
-  tags:
-    - aggregate
-
-- name: "PYNAUTOBOT_REGION TESTS"
-  include_tasks:
-    file: "region.yml"
-    apply:
-      tags:
-        - region
-  tags:
-    - region
 
 - name: "PYNAUTOBOT_DEVICE_BAY TESTS"
   include_tasks:

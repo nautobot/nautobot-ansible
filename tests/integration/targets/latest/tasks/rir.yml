@@ -19,7 +19,6 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['rir']['name'] == "Test RIR One"
-      - test_one['rir']['slug'] == "test-rir-one"
       - test_one['msg'] == "rir Test RIR One created"
 
 - name: "RIR 2: Create duplicate"
@@ -35,7 +34,6 @@
     that:
       - not test_two['changed']
       - test_two['rir']['name'] == "Test RIR One"
-      - test_two['rir']['slug'] == "test-rir-one"
       - test_two['msg'] == "rir Test RIR One already exists"
 
 - name: "RIR 3: ASSERT - Update"
@@ -53,7 +51,6 @@
       - test_three is changed
       - test_three['diff']['after']['is_private'] == true
       - test_three['rir']['name'] == "Test RIR One"
-      - test_three['rir']['slug'] == "test-rir-one"
       - test_three['rir']['is_private'] == true
       - test_three['msg'] == "rir Test RIR One updated"
 
@@ -70,6 +67,5 @@
     that:
       - test_four is changed
       - test_four['rir']['name'] == "Test RIR One"
-      - test_four['rir']['slug'] == "test-rir-one"
       - test_four['rir']['is_private'] == true
       - test_four['msg'] == "rir Test RIR One deleted"

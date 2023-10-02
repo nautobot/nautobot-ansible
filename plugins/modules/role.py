@@ -9,10 +9,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: device_role
-short_description: Create, update or delete devices roles within Nautobot
+module: role
+short_description: Create, update or delete roles within Nautobot
 description:
-  - Creates, updates or removes devices roles from Nautobot
+  - Creates, updates or removes roles from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -40,18 +40,17 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  slug:
+  content_types:
     description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
-  vm_role:
+      - Model names which the role can be related to.
+    type: list
+    elements: str
+    version_added: "5.0.0"
+  weight:
     description:
-      - Whether the role is a VM role
-    type: bool
-    version_added: "3.0.0"
+      - Weight assigned to the role.
+    type: int
+    version_added: "5.0.0"
 """
 
 EXAMPLES = r"""
@@ -62,23 +61,25 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create device role within Nautobot with only required information
-      networktocode.nautobot.device_role:
+      networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test device role
         color: FFFFFF
+        content_types:
+          - "dcim.device"
         state: present
 
     - name: Delete device role within nautobot
-      networktocode.nautobot.device_role:
+      networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rack role
+        name: Test device role
         state: absent
 """
 
 RETURN = r"""
-device_role:
+role:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -90,7 +91,7 @@ msg:
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
-    NB_DEVICE_ROLES,
+    NB_ROLES,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -106,15 +107,20 @@ def main():
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
-            slug=dict(required=False, type="str"),
-            vm_role=dict(required=False, type="bool"),
+            content_types=dict(required=False, type="list", elements="str"),
+            weight=dict(required=False, type="int"),
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_if = [
+        ("state", "present", ["name", "content_types"], True),
+        ("state", "absent", ["name"]),
+    ]
 
-    device_role = NautobotDcimModule(module, NB_DEVICE_ROLES)
-    device_role.run()
+    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
+
+    role = NautobotDcimModule(module, NB_ROLES)
+    role.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

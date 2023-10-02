@@ -9,27 +9,25 @@
     "primary_ip4": {
         "host": "10.10.10.10"
     },
-    "device_role": {
+    "role": {
         "name": "edge",
         "color_category": {
             "primary": "red"
         }
     },
-    "site": {
+    "location": {
         "name": "ATL01"
     },
     "tenant": {
-        "slug": "mytenant",
+        "name": "My Tenant",
         "type": "local"
     },
     "tags": [
         {
-            "name": "MyTag",
-            "slug": "mytag"
+            "name": "MyTag"
         },
         {
-            "name": "MyTag2",
-            "slug": "mytag2"
+            "name": "MyTag2"
         }
     ]
 }

@@ -9,7 +9,6 @@ __metaclass__ = type
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotModule,
     ENDPOINT_NAME_MAPPING,
-    SLUG_REQUIRED,
 )
 
 
@@ -21,7 +20,7 @@ NB_CONSOLE_SERVER_PORT_TEMPLATES = "console_server_port_templates"
 NB_DEVICE_BAYS = "device_bays"
 NB_DEVICE_BAY_TEMPLATES = "device_bay_templates"
 NB_DEVICES = "devices"
-NB_DEVICE_ROLES = "device_roles"
+NB_ROLES = "roles"
 NB_DEVICE_TYPES = "device_types"
 NB_FRONT_PORTS = "front_ports"
 NB_FRONT_PORT_TEMPLATES = "front_port_templates"
@@ -39,12 +38,9 @@ NB_POWER_PANELS = "power_panels"
 NB_POWER_PORTS = "power_ports"
 NB_POWER_PORT_TEMPLATES = "power_port_templates"
 NB_RACKS = "racks"
-NB_RACK_ROLES = "rack_roles"
 NB_RACK_GROUPS = "rack_groups"
 NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
-NB_REGIONS = "regions"
-NB_SITES = "sites"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
@@ -62,7 +58,6 @@ class NautobotDcimModule(NautobotModule):
         - device_bays
         - device_bay_templates
         - devices
-        - device_roles
         - device_types
         - front_ports
         - front_port_templates
@@ -77,13 +72,10 @@ class NautobotDcimModule(NautobotModule):
         - power_panels
         - power_ports
         - power_port_templates
-        - sites
         - racks
-        - rack_roles
         - rack_groups
         - rear_ports
         - rear_port_templates
-        - regions
         - virtual_chassis
         """
         # Used to dynamically set key when returning results
@@ -98,20 +90,24 @@ class NautobotDcimModule(NautobotModule):
 
         data = self.data
 
+        # # Include config context for device endpoint
+        # if endpoint_name == "device":
+        #     nb_endpoint.url = f"{nb_endpoint.url}/?&include=config_context_data"
+
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("model") and not data.get("slug"):
+        elif data.get("model"):
             name = data["model"]
         elif data.get("master"):
             name = self.module.params["data"]["master"]
-        elif data.get("slug"):
-            name = data["slug"]
+        elif data.get("id"):
+            name = data["id"]
         elif endpoint_name == "cable":
             if self.module.params["termination_a"].get("name"):
                 termination_a_name = self.module.params["termination_a"]["name"]
-            elif self.module.params["termination_a"].get("slug"):
-                termination_a_name = self.module.params["termination_a"]["slug"]
+            elif self.module.params["termination_a"].get("display"):
+                termination_a_name = self.module.params["termination_a"]["display"]
             elif self.module.params["termination_a"].get("circuit"):
                 termination_a_name = self.module.params["termination_a"]["circuit"]
             else:
@@ -119,8 +115,8 @@ class NautobotDcimModule(NautobotModule):
 
             if self.module.params["termination_b"].get("name"):
                 termination_b_name = self.module.params["termination_b"]["name"]
-            elif self.module.params["termination_b"].get("slug"):
-                termination_b_name = self.module.params["termination_b"]["slug"]
+            elif self.module.params["termination_b"].get("display"):
+                termination_b_name = self.module.params["termination_b"]["display"]
             elif self.module.params["termination_a"].get("circuit"):
                 termination_a_name = self.module.params["termination_b"]["circuit"]
             else:
@@ -133,23 +129,17 @@ class NautobotDcimModule(NautobotModule):
                 termination_b_name,
             )
 
-        if self.endpoint in SLUG_REQUIRED:
-            if not data.get("slug"):
-                data["slug"] = self._to_slug(name)
-
         # Make color params lowercase
         if data.get("color"):
             data["color"] = data["color"].lower()
 
         if self.endpoint == "cables":
-            cables = [
-                cable
-                for cable in nb_endpoint.all()
-                if cable.termination_a_type == data["termination_a_type"]
-                and cable.termination_a_id == data["termination_a_id"]
-                and cable.termination_b_type == data["termination_b_type"]
-                and cable.termination_b_id == data["termination_b_id"]
-            ]
+            cables = nb_endpoint.filter(
+                termination_a_type=data["termination_a_type"],
+                termination_a_id=data["termination_a_id"],
+                termination_b_type=data["termination_b_type"],
+                termination_b_id=data["termination_b_id"],
+            )
             if len(cables) == 0:
                 self.nb_object = None
             elif len(cables) == 1:

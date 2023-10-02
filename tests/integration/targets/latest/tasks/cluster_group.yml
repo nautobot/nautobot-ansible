@@ -19,7 +19,6 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['cluster_group']['name'] == "Test Cluster Group One"
-      - test_one['cluster_group']['slug'] == "test-cluster-group-one"
       - test_one['msg'] == "cluster_group Test Cluster Group One created"
 
 - name: "CLUSTER_GROUP 2: Create duplicate"
@@ -35,29 +34,27 @@
     that:
       - not test_two['changed']
       - test_two['cluster_group']['name'] == "Test Cluster Group One"
-      - test_two['cluster_group']['slug'] == "test-cluster-group-one"
       - test_two['msg'] == "cluster_group Test Cluster Group One already exists"
 
-- name: "CLUSTER_GROUP 3: User specified slug"
+- name: "CLUSTER_GROUP 3: Update"
   networktocode.nautobot.cluster_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: "Test Cluster Group Two"
-    slug: "test-cluster-group-2"
+    name: "Test Cluster Group One"
+    description: "Test Description"
     state: present
   register: test_three
 
-- name: "CLUSTER_GROUP 3: ASSERT - User specified slug"
+- name: "CLUSTER_GROUP 3: ASSERT - Update"
   assert:
     that:
-      - test_three is changed
-      - test_three['diff']['before']['state'] == "absent"
-      - test_three['diff']['after']['state'] == "present"
-      - test_three['cluster_group']['name'] == "Test Cluster Group Two"
-      - test_three['cluster_group']['slug'] == "test-cluster-group-2"
-      - test_three['msg'] == "cluster_group Test Cluster Group Two created"
+      - test_three['changed']
+      - test_three['diff']['after']['description'] == "Test Description"
+      - test_three['cluster_group']['name'] == "Test Cluster Group One"
+      - test_three['cluster_group']['description'] == "Test Description"
+      - test_three['msg'] == "cluster_group Test Cluster Group One updated"
 
-- name: "CLUSTER_GROUP 4: ASSERT - Delete"
+- name: "CLUSTER_GROUP 4: Delete"
   networktocode.nautobot.cluster_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -70,22 +67,5 @@
     that:
       - test_four is changed
       - test_four['cluster_group']['name'] == "Test Cluster Group One"
-      - test_four['cluster_group']['slug'] == "test-cluster-group-one"
+      - test_four['cluster_group']['description'] == "Test Description"
       - test_four['msg'] == "cluster_group Test Cluster Group One deleted"
-
-- name: "CLUSTER_GROUP 5: ASSERT - Delete"
-  networktocode.nautobot.cluster_group:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "Test Cluster Group Two"
-    slug: "test-cluster-group-2"
-    state: absent
-  register: test_five
-
-- name: "CLUSTER_GROUP 5: ASSERT - Delete"
-  assert:
-    that:
-      - test_five is changed
-      - test_five['cluster_group']['name'] == "Test Cluster Group Two"
-      - test_five['cluster_group']['slug'] == "test-cluster-group-2"
-      - test_five['msg'] == "cluster_group Test Cluster Group Two deleted"

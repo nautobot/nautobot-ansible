@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -252,7 +251,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Plugin object identifier(s) like name, slug, etc.
+      Plugin object identifier(s) like name, model, etc.
 
 
       .. raw:: html

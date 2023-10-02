@@ -6,8 +6,9 @@
 ##
 - set_fact:
     vm100: "{{ lookup('networktocode.nautobot.lookup', 'virtual-machines', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100-vm') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
     wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
@@ -15,6 +16,7 @@
     token: "{{ nautobot_token }}"
     virtual_machine: "test100-vm"
     name: "Eth10"
+    status: "Active"
     state: present
   register: test_one
 
@@ -34,6 +36,7 @@
     token: "{{ nautobot_token }}"
     virtual_machine: "test100-vm"
     name: "Eth10"
+    status: "Active"
     state: present
   register: test_two
 
@@ -51,6 +54,7 @@
     token: "{{ nautobot_token }}"
     virtual_machine: "test100-vm"
     name: "Eth10"
+    status: "Active"
     enabled: false
     mtu: 9000
     mac_address: "00:00:00:AA:AA:01"
@@ -58,12 +62,12 @@
     mode: Tagged
     untagged_vlan:
       name: Wireless
-      site: Test Site
+      location: "{{ test_location['key'] }}"
     tagged_vlans:
       - name: Data
-        site: Test Site
+        location: "{{ test_location['key'] }}"
       - name: VoIP
-        site: Test Site
+        location: "{{ test_location['key'] }}"
     tags:
       - "Schnozzberry"
     state: present
@@ -116,6 +120,7 @@
     token: "{{ nautobot_token }}"
     virtual_machine: "test100-vm"
     name: "Eth0"
+    status: "Active"
     enabled: false
     mtu: 9000
     mac_address: "00:00:00:AA:AA:01"
@@ -123,12 +128,12 @@
     mode: Tagged
     untagged_vlan:
       name: Wireless
-      site: Test Site
+      location: "{{ test_location['key'] }}"
     tagged_vlans:
       - name: Data
-        site: Test Site
+        location: "{{ test_location['key'] }}"
       - name: VoIP
-        site: Test Site
+        location: "{{ test_location['key'] }}"
     tags:
       - "Schnozzberry"
     state: present

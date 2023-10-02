@@ -23,9 +23,9 @@ version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
-  site:
+  location:
     description:
-      - The site the power panel is located in
+      - The location the power panel is located in
     required: true
     type: raw
     version_added: "3.0.0"
@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        site: Test Site
+        location: Test location
         state: present
 
     - name: Update power panel with other fields
@@ -63,7 +63,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        site: Test Site
+        location: Test location
         rack_group: Test Rack Group
         state: present
 
@@ -72,7 +72,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        site: Test Site
+        location: Test location
         state: absent
 """
 
@@ -103,7 +103,7 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            site=dict(required=True, type="raw"),
+            location=dict(required=True, type="raw"),
             rack_group=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
         )

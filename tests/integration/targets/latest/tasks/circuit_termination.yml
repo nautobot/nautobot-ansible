@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
     circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
     provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider_networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
@@ -16,7 +16,7 @@
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: A
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
     port_speed: 10000
     state: present
   register: test_one
@@ -29,7 +29,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['circuit_termination']['circuit'] == circuit['key']
       - test_one['circuit_termination']['term_side'] == "A"
-      - test_one['circuit_termination']['site'] == test_site['key']
+      - test_one['circuit_termination']['location'] == test_location['key']
       - test_one['circuit_termination']['port_speed'] == 10000
       - test_one['msg'] == "circuit_termination test_circuit_a created"
 
@@ -48,7 +48,7 @@
       - not test_two['changed']
       - test_two['circuit_termination']['circuit'] == circuit['key']
       - test_two['circuit_termination']['term_side'] == "A"
-      - test_two['circuit_termination']['site'] == test_site['key']
+      - test_two['circuit_termination']['location'] == test_location['key']
       - test_two['circuit_termination']['port_speed'] == 10000
       - test_two['msg'] == "circuit_termination test_circuit_a already exists"
 
@@ -75,7 +75,7 @@
       - test_three['diff']['after']['description'] == "Test description"
       - test_three['circuit_termination']['circuit'] == circuit['key']
       - test_three['circuit_termination']['term_side'] == "A"
-      - test_three['circuit_termination']['site'] == test_site['key']
+      - test_three['circuit_termination']['location'] == test_location['key']
       - test_three['circuit_termination']['port_speed'] == 10000
       - test_three['circuit_termination']['upstream_speed'] == 1000
       - test_three['circuit_termination']['xconnect_id'] == "10X100"
@@ -89,7 +89,7 @@
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: Z
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
     port_speed: 10000
     state: present
   register: test_four
@@ -102,7 +102,7 @@
       - test_four['diff']['after']['state'] == "present"
       - test_four['circuit_termination']['circuit'] == circuit['key']
       - test_four['circuit_termination']['term_side'] == "Z"
-      - test_four['circuit_termination']['site'] == test_site['key']
+      - test_four['circuit_termination']['location'] == test_location['key']
       - test_four['circuit_termination']['port_speed'] == 10000
       - test_four['msg'] == "circuit_termination test_circuit_z created"
 
@@ -149,7 +149,7 @@
       - test_six is changed
       - test_six['circuit_termination']['circuit'] == circuit['key']
       - test_six['circuit_termination']['term_side'] == "A"
-      - test_six['circuit_termination']['site'] == test_site['key']
+      - test_six['circuit_termination']['location'] == test_location['key']
       - test_six['circuit_termination']['port_speed'] == 10000
       - test_six['circuit_termination']['upstream_speed'] == 1000
       - test_six['circuit_termination']['xconnect_id'] == "10X100"

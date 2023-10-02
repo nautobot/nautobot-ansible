@@ -9,6 +9,7 @@
 ##
 - set_fact:
     power_panel: '{{ lookup(''networktocode.nautobot.lookup'', ''power-panels'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Power Panel"'') }}'
+    offline: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Offline') }}"
 
 - name: "POWER_FEED 1: Necessary info creation"
   networktocode.nautobot.power_feed:
@@ -54,7 +55,7 @@
     token: "{{ nautobot_token }}"
     name: Power Feed
     power_panel: Test Power Panel
-    status: offline
+    status: Offline
     type: redundant
     supply: dc
     phase: three-phase
@@ -69,7 +70,7 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['status'] == "offline"
+      - test_three['diff']['after']['status'] == offline['key']
       - test_three['diff']['after']['type'] == "redundant"
       - test_three['diff']['after']['supply'] == "dc"
       - test_three['diff']['after']['phase'] == "three-phase"
@@ -79,7 +80,7 @@
       - test_three['diff']['after']['comments'] == "totally normal power feed"
       - test_three['power_feed']['name'] == "Power Feed"
       - test_three['power_feed']['power_panel'] == power_panel['key']
-      - test_three['power_feed']['status'] == "offline"
+      - test_three['power_feed']['status'] == offline['key']
       - test_three['power_feed']['type'] == "redundant"
       - test_three['power_feed']['supply'] == "dc"
       - test_three['power_feed']['phase'] == "three-phase"

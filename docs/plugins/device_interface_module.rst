@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -741,7 +740,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 4.4.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.5.0`
 
 
       .. raw:: html
@@ -1143,12 +1142,12 @@ Examples
             type: 1000Base-t (1GE)
             untagged_vlan:
               name: Wireless
-              site: Test Site
+              location: "{{ location['key'] }}"
             tagged_vlans:
               - name: Data
-                site: Test Site
+                location: "{{ location['key'] }}"
               - name: VoIP
-                site: Test Site
+                location: "{{ location['key'] }}"
             mtu: 1600
             mgmt_only: true
             mode: Tagged

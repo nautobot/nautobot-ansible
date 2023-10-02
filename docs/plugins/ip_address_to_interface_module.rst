@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.device_role_module:
+.. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.device_role module -- Create, update or delete devices roles within Nautobot
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.ip_address_to_interface module -- Creates or removes IP address to interface association from Nautobot
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,9 +46,9 @@ networktocode.nautobot.device_role module -- Create, update or delete devices ro
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.device_role_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.ip_address_to_interface_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.device_role`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.ip_address_to_interface`.
 
 .. version_added
 
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates, updates or removes devices roles from Nautobot
+- Creates or removes IP address to interface association from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.device_role_module_requirements:
+.. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module_requirements:
 
 Requirements
 ------------
@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -110,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -145,23 +144,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-color"></div>
+        <div class="ansibleOptionAnchor" id="parameter-interface"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-color:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-interface:
 
       .. rst-class:: ansible-option-title
 
-      **color**
+      **interface**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-interface" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -172,7 +171,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Hexidecimal code for a color, ex. FFFFFF
+      Device interface to associate with an IP.
 
 
       .. raw:: html
@@ -182,23 +181,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ip_address"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-ip_address:
 
       .. rst-class:: ansible-option-title
 
-      **description**
+      **ip_address**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-ip_address" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`any` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -209,44 +208,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the device role
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-name"></div>
-
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-name:
-
-      .. rst-class:: ansible-option-title
-
-      **name**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The name of the device role
+      IP address to associate with an interface.
 
 
       .. raw:: html
@@ -258,7 +220,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -297,48 +259,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The slugified version of the name or custom slug.
-
-      This is auto-generated following Nautobot rules if not provided
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -360,7 +283,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Use \ :literal:`present`\  or \ :literal:`absent`\  for adding or removing.
+      Use \ :literal:`present`\  or \ :literal:`absent`\  for adding, or removing.
 
 
       .. rst-class:: ansible-option-line
@@ -380,7 +303,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -414,7 +337,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -448,7 +371,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -484,23 +407,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-vm_role"></div>
+        <div class="ansibleOptionAnchor" id="parameter-vm_interface"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__parameter-vm_role:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__parameter-vm_interface:
 
       .. rst-class:: ansible-option-title
 
-      **vm_role**
+      **vm_interface**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-vm_role" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-vm_interface" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`boolean`
+      :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -511,15 +434,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Whether the role is a VM role
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`false`
-      - :ansible-option-choices-entry:`true`
+      VM interface to associate with an IP.
 
 
       .. raw:: html
@@ -550,26 +465,35 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot modules"
+    - name: "Test Nautobot IP address to interface module"
       connection: local
       hosts: localhost
       gather_facts: False
 
       tasks:
-        - name: Create device role within Nautobot with only required information
-          networktocode.nautobot.device_role:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test device role
-            color: FFFFFF
-            state: present
+        - name: "Add IP address on GigabitEthernet4 - test100"
+          networktocode.nautobot.ip_address_to_interface:
+            url: "{{ nautobot_url }}"
+            token: "{{ nautobot_token }}"
+            ip_address: "{{ ip_address['key'] }}"
+            interface:
+              name: GigabitEthernet4
+              device: test100
+          vars:
+            ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
 
-        - name: Delete device role within nautobot
-          networktocode.nautobot.device_role:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Rack role
+        - name: "Delete IP address on GigabitEthernet4 - test100"
+          networktocode.nautobot.ip_address_to_interface:
+            url: "{{ nautobot_url }}"
+            token: "{{ nautobot_token }}"
+            ip_address: "{{ ip_address['key'] }}"
+            interface:
+              name: GigabitEthernet4
+              device: test100
             state: absent
+          vars:
+            ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
+
 
 
 
@@ -596,17 +520,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-device_role"></div>
+        <div class="ansibleOptionAnchor" id="return-ip_address_to_interface"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__return-device_role:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__return-ip_address_to_interface:
 
       .. rst-class:: ansible-option-title
 
-      **device_role**
+      **ip_address_to_interface**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-device_role" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-ip_address_to_interface" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -625,7 +549,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+      :ansible-option-returned-bold:`Returned:` on creation
 
 
       .. raw:: html
@@ -638,7 +562,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.device_role_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.ip_address_to_interface_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -683,6 +607,7 @@ Authors
 ~~~~~~~
 
 - Mikhail Yohman (@FragmentedPacket)
+- Anthony Ruhier (@Anthony25)
 
 
 

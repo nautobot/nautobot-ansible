@@ -8,7 +8,6 @@ __metaclass__ = type
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotModule,
     ENDPOINT_NAME_MAPPING,
-    SLUG_REQUIRED,
 )
 
 NB_TAGS = "tags"
@@ -41,14 +40,10 @@ class NautobotExtrasModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif data.get("slug"):
-            name = data["slug"]
         elif endpoint_name == "relationship_associations":
             name = f"{data['source_type']} -> {data['destination_type']}"
-
-        if self.endpoint in SLUG_REQUIRED:
-            if not data.get("slug"):
-                data["slug"] = self._to_slug(name)
+        else:
+            name = data.get("id")
 
         # Make color params lowercase
         if data.get("color"):

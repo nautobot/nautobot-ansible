@@ -91,7 +91,6 @@ The below requirements are needed on the local controller node that executes thi
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -139,7 +138,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_URL
+      - Environment variable: :envvar:`NAUTOBOT\_URL`
 
 
       .. raw:: html
@@ -226,19 +225,67 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      List of dot-sparated paths to index graphql query results (e.g. \`platform.slug\`)
+      List of dot-sparated paths to index graphql query results (e.g. \`platform.display\`)
 
       The final value returned by each path is used to derive group names and then group the devices into these groups.
 
-      Valid group names must be string, so indexing the dotted path should return a string (i.e. \`platform.slug\` instead of \`platform\`)
+      Valid group names must be string, so indexing the dotted path should return a string (i.e. \`platform.display\` instead of \`platform\`)
 
-      If value returned by the defined path is a dictionary, an attempt will first be made to access the \`name\` field, and then the \`slug\` field. (i.e. \`platform\` would attempt to lookup \`platform.name\`, and if that data was not returned, it would then try \`platform.slug\`)
+      If value returned by the defined path is a dictionary, an attempt will first be made to access the \`name\` field, and then the \`display\` field. (i.e. \`platform\` would attempt to lookup \`platform.name\`, and if that data was not returned, it would then try \`platform.display\`)
           
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-group_names_raw"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-group_names_raw:
+
+      .. rst-class:: ansible-option-title
+
+      **group_names_raw**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-group_names_raw" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.6.0`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will not add the group\_by choice name to the group names
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -484,7 +531,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_TOKEN
+      - Environment variable: :envvar:`NAUTOBOT\_TOKEN`
 
 
       .. raw:: html
@@ -598,11 +645,11 @@ Examples
         tags: name
         serial:
         tenant: name
-        site:
+        location:
           name:
           contact_name:
           description:
-          region: name
+          parent: name
       virtual_machines:
         tags: name
         tenant: name
@@ -617,19 +664,19 @@ Examples
         tags: name
         serial:
         tenant: name
-        status: slug
-        site:
+        status: display
+        location:
           name:
           contact_name:
           description:
-          region: name
+          parent: name
       virtual_machines:
         tags: name
         tenant: name
-        status: slug
+        status: display
     group_by:
       - tenant.name
-      - status.slug
+      - status.display
 
     # Filter output using any supported parameters.
     # To get supported parameters check the api/docs page for devices.

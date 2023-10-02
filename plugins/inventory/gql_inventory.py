@@ -68,15 +68,20 @@ options:
   group_by:
     required: False
     description:
-      - List of dot-sparated paths to index graphql query results (e.g. `platform.slug`)
+      - List of dot-sparated paths to index graphql query results (e.g. `platform.display`)
       - The final value returned by each path is used to derive group names and then group the devices into these groups.
-      - Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.slug` instead of `platform`)
+      - Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.display` instead of `platform`)
       - > 
-          If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `slug` field.
-          (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.slug`)
+          If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `display` field.
+          (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.display`)
     type: list
     elements: str
     default: []
+  group_names_raw:
+      description: Will not add the group_by choice name to the group names
+      default: False
+      type: boolean
+      version_added: "4.6.0"
 """
 
 EXAMPLES = """
@@ -124,11 +129,11 @@ query:
     tags: name
     serial:
     tenant: name
-    site:
+    location:
       name:
       contact_name:
       description:
-      region: name
+      parent: name
   virtual_machines:
     tags: name
     tenant: name
@@ -143,19 +148,19 @@ query:
     tags: name
     serial:
     tenant: name
-    status: slug
-    site:
+    status: display
+    location:
       name:
       contact_name:
       description:
-      region: name
+      parent: name
   virtual_machines:
     tags: name
     tenant: name
-    status: slug
+    status: display
 group_by:
   - tenant.name
-  - status.slug
+  - status.display
 
 # Filter output using any supported parameters.
 # To get supported parameters check the api/docs page for devices.
@@ -214,8 +219,8 @@ PATH = os.path.dirname(os.path.realpath(__file__))
 GROUP_BY = {
     "platform": "napalm_driver",
     "status": "name",
-    "device_role": "name",
-    "site": "name",
+    "role": "name",
+    "location": "id",
 }
 
 
@@ -279,7 +284,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if parent_attr == "tags":
                 if not chain or len(chain) > 1:
-                    self.display.display(f"Tags must be grouped by name or slug. {group_by_path} is not a valid path.")
+                    self.display.display(f"Tags must be grouped by name or display. {group_by_path} is not a valid path.")
                     continue
                 self.create_tag_groups(device, chain[0])
                 continue
@@ -302,17 +307,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if isinstance(group_name, Mapping):
                 if "name" in group_name:
                     group_name = group_name["name"]
-                elif "slug" in group_name:
-                    group_name = group_name["slug"]
+                elif "display" in group_name:
+                    group_name = group_name["display"]
                 else:
-                    self.display.display(f"No slug or name value for {group_name} in {group_by_path} on device {device_name}.")
+                    self.display.display(f"No display or name value for {group_name} in {group_by_path} on device {device_name}.")
 
             if not group_name:
                 # If the value is empty, it can't be grouped
                 continue
 
             if isinstance(group_name, str):
-                # If using force_valid_group_names=always in ansible.cfg, hyphens in Nautobot slugs will be converted to underscores
+                # If using force_valid_group_names=always in ansible.cfg, hyphens in Nautobot names will be converted to underscores
                 group = self.inventory.add_group(group_name)
                 self.inventory.add_child(group, device_name)
             else:
@@ -325,7 +330,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         device_name = device["name"]
         for tag in device.get("tags", []):
             if tag.get(tag_attr):
-                group_name = f"tags_{tag[tag_attr]}"
+                group_name = f"tags_{tag[tag_attr]}" if not self.group_names_raw else tag[tag_attr]
                 group = self.inventory.add_group(group_name)
                 self.inventory.add_child(group, device_name)
             else:
@@ -405,5 +410,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.gql_query = self.get_option("query")
         self.group_by = self.get_option("group_by")
         self.follow_redirects = self.get_option("follow_redirects")
+        self.group_names_raw = self.get_option("group_names_raw")
 
         self.main()

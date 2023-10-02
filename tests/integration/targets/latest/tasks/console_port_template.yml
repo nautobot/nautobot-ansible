@@ -8,7 +8,7 @@
 ##
 ##
 - set_fact:
-    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=cisco-test') }}"
+    cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
 
 - name: "CONSOLE_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.console_port_template:

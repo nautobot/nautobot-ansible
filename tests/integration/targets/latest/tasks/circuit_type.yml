@@ -19,7 +19,6 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['circuit_type']['name'] == "Test Circuit Type One"
-      - test_one['circuit_type']['slug'] == "test-circuit-type-one"
       - test_one['msg'] == "circuit_type Test Circuit Type One created"
 
 - name: "CIRCUIT_TYPE 2: Create duplicate"
@@ -35,27 +34,25 @@
     that:
       - not test_two['changed']
       - test_two['circuit_type']['name'] == "Test Circuit Type One"
-      - test_two['circuit_type']['slug'] == "test-circuit-type-one"
       - test_two['msg'] == "circuit_type Test Circuit Type One already exists"
 
-- name: "CIRCUIT_TYPE 3: User specified slug"
+- name: "CIRCUIT_TYPE 3: Update"
   networktocode.nautobot.circuit_type:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: "Test Circuit Type Two"
-    slug: "test-circuit-type-2"
+    name: "Test Circuit Type One"
+    description: "Test Description"
     state: present
   register: test_three
 
-- name: "CIRCUIT_TYPE 3: ASSERT - User specified slug"
+- name: "CIRCUIT_TYPE 3: ASSERT - Update"
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['before']['state'] == "absent"
-      - test_three['diff']['after']['state'] == "present"
-      - test_three['circuit_type']['name'] == "Test Circuit Type Two"
-      - test_three['circuit_type']['slug'] == "test-circuit-type-2"
-      - test_three['msg'] == "circuit_type Test Circuit Type Two created"
+      - test_three['diff']['after']['description'] == "Test Description"
+      - test_three['circuit_type']['name'] == "Test Circuit Type One"
+      - test_three['circuit_type']['description'] == "Test Description"
+      - test_three['msg'] == "circuit_type Test Circuit Type One updated"
 
 - name: "CIRCUIT_TYPE 4: ASSERT - Delete"
   networktocode.nautobot.circuit_type:
@@ -70,22 +67,5 @@
     that:
       - test_four is changed
       - test_four['circuit_type']['name'] == "Test Circuit Type One"
-      - test_four['circuit_type']['slug'] == "test-circuit-type-one"
+      - test_four['circuit_type']['description'] == "Test Description"
       - test_four['msg'] == "circuit_type Test Circuit Type One deleted"
-
-- name: "CIRCUIT_TYPE 5: ASSERT - Delete"
-  networktocode.nautobot.circuit_type:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "Test Circuit Type Two"
-    slug: "test-circuit-type-2"
-    state: absent
-  register: test_five
-
-- name: "CIRCUIT_TYPE 5: ASSERT - Delete"
-  assert:
-    that:
-      - test_five is changed
-      - test_five['circuit_type']['name'] == "Test Circuit Type Two"
-      - test_five['circuit_type']['slug'] == "test-circuit-type-2"
-      - test_five['msg'] == "circuit_type Test Circuit Type Two deleted"

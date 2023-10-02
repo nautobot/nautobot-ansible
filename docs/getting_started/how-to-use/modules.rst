@@ -69,7 +69,7 @@ This does mean that the modules may make the call to Nautobot to create an objec
 
 .. code-block:: bash
 
-  failed: [localhost] (item={'unit': 2, 'type': 'nexus-child'}) => {"ansible_loop_var": "item", "changed": false, "item": {"type": "nexus-child", "unit": 2}, "msg": "{\"device_role\":[\"This field is required.\"]}"}
+  failed: [localhost] (item={'unit': 2, 'type': 'nexus-child'}) => {"ansible_loop_var": "item", "changed": false, "item": {"type": "nexus-child", "unit": 2}, "msg": "{\"role\":[\"This field is required.\"]}"}
 
 
 To expand further, our ``present`` state can either **create** or **update** an object. If the object does not exist within Nautobot it will send a ``POST`` and create the object.
@@ -91,8 +91,8 @@ Let's take a look at creating a device via the API.
 The required fields are marked by ``*`` and we can see the following are fields are required:
 
   - **device_type**
-  - **device_role**
-  - **site**
+  - **role**
+  - **location**
 
 These same fields are required when creating a device via the :ref:`device <ansible_collections.networktocode.nautobot.device_module>` module, but with the important addition of **name**.
 
@@ -108,64 +108,42 @@ These same fields are required when creating a device via the :ref:`device <ansi
           data:
             name: "Test Device"
             device_type: "C9410R"
-            device_role: "Core Switch"
-            site: "Main"
+            role: "Core Switch"
+            location: "{{ location['key'] }}"
           state: present
 
 The reasoning behind requiring **name** within the Ansible modules is to provide the module with the ability to distinguish between devices or objects within Nautobot. The name helps make the device unique rather than attempting to only
-search on ``device_type``, ``device_role``, and ``site`` as these do not make a device unique and makes it difficult to assume which device the user cares about.
+search on ``device_type``, ``role``, and ``location`` as these do not make a device unique and makes it difficult to assume which device the user cares about.
 These modules are abstracting away the API interaction and some of the logic which means we require the users to provide a bit more information as to what they're intending to do. We're trying to keep the abstractions to a minimum,
 but that isn't always possible.
-
-Along with forcing a user to provide some uniqueness to their objects in Nautobot, we also try and mirror the module interaction with the GUI interaction where we can to prevent burdening the user.
-For instance, the ``slug`` field is required when interacting with the API for the majority of models in Nautobot, but constructing the ``slug`` is handled for the user within the GUI. To stay aligned with the GUI,
-we abstract that away from the user by constructing the ``slug`` from the ``name`` using the same rules as the Nautobot GUI.
-
-For reference, here is the code that **slugifies** the ``name`` argument when a user does not provide a ``slug``.
-
-.. code-block:: python
-
-    def _to_slug(self, value):
-        """
-        :returns slug (str): Slugified value
-        :params value (str): Value that needs to be changed to slug format
-        """
-        if value is None:
-            return value
-        elif isinstance(value, int):
-            return value
-        else:
-            removed_chars = re.sub(r"[^\-\.\w\s]", "", value)
-            convert_chars = re.sub(r"[\-\.\s]+", "-", removed_chars)
-            return convert_chars.strip().lower()
-
-This can present a challenge if you did not let Nautobot construct the slug. For instance, if you have a site named **New York City**, but you set the slug to **nyc** instead of **new-york-city**.
-This will require users in the future to have to specify the user specified slug for any modules that they will specify the site in.
 
 .. code-block:: yaml
 
   ---
   ...
     tasks:
-      - name: "Configure a device in Nautobot by specifying the slug for the site"
+      - name: "Configure a device in Nautobot by specifying the ID for the location"
         networktocode.nautobot.device:
           data:
             name: "asdf"
             device_type: "asdf"
-            device_role: "Router"
-            site: "nyc"
+            role: "Router"
+            location: "{{ location['key'] }}"
             status: "Inventory"
           state: present
-      - name: "Configure a device in Nautobot by specifying dictionary for site with our custom slug"
+        vars:
+          location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Location\" parent=\"Parent Location\"') }}"
+      - name: "Configure a device in Nautobot by specifying dictionary for role"
         networktocode.nautobot.device:
           data:
             name: "asdf"
             device_type: "asdf"
-            device_role: "Router"
-            site:
-              slug: "nyc"
-            status: "Inventory"
+            role:
+              model: "Router"
+            location: "{{ location['key'] }}"
           state: present
+        vars:
+          location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Location\" parent=\"Parent Location\"') }}"
 
 .. note:: You can learn more about advanced concepts :ref:`Advanced Usage - Modules`.
 
@@ -231,7 +209,7 @@ applied the same irregardless of which module you're using.
   We will not be covering pre-2.10 tags within these docs.
 
 Tags are now a model within Nautobot and require being resolved like any other model such as ``device_type`` shown above. This requires the user to provide a list of dictionaries
-that specify fields that are unique to each tag. Name can be used, but we always suggest that you use ``slug`` when available.
+that specify fields that are unique to each tag.
 
 .. code-block:: yaml
 
@@ -245,8 +223,8 @@ that specify fields that are unique to each tag. Name can be used, but we always
           data:
             name: "Test Device"
             tags:
-              - slug: "my-new-tag1"
-              - slug: "my-new-tag2"
+              - name: "My New Tag1"
+              - name: "My New Tag2"
           state: "present"
 
 .. warning:: Everything discussed above can be applied to each module, but may need to swap out any arguments for module specific arguments.

@@ -189,12 +189,12 @@ EXAMPLES = r"""
         type: 1000Base-t (1GE)
         untagged_vlan:
           name: Wireless
-          site: Test Site
+          location: "{{ location['key'] }}"
         tagged_vlans:
           - name: Data
-            site: Test Site
+            location: "{{ location['key'] }}"
           - name: VoIP
-            site: Test Site
+            location: "{{ location['key'] }}"
         mtu: 1600
         mgmt_only: true
         mode: Tagged
@@ -285,8 +285,11 @@ def main():
             custom_fields=dict(required=False, type="dict"),
         )
     )
+    required_if = [
+        ("state", "present", ["status"]),
+    ]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
 
     device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()

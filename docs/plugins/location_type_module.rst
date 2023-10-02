@@ -94,7 +94,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -396,40 +395,6 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-slug"></div>
-
-      .. _ansible_collections.networktocode.nautobot.location_type_module__parameter-slug:
-
-      .. rst-class:: ansible-option-title
-
-      **slug**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-slug" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      URL-friendly unique shorthand
 
 
       .. raw:: html

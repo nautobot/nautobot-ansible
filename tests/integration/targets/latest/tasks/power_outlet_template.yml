@@ -24,7 +24,7 @@
     state: present
 
 - set_fact:
-    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=device-type-power-outlet') }}"
+    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Device Type Power Outlet\"') }}"
     power_port_template: '{{ lookup(''networktocode.nautobot.lookup'', ''power-port-templates'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Power Port Template - Outlet"'') }}'
 
 - name: "POWER_OUTLET_TEMPLATE 1: Necessary info creation"
@@ -80,12 +80,12 @@
     that:
       - test_three is changed
       - test_three['diff']['after']['type'] == "ita-e"
-      - test_three['diff']['after']['power_port'] == power_port_template['key']
+      - test_three['diff']['after']['power_port_template'] == power_port_template['key']
       - test_three['diff']['after']['feed_leg'] == "B"
       - test_three['power_outlet_template']['name'] == "Power Outlet Template"
       - test_three['power_outlet_template']['device_type'] == device_type['key']
       - test_three['power_outlet_template']['type'] == "ita-e"
-      - test_three['power_outlet_template']['power_port'] == power_port_template['key']
+      - test_three['power_outlet_template']['power_port_template'] == power_port_template['key']
       - test_three['power_outlet_template']['feed_leg'] == "B"
       - test_three['msg'] == "power_outlet_template Power Outlet Template updated"
 

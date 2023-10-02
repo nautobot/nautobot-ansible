@@ -5,5 +5,7 @@ on: # yamllint disable
     - cron: "20 3 * * 1"
 
 jobs:
-  ci:
-    uses: ./.github/workflows/jobs.yml
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      full-integration: true

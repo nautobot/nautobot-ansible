@@ -5,9 +5,10 @@
 ##
 ##
 - set_fact:
-    provider: "{{ lookup('networktocode.nautobot.lookup', 'circuit-providers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-provider') }}"
-    type: "{{ lookup('networktocode.nautobot.lookup', 'circuit-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-circuit-type') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
+    provider: "{{ lookup('networktocode.nautobot.lookup', 'circuit-providers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Provider\"') }}"
+    type: "{{ lookup('networktocode.nautobot.lookup', 'circuit-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Circuit Type\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
 
 - name: "PYNAUTOBOT_CIRCUIT 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit:
@@ -28,7 +29,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['circuit']['cid'] == "Test Circuit One"
       - test_one['circuit']['provider'] == provider['key']
-      - test_one['circuit']['type'] == type['key']
+      - test_one['circuit']['circuit_type'] == type['key']
       - test_one['msg'] == "circuit Test Circuit One created"
 
 - name: "PYNAUTOBOT_CIRCUIT 2: Duplicate"
@@ -48,7 +49,7 @@
       - not test_two['changed']
       - test_two['circuit']['cid'] == "Test Circuit One"
       - test_two['circuit']['provider'] == provider['key']
-      - test_two['circuit']['type'] == type['key']
+      - test_two['circuit']['circuit_type'] == type['key']
       - test_two['msg'] == "circuit Test Circuit One already exists"
 
 - name: "PYNAUTOBOT_CIRCUIT 3: Update provider with other fields"
@@ -62,7 +63,7 @@
     tenant: Test Tenant
     install_date: "2018-12-25"
     commit_rate: 10000
-    description: "Test circuit       "
+    description: "Test circuit"
     comments: "FAST CIRCUIT"
     state: present
   register: test_three
@@ -71,7 +72,7 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['status'] == "planned"
+      - test_three['diff']['after']['status'] == planned['key']
       - test_three['diff']['after']['tenant'] == tenant['key']
       - test_three['diff']['after']['install_date'] == "2018-12-25"
       - test_three['diff']['after']['commit_rate'] == 10000
@@ -79,8 +80,8 @@
       - test_three['diff']['after']['comments'] == "FAST CIRCUIT"
       - test_three['circuit']['cid'] == "Test Circuit One"
       - test_three['circuit']['provider'] == provider['key']
-      - test_three['circuit']['type'] == type['key']
-      - test_three['circuit']['status'] == "planned"
+      - test_three['circuit']['circuit_type'] == type['key']
+      - test_three['circuit']['status'] == planned['key']
       - test_three['circuit']['tenant'] == tenant['key']
       - test_three['circuit']['install_date'] == "2018-12-25"
       - test_three['circuit']['commit_rate'] == 10000
@@ -102,8 +103,8 @@
       - test_four is changed
       - test_four['circuit']['cid'] == "Test Circuit One"
       - test_four['circuit']['provider'] == provider['key']
-      - test_four['circuit']['type'] == type['key']
-      - test_four['circuit']['status'] == "planned"
+      - test_four['circuit']['circuit_type'] == type['key']
+      - test_four['circuit']['status'] == planned['key']
       - test_four['circuit']['tenant'] == tenant['key']
       - test_four['circuit']['install_date'] == "2018-12-25"
       - test_four['circuit']['commit_rate'] == 10000
