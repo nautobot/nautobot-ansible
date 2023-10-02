@@ -54,7 +54,7 @@ networktocode.nautobot.ip_address_to_interface module -- Creates or removes IP a
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.0.0
 
 .. contents::
    :local:

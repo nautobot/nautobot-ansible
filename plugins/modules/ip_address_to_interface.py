@@ -19,7 +19,7 @@ notes:
 author:
   - Mikhail Yohman (@FragmentedPacket)
   - Anthony Ruhier (@Anthony25)
-version_added: "1.0.0"
+version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
