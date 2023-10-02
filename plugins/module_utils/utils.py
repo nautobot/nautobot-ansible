@@ -492,8 +492,10 @@ class NautobotModule:
             self.version = nb.version
             return nb
         except pynautobot.RequestError as e:
-            # pynautobot 2.0 does version constraint on init, handle errors if versions doesn't match.
             self._handle_errors(msg=e.error)
+        except ValueError as e:
+            # pynautobot 2.0 does version constraint on init, handle errors if versions doesn't match.
+            self._handle_errors(msg=str(e))
         except Exception:
             self.module.fail_json(msg="Failed to establish connection to Nautobot API")
 
