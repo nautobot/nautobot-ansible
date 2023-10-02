@@ -71,6 +71,7 @@ def test_query_api_query_variables_wrong_type(graphql_test_query_with_var, nauto
 
     assert str(exc.value) == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
 
+
 def test_invalid_api_version_error_handling(monkeypatch, nautobot_url):
     monkeypatch.setattr(pynautobot.api, "version", "1.6")
     with pytest.raises(ValueError) as exc:

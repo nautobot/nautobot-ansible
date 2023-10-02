@@ -325,6 +325,7 @@ def test_get_query_param_id_return_int(mock_module, value):
     data = mock_module._get_query_param_id("test", {"test": value})
     assert data == value
 
+
 @pytest.mark.parametrize("api_version, obj_type", [("1.6", type(None)), ("2.0", pynautobot.core.api.Api)])
 def test_invalid_api_version_error_handling(mock_ansible_module, monkeypatch, api_version, obj_type):
     """Test if pynautobot raises ValueError when Nautobot version is lower than 2.0 and returns None from _connect_api."""
