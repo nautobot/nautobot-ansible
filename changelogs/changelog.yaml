@@ -385,3 +385,15 @@ releases:
         - (#220) Adds status option to device_interface module
         - (#217) Fixes and enables testing for Nautobot 1.5
       release_summary: "Fixes error handling in inventory to not erase inventories, minor bug fixes, and introduces Plugin module"
+  5.0.0:
+    changes:
+      breaking_changes:
+        - (#234) Updates for Nautobot 2.0 Compatibility
+      release_summary: "This release refactors the GraphQL inventory plugin to allow fetching virtual machines and a more flexible approach to allow users to use most of GraphQL's native capabilities."
+    modules:
+      - description:  Creates or removes a associations between IP and interface.
+        name: ip_address_to_interface
+        namespace: ""
+      - description: Creates or removes a role. Collapsed from several role modules in DCIM and IPAM.
+        name: role
+        namespace: ""

@@ -42,7 +42,7 @@ networktocode.nautobot.lookup_graphql lookup -- Queries and returns elements fro
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this lookup plugin,
