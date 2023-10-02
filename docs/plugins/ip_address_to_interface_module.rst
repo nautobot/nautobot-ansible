@@ -42,7 +42,7 @@ networktocode.nautobot.ip_address_to_interface module -- Creates or removes IP a
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -54,7 +54,7 @@ networktocode.nautobot.ip_address_to_interface module -- Creates or removes IP a
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.0.0
 
 .. contents::
    :local:

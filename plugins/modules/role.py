@@ -18,28 +18,28 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
   name:
     description:
-      - The name of the device role
+      - The name of the role
     required: true
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   description:
     description:
-      - The description of the device role
+      - The description of the role
     required: false
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   color:
     description:
       - Hexidecimal code for a color, ex. FFFFFF
     required: false
     type: str
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   content_types:
     description:
       - Model names which the role can be related to.
@@ -60,21 +60,21 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create device role within Nautobot with only required information
+    - name: Create role within Nautobot with only required information
       networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test device role
+        name: Test role
         color: FFFFFF
         content_types:
           - "dcim.device"
         state: present
 
-    - name: Delete device role within nautobot
+    - name: Delete role within nautobot
       networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test device role
+        name: Test role
         state: absent
 """
 

@@ -42,7 +42,7 @@ networktocode.nautobot.role module -- Create, update or delete roles within Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -54,7 +54,7 @@ networktocode.nautobot.role module -- Create, update or delete roles within Naut
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.0.0
 
 .. contents::
    :local:
@@ -160,7 +160,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -234,7 +234,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -245,7 +245,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the device role
+      The description of the role
 
 
       .. raw:: html
@@ -271,7 +271,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
 
 
       .. raw:: html
@@ -282,7 +282,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the device role
+      The name of the role
 
 
       .. raw:: html
@@ -545,21 +545,21 @@ Examples
       gather_facts: False
 
       tasks:
-        - name: Create device role within Nautobot with only required information
+        - name: Create role within Nautobot with only required information
           networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test device role
+            name: Test role
             color: FFFFFF
             content_types:
               - "dcim.device"
             state: present
 
-        - name: Delete device role within nautobot
+        - name: Delete role within nautobot
           networktocode.nautobot.role:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test device role
+            name: Test role
             state: absent
 
 

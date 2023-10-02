@@ -4,6 +4,35 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v5.0.0
+======
+
+Release Summary
+---------------
+
+This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- (#234) Updates for Nautobot 2.0 Compatibility
+
+New Modules
+-----------
+
+- networktocode.nautobot.ip_address_to_interface - Creates or removes associations between IP and interface.
+- networktocode.nautobot.role - Creates or removes a role.
+
+Removed Modules
+-----------
+
+- networktocode.nautobot.site - Removed as locations replace sites and regions.
+- networktocode.nautobot.region - Removed as locations replace sites and regions.
+- networktocode.nautobot.device_role - Removed as roles changes into generic type with content_types.
+- networktocode.nautobot.ipam_role - Removed as roles changes into generic type with content_types.
+- networktocode.nautobot.rack_role - Removed as roles changes into generic type with content_types.
+- networktocode.nautobot.aggregate - Model removed in 2.0.
+
 v4.4.0
 ======
 
