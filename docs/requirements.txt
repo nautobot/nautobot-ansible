@@ -1,3 +1,4 @@
 ansible
 antsibull
+antsibull-docs
 sphinx
