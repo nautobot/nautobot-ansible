@@ -119,7 +119,32 @@
       - test_three['device']['vc_priority'] == 15
       - test_three['msg'] == "device R1 updated"
 
-- name: "3.1 - Update device name using query_params"
+- name: "3.1 - Update device status"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1"
+    status: "Active"
+    state: present
+  register: test_three_dot_one
+
+- name: "3.1 - ASSERT"
+  assert:
+    that:
+      - test_three_dot_one is changed
+      - test_three_dot_one['diff']['after']['status'] == active['key']
+      - test_three_dot_one['device']['name'] == "R1"
+      - test_three_dot_one['device']['role'] == role['key']
+      - test_three_dot_one['device']['device_type'] == device_type['key']
+      - test_three_dot_one['device']['location'] == parent_location['key']
+      - test_three_dot_one['device']['status'] == active['key']
+      - test_three_dot_one['device']['serial'] == "FXS1001"
+      - test_three_dot_one['device']['virtual_chassis'] == vc1['key']
+      - test_three_dot_one['device']['vc_position'] == 3
+      - test_three_dot_one['device']['vc_priority'] == 15
+      - test_three_dot_one['msg'] == "device R1 updated"
+
+- name: "3.2 - Update device name using query_params"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -129,21 +154,21 @@
     query_params:
       - serial
     state: present
-  register: test_three_dot_one
+  register: test_three_dot_two
 
-- name: "3.1 - ASSERT"
+- name: "3.2 - ASSERT"
   assert:
     that:
-      - test_three_dot_one is changed
-      - test_three_dot_one['diff']['after']['name'] == "R1-changed-name"
-      - test_three_dot_one['device']['role'] == role['key']
-      - test_three_dot_one['device']['device_type'] == device_type['key']
-      - test_three_dot_one['device']['location'] == parent_location['key']
-      - test_three_dot_one['device']['status'] == staged['key']
-      - test_three_dot_one['device']['serial'] == "FXS1001"
-      - test_three_dot_one['msg'] == "device R1-changed-name updated"
+      - test_three_dot_two is changed
+      - test_three_dot_two['diff']['after']['name'] == "R1-changed-name"
+      - test_three_dot_two['device']['role'] == role['key']
+      - test_three_dot_two['device']['device_type'] == device_type['key']
+      - test_three_dot_two['device']['location'] == parent_location['key']
+      - test_three_dot_two['device']['status'] == staged['key']
+      - test_three_dot_two['device']['serial'] == "FXS1001"
+      - test_three_dot_two['msg'] == "device R1-changed-name updated"
 
-- name: "3.11 - ASSERT"
+- name: "3.21 - ASSERT"
   assert:
     that:
       - device['value']['local_config_context_data']["bgp_as"] == "65412"
