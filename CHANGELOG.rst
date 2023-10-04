@@ -4,6 +4,20 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v5.0.1
+======
+
+Release Summary
+---------------
+
+Fix plugins module
+
+Bugfixes
+--------
+
+- (#257) Fix plugin module.
+
+
 v5.0.0
 ======
 
