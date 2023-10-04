@@ -2,3 +2,4 @@ ansible
 antsibull
 antsibull-docs
 sphinx
+sphinx-rtd-theme
