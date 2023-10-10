@@ -8,7 +8,7 @@ license = "Apache 2.0"
 [tool.poetry.dependencies]
 python = "^3.9"
 netutils = "^1.2"
-pynautobot = "v2.0.0-rc.2"
+pynautobot = "^2.0"
 ansible-core = "^2.14"
 
 [tool.poetry.dev-dependencies]
@@ -27,7 +27,7 @@ importlib-metadata = "1.7.0"
 pylint = "^2.6.0"
 sphinx_rtd_theme = "*"
 hypothesis = "^6.8.0"
-pynautobot = "v2.0.0-rc.2"
+pynautobot = "^2.0"
 pytest-pythonpath = "^0.7.3"
 parameterized = "^0.8.1"
 invoke = "^1.6.0"
