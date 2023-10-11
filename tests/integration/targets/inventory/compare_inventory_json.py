@@ -19,7 +19,7 @@ from operator import itemgetter
 KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url", "notes_url"])
 
 # Ignore these when performing diffs as they will be different for each test run
-KEYS_IGNORE = frozenset()
+KEYS_IGNORE = frozenset(["natural_slug"])
 
 
 def all_keys_to_ignore():

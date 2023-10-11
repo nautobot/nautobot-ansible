@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    dt_arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=arista-test') }}"
+    dt_arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Arista Test\"') }}"
 
 - name: "1 - Interface with required information"
   networktocode.nautobot.device_interface_template:

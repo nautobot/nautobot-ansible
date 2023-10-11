@@ -7,32 +7,40 @@
                 ],
                 "custom_fields": {},
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "interfaces": [],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
-                "rack_groups": [],
-                "rack_role": "test-rack-role",
+                "rack_groups": [
+                    "Parent Rack Group"
+                ],
+                "rack_role": "Test Rack Role",
                 "racks": [
-                    "Test Rack Site 2"
+                    "Main Test Rack"
                 ],
-                "regions": [],
                 "services": [],
-                "sites": [
-                    "test-site2"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -43,10 +51,10 @@
                 ],
                 "custom_fields": {},
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "nexus-parent"
+                    "Nexus Parent"
                 ],
                 "dns_name": "nexus.example.com",
                 "interfaces": [
@@ -58,15 +66,56 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "count_ipaddresses": 1,
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "Test Nexus One",
-                            "name": "Test Nexus One"
+                            "face": null,
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "Test Nexus One",
+                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_9171",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": {
+                                "object_type": "ipam.ipaddress"
+                            },
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vc_position": 0,
+                            "vc_priority": null,
+                            "virtual_chassis": {
+                                "object_type": "dcim.virtualchassis"
+                            }
                         },
                         "display": "Ethernet1/1",
                         "enabled": true,
+                        "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.11/24",
@@ -74,20 +123,67 @@
                                 "description": "",
                                 "display": "172.16.180.11/24",
                                 "dns_name": "nexus.example.com",
-                                "family": {
-                                    "label": "IPv4",
-                                    "value": 4
-                                },
+                                "host": "172.16.180.11",
+                                "ip_version": 4,
+                                "mask_length": 24,
                                 "nat_inside": null,
-                                "nat_outside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_172-16-180-11_59b6",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "broadcast": "172.31.255.255",
+                                    "custom_fields": {},
+                                    "date_allocated": null,
+                                    "description": "",
+                                    "display": "172.16.0.0/12",
+                                    "ip_version": 4,
+                                    "location": null,
+                                    "namespace": {
+                                        "custom_fields": {},
+                                        "description": "Default Global namespace. Created by Nautobot.",
+                                        "display": "Global",
+                                        "location": null,
+                                        "name": "Global",
+                                        "natural_slug": "global_2d05",
+                                        "object_type": "ipam.namespace"
+                                    },
+                                    "natural_slug": "global_172-16-0-0_12_c00f",
+                                    "network": "172.16.0.0",
+                                    "object_type": "ipam.prefix",
+                                    "parent": null,
+                                    "prefix": "172.16.0.0/12",
+                                    "prefix_length": 12,
+                                    "rir": null,
+                                    "role": null,
+                                    "status": {
+                                        "color": "4caf50",
+                                        "custom_fields": {},
+                                        "description": "Unit is active",
+                                        "display": "Active",
+                                        "name": "Active",
+                                        "natural_slug": "active_efb8",
+                                        "object_type": "extras.status"
+                                    },
+                                    "tenant": null,
+                                    "type": {
+                                        "label": "Network",
+                                        "value": "network"
+                                    },
+                                    "vlan": null
+                                },
                                 "role": null,
                                 "status": {
-                                    "label": "Active",
-                                    "value": "active"
+                                    "color": "4caf50",
+                                    "custom_fields": {},
+                                    "description": "Unit is active",
+                                    "display": "Active",
+                                    "name": "Active",
+                                    "natural_slug": "active_efb8",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "vrf": null
+                                "type": "host"
                             }
                         ],
                         "label": "",
@@ -97,14 +193,26 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet1/1",
+                        "natural_slug": "ethernet1-1_test-nexus-one__child-test-location_parent-test-location_a314",
+                        "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
                             "label": "1000BASE-T (1GE)",
                             "value": "1000base-t"
                         },
-                        "untagged_vlan": null
+                        "untagged_vlan": null,
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -114,15 +222,54 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "count_ipaddresses": 1,
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "Test Nexus Child One",
-                            "name": "Test Nexus Child One"
+                            "face": null,
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "Test Nexus Child One",
+                            "natural_slug": "test-nexus-child-one__child-test-location_parent-test-location_d562",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vc_position": 2,
+                            "vc_priority": null,
+                            "virtual_chassis": {
+                                "object_type": "dcim.virtualchassis"
+                            }
                         },
                         "display": "Ethernet2/1",
                         "enabled": true,
+                        "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.12/24",
@@ -130,20 +277,67 @@
                                 "description": "",
                                 "display": "172.16.180.12/24",
                                 "dns_name": "nexus.example.com",
-                                "family": {
-                                    "label": "IPv4",
-                                    "value": 4
-                                },
+                                "host": "172.16.180.12",
+                                "ip_version": 4,
+                                "mask_length": 24,
                                 "nat_inside": null,
-                                "nat_outside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_172-16-180-12_f322",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "broadcast": "172.31.255.255",
+                                    "custom_fields": {},
+                                    "date_allocated": null,
+                                    "description": "",
+                                    "display": "172.16.0.0/12",
+                                    "ip_version": 4,
+                                    "location": null,
+                                    "namespace": {
+                                        "custom_fields": {},
+                                        "description": "Default Global namespace. Created by Nautobot.",
+                                        "display": "Global",
+                                        "location": null,
+                                        "name": "Global",
+                                        "natural_slug": "global_2d05",
+                                        "object_type": "ipam.namespace"
+                                    },
+                                    "natural_slug": "global_172-16-0-0_12_c00f",
+                                    "network": "172.16.0.0",
+                                    "object_type": "ipam.prefix",
+                                    "parent": null,
+                                    "prefix": "172.16.0.0/12",
+                                    "prefix_length": 12,
+                                    "rir": null,
+                                    "role": null,
+                                    "status": {
+                                        "color": "4caf50",
+                                        "custom_fields": {},
+                                        "description": "Unit is active",
+                                        "display": "Active",
+                                        "name": "Active",
+                                        "natural_slug": "active_efb8",
+                                        "object_type": "extras.status"
+                                    },
+                                    "tenant": null,
+                                    "type": {
+                                        "label": "Network",
+                                        "value": "network"
+                                    },
+                                    "vlan": null
+                                },
                                 "role": null,
                                 "status": {
-                                    "label": "Active",
-                                    "value": "active"
+                                    "color": "4caf50",
+                                    "custom_fields": {},
+                                    "description": "Unit is active",
+                                    "display": "Active",
+                                    "name": "Active",
+                                    "natural_slug": "active_efb8",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "vrf": null
+                                "type": "host"
                             }
                         ],
                         "label": "",
@@ -153,39 +347,95 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Ethernet2/1",
+                        "natural_slug": "ethernet2-1_test-nexus-child-one__child-test-location_parent-test-location_be66",
+                        "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
                             "label": "1000BASE-T (1GE)",
                             "value": "1000base-t"
                         },
-                        "untagged_vlan": null
+                        "untagged_vlan": null,
+                        "vrf": null
                     }
                 ],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
                 "primary_ip4": "172.16.180.11",
-                "regions": [
-                    "test-region",
-                    "parent-region"
-                ],
                 "services": [
                     {
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "Test Nexus One",
-                            "name": "Test Nexus One"
+                            "face": null,
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "Test Nexus One",
+                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_9171",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": {
+                                "object_type": "ipam.ipaddress"
+                            },
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vc_position": 0,
+                            "vc_priority": null,
+                            "virtual_chassis": {
+                                "object_type": "dcim.virtualchassis"
+                            }
                         },
                         "display": "telnet (TCP/23)",
-                        "ipaddresses": [],
+                        "ip_addresses": [],
                         "name": "telnet",
+                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_758f",
+                        "object_type": "ipam.service",
                         "ports": [
                             23
                         ],
@@ -197,18 +447,20 @@
                         "virtual_machine": null
                     }
                 ],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "Test VM With Spaces": {
                 "cluster": "Test Cluster 2",
-                "cluster_type": "test-cluster-type",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -225,14 +477,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth0_0a6c",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "Test VM With Spaces",
-                            "name": "Test VM With Spaces"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "Test VM With Spaces",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_e84a",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -245,29 +531,65 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth1_45be",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "Test VM With Spaces",
-                            "name": "Test VM With Spaces"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "Test VM With Spaces",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_e84a",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     }
                 ],
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [],
+                "locations": [],
                 "services": [
                     {
                         "custom_fields": {},
                         "description": "",
                         "device": null,
                         "display": "ssh (TCP/22)",
-                        "ipaddresses": [],
+                        "ip_addresses": [],
                         "name": "ssh",
+                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_2cf8",
+                        "object_type": "ipam.service",
                         "ports": [
                             22
                         ],
@@ -277,14 +599,41 @@
                         },
                         "tags": [],
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "Test VM With Spaces",
-                            "name": "Test VM With Spaces"
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "Test VM With Spaces",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_e84a",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
                         }
                     }
                 ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -294,37 +643,41 @@
                 ],
                 "custom_fields": {},
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "interfaces": [],
                 "is_virtual": false,
                 "local_context_data": [
                     null
                 ],
+                "location": "Child-Child Test Location",
+                "locations": [
+                    "Child-Child Test Location",
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
                 "manufacturers": [
-                    "cisco"
+                    "Cisco"
                 ],
                 "rack_groups": [
-                    "test-rack-group",
-                    "parent-rack-group"
+                    "Child Rack Group",
+                    "Parent Rack Group"
                 ],
                 "racks": [
-                    "Test Rack"
-                ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                    "Sub Test Rack"
                 ],
                 "services": [],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -338,10 +691,10 @@
                 ],
                 "custom_fields": {},
                 "device_roles": [
-                    "core-switch"
+                    "Core Switch"
                 ],
                 "device_types": [
-                    "cisco-test"
+                    "Cisco Test"
                 ],
                 "interfaces": [
                     {
@@ -352,15 +705,58 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "count_ipaddresses": 1,
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "test100",
-                            "name": "test100"
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
                         },
                         "display": "GigabitEthernet1",
                         "enabled": true,
+                        "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.1/24",
@@ -368,20 +764,67 @@
                                 "description": "",
                                 "display": "172.16.180.1/24",
                                 "dns_name": "",
-                                "family": {
-                                    "label": "IPv4",
-                                    "value": 4
-                                },
+                                "host": "172.16.180.1",
+                                "ip_version": 4,
+                                "mask_length": 24,
                                 "nat_inside": null,
-                                "nat_outside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_172-16-180-1_57e3",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "broadcast": "172.31.255.255",
+                                    "custom_fields": {},
+                                    "date_allocated": null,
+                                    "description": "",
+                                    "display": "172.16.0.0/12",
+                                    "ip_version": 4,
+                                    "location": null,
+                                    "namespace": {
+                                        "custom_fields": {},
+                                        "description": "Default Global namespace. Created by Nautobot.",
+                                        "display": "Global",
+                                        "location": null,
+                                        "name": "Global",
+                                        "natural_slug": "global_2d05",
+                                        "object_type": "ipam.namespace"
+                                    },
+                                    "natural_slug": "global_172-16-0-0_12_c00f",
+                                    "network": "172.16.0.0",
+                                    "object_type": "ipam.prefix",
+                                    "parent": null,
+                                    "prefix": "172.16.0.0/12",
+                                    "prefix_length": 12,
+                                    "rir": null,
+                                    "role": null,
+                                    "status": {
+                                        "color": "4caf50",
+                                        "custom_fields": {},
+                                        "description": "Unit is active",
+                                        "display": "Active",
+                                        "name": "Active",
+                                        "natural_slug": "active_efb8",
+                                        "object_type": "extras.status"
+                                    },
+                                    "tenant": null,
+                                    "type": {
+                                        "label": "Network",
+                                        "value": "network"
+                                    },
+                                    "vlan": null
+                                },
                                 "role": null,
                                 "status": {
-                                    "label": "Active",
-                                    "value": "active"
+                                    "color": "4caf50",
+                                    "custom_fields": {},
+                                    "description": "Unit is active",
+                                    "display": "Active",
+                                    "name": "Active",
+                                    "natural_slug": "active_efb8",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "vrf": null
+                                "type": "host"
                             }
                         ],
                         "label": "",
@@ -391,14 +834,26 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet1",
+                        "natural_slug": "gigabitethernet1_test100_test-tenant_child-test-location_parent-test-location_0bc5",
+                        "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
                             "label": "1000BASE-T (1GE)",
                             "value": "1000base-t"
                         },
-                        "untagged_vlan": null
+                        "untagged_vlan": null,
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -408,15 +863,58 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "count_ipaddresses": 1,
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "test100",
-                            "name": "test100"
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
                         },
                         "display": "GigabitEthernet2",
                         "enabled": true,
+                        "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "2001::1:1/64",
@@ -424,20 +922,67 @@
                                 "description": "",
                                 "display": "2001::1:1/64",
                                 "dns_name": "",
-                                "family": {
-                                    "label": "IPv6",
-                                    "value": 6
-                                },
+                                "host": "2001::1:1",
+                                "ip_version": 6,
+                                "mask_length": 64,
                                 "nat_inside": null,
-                                "nat_outside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_2001-1-1_6117",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "broadcast": "2001::ffff:ffff:ffff:ffff",
+                                    "custom_fields": {},
+                                    "date_allocated": null,
+                                    "description": "",
+                                    "display": "2001::/64",
+                                    "ip_version": 6,
+                                    "location": null,
+                                    "namespace": {
+                                        "custom_fields": {},
+                                        "description": "Default Global namespace. Created by Nautobot.",
+                                        "display": "Global",
+                                        "location": null,
+                                        "name": "Global",
+                                        "natural_slug": "global_2d05",
+                                        "object_type": "ipam.namespace"
+                                    },
+                                    "natural_slug": "global_2001_64_8659",
+                                    "network": "2001::",
+                                    "object_type": "ipam.prefix",
+                                    "parent": null,
+                                    "prefix": "2001::/64",
+                                    "prefix_length": 64,
+                                    "rir": null,
+                                    "role": null,
+                                    "status": {
+                                        "color": "4caf50",
+                                        "custom_fields": {},
+                                        "description": "Unit is active",
+                                        "display": "Active",
+                                        "name": "Active",
+                                        "natural_slug": "active_efb8",
+                                        "object_type": "extras.status"
+                                    },
+                                    "tenant": null,
+                                    "type": {
+                                        "label": "Network",
+                                        "value": "network"
+                                    },
+                                    "vlan": null
+                                },
                                 "role": null,
                                 "status": {
-                                    "label": "Active",
-                                    "value": "active"
+                                    "color": "4caf50",
+                                    "custom_fields": {},
+                                    "description": "Unit is active",
+                                    "display": "Active",
+                                    "name": "Active",
+                                    "natural_slug": "active_efb8",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "vrf": null
+                                "type": "host"
                             }
                         ],
                         "label": "",
@@ -447,14 +992,204 @@
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet2",
+                        "natural_slug": "gigabitethernet2_test100_test-tenant_child-test-location_parent-test-location_be95",
+                        "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "type": {
                             "label": "1000BASE-T (1GE)",
                             "value": "1000base-t"
                         },
-                        "untagged_vlan": null
+                        "untagged_vlan": null,
+                        "vrf": null
+                    },
+                    {
+                        "bridge": null,
+                        "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
+                        "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
+                        "connected_endpoint_type": null,
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
+                            "display": "test100",
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
+                        },
+                        "display": "GigabitEthernet3",
+                        "enabled": true,
+                        "ip_address_count": 0,
+                        "ip_addresses": [],
+                        "label": "",
+                        "lag": null,
+                        "mac_address": null,
+                        "mgmt_only": false,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "GigabitEthernet3",
+                        "natural_slug": "gigabitethernet3_test100_test-tenant_child-test-location_parent-test-location_135e",
+                        "object_type": "dcim.interface",
+                        "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "type": {
+                            "label": "1000BASE-T (1GE)",
+                            "value": "1000base-t"
+                        },
+                        "untagged_vlan": null,
+                        "vrf": null
+                    },
+                    {
+                        "bridge": null,
+                        "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
+                        "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
+                        "connected_endpoint_type": null,
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
+                            "display": "test100",
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
+                        },
+                        "display": "GigabitEthernet4",
+                        "enabled": true,
+                        "ip_address_count": 0,
+                        "ip_addresses": [],
+                        "label": "",
+                        "lag": null,
+                        "mac_address": null,
+                        "mgmt_only": false,
+                        "mode": null,
+                        "mtu": null,
+                        "name": "GigabitEthernet4",
+                        "natural_slug": "gigabitethernet4_test100_test-tenant_child-test-location_parent-test-location_5982",
+                        "object_type": "dcim.interface",
+                        "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "type": {
+                            "label": "1000BASE-T (1GE)",
+                            "value": "1000base-t"
+                        },
+                        "untagged_vlan": null,
+                        "vrf": null
                     }
                 ],
                 "is_virtual": false,
@@ -465,35 +1200,129 @@
                         ]
                     }
                 ],
-                "manufacturers": [
-                    "cisco"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                "manufacturers": [
+                    "Cisco"
                 ],
                 "services": [
                     {
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "test100",
-                            "name": "test100"
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
                         },
                         "display": "http (TCP/80)",
-                        "ipaddresses": [
-                            {
-                                "address": "2001::1:1/64",
-                                "display": "2001::1:1/64",
-                                "family": 6
-                            },
+                        "ip_addresses": [
                             {
                                 "address": "172.16.180.1/24",
+                                "custom_fields": {},
+                                "description": "",
                                 "display": "172.16.180.1/24",
-                                "family": 4
+                                "dns_name": "",
+                                "host": "172.16.180.1",
+                                "interfaces": [
+                                    {
+                                        "object_type": "dcim.interface"
+                                    }
+                                ],
+                                "ip_version": 4,
+                                "mask_length": 24,
+                                "nat_inside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_172-16-180-1_57e3",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "object_type": "ipam.prefix"
+                                },
+                                "role": null,
+                                "status": {
+                                    "object_type": "extras.status"
+                                },
+                                "tenant": null,
+                                "type": "host",
+                                "vm_interfaces": []
+                            },
+                            {
+                                "address": "2001::1:1/64",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "2001::1:1/64",
+                                "dns_name": "",
+                                "host": "2001::1:1",
+                                "interfaces": [
+                                    {
+                                        "object_type": "dcim.interface"
+                                    }
+                                ],
+                                "ip_version": 6,
+                                "mask_length": 64,
+                                "nat_inside": null,
+                                "nat_outside_list": [],
+                                "natural_slug": "global_2001-1-1_6117",
+                                "object_type": "ipam.ipaddress",
+                                "parent": {
+                                    "object_type": "ipam.prefix"
+                                },
+                                "role": null,
+                                "status": {
+                                    "object_type": "extras.status"
+                                },
+                                "tenant": null,
+                                "type": "host",
+                                "vm_interfaces": []
                             }
                         ],
                         "name": "http",
+                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_a068",
+                        "object_type": "ipam.service",
                         "ports": [
                             80
                         ],
@@ -508,12 +1337,57 @@
                         "custom_fields": {},
                         "description": "",
                         "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
                             "display": "test100",
-                            "name": "test100"
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_12cb",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
                         },
                         "display": "ssh (TCP/22)",
-                        "ipaddresses": [],
+                        "ip_addresses": [],
                         "name": "ssh",
+                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_aac7",
+                        "object_type": "ipam.service",
                         "ports": [
                             22
                         ],
@@ -525,23 +1399,25 @@
                         "virtual_machine": null
                     }
                 ],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": [],
-                "tenant_group": "test-tenant-group",
+                "tenant_group": "Test Tenant Group",
                 "tenants": [
-                    "test-tenant"
+                    "Test Tenant"
                 ]
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -558,14 +1434,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "natural_slug": "test-cluster__test100-vm_eth0_7ee5",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test100-vm",
-                            "name": "test100-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test100-vm",
+                            "natural_slug": "test-cluster__test100-vm_bc38",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -578,14 +1488,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "natural_slug": "test-cluster__test100-vm_eth1_4371",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test100-vm",
-                            "name": "test100-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test100-vm",
+                            "natural_slug": "test-cluster__test100-vm_bc38",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -598,14 +1542,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
+                        "natural_slug": "test-cluster__test100-vm_eth2_f824",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test100-vm",
-                            "name": "test100-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test100-vm",
+                            "natural_slug": "test-cluster__test100-vm_bc38",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -618,14 +1596,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
+                        "natural_slug": "test-cluster__test100-vm_eth3_3bb5",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test100-vm",
-                            "name": "test100-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test100-vm",
+                            "natural_slug": "test-cluster__test100-vm_bc38",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -638,38 +1650,75 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
+                        "natural_slug": "test-cluster__test100-vm_eth4_0ba2",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test100-vm",
-                            "name": "test100-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test100-vm",
+                            "natural_slug": "test-cluster__test100-vm_bc38",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     }
                 ],
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "services": [],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test101-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -686,14 +1735,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
+                        "natural_slug": "test-cluster__test101-vm_eth0_87dc",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test101-vm",
-                            "name": "test101-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test101-vm",
+                            "natural_slug": "test-cluster__test101-vm_6d1d",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -706,14 +1789,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
+                        "natural_slug": "test-cluster__test101-vm_eth1_9cfb",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test101-vm",
-                            "name": "test101-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test101-vm",
+                            "natural_slug": "test-cluster__test101-vm_6d1d",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -726,14 +1843,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
+                        "natural_slug": "test-cluster__test101-vm_eth2_8aee",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test101-vm",
-                            "name": "test101-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test101-vm",
+                            "natural_slug": "test-cluster__test101-vm_6d1d",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -746,14 +1897,48 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
+                        "natural_slug": "test-cluster__test101-vm_eth3_4f29",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test101-vm",
-                            "name": "test101-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test101-vm",
+                            "natural_slug": "test-cluster__test101-vm_6d1d",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     },
                     {
                         "bridge": null,
@@ -766,38 +1951,75 @@
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
+                        "natural_slug": "test-cluster__test101-vm_eth4_d390",
+                        "object_type": "virtualization.vminterface",
                         "parent_interface": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "natural_slug": "active_efb8",
+                            "object_type": "extras.status"
+                        },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
                         "virtual_machine": {
+                            "cluster": {
+                                "object_type": "virtualization.cluster"
+                            },
+                            "comments": "",
+                            "custom_fields": {},
+                            "disk": null,
                             "display": "test101-vm",
-                            "name": "test101-vm"
-                        }
+                            "local_config_context_data": null,
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "memory": null,
+                            "name": "test101-vm",
+                            "natural_slug": "test-cluster__test101-vm_6d1d",
+                            "object_type": "virtualization.virtualmachine",
+                            "platform": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "role": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null,
+                            "vcpus": null
+                        },
+                        "vrf": null
                     }
                 ],
                 "is_virtual": true,
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "services": [],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test102-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -807,24 +2029,27 @@
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "services": [],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test103-vm": {
                 "cluster": "Test Cluster",
-                "cluster_group": "test-cluster-group",
-                "cluster_type": "test-cluster-type",
+                "cluster_group": "Test Cluster Group",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -834,23 +2059,26 @@
                 "local_context_data": [
                     null
                 ],
-                "regions": [
-                    "test-region",
-                    "parent-region"
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
                 ],
                 "services": [],
-                "sites": [
-                    "test-site"
-                ],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test104-vm": {
                 "cluster": "Test Cluster 2",
-                "cluster_type": "test-cluster-type",
+                "cluster_type": "Test Cluster Type",
                 "config_context": [
                     {}
                 ],
@@ -860,11 +2088,16 @@
                 "local_context_data": [
                     null
                 ],
-                "regions": [],
+                "locations": [],
                 "services": [],
                 "status": {
-                    "label": "Active",
-                    "value": "active"
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "natural_slug": "active_efb8",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             }
@@ -872,41 +2105,28 @@
     },
     "all": {
         "children": [
-            "cluster_Test_Cluster",
-            "cluster_Test_Cluster_2",
             "cluster_group_test_cluster_group",
+            "cluster_test_cluster",
+            "cluster_test_cluster_2",
             "cluster_type_test_cluster_type",
             "device_roles_core_switch",
             "device_types_cisco_test",
             "device_types_nexus_parent",
             "is_virtual",
+            "location_parent_test_location",
+            "locations_child_child_test_location",
+            "locations_child_test_location",
+            "locations_parent_test_location",
             "manufacturers_cisco",
+            "rack_group_child_rack_group",
             "rack_group_parent_rack_group",
-            "rack_group_test_rack_group",
             "rack_role_test_rack_role",
-            "racks_Test_Rack",
-            "racks_Test_Rack_Site_2",
-            "region_other_region",
-            "region_parent_region",
-            "sites_test_site2",
+            "racks_main_test_rack",
+            "racks_sub_test_rack",
             "status_active",
             "tenant_group_test_tenant_group",
             "tenants_test_tenant",
             "ungrouped"
-        ]
-    },
-    "cluster_Test_Cluster": {
-        "hosts": [
-            "test100-vm",
-            "test101-vm",
-            "test102-vm",
-            "test103-vm"
-        ]
-    },
-    "cluster_Test_Cluster_2": {
-        "hosts": [
-            "Test VM With Spaces",
-            "test104-vm"
         ]
     },
     "cluster_group_test_cluster_group": {
@@ -915,6 +2135,20 @@
             "test101-vm",
             "test102-vm",
             "test103-vm"
+        ]
+    },
+    "cluster_test_cluster": {
+        "hosts": [
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "cluster_test_cluster_2": {
+        "hosts": [
+            "Test VM With Spaces",
+            "test104-vm"
         ]
     },
     "cluster_type_test_cluster_type": {
@@ -957,51 +2191,24 @@
             "test104-vm"
         ]
     },
-    "manufacturers_cisco": {
+    "location_child_test_location": {
+        "children": [
+            "location_child_child_test_location"
+        ]
+    },
+    "location_parent_test_location": {
+        "children": [
+            "location_child_test_location"
+        ]
+    },
+    "locations_child_child_test_location": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "locations_child_test_location": {
         "hosts": [
             "R1-Device",
-            "Test Nexus One",
-            "TestDeviceR1",
-            "test100"
-        ]
-    },
-    "rack_group_parent_rack_group": {
-        "hosts": [
-            "TestDeviceR1"
-        ]
-    },
-    "rack_group_test_rack_group": {
-        "hosts": [
-            "TestDeviceR1"
-        ]
-    },
-    "rack_role_test_rack_role": {
-        "hosts": [
-            "R1-Device"
-        ]
-    },
-    "racks_Test_Rack": {
-        "hosts": [
-            "TestDeviceR1"
-        ]
-    },
-    "racks_Test_Rack_Site_2": {
-        "hosts": [
-            "R1-Device"
-        ]
-    },
-    "region_parent_region": {
-        "children": [
-            "region_test_region"
-        ]
-    },
-    "region_test_region": {
-        "children": [
-            "sites_test_site"
-        ]
-    },
-    "sites_test_site": {
-        "hosts": [
             "Test Nexus One",
             "TestDeviceR1",
             "test100",
@@ -1011,9 +2218,50 @@
             "test103-vm"
         ]
     },
-    "sites_test_site2": {
+    "locations_parent_test_location": {
+        "hosts": [
+            "R1-Device",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "manufacturers_cisco": {
+        "hosts": [
+            "R1-Device",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100"
+        ]
+    },
+    "rack_group_child_rack_group": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "rack_group_parent_rack_group": {
+        "hosts": [
+            "R1-Device",
+            "TestDeviceR1"
+        ]
+    },
+    "rack_role_test_rack_role": {
         "hosts": [
             "R1-Device"
+        ]
+    },
+    "racks_main_test_rack": {
+        "hosts": [
+            "R1-Device"
+        ]
+    },
+    "racks_sub_test_rack": {
+        "hosts": [
+            "TestDeviceR1"
         ]
     },
     "status_active": {

@@ -36,14 +36,6 @@ options:
     required: true
     type: raw
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slug of the device type. Must follow slug formatting (URL friendly)
-      - If not specified, it will slugify the model
-      - ex. test-device-type
-    required: false
-    type: str
-    version_added: "3.0.0"
   part_number:
     description:
       - The part number of the device type
@@ -92,7 +84,6 @@ EXAMPLES = r"""
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        slug: test-device-type
         model: ws-test-3750
         manufacturer: Test Manufacturer
         state: present
@@ -101,7 +92,6 @@ EXAMPLES = r"""
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        slug: test-device-type
         model: ws-test-3750
         manufacturer: Test Manufacturer
         part_number: ws-3750g-v2
@@ -114,7 +104,7 @@ EXAMPLES = r"""
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        slug: test-device-type
+        model: ws-test-3750
         state: absent
 """
 
@@ -147,7 +137,6 @@ def main():
         dict(
             manufacturer=dict(required=False, type="raw"),
             model=dict(required=True, type="raw"),
-            slug=dict(required=False, type="str"),
             part_number=dict(required=False, type="str"),
             u_height=dict(required=False, type="int"),
             is_full_depth=dict(required=False, type="bool"),

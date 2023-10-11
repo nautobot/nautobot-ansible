@@ -42,7 +42,7 @@ networktocode.nautobot.cluster module -- Create, update or delete clusters withi
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -209,7 +208,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      type of the cluster
+      type of the cluster. Required if \ :emphasis:`state=present`\  and the cluster does not exist yet
 
 
       .. raw:: html
@@ -293,6 +292,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.cluster_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Cluster location.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
       .. _ansible_collections.networktocode.nautobot.cluster_module__parameter-name:
@@ -362,43 +398,6 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
-
-      .. _ansible_collections.networktocode.nautobot.cluster_module__parameter-site:
-
-      .. rst-class:: ansible-option-title
-
-      **site**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Required if \ :emphasis:`state=present`\  and the cluster does not exist yet
 
 
       .. raw:: html
@@ -682,14 +681,14 @@ Examples
               - Schnozzberry
             state: present
 
-        - name: Update the group and site of an existing cluster
+        - name: Update the group and location of an existing cluster
           networktocode.nautobot.cluster:
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Cluster
             cluster_type: qemu
             cluster_group: GROUP
-            site: SITE
+            location: "{{ location['key'] }}"
             state: present
 
 

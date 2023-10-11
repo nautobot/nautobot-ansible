@@ -42,7 +42,7 @@ networktocode.nautobot.vrf module -- Create, update or delete vrfs within Nautob
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -219,51 +218,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-enforce_unique"></div>
-
-      .. _ansible_collections.networktocode.nautobot.vrf_module__parameter-enforce_unique:
-
-      .. rst-class:: ansible-option-title
-
-      **enforce_unique**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-enforce_unique" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`boolean`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Prevent duplicate prefixes/IP addresses within this VRF
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`false`
-      - :ansible-option-choices-entry:`true`
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-export_targets"></div>
 
       .. _ansible_collections.networktocode.nautobot.vrf_module__parameter-export_targets:
@@ -375,6 +329,47 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-namespace"></div>
+
+      .. _ansible_collections.networktocode.nautobot.vrf_module__parameter-namespace:
+
+      .. rst-class:: ansible-option-title
+
+      **namespace**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-namespace" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      namespace that IP address is associated with. VRFs are unique per namespaces.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"Global"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
       .. _ansible_collections.networktocode.nautobot.vrf_module__parameter-query_params:
@@ -430,7 +425,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`string` / :ansible-option-required:`required`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -723,7 +718,6 @@ Examples
             name: Test VRF
             rd: "65000:1"
             tenant: Test Tenant
-            enforce_unique: true
             import_targets:
               - "65000:65001"
             export_targets:

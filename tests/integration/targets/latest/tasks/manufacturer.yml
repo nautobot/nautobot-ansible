@@ -10,7 +10,7 @@
     token: "{{ nautobot_token }}"
     name: Test Manufacturer Two
     state: present
-    description: "Test Manufactureer"
+    description: "Test Manufacturer"
   register: test_one
 
 - name: "MANUFACTURER 1: ASSERT - Necessary info creation"
@@ -20,8 +20,7 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['manufacturer']['name'] == "Test Manufacturer Two"
-      - test_one['manufacturer']['slug'] == "test-manufacturer-two"
-      - test_one['manufacturer']['description'] == "Test Manufactureer"
+      - test_one['manufacturer']['description'] == "Test Manufacturer"
       - test_one['msg'] == "manufacturer Test Manufacturer Two created"
 
 - name: "MANUFACTURER 2: Create duplicate"
@@ -30,7 +29,7 @@
     token: "{{ nautobot_token }}"
     name: Test Manufacturer Two
     state: present
-    description: "Test Manufactureer"
+    description: "Test Manufacturer"
   register: test_two
 
 - name: "MANUFACTURER 2: ASSERT - Create duplicate"
@@ -38,15 +37,15 @@
     that:
       - not test_two['changed']
       - test_two['manufacturer']['name'] == "Test Manufacturer Two"
-      - test_two['manufacturer']['slug'] == "test-manufacturer-two"
-      - test_two['manufacturer']['description'] == "Test Manufactureer"
+      - test_two['manufacturer']['description'] == "Test Manufacturer"
       - test_two['msg'] == "manufacturer Test Manufacturer Two already exists"
 
 - name: "MANUFACTURER 3: Update"
   networktocode.nautobot.manufacturer:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: test manufacturer two
+    name: Test Manufacturer Two
+    description: "Test Manufacturer changed description"
     state: present
   register: test_three
 
@@ -54,18 +53,16 @@
   assert:
     that:
       - test_three['changed']
-      - test_three['manufacturer']['name'] == "test manufacturer two"
-      - test_three['manufacturer']['slug'] == "test-manufacturer-two"
-      - test_three['manufacturer']['description'] == "Test Manufactureer"
-      - test_three['msg'] == "manufacturer test manufacturer two updated"
+      - test_three['manufacturer']['name'] == "Test Manufacturer Two"
+      - test_three['manufacturer']['description'] == "Test Manufacturer changed description"
+      - test_three['msg'] == "manufacturer Test Manufacturer Two updated"
 
 - name: "MANUFACTURER 4: ASSERT - Delete"
   networktocode.nautobot.manufacturer:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: test manufacturer two
+    name: Test Manufacturer Two
     state: absent
-    description: "Test Manufactureer"
   register: test_four
 
 - name: "MANUFACTURER 3: ASSERT - Delete"
@@ -74,7 +71,7 @@
       - test_four is changed
       - test_four['diff']['before']['state'] == "present"
       - test_four['diff']['after']['state'] == "absent"
-      - test_four['msg'] == "manufacturer test manufacturer two deleted"
+      - test_four['msg'] == "manufacturer Test Manufacturer Two deleted"
 
 - name: "MANUFACTURER 5: ASSERT - Delete non existing"
   networktocode.nautobot.manufacturer:

@@ -28,7 +28,7 @@
             "circuit_type": "Test Circuit Type"
         },
         "after": {
-            "circuit_type": "test-circuit-type"
+            "circuit_type": "Test Circuit Type"
         }
     },
     {
@@ -44,7 +44,7 @@
             "cluster_group": "Test Cluster_group"
         },
         "after": {
-            "cluster_group": "test-cluster_group"
+            "cluster_group": "Test Cluster_group"
         }
     },
     {
@@ -52,7 +52,7 @@
             "cluster_type": "Test Cluster Type"
         },
         "after": {
-            "cluster_type": "test-cluster-type"
+            "cluster_type": "Test Cluster Type"
         }
     },
     {
@@ -65,10 +65,10 @@
     },
     {
         "before": {
-            "device_role": "Core Switch"
+            "role": "Core Switch"
         },
         "after": {
-            "device_role": "core-switch"
+            "role": "Core Switch"
         }
     },
     {
@@ -76,7 +76,7 @@
             "device_type": "Cisco Switch"
         },
         "after": {
-            "device_type": "cisco-switch"
+            "device_type": "Cisco Switch"
         }
     },
     {
@@ -84,7 +84,7 @@
             "group": "Test Group1"
         },
         "after": {
-            "group": "test-group1"
+            "group": "Test Group1"
         }
     },
     {
@@ -100,7 +100,7 @@
             "manufacturer": "Cisco"
         },
         "after": {
-            "manufacturer": "cisco"
+            "manufacturer": "Cisco"
         }
     },
     {
@@ -124,15 +124,15 @@
             "platform": "Cisco IOS"
         },
         "after": {
-            "platform": "cisco-ios"
+            "platform": "Cisco IOS"
         }
     },
     {
         "before": {
-            "prefix_role": "TEst Role-1"
+            "role": "TEst Role-1"
         },
         "after": {
-            "prefix_role": "test-role-1"
+            "role": "TEst Role-1"
         }
     },
     {
@@ -164,7 +164,7 @@
             "provider": "Test Provider"
         },
         "after": {
-            "provider": "test-provider"
+            "provider": "Test Provider"
         }
     },
     {
@@ -180,23 +180,15 @@
             "rack_group": "RacK_group"
         },
         "after": {
-            "rack_group": "rack_group"
+            "rack_group": "RacK_group"
         }
     },
     {
         "before": {
-            "rack_role": "Test Rack Role"
+            "role": "Test Rack Role"
         },
         "after": {
-            "rack_role": "test-rack-role"
-        }
-    },
-    {
-        "before": {
-            "region": "Test Region_1"
-        },
-        "after": {
-            "region": "test-region_1"
+            "role": "Test Rack Role"
         }
     },
     {
@@ -204,23 +196,15 @@
             "rir": "Test RIR_One"
         },
         "after": {
-            "rir": "test-rir_one"
+            "rir": "Test RIR_One"
         }
     },
     {
         "before": {
-            "prefix_role": "TEst Role-1"
+            "role": "TEst Role-1"
         },
         "after": {
-            "prefix_role": "test-role-1"
-        }
-    },
-    {
-        "before": {
-            "slug": "Test to_slug"
-        },
-        "after": {
-            "slug": "test-to_slug"
+            "role": "TEst Role-1"
         }
     },
     {
@@ -228,7 +212,7 @@
             "tenant": "Test Tenant"
         },
         "after": {
-            "tenant": "test-tenant"
+            "tenant": "Test Tenant"
         }
     },
     {
@@ -236,7 +220,7 @@
             "tenant_group": "Test Tenant Group"
         },
         "after": {
-            "tenant_group": "test-tenant-group"
+            "tenant_group": "Test Tenant Group"
         }
     },
     {
@@ -268,15 +252,15 @@
             "vlan_group": "Test VLAN Group"
         },
         "after": {
-            "vlan_group": "test-vlan-group"
+            "vlan_group": "Test VLAN Group"
         }
     },
     {
         "before": {
-            "vlan_role": "Access Role"
+            "role": "Access Role"
         },
         "after": {
-            "vlan_role": "Access Role"
+            "role": "Access Role"
         }
     },
     {
@@ -325,7 +309,7 @@
         },
         "after": {
             "vlan": {
-                "vlan_group": "test-vlan-group"
+                "vlan_group": "Test VLAN Group"
             }
         }
     },

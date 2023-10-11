@@ -28,19 +28,12 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
+  location:
     description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
-  site:
-    description:
-      - The site the vlan will be assigned to
+      - The location the vlan will be assigned to
     required: false
     type: raw
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   description:
     description:
       - The description of the vlan group
@@ -61,7 +54,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test vlan group
-        site: Test Site
+        location: Test Location
         state: present
 
     - name: Delete vlan group within nautobot
@@ -100,8 +93,7 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
         )
     )

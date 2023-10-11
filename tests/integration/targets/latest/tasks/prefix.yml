@@ -5,11 +5,14 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
-    vrf: '{{ lookup(''networktocode.nautobot.lookup'', ''vrfs'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test VRF"'') }}'
-    vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-vlan-group') }}"
+    test_child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
+    vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Vlan Group\"') }}"
+    reserved: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Reserved') }}"
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    global_namespace: "{{ lookup('networktocode.nautobot.lookup', 'namespaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Global') }}"
+    private_namespace: "{{ lookup('networktocode.nautobot.lookup', 'namespaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Private') }}"
 
 - name: "1 - Create prefix within Nautobot with only required information"
   networktocode.nautobot.prefix:
@@ -28,6 +31,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['msg'] == "prefix 10.156.0.0/19 created"
       - test_one['prefix']['prefix'] == "10.156.0.0/19"
+      - test_one['prefix']['namespace'] == global_namespace['key']
 
 - name: "2 - Duplicate"
   networktocode.nautobot.prefix:
@@ -50,7 +54,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.156.0.0/19
-    site: Test Site
+    location: "{{ test_child_location['key'] }}"
     status: Reserved
     description: "This prefix has been updated"
     state: present
@@ -60,13 +64,13 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['site'] == test_site['key']
-      - test_three['diff']['after']['status'] == "reserved"
+      - test_three['diff']['after']['location'] == test_child_location['key']
+      - test_three['diff']['after']['status'] == reserved['key']
       - test_three['diff']['after']['description'] == "This prefix has been updated"
       - test_three['msg'] == "prefix 10.156.0.0/19 updated"
       - test_three['prefix']['prefix'] == "10.156.0.0/19"
-      - test_three['prefix']['site'] == test_site['key']
-      - test_three['prefix']['status'] == "reserved"
+      - test_three['prefix']['location'] == test_child_location['key']
+      - test_three['prefix']['status'] == reserved['key']
       - test_three['prefix']['description'] == "This prefix has been updated"
 
 - name: "4 - Delete prefix within nautobot"
@@ -89,20 +93,19 @@
   networktocode.nautobot.prefix:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    family: 4
+    ip_version: 4
     prefix: 10.156.32.0/19
-    site: Test Site
-    vrf: Test VRF
+    location: "{{ test_child_location['key'] }}"
     tenant: Test Tenant
     vlan:
       name: Test VLAN
-      site: Test Site
+      location: "{{ test_child_location['key'] }}"
       tenant: Test Tenant
       vlan_group: Test Vlan Group
     status: Reserved
-    prefix_role: Network of care
+    role: Network of care
     description: Test description
-    is_pool: true
+    type: Pool
     tags:
       - "Schnozzberry"
     state: present
@@ -116,19 +119,18 @@
       - test_five['diff']['after']['state'] == "present"
       - test_five['msg'] == "prefix 10.156.32.0/19 created"
       - test_five['prefix']['prefix'] == "10.156.32.0/19"
-      - test_five['prefix']['family'] == 4
-      - test_five['prefix']['site'] == test_site['key']
-      - test_five['prefix']['vrf'] == vrf['key']
+      - test_five['prefix']['ip_version'] == 4
+      - test_five['prefix']['location'] == test_child_location['key']
       - test_five['prefix']['tenant'] == tenant['key']
       - test_five['prefix']['vlan'] == vlan['key']
-      - test_five['prefix']['status'] == "reserved"
-      - test_five['prefix']['role'] == role['key']
+      - test_five['prefix']['status'] == reserved['key']
+      - test_five['prefix']['role'] == prefix_role['key']
       - test_five['prefix']['description'] == "Test description"
-      - test_five['prefix']['is_pool'] == true
+      - test_five['prefix']['type'] == "pool"
       - test_five['prefix']['tags'][0] == tag_schnozzberry['key']
   vars:
-    role: '{{ lookup(''networktocode.nautobot.lookup'', ''roles'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''slug="network-of-care"'') }}'
-    vlan: '{{ lookup(''networktocode.nautobot.lookup'', ''vlans'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test VLAN"'') }}'
+    prefix_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Network of care\"') }}"
+    vlan: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VLAN\"') }}"
 
 - name: "6 - Get a new /24 inside 10.156.0.0/19 within Nautobot - Parent doesn't exist"
   networktocode.nautobot.prefix:
@@ -190,8 +192,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.157.0.0/19
-    vrf: Test VRF
-    site: Test Site
+    location: "{{ test_child_location['key'] }}"
     status: "Active"
     state: present
   register: test_nine
@@ -204,8 +205,7 @@
       - test_nine['diff']['after']['state'] == "present"
       - test_nine['msg'] == "prefix 10.157.0.0/19 created"
       - test_nine['prefix']['prefix'] == "10.157.0.0/19"
-      - test_nine['prefix']['site'] == test_site['key']
-      - test_nine['prefix']['vrf'] == vrf['key']
+      - test_nine['prefix']['location'] == test_child_location['key']
 
 - name: "10 - Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values"
   networktocode.nautobot.prefix:
@@ -213,8 +213,7 @@
     token: "{{ nautobot_token }}"
     parent: 10.157.0.0/19
     prefix_length: 24
-    vrf: Test VRF
-    site: Test Site
+    location: "{{ test_child_location['key'] }}"
     status: "Active"
     state: present
     first_available: yes
@@ -228,8 +227,7 @@
       - test_ten['diff']['after']['state'] == "present"
       - test_ten['msg'] == "prefix 10.157.0.0/24 created"
       - test_ten['prefix']['prefix'] == "10.157.0.0/24"
-      - test_ten['prefix']['site'] == test_site['key']
-      - test_ten['prefix']['vrf'] == vrf['key']
+      - test_ten['prefix']['location'] == test_child_location['key']
 
 - name: "11 - Get a new /24 inside 10.156.0.0/19 within Nautobot"
   networktocode.nautobot.prefix:
@@ -250,3 +248,49 @@
       - test_eleven['diff']['after']['state'] == "present"
       - test_eleven['msg'] == "prefix 10.156.1.0/24 created"
       - test_eleven['prefix']['prefix'] == "10.156.1.0/24"
+
+- name: "12 - Create 10.157.0.0/19 within Nautobot in Private namespace"
+  networktocode.nautobot.prefix:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.157.0.0/19
+    location: "{{ test_child_location['key'] }}"
+    namespace: Private
+    status: "Active"
+    state: present
+  register: test_twelve
+
+- name: "12 - ASSERT"
+  assert:
+    that:
+      - test_twelve is changed
+      - test_twelve['diff']['before']['state'] == "absent"
+      - test_twelve['diff']['after']['state'] == "present"
+      - test_twelve['msg'] == "prefix 10.157.0.0/19 created"
+      - test_twelve['prefix']['prefix'] == "10.157.0.0/19"
+      - test_twelve['prefix']['namespace'] == private_namespace['key']
+      - test_twelve['prefix']['location'] == test_child_location['key']
+
+- name: "13 - Get a new /24 inside 10.157.0.0/19 within Nautobot in Private namespace"
+  networktocode.nautobot.prefix:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.157.0.0/19
+    prefix_length: 24
+    location: "{{ test_child_location['key'] }}"
+    namespace: Private
+    status: "Active"
+    state: present
+    first_available: yes
+  register: test_thirteen
+
+- name: "13 - ASSERT"
+  assert:
+    that:
+      - test_thirteen is changed
+      - test_thirteen['diff']['before']['state'] == "absent"
+      - test_thirteen['diff']['after']['state'] == "present"
+      - test_thirteen['msg'] == "prefix 10.157.0.0/24 created"
+      - test_thirteen['prefix']['prefix'] == "10.157.0.0/24"
+      - test_thirteen['prefix']['namespace'] == private_namespace['key']
+      - test_thirteen['prefix']['location'] == test_child_location['key']

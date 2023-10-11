@@ -37,7 +37,7 @@ options:
   identifiers:
     aliases: [ids]
     description:
-      - Plugin object identifier(s) like name, slug, etc.
+      - Plugin object identifier(s) like name, model, etc.
     required: true
     type: dict
     version_added: "4.4.0"

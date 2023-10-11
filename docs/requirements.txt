@@ -1,3 +1,5 @@
 ansible
-antsibull==0.48.0
-sphinx==3.4.2
+antsibull
+antsibull-docs
+sphinx
+sphinx-rtd-theme

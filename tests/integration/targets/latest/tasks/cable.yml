@@ -10,6 +10,7 @@
 - set_fact:
     nexus_parent_intf: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="Test Nexus One" name="Ethernet1/1"'') }}'
     nexus_child_intf: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="Test Nexus Child One" name="Ethernet2/1"'') }}'
+    planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
 
 - name: "CABLE 1: Necessary info creation"
   networktocode.nautobot.cable:
@@ -23,7 +24,7 @@
     termination_b:
       device: Test Nexus Child One
       name: Ethernet2/1
-    status: "connected"
+    status: "Connected"
     state: present
   register: test_one
 
@@ -51,7 +52,7 @@
     termination_b:
       device: Test Nexus Child One
       name: Ethernet2/1
-    status: "connected"
+    status: "Connected"
     state: present
   register: test_two
 
@@ -78,7 +79,7 @@
       device: Test Nexus Child One
       name: Ethernet2/1
     type: mmf-om4
-    status: planned
+    status: Planned
     label: label123
     color: abcdef
     length: 30
@@ -91,7 +92,7 @@
     that:
       - test_three is changed
       - test_three['diff']['after']['type'] == "mmf-om4"
-      - test_three['diff']['after']['status'] == "planned"
+      - test_three['diff']['after']['status'] == planned['key']
       - test_three['diff']['after']['label'] == "label123"
       - test_three['diff']['after']['color'] == "abcdef"
       - test_three['diff']['after']['length'] == 30
@@ -101,7 +102,7 @@
       - test_three['cable']['termination_b_type'] == "dcim.interface"
       - test_three['cable']['termination_b_id'] == nexus_child_intf['key']
       - test_three['cable']['type'] == "mmf-om4"
-      - test_three['cable']['status'] == "planned"
+      - test_three['cable']['status'] == planned['key']
       - test_three['cable']['label'] == "label123"
       - test_three['cable']['color'] == "abcdef"
       - test_three['cable']['length'] == 30
@@ -143,7 +144,7 @@
     termination_b:
       name: Test Console Port
       device: test100
-    status: "connected"
+    status: "Connected"
     state: present
   register: test_five
 
@@ -174,7 +175,7 @@
     termination_b:
       device: "test100"
       name: "GigabitEthernet2"
-    status: "connected"
+    status: "Connected"
     state: present
   register: test_six
 
@@ -193,5 +194,5 @@
       - test_six['cable']['termination_b_id'] == interface['key']
       - test_six['msg'] == "cable circuits.circuittermination Test Circuit Two <> dcim.interface GigabitEthernet2 created"
   vars:
-    circuit_termination: "{{ lookup('networktocode.nautobot.lookup', 'circuit-terminations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='circuit_id=' ~ circuit['key'] ~ ' term_side=A') }}"
+    circuit_termination: "{{ lookup('networktocode.nautobot.lookup', 'circuit-terminations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='circuit=' ~ circuit['key'] ~ ' term_side=A') }}"
     interface: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="test100" name="GigabitEthernet2"'') }}'

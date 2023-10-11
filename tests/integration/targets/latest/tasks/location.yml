@@ -5,9 +5,9 @@
 ##
 ##
 - set_fact:
-    site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=my-parent-location-type') }}"
-    child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=my-child-location-type') }}"
+    parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Parent Location Type\"') }}"
+    child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Child Location Type\"') }}"
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
 
 - name: "1 - Create location within Nautobot with only required information"
   networktocode.nautobot.location:
@@ -16,7 +16,6 @@
     name: Test Location
     status: Active
     location_type: "{{ parent_location_type['key'] }}"
-    site: "{{ site['key'] }}"
   register: test_create_min
 
 - name: "1 - ASSERT"
@@ -26,8 +25,7 @@
       - test_create_min['diff']['before']['state'] == "absent"
       - test_create_min['diff']['after']['state'] == "present"
       - test_create_min['location']['name'] == "Test Location"
-      - test_create_min['location']['status'] == "active"
-      - test_create_min['location']['site'] == site["key"]
+      - test_create_min['location']['status'] == active['key']
       - test_create_min['location']['location_type'] == parent_location_type["key"]
       - test_create_min['msg'] == "location Test Location created"
 
@@ -38,7 +36,6 @@
     name: Test Location
     status: Active
     location_type: "{{ parent_location_type['key'] }}"
-    site: "{{ site['key'] }}"
   register: test_create_idem
 
 - name: "2 - ASSERT"
@@ -55,7 +52,6 @@
     name: Test Location
     status: Active
     location_type: "{{ parent_location_type['key'] }}"
-    site: "{{ site['key'] }}"
     description: Test Location Description
   register: test_update
 
@@ -74,7 +70,7 @@
     status: Active
     description: Test Location 2 Description
     location_type: "{{ child_location_type['key'] }}"
-    parent: "{{ test_create_min['location']['id'] }}"
+    parent_location: "{{ test_create_min['location']['id'] }}"
     state: present
   register: test_create_max
 
@@ -85,7 +81,7 @@
       - test_create_max['diff']['before']['state'] == "absent"
       - test_create_max['diff']['after']['state'] == "present"
       - test_create_max['location']['name'] == "Test Location 2"
-      - test_create_max['location']['status'] == "active"
+      - test_create_max['location']['status'] == active['key']
       - test_create_max['msg'] == "location Test Location 2 created"
       - test_create_max['location']['description'] == "Test Location 2 Description"
       - test_create_max['location']['location_type'] == child_location_type["key"]
@@ -99,7 +95,7 @@
     status: Active
     description: Test Location 2 Description
     location_type: "{{ child_location_type['key'] }}"
-    parent: "{{ test_create_min['location']['id'] }}"
+    parent_location: "{{ test_create_min['location']['id'] }}"
     state: present
   register: test_create_max_idem
 
@@ -110,11 +106,14 @@
       - test_create_max_idem['msg'] == "location Test Location 2 already exists"
       - test_create_max_idem['location']['name'] == "Test Location 2"
 
+- set_fact:
+    location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Location 2\" parent=\"Test Location\" location_type=\"My Child Location Type\"') }}"
+
 - name: "6 - Delete location"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test Location 2
+    id: "{{ location_to_delete['key'] }}"
     state: absent
   register: test_delete
 
@@ -125,13 +124,13 @@
       - test_delete['diff']['before']['state'] == "present"
       - test_delete['diff']['after']['state'] == "absent"
       - test_delete['location']['name'] == "Test Location 2"
-      - test_delete['msg'] == "location Test Location 2 deleted"
+      - "'deleted' in test_delete['msg']"
 
 - name: "7 - Delete duplicate"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test Location 2
+    id: "{{ location_to_delete['key'] }}"
     state: absent
   register: test_delete_idem
 
@@ -139,4 +138,25 @@
   assert:
     that:
       - not test_delete_idem['changed']
-      - test_delete_idem['msg'] == "location Test Location 2 already absent"
+      - "'already absent' in test_delete_idem['msg']"
+
+- set_fact:
+    fist_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Location\" location_type=\"My Parent Location Type\"') }}"
+
+
+- name: "8 - Delete location"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    id: "{{ fist_location['key'] }}"
+    state: absent
+  register: test_eight
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['state'] == "present"
+      - test_eight['diff']['after']['state'] == "absent"
+      - test_eight['location']['name'] == "Test Location"
+      - "'deleted' in test_eight['msg']"

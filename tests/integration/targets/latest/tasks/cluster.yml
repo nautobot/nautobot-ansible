@@ -5,11 +5,11 @@
 ##
 ##
 - set_fact:
-    test_cluster_type: "{{ lookup('networktocode.nautobot.lookup', 'cluster-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-cluster-type') }}"
-    test_cluster_group: "{{ lookup('networktocode.nautobot.lookup', 'cluster-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-cluster-group') }}"
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-tenant') }}"
-    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=schnozzberry') }}"
+    test_cluster_type: "{{ lookup('networktocode.nautobot.lookup', 'cluster-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Type\"') }}"
+    test_cluster_group: "{{ lookup('networktocode.nautobot.lookup', 'cluster-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Group\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
 
 - name: "CLUSTER 1: Necessary info creation"
   networktocode.nautobot.cluster:
@@ -27,7 +27,7 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['cluster']['name'] == "Test Cluster One"
-      - test_one['cluster']['type'] == test_cluster_type['key']
+      - test_one['cluster']['cluster_type'] == test_cluster_type['key']
       - test_one['msg'] == "cluster Test Cluster One created"
 
 - name: "CLUSTER 2: Create duplicate"
@@ -44,7 +44,7 @@
     that:
       - not test_two['changed']
       - test_two['cluster']['name'] == "Test Cluster One"
-      - test_two['cluster']['type'] == test_cluster_type['key']
+      - test_two['cluster']['cluster_type'] == test_cluster_type['key']
       - test_two['msg'] == "cluster Test Cluster One already exists"
 
 - name: "CLUSTER 3: Update"
@@ -54,7 +54,7 @@
     name: "Test Cluster One"
     cluster_type: "Test Cluster Type"
     cluster_group: "Test Cluster Group"
-    site: "Test Site"
+    location: "{{ test_location['key'] }}"
     comments: "Updated cluster"
     tenant: "Test Tenant"
     tags:
@@ -66,15 +66,15 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['group'] == test_cluster_group['key']
-      - test_three['diff']['after']['site'] == test_site['key']
+      - test_three['diff']['after']['cluster_group'] == test_cluster_group['key']
+      - test_three['diff']['after']['location'] == test_location['key']
       - test_three['diff']['after']['comments'] == "Updated cluster"
       - test_three['diff']['after']['tags'][0] == tag_schnozzberry['key']
       - test_three['diff']['after']['tenant'] == tenant['key']
       - test_three['cluster']['name'] == "Test Cluster One"
-      - test_three['cluster']['type'] == test_cluster_type['key']
-      - test_three['cluster']['group'] == test_cluster_group['key']
-      - test_three['cluster']['site'] == test_site['key']
+      - test_three['cluster']['cluster_type'] == test_cluster_type['key']
+      - test_three['cluster']['cluster_group'] == test_cluster_group['key']
+      - test_three['cluster']['location'] == test_location['key']
       - test_three['cluster']['comments'] == "Updated cluster"
       - test_three['cluster']['tags'][0] == tag_schnozzberry['key']
       - test_three['cluster']['tenant'] == tenant['key']
@@ -93,9 +93,9 @@
     that:
       - test_four is changed
       - test_four['cluster']['name'] == "Test Cluster One"
-      - test_four['cluster']['type'] == test_cluster_type['key']
-      - test_four['cluster']['group'] == test_cluster_group['key']
-      - test_four['cluster']['site'] == test_site['key']
+      - test_four['cluster']['cluster_type'] == test_cluster_type['key']
+      - test_four['cluster']['cluster_group'] == test_cluster_group['key']
+      - test_four['cluster']['location'] == test_location['key']
       - test_four['cluster']['comments'] == "Updated cluster"
       - test_four['cluster']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "cluster Test Cluster One deleted"

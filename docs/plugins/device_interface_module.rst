@@ -42,7 +42,7 @@ networktocode.nautobot.device_interface module -- Creates or removes interfaces 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -741,7 +740,7 @@ Parameters
 
       :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 4.4.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.5.0`
 
 
       .. raw:: html
@@ -1143,12 +1142,12 @@ Examples
             type: 1000Base-t (1GE)
             untagged_vlan:
               name: Wireless
-              site: Test Site
+              location: "{{ location['key'] }}"
             tagged_vlans:
               - name: Data
-                site: Test Site
+                location: "{{ location['key'] }}"
               - name: VoIP
-                site: Test Site
+                location: "{{ location['key'] }}"
             mtu: 1600
             mgmt_only: true
             mode: Tagged

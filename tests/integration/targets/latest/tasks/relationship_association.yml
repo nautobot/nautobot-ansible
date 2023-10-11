@@ -6,7 +6,7 @@
 ##
 
 - set_fact:
-    relationship: "{{ lookup('networktocode.nautobot.lookup', 'relationships', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"VLAN to Device\"') }}"
+    relationship: "{{ lookup('networktocode.nautobot.lookup', 'relationships', api_endpoint=nautobot_url, token=nautobot_token, api_filter='label=\"VLAN to Device\"') }}"
     vlan: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VLAN\"') }}"
     device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
 

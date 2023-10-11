@@ -42,7 +42,7 @@ networktocode.nautobot.prefix module -- Creates or removes prefixes from Nautobo
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -219,43 +218,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-family"></div>
-
-      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-family:
-
-      .. rst-class:: ansible-option-title
-
-      **family**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-family" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`integer`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Specifies which address family the prefix prefix belongs to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-first_available"></div>
 
       .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-first_available:
@@ -283,7 +245,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :literal:`yes`\  and state \ :literal:`present`\ , if an parent is given, it will get the first available prefix of the given prefix\_length inside the given parent (and vrf, if given). Unused with state \ :literal:`absent`\ .
+      If \ :literal:`yes`\  and state \ :literal:`present`\ , if an parent is given, it will get the first available prefix of the given prefix\_length inside the given parent (and namespace, if given). Unused with state \ :literal:`absent`\ .
 
 
       .. rst-class:: ansible-option-line
@@ -301,21 +263,58 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-is_pool"></div>
+        <div class="ansibleOptionAnchor" id="parameter-ip_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-is_pool:
+      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-ip_version:
 
       .. rst-class:: ansible-option-title
 
-      **is_pool**
+      **ip_version**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-is_pool" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-ip_version" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`boolean`
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Specifies which address version the prefix prefix belongs to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
+
+      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-location:
+
+      .. rst-class:: ansible-option-title
+
+      **location**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -328,16 +327,50 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      All IP Addresses within this prefix are considered usable
+      Location that prefix is associated with
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-namespace"></div>
+
+      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-namespace:
+
+      .. rst-class:: ansible-option-title
+
+      **namespace**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-namespace" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      namespace that IP address is associated with. IPs are unique per namespaces.
+          
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`false`
-      - :ansible-option-choices-entry:`true`
-
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"Global"`
 
       .. raw:: html
 
@@ -459,43 +492,6 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-prefix_role"></div>
-
-      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-prefix_role:
-
-      .. rst-class:: ansible-option-title
-
-      **prefix_role**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-prefix_role" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The role of the prefix
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
       .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-query_params:
@@ -537,17 +533,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
+        <div class="ansibleOptionAnchor" id="parameter-role"></div>
 
-      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-site:
+      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-role:
 
       .. rst-class:: ansible-option-title
 
-      **site**
+      **role**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -564,7 +560,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Site that prefix is associated with
+      The role of the prefix
 
 
       .. raw:: html
@@ -763,6 +759,52 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-type"></div>
+
+      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-type:
+
+      .. rst-class:: ansible-option-title
+
+      **type**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Prefix type
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"Container"`
+      - :ansible-option-choices-entry:`"Network"`
+      - :ansible-option-choices-entry:`"Pool"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
       .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-url:
@@ -869,43 +911,6 @@ Parameters
 
         </div>
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-vrf"></div>
-
-      .. _ansible_collections.networktocode.nautobot.prefix_module__parameter-vrf:
-
-      .. rst-class:: ansible-option-title
-
-      **vrf**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-vrf" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      VRF that prefix is associated with
-
-
-      .. raw:: html
-
-        </div>
-
 
 .. Attributes
 
@@ -957,18 +962,17 @@ Examples
             token: thisIsMyToken
             family: 4
             prefix: 10.156.32.0/19
-            site: Test Site
-            vrf: Test VRF
+            location: Test Location
             tenant: Test Tenant
             vlan:
               name: Test VLAN
-              site: Test Site
+              location: Test Location
               tenant: Test Tenant
               vlan_group: Test Vlan Group
             status: Reserved
-            prefix_role: Network of care
+            role: Network of care
             description: Test description
-            is_pool: true
+            type: Pool
             tags:
               - Schnozzberry
             state: present
@@ -1004,8 +1008,7 @@ Examples
             token: thisIsMyToken
             parent: 10.157.0.0/19
             prefix_length: 24
-            vrf: Test VRF
-            site: Test Site
+            location: Test Location
             state: present
             first_available: yes
 

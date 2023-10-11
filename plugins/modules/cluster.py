@@ -32,7 +32,7 @@ options:
     version_added: "3.0.0"
   cluster_type:
     description:
-      - type of the cluster
+      - type of the cluster. Required if I(state=present) and the cluster does not exist yet 
     required: false
     type: raw
     version_added: "3.0.0"
@@ -42,9 +42,9 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  site:
+  location:
     description:
-      - Required if I(state=present) and the cluster does not exist yet
+      - Cluster location.
     required: false
     type: raw
     version_added: "3.0.0"
@@ -94,14 +94,14 @@ EXAMPLES = r"""
           - Schnozzberry
         state: present
 
-    - name: Update the group and site of an existing cluster
+    - name: Update the group and location of an existing cluster
       networktocode.nautobot.cluster:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Cluster
         cluster_type: qemu
         cluster_group: GROUP
-        site: SITE
+        location: "{{ location['key'] }}"
         state: present
 """
 
@@ -135,7 +135,7 @@ def main():
             name=dict(required=True, type="str"),
             cluster_type=dict(required=False, type="raw"),
             cluster_group=dict(required=False, type="raw"),
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             comments=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
@@ -143,7 +143,12 @@ def main():
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_if = [
+        ("state", "present", ["name", "cluster_type"]),
+        ("state", "absent", ["name"]),
+    ]
+
+    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
 
     cluster = NautobotVirtualizationModule(module, NB_CLUSTERS)
     cluster.run()

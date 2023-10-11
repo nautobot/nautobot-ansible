@@ -42,7 +42,7 @@ networktocode.nautobot.virtual_machine module -- Create, update or delete virtua
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -293,17 +292,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-local_context_data"></div>
+        <div class="ansibleOptionAnchor" id="parameter-local_config_context_data"></div>
 
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-local_context_data:
+      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-local_config_context_data:
 
       .. rst-class:: ansible-option-title
 
-      **local_context_data**
+      **local_config_context_data**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-local_context_data" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-local_config_context_data" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -556,17 +555,17 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-site"></div>
+        <div class="ansibleOptionAnchor" id="parameter-role"></div>
 
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-site:
+      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-role:
 
       .. rst-class:: ansible-option-title
 
-      **site**
+      **role**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-site" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -583,7 +582,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the site attach to the virtual machine
+      The role of the virtual machine
 
 
       .. raw:: html
@@ -888,43 +887,6 @@ Parameters
 
         </div>
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-virtual_machine_role"></div>
-
-      .. _ansible_collections.networktocode.nautobot.virtual_machine_module__parameter-virtual_machine_role:
-
-      .. rst-class:: ansible-option-title
-
-      **virtual_machine_role**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-virtual_machine_role" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The role of the virtual machine
-
-
-      .. raw:: html
-
-        </div>
-
 
 .. Attributes
 
@@ -976,7 +938,6 @@ Examples
             token: thisIsMyToken
             name: Another Test Virtual Machine
             cluster: test cluster
-            site: Test Site
             status: active
             tags:
               - Schnozzberry

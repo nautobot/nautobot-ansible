@@ -25,18 +25,26 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  family:
+  ip_version:
     description:
-      - Specifies which address family the prefix prefix belongs to
+      - Specifies which address version the prefix prefix belongs to
     required: false
     type: int
-    version_added: "3.0.0"
+    version_added: "5.0.0"
   prefix:
     description:
       - Required if state is C(present) and first_available is False. Will allocate or free this prefix.
     required: false
     type: raw
     version_added: "3.0.0"
+  namespace:
+    description:
+      - |
+        namespace that IP address is associated with. IPs are unique per namespaces.
+    required: false
+    default: Global
+    type: str
+    version_added: "5.0.0"
   parent:
     description:
       - Required if state is C(present) and first_available is C(yes). Will get a new available prefix in this parent prefix.
@@ -51,15 +59,9 @@ options:
     required: false
     type: int
     version_added: "3.0.0"
-  site:
+  location:
     description:
-      - Site that prefix is associated with
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  vrf:
-    description:
-      - VRF that prefix is associated with
+      - Location that prefix is associated with
     required: false
     type: raw
     version_added: "3.0.0"
@@ -82,18 +84,22 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  prefix_role:
+  role:
     description:
       - The role of the prefix
     required: false
     type: raw
     version_added: "3.0.0"
-  is_pool:
+  type:
     description:
-      - All IP Addresses within this prefix are considered usable
+     - Prefix type
+    choices:
+      - Container
+      - Network
+      - Pool
     required: false
-    type: bool
-    version_added: "3.0.0"
+    type: str
+    version_added: "5.0.0"
   description:
     description:
       - The description of the prefix
@@ -104,7 +110,7 @@ options:
     description:
       - If C(yes) and state C(present), if an parent is given, it will get the
         first available prefix of the given prefix_length inside the given parent (and
-        vrf, if given).
+        namespace, if given).
         Unused with state C(absent).
     default: false
     type: bool
@@ -139,18 +145,17 @@ EXAMPLES = r"""
         token: thisIsMyToken
         family: 4
         prefix: 10.156.32.0/19
-        site: Test Site
-        vrf: Test VRF
+        location: Test Location
         tenant: Test Tenant
         vlan:
           name: Test VLAN
-          site: Test Site
+          location: Test Location
           tenant: Test Tenant
           vlan_group: Test Vlan Group
         status: Reserved
-        prefix_role: Network of care
+        role: Network of care
         description: Test description
-        is_pool: true
+        type: Pool
         tags:
           - Schnozzberry
         state: present
@@ -186,8 +191,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         parent: 10.157.0.0/19
         prefix_length: 24
-        vrf: Test VRF
-        site: Test Site
+        location: Test Location
         state: present
         first_available: yes
 """
@@ -220,18 +224,22 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            family=dict(required=False, type="int"),
+            ip_version=dict(required=False, type="int"),
             prefix=dict(required=False, type="raw"),
             parent=dict(required=False, type="raw"),
             prefix_length=dict(required=False, type="int"),
-            site=dict(required=False, type="raw"),
-            vrf=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             vlan=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
-            prefix_role=dict(required=False, type="raw"),
-            is_pool=dict(required=False, type="bool"),
+            role=dict(required=False, type="raw"),
+            type=dict(
+                required=False,
+                type="str",
+                choices=["Container", "Network", "Pool"],
+            ),
             description=dict(required=False, type="str"),
+            namespace=dict(required=False, type="str", default="Global"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
             first_available=dict(required=False, type="bool", default=False),

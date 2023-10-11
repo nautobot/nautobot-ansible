@@ -5,15 +5,15 @@
 ##
 ##
 - set_fact:
-    test_site: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site') }}"
-    test_site2: "{{ lookup('networktocode.nautobot.lookup', 'sites', api_endpoint=nautobot_url, token=nautobot_token, api_filter='slug=test-site2') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location2: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child-Child Test Location\"') }}"
 
 - name: "VLAN_GROUP 1: Necessary info creation"
   networktocode.nautobot.vlan_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    site: Test Site
+    location: "{{ test_location['key'] }}"
     state: present
   register: test_one
 
@@ -24,8 +24,7 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['vlan_group']['name'] == "VLAN Group One"
-      - test_one['vlan_group']['slug'] == "vlan-group-one"
-      - test_one['vlan_group']['site'] == test_site['key']
+      - test_one['vlan_group']['location'] == test_location['key']
       - test_one['msg'] == "vlan_group VLAN Group One created"
 
 - name: "VLAN_GROUP 2: Create duplicate"
@@ -33,7 +32,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    site: Test Site
+    location: "{{ test_location['key'] }}"
     state: present
   register: test_two
 
@@ -42,49 +41,44 @@
     that:
       - not test_two['changed']
       - test_two['vlan_group']['name'] == "VLAN Group One"
-      - test_two['vlan_group']['slug'] == "vlan-group-one"
-      - test_two['vlan_group']['site'] == test_site['key']
+      - test_two['vlan_group']['location'] == test_location['key']
       - test_two['msg'] == "vlan_group VLAN Group One already exists"
 
-- name: "VLAN_GROUP 3: ASSERT - Create with same name, different site"
+- name: "VLAN_GROUP 3: ASSERT - Create with same name, different location"
   networktocode.nautobot.vlan_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    site: "Test Site2"
+    location: "{{ test_location2['key'] }}"
     state: present
   register: test_three
+  ignore_errors: true
 
-- name: "VLAN_GROUP 3: ASSERT - Create with same name, different site"
+- name: "VLAN_GROUP 3: ASSERT - Create with same name, different location"
   assert:
     that:
-      - test_three is changed
-      - test_three['vlan_group']['name'] == "VLAN Group One"
-      - test_three['vlan_group']['slug'] == "vlan-group-one"
-      - test_three['vlan_group']['site'] == test_site2['key']
-      - test_three['msg'] == "vlan_group VLAN Group One created"
+      - test_three is failed
+      - test_three['msg'] == "{\"name\":[\"VLAN group with this name already exists.\"]}"
 
-- name: "VLAN_GROUP 4: ASSERT - Create vlan group, no site"
+- name: "VLAN_GROUP 4: ASSERT - Create vlan group, no location"
   networktocode.nautobot.vlan_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
     state: present
-  ignore_errors: yes
   register: test_four
 
-- name: "VLAN_GROUP 4: ASSERT - Create with same name, different site"
+- name: "VLAN_GROUP 4: ASSERT - Create with same name, different location"
   assert:
     that:
-      - test_four is failed
-      - test_four['msg'] == "More than one result returned for VLAN Group One"
+      - not test_four is changed
+      - test_four['msg'] == "vlan_group VLAN Group One already exists"
 
 - name: "VLAN_GROUP 5: ASSERT - Delete"
   networktocode.nautobot.vlan_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: VLAN Group One
-    site: Test Site2
     state: absent
   register: test_five
 
@@ -95,8 +89,7 @@
       - test_five['diff']['before']['state'] == "present"
       - test_five['diff']['after']['state'] == "absent"
       - test_five['vlan_group']['name'] == "VLAN Group One"
-      - test_five['vlan_group']['slug'] == "vlan-group-one"
-      - test_five['vlan_group']['site'] == test_site2['key']
+      - test_five['vlan_group']['location'] == test_location['key']
       - test_five['msg'] == "vlan_group VLAN Group One deleted"
 
 - name: "VLAN_GROUP 6: ASSERT - Delete non existing"
@@ -104,7 +97,6 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: VLAN Group One
-    site: Test Site2
     state: absent
   register: test_six
 

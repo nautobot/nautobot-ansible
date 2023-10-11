@@ -19,7 +19,6 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['provider']['name'] == "Test Provider One"
-      - test_one['provider']['slug'] == "test-provider-one"
       - test_one['msg'] == "provider Test Provider One created"
 
 - name: "PYNAUTOBOT_PROVIDER 2: Duplicate"
@@ -35,7 +34,6 @@
     that:
       - not test_two['changed']
       - test_two['provider']['name'] == "Test Provider One"
-      - test_two['provider']['slug'] == "test-provider-one"
       - test_two['msg'] == "provider Test Provider One already exists"
 
 - name: "PYNAUTOBOT_PROVIDER 3: Update provider with other fields"
@@ -63,7 +61,6 @@
       - test_three['diff']['after']['admin_contact'] == "admin@provider.net"
       - test_three['diff']['after']['comments'] == "BAD PROVIDER"
       - test_three['provider']['name'] == "Test Provider One"
-      - test_three['provider']['slug'] == "test-provider-one"
       - test_three['provider']['asn'] == 65001
       - test_three['provider']['account'] == "200129104"
       - test_three['provider']['portal_url'] == "http://provider.net"
@@ -85,7 +82,6 @@
     that:
       - test_four is changed
       - test_four['provider']['name'] == "Test Provider One"
-      - test_four['provider']['slug'] == "test-provider-one"
       - test_four['provider']['asn'] == 65001
       - test_four['provider']['account'] == "200129104"
       - test_four['provider']['portal_url'] == "http://provider.net"

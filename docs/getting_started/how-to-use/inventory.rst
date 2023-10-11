@@ -6,7 +6,7 @@ This page will just have quick examples that people may have had questions about
 
 The inventory plugin documentation can be found :ref:`here<ansible_collections.networktocode.nautobot.inventory_inventory>`.
 
-Using Compose to Set ansible_network_os to Platform Slug
+Using Compose to Set ansible_network_os to Platform Network Driver
 ------------------------------------------------------------------
 
 .. code-block:: yaml
@@ -14,10 +14,10 @@ Using Compose to Set ansible_network_os to Platform Slug
   ---
   plugin: networktocode.nautobot.inventory
   compose:
-    ansible_network_os: platform.slug
+    ansible_network_os: platform.network_driver
 
 
-Using Keyed Groups to set ansible_network_os to Platform Slug
+Using Keyed Groups to set ansible_network_os to Platform Network Driver
 ----------------------------------------------------------------
 
 .. code-block:: yaml

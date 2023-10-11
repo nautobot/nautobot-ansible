@@ -1,0 +1,125 @@
+---
+##
+##
+### PYNAUTOBOT_IP_ADDRESS_TO_INTERFACE
+##
+##
+- set_fact:
+    ip_address_dev: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
+    ip_address_vm: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.10.1/32') }}"
+    test100_gi4: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=GigabitEthernet4 device=test100') }}"
+    test100_vm_eth0: "{{ lookup('networktocode.nautobot.lookup', 'virtualization-interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Eth0 virtual_machine=test100-vm') }}"
+
+- name: "1 - Add IP address on GigabitEthernet4 - test100"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_dev['key'] }}"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+  register: test_one
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - "'created' in test_one['msg']"
+      - test_one['ip_address_to_interface']['ip_address'] == ip_address_dev['key']
+      - test_one['ip_address_to_interface']['interface'] == test100_gi4['key']
+
+- name: "2 - Duplicate IP address on GigabitEthernet4 - test100"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_dev['key'] }}"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+  register: test_two
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_two is changed
+      - "'already exists' in test_two['msg']"
+      - test_one['ip_address_to_interface']['ip_address'] == ip_address_dev['key']
+      - test_one['ip_address_to_interface']['interface'] == test100_gi4['key']
+
+- name: "3 - Delete IP address on GigabitEthernet4 - test100"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_dev['key'] }}"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+    state: absent
+  register: test_three
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['state'] == "present"
+      - test_three['diff']['after']['state'] == "absent"
+      - "'deleted' in test_three['msg']"
+
+- name: 4" - Add IP address on Eth0 - test100-vm"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_vm['key'] }}"
+    vm_interface:
+      name: Eth0
+      virtual_machine: test100-vm
+  register: test_four
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "absent"
+      - test_four['diff']['after']['state'] == "present"
+      - "'created' in test_four['msg']"
+      - test_four['ip_address_to_interface']['ip_address'] == ip_address_vm['key']
+      - test_four['ip_address_to_interface']['vm_interface'] == test100_vm_eth0['key']
+
+- name: "5 - Duplicate IP address on Eth0 - test100-vm"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_vm['key'] }}"
+    vm_interface:
+      name: Eth0
+      virtual_machine: test100-vm
+  register: test_five
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - not test_five is changed
+      - "'already exists' in test_five['msg']"
+      - test_five['ip_address_to_interface']['ip_address'] == ip_address_vm['key']
+      - test_five['ip_address_to_interface']['vm_interface'] == test100_vm_eth0['key']
+
+- name: "6 - Delete IP address on Eth0 - test100-vm"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address_vm['key'] }}"
+    vm_interface:
+      name: Eth0
+      virtual_machine: test100-vm
+    state: absent
+  register: test_six
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "present"
+      - test_six['diff']['after']['state'] == "absent"
+      - "'deleted' in test_six['msg']"

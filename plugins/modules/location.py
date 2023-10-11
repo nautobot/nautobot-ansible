@@ -25,14 +25,16 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    description:
+      - Primary Key of the location, used to delete the location.
+      - Because of hierarchical nature of locations and name being not unique across locations,
+      - it's a user responsibility to query location and pass its id(PK) to the task to delete the location. 
+    required: false
+    type: str
   name:
     description:
       - Name of the location to be created
-    required: true
-    type: str
-  slug:
-    description:
-      - URL-friendly unique shorthand
     required: false
     type: str
   status:
@@ -52,14 +54,9 @@ options:
       - Required if I(state=present) and does not exist yet
     required: false
     type: raw
-  parent:
+  parent_location:
     description:
       - The parent location this location should be tied to
-    required: false
-    type: raw
-  site:
-    description:
-      - The site this location should be tied to
     required: false
     type: raw
 """
@@ -75,7 +72,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: My Location
-        status: active
+        status: Active
         location_type:
           name: My Location Type
         state: present
@@ -84,22 +81,22 @@ EXAMPLES = r"""
       networktocode.nautobot.location:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: My Location
+        id: "{{ location_to_delete['key'] }}"
         state: absent
+      vars:
+        location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\" parent_location=\"Location Parent\" location_type=\"Main Type\"') }}"
 
     - name: Create location with all parameters
       networktocode.nautobot.location:
         url: http://nautobot.local
         token: thisIsMyToken
         name: My Nested Location
-        status: active
+        status: Active
         location_type:
           name: My Location Type
         description: My Nested Location Description
-        parent:
+        parent_location:
           name: My Location
-        site:
-          name: My Site
         state: present
 """
 
@@ -130,20 +127,19 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
+            id=dict(required=False, type="str"),
+            name=dict(required=False, type="str"),
             status=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             location_type=dict(required=False, type="raw"),
-            parent=dict(required=False, type="raw"),
-            site=dict(required=False, type="raw"),
+            parent_location=dict(required=False, type="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )
 
     required_if = [
         ("state", "present", ["name", "location_type", "status"]),
-        ("state", "absent", ["name"]),
+        ("state", "absent", ["id"]),
     ]
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)

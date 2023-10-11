@@ -4,6 +4,10 @@
 ### PYNAUTOBOT_PLUGIN_BGP_ASN
 ##
 ##
+- set_fact:
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
+
 - name: "BGP ASN 1: Creation"
   networktocode.nautobot.plugin:
     url: "{{ nautobot_url }}"
@@ -13,7 +17,7 @@
     ids:
       asn: 65001
     attrs:
-      status: active
+      status: Active
     state: present
   register: test_one
 
@@ -24,7 +28,7 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['autonomous-systems']['asn'] == 65001
-      - test_one['autonomous-systems']['status'] == "active"
+      - test_one['autonomous-systems']['status'] == active['key']
       - test_one['msg'] == "autonomous-systems asn:65001 created"
 
 - name: "BGP ASN 2: Create duplicate"
@@ -36,7 +40,7 @@
     ids:
       asn: 65001
     attrs:
-      status: active
+      status: Active
     state: present
   register: test_two
 
@@ -45,7 +49,7 @@
     that:
       - test_two is not changed
       - test_two['autonomous-systems']['asn'] == 65001
-      - test_two['autonomous-systems']['status'] == "active"
+      - test_two['autonomous-systems']['status'] == active['key']
       - test_two['msg'] == "autonomous-systems asn:65001 already exists"
 
 - name: "BGP ASN 3: Update"
@@ -57,7 +61,7 @@
     ids:
       asn: 65001
     attrs:
-      status: planned
+      status: Planned
     state: present
   register: test_three
 
@@ -65,8 +69,8 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['before']['status'] == "active"
-      - test_three['diff']['after']['status'] == "planned"
+      - test_three['diff']['before']['status'] == active['key']
+      - test_three['diff']['after']['status'] == planned['key']
       - test_three['msg'] == "autonomous-systems asn:65001 updated"
 
 - name: "BGP ASN 4: Update Idempotent"
@@ -78,7 +82,7 @@
     ids:
       asn: 65001
     attrs:
-      status: planned
+      status: Planned
     state: present
   register: test_four
 

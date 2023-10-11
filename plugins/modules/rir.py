@@ -28,13 +28,6 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  slug:
-    description:
-      - The slugified version of the name or custom slug.
-      - This is auto-generated following Nautobot rules if not provided
-    required: false
-    type: str
-    version_added: "3.0.0"
   is_private:
     description:
       - IP space managed by this RIR is considered private
@@ -101,7 +94,6 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
             is_private=dict(required=False, type="bool"),
         )
     )

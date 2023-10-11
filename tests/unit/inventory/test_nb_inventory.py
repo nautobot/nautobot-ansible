@@ -48,11 +48,11 @@ def allowed_device_query_parameters_fixture():
         "id",
         "interfaces",
         "has_primary_ip",
+        "location",
         "mac_address",
         "name",
         "platform",
         "rack_id",
-        "region",
         "role",
         "tag",
     ]
@@ -63,12 +63,13 @@ def allowed_vm_query_parameters_fixture():
     # Subset of parameters - real list is fetched dynamically from Nautobot openapi endpoint
     return [
         "id",
+        "cluster",
         "interfaces",
         "disk",
         "mac_address",
+        "has_primary_ip",
         "name",
         "platform",
-        "region",
         "role",
         "tag",
     ]

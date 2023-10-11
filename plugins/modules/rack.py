@@ -37,7 +37,7 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
-  site:
+  location:
     description:
       - Required if I(state=present) and the rack does not exist yet.
     required: false
@@ -62,7 +62,7 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  rack_role:
+  role:
     description:
       - The rack role the rack will be associated to.
     required: false
@@ -156,7 +156,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test rack
-        site: Test Site
+        location: Test Location
         status: active
         state: present
 
@@ -197,11 +197,11 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             facility_id=dict(required=False, type="str"),
-            site=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
             rack_group=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
-            rack_role=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
             type=dict(

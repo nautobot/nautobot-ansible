@@ -30,11 +30,6 @@ options:
       - Name of the location type to be created
     required: true
     type: str
-  slug:
-    description:
-      - URL-friendly unique shorthand
-    required: false
-    type: str
   description:
     description:
       - Location Type description
@@ -121,7 +116,6 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            slug=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             parent=dict(required=False, type="raw"),
             nestable=dict(required=False, type="bool"),
