@@ -47,9 +47,19 @@ jobs:
           python-version: "3.9"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
+      - name: "Create the ansible.cfg file"
+        run: |
+          cat << EOF > ansible.cfg
+          [galaxy]
+          server_list = published
+          [galaxy_server.published]
+          url=https://galaxy.ansible.com/api/
+          token=${{ secrets.GALAXY_API_TOKEN }}
+          EOF
+        shell: bash
       - name: "Build the collection"
         run: "ansible-galaxy collection build --output-path build"
       - name: "Publish the collection"
-        run: "ansible-galaxy collection publish build/* --api-key=${{ secrets.GALAXY_API_TOKEN }}"
+        run: "ansible-galaxy collection publish build/*"
     needs:
       - "tests"
