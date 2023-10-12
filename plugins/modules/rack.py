@@ -83,12 +83,6 @@ options:
   type:
     description:
       - The type of rack.
-    choices:
-      - 2-post frame
-      - 4-post frame
-      - 4-post cabinet
-      - Wall-mounted frame
-      - Wall-mounted cabinet
     required: false
     type: str
     version_added: "3.0.0"
@@ -204,17 +198,7 @@ def main():
             rack_role=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
-            type=dict(
-                required=False,
-                type="str",
-                choices=[
-                    "2-post frame",
-                    "4-post frame",
-                    "4-post cabinet",
-                    "Wall-mounted frame",
-                    "Wall-mounted cabinet",
-                ],
-            ),
+            type=dict(required=False, type="str"),
             width=dict(required=False, type="int", choices=[10, 19, 21, 23]),
             u_height=dict(required=False, type="int"),
             desc_units=dict(required=False, type="bool"),

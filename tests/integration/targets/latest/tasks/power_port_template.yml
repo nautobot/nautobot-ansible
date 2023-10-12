@@ -80,6 +80,25 @@
       - test_three['power_port_template']['maximum_draw'] == 20
       - test_three['msg'] == "power_port_template Power Port Template updated"
 
+- name: "POWER_PORT_TEMPLATE 3.1: Update power_port_template with invalid choice value"
+  networktocode.nautobot.power_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port Template
+    device_type: Device Type Power Tests
+    type: invalid-choice-value
+    allocated_draw: 10
+    maximum_draw: 20
+    state: present
+  register: test_three_dot_one
+  ignore_errors: true
+
+- name: "POWER_PORT_TEMPLATE 3: ASSERT - Update power_port_template with invalid choice value"
+  assert:
+    that:
+      - test_three_dot_one is failed
+      - "'invalid-choice-value was not found as a valid choice for power_port_templates' in test_three_dot_one['msg']"
+
 - name: "POWER_PORT_TEMPLATE 4: Create Power Port Template for Delete Test"
   networktocode.nautobot.power_port_template:
     url: "{{ nautobot_url }}"

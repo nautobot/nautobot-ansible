@@ -39,21 +39,6 @@ options:
   type:
     description:
       - The type of the front port
-    choices:
-      - 8p8c
-      - 110-punch
-      - bnc
-      - mrj21
-      - fc
-      - lc
-      - lc-apc
-      - lsh
-      - lsh-apc
-      - mpo
-      - mtrj
-      - sc
-      - sc-apc
-      - st
     required: true
     type: str
     version_added: "3.0.0"
@@ -146,26 +131,7 @@ def main():
         dict(
             device=dict(required=True, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(
-                required=True,
-                choices=[
-                    "8p8c",
-                    "110-punch",
-                    "bnc",
-                    "mrj21",
-                    "fc",
-                    "lc",
-                    "lc-apc",
-                    "lsh",
-                    "lsh-apc",
-                    "mpo",
-                    "mtrj",
-                    "sc",
-                    "sc-apc",
-                    "st",
-                ],
-                type="str",
-            ),
+            type=dict(required=True, type="str"),
             rear_port=dict(required=True, type="raw"),
             rear_port_position=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
