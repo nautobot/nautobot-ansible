@@ -39,20 +39,6 @@ options:
   type:
     description:
       - The type of the console server port
-    choices:
-      - de-9
-      - db-25
-      - rj-11
-      - rj-12
-      - rj-45
-      - usb-a
-      - usb-b
-      - usb-c
-      - usb-mini-a
-      - usb-mini-b
-      - usb-micro-a
-      - usb-micro-b
-      - other
     required: false
     type: str
     version_added: "3.0.0"
@@ -127,25 +113,7 @@ def main():
         dict(
             device=dict(required=True, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(
-                required=False,
-                choices=[
-                    "de-9",
-                    "db-25",
-                    "rj-11",
-                    "rj-12",
-                    "rj-45",
-                    "usb-a",
-                    "usb-b",
-                    "usb-c",
-                    "usb-mini-a",
-                    "usb-mini-b",
-                    "usb-micro-a",
-                    "usb-micro-b",
-                    "other",
-                ],
-                type="str",
-            ),
+            type=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             tags=dict(required=False, type="list", elements="raw"),
         )

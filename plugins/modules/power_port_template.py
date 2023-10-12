@@ -38,61 +38,6 @@ options:
   type:
     description:
       - The type of the power port
-    choices:
-      - iec-60320-c6
-      - iec-60320-c8
-      - iec-60320-c14
-      - iec-60320-c16
-      - iec-60320-c20
-      - iec-60309-p-n-e-4h
-      - iec-60309-p-n-e-6h
-      - iec-60309-p-n-e-9h
-      - iec-60309-2p-e-4h
-      - iec-60309-2p-e-6h
-      - iec-60309-2p-e-9h
-      - iec-60309-3p-e-4h
-      - iec-60309-3p-e-6h
-      - iec-60309-3p-e-9h
-      - iec-60309-3p-n-e-4h
-      - iec-60309-3p-n-e-6h
-      - iec-60309-3p-n-e-9h
-      - nema-5-15p
-      - nema-5-20p
-      - nema-5-30p
-      - nema-5-50p
-      - nema-6-15p
-      - nema-6-20p
-      - nema-6-30p
-      - nema-6-50p
-      - nema-l5-15p
-      - nema-l5-20p
-      - nema-l5-30p
-      - nema-l5-50p
-      - nema-l6-20p
-      - nema-l6-30p
-      - nema-l6-50p
-      - nema-l14-20p
-      - nema-l14-30p
-      - nema-l21-20p
-      - nema-l21-30p
-      - cs6361c
-      - cs6365c
-      - cs8165c
-      - cs8265c
-      - cs8365c
-      - cs8465c
-      - ita-e
-      - ita-f
-      - ita-ef
-      - ita-g
-      - ita-h
-      - ita-i
-      - ita-j
-      - ita-k
-      - ita-l
-      - ita-m
-      - ita-n
-      - ita-o
     required: false
     type: str
     version_added: "3.0.0"
@@ -174,66 +119,7 @@ def main():
         dict(
             device_type=dict(required=True, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(
-                required=False,
-                choices=[
-                    "iec-60320-c6",
-                    "iec-60320-c8",
-                    "iec-60320-c14",
-                    "iec-60320-c16",
-                    "iec-60320-c20",
-                    "iec-60309-p-n-e-4h",
-                    "iec-60309-p-n-e-6h",
-                    "iec-60309-p-n-e-9h",
-                    "iec-60309-2p-e-4h",
-                    "iec-60309-2p-e-6h",
-                    "iec-60309-2p-e-9h",
-                    "iec-60309-3p-e-4h",
-                    "iec-60309-3p-e-6h",
-                    "iec-60309-3p-e-9h",
-                    "iec-60309-3p-n-e-4h",
-                    "iec-60309-3p-n-e-6h",
-                    "iec-60309-3p-n-e-9h",
-                    "nema-5-15p",
-                    "nema-5-20p",
-                    "nema-5-30p",
-                    "nema-5-50p",
-                    "nema-6-15p",
-                    "nema-6-20p",
-                    "nema-6-30p",
-                    "nema-6-50p",
-                    "nema-l5-15p",
-                    "nema-l5-20p",
-                    "nema-l5-30p",
-                    "nema-l5-50p",
-                    "nema-l6-20p",
-                    "nema-l6-30p",
-                    "nema-l6-50p",
-                    "nema-l14-20p",
-                    "nema-l14-30p",
-                    "nema-l21-20p",
-                    "nema-l21-30p",
-                    "cs6361c",
-                    "cs6365c",
-                    "cs8165c",
-                    "cs8265c",
-                    "cs8365c",
-                    "cs8465c",
-                    "ita-e",
-                    "ita-f",
-                    "ita-ef",
-                    "ita-g",
-                    "ita-h",
-                    "ita-i",
-                    "ita-j",
-                    "ita-k",
-                    "ita-l",
-                    "ita-m",
-                    "ita-n",
-                    "ita-o",
-                ],
-                type="str",
-            ),
+            type=dict(required=False, type="str"),
             allocated_draw=dict(required=False, type="int"),
             maximum_draw=dict(required=False, type="int"),
         )

@@ -39,20 +39,6 @@ options:
     description:
       - The type of the console port template
     version_added: "3.0.0"
-    choices:
-      - de-9
-      - db-25
-      - rj-11
-      - rj-12
-      - rj-45
-      - usb-a
-      - usb-b
-      - usb-c
-      - usb-mini-a
-      - usb-mini-b
-      - usb-micro-a
-      - usb-micro-b
-      - other
     required: false
     type: str
 """
@@ -115,31 +101,7 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(
-        dict(
-            device_type=dict(required=True, type="raw"),
-            name=dict(required=True, type="str"),
-            type=dict(
-                required=False,
-                choices=[
-                    "de-9",
-                    "db-25",
-                    "rj-11",
-                    "rj-12",
-                    "rj-45",
-                    "usb-a",
-                    "usb-b",
-                    "usb-c",
-                    "usb-mini-a",
-                    "usb-mini-b",
-                    "usb-micro-a",
-                    "usb-micro-b",
-                    "other",
-                ],
-                type="str",
-            ),
-        )
-    )
+    argument_spec.update(dict(device_type=dict(required=True, type="raw"), name=dict(required=True, type="str"), type=dict(required=False, type="str")))
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
