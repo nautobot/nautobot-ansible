@@ -31,67 +31,67 @@
       - test_one['autonomous-systems']['status'] == active['key']
       - test_one['msg'] == "autonomous-systems asn:65001 created"
 
-#- name: "BGP ASN 2: Create duplicate" #  TODO (fixme) status doesn't convert to id, will look into that with issue #244
-#  networktocode.nautobot.plugin:
-#    url: "{{ nautobot_url }}"
-#    token: "{{ nautobot_token }}"
-#    plugin: bgp
-#    endpoint: autonomous-systems
-#    ids:
-#      asn: 65001
-#    attrs:
-#      status: Active
-#    state: present
-#  register: test_two
-#
-#- name: "BGP ASN 2: ASSERT - Create duplicate"
-#  assert:
-#    that:
-#      - test_two is not changed
-#      - test_two['autonomous-systems']['asn'] == 65001
-#      - test_two['autonomous-systems']['status'] == active['key']
-#      - test_two['msg'] == "autonomous-systems asn:65001 already exists"
-#
-#- name: "BGP ASN 3: Update"
-#  networktocode.nautobot.plugin:
-#    url: "{{ nautobot_url }}"
-#    token: "{{ nautobot_token }}"
-#    plugin: bgp
-#    endpoint: autonomous-systems
-#    ids:
-#      asn: 65001
-#    attrs:
-#      status: Planned
-#    state: present
-#  register: test_three
-#
-#- name: "BGP ASN 3: ASSERT - Updated"
-#  assert:
-#    that:
-#      - test_three is changed
-#      - test_three['diff']['before']['status'] == active['key']
-#      - test_three['diff']['after']['status'] == planned['key']
-#      - test_three['msg'] == "autonomous-systems asn:65001 updated"
-#
-#- name: "BGP ASN 4: Update Idempotent"
-#  networktocode.nautobot.plugin:
-#    url: "{{ nautobot_url }}"
-#    token: "{{ nautobot_token }}"
-#    plugin: bgp
-#    endpoint: autonomous-systems
-#    ids:
-#      asn: 65001
-#    attrs:
-#      status: Planned
-#    state: present
-#  register: test_four
-#
-#- name: "BGP ASN 4: ASSERT - Update Idempotent"
-#  assert:
-#    that:
-#      - test_four is not changed
-#      - test_four['msg'] == "autonomous-systems asn:65001 already exists"
-#
+- name: "BGP ASN 2: Create duplicate"
+  networktocode.nautobot.plugin:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    plugin: bgp
+    endpoint: autonomous-systems
+    ids:
+      asn: 65001
+    attrs:
+      status: Active
+    state: present
+  register: test_two
+
+- name: "BGP ASN 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - test_two is not changed
+      - test_two['autonomous-systems']['asn'] == 65001
+      - test_two['autonomous-systems']['status'] == active['key']
+      - test_two['msg'] == "autonomous-systems asn:65001 already exists"
+
+- name: "BGP ASN 3: Update"
+  networktocode.nautobot.plugin:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    plugin: bgp
+    endpoint: autonomous-systems
+    ids:
+      asn: 65001
+    attrs:
+      status: Planned
+    state: present
+  register: test_three
+
+- name: "BGP ASN 3: ASSERT - Updated"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['status'] == active['key']
+      - test_three['diff']['after']['status'] == planned['key']
+      - test_three['msg'] == "autonomous-systems asn:65001 updated"
+
+- name: "BGP ASN 4: Update Idempotent"
+  networktocode.nautobot.plugin:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    plugin: bgp
+    endpoint: autonomous-systems
+    ids:
+      asn: 65001
+    attrs:
+      status: Planned
+    state: present
+  register: test_four
+
+- name: "BGP ASN 4: ASSERT - Update Idempotent"
+  assert:
+    that:
+      - test_four is not changed
+      - test_four['msg'] == "autonomous-systems asn:65001 already exists"
+
 - name: "BGP ASN 5: Delete"
   networktocode.nautobot.plugin:
     url: "{{ nautobot_url }}"
