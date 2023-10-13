@@ -15,22 +15,31 @@ class NautobotPluginModule(NautobotModule):
         to create/update/delete the endpoint objects.
         """
         self.result = {"changed": False}
-        data = self.data
         plugin_name = self.data["plugin"]
-        endpoint_name = data["endpoint"]
+        endpoint_name = self.data["endpoint"]
         object_name = ", ".join(f"{key}:{value}" for key, value in self.data["identifiers"].items())
+        user_query_params = self.module.params.get("query_params")
 
         plugins_api = getattr(self.nb, self.endpoint)
         plugin_app = getattr(plugins_api, plugin_name)
         plugin_endpoint = getattr(plugin_app, endpoint_name)
 
-        query_params = self.module.params.get("identifiers")
-        self.nb_object = self._nb_endpoint_get(plugin_endpoint, query_params, plugin_name)
-
+        # Prepare object attributes to be data parent keys.
+        data = self.module.params.get("identifiers").copy()
         if self.module.params.get("attrs"):
-            query_params.update(self.module.params["attrs"])
+            data.update(self.module.params["attrs"])
+
+        if not user_query_params:
+            user_query_params = self.module.params.get("identifiers")
+
+        # Need to call _find_ids again, despite it's part of __init__ because plugin module has object attrs as child keys.
+        data = self._find_ids(data, user_query_params)
+
+        object_query_params = self._build_query_params(endpoint_name, data, user_query_params=user_query_params)
+        self.nb_object = self._nb_endpoint_get(plugin_endpoint, object_query_params, plugin_name)
+
         if self.state == "present":
-            self._ensure_object_exists(plugin_endpoint, endpoint_name, object_name, query_params)
+            self._ensure_object_exists(plugin_endpoint, endpoint_name, object_name, data)
         elif self.state == "absent":
             self._ensure_object_absent(endpoint_name, object_name)
 

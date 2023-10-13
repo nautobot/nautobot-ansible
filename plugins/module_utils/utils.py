@@ -777,7 +777,8 @@ class NautobotModule:
                 return item["value"]
             elif item["value"] == search.lower():
                 return item["value"]
-        self._handle_errors(msg="%s was not found as a valid choice for %s" % (search, endpoint))
+        valid_choices = [choice["value"] for choice in choices]
+        self._handle_errors(msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}")
 
     def _change_choices_id(self, endpoint, data):
         """Used to change data that is static and under _choices for the application.
