@@ -42,7 +42,7 @@ networktocode.nautobot.front_port module -- Create, update or delete front ports
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -511,26 +511,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The type of the front port
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"8p8c"`
-      - :ansible-option-choices-entry:`"110-punch"`
-      - :ansible-option-choices-entry:`"bnc"`
-      - :ansible-option-choices-entry:`"mrj21"`
-      - :ansible-option-choices-entry:`"fc"`
-      - :ansible-option-choices-entry:`"lc"`
-      - :ansible-option-choices-entry:`"lc-apc"`
-      - :ansible-option-choices-entry:`"lsh"`
-      - :ansible-option-choices-entry:`"lsh-apc"`
-      - :ansible-option-choices-entry:`"mpo"`
-      - :ansible-option-choices-entry:`"mtrj"`
-      - :ansible-option-choices-entry:`"sc"`
-      - :ansible-option-choices-entry:`"sc-apc"`
-      - :ansible-option-choices-entry:`"st"`
 
 
       .. raw:: html

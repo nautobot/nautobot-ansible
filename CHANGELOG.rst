@@ -4,19 +4,23 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+
+v5.0.2
+======
+
+Minor Changes
+-------------
+
+- (#248) Remove choices from various modules, in favor of pynaubot choices() method.
+- (#269) Fix SSL verification.
+
 v5.0.1
 ======
 
-Release Summary
----------------
-
-Fix plugins module
-
-Bugfixes
---------
+Minor Changes
+-------------
 
 - (#257) Fix plugin module.
-
 
 v5.0.0
 ======
@@ -24,7 +28,7 @@ v5.0.0
 Release Summary
 ---------------
 
-This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
+This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes. 
 
 Breaking Changes / Porting Guide
 --------------------------------
@@ -35,64 +39,66 @@ New Modules
 -----------
 
 - networktocode.nautobot.ip_address_to_interface - Creates or removes associations between IP and interface.
-- networktocode.nautobot.role - Creates or removes a role.
+- networktocode.nautobot.role - Creates or removes a role. Collapsed from several role modules in DCIM and IPAM.
 
-Removed Modules
------------
+v4.5.0
+======
 
-- networktocode.nautobot.site - Removed as locations replace sites and regions.
-- networktocode.nautobot.region - Removed as locations replace sites and regions.
-- networktocode.nautobot.device_role - Removed as roles changes into generic type with content_types.
-- networktocode.nautobot.ipam_role - Removed as roles changes into generic type with content_types.
-- networktocode.nautobot.rack_role - Removed as roles changes into generic type with content_types.
-- networktocode.nautobot.aggregate - Model removed in 2.0.
+Release Summary
+---------------
+
+Fixes error handling in inventory to not erase inventories, minor bug fixes, and introduces Plugin module
+
+Minor Changes
+-------------
+
+- (#211) Removes codecov from dev dependencies
+- (#217) Fixes and enables testing for Nautobot 1.5
+- (#220) Adds status option to device_interface module
+
+Bugfixes
+--------
+
+- (#209) Catches HTTPError for `query_graphql` and fails to enable ansible retries
+- (#223) Inventory Hosts Empty On Error
+- (#228) Fixes graphql inventory grouping by tags
 
 v4.4.0
 ======
 
-Release Summary
----------------
-
-Adds plugin module and makes updates to HTTP handling on GraphQL
-
 Minor Changes
 -------------
-- (#211) Removes codecov from dev dependencies
+
 - (#203) Adds plugin module
 - (#209) Catches HTTPError for GraphQL query and enables Ansible retries
+- (#211) Removes codecov from dev dependencies
 
 v4.3.1
 ======
 
-Release Summary
----------------
-
-Adds Location and Location Type modules.
-
 Bugfixes
 --------
-- (#170) Updates incorrect key name
-- (#175) Adds additional key options for circuit termination and manufacturer
+
+- (#196) Virtual Chassis return multiple result at times
+
+v4.3.0
+======
 
 Minor Changes
 -------------
-- (#191) Added Location and Location Type modules
+
+- (#185) Updated Doc Fragments
+- (#187) Updated Tag documentation
+- (#191) Added locations and location_type modules
 
 v4.2.0
 ======
 
-Release Summary
----------------
-
-Update missing keys on module updates.
-
-Bugfixes
---------
+Minor Changes
+-------------
 
 - (#171) Add provider_network to circuit_termination module
 - (#172) Add description to manufacturer
-- (#171) Drop testing for Python 3.6 & Python 3.7 (may still work, just no longer tested)
-- (#171) Adds provider_networks to lookup plugin filter
 
 v4.1.1
 ======
