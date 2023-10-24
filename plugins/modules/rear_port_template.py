@@ -38,31 +38,6 @@ options:
   type:
     description:
       - The type of the rear port
-    choices:
-      - 8p8c
-      - 8p6c
-      - 8p4c
-      - 8p2c
-      - gg45
-      - tera-4p
-      - tera-2p
-      - tera-1p
-      - 110-punch
-      - bnc
-      - mrj21
-      - st
-      - sc
-      - sc-apc
-      - fc
-      - lc
-      - lc-apc
-      - mtrj
-      - mpo
-      - lsh
-      - lsh-apc
-      - splice
-      - cs
-      - sn
     required: true
     type: str
     version_added: "3.0.0"
@@ -139,36 +114,7 @@ def main():
         dict(
             device_type=dict(required=True, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(
-                required=True,
-                choices=[
-                    "8p8c",
-                    "8p6c",
-                    "8p4c",
-                    "8p2c",
-                    "gg45",
-                    "tera-4p",
-                    "tera-2p",
-                    "tera-1p",
-                    "110-punch",
-                    "bnc",
-                    "mrj21",
-                    "st",
-                    "sc",
-                    "sc-apc",
-                    "fc",
-                    "lc",
-                    "lc-apc",
-                    "mtrj",
-                    "mpo",
-                    "lsh",
-                    "lsh-apc",
-                    "splice",
-                    "cs",
-                    "sn",
-                ],
-                type="str",
-            ),
+            type=dict(required=True, type="str"),
             positions=dict(required=False, type="int"),
         )
     )
