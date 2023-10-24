@@ -129,13 +129,6 @@ except ImportError as imp_exc:
 else:
     PYNAUTOBOT_IMPORT_ERROR = None
 
-try:
-    import requests
-except ImportError as imp_exc:
-    REQUESTS_IMPORT_ERROR = imp_exc
-else:
-    REQUESTS_IMPORT_ERROR = None
-
 
 def get_endpoint(nautobot, term):
     """
@@ -296,11 +289,6 @@ class LookupModule(LookupBase):
                 AnsibleError("pynautobot must be installed to use this plugin"),
                 PYNAUTOBOT_IMPORT_ERROR,
             )
-        if REQUESTS_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("requests must be installed to use this plugin"),
-                REQUESTS_IMPORT_ERROR,
-            )
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
@@ -313,15 +301,7 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        session = requests.Session()
-        session.verify = ssl_verify
-
-        nautobot = pynautobot.api(
-            api_endpoint,
-            token=api_token if api_token else None,
-            api_version=api_version,
-        )
-        nautobot.http_session = session
+        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify)
 
         results = []
         for term in terms:

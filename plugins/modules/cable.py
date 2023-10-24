@@ -70,27 +70,6 @@ options:
   type:
     description:
       - The type of the cable
-    choices:
-      - cat3
-      - cat5
-      - cat5e
-      - cat6
-      - cat6a
-      - cat7
-      - dac-active
-      - dac-passive
-      - mrj21-trunk
-      - coaxial
-      - mmf
-      - mmf-om1
-      - mmf-om2
-      - mmf-om3
-      - mmf-om4
-      - smf
-      - smf-os1
-      - smf-os2
-      - aoc
-      - power
     required: false
     type: str
     version_added: "3.0.0"
@@ -123,11 +102,6 @@ options:
     version_added: "3.0.0"
     description:
       - The unit in which the length of the cable is measured
-    choices:
-      - m
-      - cm
-      - ft
-      - in
     required: false
     type: str
 """
@@ -248,40 +222,12 @@ def main():
                 type="str",
             ),
             termination_b=dict(required=True, type="raw"),
-            type=dict(
-                required=False,
-                choices=[
-                    "cat3",
-                    "cat5",
-                    "cat5e",
-                    "cat6",
-                    "cat6a",
-                    "cat7",
-                    "dac-active",
-                    "dac-passive",
-                    "mrj21-trunk",
-                    "coaxial",
-                    "mmf",
-                    "mmf-om1",
-                    "mmf-om2",
-                    "mmf-om3",
-                    "mmf-om4",
-                    "smf",
-                    "smf-os1",
-                    "smf-os2",
-                    "aoc",
-                    "power",
-                ],
-                type="str",
-            ),
-            status=dict(
-                required=False,
-                type="str",
-            ),
+            type=dict(required=False, type="str"),
+            status=dict(required=False, type="str"),
             label=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
             length=dict(required=False, type="int"),
-            length_unit=dict(required=False, choices=["m", "cm", "ft", "in"], type="str"),
+            length_unit=dict(required=False, type="str"),
         )
     )
 

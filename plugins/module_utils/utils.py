@@ -487,8 +487,7 @@ class NautobotModule:
 
     def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            nb = pynautobot.api(url, token=token, api_version=api_version)
-            nb.http_session.verify = ssl_verify
+            nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify)
             self.version = nb.version
             return nb
         except pynautobot.RequestError as e:
@@ -728,7 +727,8 @@ class NautobotModule:
                 return item["value"]
             elif item["value"] == search.lower():
                 return item["value"]
-        self._handle_errors(msg="%s was not found as a valid choice for %s" % (search, endpoint))
+        valid_choices = [choice["value"] for choice in choices]
+        self._handle_errors(msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}")
 
     def _change_choices_id(self, endpoint, data):
         """Used to change data that is static and under _choices for the application.
@@ -978,8 +978,7 @@ class NautobotApiBase:
         self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls
-        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version)
-        self.api.http_session.verify = self.ssl_verify
+        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version, verify=self.ssl_verify)
 
 
 class NautobotGraphQL:
