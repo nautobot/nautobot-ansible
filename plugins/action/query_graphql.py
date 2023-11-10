@@ -19,6 +19,14 @@ else:
     PYNAUTOBOT_IMPORT_ERROR = None
 
 try:
+    import truststore
+    truststore.inject_into_ssl()
+except ImportError as imp_exc:
+    TRUSTSTORE_IMPORT_ERROR = imp_exc
+else:
+    TRUSTSTORE_IMPORT_ERROR = None
+
+try:
     import requests
 except ImportError as imp_exc:
     REQUESTS_IMPORT_ERROR = imp_exc
