@@ -23,6 +23,7 @@ requirements:
 version_added: "4.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   id:
@@ -59,6 +60,78 @@ options:
       - The parent location this location should be tied to
     required: false
     type: raw
+  tenant:
+    description:
+      - The tenant the location will be assigned to
+    required: false
+    type: raw
+    version_added: "5.1.0"
+  facility:
+    description:
+      - Data center provider or facility, ex. Equinix NY7
+    required: false
+    type: str
+    version_added: "5.1.0"
+  asn:
+    description:
+      - The ASN associated with the location
+    required: false
+    type: int
+    version_added: "5.1.0"
+  time_zone:
+    description:
+      - Timezone associated with the location, ex. America/Denver
+    required: false
+    type: str
+    version_added: "5.1.0"
+  physical_address:
+    description:
+      - Physical address of location
+    required: false
+    type: str
+    version_added: "5.1.0"
+  shipping_address:
+    description:
+      - Shipping address of location
+    required: false
+    type: str
+    version_added: "5.1.0"
+  latitude:
+    description:
+      - Latitude in decimal format
+    required: false
+    type: str
+    version_added: "5.1.0"
+  longitude:
+    description:
+      - Longitude in decimal format
+    required: false
+    type: str
+    version_added: "5.1.0"
+  contact_name:
+    description:
+      - Name of contact for location
+    required: false
+    type: str
+    version_added: "5.1.0"
+  contact_phone:
+    description:
+      - Contact phone number for location
+    required: false
+    type: str
+    version_added: "5.1.0"
+  contact_email:
+    description:
+      - Contact email for location
+    required: false
+    type: str
+    version_added: "5.1.0"
+  comments:
+    description:
+      - Comments for the location. This can be markdown syntax
+    required: false
+    type: str
+    version_added: "5.1.0"
 """
 
 EXAMPLES = r"""
@@ -95,8 +168,19 @@ EXAMPLES = r"""
         location_type:
           name: My Location Type
         description: My Nested Location Description
-        parent_location:
-          name: My Location
+        tenant: Test Tenant
+        facility: EquinoxCA7
+        asn: "65001"
+        time_zone: America/Los Angeles
+        physical_address: Hollywood, CA, 90210
+        shipping_address: Hollywood, CA, 90210
+        latitude: "10.100000"
+        longitude: "12.200000"
+        contact_name: Jenny
+        contact_phone: 867-5309
+        contact_email: jenny@example.com
+        comments: "**This** is a `markdown` comment"
+        parent_location: My Location
         state: present
 """
 
@@ -133,6 +217,19 @@ def main():
             description=dict(required=False, type="str"),
             location_type=dict(required=False, type="raw"),
             parent_location=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
+            facility=dict(required=False, type="str"),
+            asn=dict(required=False, type="int"),
+            time_zone=dict(required=False, type="str"),
+            physical_address=dict(required=False, type="str"),
+            shipping_address=dict(required=False, type="str"),
+            latitude=dict(required=False, type="str"),
+            longitude=dict(required=False, type="str"),
+            contact_name=dict(required=False, type="str"),
+            contact_phone=dict(required=False, type="str"),
+            contact_email=dict(required=False, type="str"),
+            comments=dict(required=False, type="str"),
+            tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
         )
     )

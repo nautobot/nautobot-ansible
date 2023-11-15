@@ -71,6 +71,18 @@
     description: Test Location 2 Description
     location_type: "{{ child_location_type['key'] }}"
     parent_location: "{{ test_create_min['location']['id'] }}"
+    tenant: Test Tenant
+    facility: EquinoxCA7
+    asn: "65001"
+    time_zone: America/Los Angeles
+    physical_address: Hollywood, CA, 90210
+    shipping_address: Hollywood, CA, 90210
+    latitude: "10.100000"
+    longitude: "12.200000"
+    contact_name: Jenny
+    contact_phone: 867-5309
+    contact_email: jenny@example.com
+    comments: "**This** is a `markdown` comment"
     state: present
   register: test_create_max
 
@@ -96,6 +108,18 @@
     description: Test Location 2 Description
     location_type: "{{ child_location_type['key'] }}"
     parent_location: "{{ test_create_min['location']['id'] }}"
+    tenant: Test Tenant
+    facility: EquinoxCA7
+    asn: "65001"
+    time_zone: America/Los Angeles
+    physical_address: Hollywood, CA, 90210
+    shipping_address: Hollywood, CA, 90210
+    latitude: "10.100000"
+    longitude: "12.200000"
+    contact_name: Jenny
+    contact_phone: 867-5309
+    contact_email: jenny@example.com
+    comments: "**This** is a `markdown` comment"
     state: present
   register: test_create_max_idem
 
