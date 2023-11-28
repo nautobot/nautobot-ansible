@@ -538,5 +538,32 @@ relationships = [
 ]
 created_relationships = make_nautobot_calls(nb.extras.relationships, relationships)
 
+# Create Secrets
+secrets = [
+    {
+        "name": "Test Secret",
+        "provider": "environment-variable",
+        "parameters": {
+            "variable": "TEST_ENV_VAR",
+        },
+    }
+]
+created_secrets = make_nautobot_calls(nb.extras.secrets, secrets)
+test_secret = nb.extras.secrets.get(name="Test Secret")
+
+secrets_groups = [
+    {
+        "name": "Test Secrets Group",
+        "secrets": [
+            {
+                "secret": test_secret.id,
+                "access_type": "Generic",
+                "secret_type": "secret",
+            }
+        ],
+    }
+]
+created_secrets_groups = make_nautobot_calls(nb.extras.secrets_groups, secrets_groups)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
