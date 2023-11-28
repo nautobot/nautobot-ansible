@@ -152,6 +152,18 @@ options:
     required: false
     type: dict
     version_added: "3.0.0"
+  device_redundancy_group:
+    description:
+      - Device redundancy group the device will be assigned to
+    required: false
+    type: raw
+    version_added: "5.1.0"
+  device_redundancy_group_priority:
+    description:
+      - Priority in the assigned device redundancy group
+    required: false
+    type: int
+    version_added: "5.1.0"
 """
 
 EXAMPLES = r"""
@@ -276,6 +288,8 @@ def main():
             tags=dict(required=False, type="list", elements="raw"),
             local_config_context_data=dict(required=False, type="dict"),
             custom_fields=dict(required=False, type="dict"),
+            device_redundancy_group=dict(required=False, type="raw"),
+            device_redundancy_group_priority=dict(required=False, type="int"),
         )
     )
 

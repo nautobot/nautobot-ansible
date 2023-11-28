@@ -565,5 +565,14 @@ secrets_groups = [
 ]
 created_secrets_groups = make_nautobot_calls(nb.extras.secrets_groups, secrets_groups)
 
+# Create Device Redundancy Groups
+device_redundancy_groups = [
+    {
+        "name": "My Device Redundancy Group",
+        "status": "Active",
+    }
+]
+created_device_redundancy_groups = make_nautobot_calls(nb.dcim.device_redundancy_groups, device_redundancy_groups)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
