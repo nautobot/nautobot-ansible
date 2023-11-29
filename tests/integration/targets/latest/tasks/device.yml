@@ -12,6 +12,7 @@
     vc1: "{{ lookup('networktocode.nautobot.lookup', 'virtual-chassis', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=VC1') }}"
     staged: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Staged') }}"
     active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    device_redundancy_group: "{{ lookup('networktocode.nautobot.lookup', 'device-redundancy-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Device Redundancy Group\"') }}"
 
 - name: "1 - Device with required information"
   networktocode.nautobot.device:
@@ -95,6 +96,8 @@
     virtual_chassis: "VC1"
     vc_position: 3
     vc_priority: 15
+    device_redundancy_group: "{{ device_redundancy_group['key'] }}"
+    device_redundancy_group_priority: 10
     state: present
   register: test_three
 
@@ -117,6 +120,8 @@
       - test_three['device']['virtual_chassis'] == vc1['key']
       - test_three['device']['vc_position'] == 3
       - test_three['device']['vc_priority'] == 15
+      - test_three['device']['device_redundancy_group'] == device_redundancy_group['key']
+      - test_three['device']['device_redundancy_group_priority'] == 10
       - test_three['msg'] == "device R1 updated"
 
 - name: "3.1 - Update device status"

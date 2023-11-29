@@ -1,0 +1,130 @@
+---
+##
+##
+### PYNAUTOBOT_DEVICE_REDUNDANCY_GROUP
+##
+##
+- set_fact:
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
+
+- name: "1 - Create device redundancy group within Nautobot with only required information"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group
+    status: Active
+  register: test_create_min
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_min is changed
+      - test_create_min['diff']['before']['state'] == "absent"
+      - test_create_min['diff']['after']['state'] == "present"
+      - test_create_min['device_redundancy_group']['name'] == "Test Device Redundancy Group"
+      - test_create_min['device_redundancy_group']['status'] == active['key']
+      - test_create_min['msg'] == "device_redundancy_group Test Device Redundancy Group created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group
+    status: Active
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "device_redundancy_group Test Device Redundancy Group already exists"
+      - test_create_idem['device_redundancy_group']['name'] == "Test Device Redundancy Group"
+
+- name: "3 - Update device redundancy group"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group
+    description: Test Device Redundancy Group Description
+  register: test_update
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['diff']['before']['description'] == ""
+      - test_update['diff']['after']['description'] == "Test Device Redundancy Group Description"
+
+- name: "4 - Create device redundancy group with all parameters"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group 2
+    status: Active
+    description: Test Device Redundancy Group Description 2
+    failover_strategy: "active-active"
+    secrets_group: "{{ secrets_group['key'] }}"
+  register: test_create_max
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - test_create_max is changed
+      - test_create_max['diff']['before']['state'] == "absent"
+      - test_create_max['diff']['after']['state'] == "present"
+      - test_create_max['device_redundancy_group']['name'] == "Test Device Redundancy Group 2"
+      - test_create_max['device_redundancy_group']['status'] == active['key']
+      - test_create_max['msg'] == "device_redundancy_group Test Device Redundancy Group 2 created"
+      - test_create_max['device_redundancy_group']['description'] == "Test Device Redundancy Group Description 2"
+      - test_create_max['device_redundancy_group']['failover_strategy'] == "active-active"
+      - test_create_max['device_redundancy_group']['secrets_group'] == secrets_group['key']
+
+- name: "5 - Duplicate create with all parameters"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group 2
+    status: Active
+    description: Test Device Redundancy Group Description 2
+    failover_strategy: "active-active"
+    secrets_group: "{{ secrets_group['key'] }}"
+  register: test_create_max_idem
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - not test_create_max_idem['changed']
+      - test_create_max_idem['msg'] == "device_redundancy_group Test Device Redundancy Group 2 already exists"
+      - test_create_max_idem['device_redundancy_group']['name'] == "Test Device Redundancy Group 2"
+
+- name: "6 - Delete device redundancy group"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group 2
+    state: absent
+  register: test_delete
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['device_redundancy_group']['name'] == "Test Device Redundancy Group 2"
+      - "'deleted' in test_delete['msg']"
+
+- name: "7 - Delete idempotent"
+  networktocode.nautobot.device_redundancy_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Device Redundancy Group 2
+    state: absent
+  register: test_delete_idem
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"

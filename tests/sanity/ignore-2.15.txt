@@ -1,0 +1,1 @@
+plugins/modules/device_redundancy_group.py validate-modules:no-log-needed  # secrets_group is not an actual secret that requires no_log to be set

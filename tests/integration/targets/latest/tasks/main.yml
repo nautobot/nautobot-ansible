@@ -484,3 +484,12 @@
         - plugin_bgp_asn
   tags:
     - plugin_bgp_asn
+
+- name: "PYNAUTOBOT_DEVICE_REDUNDANCY_GROUP TESTS"
+  include_tasks:
+    file: "device_redundancy_group.yml"
+    apply:
+      tags:
+        - device_redundancy_group
+  tags:
+    - device_redundancy_group
