@@ -5,8 +5,8 @@
 ##
 ##
 - set_fact:
-    parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Parent Location Type\"') }}"
-    child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location_types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Child Location Type\"') }}"
+    parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Parent Location Type\"') }}"
+    child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Child Location Type\"') }}"
     active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
 
 - name: "1 - Create location within Nautobot with only required information"

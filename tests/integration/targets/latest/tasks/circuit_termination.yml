@@ -8,7 +8,7 @@
     test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
     circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
-    provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider_networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
+    provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider-networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
