@@ -84,18 +84,18 @@
       - test_create_max is changed
       - test_create_max['diff']['before']['state'] == "absent"
       - test_create_max['diff']['after']['state'] == "present"
-      - test_create_min['custom_field']['label'] == "Test Custom Field 2"
-      - test_create_min['custom_field']['key'] == "test_custom_field_2"
-      - test_create_min['custom_field']['type'] == "integer"
-      - test_create_min['msg'] == "custom_field Test Custom Field 2 created"
-      - test_create_min['custom_field']['content_types'] == ['dcim.device', 'dcim.location']
-      - test_create_min['custom_field']['description'] == "Test Custom Field Description 2"
-      - test_create_min['custom_field']['required'] == true
-      - test_create_min['custom_field']['filter_logic'] == "exact"
-      - test_create_min['custom_field']['default'] == 1
-      - test_create_min['custom_field']['weight'] == 100
-      - test_create_min['custom_field']['validation_minimum'] == 1
-      - test_create_min['custom_field']['validation_maximum'] == 10
+      - test_create_max['custom_field']['label'] == "Test Custom Field 2"
+      - test_create_max['custom_field']['key'] == "test_custom_field_2"
+      - test_create_max['custom_field']['type'] == "integer"
+      - test_create_max['msg'] == "custom_field Test Custom Field 2 created"
+      - test_create_max['custom_field']['content_types'] == ['dcim.device', 'dcim.location']
+      - test_create_max['custom_field']['description'] == "Test Custom Field Description 2"
+      - test_create_max['custom_field']['required'] == true
+      - test_create_max['custom_field']['filter_logic'] == "exact"
+      - test_create_max['custom_field']['default'] == 1
+      - test_create_max['custom_field']['weight'] == 100
+      - test_create_max['custom_field']['validation_minimum'] == 1
+      - test_create_max['custom_field']['validation_maximum'] == 10
 
 - name: "5 - Duplicate create with all parameters"
   networktocode.nautobot.custom_field:
