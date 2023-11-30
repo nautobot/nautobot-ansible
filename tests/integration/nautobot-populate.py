@@ -37,6 +37,7 @@ def make_nautobot_calls(endpoint, payload):
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
         print(e.error)
+        global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
 
