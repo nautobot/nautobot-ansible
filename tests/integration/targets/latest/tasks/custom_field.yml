@@ -1,0 +1,155 @@
+---
+##
+##
+### PYNAUTOBOT_CUSTOM_FIELD
+##
+##
+- name: "1 - Create custom field within Nautobot with only required information"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field
+    key: test_custom_field
+    type: text
+    content_types:
+      - dcim.device
+  register: test_create_min
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_min is changed
+      - test_create_min['diff']['before']['state'] == "absent"
+      - test_create_min['diff']['after']['state'] == "present"
+      - test_create_min['custom_field']['label'] == "Test Custom Field"
+      - test_create_min['custom_field']['key'] == "test_custom_field"
+      - test_create_min['custom_field']['type'] == "text"
+      - test_create_min['msg'] == "custom_field Test Custom Field created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field
+    key: test_custom_field
+    type: text
+    content_types:
+      - dcim.device
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "custom_field Test Custom Field already exists"
+      - test_create_idem['custom_field']['label'] == "Test Custom Field"
+
+- name: "3 - Update custom field"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field
+    description: Test Custom Field Description
+  register: test_update
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['diff']['before']['description'] == ""
+      - test_update['diff']['after']['description'] == "Test Custom Field Description"
+
+- name: "4 - Create custom field with all parameters"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field 2
+    key: test_custom_field_2
+    type: integer
+    content_types:
+      - dcim.device
+      - dcim.location
+    description: Test Custom Field Description 2
+    required: true
+    filter_logic: exact
+    default: 1
+    weight: 100
+    validation_minimum: 1
+    validation_maximum: 10
+  register: test_create_max
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - test_create_max is changed
+      - test_create_max['diff']['before']['state'] == "absent"
+      - test_create_max['diff']['after']['state'] == "present"
+      - test_create_min['custom_field']['label'] == "Test Custom Field 2"
+      - test_create_min['custom_field']['key'] == "test_custom_field_2"
+      - test_create_min['custom_field']['type'] == "integer"
+      - test_create_min['msg'] == "custom_field Test Custom Field 2 created"
+      - test_create_min['custom_field']['content_types'] == ['dcim.device', 'dcim.location']
+      - test_create_min['custom_field']['description'] == "Test Custom Field Description 2"
+      - test_create_min['custom_field']['required'] == true
+      - test_create_min['custom_field']['filter_logic'] == "exact"
+      - test_create_min['custom_field']['default'] == 1
+      - test_create_min['custom_field']['weight'] == 100
+      - test_create_min['custom_field']['validation_minimum'] == 1
+      - test_create_min['custom_field']['validation_maximum'] == 10
+
+- name: "5 - Duplicate create with all parameters"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field 2
+    key: test_custom_field_2
+    type: integer
+    content_types:
+      - dcim.device
+      - dcim.location
+    description: Test Custom Field Description 2
+    required: true
+    filter_logic: exact
+    default: 1
+    weight: 100
+    validation_minimum: 1
+    validation_maximum: 10
+  register: test_create_max_idem
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - not test_create_max_idem['changed']
+      - test_create_max_idem['msg'] == "custom_field Test Custom Field 2 already exists"
+      - test_create_max_idem['custom_field']['label'] == "Test Custom Field 2"
+
+- name: "6 - Delete custom field"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field 2
+    state: absent
+  register: test_delete
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['custom_field']['label'] == "Test Custom Field 2"
+      - "'deleted' in test_delete['msg']"
+
+- name: "7 - Delete idempotent"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Test Custom Field 2
+    state: absent
+  register: test_delete_idem
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"
