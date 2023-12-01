@@ -4,9 +4,9 @@
 ### PYNAUTOBOT_LOOKUP
 ##
 ##
-- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly three locations"
+- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly five locations"
   assert:
-    that: "{{ query_result|count }} == 3"
+    that: "{{ query_result|count }} == 5"
   vars:
     query_result: "{{ query('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token) }}"
 
@@ -39,7 +39,9 @@
     name: "L1"
     device_type: "Cisco Test"
     role: "Core Switch"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     status: "Staged"
     tags:
       - "Nolookup"
@@ -52,7 +54,7 @@
     name: "L2"
     device_type: "Cisco Test"
     role: "Core Switch"
-    location: "{{ child_test_location['key'] }}"
+    location: "Child-Child Test Location"
     status: "Staged"
     tags:
       - "Lookup"

@@ -106,7 +106,9 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VLAN
         vid: 400
-        location: Test Site
+        location:
+          name: My Location
+          parent: Parent Location
         group: Test VLAN Group
         tenant: Test Tenant
         status: Deprecated

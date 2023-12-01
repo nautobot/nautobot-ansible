@@ -150,7 +150,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test rack
-        location: Test Location
+        location:
+          name: My Location
+          parent: Parent Location
         status: active
         state: present
 

@@ -2114,6 +2114,7 @@
             "device_types_nexus_parent",
             "is_virtual",
             "location_parent_test_location",
+            "location_parent_test_location_2",
             "locations_child_child_test_location",
             "locations_child_test_location",
             "locations_parent_test_location",
@@ -2197,6 +2198,11 @@
         ]
     },
     "location_parent_test_location": {
+        "children": [
+            "location_child_test_location"
+        ]
+    },
+    "location_parent_test_location_2": {
         "children": [
             "location_child_test_location"
         ]

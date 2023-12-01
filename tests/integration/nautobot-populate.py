@@ -120,16 +120,20 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 # Create locations
 parent_location_attrs = [
     {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 
 # Location variables to be used later on
 location_parent = nb.dcim.locations.get(name="Parent Test Location")
+location_parent2 = nb.dcim.locations.get(name="Parent Test Location 2")
 child_location_attrs = [
     {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent.id, "status": {"name": "Active"}},
+    # Creating an intentionally duplicate location name with different parent to test looking up by parent
+    {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent2.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, child_location_attrs)
-location_child = nb.dcim.locations.get(name="Child Test Location")
+location_child = nb.dcim.locations.get(name="Child Test Location", parent="Parent Test Location")
 
 child_child_location_attrs = [
     {"name": "Child-Child Test Location", "location_type": child_location_type.id, "parent": location_child.id, "status": {"name": "Active"}},

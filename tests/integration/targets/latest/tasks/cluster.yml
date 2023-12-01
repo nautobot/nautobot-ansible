@@ -7,7 +7,7 @@
 - set_fact:
     test_cluster_type: "{{ lookup('networktocode.nautobot.lookup', 'cluster-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Type\"') }}"
     test_cluster_group: "{{ lookup('networktocode.nautobot.lookup', 'cluster-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Group\"') }}"
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
 
@@ -54,7 +54,9 @@
     name: "Test Cluster One"
     cluster_type: "Test Cluster Type"
     cluster_group: "Test Cluster Group"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     comments: "Updated cluster"
     tenant: "Test Tenant"
     tags:

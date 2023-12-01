@@ -54,7 +54,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test vlan group
-        location: Test Location
+        location:
+          name: My Location
+          parent: Parent Location
         state: present
 
     - name: Delete vlan group within nautobot

@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     test_location2: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child-Child Test Location\"') }}"
 
 - name: "VLAN_GROUP 1: Necessary info creation"
@@ -13,7 +13,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_one
 
@@ -32,7 +34,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_two
 
@@ -49,7 +53,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "VLAN Group One"
-    location: "{{ test_location2['key'] }}"
+    location: "Child-Child Test Location"
     state: present
   register: test_three
   ignore_errors: true
