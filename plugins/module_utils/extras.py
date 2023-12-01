@@ -13,6 +13,8 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 NB_TAGS = "tags"
 NB_STATUS = "statuses"
 NB_RELATIONSHIP_ASSOCIATIONS = "relationship_associations"
+NB_CUSTOM_FIELDS = "custom_fields"
+NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
 
 
 class NautobotExtrasModule(NautobotModule):
@@ -42,6 +44,10 @@ class NautobotExtrasModule(NautobotModule):
             name = data["name"]
         elif endpoint_name == "relationship_associations":
             name = f"{data['source_type']} -> {data['destination_type']}"
+        elif endpoint_name == "custom_field":
+            name = data["label"]
+        elif endpoint_name == "custom_field_choice":
+            name = data["value"]
         else:
             name = data.get("id")
 

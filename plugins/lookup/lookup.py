@@ -154,6 +154,8 @@ def get_endpoint(nautobot, term):
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
         "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
+        "custom-fields": {"endpoint": nautobot.extras.custom_fields},
+        "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
         "device-types": {"endpoint": nautobot.dcim.device_types},

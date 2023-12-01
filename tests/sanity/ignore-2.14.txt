@@ -1,1 +1,2 @@
+plugins/modules/custom_field.py validate-modules:no-log-needed  # key is not an actual secret that requires no_log to be set
 plugins/modules/device_redundancy_group.py validate-modules:no-log-needed  # secrets_group is not an actual secret that requires no_log to be set

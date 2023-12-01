@@ -37,6 +37,7 @@ def make_nautobot_calls(endpoint, payload):
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
         print(e.error)
+        global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
 
@@ -573,6 +574,17 @@ device_redundancy_groups = [
     }
 ]
 created_device_redundancy_groups = make_nautobot_calls(nb.dcim.device_redundancy_groups, device_redundancy_groups)
+
+# Create Custom Fields
+custom_fields = [
+    {
+        "label": "My Selection Custom Field",
+        "key": "my_selection_custom_field",
+        "type": "select",
+        "content_types": ["circuits.circuit"],
+    }
+]
+created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
