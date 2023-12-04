@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
     circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
     provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider-networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
@@ -16,7 +16,9 @@
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: A
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     port_speed: 10000
     state: present
   register: test_one
@@ -89,7 +91,9 @@
     token: "{{ nautobot_token }}"
     circuit: Test Circuit
     term_side: Z
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     port_speed: 10000
     state: present
   register: test_four

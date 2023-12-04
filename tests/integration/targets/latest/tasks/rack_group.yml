@@ -5,14 +5,16 @@
 ##
 ##
 - set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
 
 - name: "RACK_GROUP 1: Necessary info creation"
   networktocode.nautobot.rack_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Rack Group
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_one
 
@@ -31,7 +33,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Rack Group
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_two
 

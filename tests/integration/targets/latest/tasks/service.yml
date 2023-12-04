@@ -6,7 +6,6 @@
 ##
 - set_fact:
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
 
 - name: "1 - Device with required information needs to add new service"
   networktocode.nautobot.device:
@@ -15,7 +14,9 @@
     name: "FOR_SERVICE"
     device_type: "Cisco Test"
     role: "Core Switch"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     status: "Staged"
     state: present
 

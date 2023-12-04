@@ -106,7 +106,7 @@ QUERY_TYPES = dict(
     group="name",
     installed_device="name",
     import_targets="name",
-    location="id",
+    location="name",
     manufacturer="name",
     master="name",
     nat_inside="address",
@@ -305,7 +305,7 @@ ALLOWED_QUERY_PARAMS = {
     "ipaddresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
     "ip_address_to_interface": set(["ip_address", "interface", "vm_interface"]),
     "lag": set(["name"]),
-    "location": set(["name", "id"]),
+    "location": set(["name", "id", "parent"]),
     "location_type": set(["name"]),
     "manufacturer": set(["name"]),
     "master": set(["name"]),
@@ -783,8 +783,6 @@ class NautobotModule:
                 # Do not attempt to resolve if already ID/UUID is provided
                 if isinstance(v, int) or self.is_valid_uuid(v):
                     continue
-                elif k == "location":
-                    self._handle_errors(msg="Location needs a valid UUID")
                 # Special circumstances to set endpoint to search within
                 elif k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]

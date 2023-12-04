@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        location: Test location
+        location: My Location
         state: present
 
     - name: Update power panel with other fields
@@ -63,7 +63,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        location: Test location
+        location:
+          name: My Location
+          parent: Parent Location
         rack_group: Test Rack Group
         state: present
 
@@ -72,7 +74,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Power Panel
-        location: Test location
+        location:
+          name: My Location
+          parent: Parent Location
         state: absent
 """
 

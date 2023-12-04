@@ -8,7 +8,6 @@
     vm100: "{{ lookup('networktocode.nautobot.lookup', 'virtual-machines', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100-vm') }}"
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
     wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
@@ -62,12 +61,12 @@
     mode: Tagged
     untagged_vlan:
       name: Wireless
-      location: "{{ test_location['key'] }}"
+      location: "Child Test Location"
     tagged_vlans:
       - name: Data
-        location: "{{ test_location['key'] }}"
+        location: "Child Test Location"
       - name: VoIP
-        location: "{{ test_location['key'] }}"
+        location: "Child Test Location"
     tags:
       - "Schnozzberry"
     state: present
@@ -128,12 +127,12 @@
     mode: Tagged
     untagged_vlan:
       name: Wireless
-      location: "{{ test_location['key'] }}"
+      location: "Child Test Location"
     tagged_vlans:
       - name: Data
-        location: "{{ test_location['key'] }}"
+        location: "Child Test Location"
       - name: VoIP
-        location: "{{ test_location['key'] }}"
+        location: "Child Test Location"
     tags:
       - "Schnozzberry"
     state: present

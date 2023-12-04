@@ -94,7 +94,9 @@ EXAMPLES = r"""
         token: thisIsMyToken
         circuit: Test Circuit
         term_side: A
-        location: "{{ location['key'] }}"
+        location:
+          name: My Location
+          parent: Parent Location
         port_speed: 10000
         state: present
 

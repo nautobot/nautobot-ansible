@@ -6,7 +6,7 @@
 ##
 - set_fact:
     parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
-    child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
     role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Core Switch\"') }}"
     vc1: "{{ lookup('networktocode.nautobot.lookup', 'virtual-chassis', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=VC1') }}"
@@ -22,7 +22,7 @@
     device_type:
       id: "{{ device_type['key'] }}"
     role: "Core Switch"
-    location: "{{ parent_location['key'] }}"
+    location: Parent Test Location
     status: "Staged"
     state: present
   register: test_one
@@ -41,26 +41,6 @@
       - test_one['device']['name'] == "R1"
       - test_one['msg'] == "device R1 created"
 
-- name: "1.1 - Device with location not as UUID"
-  networktocode.nautobot.device:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "R11"
-    device_type:
-      id: "{{ device_type['key'] }}"
-    role: "Core Switch"
-    location: Parent Test Location
-    status: "Staged"
-    state: present
-  register: test_one_one
-  ignore_errors: true
-
-- name: "1.1 - ASSERT"
-  assert:
-    that:
-      - test_one_one is failed
-      - test_one_one['msg'] == "Location needs a valid UUID"
-
 - name: "2 - Duplicate device"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
@@ -68,7 +48,7 @@
     name: "R1"
     device_type: "Cisco Test"
     role: "Core Switch"
-    location: "{{ parent_location['key'] }}"
+    location: Parent Test Location
     status: "Staged"
     state: present
   register: test_two
@@ -187,7 +167,9 @@
     name: "TestR1"
     device_type: "1841"
     role: "Core Switch"
-    location: "{{ child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     rack: "Main Test Rack"
     status: "Active"
     position: 35
@@ -293,7 +275,7 @@
     device_type:
       id: "{{ device_type['key'] }}"
     role: "Core Switch"
-    location: "{{ parent_location['key'] }}"
+    location: "Parent Test Location"
     status: "Staged"
     state: present
   register: test_eight

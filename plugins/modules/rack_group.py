@@ -60,7 +60,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test rack group
-        location: Test Location
+        location: My Location
         state: present
 
     - name: Delete rack group within nautobot
@@ -68,7 +68,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Rack group
-        location: Test Location
+        location:
+          name: My Location
+          parent: Parent Location
         state: absent
 """
 

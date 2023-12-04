@@ -72,7 +72,7 @@ options:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
-    type: str
+    type: raw
     version_added: "3.0.0"
   rack:
     description:
@@ -180,11 +180,9 @@ EXAMPLES = r"""
         name: Test Device
         device_type: C9410R
         role: Core Switch
-        location: "{{ my_location['key'] }}"
+        location: My Location
         status: active
         state: present
-      vars:
-        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Create device within Nautobot with empty string name to generate UUID
       networktocode.nautobot.device:
@@ -193,11 +191,11 @@ EXAMPLES = r"""
         name: ""
         device_type: C9410R
         role: Core Switch
-        location: "{{ my_location['key'] }}"
+        location:
+          name: My Location
+          parent: Parent Location
         status: active
         state: present
-      vars:
-        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Delete device within nautobot
       networktocode.nautobot.device:
@@ -213,15 +211,15 @@ EXAMPLES = r"""
         name: Another Test Device
         device_type: C9410R
         role: Core Switch
-        location: "{{ my_location['key'] }}"
+        location:
+          name: My Location
+          parent: Parent Location
         status: active
         local_config_context_data:
           bgp: "65000"
         tags:
           - Schnozzberry
         state: present
-      vars:
-        my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
     - name: Update the rack and position of an existing device
       networktocode.nautobot.device:
@@ -269,7 +267,7 @@ def main():
             platform=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
-            location=dict(required=False, type="str"),
+            location=dict(required=False, type="raw"),
             rack=dict(required=False, type="raw"),
             position=dict(required=False, type="int"),
             face=dict(

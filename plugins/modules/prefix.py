@@ -145,11 +145,11 @@ EXAMPLES = r"""
         token: thisIsMyToken
         family: 4
         prefix: 10.156.32.0/19
-        location: Test Location
+        location: My Location
         tenant: Test Tenant
         vlan:
           name: Test VLAN
-          location: Test Location
+          location: My Location
           tenant: Test Tenant
           vlan_group: Test Vlan Group
         status: Reserved
@@ -191,7 +191,9 @@ EXAMPLES = r"""
         token: thisIsMyToken
         parent: 10.157.0.0/19
         prefix_length: 24
-        location: Test Location
+        location:
+          name: My Location
+          parent: Parent Location
         state: present
         first_available: yes
 """
