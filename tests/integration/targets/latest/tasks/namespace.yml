@@ -1,0 +1,124 @@
+---
+##
+##
+### PYNAUTOBOT_DNAMESPACE
+##
+##
+- set_fact:
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
+
+- name: "1 - Create namespace within Nautobot with only required information"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace
+  register: test_create_min
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_min is changed
+      - test_create_min['diff']['before']['state'] == "absent"
+      - test_create_min['diff']['after']['state'] == "present"
+      - test_create_min['namespace']['name'] == "Test Namespace"
+      - test_create_min['msg'] == "namespace Test Namespace created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "namespace Test Namespace already exists"
+      - test_create_idem['namespace']['name'] == "Test Namespace"
+
+- name: "3 - Update namespace"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace
+    description: Test Namespace Description
+  register: test_update
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['diff']['before']['description'] == ""
+      - test_update['diff']['after']['description'] == "Test Namespace Description"
+
+- name: "4 - Create namespace with all parameters"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace 2
+    description: Test Namespace Description 2
+    location:
+      name: Child Test Location
+      parent: Parent Test Location
+  register: test_create_max
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - test_create_max is changed
+      - test_create_max['diff']['before']['state'] == "absent"
+      - test_create_max['diff']['after']['state'] == "present"
+      - test_create_max['namespace']['name'] == "Test Namespace 2"
+      - test_create_max['namespace']['description'] == "Test Namespace Description 2"
+      - test_create_max['namespace']['location'] == test_location['key']
+      - test_create_max['msg'] == "namespace Test Namespace 2 created"
+
+- name: "5 - Duplicate create with all parameters"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace 2
+    description: Test Namespace Description 2
+    location:
+      name: Child Test Location
+      parent: Parent Test Location
+  register: test_create_max_idem
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - not test_create_max_idem['changed']
+      - test_create_max_idem['msg'] == "namespace Test Namespace 2 already exists"
+      - test_create_max_idem['namespace']['name'] == "Test Namespace 2"
+
+- name: "6 - Delete namespace"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace 2
+    state: absent
+  register: test_delete
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['namespace']['name'] == "Test Namespace 2"
+      - "'deleted' in test_delete['msg']"
+
+- name: "7 - Delete idempotent"
+  networktocode.nautobot.namespace:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Namespace 2
+    state: absent
+  register: test_delete_idem
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"

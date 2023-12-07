@@ -511,3 +511,12 @@
         - custom_field_choice
   tags:
     - custom_field_choice
+
+- name: "PYNAUTOBOT_NAMESPACE TESTS"
+  include_tasks:
+    file: "namespace.yml"
+    apply:
+      tags:
+        - namespace
+  tags:
+    - namespace
