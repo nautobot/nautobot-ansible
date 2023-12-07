@@ -42,7 +42,7 @@ networktocode.nautobot.power_panel module -- Create, update or delete power pane
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -476,7 +476,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            location: Test location
+            location: My Location
             state: present
 
         - name: Update power panel with other fields
@@ -484,7 +484,9 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            location: Test location
+            location:
+              name: My Location
+              parent: Parent Location
             rack_group: Test Rack Group
             state: present
 
@@ -493,7 +495,9 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Test Power Panel
-            location: Test location
+            location:
+              name: My Location
+              parent: Parent Location
             state: absent
 
 

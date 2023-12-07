@@ -407,3 +407,22 @@ releases:
       - (#248) Remove choices from various modules, in favor of pynaubot choices()
         method.
       - (#269) Fix SSL verification.
+  5.1.0:
+    changes:
+      minor_changes:
+      - (#275) Adds more options to location module
+      - (#283) Fixes lookup plugins to with proper name
+      - (#287) Adds more allowed values for location options
+    modules:
+    - description: Creates or removes device redundancy groups.
+      name: device_redundancy_group
+      namespace: ''
+    - description: Creates or removes custom fields.
+      name: custom_field
+      namespace: ''
+    - description: Creates or removes custom field choices.
+      name: custom_field_choice
+      namespace: ''
+    - description: Creates or removes namespaces.
+      name: namespace
+      namespace: ''

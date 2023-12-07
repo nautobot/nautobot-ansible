@@ -42,7 +42,7 @@ networktocode.nautobot.vlan module -- Create, update or delete vlans within Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -756,7 +756,9 @@ Examples
             token: thisIsMyToken
             name: Test VLAN
             vid: 400
-            location: Test Site
+            location:
+              name: My Location
+              parent: Parent Location
             group: Test VLAN Group
             tenant: Test Tenant
             status: Deprecated

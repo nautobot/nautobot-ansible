@@ -5,6 +5,32 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.1.0
+======
+
+Release Summary
+---------------
+
+This release adds various new modules and includes some bug fixes and minor changes.
+
+New Modules
+-----------
+
+- networktocode.nautobot.device_redundancy_group - Creates or removes device redundancy groups from Nautobot
+- networktocode.nautobot.custom_field - Creates or removes custom fields from Nautobot
+- networktocode.nautobot.custom_field_choice - Creates or removes custom field choices from Nautobot
+- networktocode.nautobot.namespace - Creates or removes namespaces from Nautobot
+
+Minor Changes
+-------------
+
+- (#275) Added additional options to the location module that were originally on site and region in Nautobot 1.X.
+- (#283) Fixed the following lookup plugins to properly use a dash instead of an underscore:
+    - `location-types`
+    - `provider-networks`
+    - `relationship-associations`
+- (#287) Adds the ability to use the UUID, name or name and parent (as key/value pairs) for the `location` parameter in various modules.
+
 v5.0.2
 ======
 

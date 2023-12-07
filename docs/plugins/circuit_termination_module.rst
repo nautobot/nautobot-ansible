@@ -42,7 +42,7 @@ networktocode.nautobot.circuit_termination module -- Create, update or delete ci
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -707,7 +707,9 @@ Examples
             token: thisIsMyToken
             circuit: Test Circuit
             term_side: A
-            location: "{{ location['key'] }}"
+            location:
+              name: My Location
+              parent: Parent Location
             port_speed: 10000
             state: present
 

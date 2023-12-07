@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.power_outlet_module:
+.. _ansible_collections.networktocode.nautobot.device_redundancy_group_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.power_outlet module -- Create, update or delete power outlets within Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.device_redundancy_group module -- Creates or removes device redundancy groups from Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.power_outlet module -- Create, update or delete power out
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.power_outlet_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.device_redundancy_group_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.power_outlet`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.device_redundancy_group`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.1.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates, updates or removes power outlets from Nautobot
+- Creates or removes device redundancy groups from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.power_outlet_module_requirements:
+.. _ansible_collections.networktocode.nautobot.device_redundancy_group_module_requirements:
 
 Requirements
 ------------
@@ -109,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -144,9 +144,46 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-custom_fields:
+
+      .. rst-class:: ansible-option-title
+
+      **custom_fields**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Must exist in Nautobot and in key/value format
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-description:
 
       .. rst-class:: ansible-option-title
 
@@ -160,7 +197,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -171,7 +208,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Description of the power outlet
+      The description of the device redundancy group
 
 
       .. raw:: html
@@ -181,60 +218,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-device"></div>
+        <div class="ansibleOptionAnchor" id="parameter-failover_strategy"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-device:
-
-      .. rst-class:: ansible-option-title
-
-      **device**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-device" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The device the power outlet is attached to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-feed_leg"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-feed_leg:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-failover_strategy:
 
       .. rst-class:: ansible-option-title
 
-      **feed_leg**
+      **failover_strategy**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-feed_leg" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-failover_strategy" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -245,16 +245,15 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The phase, in case of three-phase feed
+      The failover strategy of the device redundancy group
 
 
       .. rst-class:: ansible-option-line
 
       :ansible-option-choices:`Choices:`
 
-      - :ansible-option-choices-entry:`"A"`
-      - :ansible-option-choices-entry:`"B"`
-      - :ansible-option-choices-entry:`"C"`
+      - :ansible-option-choices-entry:`"active-active"`
+      - :ansible-option-choices-entry:`"active-passive"`
 
 
       .. raw:: html
@@ -266,7 +265,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -280,7 +279,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -291,44 +290,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the power outlet
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-power_port"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-power_port:
-
-      .. rst-class:: ansible-option-title
-
-      **power_port**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-power_port" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The attached power port
+      The name of the device redundancy group
 
 
       .. raw:: html
@@ -340,7 +302,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -379,9 +341,46 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-secrets_group"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-secrets_group:
+
+      .. rst-class:: ansible-option-title
+
+      **secrets_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-secrets_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The secrets group of the device redundancy group
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -421,9 +420,48 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-status"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-status:
+
+      .. rst-class:: ansible-option-title
+
+      **status**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The status of the device redundancy group
+
+      Required if \ :emphasis:`state=present`\  and the device redundancy group does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-tags"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-tags:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-tags:
 
       .. rst-class:: ansible-option-title
 
@@ -460,7 +498,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -492,46 +530,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-type"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-type:
-
-      .. rst-class:: ansible-option-title
-
-      **type**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The type of the power outlet
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -565,7 +566,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -622,39 +623,44 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot modules"
+    - name: "Test Nautobot device_redundancy_group module"
       connection: local
       hosts: localhost
       gather_facts: False
 
       tasks:
-        - name: Create power port within Nautobot with only required information
-          networktocode.nautobot.power_outlet:
+        - name: Create device redundancy group within Nautobot with only required information
+          networktocode.nautobot.device_redundancy_group:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
+            name: My Redundancy Group
+            status: Active
             state: present
-
-        - name: Update power port with other fields
-          networktocode.nautobot.power_outlet:
+        
+        - name: Create device redundancy group within Nautobot with all information
+          networktocode.nautobot.device_redundancy_group:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
-            type: iec-60320-c6
-            power_port: Test Power Port
-            feed_leg: A
-            description: power port description
+            name: My Redundancy Group
+            status: Active
+            description: My Description
+            failover_strategy: active-active
+            secrets_group: "{{ my_secrets_group['key'] }}"
+            tags:
+              - My Tag
+            custom_fields:
+              my_field: my_value
             state: present
-
-        - name: Delete power port within nautobot
-          networktocode.nautobot.power_outlet:
+          vars:
+            my_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Secrets Group\"') }}"
+        
+        - name: Delete device redundancy group within nautobot
+          networktocode.nautobot.device_redundancy_group:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
+            name: My Redundancy Group
             state: absent
+
 
 
 
@@ -681,9 +687,49 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-device_redundancy_group"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__return-device_redundancy_group:
+
+      .. rst-class:: ansible-option-title
+
+      **device_redundancy_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-device_redundancy_group" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.device_redundancy_group_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -718,46 +764,6 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </div>
 
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-power_outlet"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__return-power_outlet:
-
-      .. rst-class:: ansible-option-title
-
-      **power_outlet**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#return-power_outlet" title="Permalink to this return value"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Serialized object as created or already existent within Nautobot
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
-
-
-      .. raw:: html
-
-        </div>
-
-
 
 ..  Status (Presently only deprecated)
 
@@ -767,7 +773,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Tobias Groß (@toerb)
+- Joe Wesch (@joewesch)
 
 
 

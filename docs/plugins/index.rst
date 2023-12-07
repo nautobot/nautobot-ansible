@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 5.0.2
+Collection version 5.1.0
 
 .. contents::
    :local:
@@ -58,11 +58,14 @@ Modules
 * :ref:`console_port_template module <ansible_collections.networktocode.nautobot.console_port_template_module>` -- Create, update or delete console port templates within Nautobot
 * :ref:`console_server_port module <ansible_collections.networktocode.nautobot.console_server_port_module>` -- Create, update or delete console server ports within Nautobot
 * :ref:`console_server_port_template module <ansible_collections.networktocode.nautobot.console_server_port_template_module>` -- Create, update or delete console server port templates within Nautobot
+* :ref:`custom_field module <ansible_collections.networktocode.nautobot.custom_field_module>` -- Creates or removes custom fields from Nautobot
+* :ref:`custom_field_choice module <ansible_collections.networktocode.nautobot.custom_field_choice_module>` -- Creates or removes custom field choices from Nautobot
 * :ref:`device module <ansible_collections.networktocode.nautobot.device_module>` -- Create, update or delete devices within Nautobot
 * :ref:`device_bay module <ansible_collections.networktocode.nautobot.device_bay_module>` -- Create, update or delete device bays within Nautobot
 * :ref:`device_bay_template module <ansible_collections.networktocode.nautobot.device_bay_template_module>` -- Create, update or delete device bay templates within Nautobot
 * :ref:`device_interface module <ansible_collections.networktocode.nautobot.device_interface_module>` -- Creates or removes interfaces on devices from Nautobot
 * :ref:`device_interface_template module <ansible_collections.networktocode.nautobot.device_interface_template_module>` -- Creates or removes interfaces on devices from Nautobot
+* :ref:`device_redundancy_group module <ansible_collections.networktocode.nautobot.device_redundancy_group_module>` -- Creates or removes device redundancy groups from Nautobot
 * :ref:`device_type module <ansible_collections.networktocode.nautobot.device_type_module>` -- Create, update or delete device types within Nautobot
 * :ref:`front_port module <ansible_collections.networktocode.nautobot.front_port_module>` -- Create, update or delete front ports within Nautobot
 * :ref:`front_port_template module <ansible_collections.networktocode.nautobot.front_port_template_module>` -- Create, update or delete front port templates within Nautobot
@@ -72,6 +75,7 @@ Modules
 * :ref:`location module <ansible_collections.networktocode.nautobot.location_module>` -- Creates or removes locations from Nautobot
 * :ref:`location_type module <ansible_collections.networktocode.nautobot.location_type_module>` -- Creates or removes location types from Nautobot
 * :ref:`manufacturer module <ansible_collections.networktocode.nautobot.manufacturer_module>` -- Create or delete manufacturers within Nautobot
+* :ref:`namespace module <ansible_collections.networktocode.nautobot.namespace_module>` -- Creates or removes namespaces from Nautobot
 * :ref:`nautobot_server module <ansible_collections.networktocode.nautobot.nautobot_server_module>` -- Manages Nautobot Server application.
 * :ref:`platform module <ansible_collections.networktocode.nautobot.platform_module>` -- Create or delete platforms within Nautobot
 * :ref:`plugin module <ansible_collections.networktocode.nautobot.plugin_module>` -- CRUD operation on plugin objects
@@ -119,11 +123,14 @@ Modules
     console_port_template_module
     console_server_port_module
     console_server_port_template_module
+    custom_field_module
+    custom_field_choice_module
     device_module
     device_bay_module
     device_bay_template_module
     device_interface_module
     device_interface_template_module
+    device_redundancy_group_module
     device_type_module
     front_port_module
     front_port_template_module
@@ -133,6 +140,7 @@ Modules
     location_module
     location_type_module
     manufacturer_module
+    namespace_module
     nautobot_server_module
     platform_module
     plugin_module
