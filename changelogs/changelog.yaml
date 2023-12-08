@@ -410,6 +410,7 @@ releases:
   5.1.0:
     changes:
       minor_changes:
+      - (#273) Adds custom_fields option the vm_interface module
       - (#275) Adds more options to location module
       - (#283) Fixes lookup plugins to with proper name
       - (#287) Adds more allowed values for location options

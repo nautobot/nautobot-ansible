@@ -24,6 +24,7 @@ New Modules
 Minor Changes
 -------------
 
+- (#273) Added custom_fields option to the vm_interface module.
 - (#275) Added additional options to the location module that were originally on site and region in Nautobot 1.X.
 - (#283) Fixed the following lookup plugins to properly use a dash instead of an underscore:
     - `location-types`
