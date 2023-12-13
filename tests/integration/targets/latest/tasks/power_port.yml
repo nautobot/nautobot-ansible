@@ -7,9 +7,6 @@
 ### PYNAUTOBOT_POWER_PORT
 ##
 ##
-- set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
-
 - name: "POWER_PORT 0: Create device for testing power ports"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
@@ -18,7 +15,9 @@
     device_type: Cisco Test
     role: Core Switch
     status: "Active"
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
 
 - set_fact:

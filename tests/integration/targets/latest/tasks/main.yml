@@ -484,3 +484,39 @@
         - plugin_bgp_asn
   tags:
     - plugin_bgp_asn
+
+- name: "PYNAUTOBOT_DEVICE_REDUNDANCY_GROUP TESTS"
+  include_tasks:
+    file: "device_redundancy_group.yml"
+    apply:
+      tags:
+        - device_redundancy_group
+  tags:
+    - device_redundancy_group
+
+- name: "PYNAUTOBOT_CUSTOM_FIELD TESTS"
+  include_tasks:
+    file: "custom_field.yml"
+    apply:
+      tags:
+        - custom_field
+  tags:
+    - custom_field
+
+- name: "PYNAUTOBOT_CUSTOM_FIELD_CHOICE TESTS"
+  include_tasks:
+    file: "custom_field_choice.yml"
+    apply:
+      tags:
+        - custom_field_choice
+  tags:
+    - custom_field_choice
+
+- name: "PYNAUTOBOT_NAMESPACE TESTS"
+  include_tasks:
+    file: "namespace.yml"
+    apply:
+      tags:
+        - namespace
+  tags:
+    - namespace

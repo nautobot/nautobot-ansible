@@ -7,9 +7,6 @@
 ### PYNAUTOBOT_VIRTUAL_CHASSIS
 ##
 ##
-- set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
-
 - name: "VIRTUAL_CHASSIS 0: Create device for testing virtual chassis"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
@@ -17,7 +14,9 @@
     name: Device Virtual Chassis Tests
     device_type: Cisco Test
     role: Core Switch
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     vc_position: 1
     vc_priority: 1
     status: "Active"
@@ -89,7 +88,9 @@
     name: Device Virtual Chassis Tests 2
     device_type: Cisco Test
     role: Core Switch
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     vc_position: 1
     vc_priority: 15
     status: "Active"

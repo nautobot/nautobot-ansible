@@ -43,6 +43,7 @@ API_APPS_ENDPOINTS = dict(
         "device_bay_templates",
         "devices",
         "device_types",
+        "device_redundancy_groups",
         "front_ports",
         "front_port_templates",
         "interfaces",
@@ -64,7 +65,14 @@ API_APPS_ENDPOINTS = dict(
         "rear_port_templates",
         "virtual_chassis",
     ],
-    extras=["tags", "statuses", "relationship_associations", "roles"],
+    extras=[
+        "custom_fields",
+        "custom_field_choices",
+        "relationship_associations",
+        "roles",
+        "statuses",
+        "tags",
+    ],
     ipam=[
         "ip_addresses",
         "ip_address_to_interface",
@@ -72,10 +80,10 @@ API_APPS_ENDPOINTS = dict(
         "prefixes",
         "rirs",
         "route_targets",
+        "services",
         "vlans",
         "vlan_groups",
         "vrfs",
-        "services",
     ],
     plugins=[],
     secrets=[],
@@ -98,7 +106,7 @@ QUERY_TYPES = dict(
     group="name",
     installed_device="name",
     import_targets="name",
-    location="id",
+    location="name",
     manufacturer="name",
     master="name",
     nat_inside="address",
@@ -211,10 +219,13 @@ ENDPOINT_NAME_MAPPING = {
     "console_port_templates": "console_port_template",
     "console_server_ports": "console_server_port",
     "console_server_port_templates": "console_server_port_template",
+    "custom_fields": "custom_field",
+    "custom_field_choices": "custom_field_choice",
     "device_bays": "device_bay",
     "device_bay_templates": "device_bay_template",
     "devices": "device",
     "device_types": "device_type",
+    "device_redundancy_groups": "device_redundancy_group",
     "front_ports": "front_port",
     "front_port_templates": "front_port_template",
     "interfaces": "interface",
@@ -268,6 +279,8 @@ ALLOWED_QUERY_PARAMS = {
     "console_port_template": set(["name", "device_type"]),
     "console_server_port": set(["name", "device"]),
     "console_server_port_template": set(["name", "device_type"]),
+    "custom_field": set(["label"]),
+    "custom_field_choice": set(["value", "custom_field"]),
     "dcim.consoleport": set(["name", "device"]),
     "dcim.consoleserverport": set(["name", "device"]),
     "dcim.frontport": set(["name", "device", "rear_port"]),
@@ -279,6 +292,7 @@ ALLOWED_QUERY_PARAMS = {
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
     "device": set(["name"]),
+    "device_redundancy_group": set(["name"]),
     "device_type": set(["model"]),
     "front_port": set(["name", "device", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
@@ -291,7 +305,7 @@ ALLOWED_QUERY_PARAMS = {
     "ipaddresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
     "ip_address_to_interface": set(["ip_address", "interface", "vm_interface"]),
     "lag": set(["name"]),
-    "location": set(["name", "id"]),
+    "location": set(["name", "id", "parent"]),
     "location_type": set(["name"]),
     "manufacturer": set(["name"]),
     "master": set(["name"]),
@@ -769,8 +783,6 @@ class NautobotModule:
                 # Do not attempt to resolve if already ID/UUID is provided
                 if isinstance(v, int) or self.is_valid_uuid(v):
                     continue
-                elif k == "location":
-                    self._handle_errors(msg="Location needs a valid UUID")
                 # Special circumstances to set endpoint to search within
                 elif k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]

@@ -22,6 +22,7 @@ version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
   virtual_machine:
     description:
@@ -126,6 +127,18 @@ EXAMPLES = r"""
         mtu: 1600
         mode: Tagged
         state: present
+
+    - name: |
+        Create an interface and update custom_field data point,
+        setting the value to True
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        virtual_machine: test100
+        name: GigabitEthernet26
+        enabled: false
+        custom_fields:
+          monitored: True
 """
 
 RETURN = r"""
@@ -166,6 +179,7 @@ def main():
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 

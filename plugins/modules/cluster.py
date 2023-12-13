@@ -101,7 +101,9 @@ EXAMPLES = r"""
         name: Test Cluster
         cluster_type: qemu
         cluster_group: GROUP
-        location: "{{ location['key'] }}"
+        location:
+          name: My Location
+          parent: Parent Location
         state: present
 """
 

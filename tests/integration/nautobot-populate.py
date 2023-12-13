@@ -37,6 +37,7 @@ def make_nautobot_calls(endpoint, payload):
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
         print(e.error)
+        global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
 
@@ -119,16 +120,20 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 # Create locations
 parent_location_attrs = [
     {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 
 # Location variables to be used later on
 location_parent = nb.dcim.locations.get(name="Parent Test Location")
+location_parent2 = nb.dcim.locations.get(name="Parent Test Location 2")
 child_location_attrs = [
     {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent.id, "status": {"name": "Active"}},
+    # Creating an intentionally duplicate location name with different parent to test looking up by parent
+    {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent2.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, child_location_attrs)
-location_child = nb.dcim.locations.get(name="Child Test Location")
+location_child = nb.dcim.locations.get(name="Child Test Location", parent="Parent Test Location")
 
 child_child_location_attrs = [
     {"name": "Child-Child Test Location", "location_type": child_location_type.id, "parent": location_child.id, "status": {"name": "Active"}},
@@ -537,6 +542,53 @@ relationships = [
     },
 ]
 created_relationships = make_nautobot_calls(nb.extras.relationships, relationships)
+
+# Create Secrets
+secrets = [
+    {
+        "name": "Test Secret",
+        "provider": "environment-variable",
+        "parameters": {
+            "variable": "TEST_ENV_VAR",
+        },
+    }
+]
+created_secrets = make_nautobot_calls(nb.extras.secrets, secrets)
+test_secret = nb.extras.secrets.get(name="Test Secret")
+
+secrets_groups = [
+    {
+        "name": "Test Secrets Group",
+        "secrets": [
+            {
+                "secret": test_secret.id,
+                "access_type": "Generic",
+                "secret_type": "secret",
+            }
+        ],
+    }
+]
+created_secrets_groups = make_nautobot_calls(nb.extras.secrets_groups, secrets_groups)
+
+# Create Device Redundancy Groups
+device_redundancy_groups = [
+    {
+        "name": "My Device Redundancy Group",
+        "status": "Active",
+    }
+]
+created_device_redundancy_groups = make_nautobot_calls(nb.dcim.device_redundancy_groups, device_redundancy_groups)
+
+# Create Custom Fields
+custom_fields = [
+    {
+        "label": "My Selection Custom Field",
+        "key": "my_selection_custom_field",
+        "type": "select",
+        "content_types": ["circuits.circuit"],
+    }
+]
+created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

@@ -6,7 +6,6 @@
 ##
 - set_fact:
     test100: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
-    child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
 
 - name: "1 - Interface with required information"
   networktocode.nautobot.device_interface:
@@ -143,12 +142,12 @@
     type: 1000Base-T (1GE)
     untagged_vlan:
       name: Wireless
-      location: "{{ child_location['key'] }}"
+      location: "Child Test Location"
     tagged_vlans:
       - name: Data
-        location: "{{ child_location['key'] }}"
+        location: "Child Test Location"
       - name: VoIP
-        location: "{{ child_location['key'] }}"
+        location: "Child Test Location"
     mtu: 1600
     mgmt_only: true
     mode: Tagged

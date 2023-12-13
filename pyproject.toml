@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "5.0.2"
+version = "5.1.0"
 description = "Ansible collection to interact with Nautobot's API"
-authors = ["Network to Code <opensource@networktocode.com"]
+authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
@@ -69,3 +69,10 @@ exclude = '''
                      # the root of the project
 )
 '''
+
+[tool.pylint.messages_control]
+# Line length is enforced by Black, so pylint doesn't need to check it.
+# Pylint and Black disagree about how to format multi-line arrays; Black wins.
+disable = """,
+    line-too-long
+    """

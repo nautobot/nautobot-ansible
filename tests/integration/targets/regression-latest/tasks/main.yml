@@ -4,9 +4,6 @@
 ### TEST PYNAUTOBOT CONNECTION FAILURE
 ##
 ##
-- set_fact:
-    location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
-
 - name: "TEST PYNAUTOBOT CONNECTION FAILURE"
   connection: local
   block:
@@ -17,7 +14,9 @@
         name: "R1"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location: "{{ location['key'] }}"
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
         status: "Staged"
         state: present
       register: test_one
@@ -55,7 +54,9 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location: "{{ location['key'] }}"
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
         status: "Staged"
         tags:
           - name: First
@@ -68,7 +69,9 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location: "{{ location['key'] }}"
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
         status: "Staged"
         tags:
           - name: Second
@@ -88,7 +91,9 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location: "{{ location['key'] }}"
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
         status: "Staged"
         asset_tag: "1234"
         tags:
@@ -148,7 +153,9 @@
         name: "issue-242"
         device_type: "Cisco Test"
         role: "Core Switch"
-        location: "{{ location['key'] }}"
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
         status: "Staged"
         asset_tag: "Null"
         tags:

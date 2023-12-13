@@ -8,7 +8,7 @@
 ##
 ##
 - set_fact:
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     rack_group: "{{ lookup('networktocode.nautobot.lookup', 'rack-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Rack Group\"') }}"
 
 - name: "POWER_PANEL 1: Necessary info creation"
@@ -16,7 +16,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Power Panel
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_one
 
@@ -35,7 +37,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Power Panel
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_two
 
@@ -52,7 +56,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Power Panel
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     rack_group: Parent Rack Group
     state: present
   register: test_three
@@ -72,7 +78,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Power Panel 2
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: present
   register: test_four
 
@@ -91,7 +99,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Power Panel 2
-    location: "{{ test_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     state: absent
   register: test_five
 

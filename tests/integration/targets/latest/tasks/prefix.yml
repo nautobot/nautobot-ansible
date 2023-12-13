@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    test_child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\"') }}"
+    test_child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
     tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
     vlan_group: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Vlan Group\"') }}"
@@ -54,7 +54,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.156.0.0/19
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     status: Reserved
     description: "This prefix has been updated"
     state: present
@@ -95,11 +97,13 @@
     token: "{{ nautobot_token }}"
     ip_version: 4
     prefix: 10.156.32.0/19
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     tenant: Test Tenant
     vlan:
       name: Test VLAN
-      location: "{{ test_child_location['key'] }}"
+      location: "Child Test Location"
       tenant: Test Tenant
       vlan_group: Test Vlan Group
     status: Reserved
@@ -192,7 +196,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.157.0.0/19
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     status: "Active"
     state: present
   register: test_nine
@@ -213,7 +219,9 @@
     token: "{{ nautobot_token }}"
     parent: 10.157.0.0/19
     prefix_length: 24
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     status: "Active"
     state: present
     first_available: yes
@@ -254,7 +262,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     prefix: 10.157.0.0/19
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     namespace: Private
     status: "Active"
     state: present
@@ -277,7 +287,9 @@
     token: "{{ nautobot_token }}"
     parent: 10.157.0.0/19
     prefix_length: 24
-    location: "{{ test_child_location['key'] }}"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
     namespace: Private
     status: "Active"
     state: present
