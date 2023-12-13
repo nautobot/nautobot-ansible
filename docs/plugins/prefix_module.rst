@@ -42,7 +42,7 @@ networktocode.nautobot.prefix module -- Creates or removes prefixes from Nautobo
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -962,11 +962,11 @@ Examples
             token: thisIsMyToken
             family: 4
             prefix: 10.156.32.0/19
-            location: Test Location
+            location: My Location
             tenant: Test Tenant
             vlan:
               name: Test VLAN
-              location: Test Location
+              location: My Location
               tenant: Test Tenant
               vlan_group: Test Vlan Group
             status: Reserved
@@ -1008,7 +1008,9 @@ Examples
             token: thisIsMyToken
             parent: 10.157.0.0/19
             prefix_length: 24
-            location: Test Location
+            location:
+              name: My Location
+              parent: Parent Location
             state: present
             first_available: yes
 

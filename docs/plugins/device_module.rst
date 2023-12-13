@@ -42,7 +42,7 @@ networktocode.nautobot.device module -- Create, update or delete devices within 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -292,6 +292,80 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-device_redundancy_group"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_redundancy_group:
+
+      .. rst-class:: ansible-option-title
+
+      **device_redundancy_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-device_redundancy_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Device redundancy group the device will be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-device_redundancy_group_priority"></div>
+
+      .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_redundancy_group_priority:
+
+      .. rst-class:: ansible-option-title
+
+      **device_redundancy_group_priority**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-device_redundancy_group_priority" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Priority in the assigned device redundancy group
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-device_type"></div>
 
       .. _ansible_collections.networktocode.nautobot.device_module__parameter-device_type:
@@ -427,7 +501,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -1193,11 +1267,9 @@ Examples
             name: Test Device
             device_type: C9410R
             role: Core Switch
-            location: "{{ my_location['key'] }}"
+            location: My Location
             status: active
             state: present
-          vars:
-            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Create device within Nautobot with empty string name to generate UUID
           networktocode.nautobot.device:
@@ -1206,11 +1278,11 @@ Examples
             name: ""
             device_type: C9410R
             role: Core Switch
-            location: "{{ my_location['key'] }}"
+            location:
+              name: My Location
+              parent: Parent Location
             status: active
             state: present
-          vars:
-            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Delete device within nautobot
           networktocode.nautobot.device:
@@ -1226,15 +1298,15 @@ Examples
             name: Another Test Device
             device_type: C9410R
             role: Core Switch
-            location: "{{ my_location['key'] }}"
+            location:
+              name: My Location
+              parent: Parent Location
             status: active
             local_config_context_data:
               bgp: "65000"
             tags:
               - Schnozzberry
             state: present
-          vars:
-            my_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\"') }}"
 
         - name: Update the rack and position of an existing device
           networktocode.nautobot.device:

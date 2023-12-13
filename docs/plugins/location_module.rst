@@ -42,7 +42,7 @@ networktocode.nautobot.location module -- Creates or removes locations from Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.0.2).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -144,6 +144,191 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-asn"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-asn:
+
+      .. rst-class:: ansible-option-title
+
+      **asn**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-asn" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The ASN associated with the location
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-comments"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-comments:
+
+      .. rst-class:: ansible-option-title
+
+      **comments**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Comments for the location. This can be markdown syntax
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-contact_email"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-contact_email:
+
+      .. rst-class:: ansible-option-title
+
+      **contact_email**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-contact_email" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Contact email for location
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-contact_name"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-contact_name:
+
+      .. rst-class:: ansible-option-title
+
+      **contact_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-contact_name" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Name of contact for location
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-contact_phone"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-contact_phone:
+
+      .. rst-class:: ansible-option-title
+
+      **contact_phone**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-contact_phone" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Contact phone number for location
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-custom_fields:
@@ -215,6 +400,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-facility"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-facility:
+
+      .. rst-class:: ansible-option-title
+
+      **facility**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-facility" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Data center provider or facility, ex. Equinix NY7
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-id"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-id:
@@ -253,6 +475,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-latitude"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-latitude:
+
+      .. rst-class:: ansible-option-title
+
+      **latitude**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-latitude" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Latitude in decimal format
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-location_type"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-location_type:
@@ -280,6 +539,43 @@ Parameters
       The type of location
 
       Required if \ :emphasis:`state=present`\  and does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-longitude"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-longitude:
+
+      .. rst-class:: ansible-option-title
+
+      **longitude**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-longitude" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Longitude in decimal format
 
 
       .. raw:: html
@@ -357,6 +653,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-physical_address"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-physical_address:
+
+      .. rst-class:: ansible-option-title
+
+      **physical_address**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-physical_address" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Physical address of location
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-query_params:
@@ -389,6 +722,43 @@ Parameters
       in plugins/module\_utils/utils.py and provides control to users on what may make
 
       an object unique in their environment.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-shipping_address"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-shipping_address:
+
+      .. rst-class:: ansible-option-title
+
+      **shipping_address**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-shipping_address" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Shipping address of location
 
 
       .. raw:: html
@@ -467,6 +837,117 @@ Parameters
       Status of the location
 
       Required if \ :emphasis:`state=present`\  and does not exist yet
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-tags:
+
+      .. rst-class:: ansible-option-title
+
+      **tags**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Any tags that this item may need to be associated with
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-tenant"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-tenant:
+
+      .. rst-class:: ansible-option-title
+
+      **tenant**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The tenant the location will be assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-time_zone"></div>
+
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-time_zone:
+
+      .. rst-class:: ansible-option-title
+
+      **time_zone**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-time_zone" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Timezone associated with the location, ex. America/Denver
 
 
       .. raw:: html
@@ -636,8 +1117,19 @@ Examples
             location_type:
               name: My Location Type
             description: My Nested Location Description
-            parent_location:
-              name: My Location
+            tenant: Test Tenant
+            facility: EquinoxCA7
+            asn: "65001"
+            time_zone: America/Los Angeles
+            physical_address: Hollywood, CA, 90210
+            shipping_address: Hollywood, CA, 90210
+            latitude: "10.100000"
+            longitude: "12.200000"
+            contact_name: Jenny
+            contact_phone: 867-5309
+            contact_email: jenny@example.com
+            comments: "**This** is a `markdown` comment"
+            parent_location: My Location
             state: present
 
 

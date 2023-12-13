@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.power_outlet_module:
+.. _ansible_collections.networktocode.nautobot.namespace_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.power_outlet module -- Create, update or delete power outlets within Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.namespace module -- Creates or removes namespaces from Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.power_outlet module -- Create, update or delete power out
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.power_outlet_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.namespace_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.power_outlet`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.namespace`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.1.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates, updates or removes power outlets from Nautobot
+- Creates or removes namespaces from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.power_outlet_module_requirements:
+.. _ansible_collections.networktocode.nautobot.namespace_module_requirements:
 
 Requirements
 ------------
@@ -109,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -144,9 +144,46 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-custom_fields:
+
+      .. rst-class:: ansible-option-title
+
+      **custom_fields**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Must exist in Nautobot and in key/value format
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-description:
 
       .. rst-class:: ansible-option-title
 
@@ -160,7 +197,7 @@ Parameters
 
       :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -171,7 +208,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Description of the power outlet
+      The description of the namespace
 
 
       .. raw:: html
@@ -181,23 +218,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-device"></div>
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-device:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-location:
 
       .. rst-class:: ansible-option-title
 
-      **device**
+      **location**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-device" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`any` / :ansible-option-required:`required`
+      :ansible-option-type:`any`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -208,53 +245,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The device the power outlet is attached to
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-feed_leg"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-feed_leg:
-
-      .. rst-class:: ansible-option-title
-
-      **feed_leg**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-feed_leg" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The phase, in case of three-phase feed
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"A"`
-      - :ansible-option-choices-entry:`"B"`
-      - :ansible-option-choices-entry:`"C"`
+      The location of the namespace
 
 
       .. raw:: html
@@ -266,7 +257,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -280,7 +271,7 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -291,44 +282,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the power outlet
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-power_port"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-power_port:
-
-      .. rst-class:: ansible-option-title
-
-      **power_port**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-power_port" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The attached power port
+      The name of the namespace
 
 
       .. raw:: html
@@ -340,7 +294,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -381,7 +335,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -423,7 +377,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-tags"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-tags:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-tags:
 
       .. rst-class:: ansible-option-title
 
@@ -460,7 +414,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -492,46 +446,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-type"></div>
-
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-type:
-
-      .. rst-class:: ansible-option-title
-
-      **type**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The type of the power outlet
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -565,7 +482,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -622,39 +539,27 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot modules"
-      connection: local
-      hosts: localhost
-      gather_facts: False
+    ---
+    - name: Create a namespace
+      networktocode.nautobot.namespace:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Namespace
+        location: My Location
+        description: My Description
+        tags:
+          - tag1
+          - tag2
+        custom_fields:
+          my_custom_field: my_value
+        state: present
 
-      tasks:
-        - name: Create power port within Nautobot with only required information
-          networktocode.nautobot.power_outlet:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
-            state: present
-
-        - name: Update power port with other fields
-          networktocode.nautobot.power_outlet:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
-            type: iec-60320-c6
-            power_port: Test Power Port
-            feed_leg: A
-            description: power port description
-            state: present
-
-        - name: Delete power port within nautobot
-          networktocode.nautobot.power_outlet:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Power Outlet
-            device: Test Device
-            state: absent
+    - name: Delete a namespace
+      networktocode.nautobot.namespace:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Namespace
+        state: absent
 
 
 
@@ -683,7 +588,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -721,17 +626,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-power_outlet"></div>
+        <div class="ansibleOptionAnchor" id="return-namespace"></div>
 
-      .. _ansible_collections.networktocode.nautobot.power_outlet_module__return-power_outlet:
+      .. _ansible_collections.networktocode.nautobot.namespace_module__return-namespace:
 
       .. rst-class:: ansible-option-title
 
-      **power_outlet**
+      **namespace**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-power_outlet" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-namespace" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -767,7 +672,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Tobias Groß (@toerb)
+- Joe Wesch (@joewesch)
 
 
 

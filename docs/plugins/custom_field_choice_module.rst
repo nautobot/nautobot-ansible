@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.manufacturer_module:
+.. _ansible_collections.networktocode.nautobot.custom_field_choice_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.manufacturer module -- Create or delete manufacturers within Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.custom_field_choice module -- Creates or removes custom field choices from Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.manufacturer module -- Create or delete manufacturers wit
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.manufacturer_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.custom_field_choice_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.manufacturer`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.custom_field_choice`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.1.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes manufacturers from Nautobot
+- Creates or removes custom field choices from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.manufacturer_module_requirements:
+.. _ansible_collections.networktocode.nautobot.custom_field_choice_module_requirements:
 
 Requirements
 ------------
@@ -109,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -144,23 +144,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+        <div class="ansibleOptionAnchor" id="parameter-custom_field"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-custom_field:
 
       .. rst-class:: ansible-option-title
 
-      **description**
+      **custom_field**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-custom_field" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
+      :ansible-option-type:`any` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 4.2.0`
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
 
       .. raw:: html
@@ -171,44 +171,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Applies to the description field for Nautobot Manufacturer
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-name"></div>
-
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-name:
-
-      .. rst-class:: ansible-option-title
-
-      **name**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The name of the manufacturer
+      Custom field this choice belongs to
 
 
       .. raw:: html
@@ -220,7 +183,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -261,7 +224,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -303,7 +266,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -337,7 +300,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -371,7 +334,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -404,6 +367,80 @@ Parameters
 
         </div>
 
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-value"></div>
+
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-value:
+
+      .. rst-class:: ansible-option-title
+
+      **value**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-value" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Value of this choice
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-weight"></div>
+
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__parameter-weight:
+
+      .. rst-class:: ansible-option-title
+
+      **weight**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-weight" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`integer`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Weight of this choice
+
+
+      .. raw:: html
+
+        </div>
+
 
 .. Attributes
 
@@ -414,7 +451,6 @@ Notes
 -----
 
 .. note::
-   - Tags should be defined as a YAML list
    - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
@@ -428,26 +464,15 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test Nautobot modules"
-      connection: local
-      hosts: localhost
-      gather_facts: False
-
-      tasks:
-        - name: Create manufacturer within Nautobot with only required information
-          networktocode.nautobot.manufacturer:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Manufacturer
-            state: present
-            description: The test manufacturer
-
-        - name: Delete manufacturer within nautobot
-          networktocode.nautobot.manufacturer:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Test Manufacturer
-            state: absent
+    ---
+    - name: Create a custom field choice
+      networktocode.nautobot.custom_field_choice:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        value: "Choice 1"
+        weight: 100
+        custom_field: "Custom Field 1"
+        state: present
 
 
 
@@ -474,17 +499,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-manufacturer"></div>
+        <div class="ansibleOptionAnchor" id="return-custom_field_choice"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__return-manufacturer:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__return-custom_field_choice:
 
       .. rst-class:: ansible-option-title
 
-      **manufacturer**
+      **custom_field_choice**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-manufacturer" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-custom_field_choice" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -516,7 +541,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.manufacturer_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.custom_field_choice_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -560,7 +585,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Mikhail Yohman (@FragmentedPacket)
+- Joe Wesch (@joewesch)
 
 
 
