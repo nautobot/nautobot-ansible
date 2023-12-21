@@ -195,7 +195,7 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["power_panel", "name", "status"]),
+        ("state", "present", ["power_panel", "name"]),
         ("state", "absent", ["power_panel", "name"]),
     ]
 

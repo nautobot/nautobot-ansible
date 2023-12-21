@@ -89,6 +89,38 @@
       - test_three['circuit']['comments'] == "FAST CIRCUIT"
       - test_three['msg'] == "circuit Test Circuit One updated"
 
+- name: "PYNAUTOBOT_CIRCUIT 3.1: Update circuit without status"
+  networktocode.nautobot.circuit:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cid: Test Circuit One
+    provider: Test Provider
+    circuit_type: Test Circuit Type
+    tenant: Test Tenant
+    install_date: "2018-12-25"
+    commit_rate: 10000
+    description: "Test circuit with updates"
+    comments: "FASTER CIRCUIT"
+    state: present
+  register: test_three
+
+- name: "PYNAUTOBOT_CIRCUIT 3.1: ASSERT - Update circuit without status"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['description'] == "Test circuit with updates"
+      - test_three['diff']['after']['comments'] == "FASTER CIRCUIT"
+      - test_three['circuit']['cid'] == "Test Circuit One"
+      - test_three['circuit']['provider'] == provider['key']
+      - test_three['circuit']['circuit_type'] == type['key']
+      - test_three['circuit']['status'] == planned['key']
+      - test_three['circuit']['tenant'] == tenant['key']
+      - test_three['circuit']['install_date'] == "2018-12-25"
+      - test_three['circuit']['commit_rate'] == 10000
+      - test_three['circuit']['description'] == "Test circuit with updates"
+      - test_three['circuit']['comments'] == "FASTER CIRCUIT"
+      - test_three['msg'] == "circuit Test Circuit One updated"
+
 - name: "PYNAUTOBOT_CIRCUIT 4: Delete provider within nautobot"
   networktocode.nautobot.circuit:
     url: "{{ nautobot_url }}"
@@ -108,6 +140,6 @@
       - test_four['circuit']['tenant'] == tenant['key']
       - test_four['circuit']['install_date'] == "2018-12-25"
       - test_four['circuit']['commit_rate'] == 10000
-      - test_four['circuit']['description'] == "Test circuit"
-      - test_four['circuit']['comments'] == "FAST CIRCUIT"
+      - test_four['circuit']['description'] == "Test circuit with updates"
+      - test_four['circuit']['comments'] == "FASTER CIRCUIT"
       - test_four['msg'] == "circuit Test Circuit One deleted"

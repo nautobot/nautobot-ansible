@@ -52,7 +52,6 @@
     termination_b:
       device: Test Nexus Child One
       name: Ethernet2/1
-    status: "Connected"
     state: present
   register: test_two
 
@@ -64,6 +63,7 @@
       - test_two['cable']['termination_a_id'] == nexus_parent_intf['key']
       - test_two['cable']['termination_b_type'] == "dcim.interface"
       - test_two['cable']['termination_b_id'] == nexus_child_intf['key']
+      - test_two['cable']['status'] == connected['key']
       - test_two['msg'] == "cable dcim.interface Ethernet1/1 <> dcim.interface Ethernet2/1 already exists"
 
 - name: "CABLE 3: Update Cable with other fields"
@@ -104,6 +104,44 @@
       - test_three['cable']['type'] == "mmf-om4"
       - test_three['cable']['status'] == planned['key']
       - test_three['cable']['label'] == "label123"
+      - test_three['cable']['color'] == "abcdef"
+      - test_three['cable']['length'] == 30
+      - test_three['cable']['length_unit'] == "m"
+      - test_three['msg'] == "cable dcim.interface Ethernet1/1 <> dcim.interface Ethernet2/1 updated"
+
+- name: "CABLE 3.1: Update Cable without status"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet1/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet2/1
+    type: mmf-om4
+    label: label1234
+    color: abcdef
+    length: 30
+    length_unit: m
+    state: present
+  register: test_three
+
+- name: "CABLE 3.1: ASSERT - Update Cable without status"
+  assert:
+    that:
+      - test_three is changed
+
+      - test_three['diff']['after']['label'] == "label1234"
+      - test_three['cable']['termination_a_type'] == "dcim.interface"
+      - test_three['cable']['termination_a_id'] == nexus_parent_intf['key']
+      - test_three['cable']['termination_b_type'] == "dcim.interface"
+      - test_three['cable']['termination_b_id'] == nexus_child_intf['key']
+      - test_three['cable']['type'] == "mmf-om4"
+      - test_three['cable']['status'] == planned['key']
+      - test_three['cable']['label'] == "label1234"
       - test_three['cable']['color'] == "abcdef"
       - test_three['cable']['length'] == 30
       - test_three['cable']['length_unit'] == "m"
