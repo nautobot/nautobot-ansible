@@ -218,7 +218,6 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["address", "parent"], True),
         ("state", "absent", ["address"]),
         ("state", "new", ["address", "parent"], True),
     ]

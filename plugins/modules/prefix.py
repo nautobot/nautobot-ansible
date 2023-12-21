@@ -249,7 +249,6 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["prefix", "parent"], True),
         ("state", "absent", ["prefix"]),
         ("first_available", "yes", ["parent"]),
     ]

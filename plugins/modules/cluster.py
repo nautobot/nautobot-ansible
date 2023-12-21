@@ -146,7 +146,6 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["name", "cluster_type"]),
         ("state", "absent", ["name"]),
     ]
 

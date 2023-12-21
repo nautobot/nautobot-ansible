@@ -165,7 +165,6 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["cid"]),
         ("state", "absent", ["cid"]),
     ]
 

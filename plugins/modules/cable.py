@@ -232,11 +232,6 @@ def main():
     )
 
     required_if = [
-        (
-            "state",
-            "present",
-            ["termination_a_type", "termination_a", "termination_b_type", "termination_b"],
-        ),
         ("state", "absent", ["termination_a_type", "termination_a", "termination_b_type", "termination_b"]),
     ]
 
