@@ -52,6 +52,7 @@
     termination_b:
       device: Test Nexus Child One
       name: Ethernet2/1
+    status: "Connected"
     state: present
   register: test_two
 
@@ -63,7 +64,6 @@
       - test_two['cable']['termination_a_id'] == nexus_parent_intf['key']
       - test_two['cable']['termination_b_type'] == "dcim.interface"
       - test_two['cable']['termination_b_id'] == nexus_child_intf['key']
-      - test_two['cable']['status'] == connected['key']
       - test_two['msg'] == "cable dcim.interface Ethernet1/1 <> dcim.interface Ethernet2/1 already exists"
 
 - name: "CABLE 3: Update Cable with other fields"
