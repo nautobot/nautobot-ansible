@@ -16,3 +16,4 @@ pb.*.yml
 
 # Hypothesis output when tests are run locally
 .hypothesis/
+ansible.cfg
