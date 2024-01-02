@@ -93,6 +93,21 @@ tasks:
                     api_filter='role=management tag=Dell',
                     token='<redacted>') }}"
 
+# This example uses an API Filter with Depth set to get additional details from the lookup
+tasks:
+  # query a list of devices, getting API Depth of 1 to get additional details
+  # Note the space and the use of depth. Note the location_name is set to the namae of the location
+    - name: "Obtain Location Information from Nautobot and print some facts."
+      ansible.builtin.debug:
+        msg: >
+          "Location {{ item.value.name }} is  {{ item.value['status']['name'] }} and has {{ item.value.prefix_count }} Prefixes and {{ item.value.vlan_count }} VLANs."
+      loop: "{{ query('networktocode.nautobot.lookup', 'locations',
+        url=NAUTOBOT_URL,
+        token=NAUTOBOT_TOKEN,
+        api_filter='name=' + location_name + ' depth=1',
+        ) }}"
+
+
 # Fetch bgp sessions for R1-device
 tasks:
   - name: "Obtain bgp sessions for R1-Device"
