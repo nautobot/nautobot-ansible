@@ -145,11 +145,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "absent", ["name"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     cluster = NautobotVirtualizationModule(module, NB_CLUSTERS)
     cluster.run()
