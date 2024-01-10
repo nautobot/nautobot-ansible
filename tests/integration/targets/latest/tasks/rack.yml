@@ -110,7 +110,6 @@
     rack_group: "Parent Rack Group"
     facility_id: "EQUI10291"
     tenant: "Test Tenant"
-    status: Available
     serial: "FXS10001"
     asset_tag: "1234"
     width: 23
@@ -173,7 +172,6 @@
     rack_group: "Parent Rack Group"
     facility_id: "EQUI10291"
     tenant: "Test Tenant"
-    status: Available
     serial: "FXS10001"
     asset_tag: "1234"
     width: 23

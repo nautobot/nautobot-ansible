@@ -117,12 +117,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "present", ["name", "content_types"]),
-        ("state", "absent", ["name"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     status = NautobotExtrasModule(module, NB_STATUS)
     status.run()

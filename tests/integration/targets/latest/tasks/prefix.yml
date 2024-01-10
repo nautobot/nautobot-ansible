@@ -75,6 +75,29 @@
       - test_three['prefix']['status'] == reserved['key']
       - test_three['prefix']['description'] == "This prefix has been updated"
 
+- name: "3.1 - Update 10.156.0.0/19 without status"
+  networktocode.nautobot.prefix:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix: 10.156.0.0/19
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    description: "This prefix has been updated without providing a status"
+    state: present
+  register: test_three
+
+- name: "3.1 - ASSERT - Update 10.156.0.0/19 without status"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['description'] == "This prefix has been updated without providing a status"
+      - test_three['msg'] == "prefix 10.156.0.0/19 updated"
+      - test_three['prefix']['prefix'] == "10.156.0.0/19"
+      - test_three['prefix']['location'] == test_child_location['key']
+      - test_three['prefix']['status'] == reserved['key']
+      - test_three['prefix']['description'] == "This prefix has been updated without providing a status"
+
 - name: "4 - Delete prefix within nautobot"
   networktocode.nautobot.prefix:
     url: "{{ nautobot_url }}"

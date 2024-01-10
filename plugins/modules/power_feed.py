@@ -194,12 +194,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "present", ["power_panel", "name", "status"]),
-        ("state", "absent", ["power_panel", "name"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     power_feed = NautobotDcimModule(module, NB_POWER_FEEDS)
     power_feed.run()
