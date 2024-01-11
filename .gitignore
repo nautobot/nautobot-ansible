@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 tests/output/*
 venv/
+.venv/
 .vscode/
 changelogs/.plugin-cache.yaml
 docs/_build/*
