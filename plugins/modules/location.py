@@ -235,7 +235,6 @@ def main():
     )
 
     required_if = [
-        ("state", "present", ["name", "location_type", "status"]),
         ("state", "absent", ["id"]),
     ]
 

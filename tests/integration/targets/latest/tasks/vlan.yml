@@ -115,6 +115,39 @@
       - test_four['vlan']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "vlan Test VLAN 500 updated"
 
+- name: "VLAN 4.1: Update without status"
+  networktocode.nautobot.vlan:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VLAN 500"
+    vid: 500
+    tenant: "Test Tenant"
+    vlan_group: "Test Vlan Group"
+    role: Network of care
+    description: "Updated description. More description information."
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    tags:
+      - "Schnozzberry"
+    state: present
+  register: test_four
+
+- name: "VLAN 4.1: ASSERT - Updated without status"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['after']['description'] == "Updated description. More description information."
+      - test_four['vlan']['name'] == "Test VLAN 500"
+      - test_four['vlan']['tenant'] == tenant['key']
+      - test_four['vlan']['location'] == test_location['key']
+      - test_four['vlan']['vlan_group'] == vlan_group['key']
+      - test_four['vlan']['status'] == reserved['key']
+      - test_four['vlan']['role'] == role['key']
+      - test_four['vlan']['description'] == "Updated description. More description information."
+      - test_four['vlan']['tags'][0] == tag_schnozzberry['key']
+      - test_four['msg'] == "vlan Test VLAN 500 updated"
+
 - name: "VLAN: ASSERT - IDEMPOTENT WITH VLAN_GROUP"
   networktocode.nautobot.vlan:
     url: "{{ nautobot_url }}"
@@ -125,7 +158,7 @@
     vlan_group: "Test Vlan Group"
     status: Reserved
     role: Network of care
-    description: Updated description
+    description: "Updated description. More description information."
     location:
       name: "Child Test Location"
       parent: "Parent Test Location"
@@ -206,6 +239,6 @@
       - test_six['vlan']['vlan_group'] == vlan_group['key']
       - test_six['vlan']['status'] == reserved['key']
       - test_six['vlan']['role'] == role['key']
-      - test_six['vlan']['description'] == "Updated description"
+      - test_six['vlan']['description'] == "Updated description. More description information."
       - test_six['vlan']['tags'][0] == tag_schnozzberry['key']
       - test_six['msg'] == "vlan Test VLAN 500 deleted"

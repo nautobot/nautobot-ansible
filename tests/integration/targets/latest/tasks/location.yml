@@ -50,7 +50,6 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Location
-    status: Active
     location_type: "{{ parent_location_type['key'] }}"
     description: Test Location Description
   register: test_update
@@ -61,6 +60,7 @@
       - test_update is changed
       - test_update['diff']['before']['description'] == ""
       - test_update['diff']['after']['description'] == "Test Location Description"
+      - test_update['location']['status'] == active['key']
 
 - name: "4 - Create location with all parameters"
   networktocode.nautobot.location:
@@ -184,3 +184,25 @@
       - test_eight['diff']['after']['state'] == "absent"
       - test_eight['location']['name'] == "Test Location"
       - "'deleted' in test_eight['msg']"
+
+- name: "9 - Use Parent Location Name"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Testing Parent Name Lookup
+    # Testing issue #303, where the location name lookup is exact instead of contains
+    # 'Parent Test Location' and 'Parent Test Location 2' are both valid parent locations
+    parent_location: "Parent Test Location"
+    status: Active
+    location_type: "{{ child_location_type['key'] }}"
+  register: test_parent_name
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - test_parent_name is changed
+      - test_parent_name['diff']['before']['state'] == "absent"
+      - test_parent_name['diff']['after']['state'] == "present"
+      - test_parent_name['location']['name'] == "Testing Parent Name Lookup"
+      - test_parent_name['location']['status'] == active['key']
+      - test_parent_name['location']['location_type'] == child_location_type["key"]

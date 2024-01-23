@@ -217,12 +217,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "present", ["name", "status"]),
-        ("state", "absent", ["name"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     rack = NautobotDcimModule(module, NB_RACKS)
     rack.run()

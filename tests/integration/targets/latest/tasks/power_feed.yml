@@ -90,6 +90,39 @@
       - test_three['power_feed']['comments'] == "totally normal power feed"
       - test_three['msg'] == "power_feed Power Feed updated"
 
+- name: "POWER_FEED 3.1: Update power_feed without status"
+  networktocode.nautobot.power_feed:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Feed
+    power_panel: Test Power Panel
+    type: redundant
+    supply: dc
+    phase: three-phase
+    voltage: 400
+    amperage: 32
+    max_utilization: 25
+    comments: totally normal power feed, with updates
+    state: present
+  register: test_three
+
+- name: "POWER_FEED 3.1: ASSERT - Update power_feed without status"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['comments'] == "totally normal power feed, with updates"
+      - test_three['power_feed']['name'] == "Power Feed"
+      - test_three['power_feed']['power_panel'] == power_panel['key']
+      - test_three['power_feed']['status'] == offline['key']
+      - test_three['power_feed']['type'] == "redundant"
+      - test_three['power_feed']['supply'] == "dc"
+      - test_three['power_feed']['phase'] == "three-phase"
+      - test_three['power_feed']['voltage'] == 400
+      - test_three['power_feed']['amperage'] == 32
+      - test_three['power_feed']['max_utilization'] == 25
+      - test_three['power_feed']['comments'] == "totally normal power feed, with updates"
+      - test_three['msg'] == "power_feed Power Feed updated"
+
 - name: "POWER_FEED 4: Create Power Feed for Delete Test"
   networktocode.nautobot.power_feed:
     url: "{{ nautobot_url }}"

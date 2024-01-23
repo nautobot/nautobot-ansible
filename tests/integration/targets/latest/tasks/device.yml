@@ -70,7 +70,6 @@
     token: "{{ nautobot_token }}"
     name: "R1"
     serial: "FXS1001"
-    status: "Staged"
     local_config_context_data:
       bgp_as: "65412"
     virtual_chassis: "VC1"
@@ -135,7 +134,6 @@
     token: "{{ nautobot_token }}"
     name: "R1-changed-name"
     serial: "FXS1001"
-    status: "Staged"
     query_params:
       - serial
     state: present
@@ -149,7 +147,7 @@
       - test_three_dot_two['device']['role'] == role['key']
       - test_three_dot_two['device']['device_type'] == device_type['key']
       - test_three_dot_two['device']['location'] == parent_location['key']
-      - test_three_dot_two['device']['status'] == staged['key']
+      - test_three_dot_two['device']['status'] == active['key']
       - test_three_dot_two['device']['serial'] == "FXS1001"
       - test_three_dot_two['msg'] == "device R1-changed-name updated"
 
@@ -248,7 +246,6 @@
     # This will test the UUID for ip4
     primary_ip4: "{{ ip4['key'] }}"
     primary_ip6: "2001::1:1/64"
-    status: "Active"
     state: present
   register: test_seven
 

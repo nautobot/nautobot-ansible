@@ -183,12 +183,7 @@ def main():
         )
     )
 
-    required_if = [
-        ("state", "present", ["name", "status"]),
-        ("state", "absent", ["name"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if, supports_check_mode=True)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     vm_interface = NautobotVirtualizationModule(module, NB_VM_INTERFACES)
     vm_interface.run()

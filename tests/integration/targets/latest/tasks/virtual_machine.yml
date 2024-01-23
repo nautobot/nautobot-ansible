@@ -82,6 +82,35 @@
       - test_three['virtual_machine']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "virtual_machine Test VM One updated"
 
+- name: "VIRTUAL_MACHINE 3.1: Update without status"
+  networktocode.nautobot.virtual_machine:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VM One"
+    cluster: "Test Cluster"
+    vcpus: 12
+    memory: 12
+    role: "Test VM Role"
+    tags:
+      - "Schnozzberry"
+    state: present
+  register: test_three
+
+- name: "VIRTUAL_MACHINE 3.1: ASSERT - Updated without status"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['vcpus'] == 12
+      - test_three['diff']['after']['memory'] == 12
+      - test_three['virtual_machine']['name'] == "Test VM One"
+      - test_three['virtual_machine']['cluster'] == test_cluster['key']
+      - test_three['virtual_machine']['vcpus'] == 12
+      - test_three['virtual_machine']['memory'] == 12
+      - test_three['virtual_machine']['status'] == planned['key']
+      - test_three['virtual_machine']['role'] == role['key']
+      - test_three['virtual_machine']['tags'][0] == tag_schnozzberry['key']
+      - test_three['msg'] == "virtual_machine Test VM One updated"
+
 - name: "VIRTUAL_MACHINE 4: ASSERT - Delete"
   networktocode.nautobot.virtual_machine:
     url: "{{ nautobot_url }}"
@@ -96,8 +125,8 @@
       - test_four is changed
       - test_four['virtual_machine']['name'] == "Test VM One"
       - test_four['virtual_machine']['cluster'] == test_cluster['key']
-      - test_four['virtual_machine']['vcpus'] == 8
-      - test_four['virtual_machine']['memory'] == 8
+      - test_four['virtual_machine']['vcpus'] == 12
+      - test_four['virtual_machine']['memory'] == 12
       - test_four['virtual_machine']['status'] == planned['key']
       - test_four['virtual_machine']['role'] == role['key']
       - test_four['virtual_machine']['tags'][0] == tag_schnozzberry['key']

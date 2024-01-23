@@ -158,12 +158,8 @@ def main():
             custom_fields=dict(required=False, type="dict"),
         )
     )
-    required_if = [
-        ("state", "present", ["name", "status"]),
-        ("state", "absent", ["name"]),
-    ]
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     vlan = NautobotIpamModule(module, NB_VLANS)
     vlan.run()

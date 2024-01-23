@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 tests/output/*
 venv/
+.venv/
 .vscode/
 changelogs/.plugin-cache.yaml
 docs/_build/*
@@ -16,3 +17,4 @@ pb.*.yml
 
 # Hypothesis output when tests are run locally
 .hypothesis/
+ansible.cfg

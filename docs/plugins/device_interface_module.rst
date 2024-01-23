@@ -42,7 +42,7 @@ networktocode.nautobot.device_interface module -- Creates or removes interfaces 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -753,7 +753,7 @@ Parameters
 
       The status of the interface
 
-      Required if \ :emphasis:`state=present`\  and using \ :emphasis:`api\_version`\  1.4+
+      Required if \ :emphasis:`state=present`\  and the interface does not exist yet
 
 
       .. raw:: html

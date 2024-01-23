@@ -231,16 +231,7 @@ def main():
         )
     )
 
-    required_if = [
-        (
-            "state",
-            "present",
-            ["termination_a_type", "termination_a", "termination_b_type", "termination_b", "status"],
-        ),
-        ("state", "absent", ["termination_a_type", "termination_a", "termination_b_type", "termination_b"]),
-    ]
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     cable = NautobotDcimModule(module, NB_CABLES)
     cable.run()
