@@ -5,6 +5,15 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.1.1
+======
+
+Minor Changes
+-------------
+- (#298) Removes `status` option from being required unless creating a new object for various modules
+- (#299) Added example for using the `depth` option in the `lookup` module
+- (#304) Fixed the ability to look up `parent_location` by name instead of UUID in the `location` module
+
 v5.1.0
 ======
 
