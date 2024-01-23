@@ -111,6 +111,7 @@ QUERY_TYPES = dict(
     master="name",
     nat_inside="address",
     nat_outside="address",
+    parent_location="name",
     parent_rack_group="name",
     parent_tenant_group="name",
     power_panel="name",
