@@ -35,7 +35,9 @@ options:
       - Location Type description
     required: false
     type: str
-  parent:
+  parent_location_type:
+    aliases:
+      - parent
     description:
       - The parent location type this location type should be tied to
     required: false
@@ -117,7 +119,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            parent=dict(required=False, type="raw"),
+            parent_location_type=dict(required=False, type="raw", aliases=["parent"]),
             nestable=dict(required=False, type="bool"),
             content_types=dict(required=False, type="list", elements="str"),
             custom_fields=dict(required=False, type="dict"),
