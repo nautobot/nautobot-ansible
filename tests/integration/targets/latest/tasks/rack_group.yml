@@ -6,6 +6,7 @@
 ##
 - set_fact:
     test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
+    parent_rack_group: "{{ lookup('networktocode.nautobot.lookup', 'rack-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Rack Group\"') }}"
 
 - name: "RACK_GROUP 1: Necessary info creation"
   networktocode.nautobot.rack_group:
@@ -62,3 +63,51 @@
       - test_three['diff']['before']['state'] == "present"
       - test_three['diff']['after']['state'] == "absent"
       - test_three['msg'] == "rack_group Rack Group deleted"
+
+- name: "RACK_GROUP 4: Create child rack group"
+  networktocode.nautobot.rack_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Rack Group
+    description: Test Rack Group Description
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    parent: Parent Rack Group
+    state: present
+  register: test_four
+
+- name: "RACK_GROUP 4: ASSERT - Create child rack group"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "absent"
+      - test_four['diff']['after']['state'] == "present"
+      - test_four['rack_group']['name'] == "Test Rack Group"
+      - test_four['rack_group']['description'] == "Test Rack Group Description"
+      - test_four['rack_group']['location'] == test_location['key']
+      - test_four['rack_group']['parent'] == parent_rack_group['key']
+      - test_four['msg'] == "rack_group Test Rack Group created"
+
+- name: "RACK_GROUP 5: Create duplicate child rack group"
+  networktocode.nautobot.rack_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Rack Group
+    description: Test Rack Group Description
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    parent: Parent Rack Group
+    state: present
+  register: test_five
+
+- name: "RACK_GROUP 5: ASSERT - Create duplicate child rack group"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['rack_group']['name'] == "Test Rack Group"
+      - test_five['rack_group']['description'] == "Test Rack Group Description"
+      - test_five['rack_group']['location'] == test_location['key']
+      - test_five['rack_group']['parent'] == parent_rack_group['key']
+      - test_five['msg'] == "rack_group Test Rack Group already exists"
