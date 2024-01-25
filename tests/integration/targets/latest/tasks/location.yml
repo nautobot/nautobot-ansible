@@ -107,7 +107,7 @@
     status: Active
     description: Test Location 2 Description
     location_type: "{{ child_location_type['key'] }}"
-    parent_location: "{{ test_create_min['location']['id'] }}"
+    parent: "{{ test_create_min['location']['id'] }}"
     tenant: Test Tenant
     facility: EquinoxCA7
     asn: "65001"
@@ -192,7 +192,7 @@
     name: Testing Parent Name Lookup
     # Testing issue #303, where the location name lookup is exact instead of contains
     # 'Parent Test Location' and 'Parent Test Location 2' are both valid parent locations
-    parent_location: "Parent Test Location"
+    parent: "Parent Test Location"
     status: Active
     location_type: "{{ child_location_type['key'] }}"
   register: test_parent_name

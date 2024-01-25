@@ -112,6 +112,7 @@ QUERY_TYPES = dict(
     nat_inside="address",
     nat_outside="address",
     parent_location="name",
+    parent_location_type="name",
     parent_rack_group="name",
     parent_tenant_group="name",
     power_panel="name",
@@ -176,6 +177,7 @@ CONVERT_TO_ID = {
     "platform": "platforms",
     "parent_rack_group": "rack_groups",
     "parent_location": "locations",
+    "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
     "power_panel": "power_panels",
     "power_port": "power_ports",
@@ -400,6 +402,7 @@ REQUIRED_ID_FIND = {
 CONVERT_KEYS = {
     "parent_rack_group": "parent",
     "parent_location": "parent",
+    "parent_location_type": "parent",
     "parent_tenant_group": "parent",
     "rear_port_template_position": "rear_port_position",
     "termination_a": "termination_a_id",

@@ -55,7 +55,7 @@
     token: "{{ nautobot_token }}"
     name: Test Location Type 2
     description: Test Location Type 2 Description
-    parent: "{{ test_create_min['location_type']['id'] }}"
+    parent: "{{ test_create_min['location_type']['name'] }}"
     nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
     content_types:
       - "dcim.device"
@@ -80,7 +80,7 @@
     token: "{{ nautobot_token }}"
     name: Test Location Type 2
     description: Test Location Type 2 Description
-    parent: "{{ test_create_min['location_type']['id'] }}"
+    parent: "{{ test_create_min['location_type']['name'] }}"
     nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
     content_types:
       - "dcim.device"
