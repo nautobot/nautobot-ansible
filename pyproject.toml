@@ -9,7 +9,7 @@ license = "Apache 2.0"
 python = "^3.9"
 netutils = "^1.2"
 pynautobot = "^2.0.1"
-ansible-core = "^2.14"
+ansible-core = "^2.15"
 
 [tool.poetry.dev-dependencies]
 black = "*"
