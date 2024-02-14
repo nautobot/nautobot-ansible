@@ -41,3 +41,4 @@ services:
 networks:
   integration_network:
     name: nautobot_ansible_default
+    external: true
