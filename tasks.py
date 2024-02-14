@@ -219,7 +219,7 @@ def post_upgrade(context):
 def lint(context):
     """Run linting tools"""
     context.run(
-        "docker compose up --build --force-recreate --exit-code-from lint lint",
+        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from lint lint",
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
@@ -235,7 +235,7 @@ def unit(context, verbose=0):
     env = {"PYTHON_VER": context["nautobot_ansible"]["python_ver"]}
     if verbose:
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
-    context.run("docker compose up --build --force-recreate --exit-code-from unit unit", env=env)
+    context.run("docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from unit unit", env=env)
 
 
 @task(
@@ -261,7 +261,7 @@ def integration(context, verbose=0, tags=None):
     if ansible_args:
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     context.run(
-        "docker compose up --build --force-recreate --exit-code-from integration integration",
+        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from integration integration",
         env=env,
     )
     # Clean up after the tests
