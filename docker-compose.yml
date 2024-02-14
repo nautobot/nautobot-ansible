@@ -40,5 +40,4 @@ services:
 # Attach these services to the Nautobot network that gets spun up from invoke start
 networks:
   integration_network:
-    name: nautobot_ansible_default
-    external: true
+    name: nautobot-ansible_default
