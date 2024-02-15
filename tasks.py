@@ -1,4 +1,5 @@
 """Tasks for use with Invoke."""
+
 from distutils.util import strtobool
 from invoke import Collection, task as invoke_task
 import os
@@ -55,22 +56,22 @@ def task(function=None, *args, **kwargs):
 
 
 def docker_compose(context, command, **kwargs):
-    """Helper function for running a specific docker-compose command with all appropriate parameters and environment.
+    """Helper function for running a specific docker compose command with all appropriate parameters and environment.
     Args:
         context (obj): Used to run specific commands
-        command (str): Command string to append to the "docker-compose ..." command, such as "build", "up", etc.
+        command (str): Command string to append to the "docker compose ..." command, such as "build", "up", etc.
         **kwargs: Passed through to the context.run() call.
     """
     build_env = {
         "NAUTOBOT_VER": context.nautobot_ansible.nautobot_ver,
         "PYTHON_VER": context.nautobot_ansible.python_ver,
     }
-    compose_command = f'docker-compose --project-name {context.nautobot_ansible.project_name} --project-directory "{context.nautobot_ansible.compose_dir}"'
+    compose_command = f'docker compose --project-name {context.nautobot_ansible.project_name} --project-directory "{context.nautobot_ansible.compose_dir}"'
     for compose_file in context.nautobot_ansible.compose_files:
         compose_file_path = os.path.join(context.nautobot_ansible.compose_dir, compose_file)
         compose_command += f' -f "{compose_file_path}"'
     compose_command += f" {command}"
-    print(f'Running docker-compose command "{command}"')
+    print(f'Running docker compose command "{command}"')
     return context.run(compose_command, env=build_env, **kwargs)
 
 
@@ -218,29 +219,53 @@ def post_upgrade(context):
 def lint(context):
     """Run linting tools"""
     context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from lint lint",
+        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from lint lint",
         env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
     )
 
 
-@task
-def unit(context):
+@task(
+    help={
+        "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
+    },
+    incrementable=["verbose"],
+)
+def unit(context, verbose=0):
     """Run unit tests"""
-    context.run(
-        "docker-compose up --build --force-recreate --quiet-pull --exit-code-from unit unit",
-        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
-    )
+    env = {"PYTHON_VER": context["nautobot_ansible"]["python_ver"]}
+    if verbose:
+        env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
+    context.run("docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from unit unit", env=env)
 
 
-@task
-def integration(context):
+@task(
+    help={
+        "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
+        "tags": "Run specific test tags (e.g. 'device' or 'location'); can be provided multiple times (e.g. --tags device --tags location)",
+    },
+    iterable=["tags"],
+    incrementable=["verbose"],
+)
+def integration(context, verbose=0, tags=None):
     """Run all tests including integration tests"""
+    build(context)
+    # Destroy any existing containers and volumes that may be left over from a previous run
     destroy(context)
     start(context)
+    env = {"PYTHON_VER": context["nautobot_ansible"]["python_ver"]}
+    ansible_args = []
+    if verbose:
+        ansible_args.append(f"-{'v' * verbose}")
+    if tags:
+        ansible_args.append(f"--tags {','.join(tags)}")
+    if ansible_args:
+        env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     context.run(
-        "docker-compose up --build --force-recreate --exit-code-from integration integration",
-        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from integration integration",
+        env=env,
     )
+    # Clean up after the tests
+    destroy(context)
 
 
 @task(
