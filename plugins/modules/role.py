@@ -21,6 +21,7 @@ author:
 version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
@@ -109,6 +110,7 @@ def main():
             color=dict(required=False, type="str"),
             content_types=dict(required=False, type="list", elements="str"),
             weight=dict(required=False, type="int"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 
