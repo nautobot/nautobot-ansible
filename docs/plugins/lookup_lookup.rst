@@ -476,7 +476,7 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
-                        api_version='1.3',
+                        api_version='2.0',
                         token='<redacted>') }}"
 
     # This example uses an API Filter
@@ -489,7 +489,7 @@ Examples
              manufactured by {{ item.value.device_type.manufacturer.name }}"
         loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                         api_endpoint='http://localhost/',
-                        api_version='1.3',
+                        api_version='2.0',
                         api_filter='role=management tags=Dell',
                         token='<redacted>') }}"
 
@@ -515,7 +515,7 @@ Examples
           msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
                          api_filter='device=R1-Device',
                          api_endpoint='http://localhost/',
-                         api_version='1.3',
+                         api_version='2.0',
                          token='<redacted>',
                          plugin='mycustomstuff') }}"
 
