@@ -25,7 +25,7 @@ function main {
     render "./tests/integration/integration_config.tmpl.yml" > ./tests/integration/integration_config.yml
 
     echo "# Checking to make sure Nautobot server is reachable.."
-    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
+    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
 
     echo "# Populating Nautobot for running integration tests.."
     python ./tests/integration/nautobot-populate.py
