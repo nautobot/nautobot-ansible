@@ -1,4 +1,5 @@
 """Nautobot development configuration file."""
+
 # pylint: disable=invalid-envvar-default
 import os
 import sys
@@ -73,3 +74,6 @@ CACHEOPS_REDIS = parse_redis_connection(redis_database=1)
 
 # Enable installed plugins. Add the name of each plugin to the list.
 PLUGINS = ["nautobot_bgp_models"]
+
+# Disable metrics for tests
+INSTALLATION_METRICS_ENABLED = False
