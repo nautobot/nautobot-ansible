@@ -1542,13 +1542,13 @@ testutils = ["gitpython (>3)"]
 
 [[package]]
 name = "pynautobot"
-version = "2.0.2"
+version = "2.1.1"
 description = "Nautobot API client library"
 optional = false
-python-versions = ">=3.8,<4.0"
+python-versions = "<4.0,>=3.8"
 files = [
-    {file = "pynautobot-2.0.2-py3-none-any.whl", hash = "sha256:c0533bcd5ab548d23273f6be49071f09a3dec7cd65ded3507be1707d25bb5f0e"},
-    {file = "pynautobot-2.0.2.tar.gz", hash = "sha256:a62f7b35d4f3492a3cfb038abfc3272567dd1d4b88703ab2736db47f40263932"},
+    {file = "pynautobot-2.1.1-py3-none-any.whl", hash = "sha256:bcf56fee4733942a87dd07f956418f67580f45d08e5296c8fa3d11316c4ca419"},
+    {file = "pynautobot-2.1.1.tar.gz", hash = "sha256:f01907a519689dc842f909f850737f68b53953818c97380a8101406d37e49d1b"},
 ]
 
 [package.dependencies]
