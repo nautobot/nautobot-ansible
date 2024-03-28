@@ -13,6 +13,7 @@ DOCUMENTATION = """
         - Nikhil Singh Baliyan (@nikkytub)
         - Sander Steffann (@steffann)
         - Douglas Heriot (@DouglasHeriot)
+        - Yannis Ansermoz (@Yannis100)
     short_description: Nautobot inventory source
     description:
         - Get inventory hosts from Nautobot
@@ -65,6 +66,15 @@ DOCUMENTATION = """
             default: False
             type: boolean
             version_added: "1.0.0"
+        computed_fields:
+            description:
+                - If True, it adds computed_fields in host vars.
+            default: False
+            type: boolean
+        flatten_computed_fields:
+            description:
+                - If I(computed_fields) is enabled, by default it's added as a host var named computed_fields.
+                - If flatten_computed_fields is set to True, the computed fields variables will be added directly to the host instead.
         flatten_custom_fields:
             description:
                 - By default, host custom fields are added as a dictionary host var named custom_fields.
@@ -1105,6 +1115,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if vm_url:
                 vm_url = f"{vm_url}&include=config_context"
 
+        # Include computed_fields if required
+        if self.computed_fields:
+            if device_url:
+                device_url = f"{device_url}&include=computed_fields"
+            if vm_url:
+                vm_url = f"{vm_url}&include=computed_fields"
+
         return device_url, vm_url
 
     def fetch_hosts(self):
@@ -1255,6 +1272,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 (attribute == "config_context" and self.flatten_config_context)
                 or (attribute == "custom_fields" and self.flatten_custom_fields)
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
+                or (attribute == "computed_fields" and self.flatten_computed_fields)
             ):
                 for key, value in extracted_value.items():
                     self.inventory.set_variable(hostname, key, value)
@@ -1333,6 +1351,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.config_context = self.get_option("config_context")
         self.flatten_config_context = self.get_option("flatten_config_context")
         self.flatten_local_context_data = self.get_option("flatten_local_context_data")
+        self.computed_fields = self.get_option("computed_fields")
+        self.flatten_computed_fields = self.get_option("flatten_computed_fields")
         self.flatten_custom_fields = self.get_option("flatten_custom_fields")
         self.plurals = self.get_option("plurals")
         self.interfaces = self.get_option("interfaces")
