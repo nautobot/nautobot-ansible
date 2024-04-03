@@ -22,6 +22,7 @@ version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
   device:
     description:
@@ -145,6 +146,7 @@ def main():
             asset_tag=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             discovered=dict(required=False, type="bool", default=False),
+            custom_fields=dict(required=False, type="dict"),
             tags=dict(required=False, type="list", elements="raw"),
         )
     )
