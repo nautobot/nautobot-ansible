@@ -914,11 +914,7 @@ class NautobotModule:
         updated_obj = serialized_nb_obj.copy()
         updated_obj.update(data)
         if serialized_nb_obj.get("custom_fields"):
-            serialized_nb_obj["custom_fields"] = {
-                key: value
-                for key, value in serialized_nb_obj["custom_fields"].items()
-                if value is not None
-            }
+            serialized_nb_obj["custom_fields"] = {key: value for key, value in serialized_nb_obj["custom_fields"].items() if value is not None}
         if serialized_nb_obj.get("tags") and data.get("tags"):
             serialized_nb_obj["tags"] = set(serialized_nb_obj["tags"])
             updated_obj["tags"] = set(data["tags"])
