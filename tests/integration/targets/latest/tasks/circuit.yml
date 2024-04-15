@@ -138,7 +138,7 @@
     state: present
   register: test_four
 
-- name: "PYNAUTOBOT_CIRCUIT 3.1: ASSERT - Update circuit without status"
+- name: "PYNAUTOBOT_CIRCUIT 4: ASSERT - Update circuit with custom_field"
   assert:
     that:
       - test_four is changed
@@ -154,6 +154,29 @@
       - test_four['circuit']['description'] == "Test circuit with updates"
       - test_four['circuit']['comments'] == "FASTER CIRCUIT"
       - test_four['msg'] == "circuit Test Circuit One updated"
+
+- name: "PYNAUTOBOT_CIRCUIT 4.1: Verify circuit with custom_field idempotency"
+  networktocode.nautobot.circuit:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cid: Test Circuit One
+    provider: Test Provider
+    circuit_type: Test Circuit Type
+    tenant: Test Tenant
+    install_date: "2018-12-25"
+    commit_rate: 10000
+    custom_fields:
+      my_text_custom_field: test
+    description: "Test circuit with updates"
+    comments: "FASTER CIRCUIT"
+    state: present
+  register: test_four
+
+- name: "PYNAUTOBOT_CIRCUIT 5: ASSERT - Verify custom_field idempotency"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['circuit']['custom_fields']['my_text_custom_field']  == "test"
 
 - name: "PYNAUTOBOT_CIRCUIT 5: Delete provider within nautobot"
   networktocode.nautobot.circuit:
