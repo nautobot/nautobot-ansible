@@ -121,19 +121,30 @@
       - test_three['circuit']['comments'] == "FASTER CIRCUIT"
       - test_three['msg'] == "circuit Test Circuit One updated"
 
-- name: "PYNAUTOBOT_CIRCUIT 4: Delete provider within nautobot"
+- name: "PYNAUTOBOT_CIRCUIT 4: Update circuit with custom_field"
   networktocode.nautobot.circuit:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     cid: Test Circuit One
-    state: absent
+    provider: Test Provider
+    circuit_type: Test Circuit Type
+    tenant: Test Tenant
+    install_date: "2018-12-25"
+    commit_rate: 10000
+    custom_fields:
+      my_text_custom_field: test
+    description: "Test circuit with updates"
+    comments: "FASTER CIRCUIT"
+    state: present
   register: test_four
 
-- name: "PYNAUTOBOT_CIRCUIT 4 : ASSERT - Delete"
+- name: "PYNAUTOBOT_CIRCUIT 3.1: ASSERT - Update circuit without status"
   assert:
     that:
       - test_four is changed
       - test_four['circuit']['cid'] == "Test Circuit One"
+      - test_four['diff']['after']['custom_fields']['my_text_custom_field']  == "test"
+      - test_four['circuit']['custom_fields']['my_text_custom_field']  == "test"
       - test_four['circuit']['provider'] == provider['key']
       - test_four['circuit']['circuit_type'] == type['key']
       - test_four['circuit']['status'] == planned['key']
@@ -142,4 +153,27 @@
       - test_four['circuit']['commit_rate'] == 10000
       - test_four['circuit']['description'] == "Test circuit with updates"
       - test_four['circuit']['comments'] == "FASTER CIRCUIT"
-      - test_four['msg'] == "circuit Test Circuit One deleted"
+      - test_four['msg'] == "circuit Test Circuit One updated"
+
+- name: "PYNAUTOBOT_CIRCUIT 5: Delete provider within nautobot"
+  networktocode.nautobot.circuit:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cid: Test Circuit One
+    state: absent
+  register: test_five
+
+- name: "PYNAUTOBOT_CIRCUIT 5 : ASSERT - Delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['circuit']['cid'] == "Test Circuit One"
+      - test_five['circuit']['provider'] == provider['key']
+      - test_five['circuit']['circuit_type'] == type['key']
+      - test_five['circuit']['status'] == planned['key']
+      - test_five['circuit']['tenant'] == tenant['key']
+      - test_five['circuit']['install_date'] == "2018-12-25"
+      - test_five['circuit']['commit_rate'] == 10000
+      - test_five['circuit']['description'] == "Test circuit with updates"
+      - test_five['circuit']['comments'] == "FASTER CIRCUIT"
+      - test_five['msg'] == "circuit Test Circuit One deleted"
