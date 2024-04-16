@@ -45,6 +45,12 @@ DOCUMENTATION = """
                 - Whether or not to validate SSL of the Nautobot instance
             required: False
             default: True
+        num_retries:
+            description:
+                - Number of retries
+                - This will only affect HTTP codes 429, 500, 502, 503, and 504.
+            required: False
+            default: 3
         graph_variables:
             description:
                 - Dictionary of keys/values to pass into the GraphQL query
