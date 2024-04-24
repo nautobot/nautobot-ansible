@@ -63,7 +63,7 @@ DOCUMENTATION = """
                 - Number of retries
                 - This will only affect HTTP codes 429, 500, 502, 503, and 504.
             required: False
-            default: 3
+            default: 0
         raw_data:
             description:
                 - Whether to return raw API data with the lookup/query or whether to return a key/value dict
@@ -318,7 +318,7 @@ class LookupModule(LookupBase):
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
-        num_retries = kwargs.get("num_retries", "3")
+        num_retries = kwargs.get("num_retries", "0")
         ssl_verify = kwargs.get("validate_certs", True)
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
