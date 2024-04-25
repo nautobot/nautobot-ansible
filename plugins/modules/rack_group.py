@@ -41,6 +41,8 @@ options:
     type: raw
     version_added: "3.0.0"
   parent_rack_group:
+    aliases:
+      - parent
     description:
       - The parent rack-group the rack group will be assigned to
     required: false
@@ -104,7 +106,7 @@ def main():
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
-            parent_rack_group=dict(required=False, type="raw"),
+            parent_rack_group=dict(required=False, type="raw", aliases=["parent"]),
         )
     )
 

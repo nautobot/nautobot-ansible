@@ -21,6 +21,7 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
@@ -97,6 +98,7 @@ def main():
             name=dict(required=True, type="str"),
             location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            custom_fields=dict(required=False, type="dict"),
         )
     )
 

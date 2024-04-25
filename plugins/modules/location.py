@@ -56,6 +56,8 @@ options:
     required: false
     type: raw
   parent_location:
+    aliases:
+      - parent
     description:
       - The parent location this location should be tied to
     required: false
@@ -180,7 +182,7 @@ EXAMPLES = r"""
         contact_phone: 867-5309
         contact_email: jenny@example.com
         comments: "**This** is a `markdown` comment"
-        parent_location: My Location
+        parent: My Location
         state: present
 """
 
@@ -216,7 +218,7 @@ def main():
             status=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             location_type=dict(required=False, type="raw"),
-            parent_location=dict(required=False, type="raw"),
+            parent_location=dict(required=False, type="raw", aliases=["parent"]),
             tenant=dict(required=False, type="raw"),
             facility=dict(required=False, type="str"),
             asn=dict(required=False, type="int"),

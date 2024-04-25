@@ -13,6 +13,9 @@ author:
 short_description: Nautobot inventory source using GraphQL capability
 description:
   - Get inventory hosts from Nautobot using GraphQL queries
+extends_documentation_fragment:
+  - constructed
+  - inventory_cache
 requirements:
   - netutils
 options:
@@ -118,7 +121,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 # }
 
 # This module will automatically add the ansible_host key and set it equal to primary_ip4.host
-# as well as the ansible_network_os key and set it to platform.napalm_driver
+# as well as the ansible_network_os key and set it to platform.napalm_driver via netutils mapping
 # if the primary_ip4.host and platform.napalm_driver are present on the device in Nautobot.
 
 # Add additional query parameters with the query key.
@@ -259,7 +262,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
-        if device.get("platform") and "napalm_driver" in device["platform"]:
+        if device.get("platform", {}).get("napalm_driver"):
             self.add_variable(
                 device["name"],
                 ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
@@ -383,11 +386,22 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
-            self.inventory.add_host(device["name"])
+            hostname = device["name"]
+            self.inventory.add_host(host=hostname)
             self.add_ipv4_address(device)
             self.add_ansible_platform(device)
             self.populate_variables(device)
             self.create_groups(device)
+            strict = self.get_option("strict")
+
+            # Composed variables
+            self._set_composite_vars(self.get_option("compose"), device, hostname, strict=strict)
+
+            # Complex groups based on jinja2 conditionals, hosts that meet the conditional are added to group
+            self._add_host_to_composed_groups(self.get_option("groups"), device, hostname, strict=strict)
+
+            # Create groups based on variable values and add the corresponding hosts to it
+            self._add_host_to_keyed_groups(self.get_option("keyed_groups"), device, hostname, strict=strict)
 
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)

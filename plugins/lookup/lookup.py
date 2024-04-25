@@ -58,6 +58,12 @@ DOCUMENTATION = """
                 - Whether or not to validate SSL of the Nautobot instance
             required: False
             default: True
+        num_retries:
+            description:
+                - Number of retries
+                - This will only affect HTTP codes 429, 500, 502, 503, and 504.
+            required: False
+            default: 0
         raw_data:
             description:
                 - Whether to return raw API data with the lookup/query or whether to return a key/value dict
@@ -76,7 +82,7 @@ tasks:
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
-                    api_version='1.3',
+                    api_version='2.0',
                     token='<redacted>') }}"
 
 # This example uses an API Filter
@@ -89,8 +95,8 @@ tasks:
          manufactured by {{ item.value.device_type.manufacturer.name }}"
     loop: "{{ query('networktocode.nautobot.lookup', 'devices',
                     api_endpoint='http://localhost/',
-                    api_version='1.3',
-                    api_filter='role=management tag=Dell',
+                    api_version='2.0',
+                    api_filter='role=management tags=Dell',
                     token='<redacted>') }}"
 
 # This example uses an API Filter with Depth set to get additional details from the lookup
@@ -115,7 +121,7 @@ tasks:
       msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
                      api_filter='device=R1-Device',
                      api_endpoint='http://localhost/',
-                     api_version='1.3',
+                     api_version='2.0',
                      token='<redacted>',
                      plugin='mycustomstuff') }}"
 """
@@ -312,6 +318,7 @@ class LookupModule(LookupBase):
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
+        num_retries = kwargs.get("num_retries", "0")
         ssl_verify = kwargs.get("validate_certs", True)
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
@@ -321,7 +328,7 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify)
+        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify, retries=num_retries)
 
         results = []
         for term in terms:

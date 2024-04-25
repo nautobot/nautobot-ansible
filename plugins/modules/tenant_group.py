@@ -35,6 +35,8 @@ options:
     type: str
     version_added: "3.0.0"
   parent_tenant_group:
+    aliases:
+      - parent
     description:
       - Name of the parent tenant group
     required: false
@@ -67,7 +69,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Tenant Group ABC
-        parent_tenant_group: Customer Tenants
+        parent: Customer Tenants
         state: present
 
 """
@@ -101,7 +103,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            parent_tenant_group=dict(required=False, type="raw"),
+            parent_tenant_group=dict(required=False, type="raw", aliases=["parent"]),
         )
     )
 

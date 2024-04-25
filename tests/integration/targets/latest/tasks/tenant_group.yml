@@ -13,7 +13,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Tenant Group Two"
-    parent_tenant_group: "Test Tenant Group"
+    parent: "Test Tenant Group"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -31,7 +31,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Tenant Group Two"
-    parent_tenant_group: "Test Tenant Group"
+    parent: "Test Tenant Group"
   register: test_two
 
 - name: "2 - ASSERT"

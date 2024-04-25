@@ -50,6 +50,18 @@ options:
     required: false
     type: bool
     version_added: "3.0.0"
+  label:
+    description:
+      - Label of the interface template to be created
+    required: false
+    type: str
+    version_added: "5.2.0"
+  description:
+    description:
+      - Description of the interface
+    required: false
+    type: str
+    version_added: "5.2.0"
 """
 
 EXAMPLES = r"""
@@ -110,6 +122,8 @@ def main():
                 type="str",
             ),
             mgmt_only=dict(required=False, type="bool"),
+            label=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
         )
     )
 

@@ -54,7 +54,9 @@ jobs:
         python-version:
           - "3.9"
         nautobot-version:
-          - "2.0"
+          - "2.1"
+          # TODO: Change to 2.2 once it's released
+          # - "2.2"
         ansible-version:
           - "2.14"
           - "2.15"
@@ -76,6 +78,9 @@ jobs:
           - "3.11"
         nautobot-version:
           - "2.0"
+          - "2.1"
+          # TODO: Enable 2.2 once it's released
+          # - "2.2"
         ansible-version:
           - "2.14"
           - "2.15"
