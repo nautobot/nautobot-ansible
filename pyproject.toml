@@ -6,14 +6,14 @@ authors = ["Network to Code <opensource@networktocode.com"]
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
-ansible-base = "^2.10.0"
+python = "^3.9"
 netutils = "^1.2"
 pynautobot = "^1.5.2"
+ansible-core = "^2.14"
 
 [tool.poetry.dev-dependencies]
-black = "^21.10b0"
-coverage = "^4.0"
+black = "*"
+coverage = "^6.5"
 cryptography = "*"
 jinja2 = "*"
 jmespath = "*"
@@ -34,6 +34,7 @@ invoke = "^1.6.0"
 bandit = "^1.7.0"
 antsibull = "^0.45.1"
 antsibull-docs = "^1.7.3"
+pytest-forked = "^1.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
