@@ -42,7 +42,7 @@ networktocode.nautobot.location_type module -- Creates or removes location types
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -329,17 +329,23 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-parent_location_type"></div>
         <div class="ansibleOptionAnchor" id="parameter-parent"></div>
 
       .. _ansible_collections.networktocode.nautobot.location_type_module__parameter-parent:
+      .. _ansible_collections.networktocode.nautobot.location_type_module__parameter-parent_location_type:
 
       .. rst-class:: ansible-option-title
 
-      **parent**
+      **parent_location_type**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-parent" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-parent_location_type" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: parent`
 
       .. rst-class:: ansible-option-type-line
 
