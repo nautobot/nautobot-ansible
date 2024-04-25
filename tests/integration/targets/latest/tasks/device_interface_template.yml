@@ -14,6 +14,8 @@
     device_type: Arista Test
     name: 10GBASE-T (10GE)
     type: 10gbase-t
+    label: net1
+    description: "create interface"
   register: test_one
 
 - name: "1 - ASSERT"
@@ -26,6 +28,8 @@
       - test_one['interface_template']['name'] == "10GBASE-T (10GE)"
       - test_one['interface_template']['device_type'] == dt_arista['key']
       - test_one['interface_template']['type'] == '10gbase-t'
+      - test_one['interface_template']['label'] == 'net1'
+      - test_one['interface_template']['description'] == 'create interface'
 
 - name: "2 - Update 10GBASE-T (10GE)"
   networktocode.nautobot.device_interface_template:
@@ -34,6 +38,8 @@
     device_type: Arista Test
     name: 10GBASE-T (10GE)
     type: 10gbase-t
+    label: net0
+    description: "update interface"
     mgmt_only: true
   register: test_two
 
@@ -43,9 +49,13 @@
       - test_two is changed
       - test_two['msg'] == "interface_template 10GBASE-T (10GE) updated"
       - test_two['diff']['after']['mgmt_only'] == true
+      - test_two['diff']['after']['label'] == "net0"
+      - test_two['diff']['after']['description'] == "update interface"
       - test_two['interface_template']['name'] == "10GBASE-T (10GE)"
       - test_two['interface_template']['device_type'] == dt_arista['key']
       - test_two['interface_template']['mgmt_only'] == true
+      - test_two['interface_template']['label'] == "net0"
+      - test_two['interface_template']['description'] == "update interface"
 
 - name: "3 - Delete interface template 10GBASE-T (10GE)"
   networktocode.nautobot.device_interface_template:
