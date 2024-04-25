@@ -42,7 +42,7 @@ networktocode.nautobot.tenant_group module -- Creates or removes tenant groups f
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -219,7 +219,9 @@ Parameters
 
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-parent_tenant_group"></div>
+        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
 
+      .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-parent:
       .. _ansible_collections.networktocode.nautobot.tenant_group_module__parameter-parent_tenant_group:
 
       .. rst-class:: ansible-option-title
@@ -229,6 +231,10 @@ Parameters
       .. raw:: html
 
         <a class="ansibleOptionLink" href="#parameter-parent_tenant_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: parent`
 
       .. rst-class:: ansible-option-type-line
 
@@ -489,7 +495,7 @@ Examples
             url: http://nautobot.local
             token: thisIsMyToken
             name: Tenant Group ABC
-            parent_tenant_group: Customer Tenants
+            parent: Customer Tenants
             state: present
 
 

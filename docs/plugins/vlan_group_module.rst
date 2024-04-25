@@ -42,7 +42,7 @@ networktocode.nautobot.vlan_group module -- Create, update or delete vlans group
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -135,6 +135,43 @@ Parameters
         <div class="ansible-option-cell">
 
       API Version Nautobot REST API
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+
+      .. _ansible_collections.networktocode.nautobot.vlan_group_module__parameter-custom_fields:
+
+      .. rst-class:: ansible-option-title
+
+      **custom_fields**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Must exist in Nautobot and in key/value format
 
 
       .. raw:: html

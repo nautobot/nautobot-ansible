@@ -42,7 +42,7 @@ networktocode.nautobot.lookup lookup -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this lookup plugin,
@@ -277,6 +277,49 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
       The Nautobot Rest API version to use.
 
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-num_retries"></div>
+
+      .. _ansible_collections.networktocode.nautobot.lookup_lookup__parameter-num_retries:
+
+      .. rst-class:: ansible-option-title
+
+      **num_retries**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-num_retries" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Number of retries
+
+      This will only affect HTTP codes 429, 500, 502, 503, and 504.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`0`
 
       .. raw:: html
 

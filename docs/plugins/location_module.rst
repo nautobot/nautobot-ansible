@@ -42,7 +42,7 @@ networktocode.nautobot.location module -- Creates or removes locations from Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.1.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -620,7 +620,9 @@ Parameters
 
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-parent_location"></div>
+        <div class="ansibleOptionAnchor" id="parameter-parent"></div>
 
+      .. _ansible_collections.networktocode.nautobot.location_module__parameter-parent:
       .. _ansible_collections.networktocode.nautobot.location_module__parameter-parent_location:
 
       .. rst-class:: ansible-option-title
@@ -630,6 +632,10 @@ Parameters
       .. raw:: html
 
         <a class="ansibleOptionLink" href="#parameter-parent_location" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-aliases:`aliases: parent`
 
       .. rst-class:: ansible-option-type-line
 
@@ -1129,7 +1135,7 @@ Examples
             contact_phone: 867-5309
             contact_email: jenny@example.com
             comments: "**This** is a `markdown` comment"
-            parent_location: My Location
+            parent: My Location
             state: present
 
 

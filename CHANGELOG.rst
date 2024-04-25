@@ -5,6 +5,20 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.2.0
+======
+
+Minor Changes
+-------------
+- (#310) Fixed `parent` for location_type to convert to UUID for idempotency
+- (#319) Added `custom_fields` to `tag`, `vlan_group` and `role` modules
+- (#321) Updated documentation and examples for the `lookup` plugin
+- (#323) Added constructed features and inventory cache to the `gql_inventory` plugin
+- (#335) Fixed custom field idempotency for various modules
+- (#336) Added `custom_fields` to the `inventory_item` module
+- (#338) Added `num_retries` to the `lookup` plugin
+- (#340) Added `label` and `description` to the `device_interface_template` module
+
 v5.1.1
 ======
 

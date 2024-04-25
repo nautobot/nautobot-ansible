@@ -1,4 +1,5 @@
 """Tests for Nautobot GraphQL Query Lookup Plugin."""
+
 from ansible.errors import AnsibleError
 import pynautobot
 import pytest
