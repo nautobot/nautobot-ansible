@@ -518,8 +518,7 @@ class NautobotModule:
 
     def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            nb = pynautobot.api(url, token=token, api_version=api_version)
-            nb.http_session.verify = ssl_verify
+            nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify)
             try:
                 self.version = nb.version
             except pynautobot.RequestError as e:
@@ -1058,8 +1057,7 @@ class NautobotApiBase:
         self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls
-        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version)
-        self.api.http_session.verify = self.ssl_verify
+        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version, verify=self.ssl_verify)
 
 
 class NautobotGraphQL:
