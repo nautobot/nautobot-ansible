@@ -1,4 +1,5 @@
 """Pytest conftest setup."""
+
 import pytest
 import pynautobot
 

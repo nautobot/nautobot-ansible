@@ -586,7 +586,13 @@ custom_fields = [
         "key": "my_selection_custom_field",
         "type": "select",
         "content_types": ["circuits.circuit"],
-    }
+    },
+    {
+        "label": "My Text Custom Field",
+        "key": "my_text_custom_field",
+        "type": "text",
+        "content_types": ["circuits.circuit"],
+    },
 ]
 created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
 

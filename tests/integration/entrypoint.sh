@@ -10,8 +10,8 @@
 set -o pipefail
 
 function render {
-  readonly template="$1"; shift
-  readonly content="$(cat "$template")"
+  template="$1"; shift
+  content="$(cat "$template")"
 
   eval "echo \"$content\""
 }
@@ -23,9 +23,11 @@ function main {
 
     echo "# Rendering integration configuration"
     render "./tests/integration/integration_config.tmpl.yml" > ./tests/integration/integration_config.yml
+    echo "# Creating inventory test config"
+    render "./tests/integration/targets/inventory/runme_config.template" > ./tests/integration/targets/inventory/runme_config
 
     echo "# Checking to make sure Nautobot server is reachable.."
-    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
+    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
 
     echo "# Populating Nautobot for running integration tests.."
     python ./tests/integration/nautobot-populate.py

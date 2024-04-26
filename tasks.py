@@ -279,3 +279,10 @@ def galaxy_build(context, force=False):
     if force:
         command += " --force"
     context.run(command)
+
+
+@task()
+def make_docs(context):
+    """Update ansible module docs before release."""
+    command = "./hacking/make-docs.sh"
+    context.run(command)
