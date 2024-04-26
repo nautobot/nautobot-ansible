@@ -15,11 +15,13 @@ options:
   url:
     description:
       - "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)"
+      - "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
     required: true
     type: str
   token:
     description:
       - "The token created within Nautobot to authorize API access"
+      - "Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured."
     required: true
     type: str
   state:
@@ -40,6 +42,7 @@ options:
   validate_certs:
     description:
       - "If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates."
+      - "Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured."
     required: false
     default: true
     type: raw

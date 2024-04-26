@@ -420,6 +420,31 @@ NAUTOBOT_ARG_SPEC = dict(
 )
 
 
+def is_truthy(arg):
+    """
+    Convert "truthy" strings into Booleans.
+
+    Examples:
+        >>> is_truthy('yes')
+        True
+
+    Args:
+        arg (str): Truthy string (True values are y, yes, t, true, on and 1; false values are n, no,
+        f, false, off and 0. Raises ValueError if val is anything else.
+    """
+
+    if isinstance(arg, bool):
+        return arg
+
+    val = str(arg).lower()
+    if val in ("y", "yes", "t", "true", "on", "1"):
+        return True
+    elif val in ("n", "no", "f", "false", "off", "0"):
+        return False
+    else:
+        raise ValueError(f"Invalid truthy value: `{arg}`")
+
+
 class NautobotModule:
     """
     Initialize connection to Nautobot, sets AnsibleModule passed in to
@@ -990,7 +1015,12 @@ class NautobotApiBase:
     def __init__(self, **kwargs):
         self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
-        self.ssl_verify = kwargs.get("ssl_verify", True)
+        if kwargs.get("ssl_verify") is not None:
+            self.ssl_verify = kwargs.get("ssl_verify")
+        elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
+            self.ssl_verify = is_truthy(os.getenv("NAUTOBOT_VALIDATE_CERTS"))
+        else:
+            self.ssl_verify = True
         self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls

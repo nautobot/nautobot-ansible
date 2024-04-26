@@ -28,6 +28,7 @@ else:
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotApiBase,
     NautobotGraphQL,
+    is_truthy,
 )
 from ansible.utils.display import Display
 
@@ -46,7 +47,12 @@ def nautobot_action_graphql(args):
 
     token = args.get("token") or os.getenv("NAUTOBOT_TOKEN")
     api_version = args.get("api_version")
-    ssl_verify = args.get("validate_certs", True)
+    if args.get("validate_certs") is not None:
+        ssl_verify = args.get("validate_certs")
+    elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
+        ssl_verify = is_truthy(os.getenv("NAUTOBOT_VALIDATE_CERTS"))
+    else:
+        ssl_verify = True
     Display().vv("Verify Certificates: %s" % ssl_verify)
 
     # Verify SSL Verify is of boolean

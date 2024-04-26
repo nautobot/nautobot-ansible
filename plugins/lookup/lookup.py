@@ -136,6 +136,9 @@ from ansible.plugins.lookup import LookupBase
 from ansible.parsing.splitter import parse_kv, split_args
 from ansible.utils.display import Display
 from ansible.module_utils.six import raise_from
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    is_truthy,
+)
 
 try:
     import pynautobot
@@ -312,7 +315,12 @@ class LookupModule(LookupBase):
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
-        ssl_verify = kwargs.get("validate_certs", True)
+        if kwargs.get("validate_certs") is not None:
+            ssl_verify = kwargs.get("validate_certs")
+        elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
+            ssl_verify = is_truthy(os.getenv("NAUTOBOT_VALIDATE_CERTS"))
+        else:
+            ssl_verify = True
         api_filter = kwargs.get("api_filter")
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
