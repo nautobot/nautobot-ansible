@@ -1,4 +1,5 @@
 """Tests for module_utils functions."""
+
 from typing import Any
 
 import pytest
