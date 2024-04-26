@@ -13,10 +13,11 @@ from hypothesis import given, settings, HealthCheck, strategies as st
 from functools import partial
 from unittest.mock import patch, MagicMock, Mock
 from ansible.module_utils.basic import AnsibleModule
+from ansible.errors import AnsibleError
 import pynautobot
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotModule
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotModule, NautobotApiBase
     from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import NB_DEVICES
     from ansible_collections.networktocode.nautobot.tests.test_data import load_test_data
 
@@ -29,7 +30,7 @@ except ImportError:
 
     sys.path.append("plugins/module_utils")
     sys.path.append("tests")
-    from utils import NautobotModule
+    from utils import NautobotModule, NautobotApiBase
     from dcim import NB_DEVICES
     from test_data import load_test_data
 
@@ -332,3 +333,36 @@ def test_invalid_api_version_error_handling(mock_ansible_module, monkeypatch, ap
     monkeypatch.setattr(pynautobot.api, "version", api_version)
     module = NautobotModule(mock_ansible_module, "devices")
     assert isinstance(module.nb, obj_type)
+
+
+@patch.dict(os.environ, {})
+def test_validate_certs_defaults_true():
+    """Test that the default SSL verify is set as true and no environment variable is set."""
+    test_class = NautobotApiBase(url="https://nautobot.example.com", token="abc123")
+    assert os.getenv("NAUTOBOT_VALIDATE_CERTS") is None
+    assert test_class.ssl_verify is True
+
+
+@patch.dict(os.environ, {"NAUTOBOT_VALIDATE_CERTS": "FALSE"})
+def test_validate_certs_environment_var_false():
+    """Test that the default SSL verify is set as false via environment variable."""
+    test_class = NautobotApiBase(url="https://nautobot.example.com", token="abc123")
+    assert os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None
+    assert test_class.ssl_verify is False
+
+
+@patch.dict(os.environ, {"NAUTOBOT_VALIDATE_CERTS": "FALSE"})
+def test_validate_certs_override():
+    """Test that the default SSL verify is set as true via API class, and overrides environment variable."""
+    test_class = NautobotApiBase(url="https://nautobot.example.com", token="abc123", ssl_verify=True)
+    assert os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None
+    assert os.getenv("NAUTOBOT_VALIDATE_CERTS") == "FALSE"
+    assert test_class.ssl_verify is True
+
+
+@patch.dict(os.environ, {"NAUTOBOT_VALIDATE_CERTS": "cheese"})
+def test_validate_certs_invalid():
+    """Test that the default SSL verify is set as false via environment variable."""
+    with pytest.raises(ValueError) as exc:
+        _ = NautobotApiBase(url="https://nautobot.example.com", token="abc123")
+    assert "Invalid truthy value" in str(exc.value)
