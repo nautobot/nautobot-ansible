@@ -12,6 +12,11 @@ except ImportError:
     from utils import NautobotApiBase
 
 
+@pytest.fixture(autouse=True)
+def patch_pynautobot_version_check(monkeypatch):
+    monkeypatch.setattr(pynautobot.api, "version", "1.6")
+
+
 @pytest.fixture
 def nautobot_api_base():
     return NautobotApiBase(url="https://nautobot.mock.com", token="abc123", valdiate_certs=False)
