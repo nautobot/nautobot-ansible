@@ -2,6 +2,8 @@
 
 import pytest
 
+import pynautobot
+
 try:
     from plugins.module_utils.utils import NautobotApiBase
 except ImportError:
