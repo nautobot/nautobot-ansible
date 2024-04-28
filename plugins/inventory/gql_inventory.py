@@ -147,6 +147,24 @@ query:
     tags: name
     tenant: name
 
+# Add the default IP version to be used for the ansible_host
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: http://localhost:8000
+default_ip_version: ipv6
+query:
+  devices:
+    tags: name
+    serial:
+    tenant: name
+    location:
+      name:
+      contact_name:
+      description:
+      parent: name
+  virtual_machines:
+    tags: name
+    tenant: name
+
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
 # Ensure all paths are also included in the query.
@@ -257,12 +275,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def add_ip_address(self, default_ip_version, device):
         """Add primary IP address to host."""
-        if default_ip_version.lower() == "ipv6" and device.get("primary_ip6", {}).get("host"):
-            primary_address_type = "primary_ip6"
-        elif default_ip_version.lower() == "ipv4" and device.get("primary_ip4", {}).get("host"):
-            primary_address_type = "primary_ip6"
-            self.add_variable(device["name"], device["primary_ip4"]["host"], "ansible_host")
-        else:
+        # Check to see what the primary IP host addition is, first case is IPv6
+        if default_ip_version.lower() == "ipv6":
+            if device.get("primary_ip6", {}).get("host"):
+                primary_address_type = "primary_ip6"
+            else:
+                primary_address_type = "primary_ip4"
+
+        # Check for IPv4 primary IP
+        elif default_ip_version.lower() == "ipv4":
+            if device.get("primary_ip4", {}).get("host"):
+                primary_address_type = "primary_ip4"
+            else:
+                primary_address_type = "primary_ip6"
+
+        if not device.get(primary_address_type, {}).get("host"):
             self.display.error("Mapping ansible_host requires primary_ip6.host or primary_ip4.host as part of the query.")
             self.add_variable(device["name"], device["name"], "ansible_host")
             return
