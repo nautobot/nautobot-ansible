@@ -51,6 +51,12 @@ options:
     env:
       # in order of precedence
       - name: NAUTOBOT_TOKEN
+  default_ip_version:
+    required: False
+    description:
+      - Choice between IPv6 and IPv4 address as the primary IP for ansible_host.
+    choices: ["IPv4", "ipv4", "IPv6", "ipv6"]
+    default: "IPv4"
   query:
     required: False
     description:
@@ -249,16 +255,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
-    def add_ipv4_address(self, device):
-        """Add primary IPv4 address to host."""
-        if device["primary_ip4"]:
-            if not device["primary_ip4"].get("host"):
-                self.display.error("Mapping ansible_host requires primary_ip4.host as part of the query.")
-                self.add_variable(device["name"], device["name"], "ansible_host")
-                return
+    def add_ip_address(self, default_ip_version, device):
+        """Add primary IP address to host."""
+        if default_ip_version.lower() == "ipv6" and device.get("primary_ip6", {}).get("host"):
+            primary_address_type = "primary_ip6"
+        elif default_ip_version.lower() == "ipv4" and device.get("primary_ip4", {}).get("host"):
+            primary_address_type = "primary_ip6"
             self.add_variable(device["name"], device["primary_ip4"]["host"], "ansible_host")
         else:
+            self.display.error("Mapping ansible_host requires primary_ip6.host or primary_ip4.host as part of the query.")
             self.add_variable(device["name"], device["name"], "ansible_host")
+            return
+        
+        # Add primary IP address to host
+        self.add_variable(device["name"], device[primary_address_type]["host"], "ansible_host")
+
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
@@ -349,11 +360,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 "devices": {
                     "name": None,
                     "primary_ip4": "host",
+                    "primary_ip6": "host",
                     "platform": "napalm_driver",
                 },
                 "virtual_machines": {
                     "name": None,
                     "primary_ip4": "host",
+                    "primary_ip6": "host",
                     "platform": "name",
                 },
             }
@@ -388,7 +401,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
             self.inventory.add_host(host=hostname)
-            self.add_ipv4_address(device)
+            self.add_ip_address(self.default_ip_version, device)
             self.add_ansible_platform(device)
             self.populate_variables(device)
             self.create_groups(device)
