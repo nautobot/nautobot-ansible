@@ -121,6 +121,7 @@ try:
     from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
         NautobotApiBase,
         NautobotGraphQL,
+        is_truthy,
     )
 except ModuleNotFoundError:
     # For testing
@@ -151,7 +152,14 @@ def nautobot_lookup_graphql(**kwargs):
         raise AnsibleLookupError("Missing URL of Nautobot")
 
     token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
-    ssl_verify = kwargs.get("validate_certs", True)
+
+    if kwargs.get("validate_certs") is not None:
+        ssl_verify = kwargs.get("validate_certs")
+    elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
+        ssl_verify = is_truthy(os.getenv("NAUTOBOT_VALIDATE_CERTS"))
+    else:
+        ssl_verify = True
+
     api_version = kwargs.get("api_version")
     Display().vv("Validate certs: %s" % ssl_verify)
 

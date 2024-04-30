@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 5.2.0
+Collection version 5.2.1
 
 .. contents::
    :local:
