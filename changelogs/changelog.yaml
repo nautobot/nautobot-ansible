@@ -444,3 +444,8 @@ releases:
       - (#336) Added `custom_fields` to the `inventory_item` module
       - (#338) Added `num_retries` to the `lookup` plugin
       - (#340) Added `label` and `description` to the `device_interface_template` module
+  5.2.1:
+    changes:
+      minor_changes:
+      - (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
+      - (#348) Fixed GraphQL Inventory plugin bug when device platform is None
