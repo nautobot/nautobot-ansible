@@ -42,7 +42,7 @@ networktocode.nautobot.nautobot_server module -- Manages Nautobot Server applica
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -95,7 +95,6 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -137,6 +136,10 @@ Parameters
           This translates {"name\_arg": "value\_arg"} to "--name\_arg value\_arg".
           
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
 
       .. raw:: html
 
@@ -278,6 +281,10 @@ Parameters
       A list of flags to append to the command that is passed to \ :literal:`nautobot-server`\ , so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
 
 
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
       .. raw:: html
 
         </div>
@@ -313,6 +320,10 @@ Parameters
 
       These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2".
 
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
 
       .. raw:: html
 

@@ -42,7 +42,7 @@ networktocode.nautobot.console_server_port module -- Create, update or delete co
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -438,25 +437,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The type of the console server port
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"de-9"`
-      - :ansible-option-choices-entry:`"db-25"`
-      - :ansible-option-choices-entry:`"rj-11"`
-      - :ansible-option-choices-entry:`"rj-12"`
-      - :ansible-option-choices-entry:`"rj-45"`
-      - :ansible-option-choices-entry:`"usb-a"`
-      - :ansible-option-choices-entry:`"usb-b"`
-      - :ansible-option-choices-entry:`"usb-c"`
-      - :ansible-option-choices-entry:`"usb-mini-a"`
-      - :ansible-option-choices-entry:`"usb-mini-b"`
-      - :ansible-option-choices-entry:`"usb-micro-a"`
-      - :ansible-option-choices-entry:`"usb-micro-b"`
-      - :ansible-option-choices-entry:`"other"`
 
 
       .. raw:: html

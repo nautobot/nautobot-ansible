@@ -42,7 +42,7 @@ networktocode.nautobot.power_port module -- Create, update or delete power ports
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -512,66 +511,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The type of the power port
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"iec-60320-c6"`
-      - :ansible-option-choices-entry:`"iec-60320-c8"`
-      - :ansible-option-choices-entry:`"iec-60320-c14"`
-      - :ansible-option-choices-entry:`"iec-60320-c16"`
-      - :ansible-option-choices-entry:`"iec-60320-c20"`
-      - :ansible-option-choices-entry:`"iec-60309-p-n-e-4h"`
-      - :ansible-option-choices-entry:`"iec-60309-p-n-e-6h"`
-      - :ansible-option-choices-entry:`"iec-60309-p-n-e-9h"`
-      - :ansible-option-choices-entry:`"iec-60309-2p-e-4h"`
-      - :ansible-option-choices-entry:`"iec-60309-2p-e-6h"`
-      - :ansible-option-choices-entry:`"iec-60309-2p-e-9h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-e-4h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-e-6h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-e-9h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-4h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-6h"`
-      - :ansible-option-choices-entry:`"iec-60309-3p-n-e-9h"`
-      - :ansible-option-choices-entry:`"nema-5-15p"`
-      - :ansible-option-choices-entry:`"nema-5-20p"`
-      - :ansible-option-choices-entry:`"nema-5-30p"`
-      - :ansible-option-choices-entry:`"nema-5-50p"`
-      - :ansible-option-choices-entry:`"nema-6-15p"`
-      - :ansible-option-choices-entry:`"nema-6-20p"`
-      - :ansible-option-choices-entry:`"nema-6-30p"`
-      - :ansible-option-choices-entry:`"nema-6-50p"`
-      - :ansible-option-choices-entry:`"nema-l5-15p"`
-      - :ansible-option-choices-entry:`"nema-l5-20p"`
-      - :ansible-option-choices-entry:`"nema-l5-30p"`
-      - :ansible-option-choices-entry:`"nema-l5-50p"`
-      - :ansible-option-choices-entry:`"nema-l6-20p"`
-      - :ansible-option-choices-entry:`"nema-l6-30p"`
-      - :ansible-option-choices-entry:`"nema-l6-50p"`
-      - :ansible-option-choices-entry:`"nema-l14-20p"`
-      - :ansible-option-choices-entry:`"nema-l14-30p"`
-      - :ansible-option-choices-entry:`"nema-l21-20p"`
-      - :ansible-option-choices-entry:`"nema-l21-30p"`
-      - :ansible-option-choices-entry:`"cs6361c"`
-      - :ansible-option-choices-entry:`"cs6365c"`
-      - :ansible-option-choices-entry:`"cs8165c"`
-      - :ansible-option-choices-entry:`"cs8265c"`
-      - :ansible-option-choices-entry:`"cs8365c"`
-      - :ansible-option-choices-entry:`"cs8465c"`
-      - :ansible-option-choices-entry:`"ita-e"`
-      - :ansible-option-choices-entry:`"ita-f"`
-      - :ansible-option-choices-entry:`"ita-ef"`
-      - :ansible-option-choices-entry:`"ita-g"`
-      - :ansible-option-choices-entry:`"ita-h"`
-      - :ansible-option-choices-entry:`"ita-i"`
-      - :ansible-option-choices-entry:`"ita-j"`
-      - :ansible-option-choices-entry:`"ita-k"`
-      - :ansible-option-choices-entry:`"ita-l"`
-      - :ansible-option-choices-entry:`"ita-m"`
-      - :ansible-option-choices-entry:`"ita-n"`
-      - :ansible-option-choices-entry:`"ita-o"`
 
 
       .. raw:: html

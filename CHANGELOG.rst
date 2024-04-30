@@ -4,6 +4,37 @@ networktocode.nautobot Release Notes
 
 .. contents:: Topics
 
+v4.5.1
+======
+
+Bugfixes
+--------
+- (#344) Fixed SSL verification with pynautobot v1.5.2+
+
+Minor Changes
+-------------
+- (#266) Removed explicitly defined choices for multiple modules
+
+v4.5.0
+======
+
+Release Summary
+---------------
+
+Fixes error handling in inventory to not erase inventories, minor bug fixes, and introduces Plugin module
+
+Bugfixes
+--------
+- (#223) Inventory Hosts Empty On Error
+- (#209) Catches HTTPError for `query_graphql` and fails to enable ansible retries
+- (#228) Fixes graphql inventory grouping by tags
+
+Minor Changes
+-------------
+- (#211) Removes codecov from dev dependencies
+- (#220) Adds status option to device_interface module
+- (#217) Fixes and enables testing for Nautobot 1.5
+
 v4.4.0
 ======
 

@@ -385,3 +385,10 @@ releases:
         - (#220) Adds status option to device_interface module
         - (#217) Fixes and enables testing for Nautobot 1.5
       release_summary: "Fixes error handling in inventory to not erase inventories, minor bug fixes, and introduces Plugin module"
+
+  4.5.1:
+    changes:
+      bugfixes:
+        - (#344) Fixed SSL verification with pynautobot v1.5.2+
+      minor_changes:
+        - (#266) Removed explicitly defined choices for multiple modules

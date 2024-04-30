@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 4.5.0
+Collection version 4.5.1
 
 .. contents::
    :local:
@@ -108,34 +108,10 @@ Modules
 * :ref:`vm_interface module <ansible_collections.networktocode.nautobot.vm_interface_module>` -- Creates or removes interfaces from virtual machines in Nautobot
 * :ref:`vrf module <ansible_collections.networktocode.nautobot.vrf_module>` -- Create, update or delete vrfs within Nautobot
 
-
-Inventory Plugins
-~~~~~~~~~~~~~~~~~
-
-* :ref:`gql_inventory inventory <ansible_collections.networktocode.nautobot.gql_inventory_inventory>` -- Nautobot inventory source using GraphQL capability
-* :ref:`inventory inventory <ansible_collections.networktocode.nautobot.inventory_inventory>` -- Nautobot inventory source
-
-
-Lookup Plugins
-~~~~~~~~~~~~~~
-
-* :ref:`lookup lookup <ansible_collections.networktocode.nautobot.lookup_lookup>` -- Queries and returns elements from Nautobot
-* :ref:`lookup_graphql lookup <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>` -- Queries and returns elements from Nautobot GraphQL endpoint
-
-
-
-.. seealso::
-
-    List of :ref:`collections <list_of_collections>` with docs hosted here.
-
 .. toctree::
     :maxdepth: 1
     :hidden:
 
-    gql_inventory_inventory
-    inventory_inventory
-    lookup_lookup
-    lookup_graphql_lookup
     aggregate_module
     cable_module
     circuit_module
@@ -196,3 +172,45 @@ Lookup Plugins
     vlan_group_module
     vm_interface_module
     vrf_module
+
+
+Filter Plugins
+~~~~~~~~~~~~~~
+
+* :ref:`graphql_string filter <ansible_collections.networktocode.nautobot.graphql_string_filter>` -- 
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    graphql_string_filter
+
+
+Inventory Plugins
+~~~~~~~~~~~~~~~~~
+
+* :ref:`gql_inventory inventory <ansible_collections.networktocode.nautobot.gql_inventory_inventory>` -- Nautobot inventory source using GraphQL capability
+* :ref:`inventory inventory <ansible_collections.networktocode.nautobot.inventory_inventory>` -- Nautobot inventory source
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    gql_inventory_inventory
+    inventory_inventory
+
+
+Lookup Plugins
+~~~~~~~~~~~~~~
+
+* :ref:`lookup lookup <ansible_collections.networktocode.nautobot.lookup_lookup>` -- Queries and returns elements from Nautobot
+* :ref:`lookup_graphql lookup <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>` -- Queries and returns elements from Nautobot GraphQL endpoint
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
+
+    lookup_lookup
+    lookup_graphql_lookup
+
+

@@ -42,7 +42,7 @@ networktocode.nautobot.cable module -- Create, update or delete cables within Na
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -284,16 +283,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The unit in which the length of the cable is measured
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"m"`
-      - :ansible-option-choices-entry:`"cm"`
-      - :ansible-option-choices-entry:`"ft"`
-      - :ansible-option-choices-entry:`"in"`
 
 
       .. raw:: html
@@ -665,32 +654,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The type of the cable
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"cat3"`
-      - :ansible-option-choices-entry:`"cat5"`
-      - :ansible-option-choices-entry:`"cat5e"`
-      - :ansible-option-choices-entry:`"cat6"`
-      - :ansible-option-choices-entry:`"cat6a"`
-      - :ansible-option-choices-entry:`"cat7"`
-      - :ansible-option-choices-entry:`"dac-active"`
-      - :ansible-option-choices-entry:`"dac-passive"`
-      - :ansible-option-choices-entry:`"mrj21-trunk"`
-      - :ansible-option-choices-entry:`"coaxial"`
-      - :ansible-option-choices-entry:`"mmf"`
-      - :ansible-option-choices-entry:`"mmf-om1"`
-      - :ansible-option-choices-entry:`"mmf-om2"`
-      - :ansible-option-choices-entry:`"mmf-om3"`
-      - :ansible-option-choices-entry:`"mmf-om4"`
-      - :ansible-option-choices-entry:`"smf"`
-      - :ansible-option-choices-entry:`"smf-os1"`
-      - :ansible-option-choices-entry:`"smf-os2"`
-      - :ansible-option-choices-entry:`"aoc"`
-      - :ansible-option-choices-entry:`"power"`
 
 
       .. raw:: html
