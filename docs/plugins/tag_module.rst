@@ -42,7 +42,7 @@ networktocode.nautobot.tag module -- Creates or removes tags from Nautobot
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -439,6 +439,8 @@ Parameters
 
       The token created within Nautobot to authorize API access
 
+      Can be omitted if the \ :envvar:`NAUTOBOT\_TOKEN`\  environment variable is configured.
+
 
       .. raw:: html
 
@@ -473,6 +475,8 @@ Parameters
 
       The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
+      Can be omitted if the \ :envvar:`NAUTOBOT\_URL`\  environment variable is configured.
+
 
       .. raw:: html
 
@@ -506,6 +510,8 @@ Parameters
         <div class="ansible-option-cell">
 
       If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+
+      Can be omitted if the \ :envvar:`NAUTOBOT\_VALIDATE\_CERTS`\  environment variable is configured.
 
 
       .. rst-class:: ansible-option-line

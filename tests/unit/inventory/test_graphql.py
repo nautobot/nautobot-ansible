@@ -195,3 +195,9 @@ def test_ansible_group_by_tags_invalid_nested_path(mock_display, inventory_fixtu
     inventory_fixture.group_by = ["tags.var.name"]
     inventory_fixture.create_groups(device_data)
     mock_display.assert_any_call("Tags must be grouped by name or display. tags.var.name is not a valid path.")
+
+
+def test_platform_none(inventory_fixture, device_data):
+    """Regression testing for issue #347."""
+    device_data["platform"] = None
+    inventory_fixture.add_ansible_platform(device_data)
