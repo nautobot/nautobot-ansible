@@ -42,7 +42,7 @@ networktocode.nautobot.inventory inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -80,7 +80,6 @@ Synopsis
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -174,7 +173,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_URL
+      - Environment variable: :envvar:`NAUTOBOT\_URL`
 
 
       .. raw:: html
@@ -274,7 +273,7 @@ Parameters
           cache = false
 
 
-      - Environment variable: ANSIBLE\_INVENTORY\_CACHE
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE`
 
 
       .. raw:: html
@@ -333,9 +332,9 @@ Parameters
           cache_connection = VALUE
 
 
-      - Environment variable: ANSIBLE\_CACHE\_PLUGIN\_CONNECTION
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_CONNECTION`
 
-      - Environment variable: ANSIBLE\_INVENTORY\_CACHE\_CONNECTION
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_CONNECTION`
 
 
       .. raw:: html
@@ -398,9 +397,9 @@ Parameters
           cache_plugin = memory
 
 
-      - Environment variable: ANSIBLE\_CACHE\_PLUGIN
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN`
 
-      - Environment variable: ANSIBLE\_INVENTORY\_CACHE\_PLUGIN
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_PLUGIN`
 
 
       .. raw:: html
@@ -456,6 +455,21 @@ Parameters
           fact_caching_prefix = ansible_inventory_
 
 
+        Removed in: version 2.16 of ansible.builtin
+
+
+        Why: Fixes typing error in INI section name
+
+        Alternative: Use the 'defaults' section instead
+
+
+
+        .. code-block::
+
+          [defaults]
+          fact_caching_prefix = ansible_inventory_
+
+
 
         .. code-block::
 
@@ -463,9 +477,9 @@ Parameters
           cache_prefix = ansible_inventory_
 
 
-      - Environment variable: ANSIBLE\_CACHE\_PLUGIN\_PREFIX
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_PREFIX`
 
-      - Environment variable: ANSIBLE\_INVENTORY\_CACHE\_PLUGIN\_PREFIX
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_PLUGIN\_PREFIX`
 
 
       .. raw:: html
@@ -528,9 +542,9 @@ Parameters
           cache_timeout = 3600
 
 
-      - Environment variable: ANSIBLE\_CACHE\_PLUGIN\_TIMEOUT
+      - Environment variable: :envvar:`ANSIBLE\_CACHE\_PLUGIN\_TIMEOUT`
 
-      - Environment variable: ANSIBLE\_INVENTORY\_CACHE\_TIMEOUT
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_CACHE\_TIMEOUT`
 
 
       .. raw:: html
@@ -1198,7 +1212,7 @@ Parameters
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
 
 
 
@@ -1217,6 +1231,313 @@ Parameters
       .. rst-class:: ansible-option-line
 
       :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+    
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/default_value"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/default_value:
+
+      .. rst-class:: ansible-option-title
+
+      **default_value**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/default_value" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      :ansible-option-versionadded:`added in ansible-core 2.12`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      The default value when the host variable's value is an empty string.
+
+      This option is mutually exclusive with \ :literal:`trailing\_separator`\ .
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/key"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/key:
+
+      .. rst-class:: ansible-option-title
+
+      **key**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/key" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      The key from input dictionary used to generate groups
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/parent_group"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/parent_group:
+
+      .. rst-class:: ansible-option-title
+
+      **parent_group**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/parent_group" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      parent group for keyed group
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/prefix"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/prefix:
+
+      .. rst-class:: ansible-option-title
+
+      **prefix**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/prefix" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      A keyed group name will start with this prefix
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`""`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/separator"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/separator:
+
+      .. rst-class:: ansible-option-title
+
+      **separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      separator used to build the keyed group name
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-default-bold:`Default:` :ansible-option-default:`"\_"`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-indent"></div><div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-keyed_groups/trailing_separator"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/trailing_separator:
+
+      .. rst-class:: ansible-option-title
+
+      **trailing_separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-keyed_groups/trailing_separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.12`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
+
+      Set this option to \ :emphasis:`False`\  to omit the \ :literal:`separator`\  after the host variable when the value is an empty string.
+
+      This option is mutually exclusive with \ :literal:`default\_value`\ .
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-leading_separator"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-leading_separator:
+
+      .. rst-class:: ansible-option-title
+
+      **leading_separator**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-leading_separator" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.11`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Use in conjunction with keyed\_groups.
+
+      By default, a keyed group that does not have a prefix or a separator provided will have a name that starts with an underscore.
+
+      This is because the default prefix is "" and the default separator is "\_".
+
+      Set this option to False to omit the leading underscore (or other separator) if no prefix is given.
+
+      If the group name is derived from a mapping the separator is still used to concatenate the items.
+
+      To not use a separator in the group name at all, set the separator for the keyed group to an empty string instead.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry-default:`true` :ansible-option-choices-default-mark:`← (default)`
+
 
       .. raw:: html
 
@@ -1580,7 +1901,70 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_TOKEN
+      - Environment variable: :envvar:`NAUTOBOT\_TOKEN`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-use_extra_vars"></div>
+
+      .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-use_extra_vars:
+
+      .. rst-class:: ansible-option-title
+
+      **use_extra_vars**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-use_extra_vars" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in ansible-core 2.11`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Merge extra vars into the available variables for composition (highest precedence).
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-configuration:`Configuration:`
+
+      - INI entry:
+
+        .. code-block::
+
+          [inventory_plugins]
+          use_extra_vars = false
+
+
+      - Environment variable: :envvar:`ANSIBLE\_INVENTORY\_USE\_EXTRA\_VARS`
 
 
       .. raw:: html

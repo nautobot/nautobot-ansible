@@ -42,7 +42,7 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this inventory plugin,
@@ -91,7 +91,6 @@ The below requirements are needed on the local controller node that executes thi
 Parameters
 ----------
 
-
 .. rst-class:: ansible-option-table
 
 .. list-table::
@@ -139,7 +138,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_URL
+      - Environment variable: :envvar:`NAUTOBOT\_URL`
 
 
       .. raw:: html
@@ -239,6 +238,54 @@ Parameters
       .. rst-class:: ansible-option-line
 
       :ansible-option-default-bold:`Default:` :ansible-option-default:`[]`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-group_names_raw"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-group_names_raw:
+
+      .. rst-class:: ansible-option-title
+
+      **group_names_raw**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-group_names_raw" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`boolean`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 4.6.0`
+
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Will not add the group\_by choice name to the group names
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`false` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`true`
+
 
       .. raw:: html
 
@@ -484,7 +531,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_TOKEN
+      - Environment variable: :envvar:`NAUTOBOT\_TOKEN`
 
 
       .. raw:: html

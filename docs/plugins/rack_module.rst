@@ -42,7 +42,7 @@ networktocode.nautobot.rack module -- Create, update or delete racks within Naut
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -93,7 +93,6 @@ The below requirements are needed on the host that executes this module.
 
 Parameters
 ----------
-
 
 .. rst-class:: ansible-option-table
 
@@ -900,17 +899,6 @@ Parameters
         <div class="ansible-option-cell">
 
       The type of rack.
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-choices:`Choices:`
-
-      - :ansible-option-choices-entry:`"2-post frame"`
-      - :ansible-option-choices-entry:`"4-post frame"`
-      - :ansible-option-choices-entry:`"4-post cabinet"`
-      - :ansible-option-choices-entry:`"Wall-mounted frame"`
-      - :ansible-option-choices-entry:`"Wall-mounted cabinet"`
 
 
       .. raw:: html

@@ -42,7 +42,7 @@ networktocode.nautobot.lookup_graphql lookup -- Queries and returns elements fro
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.0).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 4.5.1).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this lookup plugin,
@@ -91,9 +91,11 @@ The below requirements are needed on the local controller node that executes thi
 
 .. Options
 
-Parameters
-----------
+Keyword parameters
+------------------
 
+This describes keyword parameters of the lookup. These are the values ``key1=value1``, ``key2=value2`` and so on in the following
+examples: ``lookup('networktocode.nautobot.lookup_graphql', key1=value1, key2=value2, ...)`` and ``query('networktocode.nautobot.lookup_graphql', key1=value1, key2=value2, ...)``
 
 .. rst-class:: ansible-option-table
 
@@ -258,7 +260,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_TOKEN
+      - Environment variable: :envvar:`NAUTOBOT\_TOKEN`
 
 
       .. raw:: html
@@ -302,7 +304,7 @@ Parameters
 
       :ansible-option-configuration:`Configuration:`
 
-      - Environment variable: NAUTOBOT\_URL
+      - Environment variable: :envvar:`NAUTOBOT\_URL`
 
 
       .. raw:: html
