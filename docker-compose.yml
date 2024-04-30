@@ -1,5 +1,4 @@
 ---
-version: "3.4"
 x-args:
   &args
   PYTHON_VER: ${PYTHON_VER}
@@ -34,10 +33,3 @@ services:
     build:
       <<: *build
       target: integration
-    networks:
-      - integration_network
-
-# Attach these services to the Nautobot network that gets spun up from invoke start
-networks:
-  integration_network:
-    name: nautobot_ansible_default

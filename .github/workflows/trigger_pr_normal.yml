@@ -6,7 +6,7 @@ concurrency:  # Cancel any existing runs of this workflow for this same PR
 on: # yamllint disable
   pull_request:
     branches-ignore:
-      - "main"
+      - "ltm-1.6"
 
 jobs:
   tests:
