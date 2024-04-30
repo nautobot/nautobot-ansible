@@ -1,5 +1,8 @@
 """Pytest conftest setup."""
+
 import pytest
+
+import pynautobot
 
 try:
     from plugins.module_utils.utils import NautobotApiBase
@@ -9,6 +12,11 @@ except ImportError:
     sys.path.append("tests/")
     sys.path.append("plugins/module_utils")
     from utils import NautobotApiBase
+
+
+@pytest.fixture(autouse=True)
+def patch_pynautobot_version_check(monkeypatch):
+    monkeypatch.setattr(pynautobot.api, "version", "1.6")
 
 
 @pytest.fixture

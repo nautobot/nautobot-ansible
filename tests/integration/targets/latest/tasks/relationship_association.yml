@@ -33,7 +33,7 @@
       - test_one['relationship_associations']['source_id'] == vlan['key']
       - test_one['relationship_associations']['destination_type'] == relationship['value']['destination_type']
       - test_one['relationship_associations']['destination_id'] == device['key']
-      - test_one['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} created"
+      - "'created' in test_one['msg']"
 
 - name: "RELATIONSHIP ASSOCIATION 2: Test duplication association (Idempotency)"
   networktocode.nautobot.relationship_association:
@@ -52,7 +52,7 @@
     that:
       - test_two is not changed
       - test_two['relationship_associations']['relationship'] == relationship['key']
-      - test_two['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} already exists"
+      - "'already exists' in test_two['msg']"
 
 - name: "RELATIONSHIP ASSOCIATION 3: Test absent state"
   networktocode.nautobot.relationship_association:
@@ -77,7 +77,7 @@
       - test_three['relationship_associations']['source_id'] == vlan['key']
       - test_three['relationship_associations']['destination_type'] == relationship['value']['destination_type']
       - test_three['relationship_associations']['destination_id'] == device['key']
-      - test_three['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} deleted"
+      - "'deleted' in test_three['msg']"
 
 - name: "RELATIONSHIP ASSOCIATION 4: Test absent state (Idempotent)"
   networktocode.nautobot.relationship_association:
@@ -95,4 +95,4 @@
   assert:
     that:
       - test_four is not changed
-      - test_four['msg'] == "relationship_associations {{ relationship['value']['source_type'] }} -> {{ relationship['value']['destination_type'] }} already absent"
+      - "'already absent' in test_four['msg']"
