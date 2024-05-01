@@ -276,27 +276,24 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def add_ip_address(self, default_ip_version, device):
         """Add primary IP address to host."""
         # Check to see what the primary IP host addition is, first case is IPv6
-        if default_ip_version.lower() == "ipv6":
-            if device.get("primary_ip6", {}).get("host"):
-                primary_address_type = "primary_ip6"
-            else:
-                primary_address_type = "primary_ip4"
+        order_of_preference = ["primary_ip6"]
 
-        # Check for IPv4 primary IP
-        elif default_ip_version.lower() == "ipv4":
-            if device.get("primary_ip4", {}).get("host"):
-                primary_address_type = "primary_ip4"
-            else:
-                primary_address_type = "primary_ip6"
+        # if default_ip_version is IPv4, prepend, else postpend
+        if default_ip_version.lower() == "ipv4":
+            order_of_preference.insert(0, "primary_ip4")
+        else:
+            order_of_preference.append("primary_ip4")
 
-        if not device.get(primary_address_type, {}).get("host"):
-            self.display.error("Mapping ansible_host requires primary_ip6.host or primary_ip4.host as part of the query.")
-            self.add_variable(device["name"], device["name"], "ansible_host")
-            return
+        # Check of the address types in the order preference and if it find the first one, add that primary IP to the host
+        for address_type in order_of_preference:
+            if device.get(address_type, {}).get("host"):
+                self.add_variable(device["name"], device[address_type]["host"], "ansible_host")
+                return
+
+        # No return found, providing a mapping to just the device name
+        self.display.error("Mapping ansible_host requires primary_ip6.host or primary_ip4.host as part of the query.")
+        self.add_variable(device["name"], device["name"], "ansible_host")
         
-        # Add primary IP address to host
-        self.add_variable(device["name"], device[primary_address_type]["host"], "ansible_host")
-
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
