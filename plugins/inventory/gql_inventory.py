@@ -293,7 +293,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # No return found, providing a mapping to just the device name
         self.display.error("Mapping ansible_host requires primary_ip6.host or primary_ip4.host as part of the query.")
         self.add_variable(device["name"], device["name"], "ansible_host")
-        
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
