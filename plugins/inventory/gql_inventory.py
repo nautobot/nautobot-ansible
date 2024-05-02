@@ -275,14 +275,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def add_ip_address(self, default_ip_version, device):
         """Add primary IP address to host."""
-        # Check to see what the primary IP host addition is, first case is IPv6
-        order_of_preference = ["primary_ip6"]
+        # Check to see what the primary IP host addition is, first case is IPv4, which is the default
+        order_of_preference = ["primary_ip4"]
 
         # if default_ip_version is IPv4, prepend, else postpend
-        if default_ip_version.lower() == "ipv4":
-            order_of_preference.insert(0, "primary_ip4")
+        if default_ip_version.lower() == "ipv6":
+            order_of_preference.insert(0, "primary_ip6")
         else:
-            order_of_preference.append("primary_ip4")
+            order_of_preference.append("primary_ip6")
 
         # Check of the address types in the order preference and if it find the first one, add that primary IP to the host
         for address_type in order_of_preference:
