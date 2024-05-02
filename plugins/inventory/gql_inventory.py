@@ -286,7 +286,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         # Check of the address types in the order preference and if it find the first one, add that primary IP to the host
         for address_type in order_of_preference:
-            if device.get(address_type, {}).get("host"):
+            if address_type in device and device[address_type].get("host"):
                 self.add_variable(device["name"], device[address_type]["host"], "ansible_host")
                 return
 
