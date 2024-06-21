@@ -22,17 +22,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -51,118 +46,90 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.449934Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.494441Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "56a8ae15-5543-496f-addf-5038a27a3cb0",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/56a8ae15-5543-496f-addf-5038a27a3cb0/"
+                                "object_type": "dcim.devicetype"
                             },
-                            "display": "Test Nexus Child One",
+                            "display": "Test Nexus One",
                             "face": null,
-                            "id": "3d0c8f54-d24d-4d7a-8f5b-7a536fe0cc5a",
-                            "last_updated": "2024-03-27T17:38:39.854921Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
-                            "name": "Test Nexus Child One",
-                            "natural_slug": "test-nexus-child-one__child-test-location_parent-test-location_3d0c",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/3d0c8f54-d24d-4d7a-8f5b-7a536fe0cc5a/notes/",
+                            "name": "Test Nexus One",
+                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_725b",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
                             "position": null,
-                            "primary_ip4": null,
+                            "primary_ip4": {
+                                "object_type": "ipam.ipaddress"
+                            },
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/3d0c8f54-d24d-4d7a-8f5b-7a536fe0cc5a/",
-                            "vc_position": 2,
+                            "vc_position": 0,
                             "vc_priority": null,
                             "virtual_chassis": {
-                                "id": "c96554c7-425c-4064-aae8-c11bcffeca62",
-                                "object_type": "dcim.virtualchassis",
-                                "url": "http://127.0.0.1:8000/api/dcim/virtual-chassis/c96554c7-425c-4064-aae8-c11bcffeca62/"
+                                "object_type": "dcim.virtualchassis"
                             }
                         },
-                        "display": "Ethernet2/1",
+                        "display": "Ethernet1/1",
                         "enabled": true,
-                        "id": "f4796f28-9625-43eb-9b99-8684cf6f535a",
                         "ip_address_count": 1,
                         "ip_addresses": [
                             {
-                                "address": "172.16.180.12/24",
-                                "created": "2024-03-27T17:38:41.943535Z",
+                                "address": "172.16.180.11/24",
                                 "custom_fields": {},
                                 "description": "",
-                                "display": "172.16.180.12/24",
+                                "display": "172.16.180.11/24",
                                 "dns_name": "nexus.example.com",
-                                "host": "172.16.180.12",
-                                "id": "e0e90260-e594-4731-93ab-5efca44b55e7",
+                                "host": "172.16.180.11",
                                 "ip_version": 4,
-                                "last_updated": "2024-03-27T17:38:41.943593Z",
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-12_e0e9",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/e0e90260-e594-4731-93ab-5efca44b55e7/notes/",
+                                "natural_slug": "global_172-16-180-11_69d8",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "broadcast": "172.31.255.255",
-                                    "created": "2024-03-27T17:38:33.543642Z",
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
                                     "display": "172.16.0.0/12",
-                                    "id": "0733b370-dae3-49d5-97ee-911ddd7fdc53",
                                     "ip_version": 4,
-                                    "last_updated": "2024-03-27T17:38:33.543671Z",
                                     "namespace": {
-                                        "created": "2024-03-27T17:37:15.805479Z",
                                         "custom_fields": {},
                                         "description": "Default Global namespace. Created by Nautobot.",
                                         "display": "Global",
-                                        "id": "a21f42e2-e600-4eea-bf7c-644f7304b4e2",
-                                        "last_updated": "2024-03-27T17:37:15.805514Z",
                                         "location": null,
                                         "name": "Global",
-                                        "natural_slug": "global_a21f",
-                                        "notes_url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/notes/",
-                                        "object_type": "ipam.namespace",
-                                        "url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/"
+                                        "natural_slug": "global_1fa9",
+                                        "object_type": "ipam.namespace"
                                     },
-                                    "natural_slug": "global_172-16-0-0_12_0733",
+                                    "natural_slug": "global_172-16-0-0_12_ab44",
                                     "network": "172.16.0.0",
-                                    "notes_url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/notes/",
                                     "object_type": "ipam.prefix",
                                     "parent": null,
                                     "prefix": "172.16.0.0/12",
@@ -171,72 +138,53 @@
                                     "role": null,
                                     "status": {
                                         "color": "4caf50",
-                                        "created": "2024-03-27T00:00:00Z",
                                         "custom_fields": {},
                                         "description": "Unit is active",
                                         "display": "Active",
-                                        "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                        "last_updated": "2024-03-27T17:37:43.694424Z",
                                         "name": "Active",
-                                        "natural_slug": "active_c337",
-                                        "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                        "object_type": "extras.status",
-                                        "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                        "natural_slug": "active_e185",
+                                        "object_type": "extras.status"
                                     },
                                     "tenant": null,
                                     "type": {
                                         "label": "Network",
                                         "value": "network"
                                     },
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/",
                                     "vlan": null
                                 },
                                 "role": null,
                                 "status": {
                                     "color": "4caf50",
-                                    "created": "2024-03-27T00:00:00Z",
                                     "custom_fields": {},
                                     "description": "Unit is active",
                                     "display": "Active",
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "last_updated": "2024-03-27T17:37:43.694424Z",
                                     "name": "Active",
-                                    "natural_slug": "active_c337",
-                                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "natural_slug": "active_e185",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/e0e90260-e594-4731-93ab-5efca44b55e7/"
+                                "type": "host"
                             }
                         ],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.449955Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
-                        "name": "Ethernet2/1",
-                        "natural_slug": "ethernet2-1_test-nexus-child-one__child-test-location_parent-test-location_f479",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/f4796f28-9625-43eb-9b99-8684cf6f535a/notes/",
+                        "name": "Ethernet1/1",
+                        "natural_slug": "ethernet1-1_test-nexus-one__child-test-location_parent-test-location_a1b2",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -245,7 +193,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/f4796f28-9625-43eb-9b99-8684cf6f535a/",
                         "vrf": null
                     },
                     {
@@ -256,122 +203,88 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.395148Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.423871Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "3d51d3ca-454b-4824-859e-4601eb8022bd",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/3d51d3ca-454b-4824-859e-4601eb8022bd/"
+                                "object_type": "dcim.devicetype"
                             },
-                            "display": "Test Nexus One",
+                            "display": "Test Nexus Child One",
                             "face": null,
-                            "id": "b7867e42-ccb0-4251-be86-ea7b9a84b104",
-                            "last_updated": "2024-03-27T17:38:43.334405Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
-                            "name": "Test Nexus One",
-                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_b786",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/b7867e42-ccb0-4251-be86-ea7b9a84b104/notes/",
+                            "name": "Test Nexus Child One",
+                            "natural_slug": "test-nexus-child-one__child-test-location_parent-test-location_cb9c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
                             "position": null,
-                            "primary_ip4": {
-                                "id": "25dedf45-b258-442f-829e-e54774ce8017",
-                                "object_type": "ipam.ipaddress",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/25dedf45-b258-442f-829e-e54774ce8017/"
-                            },
+                            "primary_ip4": null,
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/b7867e42-ccb0-4251-be86-ea7b9a84b104/",
-                            "vc_position": 0,
+                            "vc_position": 2,
                             "vc_priority": null,
                             "virtual_chassis": {
-                                "id": "c96554c7-425c-4064-aae8-c11bcffeca62",
-                                "object_type": "dcim.virtualchassis",
-                                "url": "http://127.0.0.1:8000/api/dcim/virtual-chassis/c96554c7-425c-4064-aae8-c11bcffeca62/"
+                                "object_type": "dcim.virtualchassis"
                             }
                         },
-                        "display": "Ethernet1/1",
+                        "display": "Ethernet2/1",
                         "enabled": true,
-                        "id": "2f84a3d8-6923-4daf-8817-a79e62576085",
                         "ip_address_count": 1,
                         "ip_addresses": [
                             {
-                                "address": "172.16.180.11/24",
-                                "created": "2024-03-27T17:38:41.904010Z",
+                                "address": "172.16.180.12/24",
                                 "custom_fields": {},
                                 "description": "",
-                                "display": "172.16.180.11/24",
+                                "display": "172.16.180.12/24",
                                 "dns_name": "nexus.example.com",
-                                "host": "172.16.180.11",
-                                "id": "25dedf45-b258-442f-829e-e54774ce8017",
+                                "host": "172.16.180.12",
                                 "ip_version": 4,
-                                "last_updated": "2024-03-27T17:38:41.904032Z",
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-11_25de",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/25dedf45-b258-442f-829e-e54774ce8017/notes/",
+                                "natural_slug": "global_172-16-180-12_ee65",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "broadcast": "172.31.255.255",
-                                    "created": "2024-03-27T17:38:33.543642Z",
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
                                     "display": "172.16.0.0/12",
-                                    "id": "0733b370-dae3-49d5-97ee-911ddd7fdc53",
                                     "ip_version": 4,
-                                    "last_updated": "2024-03-27T17:38:33.543671Z",
                                     "namespace": {
-                                        "created": "2024-03-27T17:37:15.805479Z",
                                         "custom_fields": {},
                                         "description": "Default Global namespace. Created by Nautobot.",
                                         "display": "Global",
-                                        "id": "a21f42e2-e600-4eea-bf7c-644f7304b4e2",
-                                        "last_updated": "2024-03-27T17:37:15.805514Z",
                                         "location": null,
                                         "name": "Global",
-                                        "natural_slug": "global_a21f",
-                                        "notes_url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/notes/",
-                                        "object_type": "ipam.namespace",
-                                        "url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/"
+                                        "natural_slug": "global_1fa9",
+                                        "object_type": "ipam.namespace"
                                     },
-                                    "natural_slug": "global_172-16-0-0_12_0733",
+                                    "natural_slug": "global_172-16-0-0_12_ab44",
                                     "network": "172.16.0.0",
-                                    "notes_url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/notes/",
                                     "object_type": "ipam.prefix",
                                     "parent": null,
                                     "prefix": "172.16.0.0/12",
@@ -380,72 +293,53 @@
                                     "role": null,
                                     "status": {
                                         "color": "4caf50",
-                                        "created": "2024-03-27T00:00:00Z",
                                         "custom_fields": {},
                                         "description": "Unit is active",
                                         "display": "Active",
-                                        "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                        "last_updated": "2024-03-27T17:37:43.694424Z",
                                         "name": "Active",
-                                        "natural_slug": "active_c337",
-                                        "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                        "object_type": "extras.status",
-                                        "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                        "natural_slug": "active_e185",
+                                        "object_type": "extras.status"
                                     },
                                     "tenant": null,
                                     "type": {
                                         "label": "Network",
                                         "value": "network"
                                     },
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/",
                                     "vlan": null
                                 },
                                 "role": null,
                                 "status": {
                                     "color": "4caf50",
-                                    "created": "2024-03-27T00:00:00Z",
                                     "custom_fields": {},
                                     "description": "Unit is active",
                                     "display": "Active",
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "last_updated": "2024-03-27T17:37:43.694424Z",
                                     "name": "Active",
-                                    "natural_slug": "active_c337",
-                                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "natural_slug": "active_e185",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/25dedf45-b258-442f-829e-e54774ce8017/"
+                                "type": "host"
                             }
                         ],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.395169Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
-                        "name": "Ethernet1/1",
-                        "natural_slug": "ethernet1-1_test-nexus-one__child-test-location_parent-test-location_2f84",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/2f84a3d8-6923-4daf-8817-a79e62576085/notes/",
+                        "name": "Ethernet2/1",
+                        "natural_slug": "ethernet2-1_test-nexus-child-one__child-test-location_parent-test-location_93db",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -454,7 +348,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/2f84a3d8-6923-4daf-8817-a79e62576085/",
                         "vrf": null
                     }
                 ],
@@ -469,80 +362,59 @@
                 "role": "Core Switch",
                 "services": [
                     {
-                        "created": "2024-03-27T17:38:46.460861Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.423871Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "3d51d3ca-454b-4824-859e-4601eb8022bd",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/3d51d3ca-454b-4824-859e-4601eb8022bd/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "Test Nexus One",
                             "face": null,
-                            "id": "b7867e42-ccb0-4251-be86-ea7b9a84b104",
-                            "last_updated": "2024-03-27T17:38:43.334405Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "Test Nexus One",
-                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_b786",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/b7867e42-ccb0-4251-be86-ea7b9a84b104/notes/",
+                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_725b",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
                             "position": null,
                             "primary_ip4": {
-                                "id": "25dedf45-b258-442f-829e-e54774ce8017",
-                                "object_type": "ipam.ipaddress",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/25dedf45-b258-442f-829e-e54774ce8017/"
+                                "object_type": "ipam.ipaddress"
                             },
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/b7867e42-ccb0-4251-be86-ea7b9a84b104/",
                             "vc_position": 0,
                             "vc_priority": null,
                             "virtual_chassis": {
-                                "id": "c96554c7-425c-4064-aae8-c11bcffeca62",
-                                "object_type": "dcim.virtualchassis",
-                                "url": "http://127.0.0.1:8000/api/dcim/virtual-chassis/c96554c7-425c-4064-aae8-c11bcffeca62/"
+                                "object_type": "dcim.virtualchassis"
                             }
                         },
                         "display": "telnet (TCP/23)",
-                        "id": "9113902d-6ec7-4585-babf-4ac87889c7e3",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:46.460883Z",
                         "name": "telnet",
-                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_9113",
-                        "notes_url": "http://127.0.0.1:8000/api/ipam/services/9113902d-6ec7-4585-babf-4ac87889c7e3/notes/",
+                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_067d",
                         "object_type": "ipam.service",
                         "ports": [
                             23
@@ -552,23 +424,17 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://127.0.0.1:8000/api/ipam/services/9113902d-6ec7-4585-babf-4ac87889c7e3/",
                         "virtual_machine": null
                     }
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -580,61 +446,45 @@
                 "interfaces": [
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.856585Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
-                        "id": "69c3d77b-1523-43a8-acde-61e993c7f011",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.856616Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth0_69c3",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/69c3d77b-1523-43a8-acde-61e993c7f011/notes/",
+                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth0_f6c0",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/69c3d77b-1523-43a8-acde-61e993c7f011/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.562206Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "Test VM With Spaces",
-                            "id": "1ff0d587-3843-402a-a9a0-d229e743b008",
-                            "last_updated": "2024-03-27T17:38:44.562228Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "Test VM With Spaces",
-                            "natural_slug": "test-cluster-2__test-vm-with-spaces_1ff0",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/notes/",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_8da0",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -642,73 +492,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.895334Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
-                        "id": "0c4b09cb-d1b9-47aa-ae7c-9bce45792c65",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.895355Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth1_0c4b",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/0c4b09cb-d1b9-47aa-ae7c-9bce45792c65/notes/",
+                        "natural_slug": "test-cluster-2__test-vm-with-spaces_eth1_f6e3",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/0c4b09cb-d1b9-47aa-ae7c-9bce45792c65/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.562206Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "Test VM With Spaces",
-                            "id": "1ff0d587-3843-402a-a9a0-d229e743b008",
-                            "last_updated": "2024-03-27T17:38:44.562228Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "Test VM With Spaces",
-                            "natural_slug": "test-cluster-2__test-vm-with-spaces_1ff0",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/notes/",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_8da0",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -716,12 +547,9 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/",
                             "vcpus": null
                         },
                         "vrf": null
@@ -731,17 +559,13 @@
                 "locations": [],
                 "services": [
                     {
-                        "created": "2024-03-27T17:38:46.503654Z",
                         "custom_fields": {},
                         "description": "",
                         "device": null,
                         "display": "ssh (TCP/22)",
-                        "id": "fa302796-cedb-4484-a324-a1569ae9c4ba",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:46.503676Z",
                         "name": "ssh",
-                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_fa30",
-                        "notes_url": "http://127.0.0.1:8000/api/ipam/services/fa302796-cedb-4484-a324-a1569ae9c4ba/notes/",
+                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_cad2",
                         "object_type": "ipam.service",
                         "ports": [
                             22
@@ -751,28 +575,21 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://127.0.0.1:8000/api/ipam/services/fa302796-cedb-4484-a324-a1569ae9c4ba/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/48f3c0e7-e0d8-4af7-a9f8-4b28530b6e2b/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.562206Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "Test VM With Spaces",
-                            "id": "1ff0d587-3843-402a-a9a0-d229e743b008",
-                            "last_updated": "2024-03-27T17:38:44.562228Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "Test VM With Spaces",
-                            "natural_slug": "test-cluster-2__test-vm-with-spaces_1ff0",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/notes/",
+                            "natural_slug": "test-cluster-2__test-vm-with-spaces_8da0",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -780,29 +597,21 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ff0d587-3843-402a-a9a0-d229e743b008/",
                             "vcpus": null
                         }
                     }
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -828,17 +637,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -859,27 +663,21 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.714492Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "test100",
                             "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
                             "local_config_context_data": {
                                 "ntp_servers": [
                                     "pool.ntp.org"
@@ -889,13 +687,10 @@
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -904,77 +699,56 @@
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
+                                "object_type": "tenancy.tenant"
                             },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
                             "vc_position": null,
                             "vc_priority": null,
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet1",
                         "enabled": true,
-                        "id": "52f98b02-b953-4e0a-972b-e1b3aa0f6f59",
                         "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.1/24",
-                                "created": "2024-03-27T17:38:41.821095Z",
                                 "custom_fields": {},
                                 "description": "",
                                 "display": "172.16.180.1/24",
                                 "dns_name": "",
                                 "host": "172.16.180.1",
-                                "id": "1e99a20d-b55f-48d4-97a5-1200e4a30213",
                                 "ip_version": 4,
-                                "last_updated": "2024-03-27T17:38:41.821119Z",
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-1_1e99",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/1e99a20d-b55f-48d4-97a5-1200e4a30213/notes/",
+                                "natural_slug": "global_172-16-180-1_23b0",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "broadcast": "172.31.255.255",
-                                    "created": "2024-03-27T17:38:33.543642Z",
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
                                     "display": "172.16.0.0/12",
-                                    "id": "0733b370-dae3-49d5-97ee-911ddd7fdc53",
                                     "ip_version": 4,
-                                    "last_updated": "2024-03-27T17:38:33.543671Z",
                                     "namespace": {
-                                        "created": "2024-03-27T17:37:15.805479Z",
                                         "custom_fields": {},
                                         "description": "Default Global namespace. Created by Nautobot.",
                                         "display": "Global",
-                                        "id": "a21f42e2-e600-4eea-bf7c-644f7304b4e2",
-                                        "last_updated": "2024-03-27T17:37:15.805514Z",
                                         "location": null,
                                         "name": "Global",
-                                        "natural_slug": "global_a21f",
-                                        "notes_url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/notes/",
-                                        "object_type": "ipam.namespace",
-                                        "url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/"
+                                        "natural_slug": "global_1fa9",
+                                        "object_type": "ipam.namespace"
                                     },
-                                    "natural_slug": "global_172-16-0-0_12_0733",
+                                    "natural_slug": "global_172-16-0-0_12_ab44",
                                     "network": "172.16.0.0",
-                                    "notes_url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/notes/",
                                     "object_type": "ipam.prefix",
                                     "parent": null,
                                     "prefix": "172.16.0.0/12",
@@ -983,72 +757,53 @@
                                     "role": null,
                                     "status": {
                                         "color": "4caf50",
-                                        "created": "2024-03-27T00:00:00Z",
                                         "custom_fields": {},
                                         "description": "Unit is active",
                                         "display": "Active",
-                                        "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                        "last_updated": "2024-03-27T17:37:43.694424Z",
                                         "name": "Active",
-                                        "natural_slug": "active_c337",
-                                        "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                        "object_type": "extras.status",
-                                        "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                        "natural_slug": "active_e185",
+                                        "object_type": "extras.status"
                                     },
                                     "tenant": null,
                                     "type": {
                                         "label": "Network",
                                         "value": "network"
                                     },
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/",
                                     "vlan": null
                                 },
                                 "role": null,
                                 "status": {
                                     "color": "4caf50",
-                                    "created": "2024-03-27T00:00:00Z",
                                     "custom_fields": {},
                                     "description": "Unit is active",
                                     "display": "Active",
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "last_updated": "2024-03-27T17:37:43.694424Z",
                                     "name": "Active",
-                                    "natural_slug": "active_c337",
-                                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "natural_slug": "active_e185",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/1e99a20d-b55f-48d4-97a5-1200e4a30213/"
+                                "type": "host"
                             }
                         ],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.714514Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet1",
-                        "natural_slug": "gigabitethernet1_test100_test-tenant_child-test-location_parent-test-location_52f9",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/52f98b02-b953-4e0a-972b-e1b3aa0f6f59/notes/",
+                        "natural_slug": "gigabitethernet1_test100_test-tenant_child-test-location_parent-test-location_02a0",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -1057,7 +812,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/52f98b02-b953-4e0a-972b-e1b3aa0f6f59/",
                         "vrf": null
                     },
                     {
@@ -1068,27 +822,21 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.769927Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "test100",
                             "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
                             "local_config_context_data": {
                                 "ntp_servers": [
                                     "pool.ntp.org"
@@ -1098,13 +846,10 @@
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -1113,77 +858,56 @@
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
+                                "object_type": "tenancy.tenant"
                             },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
                             "vc_position": null,
                             "vc_priority": null,
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet2",
                         "enabled": true,
-                        "id": "1747ac15-09ee-4698-bde0-a02fbe5aed33",
                         "ip_address_count": 1,
                         "ip_addresses": [
                             {
                                 "address": "2001::1:1/64",
-                                "created": "2024-03-27T17:38:41.863826Z",
                                 "custom_fields": {},
                                 "description": "",
                                 "display": "2001::1:1/64",
                                 "dns_name": "",
                                 "host": "2001::1:1",
-                                "id": "17b14b12-322f-4ce0-bf66-5d2669815aef",
                                 "ip_version": 6,
-                                "last_updated": "2024-03-27T17:38:41.863861Z",
                                 "mask_length": 64,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_2001-1-1_17b1",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/17b14b12-322f-4ce0-bf66-5d2669815aef/notes/",
+                                "natural_slug": "global_2001-1-1_ee95",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "broadcast": "2001::ffff:ffff:ffff:ffff",
-                                    "created": "2024-03-27T17:38:33.624801Z",
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
                                     "display": "2001::/64",
-                                    "id": "386da78d-6b55-4c43-be8d-6eb33366a95c",
                                     "ip_version": 6,
-                                    "last_updated": "2024-03-27T17:38:33.624822Z",
                                     "namespace": {
-                                        "created": "2024-03-27T17:37:15.805479Z",
                                         "custom_fields": {},
                                         "description": "Default Global namespace. Created by Nautobot.",
                                         "display": "Global",
-                                        "id": "a21f42e2-e600-4eea-bf7c-644f7304b4e2",
-                                        "last_updated": "2024-03-27T17:37:15.805514Z",
                                         "location": null,
                                         "name": "Global",
-                                        "natural_slug": "global_a21f",
-                                        "notes_url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/notes/",
-                                        "object_type": "ipam.namespace",
-                                        "url": "http://127.0.0.1:8000/api/ipam/namespaces/a21f42e2-e600-4eea-bf7c-644f7304b4e2/"
+                                        "natural_slug": "global_1fa9",
+                                        "object_type": "ipam.namespace"
                                     },
-                                    "natural_slug": "global_2001_64_386d",
+                                    "natural_slug": "global_2001_64_8425",
                                     "network": "2001::",
-                                    "notes_url": "http://127.0.0.1:8000/api/ipam/prefixes/386da78d-6b55-4c43-be8d-6eb33366a95c/notes/",
                                     "object_type": "ipam.prefix",
                                     "parent": null,
                                     "prefix": "2001::/64",
@@ -1192,72 +916,53 @@
                                     "role": null,
                                     "status": {
                                         "color": "4caf50",
-                                        "created": "2024-03-27T00:00:00Z",
                                         "custom_fields": {},
                                         "description": "Unit is active",
                                         "display": "Active",
-                                        "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                        "last_updated": "2024-03-27T17:37:43.694424Z",
                                         "name": "Active",
-                                        "natural_slug": "active_c337",
-                                        "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                        "object_type": "extras.status",
-                                        "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                        "natural_slug": "active_e185",
+                                        "object_type": "extras.status"
                                     },
                                     "tenant": null,
                                     "type": {
                                         "label": "Network",
                                         "value": "network"
                                     },
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/386da78d-6b55-4c43-be8d-6eb33366a95c/",
                                     "vlan": null
                                 },
                                 "role": null,
                                 "status": {
                                     "color": "4caf50",
-                                    "created": "2024-03-27T00:00:00Z",
                                     "custom_fields": {},
                                     "description": "Unit is active",
                                     "display": "Active",
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "last_updated": "2024-03-27T17:37:43.694424Z",
                                     "name": "Active",
-                                    "natural_slug": "active_c337",
-                                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "natural_slug": "active_e185",
+                                    "object_type": "extras.status"
                                 },
                                 "tags": [],
                                 "tenant": null,
-                                "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/17b14b12-322f-4ce0-bf66-5d2669815aef/"
+                                "type": "host"
                             }
                         ],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.769947Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet2",
-                        "natural_slug": "gigabitethernet2_test100_test-tenant_child-test-location_parent-test-location_1747",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/1747ac15-09ee-4698-bde0-a02fbe5aed33/notes/",
+                        "natural_slug": "gigabitethernet2_test100_test-tenant_child-test-location_parent-test-location_e074",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -1266,7 +971,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/1747ac15-09ee-4698-bde0-a02fbe5aed33/",
                         "vrf": null
                     },
                     {
@@ -1277,27 +981,21 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.823634Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "test100",
                             "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
                             "local_config_context_data": {
                                 "ntp_servers": [
                                     "pool.ntp.org"
@@ -1307,13 +1005,10 @@
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -1322,58 +1017,43 @@
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
+                                "object_type": "tenancy.tenant"
                             },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
                             "vc_position": null,
                             "vc_priority": null,
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet3",
                         "enabled": true,
-                        "id": "0f0ab93e-e3f6-4b86-81dd-8d2b7542b999",
                         "ip_address_count": 0,
                         "ip_addresses": [],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.823708Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet3",
-                        "natural_slug": "gigabitethernet3_test100_test-tenant_child-test-location_parent-test-location_0f0a",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/0f0ab93e-e3f6-4b86-81dd-8d2b7542b999/notes/",
+                        "natural_slug": "gigabitethernet3_test100_test-tenant_child-test-location_parent-test-location_8438",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -1382,7 +1062,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/0f0ab93e-e3f6-4b86-81dd-8d2b7542b999/",
                         "vrf": null
                     },
                     {
@@ -1393,27 +1072,21 @@
                         "connected_endpoint": null,
                         "connected_endpoint_reachable": null,
                         "connected_endpoint_type": null,
-                        "created": "2024-03-27T17:38:40.878515Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "test100",
                             "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
                             "local_config_context_data": {
                                 "ntp_servers": [
                                     "pool.ntp.org"
@@ -1423,13 +1096,10 @@
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -1438,58 +1108,43 @@
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
+                                "object_type": "tenancy.tenant"
                             },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
                             "vc_position": null,
                             "vc_priority": null,
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet4",
                         "enabled": true,
-                        "id": "884700bf-df8c-4c60-8152-d628adf4ad4d",
                         "ip_address_count": 0,
                         "ip_addresses": [],
                         "label": "",
                         "lag": null,
-                        "last_updated": "2024-03-27T17:38:40.878535Z",
                         "mac_address": null,
                         "mgmt_only": false,
                         "mode": null,
                         "mtu": null,
                         "name": "GigabitEthernet4",
-                        "natural_slug": "gigabitethernet4_test100_test-tenant_child-test-location_parent-test-location_8847",
-                        "notes_url": "http://127.0.0.1:8000/api/dcim/interfaces/884700bf-df8c-4c60-8152-d628adf4ad4d/notes/",
+                        "natural_slug": "gigabitethernet4_test100_test-tenant_child-test-location_parent-test-location_854c",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
@@ -1498,7 +1153,6 @@
                             "value": "1000base-t"
                         },
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/884700bf-df8c-4c60-8152-d628adf4ad4d/",
                         "vrf": null
                     }
                 ],
@@ -1517,27 +1171,21 @@
                 "role": "Core Switch",
                 "services": [
                     {
-                        "created": "2024-03-27T17:38:46.266002Z",
                         "custom_fields": {},
                         "description": "",
                         "device": {
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
+                            "controller_managed_device_group": null,
                             "custom_fields": {},
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
+                                "object_type": "dcim.devicetype"
                             },
                             "display": "test100",
                             "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
                             "local_config_context_data": {
                                 "ntp_servers": [
                                     "pool.ntp.org"
@@ -1547,13 +1195,10 @@
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
+                                "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -1562,203 +1207,84 @@
                             "primary_ip6": null,
                             "rack": null,
                             "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
+                                "object_type": "extras.role"
                             },
                             "secrets_group": null,
                             "serial": "",
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
+                                "object_type": "tenancy.tenant"
                             },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
-                            "vc_position": null,
-                            "vc_priority": null,
-                            "virtual_chassis": null
-                        },
-                        "display": "ssh (TCP/22)",
-                        "id": "6c74dff6-acf8-44a6-a9a0-1ff519eff6df",
-                        "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:46.266022Z",
-                        "name": "ssh",
-                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_6c74",
-                        "notes_url": "http://127.0.0.1:8000/api/ipam/services/6c74dff6-acf8-44a6-a9a0-1ff519eff6df/notes/",
-                        "object_type": "ipam.service",
-                        "ports": [
-                            22
-                        ],
-                        "protocol": {
-                            "label": "TCP",
-                            "value": "tcp"
-                        },
-                        "tags": [],
-                        "url": "http://127.0.0.1:8000/api/ipam/services/6c74dff6-acf8-44a6-a9a0-1ff519eff6df/",
-                        "virtual_machine": null
-                    },
-                    {
-                        "created": "2024-03-27T17:38:46.330100Z",
-                        "custom_fields": {},
-                        "description": "",
-                        "device": {
-                            "asset_tag": null,
-                            "cluster": null,
-                            "comments": "",
-                            "controller_device_group": null,
-                            "created": "2024-03-27T17:38:37.149539Z",
-                            "custom_fields": {},
-                            "device_redundancy_group": null,
-                            "device_redundancy_group_priority": null,
-                            "device_type": {
-                                "id": "95784626-b8a8-4810-8ebf-4c75b4b2e90f",
-                                "object_type": "dcim.devicetype",
-                                "url": "http://127.0.0.1:8000/api/dcim/device-types/95784626-b8a8-4810-8ebf-4c75b4b2e90f/"
-                            },
-                            "display": "test100",
-                            "face": null,
-                            "id": "d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3",
-                            "last_updated": "2024-03-27T17:38:37.149559Z",
-                            "local_config_context_data": {
-                                "ntp_servers": [
-                                    "pool.ntp.org"
-                                ]
-                            },
-                            "local_config_context_data_owner_content_type": null,
-                            "local_config_context_data_owner_object_id": null,
-                            "local_config_context_schema": null,
-                            "location": {
-                                "id": "73e14892-23ef-463b-8285-7e50ee48ea67",
-                                "object_type": "dcim.location",
-                                "url": "http://127.0.0.1:8000/api/dcim/locations/73e14892-23ef-463b-8285-7e50ee48ea67/"
-                            },
-                            "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_d586",
-                            "notes_url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/notes/",
-                            "object_type": "dcim.device",
-                            "parent_bay": null,
-                            "platform": null,
-                            "position": null,
-                            "primary_ip4": null,
-                            "primary_ip6": null,
-                            "rack": null,
-                            "role": {
-                                "id": "15d32a44-c450-41bc-9fae-d1a4581dcaea",
-                                "object_type": "extras.role",
-                                "url": "http://127.0.0.1:8000/api/extras/roles/15d32a44-c450-41bc-9fae-d1a4581dcaea/"
-                            },
-                            "secrets_group": null,
-                            "serial": "",
-                            "software_version": null,
-                            "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
-                            },
-                            "tenant": {
-                                "id": "9f8b10f8-9513-4581-94a2-41cefc3735dd",
-                                "object_type": "tenancy.tenant",
-                                "url": "http://127.0.0.1:8000/api/tenancy/tenants/9f8b10f8-9513-4581-94a2-41cefc3735dd/"
-                            },
-                            "url": "http://127.0.0.1:8000/api/dcim/devices/d586c1fd-27c7-4e4a-bac9-a2a62b6df7e3/",
                             "vc_position": null,
                             "vc_priority": null,
                             "virtual_chassis": null
                         },
                         "display": "http (TCP/80)",
-                        "id": "c84e3af1-85b3-4a93-8075-83f2245294c4",
                         "ip_addresses": [
                             {
                                 "address": "172.16.180.1/24",
-                                "created": "2024-03-27T17:38:41.821095Z",
                                 "custom_fields": {},
                                 "description": "",
                                 "display": "172.16.180.1/24",
                                 "dns_name": "",
                                 "host": "172.16.180.1",
-                                "id": "1e99a20d-b55f-48d4-97a5-1200e4a30213",
                                 "interfaces": [
                                     {
-                                        "id": "52f98b02-b953-4e0a-972b-e1b3aa0f6f59",
-                                        "object_type": "dcim.interface",
-                                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/52f98b02-b953-4e0a-972b-e1b3aa0f6f59/"
+                                        "object_type": "dcim.interface"
                                     }
                                 ],
                                 "ip_version": 4,
-                                "last_updated": "2024-03-27T17:38:41.821119Z",
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-1_1e99",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/1e99a20d-b55f-48d4-97a5-1200e4a30213/notes/",
+                                "natural_slug": "global_172-16-180-1_23b0",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
-                                    "id": "0733b370-dae3-49d5-97ee-911ddd7fdc53",
-                                    "object_type": "ipam.prefix",
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/0733b370-dae3-49d5-97ee-911ddd7fdc53/"
+                                    "object_type": "ipam.prefix"
                                 },
                                 "role": null,
                                 "status": {
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "object_type": "extras.status"
                                 },
                                 "tenant": null,
                                 "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/1e99a20d-b55f-48d4-97a5-1200e4a30213/",
                                 "vm_interfaces": []
                             },
                             {
                                 "address": "2001::1:1/64",
-                                "created": "2024-03-27T17:38:41.863826Z",
                                 "custom_fields": {},
                                 "description": "",
                                 "display": "2001::1:1/64",
                                 "dns_name": "",
                                 "host": "2001::1:1",
-                                "id": "17b14b12-322f-4ce0-bf66-5d2669815aef",
                                 "interfaces": [
                                     {
-                                        "id": "1747ac15-09ee-4698-bde0-a02fbe5aed33",
-                                        "object_type": "dcim.interface",
-                                        "url": "http://127.0.0.1:8000/api/dcim/interfaces/1747ac15-09ee-4698-bde0-a02fbe5aed33/"
+                                        "object_type": "dcim.interface"
                                     }
                                 ],
                                 "ip_version": 6,
-                                "last_updated": "2024-03-27T17:38:41.863861Z",
                                 "mask_length": 64,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_2001-1-1_17b1",
-                                "notes_url": "http://127.0.0.1:8000/api/ipam/ip-addresses/17b14b12-322f-4ce0-bf66-5d2669815aef/notes/",
+                                "natural_slug": "global_2001-1-1_ee95",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
-                                    "id": "386da78d-6b55-4c43-be8d-6eb33366a95c",
-                                    "object_type": "ipam.prefix",
-                                    "url": "http://127.0.0.1:8000/api/ipam/prefixes/386da78d-6b55-4c43-be8d-6eb33366a95c/"
+                                    "object_type": "ipam.prefix"
                                 },
                                 "role": null,
                                 "status": {
-                                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                    "object_type": "extras.status",
-                                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                    "object_type": "extras.status"
                                 },
                                 "tenant": null,
                                 "type": "host",
-                                "url": "http://127.0.0.1:8000/api/ipam/ip-addresses/17b14b12-322f-4ce0-bf66-5d2669815aef/",
                                 "vm_interfaces": []
                             }
                         ],
-                        "last_updated": "2024-03-27T17:38:46.330122Z",
                         "name": "http",
-                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_c84e",
-                        "notes_url": "http://127.0.0.1:8000/api/ipam/services/c84e3af1-85b3-4a93-8075-83f2245294c4/notes/",
+                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_3116",
                         "object_type": "ipam.service",
                         "ports": [
                             80
@@ -1768,23 +1294,84 @@
                             "value": "tcp"
                         },
                         "tags": [],
-                        "url": "http://127.0.0.1:8000/api/ipam/services/c84e3af1-85b3-4a93-8075-83f2245294c4/",
+                        "virtual_machine": null
+                    },
+                    {
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "asset_tag": null,
+                            "cluster": null,
+                            "comments": "",
+                            "controller_managed_device_group": null,
+                            "custom_fields": {},
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "object_type": "dcim.devicetype"
+                            },
+                            "display": "test100",
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "object_type": "dcim.location"
+                            },
+                            "name": "test100",
+                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "object_type": "extras.role"
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "software_version": null,
+                            "status": {
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "object_type": "tenancy.tenant"
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
+                        },
+                        "display": "ssh (TCP/22)",
+                        "ip_addresses": [],
+                        "name": "ssh",
+                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_bfcf",
+                        "object_type": "ipam.service",
+                        "ports": [
+                            22
+                        ],
+                        "protocol": {
+                            "label": "TCP",
+                            "value": "tcp"
+                        },
+                        "tags": [],
                         "virtual_machine": null
                     }
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": [],
                 "tenant": "Test Tenant",
@@ -1799,61 +1386,45 @@
                 "interfaces": [
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.493001Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
-                        "id": "68efcdc5-9817-41a4-b43d-ac0d71de1258",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.493021Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "natural_slug": "test-cluster__test100-vm_eth0_68ef",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/68efcdc5-9817-41a4-b43d-ac0d71de1258/notes/",
+                        "natural_slug": "test-cluster__test100-vm_eth0_cc3f",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/68efcdc5-9817-41a4-b43d-ac0d71de1258/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.383003Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test100-vm",
-                            "id": "1ea51f9d-3d1c-4122-b6cd-62e49abfebcb",
-                            "last_updated": "2024-03-27T17:38:44.383024Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test100-vm",
-                            "natural_slug": "test-cluster__test100-vm_1ea5",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/notes/",
+                            "natural_slug": "test-cluster__test100-vm_b0bc",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -1861,73 +1432,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.531848Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
-                        "id": "5f6c793c-67bd-49c1-86f7-c4329d5b3e31",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.531868Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "natural_slug": "test-cluster__test100-vm_eth1_5f6c",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/5f6c793c-67bd-49c1-86f7-c4329d5b3e31/notes/",
+                        "natural_slug": "test-cluster__test100-vm_eth1_02b8",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/5f6c793c-67bd-49c1-86f7-c4329d5b3e31/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.383003Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test100-vm",
-                            "id": "1ea51f9d-3d1c-4122-b6cd-62e49abfebcb",
-                            "last_updated": "2024-03-27T17:38:44.383024Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test100-vm",
-                            "natural_slug": "test-cluster__test100-vm_1ea5",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/notes/",
+                            "natural_slug": "test-cluster__test100-vm_b0bc",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -1935,73 +1487,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.567074Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth2",
                         "enabled": true,
-                        "id": "a4855b52-d842-4ab3-9bfc-0bd09e25d449",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.567095Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
-                        "natural_slug": "test-cluster__test100-vm_eth2_a485",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/a4855b52-d842-4ab3-9bfc-0bd09e25d449/notes/",
+                        "natural_slug": "test-cluster__test100-vm_eth2_e6d3",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/a4855b52-d842-4ab3-9bfc-0bd09e25d449/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.383003Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test100-vm",
-                            "id": "1ea51f9d-3d1c-4122-b6cd-62e49abfebcb",
-                            "last_updated": "2024-03-27T17:38:44.383024Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test100-vm",
-                            "natural_slug": "test-cluster__test100-vm_1ea5",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/notes/",
+                            "natural_slug": "test-cluster__test100-vm_b0bc",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2009,73 +1542,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.603016Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth3",
                         "enabled": true,
-                        "id": "a5b6426a-e16a-4653-b975-06318e7b0bcd",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.603038Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
-                        "natural_slug": "test-cluster__test100-vm_eth3_a5b6",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/a5b6426a-e16a-4653-b975-06318e7b0bcd/notes/",
+                        "natural_slug": "test-cluster__test100-vm_eth3_46e2",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/a5b6426a-e16a-4653-b975-06318e7b0bcd/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.383003Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test100-vm",
-                            "id": "1ea51f9d-3d1c-4122-b6cd-62e49abfebcb",
-                            "last_updated": "2024-03-27T17:38:44.383024Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test100-vm",
-                            "natural_slug": "test-cluster__test100-vm_1ea5",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/notes/",
+                            "natural_slug": "test-cluster__test100-vm_b0bc",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2083,73 +1597,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.639169Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth4",
                         "enabled": true,
-                        "id": "fafbd094-dc87-48c1-85ff-befa3acddc5d",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.639189Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
-                        "natural_slug": "test-cluster__test100-vm_eth4_fafb",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/fafbd094-dc87-48c1-85ff-befa3acddc5d/notes/",
+                        "natural_slug": "test-cluster__test100-vm_eth4_f394",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/fafbd094-dc87-48c1-85ff-befa3acddc5d/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.383003Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test100-vm",
-                            "id": "1ea51f9d-3d1c-4122-b6cd-62e49abfebcb",
-                            "last_updated": "2024-03-27T17:38:44.383024Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test100-vm",
-                            "natural_slug": "test-cluster__test100-vm_1ea5",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/notes/",
+                            "natural_slug": "test-cluster__test100-vm_b0bc",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2157,12 +1652,9 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/1ea51f9d-3d1c-4122-b6cd-62e49abfebcb/",
                             "vcpus": null
                         },
                         "vrf": null
@@ -2177,17 +1669,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -2200,61 +1687,45 @@
                 "interfaces": [
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.675591Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth0",
                         "enabled": true,
-                        "id": "aff5b547-577c-4b4d-aa7c-54f55689fbb7",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.675627Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth0",
-                        "natural_slug": "test-cluster__test101-vm_eth0_aff5",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/aff5b547-577c-4b4d-aa7c-54f55689fbb7/notes/",
+                        "natural_slug": "test-cluster__test101-vm_eth0_9dea",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/aff5b547-577c-4b4d-aa7c-54f55689fbb7/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.422957Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test101-vm",
-                            "id": "7c54b8ed-0230-42e8-a7a2-4ddb8e09632f",
-                            "last_updated": "2024-03-27T17:38:44.422978Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test101-vm",
-                            "natural_slug": "test-cluster__test101-vm_7c54",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/notes/",
+                            "natural_slug": "test-cluster__test101-vm_68f2",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2262,73 +1733,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.710839Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth1",
                         "enabled": true,
-                        "id": "2242e517-063b-437c-8bf8-2a5b5c4da3ff",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.710859Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth1",
-                        "natural_slug": "test-cluster__test101-vm_eth1_2242",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/2242e517-063b-437c-8bf8-2a5b5c4da3ff/notes/",
+                        "natural_slug": "test-cluster__test101-vm_eth1_5f26",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/2242e517-063b-437c-8bf8-2a5b5c4da3ff/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.422957Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test101-vm",
-                            "id": "7c54b8ed-0230-42e8-a7a2-4ddb8e09632f",
-                            "last_updated": "2024-03-27T17:38:44.422978Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test101-vm",
-                            "natural_slug": "test-cluster__test101-vm_7c54",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/notes/",
+                            "natural_slug": "test-cluster__test101-vm_68f2",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2336,73 +1788,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.746185Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth2",
                         "enabled": true,
-                        "id": "72a3dba0-43f5-44c9-9325-b1ccb67e8a17",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.746206Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth2",
-                        "natural_slug": "test-cluster__test101-vm_eth2_72a3",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/72a3dba0-43f5-44c9-9325-b1ccb67e8a17/notes/",
+                        "natural_slug": "test-cluster__test101-vm_eth2_3f34",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/72a3dba0-43f5-44c9-9325-b1ccb67e8a17/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.422957Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test101-vm",
-                            "id": "7c54b8ed-0230-42e8-a7a2-4ddb8e09632f",
-                            "last_updated": "2024-03-27T17:38:44.422978Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test101-vm",
-                            "natural_slug": "test-cluster__test101-vm_7c54",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/notes/",
+                            "natural_slug": "test-cluster__test101-vm_68f2",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2410,73 +1843,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.784908Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth3",
                         "enabled": true,
-                        "id": "de89e19b-28d2-4449-82c0-df8866d014f5",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.784930Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth3",
-                        "natural_slug": "test-cluster__test101-vm_eth3_de89",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/de89e19b-28d2-4449-82c0-df8866d014f5/notes/",
+                        "natural_slug": "test-cluster__test101-vm_eth3_4b7e",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/de89e19b-28d2-4449-82c0-df8866d014f5/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.422957Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test101-vm",
-                            "id": "7c54b8ed-0230-42e8-a7a2-4ddb8e09632f",
-                            "last_updated": "2024-03-27T17:38:44.422978Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test101-vm",
-                            "natural_slug": "test-cluster__test101-vm_7c54",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/notes/",
+                            "natural_slug": "test-cluster__test101-vm_68f2",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2484,73 +1898,54 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/",
                             "vcpus": null
                         },
                         "vrf": null
                     },
                     {
                         "bridge": null,
-                        "created": "2024-03-27T17:38:45.820145Z",
                         "custom_fields": {},
                         "description": "",
                         "display": "Eth4",
                         "enabled": true,
-                        "id": "a22ad719-a487-44a1-96e9-d38ca1ff3b29",
                         "ip_addresses": [],
-                        "last_updated": "2024-03-27T17:38:45.820169Z",
                         "mac_address": null,
                         "mode": null,
                         "mtu": null,
                         "name": "Eth4",
-                        "natural_slug": "test-cluster__test101-vm_eth4_a22a",
-                        "notes_url": "http://127.0.0.1:8000/api/virtualization/interfaces/a22ad719-a487-44a1-96e9-d38ca1ff3b29/notes/",
+                        "natural_slug": "test-cluster__test101-vm_eth4_82d6",
                         "object_type": "virtualization.vminterface",
                         "parent_interface": null,
                         "status": {
                             "color": "4caf50",
-                            "created": "2024-03-27T00:00:00Z",
                             "custom_fields": {},
                             "description": "Unit is active",
                             "display": "Active",
-                            "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                            "last_updated": "2024-03-27T17:37:43.694424Z",
                             "name": "Active",
-                            "natural_slug": "active_c337",
-                            "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                            "object_type": "extras.status",
-                            "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                            "natural_slug": "active_e185",
+                            "object_type": "extras.status"
                         },
                         "tagged_vlans": [],
                         "tags": [],
                         "untagged_vlan": null,
-                        "url": "http://127.0.0.1:8000/api/virtualization/interfaces/a22ad719-a487-44a1-96e9-d38ca1ff3b29/",
                         "virtual_machine": {
                             "cluster": {
-                                "id": "6af71c22-6611-4079-9957-f078f504ebde",
-                                "object_type": "virtualization.cluster",
-                                "url": "http://127.0.0.1:8000/api/virtualization/clusters/6af71c22-6611-4079-9957-f078f504ebde/"
+                                "object_type": "virtualization.cluster"
                             },
                             "comments": "",
-                            "created": "2024-03-27T17:38:44.422957Z",
                             "custom_fields": {},
                             "disk": null,
                             "display": "test101-vm",
-                            "id": "7c54b8ed-0230-42e8-a7a2-4ddb8e09632f",
-                            "last_updated": "2024-03-27T17:38:44.422978Z",
                             "local_config_context_data": null,
                             "local_config_context_data_owner_content_type": null,
                             "local_config_context_data_owner_object_id": null,
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "test101-vm",
-                            "natural_slug": "test-cluster__test101-vm_7c54",
-                            "notes_url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/notes/",
+                            "natural_slug": "test-cluster__test101-vm_68f2",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -2558,12 +1953,9 @@
                             "role": null,
                             "software_version": null,
                             "status": {
-                                "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                                "object_type": "extras.status",
-                                "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                                "object_type": "extras.status"
                             },
                             "tenant": null,
-                            "url": "http://127.0.0.1:8000/api/virtualization/virtual-machines/7c54b8ed-0230-42e8-a7a2-4ddb8e09632f/",
                             "vcpus": null
                         },
                         "vrf": null
@@ -2578,17 +1970,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -2608,17 +1995,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -2638,17 +2020,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -2663,17 +2040,12 @@
                 "services": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             }
@@ -2681,29 +2053,29 @@
     },
     "all": {
         "children": [
-            "ungrouped",
+            "cluster_group_test_cluster_group",
+            "cluster_test_cluster",
+            "cluster_test_cluster_2",
+            "cluster_type_test_cluster_type",
+            "device_type_cisco_test",
+            "device_type_nexus_parent",
+            "is_virtual",
+            "location_child_child_test_location",
             "location_child_test_location",
             "location_parent_test_location",
-            "rack_main_test_rack",
-            "rack_group_parent_rack_group",
-            "rack_role_test_rack_role",
-            "role_core_switch",
-            "device_type_cisco_test",
             "manufacturer_cisco",
+            "rack_group_child_rack_group",
+            "rack_group_parent_rack_group",
+            "rack_main_test_rack",
+            "rack_role_test_rack_role",
+            "rack_sub_test_rack",
+            "role_core_switch",
+            "service_http",
+            "service_ssh",
+            "service_telnet",
             "status_active",
             "tenant_test_tenant",
-            "service_ssh",
-            "service_http",
-            "location_child_child_test_location",
-            "rack_sub_test_rack",
-            "rack_group_child_rack_group",
-            "device_type_nexus_parent",
-            "service_telnet",
-            "cluster_test_cluster",
-            "cluster_group_test_cluster_group",
-            "cluster_type_test_cluster_type",
-            "is_virtual",
-            "cluster_test_cluster_2"
+            "ungrouped"
         ]
     },
     "cluster_group_test_cluster_group": {
@@ -2724,25 +2096,25 @@
     },
     "cluster_test_cluster_2": {
         "hosts": [
-            "test104-vm",
-            "Test VM With Spaces"
+            "Test VM With Spaces",
+            "test104-vm"
         ]
     },
     "cluster_type_test_cluster_type": {
         "hosts": [
+            "Test VM With Spaces",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "device_type_cisco_test": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1"
+            "TestDeviceR1",
+            "test100"
         ]
     },
     "device_type_nexus_parent": {
@@ -2752,12 +2124,12 @@
     },
     "is_virtual": {
         "hosts": [
+            "Test VM With Spaces",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "location_child_child_test_location": {
@@ -2768,9 +2140,9 @@
     "location_child_test_location": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1",
             "Test Nexus One",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2780,9 +2152,9 @@
     "location_parent_test_location": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1",
             "Test Nexus One",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2792,9 +2164,9 @@
     "manufacturer_cisco": {
         "hosts": [
             "R1-Device",
-            "test100",
+            "Test Nexus One",
             "TestDeviceR1",
-            "Test Nexus One"
+            "test100"
         ]
     },
     "rack_group_child_rack_group": {
@@ -2826,9 +2198,9 @@
     "role_core_switch": {
         "hosts": [
             "R1-Device",
-            "test100",
+            "Test Nexus One",
             "TestDeviceR1",
-            "Test Nexus One"
+            "test100"
         ]
     },
     "service_http": {
@@ -2838,8 +2210,8 @@
     },
     "service_ssh": {
         "hosts": [
-            "test100",
-            "Test VM With Spaces"
+            "Test VM With Spaces",
+            "test100"
         ]
     },
     "service_telnet": {
@@ -2850,15 +2222,15 @@
     "status_active": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1",
             "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "tenant_test_tenant": {

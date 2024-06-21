@@ -147,6 +147,10 @@ class NautobotIpamModule(NautobotModule):
         else:
             name = data.get("name")
 
+        if self.endpoint in ["vlans", "prefixes"] and self.module.params.get("location"):
+            # Need to force the api_version to 2.0 when using `location` parameter
+            self.nb.api_version = "2.0"
+
         if self.module.params.get("first_available"):
             first_available = True
         else:

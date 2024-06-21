@@ -61,7 +61,9 @@ options:
     version_added: "3.0.0"
   location:
     description:
-      - Location that prefix is associated with
+      - The single location the prefix will be associated to
+      - If you want to associate multiple locations, use the C(prefix_location) module
+      - Using this parameter will override the C(api_version) option to C(2.0)
     required: false
     type: raw
     version_added: "3.0.0"
