@@ -187,6 +187,7 @@ vlans = [
         "vlan_group": test_vlan_group.id,
         "status": {"name": "Active"},
     },
+    {"name": "Test VLAN 600", "vid": 600, "status": {"name": "Active"}},
 ]
 created_vlans = make_nautobot_calls(nb.ipam.vlans, vlans)
 

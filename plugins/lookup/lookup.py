@@ -233,6 +233,7 @@ def get_endpoint(nautobot, term):
         "virtualization-interfaces": {"endpoint": nautobot.virtualization.interfaces},
         "vlan-groups": {"endpoint": nautobot.ipam.vlan_groups},
         "vlans": {"endpoint": nautobot.ipam.vlans},
+        "vlan-location-assignments": {"endpoint": nautobot.ipam.vlan_location_assignments},
         "vrfs": {"endpoint": nautobot.ipam.vrfs},
     }
 

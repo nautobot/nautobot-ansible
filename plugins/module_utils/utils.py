@@ -83,6 +83,7 @@ API_APPS_ENDPOINTS = dict(
         "services",
         "vlans",
         "vlan_groups",
+        "vlan_location_assignments",
         "vrfs",
     ],
     plugins=[],
@@ -206,6 +207,7 @@ CONVERT_TO_ID = {
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
     "vlan_group": "vlan_groups",
+    "vlan_location_assignments": "vlan_location_assignments",
     "vm_interface": "interfaces",
     "vrf": "vrfs",
 }
@@ -266,6 +268,7 @@ ENDPOINT_NAME_MAPPING = {
     "virtual_machines": "virtual_machine",
     "vlans": "vlan",
     "vlan_groups": "vlan_group",
+    "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
 }
 
@@ -348,6 +351,7 @@ ALLOWED_QUERY_PARAMS = {
     "virtual_machine": set(["name", "cluster"]),
     "vlan": set(["name", "location", "tenant", "vid", "vlan_group"]),
     "vlan_group": set(["name", "location"]),
+    "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
 }
