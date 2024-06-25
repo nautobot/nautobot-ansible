@@ -42,7 +42,7 @@ EXAMPLES = r"""
 
   tasks:
     - name: Assign Location to VLAN
-      networktocode.nautobot.vlan:
+      networktocode.nautobot.vlan_location:
         url: http://nautobot.local
         token: thisIsMyToken
         vlan: Test VLAN
@@ -52,7 +52,7 @@ EXAMPLES = r"""
         state: present
 
     - name: Unassign Location from VLAN
-      networktocode.nautobot.vlan:
+      networktocode.nautobot.vlan_location:
         url: http://nautobot.local
         token: thisIsMyToken
         vlan: Test VLAN
@@ -61,7 +61,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-vlan:
+vlan_location_assignments:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -94,8 +94,8 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    vlan = NautobotIpamModule(module, NB_VLAN_LOCATIONS)
-    vlan.run()
+    vlan_location = NautobotIpamModule(module, NB_VLAN_LOCATIONS)
+    vlan_location.run()
 
 
 if __name__ == "__main__":  # pragma: no cover
