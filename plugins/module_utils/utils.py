@@ -207,7 +207,6 @@ CONVERT_TO_ID = {
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
     "vlan_group": "vlan_groups",
-    "vlan_location_assignments": "vlan_location_assignments",
     "vm_interface": "interfaces",
     "vrf": "vrfs",
 }
