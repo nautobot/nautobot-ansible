@@ -24,6 +24,7 @@ NB_RIRS = "rirs"
 NB_ROUTE_TARGETS = "route_targets"
 NB_VLANS = "vlans"
 NB_VLAN_GROUPS = "vlan_groups"
+NB_VLAN_LOCATIONS = "vlan_location_assignments"
 NB_VRFS = "vrfs"
 NB_SERVICES = "services"
 
@@ -144,6 +145,8 @@ class NautobotIpamModule(NautobotModule):
             name = data.get("address")
         elif self.endpoint in ["prefixes"]:
             name = data.get("prefix")
+        elif self.endpoint == "vlan_location_assignments":
+            name = data.get("display")
         else:
             name = data.get("name")
 

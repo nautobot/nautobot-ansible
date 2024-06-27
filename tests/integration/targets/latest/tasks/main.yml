@@ -520,3 +520,12 @@
         - namespace
   tags:
     - namespace
+
+- name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
+  include_tasks:
+    file: "vlan_location.yml"
+    apply:
+      tags:
+        - vlan_location
+  tags:
+    - vlan_location
