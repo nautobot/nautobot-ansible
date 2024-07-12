@@ -1,0 +1,154 @@
+---
+##
+##
+### PYNAUTOBOT_TEAM
+##
+##
+- block:
+  - set_fact:
+      test_contact: "{{ lookup('networktocode.nautobot.lookup', 'contacts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Contact\"') }}"
+      test_contact2: "{{ lookup('networktocode.nautobot.lookup', 'contacts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Contact 2\"') }}"
+
+  - name: "1 - Create team within Nautobot with only required information"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team
+    register: test_create_min
+
+  - name: "1 - ASSERT"
+    assert:
+      that:
+        - test_create_min is changed
+        - test_create_min['diff']['before']['state'] == "absent"
+        - test_create_min['diff']['after']['state'] == "present"
+        - test_create_min['team']['name'] == "Test Team"
+        - test_create_min['msg'] == "team Test Team created"
+
+  - name: "2 - Duplicate"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team
+
+    register: test_create_idem
+  - name: "2 - ASSERT"
+    assert:
+      that:
+        - not test_create_idem['changed']
+        - test_create_idem['msg'] == "team Test Team already exists"
+        - test_create_idem['team']['name'] == "Test Team"
+  
+  - name: "3 - Update team"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team
+      comments: Test Comments
+    register: test_update
+  
+  - name: "3 - ASSERT"
+    assert:
+      that:
+        - test_update is changed
+        - test_update['diff']['before']['comments'] == ""
+        - test_update['diff']['after']['comments'] == "Test Comments"
+
+  - name: "4 - Update idempotent"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team
+      comments: Test Comments
+    register: test_update_idem
+
+  - name: "4 - ASSERT"
+    assert:
+      that:
+        - not test_update_idem['changed']
+        - test_update_idem['msg'] == "team Test Team already exists"
+        - test_update_idem['team']['name'] == "Test Team"
+
+  - name: "5 - Create team with all parameters"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team 2
+      phone: "123456789"
+      email: user@example.com
+      address: Test Address
+      contacts:
+        - name: My Contact
+        - name: My Contact 2
+      comments: Test Comments
+    register: test_create_max
+
+  - name: "5 - ASSERT"
+    assert:
+      that:
+        - test_create_max is changed
+        - test_create_max['diff']['before']['state'] == "absent"
+        - test_create_max['diff']['after']['state'] == "present"
+        - test_create_max['team']['name'] == "Test Team 2"
+        - test_create_max['team']['phone'] == "123456789"
+        - test_create_max['team']['email'] == "user@example.com"
+        - test_create_max['team']['address'] == "Test Address"
+        - test_create_max['team']['contacts'][0] == test_contact['key']
+        - test_create_max['team']['contacts'][1] == test_contact2['key']
+        - test_create_max['team']['comments'] == "Test Comments"
+
+  - name: "6 - Duplicate create with all parameters"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team 2
+      phone: "123456789"
+      email: user@example.com
+      address: Test Address
+      contacts:
+        - name: My Contact
+        - name: My Contact 2
+      comments: Test Comments
+    register: test_create_max_idem
+
+  - name: "6 - ASSERT"
+    assert:
+      that:
+        - not test_create_max_idem['changed']
+        - test_create_max_idem['msg'] == "team Test Team 2 already exists"
+        - test_create_max_idem['team']['name'] == "Test Team 2"
+
+  - name: "7 - Delete team"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team 2
+      state: absent
+    register: test_delete
+  
+  - name: "7 - ASSERT"
+    assert:
+      that:
+        - test_delete is changed
+        - test_delete['diff']['before']['state'] == "present"
+        - test_delete['diff']['after']['state'] == "absent"
+        - test_delete['team']['name'] == "Test Team 2"
+        - "'deleted' in test_delete['msg']"
+  
+  - name: "8 - Delete idempotent"
+    networktocode.nautobot.team:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Team 2
+      state: absent
+    register: test_delete_idem
+
+  - name: "8 - ASSERT"
+    assert:
+      that:
+        - not test_delete_idem['changed']
+        - "'already absent' in test_delete_idem['msg']"
+
+  when:
+    # Teams are only available on Nautobot 2.2+
+    - "nautobot_version is version('2.2', '>=')"

@@ -529,3 +529,21 @@
         - vlan_location
   tags:
     - vlan_location
+
+- name: "PYNAUTOBOT_CONTACT TESTS"
+  include_tasks:
+    file: "contact.yml"
+    apply:
+      tags:
+        - contact
+  tags:
+    - contact
+
+- name: "PYNAUTOBOT_TEAM TESTS"
+  include_tasks:
+    file: "team.yml"
+    apply:
+      tags:
+        - team
+  tags:
+    - team

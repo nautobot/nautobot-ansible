@@ -15,6 +15,8 @@ NB_STATUS = "statuses"
 NB_RELATIONSHIP_ASSOCIATIONS = "relationship_associations"
 NB_CUSTOM_FIELDS = "custom_fields"
 NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
+NB_CONTACT = "contacts"
+NB_TEAM = "teams"
 
 
 class NautobotExtrasModule(NautobotModule):

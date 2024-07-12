@@ -597,5 +597,17 @@ custom_fields = [
 ]
 created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
 
+###############
+# v2.2+ items #
+###############
+if nautobot_version > version.parse("2.1"):
+    # Create Teams
+    teams = [{"name": "My Test Team"}]
+    created_teams = make_nautobot_calls(nb.extras.teams, teams)
+
+    # Create Contacts
+    contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
+    created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
