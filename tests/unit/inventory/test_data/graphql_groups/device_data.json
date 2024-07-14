@@ -9,6 +9,9 @@
     "primary_ip4": {
         "host": "10.10.10.10"
     },
+    "primary_ip6": {
+        "host": "2001:db8::1"
+    },
     "role": {
         "name": "edge",
         "color_category": {
