@@ -1,5 +1,4 @@
 ---
-version: "3.4"
 x-args:
   &args
   PYTHON_VER: ${PYTHON_VER}

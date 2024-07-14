@@ -236,29 +236,34 @@
       - test_nine['prefix']['prefix'] == "10.157.0.0/19"
       - test_nine['prefix']['location'] == test_child_location['key']
 
-- name: "10 - Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values"
-  networktocode.nautobot.prefix:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    parent: 10.157.0.0/19
-    prefix_length: 24
-    location:
-      name: "Child Test Location"
-      parent: "Parent Test Location"
-    status: "Active"
-    state: present
-    first_available: yes
-  register: test_ten
+- block:
+  - name: "10 - Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values"
+    networktocode.nautobot.prefix:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      parent: 10.157.0.0/19
+      prefix_length: 24
+      location:
+        name: "Child Test Location"
+        parent: "Parent Test Location"
+      status: "Active"
+      state: present
+      first_available: yes
+    register: test_ten
 
-- name: "10 - ASSERT"
-  assert:
-    that:
-      - test_ten is changed
-      - test_ten['diff']['before']['state'] == "absent"
-      - test_ten['diff']['after']['state'] == "present"
-      - test_ten['msg'] == "prefix 10.157.0.0/24 created"
-      - test_ten['prefix']['prefix'] == "10.157.0.0/24"
-      - test_ten['prefix']['location'] == test_child_location['key']
+  - name: "10 - ASSERT"
+    assert:
+      that:
+        - test_ten is changed
+        - test_ten['diff']['before']['state'] == "absent"
+        - test_ten['diff']['after']['state'] == "present"
+        - test_ten['msg'] == "prefix 10.157.0.0/24 created"
+        - test_ten['prefix']['prefix'] == "10.157.0.0/24"
+        - test_ten['prefix']['location'] == test_child_location['key']
+  when:
+    # Waiting on bug fix for API version in v2.2+
+    # https://github.com/nautobot/nautobot/issues/5832
+    - "nautobot_version is version('2.2', '<')"
 
 - name: "11 - Get a new /24 inside 10.156.0.0/19 within Nautobot"
   networktocode.nautobot.prefix:
@@ -304,28 +309,33 @@
       - test_twelve['prefix']['namespace'] == private_namespace['key']
       - test_twelve['prefix']['location'] == test_child_location['key']
 
-- name: "13 - Get a new /24 inside 10.157.0.0/19 within Nautobot in Private namespace"
-  networktocode.nautobot.prefix:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    parent: 10.157.0.0/19
-    prefix_length: 24
-    location:
-      name: "Child Test Location"
-      parent: "Parent Test Location"
-    namespace: Private
-    status: "Active"
-    state: present
-    first_available: yes
-  register: test_thirteen
+- block:
+  - name: "13 - Get a new /24 inside 10.157.0.0/19 within Nautobot in Private namespace"
+    networktocode.nautobot.prefix:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      parent: 10.157.0.0/19
+      prefix_length: 24
+      location:
+        name: "Child Test Location"
+        parent: "Parent Test Location"
+      namespace: Private
+      status: "Active"
+      state: present
+      first_available: yes
+    register: test_thirteen
 
-- name: "13 - ASSERT"
-  assert:
-    that:
-      - test_thirteen is changed
-      - test_thirteen['diff']['before']['state'] == "absent"
-      - test_thirteen['diff']['after']['state'] == "present"
-      - test_thirteen['msg'] == "prefix 10.157.0.0/24 created"
-      - test_thirteen['prefix']['prefix'] == "10.157.0.0/24"
-      - test_thirteen['prefix']['namespace'] == private_namespace['key']
-      - test_thirteen['prefix']['location'] == test_child_location['key']
+  - name: "13 - ASSERT"
+    assert:
+      that:
+        - test_thirteen is changed
+        - test_thirteen['diff']['before']['state'] == "absent"
+        - test_thirteen['diff']['after']['state'] == "present"
+        - test_thirteen['msg'] == "prefix 10.157.0.0/24 created"
+        - test_thirteen['prefix']['prefix'] == "10.157.0.0/24"
+        - test_thirteen['prefix']['namespace'] == private_namespace['key']
+        - test_thirteen['prefix']['location'] == test_child_location['key']
+  when:
+    # Waiting on bug fix for API version in v2.2+
+    # https://github.com/nautobot/nautobot/issues/5832
+    - "nautobot_version is version('2.2', '<')"

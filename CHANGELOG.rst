@@ -5,6 +5,14 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.2.1
+======
+
+Minor Changes
+-------------
+- (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
+- (#348) Fixed GraphQL Inventory plugin bug when device platform is None
+
 v5.2.0
 ======
 

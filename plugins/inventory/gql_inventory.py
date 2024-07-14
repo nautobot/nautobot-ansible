@@ -296,7 +296,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def add_ansible_platform(self, device):
         """Add network platform to host"""
-        if device.get("platform", {}).get("napalm_driver"):
+        if device.get("platform") and "napalm_driver" in device["platform"]:
             self.add_variable(
                 device["name"],
                 ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
