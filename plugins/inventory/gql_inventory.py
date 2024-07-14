@@ -273,12 +273,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """
         self.inventory.set_variable(host, var_type, var)
 
-    def add_ip_address(self, default_ip_version, device):
+    def add_ip_address(self, device, default_ip_version="ipv4"):
         """Add primary IP address to host."""
         # Check to see what the primary IP host addition is, first case is IPv4, which is the default
         order_of_preference = ["primary_ip4"]
 
-        # if default_ip_version is IPv4, prepend, else postpend
+        # if default_ip_version is IPv4, prepend, else add to the end
         if default_ip_version.lower() == "ipv6":
             order_of_preference.insert(0, "primary_ip6")
         else:
@@ -424,7 +424,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
             self.inventory.add_host(host=hostname)
-            self.add_ip_address(self.default_ip_version, device)
+            self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
             self.populate_variables(device)
             self.create_groups(device)
