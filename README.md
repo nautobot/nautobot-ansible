@@ -10,7 +10,7 @@ To keep the code simple, we only officially support the two latest releases of N
 
 - Nautobot 1.0.0+ or the two latest Nautobot releases
 - Python 3.6+
-- Python modules: **pynautobot 1.0.0+**, for Nautobot 2.x use **pynautobot 2.x**
+- Python modules: **pynautobot 2.x+**
 - Ansible 2.9+
 - Nautobot write-enabled token when using modules or read-only token for `lookup/inventory`
 
