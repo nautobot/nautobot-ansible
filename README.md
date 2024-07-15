@@ -33,22 +33,22 @@ The modules in this collection enable seamless interaction with the Nautobot pla
 
 Here is a list of available modules along with a brief description of each:
 
-- **nautobot_device**: Manage devices in Nautobot.
-- **nautobot_device_role**: Manage device roles in Nautobot.
-- **nautobot_device_type**: Manage device types in Nautobot.
-- **nautobot_interface**: Manage interfaces on devices in Nautobot.
-- **nautobot_ip_address**: Manage IP addresses in Nautobot.
-- **nautobot_site**: Manage sites in Nautobot.
-- **nautobot_tenant**: Manage tenants in Nautobot.
-- **nautobot_vlan**: Manage VLANs in Nautobot.
-- **nautobot_virtual_machine**: Manage virtual machines in Nautobot.
-- **nautobot_virtualization_cluster**: Manage virtualization clusters in Nautobot.
-- **nautobot_cable**: Manage cables in Nautobot.
-- **nautobot_circuit**: Manage circuits in Nautobot.
-- **nautobot_power_feed**: Manage power feeds in Nautobot.
-- **nautobot_rack**: Manage racks in Nautobot.
-- **nautobot_rack_group**: Manage rack groups in Nautobot.
-- **nautobot_inventory_item**: Manage inventory items in Nautobot.
+- **nautobot.device**: Manage devices in Nautobot.
+- **nautobot.device_role**: Manage device roles in Nautobot.
+- **nautobot.device_type**: Manage device types in Nautobot.
+- **nautobot.interface**: Manage interfaces on devices in Nautobot.
+- **nautobot.ip_address**: Manage IP addresses in Nautobot.
+- **nautobot.site**: Manage sites in Nautobot.
+- **nautobot.tenant**: Manage tenants in Nautobot.
+- **nautobot.vlan**: Manage VLANs in Nautobot.
+- **nautobot.virtual_machine**: Manage virtual machines in Nautobot.
+- **nautobot.virtualization_cluster**: Manage virtualization clusters in Nautobot.
+- **nautobot.cable**: Manage cables in Nautobot.
+- **nautobot.circuit**: Manage circuits in Nautobot.
+- **nautobot.power_feed**: Manage power feeds in Nautobot.
+- **nautobot.rack**: Manage racks in Nautobot.
+- **nautobot.rack_group**: Manage rack groups in Nautobot.
+- **nautobot.inventory_item**: Manage inventory items in Nautobot.
 
 ## Releasing, Versioning, and Deprecation
 
