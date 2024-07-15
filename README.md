@@ -33,22 +33,22 @@ The modules in this collection enable seamless interaction with the Nautobot pla
 
 Here is a list of available modules along with a brief description of each:
 
-- **nautobot.device**: Manage devices in Nautobot.
-- **nautobot.device_role**: Manage device roles in Nautobot.
-- **nautobot.device_type**: Manage device types in Nautobot.
-- **nautobot.interface**: Manage interfaces on devices in Nautobot.
-- **nautobot.ip_address**: Manage IP addresses in Nautobot.
-- **nautobot.site**: Manage sites in Nautobot.
-- **nautobot.tenant**: Manage tenants in Nautobot.
-- **nautobot.vlan**: Manage VLANs in Nautobot.
-- **nautobot.virtual_machine**: Manage virtual machines in Nautobot.
-- **nautobot.virtualization_cluster**: Manage virtualization clusters in Nautobot.
-- **nautobot.cable**: Manage cables in Nautobot.
-- **nautobot.circuit**: Manage circuits in Nautobot.
-- **nautobot.power_feed**: Manage power feeds in Nautobot.
-- **nautobot.rack**: Manage racks in Nautobot.
-- **nautobot.rack_group**: Manage rack groups in Nautobot.
-- **nautobot.inventory_item**: Manage inventory items in Nautobot.
+- **networktocode.nautobot.device**: Manage devices in Nautobot.
+- **networktocode.nautobot.device_role**: Manage device roles in Nautobot.
+- **networktocode.nautobot.device_type**: Manage device types in Nautobot.
+- **networktocode.nautobot.interface**: Manage interfaces on devices in Nautobot.
+- **networktocode.nautobot.ip_address**: Manage IP addresses in Nautobot.
+- **networktocode.nautobot.site**: Manage sites in Nautobot.
+- **networktocode.nautobot.tenant**: Manage tenants in Nautobot.
+- **networktocode.nautobot.vlan**: Manage VLANs in Nautobot.
+- **networktocode.nautobot.virtual_machine**: Manage virtual machines in Nautobot.
+- **networktocode.nautobot.virtualization_cluster**: Manage virtualization clusters in Nautobot.
+- **networktocode.nautobot.cable**: Manage cables in Nautobot.
+- **networktocode.nautobot.circuit**: Manage circuits in Nautobot.
+- **networktocode.nautobot.power_feed**: Manage power feeds in Nautobot.
+- **networktocode.nautobot.rack**: Manage racks in Nautobot.
+- **networktocode.nautobot.rack_group**: Manage rack groups in Nautobot.
+- **networktocode.nautobot.inventory_item**: Manage inventory items in Nautobot.
 
 ## Releasing, Versioning, and Deprecation
 
