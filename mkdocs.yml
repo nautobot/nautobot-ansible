@@ -1,0 +1,126 @@
+---
+site_name: "Nautobot Ansible"
+site_url: "https://nautobot-ansible.readthedocs.io"
+repo_url: "https://github.com/nautobot/nautobot-ansible/"
+edit_uri: blob/main/docs/
+copyright: Copyright © 2024 Red Hat, Inc.
+docs_dir: docs
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - content.action.edit
+    - navigation.expand
+    - navigation.sections
+    - navigation.instant
+    - navigation.indexes
+    - navigation.tracking
+    - toc.integrate
+extra:
+  # TODO: Update these social items
+  social:
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/ansible-navigator/
+      name: PyPI
+    - icon: fontawesome/solid/scroll
+      link: https://github.com/ansible/ansible-navigator/releases
+      name: Releases
+    - icon: simple/mastodon
+      link: https://fosstodon.org/@ansible
+      name: Mastodon
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ansible
+      name: Twitter
+    - icon: simple/matrix
+      link: https://matrix.to/#/#devtools:ansible.com
+      name: Matrix
+    - icon: fontawesome/solid/comments
+      link: https://github.com/ansible/ansible-navigator/discussions
+      name: Discussions
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/ansible/ansible-navigator
+      name: GitHub
+
+nav:
+  - home: index.md
+  - Installation: installation.md
+  - Configuration: settings.md
+  - Developer Guide:
+    - Code Reference:
+      - Module Utils:
+        - Circuits: "dev/code_reference/module_utils/circuits.md"
+    - Contributing:
+      - Documentation Generation: "dev/contributing/generate_docs.md"
+    - Environment Variable Index: "dev/code_reference/environment_variables.md"
+  - User Guide:
+    - Modules:
+      - networktocode.nautobot.cable: "plugins/cable.md" 
+      - networktocode.nautobot.circuit_termination: "plugins/circuit_termination.md" 
+  - Usage:
+      - subcommands.md
+      - faq.md
+  - Contributions:
+      - ../code-of-conduct.md
+      - contributing/security.md
+      - contributing/guidelines.md
+
+plugins:
+  # - autorefs
+  # - markdown-exec
+  - material/search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  # https://github.com/squidfunk/mkdocs-material/issues/6983
+  # - material/social
+  - material/tags
+  # https://github.com/manuzhang/mkdocs-htmlproofer-plugin
+  # - htmlproofer
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
+          options:
+            merge_init_into_class: yes
+            show_submodules: yes
+            heading_level: 1
+            show_root_heading: true
+            show_root_members_full_path: true
+            show_source: true
+          import:
+            - url: https://docs.ansible.com/ansible/latest/objects.inv
+              domains: [py, std]
+
+markdown_extensions:
+  # - markdown_include.include:
+  #     base_path: docs
+  - "admonition"
+  - "attr_list" # needed by our def_list use in order to add hrefs to <dt> tags
+  - "def_list"
+  - "footnotes"
+  - "markdown_version_annotations"
+  - "pymdownx.details"
+  - "pymdownx.highlight":
+      anchor_linenums: true
+  - "pymdownx.inlinehilite"
+  - "pymdownx.magiclink":
+      repo_url_shortener: true
+      repo_url_shorthand: true
+      social_url_shorthand: true
+      social_url_shortener: true
+      user: facelessuser
+      repo: pymdown-extensions
+      normalize_issue_symbols: true
+  - "pymdownx.tabbed":
+      alternate_style: true
+  - "toc":
+      toc_depth: 2-3
+      permalink: true
+  - "pymdownx.superfences":
+      "custom_fences":
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        # - name: python
+        #   class: python
+        #   validator: !!python/name:markdown_exec.validator
+        #   format: !!python/name:markdown_exec.formatter

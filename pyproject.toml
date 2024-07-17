@@ -6,7 +6,7 @@ authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.10,<4.0"
 netutils = "^1.2"
 pynautobot = "^2.1.1"
 ansible-core = "^2.14"
@@ -34,6 +34,12 @@ bandit = "^1.7.0"
 antsibull = "^0.45.1"
 antsibull-docs = "^1.7.3"
 pytest-forked = "^1.6.0"
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.0"
+mkdocs-material = "^9.5.29"
+mkdocstrings = {extras = ["python"], version = "^0.25.1"}
+markdown-version-annotations = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
