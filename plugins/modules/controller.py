@@ -41,33 +41,33 @@ options:
     type: string
   role:
     description:
-      - Required if I(state=present) and the device does not exist yet
+      - Required if I(state=present) and the controller does not exist yet
     required: false
     type: raw
   tenant:
     description:
-      - The tenant that the device will be assigned to
+      - The tenant that the controller will be assigned to
     required: false
     type: raw
   platform:
     description:
-      - The platform of the device
+      - The platform of the controller
     required: false
     type: raw
   location:
     description:
-      - Required if I(state=present) and the device does not exist yet
+      - Required if I(state=present) and the controller does not exist yet
     required: false
     type: raw
   status:
     description:
-      - The status of the device
-      - Required if I(state=present) and the device does not exist yet
+      - The status of the controller
+      - Required if I(state=present) and the controller does not exist yet
     required: false
     type: raw
-  controller_device_redundancy_group:
+  controller:
     description:
-      - Related device redundancy group the device will be assigned to
+      - Related device redundancy group the controller will be assigned to
     required: false
     type: string
 """
@@ -128,7 +128,6 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
-import uuid
 
 
 def main():
@@ -153,8 +152,6 @@ def main():
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    if module.params["name"] == "":
-        module.params["name"] = str(uuid.uuid4())
 
     controller = NautobotDcimModule(module, NB_CONTROLLERS)
     controller.run()
