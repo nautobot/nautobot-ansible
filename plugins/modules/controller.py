@@ -74,18 +74,6 @@ options:
     required: false
     type: raw
     version_added: "5.3.0"
-  local_config_context_data:
-    description:
-      - Arbitrary JSON data to define the devices configuration variables.
-    required: false
-    type: dict
-    version_added: "5.3.0"
-  device_redundancy_group:
-    description:
-      - Device redundancy group the device will be assigned to
-    required: false
-    type: raw
-    version_added: "5.1.0"
   controller_device_redundancy_group:
     description:
       - Related device redundancy group the device will be assigned to
@@ -102,62 +90,34 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create device within Nautobot with only required information
-      networktocode.nautobot.device:
+      networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device
-        device_type: C9410R
-        role: Core Switch
+        name: "test_controller_2"
         location: My Location
-        status: active
+        status: "Active"
         state: present
 
-    - name: Create device within Nautobot with empty string name to generate UUID
-      networktocode.nautobot.device:
+    - name: "CREATE THE SECOND CONTROLLER"
+      networktocode.nautobot.controller:
+        name: "test_controller_3"
         url: http://nautobot.local
         token: thisIsMyToken
-        name: ""
-        device_type: C9410R
-        role: Core Switch
-        location:
-          name: My Location
-          parent: Parent Location
-        status: active
-        state: present
+        status: "Active"
+        location: "Cisco"
+        external_integration: "Cisco Catalyst SD-WAN"
+        role: "Administrative"
+        platform: "Cisco IOS"
+        tenant: "Nautobot Baseball Stadiums"
+        controller_device_redundancy_group: "controller_test"
 
     - name: Delete device within nautobot
-      networktocode.nautobot.device:
+      networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device
+        name: test_controller_3
         state: absent
 
-    - name: Create device with tags
-      networktocode.nautobot.device:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Another Test Device
-        device_type: C9410R
-        role: Core Switch
-        location:
-          name: My Location
-          parent: Parent Location
-        status: active
-        local_config_context_data:
-          bgp: "65000"
-        tags:
-          - Schnozzberry
-        state: present
-
-    - name: Update the rack and position of an existing device
-      networktocode.nautobot.device:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Device
-        rack: Test Rack
-        position: 10
-        face: Front
-        state: present
 """
 
 RETURN = r"""
