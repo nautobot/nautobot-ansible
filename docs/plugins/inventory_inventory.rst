@@ -42,7 +42,7 @@ networktocode.nautobot.inventory inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.3.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 

@@ -449,3 +449,7 @@ releases:
       minor_changes:
       - (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
       - (#348) Fixed GraphQL Inventory plugin bug when device platform is None
+  5.3.0:
+    changes:
+      minor_changes:
+        - (#326) Added `controller` module
