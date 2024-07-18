@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-# TODO: Check for any words of Device
 
 from __future__ import absolute_import, division, print_function
 
@@ -30,56 +29,47 @@ options:
       - The name of the controller
     required: true
     type: str
-    version_added: "5.3.0"
   controller_device:
     description:
       - Device that runs the controller software
     required: false
     type: string
-    version_added: "5.3.0"
   external_integration:
     description:
       - External connection for the controller, such as Meraki Cloud URL
     required: false
     type: string
-    version_added: "5.3.0"
   role:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
-    version_added: "5.3.0"
   tenant:
     description:
       - The tenant that the device will be assigned to
     required: false
     type: raw
-    version_added: "5.3.0"
   platform:
     description:
       - The platform of the device
     required: false
     type: raw
-    version_added: "5.3.0"
   location:
     description:
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
-    version_added: "5.3.0"
   status:
     description:
       - The status of the device
       - Required if I(state=present) and the device does not exist yet
     required: false
     type: raw
-    version_added: "5.3.0"
   controller_device_redundancy_group:
     description:
       - Related device redundancy group the device will be assigned to
     required: false
     type: string
-    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""
