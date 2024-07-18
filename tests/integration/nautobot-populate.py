@@ -48,7 +48,7 @@ def make_nautobot_calls(endpoint, payload):
 create_tags = make_nautobot_calls(
     nb.extras.tags,
     [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget", "dcim.controller"]},
         {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Third", "content_types": ["dcim.device"]},
         {
@@ -244,6 +244,7 @@ device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
     {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
     {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
+    {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 # Device role variables to be used later on
@@ -608,6 +609,8 @@ if nautobot_version > version.parse("2.1"):
     # Create Contacts
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
+
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
