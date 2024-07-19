@@ -9,13 +9,16 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.location_type`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 4.3.0 "Initial Modules Creation."
+    Added in 4.3.0.
+
 ## Synopsis
 
 - Creates or removes location types from Nautobot
 
 ## Requirements
+
+The below requirements are needed on the host that executes this module.
 
 - pynautobot
 
@@ -25,25 +28,27 @@
 | --------- | --------- | ------------- | -------- |
 | api_version | str | 4.1.0 | API Version Nautobot REST API |
 | content_types | list |  | Location Type content type(s). These match app.endpoint and the endpoint is singular. e.g. dcim.device, ipam.ipaddress (more can be found in the examples) |
+| custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | description | str |  | Location Type description |
 | name | str |  | Name of the location type to be created |
-| nestable | bool |  | Allow Locations of this type to be parents/children of other Locations of this same type Requires `nautobot >= 1.5` |
+| nestable | bool |  | Allow Locations of this type to be parents/children of other Locations of this same type Requires C(nautobot >= 1.5) |
 | parent_location_type | raw |  | The parent location type this location type should be tied to |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
-| state | str |  | Use `present` or `absent` for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the [`NAUTOBOT_TOKEN`](../code_reference/environment_variables.md#nautobot_token) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the [`NAUTOBOT_URL`](../code_reference/environment_variables.md#nautobot_url) environment variable is configured. |
-| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the [`NAUTOBOT_VALIDATE_CERTS`](../code_reference/environment_variables.md#nautobot_validate_certs) environment variable is configured. |
+| state | str |  | Use C(present) or C(absent) for adding or removing. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
+| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
 
 ## Tags
 
 !!! note "Note"
     * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
+    * This should be ran with connection C(local) and hosts C(localhost)
 
 ## Examples
 
 ```yaml
+
 - name: "Test Nautobot location type module"
   connection: local
   hosts: localhost
@@ -75,17 +80,19 @@
         content_types:
           - "dcim.device"
         state: present
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| location_type | string | Serialized object as created or already existent within Nautobot<br>Returned: always |
-| msg | string | Message indicating failure or info about what has been achieved<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| location_type | dict | Serialized object as created or already existent within Nautobot | on creation |
+| msg | str | Message indicating failure or info about what has been achieved | always |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Joe Wesch (@joewesch)
 
 ## Collection Links
 

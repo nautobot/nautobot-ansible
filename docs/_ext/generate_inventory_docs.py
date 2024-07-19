@@ -2,6 +2,7 @@ import os
 import ast
 import yaml
 
+
 def extract_documentation(file_path):
     with open(file_path, "r") as file:
         content = file.read()
@@ -17,6 +18,7 @@ def extract_documentation(file_path):
         print(f"Error parsing {file_path}: {e}")
     return None
 
+
 def read_inventory_plugins(src_dir):
     documentation_dict = {}
     for root, _, files in os.walk(src_dir):
@@ -31,6 +33,7 @@ def read_inventory_plugins(src_dir):
                     except yaml.YAMLError as e:
                         print(f"Error parsing YAML in {file}: {e}")
     return documentation_dict
+
 
 if __name__ == "__main__":
     src_dir = "plugins/inventory"  # Update with your actual source directory for inventory plugins

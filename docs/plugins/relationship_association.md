@@ -9,11 +9,18 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.relationship_association`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 4.0.0 "Initial Modules Creation."
+    Added in 4.0.0.
+
 ## Synopsis
 
 - Creates or removes a relationship association from Nautobot
+
+## Requirements
+
+The below requirements are needed on the host that executes this module.
+
+- pynautobot
 
 ## Parameters
 
@@ -26,20 +33,18 @@
 | relationship | raw |  | The Relationship UUID to add the association to |
 | source_id | str |  | The UUID of the source of the relationship |
 | source_type | str |  | The app_label.model for the source of the relationship |
-| state | str |  | Use `present` or `absent` for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the [`NAUTOBOT_TOKEN`](../code_reference/environment_variables.md#nautobot_token) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the [`NAUTOBOT_URL`](../code_reference/environment_variables.md#nautobot_url) environment variable is configured. |
-| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the [`NAUTOBOT_VALIDATE_CERTS`](../code_reference/environment_variables.md#nautobot_validate_certs) environment variable is configured. |
+| state | str |  | Use C(present) or C(absent) for adding or removing. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
+| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
 
 ## Tags
 
-!!! note "Note"
-    * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
 
 ## Examples
 
 ```yaml
+
 - name: "Test relationship association creation/deletion"
   connection: local
   hosts: localhost
@@ -65,17 +70,20 @@
         destination_type: ipam.vrf
         destination_id: 01234567-abcd-0123-abcd-123456789012
         state: absent
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| relationship_associations | string | Serialized object as created/existent/updated/deleted within Nautobot<br>Returned: always |
-| msg | string | Message indicating failure or info about what has been achieved<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| msg | str | Message indicating failure or info about what has been achieved | always |
+| relationship_associations | dict | Serialized object as created/existent/updated/deleted within Nautobot | always |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Network to Code (@networktocode)
+- Joe Wesch (@joewesch)
 
 ## Collection Links
 

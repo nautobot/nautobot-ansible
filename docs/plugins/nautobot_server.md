@@ -9,13 +9,17 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.nautobot_server`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 3.0.0 "Initial Modules Creation."
+    Added in 3.0.0.
+
 ## Synopsis
 
-- No synopsis available.
+- Manages Nautobot Server using the C(nautobot-server) application frontend to C(django-admin). With the C(virtualenv) parameter
+- all management commands will be executed by the given C(virtualenv) installation.
 
 ## Requirements
+
+The below requirements are needed on the host that executes this module.
 
 - nautobot
 
@@ -23,12 +27,18 @@
 
 | Parameter | Data Type | Version Added | Comments |
 | --------- | --------- | ------------- | -------- |
-| args | dict |  | A dictionary of the optional arguments and their values used together with the command. This translates {"name_arg": "value_arg"} to "--name_arg value_arg". |
-| command | str |  | The name of the Nautobot management command to run. Some command fully implemented are: `createsuperuser`, `migrate`, `makemigrations`, `post_upgrade` and `collectstatic`. Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments. The module will perform some basic parameter validation, when applicable, to the commands. |
+| args | dict |  | A dictionary of the optional arguments and their values used together with the command.
+This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
+ |
+| command | str |  | The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser),
+C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
+Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
+The module will perform some basic parameter validation, when applicable, to the commands.
+ |
 | db_password | str |  | Database password used in Nautobot. |
 | db_username | str |  | Database username used in Nautobot. |
-| flags | list |  | A list of flags to append to the command that is passed to `nautobot-server`, so that ["flag1", "flag2"] is translated to "--flag1 --flag2". |
-| positional_args | list |  | A list of additional arguments to append to the end of the command that is passed to `nautobot-server`. These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2". |
+| flags | list |  | A list of flags to append to the command that is passed to C(nautobot-server), so that ["flag1", "flag2"] is translated to "--flag1 --flag2". |
+| positional_args | list |  | A list of additional arguments to append to the end of the command that is passed to C(nautobot-server). These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2". |
 | project_path | path |  | The path to the root of the Nautobot application where B(nautobot-server) lives. |
 | pythonpath | path |  | A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory. |
 | settings | path |  | The Python path to the application's settings module, such as 'myapp.settings'. |
@@ -37,13 +47,15 @@
 ## Tags
 
 !!! note "Note"
-    * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
+    * Inspired from Django_manage (U(https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py)).
+    * To be able to use the C(collectstatic) command, you must have enabled staticfiles in your nautbot_config.py.
+    * Your C(nautobot-server) application must be executable (rwxr-xr-x), and must have a valid shebang.
 
 ## Examples
 
 ```yaml
-- name: Createsuperuser
+
+  - name: Createsuperuser
     networktocode.nautobot.nautobot_server:
       command: "createsuperuser"
       args:
@@ -71,19 +83,21 @@
       positional_args: ["my_plugin_name"]
       db_username: "{{ db_username }}"
       db_password: "{{ db_password }}"
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| changed | string | Boolean that is true if the command changed the state.<br>Returned: always |
-| out | string | Raw output from the command execution.<br>Returned: always |
-| cmd | string | Full command executed in the Server.<br>Returned: always |
-| project_path | string | The path to the root of the Nautobot application where B(nautobot-server) lives.<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| changed | bool | Boolean that is true if the command changed the state. | always |
+| cmd | str | Full command executed in the Server. | always |
+| out | str | Raw output from the command execution. | always |
+| project_path | str | The path to the root of the Nautobot application where B(nautobot-server) lives. | always |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Network to Code (@networktocode)
 
 ## Collection Links
 

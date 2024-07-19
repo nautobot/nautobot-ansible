@@ -9,13 +9,16 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.custom_field`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 5.1.0 "Initial Modules Creation."
+    Added in 5.1.0.
+
 ## Synopsis
 
 - Creates or removes custom fields from Nautobot
 
 ## Requirements
+
+The below requirements are needed on the host that executes this module.
 
 - pynautobot
 
@@ -34,11 +37,11 @@
 | label | str | 5.1.0 | Name of the field as displayed to users |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | required | bool | 5.1.0 | Whether or not a value is required for this field when editing models |
-| state | str |  | Use `present` or `absent` for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the [`NAUTOBOT_TOKEN`](../code_reference/environment_variables.md#nautobot_token) environment variable is configured. |
+| state | str |  | Use C(present) or C(absent) for adding or removing. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
 | type | str | 5.1.0 | Data type of this field Required if I(state=present) and the custom field does not exist yet I(type=select) and I(type=multi-select) require choices to be defined separately with the I(custom_field_choice) module |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the [`NAUTOBOT_URL`](../code_reference/environment_variables.md#nautobot_url) environment variable is configured. |
-| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the [`NAUTOBOT_VALIDATE_CERTS`](../code_reference/environment_variables.md#nautobot_validate_certs) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
+| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
 | validation_maximum | int | 5.1.0 | Maximum value allowed for this field Only compatible with I(type=integer) |
 | validation_minimum | int | 5.1.0 | Minimum value allowed for this field Only compatible with I(type=integer) |
 | validation_regex | str | 5.1.0 | Regular expression that this field must match Only compatible with I(type=text) |
@@ -47,12 +50,12 @@
 ## Tags
 
 !!! note "Note"
-    * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
+    * This should be ran with connection C(local) and hosts C(localhost)
 
 ## Examples
 
 ```yaml
+
 - name: Create custom field within Nautobot with only required information
   networktocode.nautobot.custom_field:
     url: http://nautobot.local
@@ -82,17 +85,19 @@
     validation_maximum: 100
     validation_regex: ^[a-z]+$
     state: present
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| custom_field | string | Serialized object as created or already existent within Nautobot<br>Returned: always |
-| msg | string | Message indicating failure or info about what has been achieved<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| custom_field | dict | Serialized object as created or already existent within Nautobot | success (when I(state=present)) |
+| msg | str | Message indicating failure or info about what has been achieved | always |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Joe Wesch (@joewesch)
 
 ## Collection Links
 

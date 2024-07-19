@@ -9,13 +9,16 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.query_graphql`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 1.1.0 "Initial Modules Creation."
+    Added in 1.1.0.
+
 ## Synopsis
 
-- No synopsis available.
+- Queries Nautobot via its GraphQL API through pynautobot
 
 ## Requirements
+
+The below requirements are needed on the host that executes this module.
 
 - pynautobot
 
@@ -33,14 +36,12 @@
 
 ## Tags
 
-!!! note "Note"
-    * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
 
 ## Examples
 
 ```yaml
-# Make API Query without variables
+
+  # Make API Query without variables
   - name: SET FACT OF STRING
     set_fact:
       query_string: |
@@ -86,15 +87,46 @@
       query: "{{ query_string }}"
       graph_variables: "{{ graph_variables }}"
       update_hostvars: yes
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| data | dict | ['Data result from the GraphQL endpoint'] | success |
+| graph_variables | dict | ['Variables passed in'] | success |
+| query | str | ['Query string that was sent to Nautobot'] | success |
+| url | str | ['Nautobot URL that was supplied for troubleshooting'] | success |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- J
+- o
+- s
+- h
+-  
+- V
+- a
+- n
+- D
+- e
+- r
+- a
+- a
+-  
+- (
+- @
+- j
+- v
+- a
+- n
+- d
+- e
+- r
+- a
+- a
+- )
 
 ## Collection Links
 

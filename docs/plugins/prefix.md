@@ -11,43 +11,56 @@
 
 +++ 1.0.0 "Initial Modules Creation."
     Initial creation of Nautobot modules.
+
 ## Synopsis
 
 - Creates or removes prefixes from Nautobot
+
+## Requirements
+
+The below requirements are needed on the host that executes this module.
+
+- pynautobot
 
 ## Parameters
 
 | Parameter | Data Type | Version Added | Comments |
 | --------- | --------- | ------------- | -------- |
 | api_version | str | 4.1.0 | API Version Nautobot REST API |
+| custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | description | str | 3.0.0 | The description of the prefix |
-| first_available | bool | 3.0.0 | If `yes` and state `present`, if an parent is given, it will get the first available prefix of the given prefix_length inside the given parent (and namespace, if given). Unused with state `absent`. |
+| first_available | bool | 3.0.0 | If C(yes) and state C(present), if an parent is given, it will get the first available prefix of the given prefix_length inside the given parent (and namespace, if given). Unused with state C(absent). |
 | ip_version | int | 5.0.0 | Specifies which address version the prefix prefix belongs to |
-| location | raw | 3.0.0 | The single location the prefix will be associated to If you want to associate multiple locations, use the `prefix_location` module Using this parameter will override the `api_version` option to `2.0` |
-| namespace | str | 5.0.0 | namespace that IP address is associated with. IPs are unique per namespaces. |
-| parent | raw | 3.0.0 | Required if state is `present` and first_available is `yes`. Will get a new available prefix in this parent prefix. |
-| prefix | raw | 3.0.0 | Required if state is `present` and first_available is False. Will allocate or free this prefix. |
-| prefix_length | int | 3.0.0 | Required ONLY if state is `present` and first_available is `yes`. Will get a new available prefix of the given prefix_length in this parent prefix. |
+| location | raw | 3.0.0 | The single location the prefix will be associated to If you want to associate multiple locations, use the C(prefix_location) module Using this parameter will override the C(api_version) option to C(2.0) |
+| namespace | str | 5.0.0 | namespace that IP address is associated with. IPs are unique per namespaces.
+ |
+| parent | raw | 3.0.0 | Required if state is C(present) and first_available is C(yes). Will get a new available prefix in this parent prefix. |
+| prefix | raw | 3.0.0 | Required if state is C(present) and first_available is False. Will allocate or free this prefix. |
+| prefix_length | int | 3.0.0 | Required ONLY if state is C(present) and first_available is C(yes).
+Will get a new available prefix of the given prefix_length in this parent prefix.
+ |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | role | raw | 3.0.0 | The role of the prefix |
-| state | str |  | Use `present` or `absent` for adding or removing. |
+| state | str |  | Use C(present) or C(absent) for adding or removing. |
 | status | raw | 3.0.0 | The status of the prefix Required if I(state=present) and does not exist yet |
+| tags | list | 3.0.0 | Any tags that this item may need to be associated with |
 | tenant | raw | 3.0.0 | The tenant that the prefix will be assigned to |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the [`NAUTOBOT_TOKEN`](../code_reference/environment_variables.md#nautobot_token) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
 | type | str | 5.0.0 | Prefix type |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the [`NAUTOBOT_URL`](../code_reference/environment_variables.md#nautobot_url) environment variable is configured. |
-| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the [`NAUTOBOT_VALIDATE_CERTS`](../code_reference/environment_variables.md#nautobot_validate_certs) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
+| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
 | vlan | raw | 3.0.0 | The VLAN the prefix will be assigned to |
 
 ## Tags
 
 !!! note "Note"
     * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
+    * This should be ran with connection C(local) and hosts C(localhost)
 
 ## Examples
 
 ```yaml
+
 - name: "Test Nautobot prefix module"
   connection: local
   hosts: localhost
@@ -126,17 +139,20 @@
           parent: Parent Location
         state: present
         first_available: yes
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| prefix | string | Serialized object as created or already existent within Nautobot<br>Returned: always |
-| msg | string | Message indicating failure or info about what has been achieved<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| msg | str | Message indicating failure or info about what has been achieved | always |
+| prefix | dict | Serialized object as created or already existent within Nautobot | on creation |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Mikhail Yohman (@FragmentedPacket)
+- Anthony Ruhier (@Anthony25)
 
 ## Collection Links
 

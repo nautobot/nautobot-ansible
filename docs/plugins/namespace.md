@@ -9,13 +9,16 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.namespace`.
 
-+++ 1.0.0 "Initial Modules Creation."
-    Initial creation of Nautobot modules.
++++ 5.1.0 "Initial Modules Creation."
+    Added in 5.1.0.
+
 ## Synopsis
 
 - Creates or removes namespaces from Nautobot
 
 ## Requirements
+
+The below requirements are needed on the host that executes this module.
 
 - pynautobot
 
@@ -24,24 +27,27 @@
 | Parameter | Data Type | Version Added | Comments |
 | --------- | --------- | ------------- | -------- |
 | api_version | str | 4.1.0 | API Version Nautobot REST API |
+| custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | description | str | 5.1.0 | The description of the namespace |
 | location | raw | 5.1.0 | The location of the namespace |
 | name | str | 5.1.0 | The name of the namespace |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
-| state | str |  | Use `present` or `absent` for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the [`NAUTOBOT_TOKEN`](../code_reference/environment_variables.md#nautobot_token) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the [`NAUTOBOT_URL`](../code_reference/environment_variables.md#nautobot_url) environment variable is configured. |
-| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the [`NAUTOBOT_VALIDATE_CERTS`](../code_reference/environment_variables.md#nautobot_validate_certs) environment variable is configured. |
+| state | str |  | Use C(present) or C(absent) for adding or removing. |
+| tags | list | 3.0.0 | Any tags that this item may need to be associated with |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
+| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
 
 ## Tags
 
 !!! note "Note"
     * Tags should be defined as a YAML list
-    * This should be ran with connection local and hosts localhost
+    * This should be ran with connection C(local) and hosts C(localhost)
 
 ## Examples
 
 ```yaml
+
 ---
 - name: Create a namespace
   networktocode.nautobot.namespace:
@@ -63,17 +69,19 @@
     token: thisIsMyToken
     name: My Namespace
     state: absent
+
 ```
+
 ## Return Values
 
-| Key | Data Type | Description |
-| --- | --------- | ----------- |
-| namespace | string | Serialized object as created or already existent within Nautobot<br>Returned: always |
-| msg | string | Message indicating failure or info about what has been achieved<br>Returned: always |
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+| msg | str | Message indicating failure or info about what has been achieved | always |
+| namespace | dict | Serialized object as created or already existent within Nautobot | success (when I(state=present)) |
 
 ## Authors
 
-- Tobias Groß (@toerb)
+- Joe Wesch (@joewesch)
 
 ## Collection Links
 

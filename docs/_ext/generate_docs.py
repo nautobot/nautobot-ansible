@@ -5,11 +5,12 @@ import sys
 from collections import defaultdict
 
 # Add the plugins directory to the Python path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../plugins')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../plugins")))
 
 from doc_fragments.fragments import ModuleDocFragment
 
 env_var_usage = defaultdict(list)
+
 
 def extract_section(content, section_name):
     pattern = re.compile(rf'{section_name} = r?""".*?"""', re.DOTALL)
@@ -18,33 +19,37 @@ def extract_section(content, section_name):
         return match.group(0).strip().strip(f'{section_name} = r"""').strip(f'{section_name} = """').strip()
     return ""
 
+
 def extract_fragments(content):
     fragments = []
-    pattern = re.compile(r'extends_documentation_fragment:\n  - (.+)')
+    pattern = re.compile(r"extends_documentation_fragment:\n  - (.+)")
     match = pattern.search(content)
     if match:
-        fragments = match.group(1).split('\n  - ')
+        fragments = match.group(1).split("\n  - ")
     return fragments
+
 
 def merge_fragments(main_doc, fragments):
     main_doc_yaml = yaml.safe_load(main_doc)
     for fragment in fragments:
-        fragment_content = getattr(ModuleDocFragment, fragment.split('.')[-1].upper(), "")
+        fragment_content = getattr(ModuleDocFragment, fragment.split(".")[-1].upper(), "")
         if fragment_content:
             fragment_yaml = yaml.safe_load(fragment_content)
-            if 'options' in fragment_yaml:
-                if 'options' not in main_doc_yaml:
-                    main_doc_yaml['options'] = {}
-                main_doc_yaml['options'].update(fragment_yaml['options'])
+            if "options" in fragment_yaml:
+                if "options" not in main_doc_yaml:
+                    main_doc_yaml["options"] = {}
+                main_doc_yaml["options"].update(fragment_yaml["options"])
     return yaml.dump(main_doc_yaml)
 
+
 def extract_synopsis(documentation):
-    synopsis_pattern = re.compile(r'description:\n(  - .+?\n)+', re.DOTALL)
+    synopsis_pattern = re.compile(r"description:\n(  - .+?\n)+", re.DOTALL)
     match = synopsis_pattern.search(documentation)
     if match:
         synopsis = match.group(0).split("\n")[1].strip().strip("- ").strip()
         return synopsis
     return "No synopsis available."
+
 
 def format_description(description_lines, module_name):
     """
@@ -53,24 +58,26 @@ def format_description(description_lines, module_name):
     formatted_description = ""
     for line in description_lines:
         # Replace C(code) with `code`
-        line = re.sub(r'C\((.+?)\)', r'`\1`', line)
+        line = re.sub(r"C\((.+?)\)", r"`\1`", line)
         # Replace E(env_var) with a link to the environment variables reference
-        env_vars = re.findall(r'E\((.+?)\)', line)
+        env_vars = re.findall(r"E\((.+?)\)", line)
         for env_var in env_vars:
             env_var_usage[env_var].append(module_name)
-            line = line.replace(f'E({env_var})', f'[`{env_var}`](../code_reference/environment_variables.md#{env_var.lower()})')
+            line = line.replace(f"E({env_var})", f"[`{env_var}`](../code_reference/environment_variables.md#{env_var.lower()})")
         if line.startswith("- "):
             formatted_description += f"<li>{line.strip('- ').strip()}</li>\n"
         else:
             formatted_description += f"{line.strip()}\n"
     return formatted_description
 
+
 def format_multiline(text):
     """
     Format multiline text for Markdown tables, ensuring proper line breaks and handling special cases.
     """
-    text = text.replace('\n', ' ').replace('  ', ' ').strip()
+    text = text.replace("\n", " ").replace("  ", " ").strip()
     return text
+
 
 def convert_to_markdown(file_name, documentation, examples, return_section, fragments):
     module_name = f"networktocode.nautobot.{os.path.splitext(file_name)[0]}"
@@ -102,7 +109,7 @@ def convert_to_markdown(file_name, documentation, examples, return_section, frag
             for req in doc_yaml["requirements"]:
                 markdown += f"- {req}\n"
             markdown += "\n"
-        
+
         if "options" in doc_yaml:
             markdown += "## Parameters\n\n| Parameter | Data Type | Version Added | Comments |\n| --------- | --------- | ------------- | -------- |\n"
             for param, details in doc_yaml["options"].items():
@@ -120,13 +127,13 @@ def convert_to_markdown(file_name, documentation, examples, return_section, frag
 
     if examples:
         # Replace C(code) with `code` and E(env_var) with link in examples
-        examples = re.sub(r'C\((.+?)\)', r'`\1`', examples)
-        examples = re.sub(r'E\((.+?)\)', lambda m: f"[`{m.group(1)}`](../code_reference/environment_variables.md#{m.group(1).lower()})", examples)
+        examples = re.sub(r"C\((.+?)\)", r"`\1`", examples)
+        examples = re.sub(r"E\((.+?)\)", lambda m: f"[`{m.group(1)}`](../code_reference/environment_variables.md#{m.group(1).lower()})", examples)
         markdown += "## Examples\n\n```yaml\n" + examples + "\n```\n"
 
     if return_section:
         markdown += "## Return Values\n\n| Key | Data Type | Description |\n| --- | --------- | ----------- |\n"
-        return_pattern = re.compile(r'(\w+):\n  description: (.+)')
+        return_pattern = re.compile(r"(\w+):\n  description: (.+)")
         for match in return_pattern.finditer(return_section):
             key = match.group(1)
             desc = match.group(2)
@@ -144,6 +151,7 @@ def convert_to_markdown(file_name, documentation, examples, return_section, frag
 [Repository Source](https://github.com/nautobot/nautobot-ansible/)\n"""
 
     return markdown
+
 
 def generate_docs(src_dir, dest_dir):
     for root, _, files in os.walk(src_dir):
@@ -166,19 +174,23 @@ def generate_docs(src_dir, dest_dir):
                         md_file.write(markdown_content)
                     print(f"Generated documentation for {file} at {dest_path}")
 
+
 def generate_env_var_reference(dest_dir):
     env_var_reference_path = os.path.join(dest_dir, "environment_variables.md")
     os.makedirs(os.path.dirname(env_var_reference_path), exist_ok=True)
-    
+
     with open(env_var_reference_path, "w") as ref_file:
         ref_file.write("# Index of All Collection Environment Variables\n\n")
-        ref_file.write("The following index documents all environment variables declared by plugins in collections. Environment variables used by the ansible-core configuration are documented in ansible_configuration_settings.\n\n")
-        
+        ref_file.write(
+            "The following index documents all environment variables declared by plugins in collections. Environment variables used by the ansible-core configuration are documented in ansible_configuration_settings.\n\n"
+        )
+
         for env_var, modules in env_var_usage.items():
             ref_file.write(f"## {env_var.lower()}\n\n")
             ref_file.write(f"See the documentation for the options where this environment variable is used.\n\n")
             module_links = [f"[{module.split('.')[-1]}](../../plugins/{module.split('.')[-1]}/)" for module in modules]
             ref_file.write(f"_Used by_: {', '.join(module_links)}\n\n")
+
 
 if __name__ == "__main__":
     src_dir = "plugins/modules"  # Update with your actual source directory
