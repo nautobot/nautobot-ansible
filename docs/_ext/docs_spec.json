@@ -116,6 +116,16 @@
                             ],
                             "ini": [
                                 {
+                                    "deprecated": {
+                                        "alternatives": "Use the 'defaults' section instead",
+                                        "collection_name": "ansible.builtin",
+                                        "version": "2.16",
+                                        "why": "Fixes typing error in INI section name"
+                                    },
+                                    "key": "fact_caching_prefix",
+                                    "section": "default"
+                                },
+                                {
                                     "key": "fact_caching_prefix",
                                     "section": "defaults"
                                 },
@@ -214,7 +224,7 @@
                                 "default_value": {
                                     "description": [
                                         "The default value when the host variable's value is an empty string.",
-                                        "This option is mutually exclusive with O(keyed_groups[].trailing_separator)."
+                                        "This option is mutually exclusive with C(trailing_separator)."
                                     ],
                                     "type": "str",
                                     "version_added": "2.12",
@@ -243,8 +253,8 @@
                                 "trailing_separator": {
                                     "default": true,
                                     "description": [
-                                        "Set this option to V(False) to omit the O(keyed_groups[].separator) after the host variable when the value is an empty string.",
-                                        "This option is mutually exclusive with O(keyed_groups[].default_value)."
+                                        "Set this option to I(False) to omit the C(separator) after the host variable when the value is an empty string.",
+                                        "This option is mutually exclusive with C(default_value)."
                                     ],
                                     "type": "bool",
                                     "version_added": "2.12",
@@ -301,7 +311,7 @@
                         "strict": {
                             "default": false,
                             "description": [
-                                "If V(yes) make invalid entries a fatal error, otherwise skip and continue.",
+                                "If C(yes) make invalid entries a fatal error, otherwise skip and continue.",
                                 "Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default."
                             ],
                             "type": "bool"
@@ -485,6 +495,16 @@
                             ],
                             "ini": [
                                 {
+                                    "deprecated": {
+                                        "alternatives": "Use the 'defaults' section instead",
+                                        "collection_name": "ansible.builtin",
+                                        "version": "2.16",
+                                        "why": "Fixes typing error in INI section name"
+                                    },
+                                    "key": "fact_caching_prefix",
+                                    "section": "default"
+                                },
+                                {
                                     "key": "fact_caching_prefix",
                                     "section": "defaults"
                                 },
@@ -666,7 +686,7 @@
                                 "default_value": {
                                     "description": [
                                         "The default value when the host variable's value is an empty string.",
-                                        "This option is mutually exclusive with O(keyed_groups[].trailing_separator)."
+                                        "This option is mutually exclusive with C(trailing_separator)."
                                     ],
                                     "type": "str",
                                     "version_added": "2.12",
@@ -695,8 +715,8 @@
                                 "trailing_separator": {
                                     "default": true,
                                     "description": [
-                                        "Set this option to V(False) to omit the O(keyed_groups[].separator) after the host variable when the value is an empty string.",
-                                        "This option is mutually exclusive with O(keyed_groups[].default_value)."
+                                        "Set this option to I(False) to omit the C(separator) after the host variable when the value is an empty string.",
+                                        "This option is mutually exclusive with C(default_value)."
                                     ],
                                     "type": "bool",
                                     "version_added": "2.12",
@@ -765,7 +785,7 @@
                         "strict": {
                             "default": false,
                             "description": [
-                                "If V(yes) make invalid entries a fatal error, otherwise skip and continue.",
+                                "If C(yes) make invalid entries a fatal error, otherwise skip and continue.",
                                 "Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default."
                             ],
                             "type": "bool"
@@ -1824,6 +1844,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2022,6 +2047,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2195,6 +2225,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2318,6 +2353,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -2489,6 +2529,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2604,6 +2649,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2718,6 +2768,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -2862,6 +2917,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -2985,6 +3045,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -3129,6 +3194,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -3252,6 +3322,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -3412,6 +3487,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -3436,206 +3516,6 @@
                 "metadata": null,
                 "return": {
                     "contact": {
-                        "description": "Serialized object as created or already existent within Nautobot",
-                        "returned": "success (when I(state=present))",
-                        "type": "dict"
-                    },
-                    "msg": {
-                        "description": "Message indicating failure or info about what has been achieved",
-                        "returned": "always",
-                        "type": "str"
-                    }
-                }
-            },
-            "networktocode.nautobot.controller": {
-                "doc": {
-                    "author": [
-                        "Josh VanDeraa (@jvanderaa)"
-                    ],
-                    "collection": "networktocode.nautobot",
-                    "description": [
-                        {
-                            "Creates, updates or removes controllers from Nautobot, related page": "https://docs.nautobot.com/projects/core/en/stable/user-guide/core-data-model/dcim/controller/"
-                        }
-                    ],
-                    "filename": "/home/joshv/.ansible/collections/ansible_collections/networktocode/nautobot/plugins/modules/controller.py",
-                    "has_action": false,
-                    "module": "controller",
-                    "notes": [
-                        "Tags should be defined as a YAML list",
-                        "This should be ran with connection C(local) and hosts C(localhost)"
-                    ],
-                    "options": {
-                        "api_version": {
-                            "description": [
-                                "API Version Nautobot REST API"
-                            ],
-                            "required": false,
-                            "type": "str",
-                            "version_added": "4.1.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "controller_device": {
-                            "description": [
-                                "Device that runs the controller software"
-                            ],
-                            "required": false,
-                            "type": "string",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "controller_device_redundancy_group": {
-                            "description": [
-                                "Related device redundancy group the device will be assigned to"
-                            ],
-                            "required": false,
-                            "type": "string",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "custom_fields": {
-                            "description": [
-                                "Must exist in Nautobot and in key/value format"
-                            ],
-                            "required": false,
-                            "type": "dict",
-                            "version_added": "3.0.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "external_integration": {
-                            "description": [
-                                "External connection for the controller, such as Meraki Cloud URL"
-                            ],
-                            "required": false,
-                            "type": "string",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "location": {
-                            "description": [
-                                "Required if I(state=present) and the device does not exist yet"
-                            ],
-                            "required": false,
-                            "type": "raw",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "name": {
-                            "description": [
-                                "The name of the controller"
-                            ],
-                            "required": true,
-                            "type": "str",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "platform": {
-                            "description": [
-                                "The platform of the device"
-                            ],
-                            "required": false,
-                            "type": "raw",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "query_params": {
-                            "description": [
-                                "This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined",
-                                "in plugins/module_utils/utils.py and provides control to users on what may make",
-                                "an object unique in their environment."
-                            ],
-                            "elements": "str",
-                            "required": false,
-                            "type": "list",
-                            "version_added": "3.0.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "role": {
-                            "description": [
-                                "Required if I(state=present) and the device does not exist yet"
-                            ],
-                            "required": false,
-                            "type": "raw",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "state": {
-                            "choices": [
-                                "absent",
-                                "present"
-                            ],
-                            "default": "present",
-                            "description": [
-                                "Use C(present) or C(absent) for adding or removing."
-                            ],
-                            "type": "str"
-                        },
-                        "status": {
-                            "description": [
-                                "The status of the device",
-                                "Required if I(state=present) and the device does not exist yet"
-                            ],
-                            "required": false,
-                            "type": "raw",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "tags": {
-                            "description": [
-                                "Any tags that this item may need to be associated with"
-                            ],
-                            "elements": "raw",
-                            "required": false,
-                            "type": "list",
-                            "version_added": "3.0.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "tenant": {
-                            "description": [
-                                "The tenant that the device will be assigned to"
-                            ],
-                            "required": false,
-                            "type": "raw",
-                            "version_added": "5.3.0",
-                            "version_added_collection": "networktocode.nautobot"
-                        },
-                        "token": {
-                            "description": [
-                                "The token created within Nautobot to authorize API access",
-                                "Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured."
-                            ],
-                            "required": true,
-                            "type": "str"
-                        },
-                        "url": {
-                            "description": [
-                                "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
-                                "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
-                            ],
-                            "required": true,
-                            "type": "str"
-                        },
-                        "validate_certs": {
-                            "default": true,
-                            "description": [
-                                "If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.",
-                                "Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured."
-                            ],
-                            "required": false,
-                            "type": "raw"
-                        }
-                    },
-                    "requirements": [
-                        "pynautobot"
-                    ],
-                    "short_description": "Create, update or delete controllers within Nautobot",
-                    "version_added": "5.3.0",
-                    "version_added_collection": "networktocode.nautobot"
-                },
-                "examples": "\n- name: \"Test Nautobot modules\"\n  connection: local\n  hosts: localhost\n  gather_facts: False\n\n  tasks:\n    - name: Create device within Nautobot with only required information\n      networktocode.nautobot.controller:\n        url: http://nautobot.local\n        token: thisIsMyToken\n        name: \"test_controller_2\"\n        location: My Location\n        status: \"Active\"\n        state: present\n\n    - name: \"CREATE THE SECOND CONTROLLER\"\n      networktocode.nautobot.controller:\n        name: \"test_controller_3\"\n        url: http://nautobot.local\n        token: thisIsMyToken\n        status: \"Active\"\n        location: \"Cisco\"\n        external_integration: \"Cisco Catalyst SD-WAN\"\n        role: \"Administrative\"\n        platform: \"Cisco IOS\"\n        tenant: \"Nautobot Baseball Stadiums\"\n        controller_device_redundancy_group: \"controller_test\"\n\n    - name: Delete device within nautobot\n      networktocode.nautobot.controller:\n        url: http://nautobot.local\n        token: thisIsMyToken\n        name: test_controller_3\n        state: absent\n\n",
-                "metadata": null,
-                "return": {
-                    "device": {
                         "description": "Serialized object as created or already existent within Nautobot",
                         "returned": "success (when I(state=present))",
                         "type": "dict"
@@ -3823,6 +3703,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -3966,6 +3851,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -4280,6 +4170,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -4450,6 +4345,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -4564,6 +4464,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -4835,6 +4740,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -4985,6 +4895,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -5151,6 +5066,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -5337,6 +5257,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -5498,6 +5423,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -5639,6 +5569,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -5828,6 +5763,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -6044,6 +5984,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -6159,6 +6104,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -6442,6 +6392,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -6588,6 +6543,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -6702,6 +6662,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -6845,6 +6810,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -7131,6 +7101,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -7266,6 +7241,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -7486,6 +7466,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -7661,6 +7646,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -7808,6 +7798,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -7931,6 +7926,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -8093,6 +8093,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -8234,6 +8239,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -8469,6 +8479,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -8656,6 +8671,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -9027,6 +9047,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -9177,6 +9202,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -9330,6 +9360,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -9463,6 +9498,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -9592,6 +9632,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -9706,6 +9751,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -9848,6 +9898,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -9997,6 +10052,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -10168,6 +10228,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -10301,6 +10366,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -10444,6 +10514,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -10604,6 +10679,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -10756,6 +10836,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -10882,6 +10967,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -11016,6 +11106,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -11242,6 +11337,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -11424,6 +11524,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -11575,6 +11680,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -11678,6 +11788,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"
@@ -11884,6 +11999,11 @@
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
                             ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
+                            ],
                             "required": true,
                             "type": "str"
                         },
@@ -12074,6 +12194,11 @@
                             "description": [
                                 "The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)",
                                 "Can be omitted if the E(NAUTOBOT_URL) environment variable is configured."
+                            ],
+                            "env": [
+                                {
+                                    "name": "NAUTOBOT_URL"
+                                }
                             ],
                             "required": true,
                             "type": "str"

@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.namespace`.
 
-+++ 5.1.0 "Initial Modules Creation."
++++ 5.1.0
     Added in 5.1.0.
 
 ## Synopsis

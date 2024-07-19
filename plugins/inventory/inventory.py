@@ -7,6 +7,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: inventory
+    version_added: "1.0.0"
     author:
         - Remy Leone (@sieben)
         - Anthony Ruhier (@Anthony25)

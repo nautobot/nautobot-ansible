@@ -16,6 +16,7 @@ description:
 extends_documentation_fragment:
   - constructed
   - inventory_cache
+version_added: "3.1.0"
 requirements:
   - netutils
 options:

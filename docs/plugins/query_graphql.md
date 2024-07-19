@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.query_graphql`.
 
-+++ 1.1.0 "Initial Modules Creation."
++++ 1.1.0
     Added in 1.1.0.
 
 ## Synopsis

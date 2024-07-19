@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.service`.
 
-+++ 1.0.0 "Initial Modules Creation."
++++ 1.0.0
     Initial creation of Nautobot modules.
 
 ## Synopsis

@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.ip_address_to_interface`.
 
-+++ 5.0.0 "Initial Modules Creation."
++++ 5.0.0
     Added in 5.0.0.
 
 ## Synopsis

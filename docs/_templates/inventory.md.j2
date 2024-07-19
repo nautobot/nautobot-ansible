@@ -1,0 +1,75 @@
+# {{ plugin_name }}
+
+!!! note "Collection Note"
+    This module is part of the __{{ collection_name }}__ collection https://galaxy.ansible.com/networktocode/nautobot (version 5.2.1).
+
+    To install it, use: `ansible-galaxy collection install {{ collection_name }}`.
+    You need further requirements to be able to use this module,
+    see [Requirements](#requirements) for details.
+
+    To use it in a playbook, specify: `{{ plugin_name }}`.
+
+## Synopsis
+
+{% for desc_item in description %}
+- {{ desc_item}}
+{% endfor %}
+
+{% if requirements is not none %}
+## Requirements
+
+The below requirements are needed on the host that executes this module.
+
+{% for req in requirements %}
+- {{ req }}
+{% endfor %}
+{% endif %}
+
+## Parameters
+
+| Parameter | Data Type | Version Added | Comments |
+| --------- | --------- | ------------- | -------- |
+{% for param_name, param_values in parameters.items() %}
+{% if param_values["description"] is string %}
+| {{ param_name }} | {{ param_values["type"] }} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"] }} |
+{% else %}
+| {{ param_name }} | {{ param_values["type"] }} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|join(' ') }} |
+{% endif %}
+{% endfor %}
+
+{% if notes is defined and notes is not none %}
+## Tags
+
+!!! note "Note"
+{% for note in notes %}
+    * {{ note }}
+{% endfor %}
+{% endif %}
+
+## Examples
+
+```yaml
+{{ examples }}
+```
+
+{% if return_data is not none %}
+## Return Values
+
+| Key | Data Type | Description | Returned | 
+| --- | --------- | ----------- | -------- |
+{% for key, values in return_data.items() %}
+| {{ key }} | {{ values["type"] }} | {{ values["description"] }} | {{ values["returned"] }} |
+{% endfor %}
+{% endif %}
+
+## Authors
+
+{% for author in authors %}
+- {{ author }}
+{% endfor %}
+
+## Collection Links
+
+[Issue Tracker](https://github.com/nautobot/nautobot-ansible/issues/)<br>
+[Repository Source](https://github.com/nautobot/nautobot-ansible/)
+

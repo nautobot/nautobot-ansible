@@ -8,6 +8,8 @@ docs_dir: docs
 
 theme:
   name: material
+  palette:
+    - accent: deep orange
   features:
     - content.code.copy
     - content.action.edit
@@ -44,16 +46,11 @@ extra:
 
 nav:
   - home: index.md
-  - Installation: installation.md
-  - Configuration: settings.md
-  - Developer Guide:
-    - Code Reference:
-      - Module Utils:
-        - Circuits: "dev/code_reference/module_utils/circuits.md"
-    - Contributing:
-      - Documentation Generation: "dev/contributing/generate_docs.md"
-    - Environment Variable Index: "dev/code_reference/environment_variables.md"
+  - Installation: "getting_started/installation.md"
   - User Guide:
+    - Inventories:
+      - GraphQL: "inventory/gql_inventory.md"
+      - REST (Original): "inventory/inventory.md"
     - Modules:
       - cable: "plugins/cable.md" 
       - circuit: "plugins/circuit.md"
@@ -119,6 +116,13 @@ nav:
       - vlan_location: "plugins/vlan_location.md"
       - vm_interface: "plugins/vm_interface.md"
       - vrf: "plugins/vrf.md"
+  - Developer Guide:
+    - Code Reference:
+      - Module Utils:
+        - Circuits: "dev/code_reference/module_utils/circuits.md"
+    - Contributing:
+      - Documentation Generation: "dev/contributing/generate_docs.md"
+    - Environment Variable Index: "dev/code_reference/environment_variables.md"
   - Usage:
       - subcommands.md
       - faq.md

@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.plugin`.
 
-+++ 4.4.0 "Initial Modules Creation."
++++ 4.4.0
     Added in 4.4.0.
 
 ## Synopsis

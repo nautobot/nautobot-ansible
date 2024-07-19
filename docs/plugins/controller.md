@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.controller`.
 
-+++ 5.3.0 "Initial Modules Creation."
++++ 5.3.0
     Added in 5.3.0.
 
 ## Synopsis

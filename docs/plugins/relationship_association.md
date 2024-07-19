@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.relationship_association`.
 
-+++ 4.0.0 "Initial Modules Creation."
++++ 4.0.0
     Added in 4.0.0.
 
 ## Synopsis

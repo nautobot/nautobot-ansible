@@ -9,7 +9,7 @@
 
     To use it in a playbook, specify: `networktocode.nautobot.nautobot_server`.
 
-+++ 3.0.0 "Initial Modules Creation."
++++ 3.0.0
     Added in 3.0.0.
 
 ## Synopsis
