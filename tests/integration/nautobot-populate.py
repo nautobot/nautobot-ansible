@@ -611,6 +611,5 @@ if nautobot_version > version.parse("2.1"):
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
 
 
-
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
