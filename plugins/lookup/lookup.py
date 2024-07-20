@@ -15,7 +15,8 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: lookup
-    author: Chris Mills (@cpmills1975)
+    author: 
+      - Chris Mills (@cpmills1975)
     version_added: "1.0.0"
     short_description: Queries and returns elements from Nautobot
     description:

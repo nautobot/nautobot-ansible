@@ -11,7 +11,8 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: lookup_graphql
-    author: Josh VanDeraa (@jvanderaa)
+    author: 
+      - Josh VanDeraa (@jvanderaa)
     version_added: "1.1.0"
     short_description: Queries and returns elements from Nautobot GraphQL endpoint
     description:

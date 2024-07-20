@@ -48,10 +48,13 @@ nav:
   - home: index.md
   - Installation: "getting_started/installation.md"
   - User Guide:
-    - Inventories:
+    - Inventories Plugins:
       - GraphQL: "inventory/gql_inventory.md"
       - REST (Original): "inventory/inventory.md"
-    - Modules:
+    - Lookup Plugins:
+      - GraphQL: "lookup/lookup_graphql.md"
+      - REST (Original): "lookup/lookup.md"
+    - Module Plugins:
       - cable: "plugins/cable.md" 
       - circuit: "plugins/circuit.md"
       - circuit_termination: "plugins/circuit_termination.md"

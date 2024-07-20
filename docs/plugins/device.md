@@ -3,7 +3,12 @@
 !!! note "Collection Note"
     This module is part of the __networktocode.nautobot__ collection https://galaxy.ansible.com/networktocode/nautobot (version 5.2.1).
 
-    To install it, use: `ansible-galaxy collection install networktocode.nautobot`.
+    To install the collection, use: 
+    
+    ```
+    ansible-galaxy collection install networktocode.nautobot
+    ```
+    
     You need further requirements to be able to use this module,
     see [Requirements](#requirements) for details.
 
