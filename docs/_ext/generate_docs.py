@@ -1,4 +1,13 @@
-"""This generates the plugin documentation for Mkdocs-Material."""
+"""This generates the plugin documentation for Mkdocs-Material.
+
+
+### TODOs ####
+Check into the conversion of C() and E()
+Inventory:
+    - Check for keyed_groups if we should do anything with that
+    - Handle various types of plugins that are not part of the Nautobot collection
+
+"""
 
 import json
 import logging
@@ -109,10 +118,3 @@ if __name__ == "__main__":
     ]:
         template = env.get_template(f"{component}.md.j2")
         loop_over_component(plugins, component, doc_type)
-
-
-# TODOs
-# Check into the conversion of C() and E()
-# Inventory:
-#  - Check for keyed_groups if we should do anything with that
-#  - Handle various types of plugins that are not part of the Nautobot collection
