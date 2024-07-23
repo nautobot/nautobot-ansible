@@ -15,6 +15,8 @@ import os
 
 from jinja2 import Environment, FileSystemLoader
 
+from custom_filters import add_custom_filters
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -74,7 +76,7 @@ def loop_over_component(plugin_data, component, doc_type):
         component (str): Component to iterate over, such as "module" or "inventory"
         doc_type (str): Type of documentation to generate, such as "plugin" or "inventory", corresponds to the output directory
     """
-    for plugin_name, plugin_values in plugins['all'][component].items():
+    for plugin_name, plugin_values in plugin_data['all'][component].items():
         # Create the plugin directory
         plugin_dir = os.path.join("docs", doc_type)
         os.makedirs(plugin_dir, exist_ok=True)
@@ -99,7 +101,7 @@ def loop_over_component(plugin_data, component, doc_type):
 if __name__ == "__main__":
     # Load the plugin data
     with open("docs/_ext/docs_spec.json", "r") as f:
-        plugins = json.load(f)
+        json_data = json.load(f)
 
     # Load the template
     env = Environment(
@@ -107,7 +109,8 @@ if __name__ == "__main__":
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    
+
+    add_custom_filters(env)
 
     # Generate the plugin documentation, getting to the plugins which are in the ['all']['module'] key
     for component, doc_type in [
@@ -117,4 +120,22 @@ if __name__ == "__main__":
         # ("filter", "filter"),
     ]:
         template = env.get_template(f"{component}.md.j2")
-        loop_over_component(plugins, component, doc_type)
+        loop_over_component(json_data, component, doc_type)
+
+    # Generate the Environment Variable documentation, first finding all of the Environment Variables
+    template = env.get_template("environment.md.j2")
+    env_vars = [
+        {
+            "name": "NAUTOBOT_URL",
+            "used_by_list": [
+                "networktocode.nautobot.inventory",
+                "networktocode.nautobot.graphql",
+            ]
+        }
+    ]
+
+    # Generate the Environment Variable documentation
+    env_doc = template.render(env_vars=env_vars)
+    with open("docs/dev/code_reference/environment_variables.md", "w") as f:
+        f.write(env_doc)
+    logger.info("Generated documentation for Environment Variables")

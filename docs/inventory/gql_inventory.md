@@ -35,7 +35,7 @@ The below requirements are needed on the host that executes this module.
 | cache_timeout | int |  ANSIBLE_CACHE_PLUGIN_TIMEOUT  ANSIBLE_INVENTORY_CACHE_TIMEOUT  |  | Cache duration in seconds |
 | compose | dict |  |  | Create vars from jinja2 expressions. |
 | default_ip_version |  |  |  | Choice between IPv6 and IPv4 address as the primary IP for ansible_host. |
-| follow_redirects |  |  |  | Determine how redirects are followed. By default, I(follow_redirects) is set to uses urllib2 default behavior. |
+| follow_redirects |  |  |  | Determine how redirects are followed. By default, _follow_redirects_ is set to uses urllib2 default behavior. |
 | group_by | list |  |  | List of dot-sparated paths to index graphql query results (e.g. `platform.display`) The final value returned by each path is used to derive group names and then group the devices into these groups. Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.display` instead of `platform`) If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `display` field. (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.display`)
  |
 | group_names_raw | boolean |  | 4.6.0 | Will not add the group_by choice name to the group names |
@@ -44,11 +44,11 @@ The below requirements are needed on the host that executes this module.
 | leading_separator | boolean |  | 2.11 | Use in conjunction with keyed_groups. By default, a keyed group that does not have a prefix or a separator provided will have a name that starts with an underscore. This is because the default prefix is "" and the default separator is "_". Set this option to False to omit the leading underscore (or other separator) if no prefix is given. If the group name is derived from a mapping the separator is still used to concatenate the items. To not use a separator in the group name at all, set the separator for the keyed group to an empty string instead. |
 | plugin |  |  |  | Setting that ensures this is a source file for the 'networktocode.nautobot' plugin. |
 | query | dict |  |  | GraphQL query parameters or filters to send to Nautobot to obtain desired data |
-| strict | bool |  |  | If C(yes) make invalid entries a fatal error, otherwise skip and continue. Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default. |
+| strict | bool |  |  | If `yes` make invalid entries a fatal error, otherwise skip and continue. Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default. |
 | timeout | int |  |  | Timeout for Nautobot requests in seconds |
 | token |  |  NAUTOBOT_TOKEN  |  | Nautobot API token to be able to read against Nautobot. This may not be required depending on the Nautobot setup. |
 | use_extra_vars | bool |  ANSIBLE_INVENTORY_USE_EXTRA_VARS  | 2.11 | Merge extra vars into the available variables for composition (highest precedence). |
-| validate_certs | boolean |  |  | Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted. |
+| validate_certs | boolean |  |  | Allows connection when SSL certificates are not valid. Set to `false` when certificates are not trusted. |
 
 
 ## Examples

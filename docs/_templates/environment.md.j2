@@ -1,0 +1,11 @@
+# Environment Variable Usage
+
+The following environment variables can be used to configure the behavior of the modules:
+
+{% if env_vars is defined and env_vars is not none %}
+| Environment Variable | Where Used |
+|----------------------|------------|
+{% for env_var in env_vars %}
+| {{ env_var.name }} | {% for used_by in env_var.used_by_list %}{{ used_by }}<br>{% endfor %} |
+{% endfor %}
+{% endif %}

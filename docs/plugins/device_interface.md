@@ -46,21 +46,21 @@ The below requirements are needed on the host that executes this module.
 | name | str | 3.0.0 | Name of the interface to be created |
 | parent_interface | raw | 4.5.0 | Interface that will be the parent of the interface being created |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| status | raw | 4.5.0 | The status of the interface Required if I(state=present) and the interface does not exist yet |
-| tagged_vlans | raw | 3.0.0 | A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All) |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| status | raw | 4.5.0 | The status of the interface Required if _state=present_ and the interface does not exist yet |
+| tagged_vlans | raw | 3.0.0 | A list of tagged VLANS to be assigned to interface. Mode must be set to either `Tagged` or `Tagged All` |
 | tags | list | 3.0.0 | Any tags that this item may need to be associated with |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
 | type | str | 3.0.0 | Form factor of the interface:
 ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
 This has to be specified exactly as what is found within UI
  |
 | untagged_vlan | raw | 3.0.0 | The untagged VLAN to be assigned to interface |
-| update_vc_child | bool | 3.0.0 | Use when master device is specified for C(device) and the specified interface exists on a child device
+| update_vc_child | bool | 3.0.0 | Use when master device is specified for `device` and the specified interface exists on a child device
 and needs updated
  |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 
 ## Tags
 

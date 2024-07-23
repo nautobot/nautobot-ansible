@@ -42,7 +42,7 @@ The below requirements are needed on the host that executes this module.
 | Parameter | Data Type | Version Added | Comments |
 | --------- | --------- | ------------- | -------- |
 {% for param_name, param_values in parameters.items() %}
-| {{ param_name }} | {{ param_values["type"] }} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|join(' ') }} |
+| {{ param_name }} | {{ param_values["type"] }} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|join(' ')|convert_text }} |
 {% endfor %}
 
 ## Tags

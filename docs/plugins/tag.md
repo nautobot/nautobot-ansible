@@ -33,15 +33,15 @@ The below requirements are needed on the host that executes this module.
 | --------- | --------- | ------------- | -------- |
 | api_version | str | 4.1.0 | API Version Nautobot REST API |
 | color | str | 3.0.0 | Tag color |
-| content_types | list |  | Tags content type(s). These match app.endpoint and the endpoint is singular. e.g. dcim.device, ipam.ipaddress (more can be found in the examples) Required if I(state=present) and the tag does not exist yet |
+| content_types | list |  | Tags content type(s). These match app.endpoint and the endpoint is singular. e.g. dcim.device, ipam.ipaddress (more can be found in the examples) Required if _state=present_ and the tag does not exist yet |
 | custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | description | str | 3.0.0 | Tag description |
 | name | str | 3.0.0 | Tag name |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 
 ## Tags
 

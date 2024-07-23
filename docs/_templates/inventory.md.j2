@@ -35,9 +35,9 @@ The below requirements are needed on the host that executes this module.
 | --------- | --------- | -------------------- | ------------- | -------- |
 {% for param_name, param_values in parameters.items() %}
 {% if param_values["description"] is string %}
-| {{ param_name }} | {{ param_values["type"] }} | {% for env_var in param_values["env"] %} {{ env_var["name"] }} {% endfor %} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"] }} |
+| {{ param_name }} | {{ param_values["type"] }} | {% for env_var in param_values["env"] %} {{ env_var["name"] }} {% endfor %} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|convert_text }} |
 {% else %}
-| {{ param_name }} | {{ param_values["type"] }} | {% for env_var in param_values["env"] %} {{ env_var["name"] }} {% endfor %} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|join(' ') }} |
+| {{ param_name }} | {{ param_values["type"] }} | {% for env_var in param_values["env"] %} {{ env_var["name"] }} {% endfor %} | {{ param_values["version_added"]  | default('') }} | {{ param_values["description"]|join(' ')|convert_text }} |
 {% endif %}
 {% endfor %}
 

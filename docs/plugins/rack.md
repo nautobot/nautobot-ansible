@@ -37,24 +37,24 @@ The below requirements are needed on the host that executes this module.
 | custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | desc_units | bool | 3.0.0 | Rack units will be numbered top-to-bottom. |
 | facility_id | str | 3.0.0 | The unique rack ID assigned by the facility. |
-| location | raw | 3.0.0 | Required if I(state=present) and the rack does not exist yet. |
+| location | raw | 3.0.0 | Required if _state=present_ and the rack does not exist yet. |
 | name | str | 3.0.0 | The name of the rack. |
 | outer_depth | int | 3.0.0 | The outer depth of the rack. |
-| outer_unit | str | 3.0.0 | Whether the rack unit is in Millimeters or Inches and is I(required) if outer_width/outer_depth is specified. |
+| outer_unit | str | 3.0.0 | Whether the rack unit is in Millimeters or Inches and is _required_ if outer_width/outer_depth is specified. |
 | outer_width | int | 3.0.0 | The outer width of the rack. |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | rack_group | raw | 3.0.0 | The rack group the rack will be associated to. |
 | role | raw | 3.0.0 | The rack role the rack will be associated to. |
 | serial | str | 3.0.0 | Serial number of the rack. |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| status | raw | 3.0.0 | The status of the rack Required if I(state=present) and does not exist yet. |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| status | raw | 3.0.0 | The status of the rack Required if _state=present_ and does not exist yet. |
 | tags | list | 3.0.0 | Any tags that this item may need to be associated with |
 | tenant | raw | 3.0.0 | The tenant that the device will be assigned to. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
 | type | str | 3.0.0 | The type of rack. |
 | u_height | int | 3.0.0 | The height of the rack in rack units. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 | width | int | 3.0.0 | The rail-to-rail width. |
 
 ## Tags

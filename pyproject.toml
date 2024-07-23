@@ -10,6 +10,7 @@ python = ">=3.10,<4.0"
 netutils = "^1.2"
 pynautobot = "^2.1.1"
 ansible-core = "^2.14"
+antsibull-docs-parser = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 black = "*"

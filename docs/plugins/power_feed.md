@@ -41,14 +41,14 @@ The below requirements are needed on the host that executes this module.
 | power_panel | raw | 3.0.0 | The power panel the power feed is terminated on |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | rack | raw | 3.0.0 | The rack the power feed is assigned to |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| status | str | 3.0.0 | The status of the power feed Required if I(state=present) and does not exist yet |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| status | str | 3.0.0 | The status of the power feed Required if _state=present_ and does not exist yet |
 | supply | str | 3.0.0 | The supply type of the power feed |
 | tags | list | 3.0.0 | Any tags that this item may need to be associated with |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
 | type | str | 3.0.0 | The type of the power feed |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 | voltage | int | 3.0.0 | The voltage of the power feed |
 
 ## Tags

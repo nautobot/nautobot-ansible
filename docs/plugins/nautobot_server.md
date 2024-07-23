@@ -35,19 +35,19 @@ The below requirements are needed on the host that executes this module.
 | args | dict |  | A dictionary of the optional arguments and their values used together with the command.
 This translates {"name_arg": "value_arg"} to "--name_arg value_arg".
  |
-| command | str |  | The name of the Nautobot management command to run. Some command fully implemented are: C(createsuperuser),
-C(migrate), C(makemigrations), C(post_upgrade) and C(collectstatic).
+| command | str |  | The name of the Nautobot management command to run. Some command fully implemented are: `createsuperuser`,
+`migrate`, `makemigrations`, `post_upgrade` and `collectstatic`.
 Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
 The module will perform some basic parameter validation, when applicable, to the commands.
  |
 | db_password | str |  | Database password used in Nautobot. |
 | db_username | str |  | Database username used in Nautobot. |
-| flags | list |  | A list of flags to append to the command that is passed to C(nautobot-server), so that ["flag1", "flag2"] is translated to "--flag1 --flag2". |
-| positional_args | list |  | A list of additional arguments to append to the end of the command that is passed to C(nautobot-server). These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2". |
-| project_path | path |  | The path to the root of the Nautobot application where B(nautobot-server) lives. |
+| flags | list |  | A list of flags to append to the command that is passed to `nautobot-server`, so that ["flag1", "flag2"] is translated to "--flag1 --flag2". |
+| positional_args | list |  | A list of additional arguments to append to the end of the command that is passed to `nautobot-server`. These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2". |
+| project_path | path |  | The path to the root of the Nautobot application where __nautobot-server__ lives. |
 | pythonpath | path |  | A directory to add to the Python path. Typically used to include the settings module if it is located external to the application directory. |
 | settings | path |  | The Python path to the application's settings module, such as 'myapp.settings'. |
-| virtualenv | path |  | An optional path to a I(virtualenv) installation to use while running the nautobot-server application. |
+| virtualenv | path |  | An optional path to a _virtualenv_ installation to use while running the nautobot-server application. |
 
 ## Tags
 

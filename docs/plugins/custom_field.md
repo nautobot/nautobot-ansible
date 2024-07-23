@@ -33,23 +33,23 @@ The below requirements are needed on the host that executes this module.
 | --------- | --------- | ------------- | -------- |
 | advanced_ui | bool | 5.1.0 | Whether or not to display this field in the advanced tab |
 | api_version | str | 4.1.0 | API Version Nautobot REST API |
-| content_types | list | 5.1.0 | Content types that this field should be available for Required if I(state=present) and the custom field does not exist yet |
+| content_types | list | 5.1.0 | Content types that this field should be available for Required if _state=present_ and the custom field does not exist yet |
 | default | raw | 5.1.0 | Default value for this field when editing models Must be in JSON format |
 | description | str | 5.1.0 | Description of this field Also used as the help text when editing models using this custom field Markdown is supported |
-| filter_logic | str | 5.1.0 | Filter logic to apply when filtering models based on this field Only compatible with I(type=text), I(type=url) and I(type=json) |
+| filter_logic | str | 5.1.0 | Filter logic to apply when filtering models based on this field Only compatible with _type=text_, _type=url_ and _type=json_ |
 | grouping | str | 5.1.0 | Human-readable grouping that this custom field belongs to |
-| key | str | 5.1.0 | Internal name of this field Required if I(state=present) and the custom field does not exist yet |
+| key | str | 5.1.0 | Internal name of this field Required if _state=present_ and the custom field does not exist yet |
 | label | str | 5.1.0 | Name of the field as displayed to users |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | required | bool | 5.1.0 | Whether or not a value is required for this field when editing models |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
-| type | str | 5.1.0 | Data type of this field Required if I(state=present) and the custom field does not exist yet I(type=select) and I(type=multi-select) require choices to be defined separately with the I(custom_field_choice) module |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
-| validation_maximum | int | 5.1.0 | Maximum value allowed for this field Only compatible with I(type=integer) |
-| validation_minimum | int | 5.1.0 | Minimum value allowed for this field Only compatible with I(type=integer) |
-| validation_regex | str | 5.1.0 | Regular expression that this field must match Only compatible with I(type=text) |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
+| type | str | 5.1.0 | Data type of this field Required if _state=present_ and the custom field does not exist yet _type=select_ and _type=multi-select_ require choices to be defined separately with the _custom_field_choice_ module |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
+| validation_maximum | int | 5.1.0 | Maximum value allowed for this field Only compatible with _type=integer_ |
+| validation_minimum | int | 5.1.0 | Minimum value allowed for this field Only compatible with _type=integer_ |
+| validation_regex | str | 5.1.0 | Regular expression that this field must match Only compatible with _type=text_ |
 | weight | int | 5.1.0 | Position this field should be displayed in |
 
 ## Tags

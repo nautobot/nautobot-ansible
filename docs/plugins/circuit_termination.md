@@ -39,12 +39,12 @@ The below requirements are needed on the host that executes this module.
 | pp_info | str | 3.0.0 | Patch panel information |
 | provider_network | raw | 4.2.0 | Connection to a provider_network type |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
+| state | str |  | Use `present` or `absent` for adding or removing. |
 | term_side | str | 3.0.0 | The side of the circuit termination |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
 | upstream_speed | int | 3.0.0 | The upstream speed of the circuit termination |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 | xconnect_id | str | 3.0.0 | The cross connect ID of the circuit termination |
 
 ## Tags

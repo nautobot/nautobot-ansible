@@ -38,10 +38,10 @@ The below requirements are needed on the host that executes this module.
 | custom_fields | dict | 3.0.0 | Must exist in Nautobot and in key/value format |
 | device_redundancy_group | raw | 5.1.0 | Device redundancy group the device will be assigned to |
 | device_redundancy_group_priority | int | 5.1.0 | Priority in the assigned device redundancy group |
-| device_type | raw | 3.0.0 | Required if I(state=present) and the device does not exist yet |
-| face | str | 3.0.0 | Required if I(rack) is defined |
+| device_type | raw | 3.0.0 | Required if _state=present_ and the device does not exist yet |
+| face | str | 3.0.0 | Required if _rack_ is defined |
 | local_config_context_data | dict | 3.0.0 | Arbitrary JSON data to define the devices configuration variables. |
-| location | raw | 3.0.0 | Required if I(state=present) and the device does not exist yet |
+| location | raw | 3.0.0 | Required if _state=present_ and the device does not exist yet |
 | name | str | 3.0.0 | The name of the device |
 | platform | raw | 3.0.0 | The platform of the device |
 | position | int | 3.0.0 | The position of the device in the rack defined above |
@@ -49,15 +49,15 @@ The below requirements are needed on the host that executes this module.
 | primary_ip6 | raw | 3.0.0 | Primary IPv6 address assigned to the device |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | rack | raw | 3.0.0 | The name of the rack to assign the device to |
-| role | raw | 3.0.0 | Required if I(state=present) and the device does not exist yet |
+| role | raw | 3.0.0 | Required if _state=present_ and the device does not exist yet |
 | serial | str | 3.0.0 | Serial number of the device |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| status | raw | 3.0.0 | The status of the device Required if I(state=present) and the device does not exist yet |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| status | raw | 3.0.0 | The status of the device Required if _state=present_ and the device does not exist yet |
 | tags | list | 3.0.0 | Any tags that this item may need to be associated with |
 | tenant | raw | 3.0.0 | The tenant that the device will be assigned to |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 | vc_position | int | 3.0.0 | Position in the assigned virtual chassis |
 | vc_priority | int | 3.0.0 | Priority in the assigned virtual chassis |
 | virtual_chassis | raw | 3.0.0 | Virtual chassis the device will be assigned to |

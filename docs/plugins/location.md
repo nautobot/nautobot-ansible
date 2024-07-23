@@ -42,21 +42,21 @@ The below requirements are needed on the host that executes this module.
 | facility | str | 5.1.0 | Data center provider or facility, ex. Equinix NY7 |
 | id | str |  | Primary Key of the location, used to delete the location. Because of hierarchical nature of locations and name being not unique across locations, it's a user responsibility to query location and pass its id(PK) to the task to delete the location. |
 | latitude | str | 5.1.0 | Latitude in decimal format |
-| location_type | raw |  | The type of location Required if I(state=present) and does not exist yet |
+| location_type | raw |  | The type of location Required if _state=present_ and does not exist yet |
 | longitude | str | 5.1.0 | Longitude in decimal format |
 | name | str |  | Name of the location to be created |
 | parent_location | raw |  | The parent location this location should be tied to |
 | physical_address | str | 5.1.0 | Physical address of location |
 | query_params | list | 3.0.0 | This can be used to override the specified values in ALLOWED_QUERY_PARAMS that is defined in plugins/module_utils/utils.py and provides control to users on what may make an object unique in their environment. |
 | shipping_address | str | 5.1.0 | Shipping address of location |
-| state | str |  | Use C(present) or C(absent) for adding or removing. |
-| status | raw |  | Status of the location Required if I(state=present) and does not exist yet |
+| state | str |  | Use `present` or `absent` for adding or removing. |
+| status | raw |  | Status of the location Required if _state=present_ and does not exist yet |
 | tags | list | 3.0.0 | Any tags that this item may need to be associated with |
 | tenant | raw | 5.1.0 | The tenant the location will be assigned to |
 | time_zone | str | 5.1.0 | Timezone associated with the location, ex. America/Denver |
-| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the E(NAUTOBOT_TOKEN) environment variable is configured. |
-| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the E(NAUTOBOT_URL) environment variable is configured. |
-| validate_certs | raw |  | If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the E(NAUTOBOT_VALIDATE_CERTS) environment variable is configured. |
+| token | str |  | The token created within Nautobot to authorize API access Can be omitted if the `NAUTOBOT_TOKEN` environment variable is configured. |
+| url | str |  | The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000) Can be omitted if the `NAUTOBOT_URL` environment variable is configured. |
+| validate_certs | raw |  | If `no`, SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates. Can be omitted if the `NAUTOBOT_VALIDATE_CERTS` environment variable is configured. |
 
 ## Tags
 

@@ -7,20 +7,7 @@
         "connection": {},
         "filter": {
             "networktocode.nautobot.graphql_string": {
-                "doc": {
-                    "author": [
-                        "Mikhail Yohman (@fragmentedpacket)"
-                    ],
-                    "collection": "networktocode.nautobot",
-                    "description": [
-                        "Provides filters for working with GraphQL queries from Python objects."
-                    ],
-                    "filename": "/home/joshv/.ansible/collections/ansible_collections/networktocode/nautobot/plugins/filter/graphql.py",
-                    "name": "graphql"
-                },
-                "examples": null,
-                "metadata": null,
-                "return": null
+                "error": "Missing documentation or could not parse documentation: No documentation available for networktocode.nautobot.graphql_string (/home/joshv/.ansible/collections/ansible_collections/networktocode/nautobot/plugins/filter/graphql.py)"
             }
         },
         "httpapi": {},

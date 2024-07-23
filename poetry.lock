@@ -259,6 +259,25 @@ sphinx = "*"
 twiggy = "*"
 
 [[package]]
+name = "antsibull-docs-parser"
+version = "1.0.2"
+description = "Python library for processing Ansible documentation markup"
+optional = false
+python-versions = ">=3.6.1"
+files = [
+    {file = "antsibull_docs_parser-1.0.2-py3-none-any.whl", hash = "sha256:ee4717be6280300a3d61404e23508c5ab2522d40b9487e88ff8896092878e379"},
+    {file = "antsibull_docs_parser-1.0.2.tar.gz", hash = "sha256:d42546c5697c9e5ff4e9515bbd142fa88771058d18307f2105c3f60e4c089558"},
+]
+
+[package.extras]
+codeqa = ["antsibull-changelog", "flake8", "pylint", "reuse"]
+coverage = ["coverage[toml]"]
+dev = ["antsibull-changelog", "black", "coverage[toml]", "flake8", "isort", "mypy", "nox", "pylint", "pyre-check (>=0.9.17)", "pytest", "pytest-cov", "pytest-error-for-skips", "pyyaml", "reuse"]
+formatters = ["black", "isort"]
+test = ["pytest", "pytest-cov", "pytest-error-for-skips", "pyyaml"]
+typing = ["mypy", "pyre-check (>=0.9.17)"]
+
+[[package]]
 name = "astroid"
 version = "2.15.8"
 description = "An abstract syntax tree for Python with inference support."
@@ -2757,4 +2776,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<4.0"
-content-hash = "c9606da0f788e87332ceedeb8f64f11d88b5a344dec128b26be85541443587e7"
+content-hash = "4ab36924ccbc553341c58012f23fde09c1d944e1f7e81d002a425630a8aeb5bc"

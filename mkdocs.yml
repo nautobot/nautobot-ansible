@@ -1,9 +1,10 @@
 ---
+dev_addr: "127.0.0.1:8001"
 site_name: "Nautobot Ansible"
 site_url: "https://nautobot-ansible.readthedocs.io"
 repo_url: "https://github.com/nautobot/nautobot-ansible/"
 edit_uri: blob/main/docs/
-copyright: Copyright © 2024 Red Hat, Inc.
+copyright: "Copyright &copy; The Authors"
 docs_dir: docs
 
 theme:
@@ -11,14 +12,21 @@ theme:
   palette:
     - accent: deep orange
   features:
-    - content.code.copy
-    - content.action.edit
-    - navigation.expand
-    - navigation.sections
-    - navigation.instant
-    - navigation.indexes
-    - navigation.tracking
-    - toc.integrate
+    - "content.code.copy"
+    - "content.action.edit"
+    - "content.action.view"
+    - "navigation.expand"
+    - "navigation.footer"
+    - "navigation.instant"
+    - "navigation.indexes"
+    - "navigation.sections"
+    - "navigation.tabs"
+    - "navigation.tabs.sticky"
+    - "navigation.tracking"
+    - "search.highlight"
+    - "search.share"
+    - "search.suggest"
+    - "toc.integrate"
 extra:
   # TODO: Update these social items
   social:
@@ -44,8 +52,11 @@ extra:
       link: https://github.com/ansible/ansible-navigator
       name: GitHub
 
+watch:
+  - README.md
+
 nav:
-  - home: index.md
+  - Overview: "index.md"
   - Installation: "getting_started/installation.md"
   - User Guide:
     - Inventories Plugins:
@@ -125,11 +136,11 @@ nav:
         - Circuits: "dev/code_reference/module_utils/circuits.md"
     - Contributing:
       - Documentation Generation: "dev/contributing/generate_docs.md"
+      - New Releases: "dev/contributing/new_release.md"
+      - Module Architecture: "dev/contributing/modules.md"
+    - Code of Conduct: "dev/code_of_conduct.md"
     - Environment Variable Index: "dev/code_reference/environment_variables.md"
-  - Usage:
-      - subcommands.md
-      - faq.md
-  - Contributions:
+  - Release Notes:
       - ../code-of-conduct.md
       - contributing/security.md
       - contributing/guidelines.md
