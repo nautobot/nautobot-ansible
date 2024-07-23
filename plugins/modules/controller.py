@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 module: controller
 short_description: Create, update or delete controllers within Nautobot
 description:
-  - Creates, updates or removes controllers from Nautobot, related page: https://docs.nautobot.com/projects/core/en/stable/user-guide/core-data-model/dcim/controller/
+  - Creates, updates or removes controllers from Nautobot.
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -33,12 +33,12 @@ options:
     description:
       - Device that runs the controller software
     required: false
-    type: string
+    type: str
   external_integration:
     description:
       - External connection for the controller, such as Meraki Cloud URL
     required: false
-    type: string
+    type: str
   role:
     description:
       - Required if I(state=present) and the controller does not exist yet
@@ -65,11 +65,11 @@ options:
       - Required if I(state=present) and the controller does not exist yet
     required: false
     type: raw
-  controller:
+  controller_device_redundancy_group:
     description:
       - Related device redundancy group the controller will be assigned to
     required: false
-    type: string
+    type: str
 """
 
 EXAMPLES = r"""
@@ -147,7 +147,7 @@ def main():
             status=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
-            controller_device_redundancy_group=dict(required=False, type="raw"),
+            controller_device_redundancy_group=dict(required=False, type="str"),
         )
     )
 
