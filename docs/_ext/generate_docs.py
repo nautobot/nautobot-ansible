@@ -20,6 +20,7 @@ from custom_filters import add_custom_filters
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+
 def parse_json_info(plugin_values):
     """Parses the dictionary information into individual fragments.
 
@@ -32,17 +33,18 @@ def parse_json_info(plugin_values):
 
     return_dict = {}
 
-    return_dict["authors"] = plugin_values['doc'].get("author")
-    return_dict["collection_name"] = plugin_values['doc'].get("collection")
-    return_dict["description"] = plugin_values['doc'].get("description")
-    return_dict["notes"] = plugin_values['doc'].get('notes')
-    return_dict["parameters"] = plugin_values['doc'].get("options")
-    return_dict["version_added"] = plugin_values['doc'].get("version_added")
-    return_dict["examples"] = plugin_values['examples']
-    return_dict["return_data"] = plugin_values['return']
-    return_dict["requirements"] = plugin_values['doc'].get("requirements")
+    return_dict["authors"] = plugin_values["doc"].get("author")
+    return_dict["collection_name"] = plugin_values["doc"].get("collection")
+    return_dict["description"] = plugin_values["doc"].get("description")
+    return_dict["notes"] = plugin_values["doc"].get("notes")
+    return_dict["parameters"] = plugin_values["doc"].get("options")
+    return_dict["version_added"] = plugin_values["doc"].get("version_added")
+    return_dict["examples"] = plugin_values["examples"]
+    return_dict["return_data"] = plugin_values["return"]
+    return_dict["requirements"] = plugin_values["doc"].get("requirements")
 
     return return_dict
+
 
 def generate_module_markdown(plugin_name, plugin_values):
     """Generates the module docs.
@@ -60,13 +62,10 @@ def generate_module_markdown(plugin_name, plugin_values):
     #     breakpoint()
 
     # Generate the plugin documentation
-    plugin_doc = template.render(
-        plugin_name=plugin_name,
-        plugin_values=plugin_values,
-        **template_vars
-    )
+    plugin_doc = template.render(plugin_name=plugin_name, plugin_values=plugin_values, **template_vars)
 
     return plugin_doc
+
 
 def loop_over_component(plugin_data, component, doc_type):
     """Iterate over the various plugin types.
@@ -76,13 +75,13 @@ def loop_over_component(plugin_data, component, doc_type):
         component (str): Component to iterate over, such as "module" or "inventory"
         doc_type (str): Type of documentation to generate, such as "plugin" or "inventory", corresponds to the output directory
     """
-    for plugin_name, plugin_values in plugin_data['all'][component].items():
+    for plugin_name, plugin_values in plugin_data["all"][component].items():
         # Create the plugin directory
         plugin_dir = os.path.join("docs", doc_type)
         os.makedirs(plugin_dir, exist_ok=True)
 
         plugin_doc = generate_module_markdown(plugin_name, plugin_values)
-        
+
         # Get the module name from the ansible-docs output for the file name.
         match component:
             case "module":
@@ -93,10 +92,11 @@ def loop_over_component(plugin_data, component, doc_type):
                 name_key = "name"
             case _:
                 raise ValueError(f"Unknown component {component}")
-        module_name = plugin_values['doc'][name_key]
+        module_name = plugin_values["doc"][name_key]
         with open(os.path.join(plugin_dir, module_name + ".md"), "w") as f:
             f.write(plugin_doc)
             logger.info(f"Generated documentation for {module_name}")
+
 
 if __name__ == "__main__":
     # Load the plugin data
@@ -130,7 +130,7 @@ if __name__ == "__main__":
             "used_by_list": [
                 "networktocode.nautobot.inventory",
                 "networktocode.nautobot.graphql",
-            ]
+            ],
         }
     ]
 

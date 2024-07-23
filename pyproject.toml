@@ -55,7 +55,7 @@ addopts = "-vv"
 
 [tool.black]
 line-length = 160
-target-version = ['py37']
+target-version = ['py310']
 include = '\.pyi?$'
 exclude = '''
 (
