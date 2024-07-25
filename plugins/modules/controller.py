@@ -111,7 +111,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-device:
+controller:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
