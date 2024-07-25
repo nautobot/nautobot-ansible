@@ -547,3 +547,12 @@
         - team
   tags:
     - team
+
+- name: "PYNAUTOBOT_CONTROLLER TESTS"
+  include_tasks:
+    file: "controller.yml"
+    apply:
+      tags:
+        - team
+  tags:
+    - team
