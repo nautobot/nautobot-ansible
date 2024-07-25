@@ -144,7 +144,6 @@ def main():
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             platform=dict(required=False, type="raw"),
-            location=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
             tags=dict(required=False, type="list", elements="raw"),
             custom_fields=dict(required=False, type="dict"),
