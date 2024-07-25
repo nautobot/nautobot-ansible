@@ -1,0 +1,154 @@
+---
+# Corresponding to the docs/user_guide/advanced.md examples
+- name: "EXAMPLE PLAY: Add IP Address to Nautobot"
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars:
+    nautobot_url: "{{ lookup('ansible.builtin.env', 'NAUTOBOT_URL') }}"
+    nautobot_token: "{{ lookup('ansible.builtin.env', 'NAUTOBOT_TOKEN') }}"
+  tasks:
+    - name: "TASK 10: CREATE REQUIRED ITEMS FOR DEVICES"
+      networktocode.nautobot.manufacturer:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Cisco"
+        state: present
+
+    - name: "TASK 20: CREATE DEVICE TYPE"
+      networktocode.nautobot.device_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        manufacturer: "Cisco"
+        model: "Catalyst 9300"
+        state: present
+
+    - name: "TASK 30: CREATE REGION LOCATION TYPE"
+      networktocode.nautobot.location_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Region"
+        nestable: yes
+        content_types:
+          - "dcim.device"
+
+    - name: "TASK 30: CREATE SITE LOCATION TYPE"
+      networktocode.nautobot.location_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Site"
+        nestable: true
+        parent: "Region"
+        content_types:
+          - "dcim.device"
+
+    - name: "TASK 35: CREATE REGION"
+      networktocode.nautobot.location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "region01"
+        location_type: "Region"
+        status: "Active"
+
+    - name: "TASK 40: CREATE LOCATION site01"
+      networktocode.nautobot.location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "site01"
+        location_type: "Site"
+        parent:
+          name: region01
+        status: "Active"
+        contact_name: "Jane"
+
+    - name: "TASK 40: CREATE LOCATION site01"
+      networktocode.nautobot.location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "site01"
+        location_type: "Site"
+        status: "Active"
+        contact_name: "John"
+        query_params:
+          - contact_name
+
+
+    # - name: "TASK 50: CREATE ROLE"
+    #   networktocode.nautobot.role:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     name: "Access Switch"
+    #     content_types: 
+    #       - "dcim.device"
+
+    # - name: "CREATE DEVICE 1"
+    #   networktocode.nautobot.device:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     name: "dev01"
+    #     device_type: "Catalyst 9300"
+    #     location: "site01"
+    #     status: Active
+    #     role: "Access Switch"
+    #     serial: "001"
+    #     query_params:
+    #       - serial
+
+    # - name: "CREATE DEVICE 2"
+    #   networktocode.nautobot.device:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     name: "dev01"
+    #     device_type: "Catalyst 9300"
+    #     location: "site02"
+    #     status: Active
+    #     role: "Access Switch"
+    #     serial: "002"
+    #     query_params:
+    #       - serial
+
+
+
+
+    # - name: "TASK 05: Create required namespace"
+    #   networktocode.nautobot.namespace:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     name: "Test VRF"
+
+    # - name: "TASK 06: Create 203.0.113.0/24 Prefix"
+    #   networktocode.nautobot.prefix:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     prefix: "203.0.113.0/24"
+    #     namespace: "Test VRF"
+    #     status: "Active"
+    #     state: present
+
+    # - name: "TASK 07: Create 192.0.2.0/24 Prefix"
+    #   networktocode.nautobot.prefix:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     prefix: "192.0.2.0/24"
+    #     status: "Active"
+    #     namespace: "Test VRF"
+    #     state: present
+
+    # - name: "TASK 08: Create 203.0.113.1/24 Address"
+    #   networktocode.nautobot.ip_address:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     address: "203.0.113.1/24"
+    #     namespace: "Test VRF"
+    #     status: "Active"
+    #     state: present
+
+    # - name: "TASK 10: Add ip address to nautobot"
+    #   networktocode.nautobot.ip_address:
+    #     url: "{{ nautobot_url }}"
+    #     token: "{{ nautobot_token }}"
+    #     address: "192.0.2.60/24"
+    #     namespace: "Test VRF"
+    #     nat_inside: "203.0.113.1/24"
+    #     status: "Active"
+    #     state: present

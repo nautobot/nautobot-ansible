@@ -58,8 +58,8 @@ watch:
 nav:
   - Overview: "index.md"
   - Installation: "getting_started/installation.md"
-  - User Guide:
-    - Inventories Plugins:
+  - User Guide & Module Reference:
+    - Inventory Plugins:
       - GraphQL: "inventory/gql_inventory.md"
       - REST (Original): "inventory/inventory.md"
     - Lookup Plugins:
@@ -130,6 +130,7 @@ nav:
       - vlan_location: "plugins/vlan_location.md"
       - vm_interface: "plugins/vm_interface.md"
       - vrf: "plugins/vrf.md"
+    - Advanced Usage: "user_guide/advanced.md"
   - Developer Guide:
     - Code Reference:
       - Module Utils:
