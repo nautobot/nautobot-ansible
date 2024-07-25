@@ -101,7 +101,7 @@ EXAMPLES = r"""
         tenant: "Nautobot Baseball Stadiums"
         controller_device_redundancy_group: "controller_test"
 
-    - name: Delete device within nautobot
+    - name: Delete controller within nautobot
       networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
