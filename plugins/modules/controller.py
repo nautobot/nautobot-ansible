@@ -140,6 +140,7 @@ def main():
             name=dict(required=True, type="str"),
             controller_device=dict(required=False, type="str"),
             external_integration=dict(required=False, type="str"),
+            location=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
             platform=dict(required=False, type="raw"),

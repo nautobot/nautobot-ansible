@@ -1,10 +1,14 @@
 ---
 - block:
+  - set_fact:
+      parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
+
   - name: "CONTROLLER 1: Necessary info creation"
     networktocode.nautobot.controller:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller One
+      location: "Parent Test Location"
       state: present
       status: "Active"
     register: test_one_controller
@@ -24,6 +28,7 @@
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller One
+      location: "Parent Test Location"
       state: present
       status: "Active"
     register: test_two
@@ -41,6 +46,7 @@
       token: "{{ nautobot_token }}"
       name: Test Controller Two
       description: "Test Controller changed description"
+      location: "Parent Test Location"
       state: present
       status: "Active"
     register: test_three
@@ -90,7 +96,7 @@
       token: "{{ nautobot_token }}"
       name: "test_controller_3"
       status: "Active"
-      location: "My Parent Location Type"
+      location: "My Parent Location"
       # external_integration: ""
       role: "Test Controller Role"
       tenant: "Test Tenant"
