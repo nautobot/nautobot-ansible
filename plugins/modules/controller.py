@@ -79,7 +79,7 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create device within Nautobot with only required information
+    - name: Create controller within Nautobot with only required information
       networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
