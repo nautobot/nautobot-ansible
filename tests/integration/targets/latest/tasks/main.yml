@@ -547,3 +547,30 @@
         - team
   tags:
     - team
+
+- name: "PYNAUTOBOT_USER TESTS"
+  include_tasks:
+    file: "user.yml"
+    apply:
+      tags:
+        - user
+  tags:
+    - user
+
+- name: "PYNAUTOBOT_GROUPS TESTS"
+  include_tasks:
+    file: "admin_group.yml"
+    apply:
+      tags:
+        - admin_group
+  tags:
+    - admin_group
+
+- name: "PYNAUTOBOT_OBJECT_PERMISSIONS TESTS"
+  include_tasks:
+    file: "object_permission.yml"
+    apply:
+      tags:
+        - object_permission
+  tags:
+    - object_permission
