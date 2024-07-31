@@ -38,17 +38,17 @@
 
 # Update tests skipped due to only one parameter.
 
-  - name: "GROUPS 3: ASSERT - Delete"
-    networktocode.nautobot.admin_group:
-      url: "{{ nautobot_url }}"
-      token: "{{ nautobot_token }}"
-      name: "Test GROUPS One"
-      state: absent
-    register: test_four
+- name: "GROUPS 3: ASSERT - Delete"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test GROUPS One"
+    state: absent
+  register: test_four
 
-  - name: "GROUPS 3: ASSERT - Delete"
-    assert:
-      that:
-        - test_four is changed
-        - test_four['group']['name'] == "Test GROUPS One"
-        - test_four['msg'] == "group Test GROUPS One deleted"
+- name: "GROUPS 3: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['group']['name'] == "Test GROUPS One"
+      - test_four['msg'] == "group Test GROUPS One deleted"
