@@ -8,7 +8,7 @@
   networktocode.nautobot.user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test USER One
+    username: nb-user
     state: present
   register: test_one
 
@@ -18,14 +18,13 @@
       - test_one is changed
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
-      - test_one['user']['name'] == "Test USER One"
-      - test_one['msg'] == "user Test USER One created"
+      - test_one['user']['username'] == "nb-user"
 
 - name: "USER 2: Create duplicate"
   networktocode.nautobot.user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test USER One
+    username: nb-user
     state: present
   register: test_two
 
@@ -33,15 +32,15 @@
   assert:
     that:
       - not test_two['changed']
-      - test_two['user']['name'] == "Test USER One"
-      - test_two['msg'] == "user Test USER One already exists"
+      - test_two['user']['username'] == "nb-user"
 
 - name: "USER 3: ASSERT - Update"
   networktocode.nautobot.user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: "Test USER One"
-    is_private: true
+    username: "nb-user"
+    first_name: "nb"
+    last_name: "user"
     state: present
   register: test_three
 
@@ -49,16 +48,19 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['is_private'] == true
-      - test_three['user']['name'] == "Test USER One"
-      - test_three['user']['is_private'] == true
-      - test_three['msg'] == "user Test USER One updated"
+      - test_three['user']['username'] == "nb-user"
+      - test_three['user']['first_name'] == "nb"
+      - test_three['user']['last_name'] == "user"
+      - test_three['diff']['before']['first_name'] == ""
+      - test_three['diff']['after']['first_name'] == "nb"
+      - test_three['diff']['before']['last_name'] == ""
+      - test_three['diff']['after']['last_name'] == "user"
 
 - name: "USER 4: ASSERT - Delete"
   networktocode.nautobot.user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: "Test USER One"
+    username: "nb-user"
     state: absent
   register: test_four
 
@@ -66,6 +68,4 @@
   assert:
     that:
       - test_four is changed
-      - test_four['user']['name'] == "Test USER One"
-      - test_four['user']['is_private'] == true
-      - test_four['msg'] == "user Test USER One deleted"
+      - test_four['user']['username'] == "nb-user"

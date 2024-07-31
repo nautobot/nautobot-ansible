@@ -18,8 +18,8 @@
       - test_one is changed
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
-      - test_one['groups']['name'] == "Test GROUPS One"
-      - test_one['msg'] == "groups Test GROUPS One created"
+      - test_one['group']['name'] == "Test GROUPS One"
+      - test_one['msg'] == "group Test GROUPS One created"
 
 - name: "GROUPS 2: Create duplicate"
   networktocode.nautobot.admin_group:
@@ -33,39 +33,22 @@
   assert:
     that:
       - not test_two['changed']
-      - test_two['groups']['name'] == "Test GROUPS One"
-      - test_two['msg'] == "groups Test GROUPS One already exists"
+      - test_two['group']['name'] == "Test GROUPS One"
+      - test_two['msg'] == "group Test GROUPS One already exists"
 
-- name: "GROUPS 3: ASSERT - Update"
-  networktocode.nautobot.admin_group:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "Test GROUPS One"
-    is_private: true
-    state: present
-  register: test_three
+# Update tests skipped due to only one parameter.
 
-- name: "GROUPS 3: ASSERT - Updated"
-  assert:
-    that:
-      - test_three is changed
-      - test_three['diff']['after']['is_private'] == true
-      - test_three['groups']['name'] == "Test GROUPS One"
-      - test_three['groups']['is_private'] == true
-      - test_three['msg'] == "groups Test GROUPS One updated"
+  - name: "GROUPS 3: ASSERT - Delete"
+    networktocode.nautobot.admin_group:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: "Test GROUPS One"
+      state: absent
+    register: test_four
 
-- name: "GROUPS 4: ASSERT - Delete"
-  networktocode.nautobot.admin_group:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "Test GROUPS One"
-    state: absent
-  register: test_four
-
-- name: "GROUPS 4: ASSERT - Delete"
-  assert:
-    that:
-      - test_four is changed
-      - test_four['groups']['name'] == "Test GROUPS One"
-      - test_four['groups']['is_private'] == true
-      - test_four['msg'] == "groups Test GROUPS One deleted"
+  - name: "GROUPS 3: ASSERT - Delete"
+    assert:
+      that:
+        - test_four is changed
+        - test_four['group']['name'] == "Test GROUPS One"
+        - test_four['msg'] == "group Test GROUPS One deleted"

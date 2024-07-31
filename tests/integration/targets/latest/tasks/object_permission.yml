@@ -9,6 +9,11 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
+    enabled: true
+    object_types:
+      - "dcim.device"
+    actions:
+      - view
     state: present
   register: test_one
 
@@ -26,6 +31,11 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
     state: present
   register: test_two
 
@@ -41,7 +51,11 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test PERMISSION One"
-    is_private: true
+    enabled: true
+    actions:
+      - add
+    object_types:
+      - "dcim.device"
     state: present
   register: test_three
 
@@ -49,9 +63,9 @@
   assert:
     that:
       - test_three is changed
-      - test_three['diff']['after']['is_private'] == true
+      - test_three['diff']['after']['actions'] == ["add"]
       - test_three['permission']['name'] == "Test PERMISSION One"
-      - test_three['permission']['is_private'] == true
+      - test_three['permission']['actions'] == ["add"]
       - test_three['msg'] == "permission Test PERMISSION One updated"
 
 - name: "PERMISSION 4: ASSERT - Delete"
@@ -59,6 +73,11 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
     state: absent
   register: test_four
 
@@ -67,5 +86,4 @@
     that:
       - test_four is changed
       - test_four['permission']['name'] == "Test PERMISSION One"
-      - test_four['permission']['is_private'] == true
       - test_four['msg'] == "permission Test PERMISSION One deleted"
