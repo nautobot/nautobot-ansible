@@ -101,6 +101,10 @@ location_content_types = [
     "virtualization.cluster",
     "circuits.circuittermination",
 ]
+
+if nautobot_version > version.parse("2.2"):
+    location_content_types.append("dcim.controller")
+
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
 created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
 parent_location_type = nb.dcim.location_types.get(name="My Parent Location Type")
