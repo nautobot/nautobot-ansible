@@ -29,6 +29,11 @@ options:
       - The name of the controller
     required: true
     type: str
+  description:
+    description:
+      - Description of the controller
+    required: false
+    type: str
   controller_device:
     description:
       - Device that runs the controller software
@@ -94,6 +99,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         status: "Active"
+        description: "Description of the controller"
         location: "Cisco"
         external_integration: "Cisco Catalyst SD-WAN"
         role: "Administrative"
@@ -140,6 +146,7 @@ def main():
             name=dict(required=True, type="str"),
             controller_device=dict(required=False, type="str"),
             external_integration=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
