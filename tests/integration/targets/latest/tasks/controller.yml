@@ -55,7 +55,7 @@
     assert:
       that:
         - test_three['changed']
-        - test_three['controller']['name'] == "Test Controller One"
+        - test_three['controller']['name'] == "Test Controller Two"
         - test_three['controller']['description'] == "Test Controller changed description"
         - test_three['msg'] == "controller Test Controller One updated"
 
