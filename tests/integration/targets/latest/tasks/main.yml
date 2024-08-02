@@ -553,6 +553,6 @@
     file: "controller.yml"
     apply:
       tags:
-        - team
+        - controller
   tags:
-    - team
+    - controller

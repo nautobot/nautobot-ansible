@@ -67,7 +67,7 @@
       state: absent
     register: test_four
 
-  - name: "CONTROLLER 3: ASSERT - Delete"
+  - name: "CONTROLLER 4: ASSERT - Delete"
     assert:
       that:
         - test_four is changed
