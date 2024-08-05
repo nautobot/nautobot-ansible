@@ -1,4 +1,7 @@
 ---
+- debug:
+    msg: "{{ nautobot_version }}"
+
 - block:
   - set_fact:
       parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
@@ -44,26 +47,29 @@
     networktocode.nautobot.controller:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
-      name: Test Controller Two
+      name: Test Controller One
       description: "Test Controller changed description"
       location: "Parent Test Location"
       state: present
       status: "Active"
     register: test_three
 
+  - debug:
+      msg: "{{ test_three}}"
+
   - name: "CONTROLLER 3: ASSERT - Update"
     assert:
       that:
         - test_three['changed']
-        - test_three['controller']['name'] == "Test Controller Two"
+        - test_three['controller']['name'] == "Test Controller One"
         - test_three['controller']['description'] == "Test Controller changed description"
-        - test_three['msg'] == "controller Test Controller Two updated"
+        - test_three['msg'] == "controller Test Controller One updated"
 
   - name: "CONTROLLER 4: ASSERT - Delete"
     networktocode.nautobot.controller:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
-      name: Test Controller Two
+      name: Test Controller One
       state: absent
     register: test_four
 
@@ -96,7 +102,7 @@
       token: "{{ nautobot_token }}"
       name: "test_controller_3"
       status: "Active"
-      location: "My Parent Location"
+      location: "Parent Test Location"
       # external_integration: ""
       role: "Test Controller Role"
       tenant: "Test Tenant"
