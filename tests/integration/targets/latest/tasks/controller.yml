@@ -110,5 +110,5 @@
       tags:
         - First
   when:
-    # Contacts are only available on Nautobot 2.2+
+    # Controllers are only available on Nautobot 2.2+
     - "nautobot_version is version('2.2', '>=')"
