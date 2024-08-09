@@ -102,7 +102,7 @@ location_content_types = [
     "circuits.circuittermination",
 ]
 
-if nautobot_version > version.parse("2.2"):
+if nautobot_version >= version.parse("2.2"):
     location_content_types.append("dcim.controller")
 
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
