@@ -109,6 +109,17 @@
       controller_device_redundancy_group: "My Device Redundancy Group"
       tags:
         - First
+    register: test_six_controller
+
+  - name: "CONTROLLER 7: ASSERT - As Much As Possible Info creation"
+    assert:
+      that:
+        - test_six_controller is changed
+        - test_six_controller['diff']['before']['state'] == "absent"
+        - test_six_controller['diff']['after']['state'] == "present"
+        - test_six_controller['controller']['name'] == "test_controller_3"
+        - test_six_controller['controller']['object_type'] == "dcim.controller"
+        - test_six_controller['msg'] == "controller test_controller_3 created"
   when:
     # Controllers are only available on Nautobot 2.2+
     - "nautobot_version is version('2.2', '>=')"
