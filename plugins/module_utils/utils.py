@@ -432,6 +432,14 @@ NAUTOBOT_ARG_SPEC = dict(
     api_version=dict(type="str", required=False),
 )
 
+TAGS_ARG_SPEC = dict(
+    tags=dict(required=False, type="list", elements="raw"),
+)
+
+CUSTOM_FIELDS_ARG_SPEC = dict(
+    custom_fields=dict(required=False, type="dict"),
+)
+
 
 def is_truthy(arg):
     """

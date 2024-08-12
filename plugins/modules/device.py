@@ -243,7 +243,11 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_DEVICES,
@@ -258,6 +262,8 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
@@ -283,9 +289,7 @@ def main():
             vc_position=dict(required=False, type="int"),
             vc_priority=dict(required=False, type="int"),
             comments=dict(required=False, type="str"),
-            tags=dict(required=False, type="list", elements="raw"),
             local_config_context_data=dict(required=False, type="dict"),
-            custom_fields=dict(required=False, type="dict"),
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
         )

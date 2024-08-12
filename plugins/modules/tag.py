@@ -127,7 +127,10 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
     NautobotExtrasModule,
     NB_TAGS,
@@ -141,13 +144,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
             color=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             content_types=dict(required=False, type="list", elements="str"),
-            custom_fields=dict(required=False, type="dict"),
         )
     )
 
