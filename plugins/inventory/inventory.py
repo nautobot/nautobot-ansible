@@ -16,6 +16,7 @@ DOCUMENTATION = """
     short_description: Nautobot inventory source
     description:
         - Get inventory hosts from Nautobot
+        - "Note: If gathering an endpoint that has significant number of objects (such as interfaces), you may have failures caused by gathering too much data. Look to leverage the GraphQL inventory or gather data as a first task in the playbook rather than in inventory."
     extends_documentation_fragment:
         - constructed
         - inventory_cache
