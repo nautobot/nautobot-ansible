@@ -19,6 +19,7 @@
     device: test100
     type: bnc
     rear_port: Test Rear Port
+    rear_port_position: 1
     state: present
   register: test_one
 
@@ -42,6 +43,7 @@
     device: test100
     type: bnc
     rear_port: Test Rear Port
+    rear_port_position: 1
     state: present
   register: test_two
 
@@ -90,6 +92,7 @@
     device: test100
     type: bnc
     rear_port: Test Rear Port
+    rear_port_position: 1
     state: present
   register: test_four
 
@@ -134,6 +137,7 @@
     rear_port:
       device: test100
       name: Test Rear Port
+    rear_port_position: 5
     state: present
   register: test_six
 
