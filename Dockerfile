@@ -3,11 +3,11 @@
 #
 #  This base stage just installs the dependencies required for production
 #  without any development deps.
-ARG PYTHON_VER=3.9
+ARG PYTHON_VER=3.10
 FROM python:${PYTHON_VER} AS base
 
 # Allow for flexible Python versions, for broader testing
-ARG PYTHON_VER=3.9
+ARG PYTHON_VER=3.10
 ENV PYTHON_VERSION=${PYTHON_VER}
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -yqq && apt-get install -yqq shellcheck && apt-get clean
@@ -60,7 +60,7 @@ FROM lint AS unittests
 ARG ANSIBLE_COLLECTIONS_PATH=/usr/share/ansible/collections
 ENV ANSIBLE_COLLECTIONS_PATH=${ANSIBLE_COLLECTIONS_PATH}
 
-ARG PYTHON_VER=3.9
+ARG PYTHON_VER=3.10
 ENV PYTHON_VERSION=${PYTHON_VER}
 
 # Allows for custom command line arguments to be passed to ansible-test (like -vvv)
