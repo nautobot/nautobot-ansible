@@ -20,6 +20,7 @@
     device_type: Cisco Test
     type: bnc
     rear_port_template: Test Rear Port Template
+    rear_port_template_position: 1
     state: present
   register: test_one
 
@@ -43,6 +44,7 @@
     device_type: Cisco Test
     type: bnc
     rear_port_template: Test Rear Port Template
+    rear_port_template_position: 1
     state: present
   register: test_two
 
@@ -88,6 +90,7 @@
     device_type: Cisco Test
     type: bnc
     rear_port_template: Test Rear Port Template
+    rear_port_template_position: 1
     state: present
   register: test_four
 
@@ -111,6 +114,7 @@
     device_type: Cisco Test
     type: bnc
     rear_port_template: Test Rear Port Template
+    rear_port_template_position: 1
     state: absent
   register: test_five
 
@@ -132,6 +136,7 @@
     rear_port_template:
       device: Cisco Test
       name: Test Rear Port Template
+    rear_port_template_position: 5
     state: present
   register: test_six
 
