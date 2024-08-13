@@ -36,7 +36,7 @@ def make_nautobot_calls(endpoint, payload):
     try:
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
-        print(e.error)
+        print(f"Error creating endpoint {endpoint} with payload {payload}: {e.error}")
         global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
@@ -600,7 +600,7 @@ created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fiel
 ###############
 # v2.2+ items #
 ###############
-if nautobot_version > version.parse("2.1"):
+if nautobot_version >= version.parse("2.2"):
     # Create Teams
     teams = [{"name": "My Test Team"}]
     created_teams = make_nautobot_calls(nb.extras.teams, teams)
