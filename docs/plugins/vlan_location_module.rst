@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.status_module:
+.. _ansible_collections.networktocode.nautobot.vlan_location_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.status module -- Creates or removes status from Nautobot
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.vlan_location module -- Create, update or delete Location assignments to VLANs within Nautobot
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.status module -- Creates or removes status from Nautobot
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.status_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.vlan_location_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.status`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.vlan_location`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.3.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes status from Nautobot
+- Create, update or delete Location assignments to VLANs within Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.status_module_requirements:
+.. _ansible_collections.networktocode.nautobot.vlan_location_module_requirements:
 
 Requirements
 ------------
@@ -109,7 +109,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -144,24 +144,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-color"></div>
+        <div class="ansibleOptionAnchor" id="parameter-location"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-color:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-location:
 
       .. rst-class:: ansible-option-title
 
-      **color**
+      **location**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
+      :ansible-option-type:`any` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -171,120 +168,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Status color
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-content_types"></div>
-
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-content_types:
-
-      .. rst-class:: ansible-option-title
-
-      **content_types**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-content_types" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Status content type(s). These match app.endpoint and the endpoint is singular.
-
-      e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
-
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-description:
-
-      .. rst-class:: ansible-option-title
-
-      **description**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      The description for the status
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-name"></div>
-
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-name:
-
-      .. rst-class:: ansible-option-title
-
-      **name**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`string` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Status name
+      The location the VLAN will be associated to
 
 
       .. raw:: html
@@ -296,7 +180,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -337,7 +221,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -379,7 +263,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -415,7 +299,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -451,7 +335,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -486,6 +370,40 @@ Parameters
 
         </div>
 
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-vlan"></div>
+
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__parameter-vlan:
+
+      .. rst-class:: ansible-option-title
+
+      **vlan**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-vlan" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`any` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The VLAN to associate with the location
+
+
+      .. raw:: html
+
+        </div>
+
 
 .. Attributes
 
@@ -496,7 +414,8 @@ Notes
 -----
 
 .. note::
-   - Status should be defined as a YAML list
+   - This module requires Nautobot v2.2+
+   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
 
@@ -509,34 +428,28 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test status creation/deletion"
+    - name: "Test Nautobot modules"
       connection: local
       hosts: localhost
       gather_facts: False
-      tasks:
-        - name: Create status
-          networktocode.nautobot.status:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: "ansible_status"
-            description: "Status if provisioned by Ansible"
-            content_types:
-              - dcim.device
-              - dcim.cable
-              - dcim.powerfeed
-              - dcim.rack
-              - circuits.circuit
-              - virtualization.virtualmachine
-              - ipam.prefix
-              - ipam.ipaddress
-              - ipam.vlan
-            color: 01bea3
 
-        - name: Delete status
-          networktocode.nautobot.status:
+      tasks:
+        - name: Assign Location to VLAN
+          networktocode.nautobot.vlan_location:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: "ansible_status"
+            vlan: Test VLAN
+            location:
+              name: My Child Location
+              parent: My Parent Location
+            state: present
+
+        - name: Unassign Location from VLAN
+          networktocode.nautobot.vlan_location:
+            url: http://nautobot.local
+            token: thisIsMyToken
+            vlan: Test VLAN
+            location: My Location
             state: absent
 
 
@@ -566,7 +479,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -604,17 +517,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-statuses"></div>
+        <div class="ansibleOptionAnchor" id="return-vlan_location_assignments"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__return-statuses:
+      .. _ansible_collections.networktocode.nautobot.vlan_location_module__return-vlan_location_assignments:
 
       .. rst-class:: ansible-option-title
 
-      **statuses**
+      **vlan_location_assignments**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-statuses" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-vlan_location_assignments" title="Permalink to this return value"></a>
 
       .. rst-class:: ansible-option-type-line
 
@@ -628,12 +541,12 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <div class="ansible-option-cell">
 
-      Serialized object as created/existent/updated/deleted within Nautobot
+      Serialized object as created or already existent within Nautobot
 
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` always
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
 
 
       .. raw:: html
@@ -650,9 +563,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
-- Mikhail Yohman (@fragmentedpacket)
-- Josh VanDeraa (@jvanaderaa)
+- Joe Wesch (@joewesch)
 
 
 

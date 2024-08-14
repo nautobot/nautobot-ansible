@@ -26,7 +26,7 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.status_module:
+.. _ansible_collections.networktocode.nautobot.contact_module:
 
 .. Anchors: short name for ansible.builtin
 
@@ -36,8 +36,8 @@
 
 .. Title
 
-networktocode.nautobot.status module -- Creates or removes status from Nautobot
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.contact module -- Creates or removes contacts from Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -46,15 +46,15 @@ networktocode.nautobot.status module -- Creates or removes status from Nautobot
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.status_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.contact_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.status`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.contact`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.3.0
 
 .. contents::
    :local:
@@ -68,7 +68,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes status from Nautobot
+- Creates or removes contacts from Nautobot
 
 
 .. Aliases
@@ -76,7 +76,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.status_module_requirements:
+.. _ansible_collections.networktocode.nautobot.contact_module_requirements:
 
 Requirements
 ------------
@@ -107,9 +107,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-address"></div>
+
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-address:
+
+      .. rst-class:: ansible-option-title
+
+      **address**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-address" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The address of the contact
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -144,24 +178,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-color"></div>
+        <div class="ansibleOptionAnchor" id="parameter-comments"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-color:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-comments:
 
       .. rst-class:: ansible-option-title
 
-      **color**
+      **comments**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-color" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
 
       .. raw:: html
 
@@ -171,7 +202,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Status color
+      Comments about the contact
 
 
       .. raw:: html
@@ -181,21 +212,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-content_types"></div>
+        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-content_types:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-custom_fields:
 
       .. rst-class:: ansible-option-title
 
-      **content_types**
+      **custom_fields**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-content_types" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+      :ansible-option-type:`dictionary`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -208,9 +239,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Status content type(s). These match app.endpoint and the endpoint is singular.
-
-      e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+      Must exist in Nautobot and in key/value format
 
 
       .. raw:: html
@@ -220,24 +249,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
+        <div class="ansibleOptionAnchor" id="parameter-email"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-email:
 
       .. rst-class:: ansible-option-title
 
-      **description**
+      **email**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-email" title="Permalink to this option"></a>
 
       .. rst-class:: ansible-option-type-line
 
       :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
 
       .. raw:: html
 
@@ -247,7 +273,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description for the status
+      The email of the contact
 
 
       .. raw:: html
@@ -259,7 +285,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -273,8 +299,39 @@ Parameters
 
       :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      .. raw:: html
 
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the contact
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-phone"></div>
+
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-phone:
+
+      .. rst-class:: ansible-option-title
+
+      **phone**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-phone" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -284,7 +341,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Status name
+      The phone number of the contact
 
 
       .. raw:: html
@@ -296,7 +353,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -337,7 +394,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -377,9 +434,80 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
+
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-tags:
+
+      .. rst-class:: ansible-option-title
+
+      **tags**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
+
+      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Any tags that this item may need to be associated with
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-teams"></div>
+
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-teams:
+
+      .. rst-class:: ansible-option-title
+
+      **teams**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-teams" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The teams the contact is associated with
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -415,7 +543,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -451,7 +579,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.contact_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -496,7 +624,8 @@ Notes
 -----
 
 .. note::
-   - Status should be defined as a YAML list
+   - Tags should be defined as a YAML list
+   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
 
 .. Seealso
 
@@ -509,35 +638,32 @@ Examples
 .. code-block:: yaml+jinja
 
     
-    - name: "Test status creation/deletion"
-      connection: local
-      hosts: localhost
-      gather_facts: False
-      tasks:
-        - name: Create status
-          networktocode.nautobot.status:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: "ansible_status"
-            description: "Status if provisioned by Ansible"
-            content_types:
-              - dcim.device
-              - dcim.cable
-              - dcim.powerfeed
-              - dcim.rack
-              - circuits.circuit
-              - virtualization.virtualmachine
-              - ipam.prefix
-              - ipam.ipaddress
-              - ipam.vlan
-            color: 01bea3
+    ---
+    - name: Create a contact
+      networktocode.nautobot.contact:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Contact
+        phone: 123-456-7890
+        email: user@example.com
+        address: 1234 Main St
+        teams:
+          - name: team1
+          - name: team2
+        comments: My Comments
+        tags:
+          - tag1
+          - tag2
+        custom_fields:
+          my_custom_field: my_value
+        state: present
 
-        - name: Delete status
-          networktocode.nautobot.status:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: "ansible_status"
-            state: absent
+    - name: Delete a contact
+      networktocode.nautobot.contact:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Contact
+        state: absent
 
 
 
@@ -564,9 +690,49 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-contact"></div>
+
+      .. _ansible_collections.networktocode.nautobot.contact_module__return-contact:
+
+      .. rst-class:: ansible-option-title
+
+      **contact**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-contact" title="Permalink to this return value"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.status_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.contact_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -601,46 +767,6 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </div>
 
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-statuses"></div>
-
-      .. _ansible_collections.networktocode.nautobot.status_module__return-statuses:
-
-      .. rst-class:: ansible-option-title
-
-      **statuses**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#return-statuses" title="Permalink to this return value"></a>
-
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`dictionary`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Serialized object as created/existent/updated/deleted within Nautobot
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-returned-bold:`Returned:` always
-
-
-      .. raw:: html
-
-        </div>
-
-
 
 ..  Status (Presently only deprecated)
 
@@ -650,9 +776,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Network to Code (@networktocode)
-- Mikhail Yohman (@fragmentedpacket)
-- Josh VanDeraa (@jvanaderaa)
+- Joe Wesch (@joewesch)
 
 
 

@@ -42,7 +42,7 @@ networktocode.nautobot.gql_inventory inventory -- Nautobot inventory source usin
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.3.0).
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this inventory plugin,
@@ -512,6 +512,53 @@ Parameters
       .. rst-class:: ansible-option-line
 
       :ansible-option-default-bold:`Default:` :ansible-option-default:`{}`
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-default_ip_version"></div>
+
+      .. _ansible_collections.networktocode.nautobot.gql_inventory_inventory__parameter-default_ip_version:
+
+      .. rst-class:: ansible-option-title
+
+      **default_ip_version**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-default_ip_version" title="Permalink to this option"></a>
+
+      .. rst-class:: ansible-option-type-line
+
+      :ansible-option-type:`string`
+
+
+
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Choice between IPv6 and IPv4 address as the primary IP for ansible\_host.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry-default:`"IPv4"` :ansible-option-choices-default-mark:`← (default)`
+      - :ansible-option-choices-entry:`"ipv4"`
+      - :ansible-option-choices-entry:`"IPv6"`
+      - :ansible-option-choices-entry:`"ipv6"`
+
 
       .. raw:: html
 
@@ -1511,6 +1558,24 @@ Examples
     # Add additional query parameters with the query key.
     plugin: networktocode.nautobot.gql_inventory
     api_endpoint: http://localhost:8000
+    query:
+      devices:
+        tags: name
+        serial:
+        tenant: name
+        location:
+          name:
+          contact_name:
+          description:
+          parent: name
+      virtual_machines:
+        tags: name
+        tenant: name
+
+    # Add the default IP version to be used for the ansible_host
+    plugin: networktocode.nautobot.gql_inventory
+    api_endpoint: http://localhost:8000
+    default_ip_version: ipv6
     query:
       devices:
         tags: name
