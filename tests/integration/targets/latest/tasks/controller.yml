@@ -1,0 +1,125 @@
+---
+- debug:
+    msg: "{{ nautobot_version }}"
+
+- block:
+  - set_fact:
+      parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
+
+  - name: "CONTROLLER 1: Necessary info creation"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller One
+      location: "Parent Test Location"
+      state: present
+      status: "Active"
+    register: test_one_controller
+
+  - name: "CONTROLLER 1: ASSERT - Necessary info creation"
+    assert:
+      that:
+        - test_one_controller is changed
+        - test_one_controller['diff']['before']['state'] == "absent"
+        - test_one_controller['diff']['after']['state'] == "present"
+        - test_one_controller['controller']['name'] == "Test Controller One"
+        - test_one_controller['controller']['object_type'] == "dcim.controller"
+        - test_one_controller['msg'] == "controller Test Controller One created"
+
+  - name: "CONTROLLER 2: Create duplicate"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller One
+      location: "Parent Test Location"
+      state: present
+      status: "Active"
+    register: test_two
+
+  - name: "CONTROLLER 2: ASSERT - Create duplicate"
+    assert:
+      that:
+        - not test_two['changed']
+        - test_two['controller']['name'] == "Test Controller One"
+        - test_two['msg'] == "controller Test Controller One already exists"
+
+  - name: "CONTROLLER 3: Update"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller One
+      description: "Test Controller changed description"
+      location: "Parent Test Location"
+      state: present
+      status: "Active"
+    register: test_three
+
+  - debug:
+      msg: "{{ test_three}}"
+
+  - name: "CONTROLLER 3: ASSERT - Update"
+    assert:
+      that:
+        - test_three['changed']
+        - test_three['controller']['name'] == "Test Controller One"
+        - test_three['controller']['description'] == "Test Controller changed description"
+        - test_three['msg'] == "controller Test Controller One updated"
+
+  - name: "CONTROLLER 4: ASSERT - Delete"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller One
+      state: absent
+    register: test_four
+
+  - name: "CONTROLLER 4: ASSERT - Delete"
+    assert:
+      that:
+        - test_four is changed
+        - test_four['diff']['before']['state'] == "present"
+        - test_four['diff']['after']['state'] == "absent"
+        - test_four['msg'] == "controller Test Controller One deleted"
+
+  - name: "CONTROLLER 5: ASSERT - Delete non existing"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Two
+      state: absent
+    register: test_five
+
+  - name: "CONTROLLER 5: ASSERT - Delete non existing"
+    assert:
+      that:
+        - not test_five['changed']
+        - test_five['controller'] == None
+        - test_five['msg'] == "controller Test Controller Two already absent"
+
+  - name: "CONTROLLER 6: CREATE A CONTROLLER WITH AS MUCH AS POSSIBLE"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: "test_controller_3"
+      status: "Active"
+      location: "Parent Test Location"
+      # external_integration: ""
+      role: "Test Controller Role"
+      tenant: "Test Tenant"
+      controller_device_redundancy_group: "My Device Redundancy Group"
+      tags:
+        - First
+    register: test_six_controller
+
+  - name: "CONTROLLER 7: ASSERT - As Much As Possible Info creation"
+    assert:
+      that:
+        - test_six_controller is changed
+        - test_six_controller['diff']['before']['state'] == "absent"
+        - test_six_controller['diff']['after']['state'] == "present"
+        - test_six_controller['controller']['name'] == "test_controller_3"
+        - test_six_controller['controller']['object_type'] == "dcim.controller"
+        - test_six_controller['msg'] == "controller test_controller_3 created"
+  when:
+    # Controllers are only available on Nautobot 2.2+
+    - "nautobot_version is version('2.2', '>=')"
