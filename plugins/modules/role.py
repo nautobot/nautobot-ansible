@@ -89,7 +89,10 @@ msg:
   returned: always
   type: str
 """
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_ROLES,
@@ -103,6 +106,7 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
@@ -110,7 +114,6 @@ def main():
             color=dict(required=False, type="str"),
             content_types=dict(required=False, type="list", elements="str"),
             weight=dict(required=False, type="int"),
-            custom_fields=dict(required=False, type="dict"),
         )
     )
 
