@@ -1,7 +1,7 @@
 ---
 name: "Pull Requests (main)"
 concurrency:  # Cancel any existing runs of this workflow for this same PR
-  group: "${{ '{{ github.workflow }}' }}-${{ '{{ github.ref }}' }}"
+  group: "${{ github.workflow }}-${{ github.ref }}"
   cancel-in-progress: true
 on: # yamllint disable
   pull_request:
