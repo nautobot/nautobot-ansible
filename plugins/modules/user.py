@@ -15,7 +15,6 @@ short_description: Create, update or delete users within Nautobot
 description:
   - Creates, updates or removes users from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Jeff Kala (@jeffkala)
@@ -37,13 +36,13 @@ options:
     version_added: "5.3.0"
   is_staff:
     description:
-      - If the user should be set for superuser status
+      - If the user should be set for staff status
     required: false
     type: bool
     version_added: "5.3.0"
   is_active:
     description:
-      - If the user should be set for superuser status
+      - If the user should be active
     required: false
     type: bool
     version_added: "5.3.0"

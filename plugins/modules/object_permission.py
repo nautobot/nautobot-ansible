@@ -15,7 +15,6 @@ short_description: Create, update or delete object permissions within Nautobot
 description:
   - Creates, updates or removes object permissions from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Jeff Kala (@jeffkala)
@@ -74,7 +73,7 @@ options:
       - The groups assigned for the permission definition.
     required: false
     type: list
-    elements: dict
+    elements: raw
     version_added: "5.3.0"
 """
 
