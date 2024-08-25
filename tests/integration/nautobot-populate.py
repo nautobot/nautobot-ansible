@@ -246,7 +246,7 @@ created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, r
 # Create Device Roles
 device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
-    {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine", "virtualization.vminterface"]},
+    {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
     {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
     {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
@@ -617,3 +617,14 @@ if nautobot_version >= version.parse("2.2"):
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
+
+
+###############
+# v2.3+ items #
+###############
+if nautobot_version >= version.parse("2.3"):
+    # Create role for virtual machine interfaces
+    vm_interface_roles = [
+        {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
+    ]
+    created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
