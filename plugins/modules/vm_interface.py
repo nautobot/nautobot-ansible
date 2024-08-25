@@ -85,6 +85,12 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
+  role:
+    description:
+      - The role of the interface
+    required: false
+    type: raw
+    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""
@@ -125,6 +131,7 @@ EXAMPLES = r"""
           - name: VoIP
             location: "{{ test_location['key'] }}"
         mtu: 1600
+        role: Server
         mode: Tagged
         state: present
 
@@ -184,6 +191,7 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
         )
     )
 

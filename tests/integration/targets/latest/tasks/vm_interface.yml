@@ -8,6 +8,7 @@
     vm100: "{{ lookup('networktocode.nautobot.lookup', 'virtual-machines', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100-vm') }}"
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
     wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+    vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='Test VM Role' )}}"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
@@ -58,6 +59,7 @@
     mac_address: "00:00:00:AA:AA:01"
     description: "Updated test100-vm"
     mode: Tagged
+    role: "Test VM Role"
     untagged_vlan:
       name: Wireless
       location: "Child Test Location"
@@ -95,6 +97,7 @@
       - test_three['interface']['tagged_vlans']|length == 2
       - test_three['interface']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "interface Eth10 updated"
+      - test_three['interface']['role'] == 
 
 - name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Delete"
   networktocode.nautobot.vm_interface:
