@@ -165,7 +165,7 @@
 
 - name: "NAUTOBOT 2.3+ TESTS"
   when: 
-    - "nautobot_version is version('2.2', '>')"
+    - "nautobot_version is version('2.3', '>=')"
   block:
     - name: SET ADDITIONAL FACTS
       set_fact:
