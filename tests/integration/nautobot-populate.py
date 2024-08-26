@@ -5,6 +5,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import os
+import logging
 import sys
 import pynautobot
 from packaging import version
@@ -12,6 +13,8 @@ from packaging import version
 # NOTE: If anything depends on specific versions of Nautobot, can check INTEGRATION_TESTS in env
 # os.environ["INTEGRATION_TESTS"]
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Set nb variable to connect to Nautobot and use the variable in future calls
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
@@ -48,7 +51,7 @@ def make_nautobot_calls(endpoint, payload):
 create_tags = make_nautobot_calls(
     nb.extras.tags,
     [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget", "dcim.controller"]},
+        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Third", "content_types": ["dcim.device"]},
         {
@@ -251,6 +254,8 @@ device_roles = [
     {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
+print(created_device_roles)
+logger.debug("Device Roles: %s", created_device_roles)
 # Device role variables to be used later on
 core_switch = nb.extras.roles.get(name="Core Switch")
 
@@ -624,7 +629,9 @@ if ERRORS:
 ###############
 if nautobot_version >= version.parse("2.3"):
     # Create role for virtual machine interfaces
+    logger.debug("Creating VM Interface Role")
     vm_interface_roles = [
         {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
     ]
     created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
+    logger.debug("VM Interface Role created")

@@ -8,7 +8,7 @@
     vm100: "{{ lookup('networktocode.nautobot.lookup', 'virtual-machines', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100-vm') }}"
     tag_schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
     wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
-    vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='Test VM Role' )}}"
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
 
 - name: "PYNAUTOBOT_VM_INTERFACE 1: Necessary info creation"
   networktocode.nautobot.vm_interface:
@@ -59,7 +59,6 @@
     mac_address: "00:00:00:AA:AA:01"
     description: "Updated test100-vm"
     mode: Tagged
-    role: "Test VM Role"
     untagged_vlan:
       name: Wireless
       location: "Child Test Location"
@@ -97,7 +96,6 @@
       - test_three['interface']['tagged_vlans']|length == 2
       - test_three['interface']['tags'][0] == tag_schnozzberry['key']
       - test_three['msg'] == "interface Eth10 updated"
-      - test_three['interface']['role'] == 
 
 - name: "PYNAUTOBOT_VM_INTERFACE 4: ASSERT - Delete"
   networktocode.nautobot.vm_interface:
@@ -164,3 +162,166 @@
       - test_five['interface']['tagged_vlans']|length == 2
       - test_five['interface']['tags'][0] == tag_schnozzberry['key']
       - test_five['msg'] == "interface Eth0 updated"
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.2', '>')"
+  block:
+    - name: SET ADDITIONAL FACTS
+      set_fact:
+        vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='Test VM Role' )}}"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 11: Necessary info creation"
+      networktocode.nautobot.vm_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        virtual_machine: "test100-vm"
+        name: "Eth10"
+        status: "Active"
+        state: present
+      register: test_eleven
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 11: ASSERT - Necessary info creation"
+      assert:
+        that:
+          - test_eleven is changed
+          - test_eleven['diff']['before']['state'] == "absent"
+          - test_eleven['diff']['after']['state'] == "present"
+          - test_eleven['interface']['name'] == "Eth10"
+          - test_eleven['interface']['virtual_machine'] == vm100['key']
+          - test_eleven['msg'] == "interface Eth10 created"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 12: Create duplicate"
+      networktocode.nautobot.vm_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        virtual_machine: "test100-vm"
+        name: "Eth10"
+        status: "Active"
+        state: present
+      register: test_twelve
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 12: ASSERT - Create duplicate"
+      assert:
+        that:
+          - not test_twelve['changed']
+          - test_twelve['interface']['name'] == "Eth10"
+          - test_twelve['interface']['virtual_machine'] == vm100['key']
+          - test_twelve['msg'] == "interface Eth10 already exists"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 13: Updated"
+      networktocode.nautobot.vm_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        virtual_machine: "test100-vm"
+        name: "Eth10"
+        enabled: false
+        mtu: 9000
+        mac_address: "00:00:00:AA:AA:01"
+        description: "Updated test100-vm"
+        mode: Tagged
+        role: "Test VM Role"
+        untagged_vlan:
+          name: Wireless
+          location: "Child Test Location"
+        tagged_vlans:
+          - name: Data
+            location: "Child Test Location"
+          - name: VoIP
+            location: "Child Test Location"
+        tags:
+          - "Schnozzberry"
+        state: present
+      register: test_thirteen
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 13: ASSERT - Updated"
+      assert:
+        that:
+          - test_thirteen is changed
+          - test_thirteen['diff']['after']['enabled'] == false
+          - test_thirteen['diff']['after']['mtu'] == 9000
+          - test_thirteen['diff']['after']['mac_address'] == "00:00:00:AA:AA:01"
+          - test_thirteen['diff']['after']['description'] == "Updated test100-vm"
+          - test_thirteen['diff']['after']['mode'] == "tagged"
+          - test_thirteen['diff']['after']['untagged_vlan'] == wireless['key']
+          - test_thirteen['diff']['after']['tagged_vlans']|length == 2
+          - test_thirteen['diff']['after']['tags'][0] == tag_schnozzberry['key']
+          - test_thirteen['interface']['name'] == "Eth10"
+          - test_thirteen['interface']['status'] == active['key']
+          - test_thirteen['interface']['virtual_machine'] == vm100['key']
+          - test_thirteen['interface']['enabled'] == false
+          - test_thirteen['interface']['mtu'] == 9000
+          - test_thirteen['interface']['mac_address'] == "00:00:00:AA:AA:01"
+          - test_thirteen['interface']['description'] == "Updated test100-vm"
+          - test_thirteen['interface']['mode'] == "tagged"
+          - test_thirteen['interface']['untagged_vlan'] == wireless['key']
+          - test_thirteen['interface']['tagged_vlans']|length == 2
+          - test_thirteen['interface']['tags'][0] == tag_schnozzberry['key']
+          - test_thirteen['interface']['role'] == vm_interface_role['key']
+          - test_thirteen['msg'] == "interface Eth10 updated"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 14: ASSERT - Delete"
+      networktocode.nautobot.vm_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Eth10"
+        virtual_machine: "test100-vm"
+        state: absent
+      register: test_fourteen
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 14: ASSERT - Delete"
+      assert:
+        that:
+          - test_fourteen is changed
+          - test_fourteen['interface']['name'] == "Eth10"
+          - test_fourteen['interface']['virtual_machine'] == vm100['key']
+          - test_fourteen['msg'] == "interface Eth10 deleted"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 15: Attempt to update interface with same name on other VMs"
+      networktocode.nautobot.vm_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        virtual_machine: "test100-vm"
+        name: "Eth0"
+        status: "Active"
+        enabled: false
+        mtu: 9000
+        mac_address: "00:00:00:AA:AA:01"
+        description: "Updated test100-vm Eth0 intf"
+        mode: Tagged
+        untagged_vlan:
+          name: Wireless
+          location: "Child Test Location"
+        tagged_vlans:
+          - name: Data
+            location: "Child Test Location"
+          - name: VoIP
+            location: "Child Test Location"
+        tags:
+          - "Schnozzberry"
+        state: present
+      register: test_fifteen
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 15: ASSERT - Updated"
+      assert:
+        that:
+          - test_fifteen is changed
+          - test_fifteen['diff']['after']['enabled'] == false
+          - test_fifteen['diff']['after']['mtu'] == 9000
+          - test_fifteen['diff']['after']['mac_address'] == "00:00:00:AA:AA:01"
+          - test_fifteen['diff']['after']['description'] == "Updated test100-vm Eth0 intf"
+          - test_fifteen['diff']['after']['mode'] == "tagged"
+          - test_fifteen['diff']['after']['untagged_vlan'] == wireless['key']
+          - test_fifteen['diff']['after']['tagged_vlans']|length == 2
+          - test_fifteen['diff']['after']['tags'][0] == tag_schnozzberry['key']
+          - test_fifteen['interface']['name'] == "Eth0"
+          - test_fifteen['interface']['virtual_machine'] == vm100['key']
+          - test_fifteen['interface']['enabled'] == false
+          - test_fifteen['interface']['mtu'] == 9000
+          - test_fifteen['interface']['mac_address'] == "00:00:00:AA:AA:01"
+          - test_fifteen['interface']['description'] == "Updated test100-vm Eth0 intf"
+          - test_fifteen['interface']['mode'] == "tagged"
+          - test_fifteen['interface']['untagged_vlan'] == wireless['key']
+          - test_fifteen['interface']['tagged_vlans']|length == 2
+          - test_fifteen['interface']['tags'][0] == tag_schnozzberry['key']
+          - test_fifteen['msg'] == "interface Eth0 updated"
