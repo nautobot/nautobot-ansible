@@ -168,7 +168,7 @@
   block:
     - name: SET ADDITIONAL FACTS
       set_fact:
-        vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='Test VM Role' )}}"
+        vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VM Role\"' )}}"
 
     - name: "PYNAUTOBOT_VM_INTERFACE 11: Necessary info creation"
       networktocode.nautobot.vm_interface:
