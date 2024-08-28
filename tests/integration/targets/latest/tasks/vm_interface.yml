@@ -219,7 +219,7 @@
         mac_address: "00:00:00:AA:AA:01"
         description: "Updated test100-vm"
         mode: Tagged
-        role: "Test VM Role"
+        role: "Test VM Interface Role"
         untagged_vlan:
           name: Wireless
           location: "Child Test Location"
