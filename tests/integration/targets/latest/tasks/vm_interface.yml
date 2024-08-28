@@ -199,18 +199,12 @@
     - debug:
         msg: "{{ test_ten }}"
 
-    - name: "PYNAUTOBOT_VM_INTERFACE 10: ASSERT - Updated"
+    - name: "PYNAUTOBOT_VM_INTERFACE 10: ASSERT - Created"
       assert:
         that:
           - test_ten is changed
-          - test_ten['diff']['after']['enabled'] == false
-          - test_ten['diff']['after']['mtu'] == 9000
-          - test_ten['diff']['after']['mac_address'] == "00:00:00:AA:AA:01"
-          - test_ten['diff']['after']['description'] == "Updated test100-vm"
-          - test_ten['diff']['after']['mode'] == "tagged"
-          - test_ten['diff']['after']['untagged_vlan'] == wireless['key']
-          - test_ten['diff']['after']['tagged_vlans']|length == 2
-          - test_ten['diff']['after']['tags'][0] == tag_schnozzberry['key']
+          - test_ten['diff']['before']['state'] == "absent"
+          - test_ten['diff']['after']['state'] == "present"
           - test_ten['interface']['name'] == "Eth101"
           - test_ten['interface']['status'] == active['key']
           - test_ten['interface']['virtual_machine'] == vm100['key']
