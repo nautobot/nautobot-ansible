@@ -217,4 +217,4 @@
           - test_ten['interface']['tagged_vlans']|length == 2
           - test_ten['interface']['tags'][0] == tag_schnozzberry['key']
           - test_ten['interface']['role'] == vm_interface_role['key']
-          - test_ten['msg'] == "interface Eth101 updated"
+          - test_ten['msg'] == "interface Eth101 created"
