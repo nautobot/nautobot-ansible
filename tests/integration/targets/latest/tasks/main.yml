@@ -1,4 +1,8 @@
 ---
+- name: "Set Active Fact"
+  set_fact:
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+
 # Lookup tests should run first so items created by other tests don't influence the results
 - name: "PYNAUTOBOT_LOOKUP TESTS"
   include_tasks:
