@@ -196,7 +196,10 @@
         state: present
       register: test_ten
 
-    - name: "PYNAUTOBOT_VM_INTERFACE 13: ASSERT - Updated"
+    - debug:
+        msg: "{{ test_ten }}"
+
+    - name: "PYNAUTOBOT_VM_INTERFACE 10: ASSERT - Updated"
       assert:
         that:
           - test_ten is changed
