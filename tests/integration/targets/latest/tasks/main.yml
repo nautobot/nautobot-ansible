@@ -1,5 +1,5 @@
 ---
-- name: "Set Active Fact"
+- name: "Set facts used in multiple tests."
   set_fact:
     active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
   tags:
