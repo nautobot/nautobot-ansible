@@ -170,12 +170,12 @@
       set_fact:
         vm_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VM Interface Role\"' )}}"
 
-    - name: "PYNAUTOBOT_VM_INTERFACE 10: Updated"
+    - name: "PYNAUTOBOT_VM_INTERFACE 10: Created"
       networktocode.nautobot.vm_interface:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         virtual_machine: "test100-vm"
-        name: "Eth10"
+        name: "Eth101"
         enabled: false
         mtu: 9000
         mac_address: "00:00:00:AA:AA:01"
@@ -211,7 +211,7 @@
           - test_ten['diff']['after']['untagged_vlan'] == wireless['key']
           - test_ten['diff']['after']['tagged_vlans']|length == 2
           - test_ten['diff']['after']['tags'][0] == tag_schnozzberry['key']
-          - test_ten['interface']['name'] == "Eth10"
+          - test_ten['interface']['name'] == "Eth101"
           - test_ten['interface']['status'] == active['key']
           - test_ten['interface']['virtual_machine'] == vm100['key']
           - test_ten['interface']['enabled'] == false
@@ -223,4 +223,4 @@
           - test_ten['interface']['tagged_vlans']|length == 2
           - test_ten['interface']['tags'][0] == tag_schnozzberry['key']
           - test_ten['interface']['role'] == vm_interface_role['key']
-          - test_ten['msg'] == "interface Eth10 updated"
+          - test_ten['msg'] == "interface Eth101 updated"
