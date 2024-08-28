@@ -13,8 +13,6 @@ from packaging import version
 # NOTE: If anything depends on specific versions of Nautobot, can check INTEGRATION_TESTS in env
 # os.environ["INTEGRATION_TESTS"]
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 # Set nb variable to connect to Nautobot and use the variable in future calls
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
@@ -254,11 +252,9 @@ device_roles = [
     {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
-print(created_device_roles)
-logger.debug("Device Roles: %s", created_device_roles)
+
 # Device role variables to be used later on
 core_switch = nb.extras.roles.get(name="Core Switch")
-
 
 # Create Rack Groups
 rack_groups = [
@@ -624,12 +620,10 @@ if nautobot_version >= version.parse("2.2"):
 ###############
 if nautobot_version >= version.parse("2.3"):
     # Create role for virtual machine interfaces
-    logger.debug("Creating VM Interface Role")
     vm_interface_roles = [
         {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
     ]
     created_device_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
-    logger.debug("VM Interface Role created")
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
