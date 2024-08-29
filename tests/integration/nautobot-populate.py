@@ -49,7 +49,7 @@ def make_nautobot_calls(endpoint, payload):
 create_tags = make_nautobot_calls(
     nb.extras.tags,
     [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget", "dcim.controller"]},
         {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Third", "content_types": ["dcim.device"]},
         {
