@@ -32,7 +32,7 @@ namespace = Collection("nautobot_ansible")
 namespace.configure(
     {
         "nautobot_ansible": {
-            "nautobot_ver": "2.2.4",
+            "nautobot_ver": "2.3.1",
             "project_name": "nautobot_ansible",
             "python_ver": "3.10",
             "local": False,

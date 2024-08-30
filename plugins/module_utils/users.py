@@ -39,7 +39,9 @@ class NautobotUsersModule(NautobotModule):
         data = self.data
 
         # Used for msg output
-        if data.get("name"):
+        if data.get("username"):
+            name = data["username"]
+        elif data.get("name"):
             name = data["name"]
         else:
             name = data.get("id")

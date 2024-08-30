@@ -104,6 +104,5 @@
 - name: "PERMISSION 5: ASSERT - Delete non existing"
   assert:
     that:
-      - test_five is changed
-      - test_five['permission']['name'] == "Test PERMISSION One"
+      - not test_five['changed']
       - test_five['msg'] == "permission Test PERMISSION One already absent"

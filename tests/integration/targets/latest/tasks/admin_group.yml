@@ -12,6 +12,9 @@
     state: present
   register: test_one
 
+- debug:
+    var: test_one
+
 - name: "GROUPS 1: ASSERT - Necessary info creation"
   assert:
     that:
@@ -64,6 +67,5 @@
 - name: "GROUPS 4: ASSERT - Delete non existing"
   assert:
     that:
-      - test_four is changed
-      - test_four['group']['name'] == "Test GROUPS One"
+      - not test_four['changed']
       - test_four['msg'] == "group Test GROUPS One already absent"
