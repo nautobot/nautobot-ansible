@@ -69,3 +69,17 @@
     that:
       - test_four is changed
       - test_four['user']['username'] == "nb-user"
+
+- name: "USER 5: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_user:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    username: "nb-user"
+    state: absent
+  register: test_five
+
+- name: "USER 5: ASSERT - Delete non existing"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['user']['username'] == "nb-user"

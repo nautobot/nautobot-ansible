@@ -44,11 +44,26 @@
     token: "{{ nautobot_token }}"
     name: "Test GROUPS One"
     state: absent
-  register: test_four
+  register: test_three
 
 - name: "GROUPS 3: ASSERT - Delete"
   assert:
     that:
-      - test_four is changed
-      - test_four['group']['name'] == "Test GROUPS One"
-      - test_four['msg'] == "group Test GROUPS One deleted"
+      - test_three is changed
+      - test_three['group']['name'] == "Test GROUPS One"
+      - test_three['msg'] == "group Test GROUPS One deleted"
+
+- name: "GROUPS 4: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test GROUPS One"
+    state: absent
+  register: test_four
+
+- name: "GROUPS 4: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['manufacturer'] == None
+      - test_four['msg'] == "group Test GROUPS One Two already absent"

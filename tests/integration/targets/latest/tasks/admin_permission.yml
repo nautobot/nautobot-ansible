@@ -87,3 +87,23 @@
       - test_four is changed
       - test_four['permission']['name'] == "Test PERMISSION One"
       - test_four['msg'] == "permission Test PERMISSION One deleted"
+
+- name: "PERMISSION 5: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    state: absent
+  register: test_five
+
+- name: "PERMISSION 5: ASSERT - Delete non existing"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['permission']['name'] == "Test PERMISSION One"
+      - test_five['msg'] == "permission Test PERMISSION One deleted"
