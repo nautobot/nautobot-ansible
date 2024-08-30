@@ -568,9 +568,9 @@
 
 - name: "PYNAUTOBOT_OBJECT_PERMISSIONS TESTS"
   include_tasks:
-    file: "object_permission.yml"
+    file: "admin_permission.yml"
     apply:
       tags:
-        - object_permission
+        - admin_permission
   tags:
-    - object_permission
+    - admin_permission
