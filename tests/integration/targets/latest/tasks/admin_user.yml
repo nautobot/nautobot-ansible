@@ -5,7 +5,7 @@
 ##
 ##
 - name: "USER 1: Necessary info creation"
-  networktocode.nautobot.user:
+  networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     username: nb-user
@@ -21,7 +21,7 @@
       - test_one['user']['username'] == "nb-user"
 
 - name: "USER 2: Create duplicate"
-  networktocode.nautobot.user:
+  networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     username: nb-user
@@ -35,7 +35,7 @@
       - test_two['user']['username'] == "nb-user"
 
 - name: "USER 3: ASSERT - Update"
-  networktocode.nautobot.user:
+  networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     username: "nb-user"
@@ -57,7 +57,7 @@
       - test_three['diff']['after']['last_name'] == "user"
 
 - name: "USER 4: ASSERT - Delete"
-  networktocode.nautobot.user:
+  networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     username: "nb-user"

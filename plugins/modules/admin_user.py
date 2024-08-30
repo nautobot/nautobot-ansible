@@ -10,7 +10,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: user
+module: admin_user
 short_description: Create, update or delete users within Nautobot
 description:
   - Creates, updates or removes users from Nautobot
@@ -28,50 +28,42 @@ options:
       - The name of the user
     required: true
     type: str
-    version_added: "5.3.0"
   is_superuser:
     description:
       - If the user should be set for superuser status
     required: false
     type: bool
-    version_added: "5.3.0"
   is_staff:
     description:
       - If the user should be set for superuser status
     required: false
     type: bool
-    version_added: "5.3.0"
   is_active:
     description:
       - If the user should be set for superuser status
     required: false
     type: bool
-    version_added: "5.3.0"
   first_name:
     description:
       - The first name of the user
     required: false
     type: str
-    version_added: "5.3.0"
   last_name:
     description:
       - The last name of the user
     required: false
     type: str
-    version_added: "5.3.0"
   email:
     description:
       - The email of the user
     required: false
     type: str
-    version_added: "5.3.0"
   groups:
     description:
       - The groups the user is assigned to
     required: false
     type: list
     elements: raw
-    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""
@@ -82,7 +74,7 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create user within Nautobot with only required information
-      networktocode.nautobot.user:
+      networktocode.nautobot.admin_user:
         url: http://nautobot.local
         token: thisIsMyToken
         username: nb_user
@@ -92,7 +84,7 @@ EXAMPLES = r"""
         state: present
 
     - name: Delete user within nautobot
-      networktocode.nautobot.user:
+      networktocode.nautobot.admin_user:
         url: http://nautobot.local
         token: thisIsMyToken
         username: nb_user

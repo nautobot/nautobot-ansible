@@ -28,7 +28,6 @@ options:
       - The name of the group
     required: true
     type: str
-    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""

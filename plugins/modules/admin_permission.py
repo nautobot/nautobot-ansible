@@ -10,7 +10,7 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: object_permission
+module: admin_permission
 short_description: Create, update or delete object permissions within Nautobot
 description:
   - Creates, updates or removes object permissions from Nautobot
@@ -28,26 +28,22 @@ options:
       - The name of the permission
     required: true
     type: str
-    version_added: "5.3.0"
   description:
     description:
       - The description of the permission
     required: false
     type: str
-    version_added: "5.3.0"
   enabled:
     description:
       - If the permission is enabled or not.
     required: true
     type: bool
-    version_added: "5.3.0"
   object_types:
     description:
       - The permitted object_types for the permission definition.
     required: false
     type: list
     elements: str
-    version_added: "5.3.0"
   actions:
     description:
       - The actions allowed for the permission definition.
@@ -55,27 +51,23 @@ options:
     required: true
     type: list
     elements: str
-    version_added: "5.3.0"
   constraints:
     description:
       - The constraints for the permission definition.
     required: false
     type: json
-    version_added: "5.3.0"
   users:
     description:
       - The users assigned for the permission definition.
     required: false
     type: list
     elements: str
-    version_added: "5.3.0"
   groups:
     description:
       - The groups assigned for the permission definition.
     required: false
     type: list
     elements: dict
-    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""
@@ -86,7 +78,7 @@ EXAMPLES = r"""
 
   tasks:
     - name: Create object permission within Nautobot with only required information
-      networktocode.nautobot.object_permission:
+      networktocode.nautobot.admin_permission:
         url: http://nautobot.local
         token: thisIsMyToken
         name: read only
@@ -104,7 +96,7 @@ EXAMPLES = r"""
         state: present
 
     - name: Delete permission
-      networktocode.nautobot.object_permission:
+      networktocode.nautobot.admin_permission:
         url: http://nautobot.local
         token: thisIsMyToken
         name: read only
@@ -123,7 +115,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-object_permission:
+admin_permission:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
