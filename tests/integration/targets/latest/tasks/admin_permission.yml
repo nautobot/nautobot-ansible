@@ -106,4 +106,4 @@
     that:
       - test_five is changed
       - test_five['permission']['name'] == "Test PERMISSION One"
-      - test_five['msg'] == "permission Test PERMISSION One deleted"
+      - test_five['msg'] == "permission Test PERMISSION One already absent"

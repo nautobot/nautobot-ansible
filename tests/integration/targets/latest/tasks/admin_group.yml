@@ -64,6 +64,6 @@
 - name: "GROUPS 4: ASSERT - Delete non existing"
   assert:
     that:
-      - not test_four['changed']
-      - test_four['manufacturer'] == None
-      - test_four['msg'] == "group Test GROUPS One Two already absent"
+      - test_four is changed
+      - test_four['group']['name'] == "Test GROUPS One"
+      - test_four['msg'] == "group Test GROUPS One  already absent"

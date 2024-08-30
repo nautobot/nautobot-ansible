@@ -69,6 +69,7 @@
     that:
       - test_four is changed
       - test_four['user']['username'] == "nb-user"
+      - test_four['msg'] == "user nb-user deleted"
 
 - name: "USER 5: ASSERT - Delete non existing"
   networktocode.nautobot.admin_user:
@@ -83,3 +84,4 @@
     that:
       - test_five is changed
       - test_five['user']['username'] == "nb-user"
+      - test_five['msg'] == "user nb-user already absent"
