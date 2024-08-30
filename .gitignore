@@ -11,6 +11,7 @@ docs/_build/*
 pb.*.yml
 .DS_Store
 .env
+invoke.yml
 
 # https://github.com/ansible/ansible/issues/68499
 # ansible_collections/
