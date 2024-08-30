@@ -550,12 +550,12 @@
 
 - name: "PYNAUTOBOT_USER TESTS"
   include_tasks:
-    file: "user.yml"
+    file: "admin_user.yml"
     apply:
       tags:
-        - user
+        - admin_user
   tags:
-    - user
+    - admin_user
 
 - name: "PYNAUTOBOT_GROUPS TESTS"
   include_tasks:
