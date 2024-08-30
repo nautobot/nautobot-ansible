@@ -147,7 +147,7 @@ def main():
             actions=dict(required=True, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]),
             constraints=dict(required=False, type="json"),
             users=dict(required=False, type="list", elements="str"),
-            groups=dict(required=False, type="list", elements="dict"),
+            groups=dict(required=False, type="list", elements="raw"),
         )
     )
 
