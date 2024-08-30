@@ -66,4 +66,4 @@
     that:
       - test_four is changed
       - test_four['group']['name'] == "Test GROUPS One"
-      - test_four['msg'] == "group Test GROUPS One  already absent"
+      - test_four['msg'] == "group Test GROUPS One already absent"
