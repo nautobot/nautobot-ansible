@@ -23,8 +23,8 @@ class NautobotUsersModule(NautobotModule):
         to create/update/delete the endpoint objects
         Supported endpoints:
         users
-        admin_groups
-        object_permissions
+        groups
+        permissions
         """
         # Used to dynamically set key when returning results
         endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]
