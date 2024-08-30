@@ -1,4 +1,14 @@
 ---
+# Lookup tests should run first so items created by other tests don't influence the results
+- name: "PYNAUTOBOT_LOOKUP TESTS"
+  include_tasks:
+    file: "lookup.yml"
+    apply:
+      tags:
+        - lookup
+  tags:
+    - lookup
+
 - name: "PYNAUTOBOT_DEVICE TESTS"
   include_tasks:
     file: "device.yml"
@@ -440,15 +450,6 @@
   tags:
     - service
 
-- name: "PYNAUTOBOT_LOOKUP TESTS"
-  include_tasks:
-    file: "lookup.yml"
-    apply:
-      tags:
-        - lookup
-  tags:
-    - lookup
-
 - name: "PYNAUTOBOT_TAG_TESTS"
   include_tasks:
     file: "tag.yml"
@@ -574,3 +575,12 @@
         - admin_permission
   tags:
     - admin_permission
+
+- name: "PYNAUTOBOT_CONTROLLER TESTS"
+  include_tasks:
+    file: "controller.yml"
+    apply:
+      tags:
+        - controller
+  tags:
+    - controller

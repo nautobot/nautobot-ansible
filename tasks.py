@@ -1,12 +1,12 @@
 """Tasks for use with Invoke."""
 
-from distutils.util import strtobool
 from invoke import Collection, task as invoke_task
 import os
 
 
 def is_truthy(arg):
     """Convert "truthy" strings into Booleans.
+
     Examples:
         >>> is_truthy('yes')
         True
@@ -16,7 +16,14 @@ def is_truthy(arg):
     """
     if isinstance(arg, bool):
         return arg
-    return bool(strtobool(arg))
+
+    val = str(arg).lower()
+    if val in ("y", "yes", "t", "true", "on", "1"):
+        return True
+    elif val in ("n", "no", "f", "false", "off", "0"):
+        return False
+    else:
+        raise ValueError(f"Invalid truthy value: `{arg}`")
 
 
 # Use pyinvoke configuration for default values, see http://docs.pyinvoke.org/en/stable/concepts/configuration.html
@@ -27,7 +34,7 @@ namespace.configure(
         "nautobot_ansible": {
             "nautobot_ver": "2.2.4",
             "project_name": "nautobot_ansible",
-            "python_ver": "3.9",
+            "python_ver": "3.10",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],

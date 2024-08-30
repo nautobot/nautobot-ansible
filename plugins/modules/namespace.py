@@ -81,7 +81,11 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_NAMESPACES,
@@ -95,13 +99,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list", elements="raw"),
-            custom_fields=dict(required=False, type="dict"),
         )
     )
 

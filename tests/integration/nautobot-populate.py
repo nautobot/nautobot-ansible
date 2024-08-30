@@ -36,7 +36,7 @@ def make_nautobot_calls(endpoint, payload):
     try:
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
-        print(e.error)
+        print(f"Error creating endpoint {endpoint} with payload {payload}: {e.error}")
         global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
@@ -48,7 +48,7 @@ def make_nautobot_calls(endpoint, payload):
 create_tags = make_nautobot_calls(
     nb.extras.tags,
     [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget", "dcim.controller"]},
         {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
         {"name": "Third", "content_types": ["dcim.device"]},
         {
@@ -101,6 +101,10 @@ location_content_types = [
     "virtualization.cluster",
     "circuits.circuittermination",
 ]
+
+if nautobot_version >= version.parse("2.2"):
+    location_content_types.append("dcim.controller")
+
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
 created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
 parent_location_type = nb.dcim.location_types.get(name="My Parent Location Type")
@@ -244,6 +248,7 @@ device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
     {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
     {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
+    {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 # Device role variables to be used later on
@@ -600,7 +605,7 @@ created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fiel
 ###############
 # v2.2+ items #
 ###############
-if nautobot_version > version.parse("2.1"):
+if nautobot_version >= version.parse("2.2"):
     # Create Teams
     teams = [{"name": "My Test Team"}]
     created_teams = make_nautobot_calls(nb.extras.teams, teams)
@@ -608,6 +613,7 @@ if nautobot_version > version.parse("2.1"):
     # Create Contacts
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

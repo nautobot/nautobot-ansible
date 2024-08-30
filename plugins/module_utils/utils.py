@@ -39,6 +39,7 @@ API_APPS_ENDPOINTS = dict(
         "console_port_templates",
         "console_server_ports",
         "console_server_port_templates",
+        "controllers",
         "device_bays",
         "device_bay_templates",
         "devices",
@@ -103,6 +104,7 @@ QUERY_TYPES = dict(
     cluster="name",
     cluster_group="name",
     cluster_type="name",
+    controller="name",
     device="name",
     role="name",
     device_type="model",
@@ -112,6 +114,7 @@ QUERY_TYPES = dict(
     installed_device="name",
     import_targets="name",
     location="name",
+    location_type="name",
     manufacturer="name",
     master="name",
     nat_inside="address",
@@ -176,6 +179,7 @@ CONVERT_TO_ID = {
     "ipaddresses": "ip_addresses",
     "lag": "interfaces",
     "location": "locations",
+    "location_type": "location_types",
     "manufacturer": "manufacturers",
     "master": "devices",
     "nat_inside": "ip_addresses",
@@ -231,6 +235,7 @@ ENDPOINT_NAME_MAPPING = {
     "console_server_ports": "console_server_port",
     "console_server_port_templates": "console_server_port_template",
     "contacts": "contact",
+    "controllers": "controller",
     "custom_fields": "custom_field",
     "custom_field_choices": "custom_field_choice",
     "device_bays": "device_bay",
@@ -298,6 +303,7 @@ ALLOWED_QUERY_PARAMS = {
     "console_server_port_template": set(["name", "device_type"]),
     "contact": set(["name", "phone", "email"]),
     "contacts": set(["name", "phone", "email"]),
+    "controller": set(["name"]),
     "custom_field": set(["label"]),
     "custom_field_choice": set(["value", "custom_field"]),
     "dcim.consoleport": set(["name", "device"]),
@@ -440,6 +446,14 @@ NAUTOBOT_ARG_SPEC = dict(
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
     api_version=dict(type="str", required=False),
+)
+
+TAGS_ARG_SPEC = dict(
+    tags=dict(required=False, type="list", elements="raw"),
+)
+
+CUSTOM_FIELDS_ARG_SPEC = dict(
+    custom_fields=dict(required=False, type="dict"),
 )
 
 

@@ -6,7 +6,7 @@
 Networktocode.Nautobot
 ======================
 
-Collection version 5.2.1
+Collection version 5.3.0
 
 .. contents::
    :local:
@@ -58,6 +58,8 @@ Modules
 * :ref:`console_port_template module <ansible_collections.networktocode.nautobot.console_port_template_module>` -- Create, update or delete console port templates within Nautobot
 * :ref:`console_server_port module <ansible_collections.networktocode.nautobot.console_server_port_module>` -- Create, update or delete console server ports within Nautobot
 * :ref:`console_server_port_template module <ansible_collections.networktocode.nautobot.console_server_port_template_module>` -- Create, update or delete console server port templates within Nautobot
+* :ref:`contact module <ansible_collections.networktocode.nautobot.contact_module>` -- Creates or removes contacts from Nautobot
+* :ref:`controller module <ansible_collections.networktocode.nautobot.controller_module>` -- 
 * :ref:`custom_field module <ansible_collections.networktocode.nautobot.custom_field_module>` -- Creates or removes custom fields from Nautobot
 * :ref:`custom_field_choice module <ansible_collections.networktocode.nautobot.custom_field_choice_module>` -- Creates or removes custom field choices from Nautobot
 * :ref:`device module <ansible_collections.networktocode.nautobot.device_module>` -- Create, update or delete devices within Nautobot
@@ -99,12 +101,14 @@ Modules
 * :ref:`service module <ansible_collections.networktocode.nautobot.service_module>` -- Creates or removes service from Nautobot
 * :ref:`status module <ansible_collections.networktocode.nautobot.status_module>` -- Creates or removes status from Nautobot
 * :ref:`tag module <ansible_collections.networktocode.nautobot.tag_module>` -- Creates or removes tags from Nautobot
+* :ref:`team module <ansible_collections.networktocode.nautobot.team_module>` -- Creates or removes teams from Nautobot
 * :ref:`tenant module <ansible_collections.networktocode.nautobot.tenant_module>` -- Creates or removes tenants from Nautobot
 * :ref:`tenant_group module <ansible_collections.networktocode.nautobot.tenant_group_module>` -- Creates or removes tenant groups from Nautobot
 * :ref:`virtual_chassis module <ansible_collections.networktocode.nautobot.virtual_chassis_module>` -- Create, update or delete virtual chassis within Nautobot
 * :ref:`virtual_machine module <ansible_collections.networktocode.nautobot.virtual_machine_module>` -- Create, update or delete virtual\_machines within Nautobot
 * :ref:`vlan module <ansible_collections.networktocode.nautobot.vlan_module>` -- Create, update or delete vlans within Nautobot
 * :ref:`vlan_group module <ansible_collections.networktocode.nautobot.vlan_group_module>` -- Create, update or delete vlans groups within Nautobot
+* :ref:`vlan_location module <ansible_collections.networktocode.nautobot.vlan_location_module>` -- Create, update or delete Location assignments to VLANs within Nautobot
 * :ref:`vm_interface module <ansible_collections.networktocode.nautobot.vm_interface_module>` -- Creates or removes interfaces from virtual machines in Nautobot
 * :ref:`vrf module <ansible_collections.networktocode.nautobot.vrf_module>` -- Create, update or delete vrfs within Nautobot
 
@@ -123,6 +127,8 @@ Modules
     console_port_template_module
     console_server_port_module
     console_server_port_template_module
+    contact_module
+    controller_module
     custom_field_module
     custom_field_choice_module
     device_module
@@ -164,12 +170,14 @@ Modules
     service_module
     status_module
     tag_module
+    team_module
     tenant_module
     tenant_group_module
     virtual_chassis_module
     virtual_machine_module
     vlan_module
     vlan_group_module
+    vlan_location_module
     vm_interface_module
     vrf_module
 
