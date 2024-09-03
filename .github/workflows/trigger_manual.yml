@@ -1,0 +1,16 @@
+---
+name: "Manual Tests"
+on: # yamllint disable
+  workflow_dispatch:
+    inputs:
+      full-integration:
+        description: "Run full integration tests"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+    with:
+      full-integration: "${{ inputs.full-integration }}"

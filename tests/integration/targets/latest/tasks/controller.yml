@@ -108,7 +108,7 @@
       tenant: "Test Tenant"
       controller_device_redundancy_group: "My Device Redundancy Group"
       tags:
-        - First
+        - Controller Tag
     register: test_six_controller
 
   - name: "CONTROLLER 7: ASSERT - As Much As Possible Info creation"
