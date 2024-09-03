@@ -45,37 +45,40 @@ def make_nautobot_calls(endpoint, payload):
 
 
 # Create tags used in future tests
-create_tags = make_nautobot_calls(
-    nb.extras.tags,
-    [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget", "dcim.controller"]},
-        {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
-        {"name": "Third", "content_types": ["dcim.device"]},
-        {
-            "name": "Schnozzberry",
-            "content_types": [
-                "dcim.device",
-                "dcim.rack",
-                "ipam.ipaddress",
-                "ipam.prefix",
-                "ipam.service",
-                "ipam.vlan",
-                "ipam.vrf",
-                "dcim.devicebay",
-                "dcim.inventoryitem",
-                "virtualization.virtualmachine",
-                "virtualization.cluster",
-                "virtualization.vminterface",
-            ],
-        },
-        {"name": "Lookup", "content_types": ["dcim.device"]},
-        {"name": "Nolookup", "content_types": ["dcim.device"]},
-        {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "tagB", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "tagC", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "Updated", "content_types": ["dcim.device", "ipam.ipaddress"]},
-    ],
-)
+tags = [
+    {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+    {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
+    {"name": "Third", "content_types": ["dcim.device"]},
+    {
+        "name": "Schnozzberry",
+        "content_types": [
+            "dcim.device",
+            "dcim.rack",
+            "ipam.ipaddress",
+            "ipam.prefix",
+            "ipam.service",
+            "ipam.vlan",
+            "ipam.vrf",
+            "dcim.devicebay",
+            "dcim.inventoryitem",
+            "virtualization.virtualmachine",
+            "virtualization.cluster",
+            "virtualization.vminterface",
+        ],
+    },
+    {"name": "Lookup", "content_types": ["dcim.device"]},
+    {"name": "Nolookup", "content_types": ["dcim.device"]},
+    {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "tagB", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "tagC", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "Updated", "content_types": ["dcim.device", "ipam.ipaddress"]},
+]
+
+if nautobot_version >= version.parse("2.2"):
+    tags.append({"name": "Controller Tag", "content_types": ["dcim.controller"]})
+
+create_tags = make_nautobot_calls(nb.extras.tags, tags)
+
 
 # ORDER OF OPERATIONS FOR THE MOST PART
 # Create TENANT GROUPS
@@ -248,8 +251,11 @@ device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
     {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
     {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
-    {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]},
 ]
+
+if nautobot_version >= version.parse("2.2"):
+    device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
+
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 
 # Device role variables to be used later on

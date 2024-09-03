@@ -49,7 +49,7 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Location
-    location_type: "{{ parent_location_type['key'] }}"
+    location_type: "{{ parent_location_type['value']['name'] }}"
     description: Test Location Description
   register: test_update
 
@@ -68,7 +68,7 @@
     name: Test Location 2
     status: Active
     description: Test Location 2 Description
-    location_type: "{{ child_location_type['key'] }}"
+    location_type: "{{ child_location_type['value']['name'] }}"
     parent_location: "{{ test_create_min['location']['id'] }}"
     tenant: Test Tenant
     facility: EquinoxCA7
@@ -105,7 +105,7 @@
     name: Test Location 2
     status: Active
     description: Test Location 2 Description
-    location_type: "{{ child_location_type['key'] }}"
+    location_type: "{{ child_location_type['value']['name'] }}"
     parent: "{{ test_create_min['location']['id'] }}"
     tenant: Test Tenant
     facility: EquinoxCA7
@@ -165,7 +165,6 @@
 
 - set_fact:
     fist_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Location\" location_type=\"My Parent Location Type\"') }}"
-
 
 - name: "8 - Delete location"
   networktocode.nautobot.location:
