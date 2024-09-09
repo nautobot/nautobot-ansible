@@ -46,7 +46,7 @@
       - test_two['permission']['name'] == "Test PERMISSION One"
       - test_two['msg'] == "permission Test PERMISSION One already exists"
 
-- name: "PERMISSION 3: ASSERT - Update"
+- name: "PERMISSION 3: Update"
   networktocode.nautobot.admin_permission:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"

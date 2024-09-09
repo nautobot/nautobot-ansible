@@ -22,9 +22,9 @@ class NautobotUsersModule(NautobotModule):
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
-        users
-        groups
-        permissions
+        - users
+        - groups
+        - permissions
         """
         # Used to dynamically set key when returning results
         endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]

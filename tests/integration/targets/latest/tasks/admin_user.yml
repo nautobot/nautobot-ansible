@@ -34,7 +34,7 @@
       - not test_two['changed']
       - test_two['user']['username'] == "nb-user"
 
-- name: "USER 3: ASSERT - Update"
+- name: "USER 3: Update"
   networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
