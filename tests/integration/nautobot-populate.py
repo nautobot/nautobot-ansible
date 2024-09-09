@@ -257,9 +257,9 @@ if nautobot_version >= version.parse("2.2"):
     device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
 
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
+
 # Device role variables to be used later on
 core_switch = nb.extras.roles.get(name="Core Switch")
-
 
 # Create Rack Groups
 rack_groups = [
@@ -620,6 +620,15 @@ if nautobot_version >= version.parse("2.2"):
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
 
+###############
+# v2.3+ items #
+###############
+if nautobot_version >= version.parse("2.3"):
+    # Create role for virtual machine interfaces
+    vm_interface_roles = [
+        {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
+    ]
+    created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
