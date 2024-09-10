@@ -171,6 +171,7 @@ CONVERT_TO_ID = {
     "device_type": "device_types",
     "export_targets": "route_targets",
     "group": "tenant_groups",
+    "groups": "groups",
     "import_targets": "route_targets",
     "installed_device": "devices",
     "interface": "interfaces",
@@ -214,6 +215,7 @@ CONVERT_TO_ID = {
     "termination_a": "interfaces",
     "termination_b": "interfaces",
     "untagged_vlan": "vlans",
+    "users": "users",
     "virtual_chassis": "virtual_chassis",
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
@@ -695,7 +697,8 @@ class NautobotModule:
         result = self._nb_endpoint_get(nb_endpoint, query_params, match)
 
         if result:
-            return result.id
+            # Inherited django models(admin groups) that are not overloaded are integers, force the integer to string.
+            return str(result.id)
         else:
             return data
 

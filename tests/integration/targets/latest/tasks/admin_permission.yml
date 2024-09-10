@@ -8,13 +8,18 @@
     nb_user: "{{ lookup('networktocode.nautobot.lookup', 'admin-users', api_endpoint=nautobot_url, token=nautobot_token, api_filter='username=\"a_admin_user\"') }}"
     nb_group: "{{ lookup('networktocode.nautobot.lookup', 'admin-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"A Test Admin User Group\"') }}"
 
+- debug:
+    var: nb_user
+- debug:
+    var: nb_group
+
 - name: "PERMISSION 1: Necessary info creation"
   networktocode.nautobot.admin_permission:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
     enabled: true
-    users: 
+    users:
       - "a_admin_user"
     groups:
       - name: "A Test Admin User Group"
@@ -42,7 +47,7 @@
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
     enabled: true
-    users: 
+    users:
       - "a_admin_user"
     groups:
       - name: "A Test Admin User Group"
@@ -52,6 +57,9 @@
       - "dcim.device"
     state: present
   register: test_two
+
+- debug:
+    var: test_two
 
 - name: "PERMISSION 2: ASSERT - Create duplicate"
   assert:
@@ -66,10 +74,6 @@
     token: "{{ nautobot_token }}"
     name: "Test PERMISSION One"
     enabled: true
-    users: 
-      - "a_admin_user"
-    groups:
-      - name: "A Test Admin User Group"
     actions:
       - add
     object_types:
