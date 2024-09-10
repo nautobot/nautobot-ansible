@@ -164,6 +164,9 @@ def get_endpoint(nautobot, term):
     """
 
     endpoint_map = {
+        "admin-users": {"endpoint": nautobot.users.users},
+        "admin-groups": {"endpoint": nautobot.users.groups},
+        "admin-permissions": {"endpoint": nautobot.users.permissions},
         "aggregates": {"endpoint": nautobot.ipam.aggregates},
         "circuit-terminations": {"endpoint": nautobot.circuits.circuit_terminations},
         "circuit-types": {"endpoint": nautobot.circuits.circuit_types},

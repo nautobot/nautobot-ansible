@@ -4,12 +4,20 @@
 ### PYNAUTOBOT_OBJECT_PERMISSIONS
 ##
 ##
+- set_fact:
+    nb_user: "{{ lookup('networktocode.nautobot.lookup', 'admin-users', api_endpoint=nautobot_url, token=nautobot_token, api_filter='username=\"a_admin_user\"') }}"
+    nb_group: "{{ lookup('networktocode.nautobot.lookup', 'admin-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"A Test Admin User Group\"') }}"
+
 - name: "PERMISSION 1: Necessary info creation"
   networktocode.nautobot.admin_permission:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
     enabled: true
+    users: 
+      - "a_admin_user"
+    groups:
+      - name: "A Test Admin User Group"
     object_types:
       - "dcim.device"
     actions:
@@ -21,6 +29,8 @@
   assert:
     that:
       - test_one is changed
+      - test_one['permission']['users'][0] == nb_user['key']
+      - test_one['permission']['groups'][0] == nb_group['key']
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['permission']['name'] == "Test PERMISSION One"
@@ -32,6 +42,10 @@
     token: "{{ nautobot_token }}"
     name: Test PERMISSION One
     enabled: true
+    users: 
+      - "a_admin_user"
+    groups:
+      - name: "A Test Admin User Group"
     actions:
       - view
     object_types:
@@ -52,6 +66,10 @@
     token: "{{ nautobot_token }}"
     name: "Test PERMISSION One"
     enabled: true
+    users: 
+      - "a_admin_user"
+    groups:
+      - name: "A Test Admin User Group"
     actions:
       - add
     object_types:
@@ -68,27 +86,27 @@
       - test_three['permission']['actions'] == ["add"]
       - test_three['msg'] == "permission Test PERMISSION One updated"
 
-- name: "PERMISSION 4: ASSERT - Delete"
+- name: "PERMISSION 4: Update - Idempotent"
   networktocode.nautobot.admin_permission:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test PERMISSION One"
     enabled: true
     actions:
-      - view
+      - add
     object_types:
       - "dcim.device"
-    state: absent
+    state: present
   register: test_four
 
-- name: "PERMISSION 4: ASSERT - Delete"
+- name: "PERMISSION 4: ASSERT - Update - Idempotent"
   assert:
     that:
-      - test_four is changed
+      - not test_four['changed']
       - test_four['permission']['name'] == "Test PERMISSION One"
-      - test_four['msg'] == "permission Test PERMISSION One deleted"
+      - test_four['msg'] == "permission Test PERMISSION One already exists"
 
-- name: "PERMISSION 5: ASSERT - Delete non existing"
+- name: "PERMISSION 5: ASSERT - Delete"
   networktocode.nautobot.admin_permission:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -101,8 +119,28 @@
     state: absent
   register: test_five
 
-- name: "PERMISSION 5: ASSERT - Delete non existing"
+- name: "PERMISSION 5: ASSERT - Delete"
   assert:
     that:
-      - not test_five['changed']
-      - test_five['msg'] == "permission Test PERMISSION One already absent"
+      - test_five is changed
+      - test_five['permission']['name'] == "Test PERMISSION One"
+      - test_five['msg'] == "permission Test PERMISSION One deleted"
+
+- name: "PERMISSION 6: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    state: absent
+  register: test_six
+
+- name: "PERMISSION 6: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "permission Test PERMISSION One already absent"

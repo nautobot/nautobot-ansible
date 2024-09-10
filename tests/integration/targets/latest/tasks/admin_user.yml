@@ -56,22 +56,22 @@
       - test_three['diff']['before']['last_name'] == ""
       - test_three['diff']['after']['last_name'] == "user"
 
-- name: "USER 4: ASSERT - Delete"
+- name: "USER 4: Update - idempotent"
   networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     username: "nb-user"
-    state: absent
+    first_name: "nb"
+    last_name: "user"
+    state: present
   register: test_four
 
-- name: "USER 4: ASSERT - Delete"
+- name: "USER 4: ASSERT - Update - idempotent"
   assert:
     that:
-      - test_four is changed
-      - test_four['user']['username'] == "nb-user"
-      - test_four['msg'] == "user nb-user deleted"
+      - not test_four['changed']
 
-- name: "USER 5: ASSERT - Delete non existing"
+- name: "USER 5: ASSERT - Delete"
   networktocode.nautobot.admin_user:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -79,8 +79,23 @@
     state: absent
   register: test_five
 
-- name: "USER 5: ASSERT - Delete non existing"
+- name: "USER 5: ASSERT - Delete"
   assert:
     that:
-      - not test_five['changed']
-      - test_five['msg'] == "user nb-user already absent"
+      - test_five is changed
+      - test_five['user']['username'] == "nb-user"
+      - test_five['msg'] == "user nb-user deleted"
+
+- name: "USER 6: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_user:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    username: "nb-user"
+    state: absent
+  register: test_six
+
+- name: "USER 6: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "user nb-user already absent"

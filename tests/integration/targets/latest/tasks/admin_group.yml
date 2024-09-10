@@ -12,9 +12,6 @@
     state: present
   register: test_one
 
-- debug:
-    var: test_one
-
 - name: "GROUPS 1: ASSERT - Necessary info creation"
   assert:
     that:
