@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -6,33 +5,14 @@
 .. |antsibull-internal-nbsp| unicode:: 0xA0
     :trim:
 
-.. role:: ansible-attribute-support-label
-.. role:: ansible-attribute-support-property
-.. role:: ansible-attribute-support-full
-.. role:: ansible-attribute-support-partial
-.. role:: ansible-attribute-support-none
-.. role:: ansible-attribute-support-na
-.. role:: ansible-option-type
-.. role:: ansible-option-elements
-.. role:: ansible-option-required
-.. role:: ansible-option-versionadded
-.. role:: ansible-option-aliases
-.. role:: ansible-option-choices
-.. role:: ansible-option-choices-default-mark
-.. role:: ansible-option-default-bold
-.. role:: ansible-option-configuration
-.. role:: ansible-option-returned-bold
-.. role:: ansible-option-sample-bold
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.device_module:
 
 .. Anchors: short name for ansible.builtin
-
-.. Anchors: aliases
-
-
 
 .. Title
 
@@ -42,7 +22,10 @@ networktocode.nautobot.device module -- Create, update or delete devices within 
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.3.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -94,12 +77,13 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -119,9 +103,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
@@ -156,9 +140,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-asset_tag" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -193,9 +177,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cluster" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -230,9 +214,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -267,9 +251,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -304,9 +288,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-device_redundancy_group" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
@@ -341,9 +325,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-device_redundancy_group_priority" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 5.1.0`
 
@@ -378,9 +362,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-device_type" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -393,7 +377,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+      Required if :emphasis:`state=present` and the device does not exist yet
 
 
       .. raw:: html
@@ -415,9 +399,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-face" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -430,7 +414,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Required if \ :emphasis:`rack`\  is defined
+      Required if :emphasis:`rack` is defined
 
 
       .. rst-class:: ansible-option-line
@@ -462,9 +446,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-local_config_context_data" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -499,9 +483,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-location" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -514,7 +498,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+      Required if :emphasis:`state=present` and the device does not exist yet
 
 
       .. raw:: html
@@ -536,9 +520,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -573,9 +557,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-platform" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -610,9 +594,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-position" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -647,9 +631,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-primary_ip4" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -684,9 +668,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-primary_ip6" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -721,9 +705,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-query_params" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -762,9 +746,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-rack" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -799,9 +783,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-role" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -814,7 +798,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+      Required if :emphasis:`state=present` and the device does not exist yet
 
 
       .. raw:: html
@@ -836,9 +820,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-serial" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -873,9 +857,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -885,7 +869,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Use \ :literal:`present`\  or \ :literal:`absent`\  for adding or removing.
+      Use :literal:`present` or :literal:`absent` for adding or removing.
 
 
       .. rst-class:: ansible-option-line
@@ -915,9 +899,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-status" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -932,7 +916,7 @@ Parameters
 
       The status of the device
 
-      Required if \ :emphasis:`state=present`\  and the device does not exist yet
+      Required if :emphasis:`state=present` and the device does not exist yet
 
 
       .. raw:: html
@@ -954,9 +938,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -991,9 +975,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-tenant" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -1028,9 +1012,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -1042,7 +1026,7 @@ Parameters
 
       The token created within Nautobot to authorize API access
 
-      Can be omitted if the \ :envvar:`NAUTOBOT\_TOKEN`\  environment variable is configured.
+      Can be omitted if the :ansenvvarref:`NAUTOBOT\_TOKEN` environment variable is configured.
 
 
       .. raw:: html
@@ -1064,9 +1048,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -1078,7 +1062,7 @@ Parameters
 
       The URL of the Nautobot instance resolvable by the Ansible host (for example: http://nautobot.example.com:8000)
 
-      Can be omitted if the \ :envvar:`NAUTOBOT\_URL`\  environment variable is configured.
+      Can be omitted if the :ansenvvarref:`NAUTOBOT\_URL` environment variable is configured.
 
 
       .. raw:: html
@@ -1100,9 +1084,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       .. raw:: html
 
@@ -1112,9 +1096,9 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
+      If :literal:`no`\ , SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
 
-      Can be omitted if the \ :envvar:`NAUTOBOT\_VALIDATE\_CERTS`\  environment variable is configured.
+      Can be omitted if the :ansenvvar:`NAUTOBOT\_VALIDATE\_CERTS` environment variable is configured.
 
 
       .. rst-class:: ansible-option-line
@@ -1140,9 +1124,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-vc_position" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -1177,9 +1161,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-vc_priority" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -1214,9 +1198,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-virtual_chassis" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`any`
+        :ansible-option-type:`any`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
 
@@ -1247,7 +1231,7 @@ Notes
 
 .. note::
    - Tags should be defined as a YAML list
-   - This should be ran with connection \ :literal:`local`\  and hosts \ :literal:`localhost`\ 
+   - This should be ran with connection :literal:`local` and hosts :literal:`localhost`
 
 .. Seealso
 
@@ -1259,7 +1243,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
     - name: "Test Nautobot modules"
       connection: local
       hosts: localhost
@@ -1326,7 +1309,6 @@ Examples
 
 
 
-
 .. Facts
 
 
@@ -1336,12 +1318,13 @@ Return Values
 -------------
 Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Key
     - Description
@@ -1361,9 +1344,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-device" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       .. raw:: html
 
@@ -1378,7 +1361,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` success (when \ :emphasis:`state=present`\ )
+      :ansible-option-returned-bold:`Returned:` success (when :emphasis:`state=present`\ )
 
 
       .. raw:: html
@@ -1401,9 +1384,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-msg" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -1445,12 +1428,14 @@ Authors
 Collection links
 ~~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. ansible-links::
 
-  <p class="ansible-links">
-    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
-    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
-  </p>
+  - title: "Issue Tracker"
+    url: "https://github.com/nautobot/nautobot-ansible/issues"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/nautobot/nautobot-ansible"
+    external: true
+
 
 .. Parsing errors
-
