@@ -1,0 +1,150 @@
+---
+##
+##
+### PYNAUTOBOT_OBJECT_PERMISSIONS
+##
+##
+- set_fact:
+    nb_user: "{{ lookup('networktocode.nautobot.lookup', 'admin-users', api_endpoint=nautobot_url, token=nautobot_token, api_filter='username=\"a_admin_user\"') }}"
+    nb_group: "{{ lookup('networktocode.nautobot.lookup', 'admin-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"A Test Admin User Group\"') }}"
+
+- debug:
+    var: nb_user
+- debug:
+    var: nb_group
+
+- name: "PERMISSION 1: Necessary info creation"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test PERMISSION One
+    enabled: true
+    users:
+      - "a_admin_user"
+    groups:
+      - "A Test Admin User Group"
+    object_types:
+      - "dcim.device"
+    actions:
+      - view
+    state: present
+  register: test_one
+
+- name: "PERMISSION 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['permission']['users'][0] == nb_user['key']
+      - test_one['permission']['groups'][0] == nb_group['key']
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['permission']['name'] == "Test PERMISSION One"
+      - test_one['msg'] == "permission Test PERMISSION One created"
+
+- name: "PERMISSION 2: Create duplicate"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test PERMISSION One
+    enabled: true
+    users:
+      - "a_admin_user"
+    groups:
+      - "A Test Admin User Group"
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    state: present
+  register: test_two
+
+- debug:
+    var: test_two
+
+- name: "PERMISSION 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['permission']['name'] == "Test PERMISSION One"
+      - test_two['msg'] == "permission Test PERMISSION One already exists"
+
+- name: "PERMISSION 3: Update"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - add
+    object_types:
+      - "dcim.device"
+    state: present
+  register: test_three
+
+- name: "PERMISSION 3: ASSERT - Updated"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['actions'] == ["add"]
+      - test_three['permission']['name'] == "Test PERMISSION One"
+      - test_three['permission']['actions'] == ["add"]
+      - test_three['msg'] == "permission Test PERMISSION One updated"
+
+- name: "PERMISSION 4: Update - Idempotent"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - add
+    object_types:
+      - "dcim.device"
+    state: present
+  register: test_four
+
+- name: "PERMISSION 4: ASSERT - Update - Idempotent"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['permission']['name'] == "Test PERMISSION One"
+      - test_four['msg'] == "permission Test PERMISSION One already exists"
+
+- name: "PERMISSION 5: ASSERT - Delete"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    state: absent
+  register: test_five
+
+- name: "PERMISSION 5: ASSERT - Delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['permission']['name'] == "Test PERMISSION One"
+      - test_five['msg'] == "permission Test PERMISSION One deleted"
+
+- name: "PERMISSION 6: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test PERMISSION One"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    state: absent
+  register: test_six
+
+- name: "PERMISSION 6: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "permission Test PERMISSION One already absent"

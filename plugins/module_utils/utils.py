@@ -92,6 +92,7 @@ API_APPS_ENDPOINTS = dict(
     plugins=[],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
+    users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
 )
 
@@ -109,6 +110,7 @@ QUERY_TYPES = dict(
     device_type="model",
     export_targets="name",
     group="name",
+    groups="name",
     installed_device="name",
     import_targets="name",
     location="name",
@@ -139,6 +141,7 @@ QUERY_TYPES = dict(
     tenant="name",
     tenant_group="name",
     time_zone="timezone",
+    user="username",
     virtual_chassis="name",
     virtual_machine="name",
     vlan="name",
@@ -168,6 +171,7 @@ CONVERT_TO_ID = {
     "device_type": "device_types",
     "export_targets": "route_targets",
     "group": "tenant_groups",
+    "groups": "groups",
     "import_targets": "route_targets",
     "installed_device": "devices",
     "interface": "interfaces",
@@ -211,6 +215,7 @@ CONVERT_TO_ID = {
     "termination_a": "interfaces",
     "termination_b": "interfaces",
     "untagged_vlan": "vlans",
+    "users": "users",
     "virtual_chassis": "virtual_chassis",
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
@@ -242,6 +247,7 @@ ENDPOINT_NAME_MAPPING = {
     "device_redundancy_groups": "device_redundancy_group",
     "front_ports": "front_port",
     "front_port_templates": "front_port_template",
+    "groups": "group",
     "interfaces": "interface",
     "interface_templates": "interface_template",
     "inventory_items": "inventory_item",
@@ -251,6 +257,7 @@ ENDPOINT_NAME_MAPPING = {
     "location_types": "location_type",
     "manufacturers": "manufacturer",
     "namespaces": "namespace",
+    "permissions": "permission",
     "platforms": "platform",
     "power_feeds": "power_feed",
     "power_outlets": "power_outlet",
@@ -274,6 +281,7 @@ ENDPOINT_NAME_MAPPING = {
     "teams": "team",
     "tenants": "tenant",
     "tenant_groups": "tenant_group",
+    "users": "user",
     "virtual_chassis": "virtual_chassis",
     "virtual_machines": "virtual_machine",
     "vlans": "vlan",
@@ -315,6 +323,8 @@ ALLOWED_QUERY_PARAMS = {
     "device_type": set(["model"]),
     "front_port": set(["name", "device", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
+    "group": set(["name"]),
+    "groups": set(["name"]),
     "installed_device": set(["name"]),
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
@@ -332,6 +342,7 @@ ALLOWED_QUERY_PARAMS = {
     "nat_inside": set(["namespace", "address"]),
     "parent_rack_group": set(["name"]),
     "parent_tenant_group": set(["name"]),
+    "permission": set(["name"]),
     "platform": set(["name"]),
     "power_feed": set(["name", "power_panel"]),
     "power_outlet": set(["name", "device"]),
@@ -361,6 +372,7 @@ ALLOWED_QUERY_PARAMS = {
     "tenant_group": set(["name"]),
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
+    "user": set(["username"]),
     "untagged_vlan": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "virtual_chassis": set(["name", "device"]),
     "virtual_machine": set(["name", "cluster"]),
@@ -685,7 +697,8 @@ class NautobotModule:
         result = self._nb_endpoint_get(nb_endpoint, query_params, match)
 
         if result:
-            return result.id
+            # Inherited django models(admin groups) that are not overloaded are integers, force the integer to string.
+            return str(result.id)
         else:
             return data
 

@@ -81,6 +81,14 @@ create_tags = make_nautobot_calls(nb.extras.tags, tags)
 
 
 # ORDER OF OPERATIONS FOR THE MOST PART
+# Create Admin Users
+admin_users = [{"username": "a_admin_user", "is_staff": True, "is_superuser": True}]
+created_admin_users = make_nautobot_calls(nb.users.users, admin_users)
+
+# Create Admin User Groups
+admin_groups = [{"name": "A Test Admin User Group"}]
+created_admin_groups = make_nautobot_calls(nb.users.groups, admin_groups)
+
 # Create TENANT GROUPS
 tenant_groups = [{"name": "Test Tenant Group"}]
 created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_groups)

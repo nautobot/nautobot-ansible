@@ -555,6 +555,33 @@
   tags:
     - team
 
+- name: "PYNAUTOBOT_USER TESTS"
+  include_tasks:
+    file: "admin_user.yml"
+    apply:
+      tags:
+        - admin_user
+  tags:
+    - admin_user
+
+- name: "PYNAUTOBOT_GROUPS TESTS"
+  include_tasks:
+    file: "admin_group.yml"
+    apply:
+      tags:
+        - admin_group
+  tags:
+    - admin_group
+
+- name: "PYNAUTOBOT_OBJECT_PERMISSIONS TESTS"
+  include_tasks:
+    file: "admin_permission.yml"
+    apply:
+      tags:
+        - admin_permission
+  tags:
+    - admin_permission
+
 - name: "PYNAUTOBOT_CONTROLLER TESTS"
   include_tasks:
     file: "controller.yml"
