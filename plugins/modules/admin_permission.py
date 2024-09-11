@@ -66,7 +66,7 @@ options:
       - The groups assigned for the permission definition.
     required: false
     type: list
-    elements: raw
+    elements: str
 """
 
 EXAMPLES = r"""
@@ -81,7 +81,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: read only
-        description: "ro permisisons"
+        description: "ro permissions"
         enabled: true
         object_types:
           - "dcim.device"
@@ -91,7 +91,7 @@ EXAMPLES = r"""
         users:
           - nb_user
         groups:
-          - name: read_only_group
+          - read_only_group
         state: present
 
     - name: Delete permission
@@ -99,7 +99,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: read only
-        description: "ro permisisons"
+        description: "ro permissions"
         enabled: true
         object_types:
           - "dcim.device"
@@ -109,7 +109,7 @@ EXAMPLES = r"""
         users:
           - nb_user
         groups:
-          - name: read_only_group
+          - read_only_group
         state: absent
 """
 
@@ -147,7 +147,7 @@ def main():
             actions=dict(required=True, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]),
             constraints=dict(required=False, type="json"),
             users=dict(required=False, type="list", elements="str"),
-            groups=dict(required=False, type="list", elements="raw"),
+            groups=dict(required=False, type="list", elements="str"),
         )
     )
 

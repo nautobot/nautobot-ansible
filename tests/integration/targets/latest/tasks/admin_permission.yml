@@ -22,7 +22,7 @@
     users:
       - "a_admin_user"
     groups:
-      - name: "A Test Admin User Group"
+      - "A Test Admin User Group"
     object_types:
       - "dcim.device"
     actions:
@@ -50,7 +50,7 @@
     users:
       - "a_admin_user"
     groups:
-      - name: "A Test Admin User Group"
+      - "A Test Admin User Group"
     actions:
       - view
     object_types:
