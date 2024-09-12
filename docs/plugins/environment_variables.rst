@@ -1,5 +1,7 @@
-
 :orphan:
+
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. _list_of_collection_env_vars:
 
@@ -14,23 +16,23 @@ Environment variables used by the ansible-core configuration are documented in :
     Merge extra vars into the available variables for composition (highest precedence).
 
     *Used by:*
-    :ref:`networktocode.nautobot.gql\_inventory inventory plugin <ansible_collections.networktocode.nautobot.gql_inventory_inventory>`,
-    :ref:`networktocode.nautobot.inventory inventory plugin <ansible_collections.networktocode.nautobot.inventory_inventory>`
+    :ansplugin:`networktocode.nautobot.gql\_inventory inventory plugin <networktocode.nautobot.gql_inventory#inventory>`,
+    :ansplugin:`networktocode.nautobot.inventory inventory plugin <networktocode.nautobot.inventory#inventory>`
 .. envvar:: NAUTOBOT_TOKEN
 
     See the documentations for the options where this environment variable is used.
 
     *Used by:*
-    :ref:`networktocode.nautobot.gql\_inventory inventory plugin <ansible_collections.networktocode.nautobot.gql_inventory_inventory>`,
-    :ref:`networktocode.nautobot.inventory inventory plugin <ansible_collections.networktocode.nautobot.inventory_inventory>`,
-    :ref:`networktocode.nautobot.lookup lookup plugin <ansible_collections.networktocode.nautobot.lookup_lookup>`,
-    :ref:`networktocode.nautobot.lookup\_graphql lookup plugin <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>`
+    :ansplugin:`networktocode.nautobot.gql\_inventory inventory plugin <networktocode.nautobot.gql_inventory#inventory>`,
+    :ansplugin:`networktocode.nautobot.inventory inventory plugin <networktocode.nautobot.inventory#inventory>`,
+    :ansplugin:`networktocode.nautobot.lookup lookup plugin <networktocode.nautobot.lookup#lookup>`,
+    :ansplugin:`networktocode.nautobot.lookup\_graphql lookup plugin <networktocode.nautobot.lookup_graphql#lookup>`
 .. envvar:: NAUTOBOT_URL
 
     See the documentations for the options where this environment variable is used.
 
     *Used by:*
-    :ref:`networktocode.nautobot.gql\_inventory inventory plugin <ansible_collections.networktocode.nautobot.gql_inventory_inventory>`,
-    :ref:`networktocode.nautobot.inventory inventory plugin <ansible_collections.networktocode.nautobot.inventory_inventory>`,
-    :ref:`networktocode.nautobot.lookup lookup plugin <ansible_collections.networktocode.nautobot.lookup_lookup>`,
-    :ref:`networktocode.nautobot.lookup\_graphql lookup plugin <ansible_collections.networktocode.nautobot.lookup_graphql_lookup>`
+    :ansplugin:`networktocode.nautobot.gql\_inventory inventory plugin <networktocode.nautobot.gql_inventory#inventory>`,
+    :ansplugin:`networktocode.nautobot.inventory inventory plugin <networktocode.nautobot.inventory#inventory>`,
+    :ansplugin:`networktocode.nautobot.lookup lookup plugin <networktocode.nautobot.lookup#lookup>`,
+    :ansplugin:`networktocode.nautobot.lookup\_graphql lookup plugin <networktocode.nautobot.lookup_graphql#lookup>`

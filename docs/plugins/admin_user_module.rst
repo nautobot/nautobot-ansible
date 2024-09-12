@@ -10,14 +10,14 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.tenant_module:
+.. _ansible_collections.networktocode.nautobot.admin_user_module:
 
 .. Anchors: short name for ansible.builtin
 
 .. Title
 
-networktocode.nautobot.tenant module -- Creates or removes tenants from Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.admin_user module -- Create, update or delete users within Nautobot
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -29,15 +29,15 @@ networktocode.nautobot.tenant module -- Creates or removes tenants from Nautobot
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.tenant_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.admin_user_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.tenant`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.admin_user`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.3.0
 
 .. contents::
    :local:
@@ -51,7 +51,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes tenants from Nautobot
+- Creates, updates or removes users from Nautobot
 
 
 .. Aliases
@@ -59,7 +59,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.tenant_module_requirements:
+.. _ansible_collections.networktocode.nautobot.admin_user_module_requirements:
 
 Requirements
 ------------
@@ -93,7 +93,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -128,25 +128,22 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-comments"></div>
+        <div class="ansibleOptionAnchor" id="parameter-email"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-comments:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-email:
 
       .. rst-class:: ansible-option-title
 
-      **comments**
+      **email**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-email" title="Permalink to this option"></a>
 
       .. ansible-option-type-line::
 
         :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
       .. raw:: html
 
         </div>
@@ -155,7 +152,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Comments for the tenant. This can be markdown syntax
+      The email of the user
 
 
       .. raw:: html
@@ -165,62 +162,22 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
+        <div class="ansibleOptionAnchor" id="parameter-first_name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-custom_fields:
-
-      .. rst-class:: ansible-option-title
-
-      **custom_fields**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`dictionary`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Must exist in Nautobot and in key/value format
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-description"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-first_name:
 
       .. rst-class:: ansible-option-title
 
-      **description**
+      **first_name**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-description" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-first_name" title="Permalink to this option"></a>
 
       .. ansible-option-type-line::
 
         :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
       .. raw:: html
 
         </div>
@@ -229,7 +186,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the tenant
+      The first name of the user
 
 
       .. raw:: html
@@ -239,24 +196,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-name"></div>
+        <div class="ansibleOptionAnchor" id="parameter-groups"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-groups:
 
       .. rst-class:: ansible-option-title
 
-      **name**
+      **groups**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-name" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-groups" title="Permalink to this option"></a>
 
       .. ansible-option-type-line::
 
-        :ansible-option-type:`string` / :ansible-option-required:`required`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
 
       .. raw:: html
 
@@ -266,7 +220,167 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Name of the tenant to be created
+      The groups the user is assigned to
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-is_active"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-is_active:
+
+      .. rst-class:: ansible-option-title
+
+      **is_active**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-is_active" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If the user should be active
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-is_staff"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-is_staff:
+
+      .. rst-class:: ansible-option-title
+
+      **is_staff**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-is_staff" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If the user should be set for staff status
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-is_superuser"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-is_superuser:
+
+      .. rst-class:: ansible-option-title
+
+      **is_superuser**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-is_superuser" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      If the user should be set for superuser status
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-last_name"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-last_name:
+
+      .. rst-class:: ansible-option-title
+
+      **last_name**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-last_name" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The last name of the user
 
 
       .. raw:: html
@@ -278,7 +392,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -319,7 +433,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -359,83 +473,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-tags:
-
-      .. rst-class:: ansible-option-title
-
-      **tags**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Any tags that this item may need to be associated with
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tenant_group"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-tenant_group:
-
-      .. rst-class:: ansible-option-title
-
-      **tenant_group**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tenant_group" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Tenant group this tenant should be in
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -471,7 +511,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -505,9 +545,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-username"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-username:
+
+      .. rst-class:: ansible-option-title
+
+      **username**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the user
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -552,7 +626,6 @@ Notes
 -----
 
 .. note::
-   - Tags should be defined as a YAML list
    - This should be ran with connection :literal:`local` and hosts :literal:`localhost`
 
 .. Seealso
@@ -565,38 +638,31 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: "Test Nautobot module"
+    - name: "Test Nautobot modules"
       connection: local
       hosts: localhost
       gather_facts: False
+
       tasks:
-        - name: Create tenant within Nautobot with only required information
-          networktocode.nautobot.tenant:
+        - name: Create user within Nautobot with only required information
+          networktocode.nautobot.admin_user:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant ABC
+            username: nb_user
+            email: nb_user@example.com
+            first_name: nb
+            last_name: user
             state: present
 
-        - name: Delete tenant within nautobot
-          networktocode.nautobot.tenant:
+        - name: Delete user within nautobot
+          networktocode.nautobot.admin_user:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant ABC
+            username: nb_user
+            email: nb_user@example.com
+            first_name: nb
+            last_name: user
             state: absent
-
-        - name: Create tenant with all parameters
-          networktocode.nautobot.tenant:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Tenant ABC
-            tenant_group: Very Special Tenants
-            description: ABC Incorporated
-            comments: '### This tenant is super cool'
-            tags:
-              - tagA
-              - tagB
-              - tagC
-            state: present
 
 
 
@@ -625,7 +691,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -663,17 +729,17 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-tenant"></div>
+        <div class="ansibleOptionAnchor" id="return-user"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__return-tenant:
+      .. _ansible_collections.networktocode.nautobot.admin_user_module__return-user:
 
       .. rst-class:: ansible-option-title
 
-      **tenant**
+      **user**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#return-tenant" title="Permalink to this return value"></a>
+        <a class="ansibleOptionLink" href="#return-user" title="Permalink to this return value"></a>
 
       .. ansible-option-type-line::
 
@@ -692,7 +758,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
       .. rst-class:: ansible-option-line
 
-      :ansible-option-returned-bold:`Returned:` on creation
+      :ansible-option-returned-bold:`Returned:` success (when :emphasis:`state=present`\ )
 
 
       .. raw:: html
@@ -709,7 +775,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Amy Liebowitz (@amylieb)
+- Jeff Kala (@jeffkala)
 
 
 

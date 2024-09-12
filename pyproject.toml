@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "5.2.1"
+version = "5.3.0"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"

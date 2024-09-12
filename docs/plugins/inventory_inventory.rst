@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -6,33 +5,14 @@
 .. |antsibull-internal-nbsp| unicode:: 0xA0
     :trim:
 
-.. role:: ansible-attribute-support-label
-.. role:: ansible-attribute-support-property
-.. role:: ansible-attribute-support-full
-.. role:: ansible-attribute-support-partial
-.. role:: ansible-attribute-support-none
-.. role:: ansible-attribute-support-na
-.. role:: ansible-option-type
-.. role:: ansible-option-elements
-.. role:: ansible-option-required
-.. role:: ansible-option-versionadded
-.. role:: ansible-option-aliases
-.. role:: ansible-option-choices
-.. role:: ansible-option-choices-default-mark
-.. role:: ansible-option-default-bold
-.. role:: ansible-option-configuration
-.. role:: ansible-option-returned-bold
-.. role:: ansible-option-sample-bold
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.inventory_inventory:
 
 .. Anchors: short name for ansible.builtin
-
-.. Anchors: aliases
-
-
 
 .. Title
 
@@ -42,7 +22,10 @@ networktocode.nautobot.inventory inventory -- Nautobot inventory source
 .. Collection note
 
 .. note::
-    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.3.0).
+    This inventory plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
 
@@ -64,6 +47,7 @@ Synopsis
 .. Description
 
 - Get inventory hosts from Nautobot
+- Note: If gathering an endpoint that has significant number of objects (such as interfaces), you may have failures caused by gathering too much data. Look to leverage the GraphQL inventory or gather data as a first task in the playbook rather than in inventory.
 
 
 .. Aliases
@@ -81,12 +65,13 @@ Synopsis
 Parameters
 ----------
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -106,9 +91,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-ansible_host_dns_name" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -151,9 +136,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-api_endpoint" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
 
 
@@ -195,9 +180,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
@@ -235,9 +220,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cache" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -295,9 +280,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cache_connection" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -356,9 +341,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cache_plugin" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -421,9 +406,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cache_prefix" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -448,21 +433,6 @@ Parameters
       :ansible-option-configuration:`Configuration:`
 
       - INI entries:
-
-        .. code-block::
-
-          [default]
-          fact_caching_prefix = ansible_inventory_
-
-
-        Removed in: version 2.16 of ansible.builtin
-
-
-        Why: Fixes typing error in INI section name
-
-        Alternative: Use the 'defaults' section instead
-
-
 
         .. code-block::
 
@@ -501,9 +471,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-cache_timeout" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
 
 
@@ -566,9 +536,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-compose" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
 
 
@@ -607,9 +577,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-config_context" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -654,9 +624,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-device_query_filters" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
 
 
@@ -695,9 +665,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-dns_name" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -742,9 +712,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-fetch_all" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -800,9 +770,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-flatten_config_context" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -818,7 +788,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :emphasis:`config\_context`\  is enabled, by default it's added as a host var named config\_context.
+      If :emphasis:`config\_context` is enabled, by default it's added as a host var named config\_context.
 
       If flatten\_config\_context is set to True, the config context variables will be added directly to the host instead.
 
@@ -850,9 +820,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-flatten_custom_fields" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -900,9 +870,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-flatten_local_context_data" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -918,7 +888,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :emphasis:`local\_context\_data`\  is enabled, by default it's added as a host var named local\_context\_data.
+      If :emphasis:`local\_context\_data` is enabled, by default it's added as a host var named local\_context\_data.
 
       If flatten\_local\_context\_data is set to True, the config context variables will be added directly to the host instead.
 
@@ -950,9 +920,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-follow_redirects" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -967,7 +937,7 @@ Parameters
 
       Determine how redirects are followed.
 
-      By default, \ :emphasis:`follow\_redirects`\  is set to uses urllib2 default behavior.
+      By default, :emphasis:`follow\_redirects` is set to uses urllib2 default behavior.
 
 
       .. rst-class:: ansible-option-line
@@ -1000,9 +970,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-group_by" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
 
 
@@ -1015,7 +985,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Keys used to create groups. The \ :emphasis:`plurals`\  option controls which of these are valid.
+      Keys used to create groups. The :emphasis:`plurals` option controls which of these are valid.
 
 
       .. rst-class:: ansible-option-line
@@ -1072,9 +1042,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-group_names_raw" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -1120,9 +1090,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-groups" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
 
 
@@ -1161,9 +1131,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-interfaces" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -1209,9 +1179,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=dictionary`
 
 
 
@@ -1234,11 +1204,15 @@ Parameters
       .. raw:: html
 
         </div>
-    
+
   * - .. raw:: html
 
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/default_value"></div>
+
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
 
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/default_value:
 
@@ -1250,9 +1224,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/default_value" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in ansible-core 2.12`
 
@@ -1264,13 +1238,17 @@ Parameters
 
         </div>
 
+      .. raw:: latex
+
+        \end{minipage}
+
     - .. raw:: html
 
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
       The default value when the host variable's value is an empty string.
 
-      This option is mutually exclusive with \ :literal:`trailing\_separator`\ .
+      This option is mutually exclusive with :ansopt:`networktocode.nautobot.inventory#inventory:keyed\_groups[].trailing\_separator`.
 
 
       .. raw:: html
@@ -1282,6 +1260,10 @@ Parameters
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/key"></div>
 
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
+
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/key:
 
       .. rst-class:: ansible-option-title
@@ -1292,9 +1274,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/key" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -1302,6 +1284,10 @@ Parameters
       .. raw:: html
 
         </div>
+
+      .. raw:: latex
+
+        \end{minipage}
 
     - .. raw:: html
 
@@ -1319,6 +1305,10 @@ Parameters
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/parent_group"></div>
 
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
+
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/parent_group:
 
       .. rst-class:: ansible-option-title
@@ -1329,9 +1319,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/parent_group" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -1339,6 +1329,10 @@ Parameters
       .. raw:: html
 
         </div>
+
+      .. raw:: latex
+
+        \end{minipage}
 
     - .. raw:: html
 
@@ -1356,6 +1350,10 @@ Parameters
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/prefix"></div>
 
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
+
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/prefix:
 
       .. rst-class:: ansible-option-title
@@ -1366,9 +1364,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/prefix" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -1376,6 +1374,10 @@ Parameters
       .. raw:: html
 
         </div>
+
+      .. raw:: latex
+
+        \end{minipage}
 
     - .. raw:: html
 
@@ -1397,6 +1399,10 @@ Parameters
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/separator"></div>
 
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
+
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/separator:
 
       .. rst-class:: ansible-option-title
@@ -1407,9 +1413,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/separator" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -1417,6 +1423,10 @@ Parameters
       .. raw:: html
 
         </div>
+
+      .. raw:: latex
+
+        \end{minipage}
 
     - .. raw:: html
 
@@ -1438,6 +1448,10 @@ Parameters
         <div class="ansible-option-indent"></div><div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-keyed_groups/trailing_separator"></div>
 
+      .. raw:: latex
+
+        \hspace{0.02\textwidth}\begin{minipage}[t]{0.3\textwidth}
+
       .. _ansible_collections.networktocode.nautobot.inventory_inventory__parameter-keyed_groups/trailing_separator:
 
       .. rst-class:: ansible-option-title
@@ -1448,9 +1462,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-keyed_groups/trailing_separator" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in ansible-core 2.12`
 
@@ -1462,13 +1476,17 @@ Parameters
 
         </div>
 
+      .. raw:: latex
+
+        \end{minipage}
+
     - .. raw:: html
 
         <div class="ansible-option-indent-desc"></div><div class="ansible-option-cell">
 
-      Set this option to \ :emphasis:`False`\  to omit the \ :literal:`separator`\  after the host variable when the value is an empty string.
+      Set this option to :ansval:`False` to omit the :ansopt:`networktocode.nautobot.inventory#inventory:keyed\_groups[].separator` after the host variable when the value is an empty string.
 
-      This option is mutually exclusive with \ :literal:`default\_value`\ .
+      This option is mutually exclusive with :ansopt:`networktocode.nautobot.inventory#inventory:keyed\_groups[].default\_value`.
 
 
       .. rst-class:: ansible-option-line
@@ -1499,9 +1517,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-leading_separator" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in ansible-core 2.11`
 
@@ -1557,9 +1575,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-max_uri_length" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -1603,9 +1621,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
 
 
@@ -1647,9 +1665,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-plurals" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -1669,7 +1687,7 @@ Parameters
 
       Group names will be plural (ie. "locations\_mylocation" instead of "location\_mylocation")
 
-      The choices of \ :emphasis:`group\_by`\  will be changed by this option.
+      The choices of :emphasis:`group\_by` will be changed by this option.
 
 
       .. rst-class:: ansible-option-line
@@ -1699,9 +1717,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-query_filters" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
 
 
@@ -1740,9 +1758,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-services" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 1.0.0`
 
@@ -1788,9 +1806,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-strict" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -1803,7 +1821,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      If \ :literal:`yes`\  make invalid entries a fatal error, otherwise skip and continue.
+      If :ansval:`yes` make invalid entries a fatal error, otherwise skip and continue.
 
       Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.
 
@@ -1835,9 +1853,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-timeout" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`integer`
+        :ansible-option-type:`integer`
 
 
 
@@ -1876,9 +1894,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -1922,9 +1940,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-use_extra_vars" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       :ansible-option-versionadded:`added in ansible-core 2.11`
 
@@ -1985,9 +2003,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -2000,7 +2018,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Allows connection when SSL certificates are not valid. Set to \ :literal:`false`\  when certificates are not trusted.
+      Allows connection when SSL certificates are not valid. Set to :literal:`false` when certificates are not trusted.
 
 
       .. rst-class:: ansible-option-line
@@ -2030,9 +2048,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-virtual_chassis_name" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
 
 
@@ -2077,9 +2095,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-vm_query_filters" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
 
 
@@ -2120,7 +2138,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
     # inventory.yml file in YAML format
     # Example command line: ansible-inventory -v --list -i inventory.yml
 
@@ -2171,7 +2188,6 @@ Examples
 
 
 
-
 .. Facts
 
 
@@ -2201,12 +2217,14 @@ Authors
 Collection links
 ~~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. ansible-links::
 
-  <p class="ansible-links">
-    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
-    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
-  </p>
+  - title: "Issue Tracker"
+    url: "https://github.com/nautobot/nautobot-ansible/issues"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/nautobot/nautobot-ansible"
+    external: true
+
 
 .. Parsing errors
-

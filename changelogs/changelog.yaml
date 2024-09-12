@@ -450,6 +450,30 @@ releases:
       - (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
       - (#348) Fixed GraphQL Inventory plugin bug when device platform is None
   5.3.0:
+    modules:
+    - description: Creates or removes Location assignments to VLANs from Nautobot
+      name: vlan_location
+      namespace: ''
+    - description: Creates or removes contacts from Nautobot
+      name: contact
+      namespace: ''
+    - description: Creates or removes teams from Nautobot
+      name: team
+      namespace: ''
+    - description: Creates or removes controllers from Nautobot
+      name: controller
+      namespace: ''
+    - description: Creates or removes users from Nautobot
+      name: admin_user
+      namespace: ''
+    - description: Creates or removes groups from Nautobot
+      name: admin_group
+      namespace: ''
+    - description: Creates or removes permissions from Nautobot
+      name: admin_permission
+      namespace: ''
     changes:
       minor_changes:
-        - (#326) Added `controller` module
+      - (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
+      - (#415) Added `role` option to `vm_interface` module
+      - (#416) Fixed `location_type` idempotency for `location` module

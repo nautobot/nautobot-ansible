@@ -10,14 +10,14 @@
 
 .. Anchors
 
-.. _ansible_collections.networktocode.nautobot.tenant_module:
+.. _ansible_collections.networktocode.nautobot.admin_permission_module:
 
 .. Anchors: short name for ansible.builtin
 
 .. Title
 
-networktocode.nautobot.tenant module -- Creates or removes tenants from Nautobot
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+networktocode.nautobot.admin_permission module -- Create, update or delete object permissions within Nautobot
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. Collection note
 
@@ -29,15 +29,15 @@ networktocode.nautobot.tenant module -- Creates or removes tenants from Nautobot
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
-    see :ref:`Requirements <ansible_collections.networktocode.nautobot.tenant_module_requirements>` for details.
+    see :ref:`Requirements <ansible_collections.networktocode.nautobot.admin_permission_module_requirements>` for details.
 
-    To use it in a playbook, specify: :code:`networktocode.nautobot.tenant`.
+    To use it in a playbook, specify: :code:`networktocode.nautobot.admin_permission`.
 
 .. version_added
 
 .. rst-class:: ansible-version-added
 
-New in networktocode.nautobot 1.0.0
+New in networktocode.nautobot 5.3.0
 
 .. contents::
    :local:
@@ -51,7 +51,7 @@ Synopsis
 
 .. Description
 
-- Creates or removes tenants from Nautobot
+- Creates, updates or removes object permissions from Nautobot
 
 
 .. Aliases
@@ -59,7 +59,7 @@ Synopsis
 
 .. Requirements
 
-.. _ansible_collections.networktocode.nautobot.tenant_module_requirements:
+.. _ansible_collections.networktocode.nautobot.admin_permission_module_requirements:
 
 Requirements
 ------------
@@ -91,9 +91,54 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-actions"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-actions:
+
+      .. rst-class:: ansible-option-title
+
+      **actions**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-actions" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string` / :ansible-option-required:`required`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The actions allowed for the permission definition.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`"view"`
+      - :ansible-option-choices-entry:`"add"`
+      - :ansible-option-choices-entry:`"change"`
+      - :ansible-option-choices-entry:`"delete"`
+      - :ansible-option-choices-entry:`"run"`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-api_version"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-api_version:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-api_version:
 
       .. rst-class:: ansible-option-title
 
@@ -128,24 +173,21 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-comments"></div>
+        <div class="ansibleOptionAnchor" id="parameter-constraints"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-comments:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-constraints:
 
       .. rst-class:: ansible-option-title
 
-      **comments**
+      **constraints**
 
       .. raw:: html
 
-        <a class="ansibleOptionLink" href="#parameter-comments" title="Permalink to this option"></a>
+        <a class="ansibleOptionLink" href="#parameter-constraints" title="Permalink to this option"></a>
 
       .. ansible-option-type-line::
 
-        :ansible-option-type:`string`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
+        :ansible-option-type:`json`
 
       .. raw:: html
 
@@ -155,44 +197,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Comments for the tenant. This can be markdown syntax
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-custom_fields"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-custom_fields:
-
-      .. rst-class:: ansible-option-title
-
-      **custom_fields**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-custom_fields" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`dictionary`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Must exist in Nautobot and in key/value format
+      The constraints for the permission definition.
 
 
       .. raw:: html
@@ -204,7 +209,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-description"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-description:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-description:
 
       .. rst-class:: ansible-option-title
 
@@ -218,8 +223,39 @@ Parameters
 
         :ansible-option-type:`string`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      .. raw:: html
 
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The description of the permission
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-enabled"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-enabled:
+
+      .. rst-class:: ansible-option-title
+
+      **enabled**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`boolean` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -229,7 +265,49 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The description of the tenant
+      If the permission is enabled or not.
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-choices:`Choices:`
+
+      - :ansible-option-choices-entry:`false`
+      - :ansible-option-choices-entry:`true`
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-groups"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-groups:
+
+      .. rst-class:: ansible-option-title
+
+      **groups**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-groups" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The groups assigned for the permission definition.
 
 
       .. raw:: html
@@ -241,7 +319,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-name"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-name:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-name:
 
       .. rst-class:: ansible-option-title
 
@@ -255,8 +333,39 @@ Parameters
 
         :ansible-option-type:`string` / :ansible-option-required:`required`
 
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
+      .. raw:: html
 
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The name of the permission
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-object_types"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-object_types:
+
+      .. rst-class:: ansible-option-title
+
+      **object_types**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-object_types" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
       .. raw:: html
 
@@ -266,7 +375,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Name of the tenant to be created
+      The permitted object\_types for the permission definition.
 
 
       .. raw:: html
@@ -278,7 +387,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-query_params"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-query_params:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-query_params:
 
       .. rst-class:: ansible-option-title
 
@@ -319,7 +428,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-state"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-state:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-state:
 
       .. rst-class:: ansible-option-title
 
@@ -359,83 +468,9 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tags"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-tags:
-
-      .. rst-class:: ansible-option-title
-
-      **tags**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tags" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`list` / :ansible-option-elements:`elements=any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Any tags that this item may need to be associated with
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="parameter-tenant_group"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-tenant_group:
-
-      .. rst-class:: ansible-option-title
-
-      **tenant_group**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#parameter-tenant_group" title="Permalink to this option"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`any`
-
-      :ansible-option-versionadded:`added in networktocode.nautobot 3.0.0`
-
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Tenant group this tenant should be in
-
-
-      .. raw:: html
-
-        </div>
-
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-token"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-token:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-token:
 
       .. rst-class:: ansible-option-title
 
@@ -471,7 +506,7 @@ Parameters
         <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-url"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-url:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-url:
 
       .. rst-class:: ansible-option-title
 
@@ -505,9 +540,43 @@ Parameters
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="parameter-users"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-users:
+
+      .. rst-class:: ansible-option-title
+
+      **users**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#parameter-users" title="Permalink to this option"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      The users assigned for the permission definition.
+
+
+      .. raw:: html
+
+        </div>
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="parameter-validate_certs"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__parameter-validate_certs:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__parameter-validate_certs:
 
       .. rst-class:: ansible-option-title
 
@@ -552,7 +621,6 @@ Notes
 -----
 
 .. note::
-   - Tags should be defined as a YAML list
    - This should be ran with connection :literal:`local` and hosts :literal:`localhost`
 
 .. Seealso
@@ -565,38 +633,47 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    - name: "Test Nautobot module"
+    - name: "Test Nautobot modules"
       connection: local
       hosts: localhost
       gather_facts: False
+
       tasks:
-        - name: Create tenant within Nautobot with only required information
-          networktocode.nautobot.tenant:
+        - name: Create object permission within Nautobot with only required information
+          networktocode.nautobot.admin_permission:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant ABC
+            name: read only
+            description: "ro permissions"
+            enabled: true
+            object_types:
+              - "dcim.device"
+            actions:
+              - view
+              - change
+            users:
+              - nb_user
+            groups:
+              - read_only_group
             state: present
 
-        - name: Delete tenant within nautobot
-          networktocode.nautobot.tenant:
+        - name: Delete permission
+          networktocode.nautobot.admin_permission:
             url: http://nautobot.local
             token: thisIsMyToken
-            name: Tenant ABC
+            name: read only
+            description: "ro permissions"
+            enabled: true
+            object_types:
+              - "dcim.device"
+            actions:
+              - view
+              - change
+            users:
+              - nb_user
+            groups:
+              - read_only_group
             state: absent
-
-        - name: Create tenant with all parameters
-          networktocode.nautobot.tenant:
-            url: http://nautobot.local
-            token: thisIsMyToken
-            name: Tenant ABC
-            tenant_group: Very Special Tenants
-            description: ABC Incorporated
-            comments: '### This tenant is super cool'
-            tags:
-              - tagA
-              - tagB
-              - tagC
-            state: present
 
 
 
@@ -623,9 +700,49 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
   * - .. raw:: html
 
         <div class="ansible-option-cell">
+        <div class="ansibleOptionAnchor" id="return-admin_permission"></div>
+
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__return-admin_permission:
+
+      .. rst-class:: ansible-option-title
+
+      **admin_permission**
+
+      .. raw:: html
+
+        <a class="ansibleOptionLink" href="#return-admin_permission" title="Permalink to this return value"></a>
+
+      .. ansible-option-type-line::
+
+        :ansible-option-type:`dictionary`
+
+      .. raw:: html
+
+        </div>
+
+    - .. raw:: html
+
+        <div class="ansible-option-cell">
+
+      Serialized object as created or already existent within Nautobot
+
+
+      .. rst-class:: ansible-option-line
+
+      :ansible-option-returned-bold:`Returned:` success (when :emphasis:`state=present`\ )
+
+
+      .. raw:: html
+
+        </div>
+
+
+  * - .. raw:: html
+
+        <div class="ansible-option-cell">
         <div class="ansibleOptionAnchor" id="return-msg"></div>
 
-      .. _ansible_collections.networktocode.nautobot.tenant_module__return-msg:
+      .. _ansible_collections.networktocode.nautobot.admin_permission_module__return-msg:
 
       .. rst-class:: ansible-option-title
 
@@ -660,46 +777,6 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
         </div>
 
 
-  * - .. raw:: html
-
-        <div class="ansible-option-cell">
-        <div class="ansibleOptionAnchor" id="return-tenant"></div>
-
-      .. _ansible_collections.networktocode.nautobot.tenant_module__return-tenant:
-
-      .. rst-class:: ansible-option-title
-
-      **tenant**
-
-      .. raw:: html
-
-        <a class="ansibleOptionLink" href="#return-tenant" title="Permalink to this return value"></a>
-
-      .. ansible-option-type-line::
-
-        :ansible-option-type:`dictionary`
-
-      .. raw:: html
-
-        </div>
-
-    - .. raw:: html
-
-        <div class="ansible-option-cell">
-
-      Serialized object as created or already existent within Nautobot
-
-
-      .. rst-class:: ansible-option-line
-
-      :ansible-option-returned-bold:`Returned:` on creation
-
-
-      .. raw:: html
-
-        </div>
-
-
 
 ..  Status (Presently only deprecated)
 
@@ -709,7 +786,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 Authors
 ~~~~~~~
 
-- Amy Liebowitz (@amylieb)
+- Jeff Kala (@jeffkala)
 
 
 
