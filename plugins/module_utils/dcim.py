@@ -17,6 +17,7 @@ NB_CONSOLE_PORTS = "console_ports"
 NB_CONSOLE_PORT_TEMPLATES = "console_port_templates"
 NB_CONSOLE_SERVER_PORTS = "console_server_ports"
 NB_CONSOLE_SERVER_PORT_TEMPLATES = "console_server_port_templates"
+NB_CONTROLLERS = "controllers"
 NB_DEVICE_BAYS = "device_bays"
 NB_DEVICE_BAY_TEMPLATES = "device_bay_templates"
 NB_DEVICE_REDUNDANCY_GROUPS = "device_redundancy_groups"
@@ -57,6 +58,7 @@ class NautobotDcimModule(NautobotModule):
         - console_port_templates
         - console_server_ports
         - console_server_port_templates
+        - controllers
         - device_bays
         - device_bay_templates
         - devices

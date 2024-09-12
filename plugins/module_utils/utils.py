@@ -39,6 +39,7 @@ API_APPS_ENDPOINTS = dict(
         "console_port_templates",
         "console_server_ports",
         "console_server_port_templates",
+        "controllers",
         "device_bays",
         "device_bay_templates",
         "devices",
@@ -66,12 +67,14 @@ API_APPS_ENDPOINTS = dict(
         "virtual_chassis",
     ],
     extras=[
+        "contacts",
         "custom_fields",
         "custom_field_choices",
         "relationship_associations",
         "roles",
         "statuses",
         "tags",
+        "teams",
     ],
     ipam=[
         "ip_addresses",
@@ -83,11 +86,13 @@ API_APPS_ENDPOINTS = dict(
         "services",
         "vlans",
         "vlan_groups",
+        "vlan_location_assignments",
         "vrfs",
     ],
     plugins=[],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
+    users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
 )
 
@@ -99,14 +104,17 @@ QUERY_TYPES = dict(
     cluster="name",
     cluster_group="name",
     cluster_type="name",
+    controller="name",
     device="name",
     role="name",
     device_type="model",
     export_targets="name",
     group="name",
+    groups="name",
     installed_device="name",
     import_targets="name",
     location="name",
+    location_type="name",
     manufacturer="name",
     master="name",
     nat_inside="address",
@@ -133,6 +141,7 @@ QUERY_TYPES = dict(
     tenant="name",
     tenant_group="name",
     time_zone="timezone",
+    user="username",
     virtual_chassis="name",
     virtual_machine="name",
     vlan="name",
@@ -149,6 +158,7 @@ CONVERT_TO_ID = {
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
+    "contacts": "contacts",
     "dcim.consoleport": "console_ports",
     "dcim.consoleserverport": "console_server_ports",
     "dcim.frontport": "front_ports",
@@ -161,6 +171,7 @@ CONVERT_TO_ID = {
     "device_type": "device_types",
     "export_targets": "route_targets",
     "group": "tenant_groups",
+    "groups": "groups",
     "import_targets": "route_targets",
     "installed_device": "devices",
     "interface": "interfaces",
@@ -169,6 +180,7 @@ CONVERT_TO_ID = {
     "ipaddresses": "ip_addresses",
     "lag": "interfaces",
     "location": "locations",
+    "location_type": "location_types",
     "manufacturer": "manufacturers",
     "master": "devices",
     "nat_inside": "ip_addresses",
@@ -197,11 +209,13 @@ CONVERT_TO_ID = {
     "status": "statuses",
     "tags": "tags",
     "tagged_vlans": "vlans",
+    "teams": "teams",
     "tenant": "tenants",
     "tenant_group": "tenant_groups",
     "termination_a": "interfaces",
     "termination_b": "interfaces",
     "untagged_vlan": "vlans",
+    "users": "users",
     "virtual_chassis": "virtual_chassis",
     "virtual_machine": "virtual_machines",
     "vlan": "vlans",
@@ -222,6 +236,8 @@ ENDPOINT_NAME_MAPPING = {
     "console_port_templates": "console_port_template",
     "console_server_ports": "console_server_port",
     "console_server_port_templates": "console_server_port_template",
+    "contacts": "contact",
+    "controllers": "controller",
     "custom_fields": "custom_field",
     "custom_field_choices": "custom_field_choice",
     "device_bays": "device_bay",
@@ -231,6 +247,7 @@ ENDPOINT_NAME_MAPPING = {
     "device_redundancy_groups": "device_redundancy_group",
     "front_ports": "front_port",
     "front_port_templates": "front_port_template",
+    "groups": "group",
     "interfaces": "interface",
     "interface_templates": "interface_template",
     "inventory_items": "inventory_item",
@@ -240,6 +257,7 @@ ENDPOINT_NAME_MAPPING = {
     "location_types": "location_type",
     "manufacturers": "manufacturer",
     "namespaces": "namespace",
+    "permissions": "permission",
     "platforms": "platform",
     "power_feeds": "power_feed",
     "power_outlets": "power_outlet",
@@ -260,12 +278,15 @@ ENDPOINT_NAME_MAPPING = {
     "services": "services",
     "statuses": "statuses",
     "tags": "tags",
+    "teams": "team",
     "tenants": "tenant",
     "tenant_groups": "tenant_group",
+    "users": "user",
     "virtual_chassis": "virtual_chassis",
     "virtual_machines": "virtual_machine",
     "vlans": "vlan",
     "vlan_groups": "vlan_group",
+    "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
 }
 
@@ -282,6 +303,9 @@ ALLOWED_QUERY_PARAMS = {
     "console_port_template": set(["name", "device_type"]),
     "console_server_port": set(["name", "device"]),
     "console_server_port_template": set(["name", "device_type"]),
+    "contact": set(["name", "phone", "email"]),
+    "contacts": set(["name", "phone", "email"]),
+    "controller": set(["name"]),
     "custom_field": set(["label"]),
     "custom_field_choice": set(["value", "custom_field"]),
     "dcim.consoleport": set(["name", "device"]),
@@ -299,6 +323,8 @@ ALLOWED_QUERY_PARAMS = {
     "device_type": set(["model"]),
     "front_port": set(["name", "device", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
+    "group": set(["name"]),
+    "groups": set(["name"]),
     "installed_device": set(["name"]),
     "interface": set(["name", "device", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
@@ -316,6 +342,7 @@ ALLOWED_QUERY_PARAMS = {
     "nat_inside": set(["namespace", "address"]),
     "parent_rack_group": set(["name"]),
     "parent_tenant_group": set(["name"]),
+    "permission": set(["name"]),
     "platform": set(["name"]),
     "power_feed": set(["name", "power_panel"]),
     "power_outlet": set(["name", "device"]),
@@ -339,15 +366,19 @@ ALLOWED_QUERY_PARAMS = {
     "statuses": set(["name"]),
     "tags": set(["name"]),
     "tagged_vlans": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
+    "team": set(["name", "phone", "email"]),
+    "teams": set(["name", "phone", "email"]),
     "tenant": set(["name"]),
     "tenant_group": set(["name"]),
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
+    "user": set(["username"]),
     "untagged_vlan": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "virtual_chassis": set(["name", "device"]),
     "virtual_machine": set(["name", "cluster"]),
     "vlan": set(["name", "location", "tenant", "vid", "vlan_group"]),
     "vlan_group": set(["name", "location"]),
+    "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
 }
@@ -417,6 +448,14 @@ NAUTOBOT_ARG_SPEC = dict(
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
     api_version=dict(type="str", required=False),
+)
+
+TAGS_ARG_SPEC = dict(
+    tags=dict(required=False, type="list", elements="raw"),
+)
+
+CUSTOM_FIELDS_ARG_SPEC = dict(
+    custom_fields=dict(required=False, type="dict"),
 )
 
 
@@ -658,7 +697,8 @@ class NautobotModule:
         result = self._nb_endpoint_get(nb_endpoint, query_params, match)
 
         if result:
-            return result.id
+            # Inherited django models(admin groups) that are not overloaded are integers, force the integer to string.
+            return str(result.id)
         else:
             return data
 

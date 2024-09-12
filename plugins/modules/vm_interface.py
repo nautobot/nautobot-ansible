@@ -85,6 +85,12 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
+  role:
+    description:
+      - The role of the interface
+    required: false
+    type: raw
+    version_added: "5.3.0"
 """
 
 EXAMPLES = r"""
@@ -125,6 +131,7 @@ EXAMPLES = r"""
           - name: VoIP
             location: "{{ test_location['key'] }}"
         mtu: 1600
+        role: Server
         mode: Tagged
         state: present
 
@@ -152,7 +159,11 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
     NautobotVirtualizationModule,
     NB_VM_INTERFACES,
@@ -166,6 +177,8 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             virtual_machine=dict(required=True, type="raw"),
@@ -178,8 +191,7 @@ def main():
             mode=dict(required=False, type="raw"),
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
-            tags=dict(required=False, type="list", elements="raw"),
-            custom_fields=dict(required=False, type="dict"),
+            role=dict(required=False, type="raw"),
         )
     )
 

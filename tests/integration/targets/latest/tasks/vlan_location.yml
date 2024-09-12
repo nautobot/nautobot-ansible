@@ -1,0 +1,90 @@
+---
+##
+##
+### PYNAUTOBOT_VLAN_LOCATION
+##
+##
+- block:
+  - set_fact:
+      test_vlan: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VLAN 600\"') }}"
+      test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
+
+  - name: "VLAN Location 1: Create VLAN Location assignment"
+    networktocode.nautobot.vlan_location:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      vlan: Test VLAN 600
+      location:
+        name: Child Test Location
+        parent: Parent Test Location
+      state: present
+    register: test_one
+
+  - name: "VLAN Location 1: ASSERT - Create VLAN Location assignment"
+    assert:
+      that:
+        - test_one is changed
+        - test_one['diff']['before']['state'] == "absent"
+        - test_one['diff']['after']['state'] == "present"
+        - test_one['vlan_location_assignments']['vlan'] == test_vlan['key']
+        - test_one['vlan_location_assignments']['location'] == test_location['key']
+        - test_one['msg'] == "vlan_location_assignments Test VLAN 600 (600): Child Test Location created"
+
+  - name: "VLAN Location 2: Create idempotent"
+    networktocode.nautobot.vlan_location:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      vlan: Test VLAN 600
+      location:
+        name: Child Test Location
+        parent: Parent Test Location
+      state: present
+    register: test_two
+  
+  - name: "VLAN Location 2: ASSERT - Create idempotent"
+    assert:
+      that:
+        - not test_two['changed']
+        - test_two['vlan_location_assignments']['vlan'] == test_vlan['key']
+        - test_two['vlan_location_assignments']['location'] == test_location['key']
+        - test_two['msg'] == "vlan_location_assignments Test VLAN 600 (600): Child Test Location already exists"
+  
+  - name: "VLAN Location 3: Delete VLAN Location assignment"
+    networktocode.nautobot.vlan_location:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      vlan: Test VLAN 600
+      location:
+        name: Child Test Location
+        parent: Parent Test Location
+      state: absent
+    register: test_three
+
+  - name: "VLAN Location 3: ASSERT - Delete VLAN Location assignment"
+    assert:
+      that:
+        - test_three is changed
+        - test_three['diff']['before']['state'] == "present"
+        - test_three['diff']['after']['state'] == "absent"
+        - "'deleted' in test_three['msg']"
+
+  - name: "VLAN Location 4: Delete idempotent"
+    networktocode.nautobot.vlan_location:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      vlan: Test VLAN 600
+      location:
+        name: Child Test Location
+        parent: Parent Test Location
+      state: absent
+    register: test_four
+
+  - name: "VLAN Location 4: ASSERT - Delete idempotent"
+    assert:
+      that:
+        - not test_four['changed']
+        - "'already absent' in test_four['msg']"
+
+  when:
+    # VLAN to Location assignments are only in Nautobot v2.2+
+    - "nautobot_version is version('2.2', '>=')"

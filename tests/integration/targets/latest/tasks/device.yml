@@ -11,7 +11,6 @@
     role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Core Switch\"') }}"
     vc1: "{{ lookup('networktocode.nautobot.lookup', 'virtual-chassis', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=VC1') }}"
     staged: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Staged') }}"
-    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
     device_redundancy_group: "{{ lookup('networktocode.nautobot.lookup', 'device-redundancy-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Device Redundancy Group\"') }}"
 
 - name: "1 - Device with required information"

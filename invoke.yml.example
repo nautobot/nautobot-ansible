@@ -1,0 +1,10 @@
+---
+# Copy this file to invoke.yml and update the variables to override the defaults from tasks.py
+# nautobot_ansible:
+#   nautobot_ver: "2.3.0"
+#   project_name: "nautobot_ansible"
+#   python_ver: "3.11"
+#   local: False
+#   compose_dir: "/full/path/to/nautobot-ansible/development"
+#   compose_files:
+#     - "docker-compose.yml"

@@ -36,7 +36,7 @@ def make_nautobot_calls(endpoint, payload):
     try:
         created = endpoint.create(payload)
     except pynautobot.RequestError as e:
-        print(e.error)
+        print(f"Error creating endpoint {endpoint} with payload {payload}: {e.error}")
         global ERRORS  # pylint: disable=global-statement
         ERRORS = True
         return
@@ -45,39 +45,50 @@ def make_nautobot_calls(endpoint, payload):
 
 
 # Create tags used in future tests
-create_tags = make_nautobot_calls(
-    nb.extras.tags,
-    [
-        {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
-        {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
-        {"name": "Third", "content_types": ["dcim.device"]},
-        {
-            "name": "Schnozzberry",
-            "content_types": [
-                "dcim.device",
-                "dcim.rack",
-                "ipam.ipaddress",
-                "ipam.prefix",
-                "ipam.service",
-                "ipam.vlan",
-                "ipam.vrf",
-                "dcim.devicebay",
-                "dcim.inventoryitem",
-                "virtualization.virtualmachine",
-                "virtualization.cluster",
-                "virtualization.vminterface",
-            ],
-        },
-        {"name": "Lookup", "content_types": ["dcim.device"]},
-        {"name": "Nolookup", "content_types": ["dcim.device"]},
-        {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "tagB", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "tagC", "content_types": ["dcim.device", "tenancy.tenant"]},
-        {"name": "Updated", "content_types": ["dcim.device", "ipam.ipaddress"]},
-    ],
-)
+tags = [
+    {"name": "First", "content_types": ["dcim.device", "ipam.routetarget"]},
+    {"name": "Second", "content_types": ["dcim.device", "ipam.routetarget"]},
+    {"name": "Third", "content_types": ["dcim.device"]},
+    {
+        "name": "Schnozzberry",
+        "content_types": [
+            "dcim.device",
+            "dcim.rack",
+            "ipam.ipaddress",
+            "ipam.prefix",
+            "ipam.service",
+            "ipam.vlan",
+            "ipam.vrf",
+            "dcim.devicebay",
+            "dcim.inventoryitem",
+            "virtualization.virtualmachine",
+            "virtualization.cluster",
+            "virtualization.vminterface",
+        ],
+    },
+    {"name": "Lookup", "content_types": ["dcim.device"]},
+    {"name": "Nolookup", "content_types": ["dcim.device"]},
+    {"name": "tagA", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "tagB", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "tagC", "content_types": ["dcim.device", "tenancy.tenant"]},
+    {"name": "Updated", "content_types": ["dcim.device", "ipam.ipaddress"]},
+]
+
+if nautobot_version >= version.parse("2.2"):
+    tags.append({"name": "Controller Tag", "content_types": ["dcim.controller"]})
+
+create_tags = make_nautobot_calls(nb.extras.tags, tags)
+
 
 # ORDER OF OPERATIONS FOR THE MOST PART
+# Create Admin Users
+admin_users = [{"username": "a_admin_user", "is_staff": True, "is_superuser": True}]
+created_admin_users = make_nautobot_calls(nb.users.users, admin_users)
+
+# Create Admin User Groups
+admin_groups = [{"name": "A Test Admin User Group"}]
+created_admin_groups = make_nautobot_calls(nb.users.groups, admin_groups)
+
 # Create TENANT GROUPS
 tenant_groups = [{"name": "Test Tenant Group"}]
 created_tenant_groups = make_nautobot_calls(nb.tenancy.tenant_groups, tenant_groups)
@@ -101,6 +112,10 @@ location_content_types = [
     "virtualization.cluster",
     "circuits.circuittermination",
 ]
+
+if nautobot_version >= version.parse("2.2"):
+    location_content_types.append("dcim.controller")
+
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
 created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
 parent_location_type = nb.dcim.location_types.get(name="My Parent Location Type")
@@ -187,6 +202,7 @@ vlans = [
         "vlan_group": test_vlan_group.id,
         "status": {"name": "Active"},
     },
+    {"name": "Test VLAN 600", "vid": 600, "status": {"name": "Active"}},
 ]
 created_vlans = make_nautobot_calls(nb.ipam.vlans, vlans)
 
@@ -244,10 +260,14 @@ device_roles = [
     {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
     {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
 ]
+
+if nautobot_version >= version.parse("2.2"):
+    device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
+
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
+
 # Device role variables to be used later on
 core_switch = nb.extras.roles.get(name="Core Switch")
-
 
 # Create Rack Groups
 rack_groups = [
@@ -595,6 +615,28 @@ custom_fields = [
     },
 ]
 created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
+
+###############
+# v2.2+ items #
+###############
+if nautobot_version >= version.parse("2.2"):
+    # Create Teams
+    teams = [{"name": "My Test Team"}]
+    created_teams = make_nautobot_calls(nb.extras.teams, teams)
+
+    # Create Contacts
+    contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
+    created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
+###############
+# v2.3+ items #
+###############
+if nautobot_version >= version.parse("2.3"):
+    # Create role for virtual machine interfaces
+    vm_interface_roles = [
+        {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
+    ]
+    created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

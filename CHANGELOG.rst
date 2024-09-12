@@ -5,6 +5,26 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.3.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.vlan_location - Creates or removes Location assignments to VLANs from Nautobot
+- networktocode.nautobot.contact - Creates or removes contacts from Nautobot
+- networktocode.nautobot.team - Creates or removes teams from Nautobot
+- networktocode.nautobot.controller - Creates or removes controllers from Nautobot
+- networktocode.nautobot.admin_user - Creates or removes users from Nautobot
+- networktocode.nautobot.admin_group - Creates or removes groups from Nautobot
+- networktocode.nautobot.admin_permission - Creates or removes permissions from Nautobot
+
+Minor Changes
+-------------
+- (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
+- (#415) Added `role` option to `vm_interface` module
+- (#416) Fixed `location_type` idempotency for `location` module
+
 v5.2.1
 ======
 

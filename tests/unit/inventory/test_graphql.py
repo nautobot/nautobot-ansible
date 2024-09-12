@@ -140,7 +140,34 @@ def test_group_by_empty_string(inventory_fixture, device_data):
 def test_add_ipv4(inventory_fixture, device_data):
     inventory_fixture.group_by = ["location"]
     inventory_fixture.create_groups(device_data)
-    inventory_fixture.add_ipv4_address(device_data)
+    inventory_fixture.add_ip_address(device_data, default_ip_version="ipv4")
+    mydevice_host = inventory_fixture.inventory.get_host("mydevice")
+    assert mydevice_host.vars.get("ansible_host") == "10.10.10.10"
+
+
+def test_add_ipv6(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["location"]
+    inventory_fixture.create_groups(device_data)
+    inventory_fixture.add_ip_address(device_data, default_ip_version="ipv6")
+    mydevice_host = inventory_fixture.inventory.get_host("mydevice")
+    assert mydevice_host.vars.get("ansible_host") == "2001:db8::1"
+
+
+def test_add_ip_address_no_default(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["location"]
+    inventory_fixture.create_groups(device_data)
+    inventory_fixture.add_ip_address(device_data)
+    mydevice_host = inventory_fixture.inventory.get_host("mydevice")
+    assert mydevice_host.vars.get("ansible_host") == "10.10.10.10"
+
+
+def test_add_ip_address_no_ipv6(inventory_fixture, device_data):
+    inventory_fixture.group_by = ["location"]
+
+    # Set the primary_ip6 to None as it would be if there was no ipv6 address assigned
+    device_data["primary_ip6"]["host"] = None
+    inventory_fixture.create_groups(device_data)
+    inventory_fixture.add_ip_address(device_data, default_ip_version="ipv6")
     mydevice_host = inventory_fixture.inventory.get_host("mydevice")
     assert mydevice_host.vars.get("ansible_host") == "10.10.10.10"
 

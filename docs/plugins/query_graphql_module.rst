@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -6,33 +5,14 @@
 .. |antsibull-internal-nbsp| unicode:: 0xA0
     :trim:
 
-.. role:: ansible-attribute-support-label
-.. role:: ansible-attribute-support-property
-.. role:: ansible-attribute-support-full
-.. role:: ansible-attribute-support-partial
-.. role:: ansible-attribute-support-none
-.. role:: ansible-attribute-support-na
-.. role:: ansible-option-type
-.. role:: ansible-option-elements
-.. role:: ansible-option-required
-.. role:: ansible-option-versionadded
-.. role:: ansible-option-aliases
-.. role:: ansible-option-choices
-.. role:: ansible-option-choices-default-mark
-.. role:: ansible-option-default-bold
-.. role:: ansible-option-configuration
-.. role:: ansible-option-returned-bold
-.. role:: ansible-option-sample-bold
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.query_graphql_module:
 
 .. Anchors: short name for ansible.builtin
-
-.. Anchors: aliases
-
-
 
 .. Title
 
@@ -42,7 +22,10 @@ networktocode.nautobot.query_graphql module -- Queries and returns elements from
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -96,12 +79,13 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -121,9 +105,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -155,9 +139,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-graph_variables" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       .. raw:: html
 
@@ -167,7 +151,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      Dictionary of keys/values to pass into the GraphQL query, see (\ https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html\ ) for more info
+      Dictionary of keys/values to pass into the GraphQL query, see (\ `https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html <https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html>`__\ ) for more info
 
 
       .. rst-class:: ansible-option-line
@@ -193,9 +177,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-query" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -205,7 +189,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The GraphQL formatted query string, see (\ https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html\ ) for more details.
+      The GraphQL formatted query string, see (\ `https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html <https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html>`__\ ) for more details.
 
 
       .. raw:: html
@@ -227,9 +211,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -261,9 +245,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-update_hostvars" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       .. raw:: html
 
@@ -303,9 +287,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-url" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -337,9 +321,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       .. raw:: html
 
@@ -381,54 +365,52 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-      # Make API Query without variables
-      - name: SET FACT OF STRING
-        set_fact:
-          query_string: |
-            query {
-              locations {
-                id
+    # Make API Query without variables
+    - name: SET FACT OF STRING
+      set_fact:
+        query_string: |
+          query {
+            locations {
+              id
+              name
+              parent {
                 name
-                parent {
+              }
+            }
+          }
+
+    # Make query to GraphQL Endpoint
+    - name: Obtain list of locations from Nautobot
+      networktocode.nautobot.query_graphql:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        query: "{{ query_string }}"
+
+
+    # Example with variables
+    - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
+      set_fact:
+        graph_variables:
+          $location_name: AMS01
+        query_string: |
+          query ($location_name: String!) {
+            locations (name: $location_name) {
+              id
+              name
+              parent {
                   name
-                }
               }
             }
+          }
 
-      # Make query to GraphQL Endpoint
-      - name: Obtain list of locations from Nautobot
-        networktocode.nautobot.query_graphql:
-          url: http://nautobot.local
-          token: thisIsMyToken
-          query: "{{ query_string }}"
-
-
-      # Example with variables
-      - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
-        set_fact:
-          graph_variables:
-            $location_name: AMS01
-          query_string: |
-            query ($location_name: String!) {
-              locations (name: $location_name) {
-                id
-                name
-                parent {
-                    name
-                }
-              }
-            }
-
-      # Get Response with variables and set to root keys
-      - name: Obtain list of devices at location in variables from Nautobot
-        networktocode.nautobot.query_graphql:
-          url: http://nautobot.local
-          token: thisIsMyToken
-          query: "{{ query_string }}"
-          graph_variables: "{{ graph_variables }}"
-          update_hostvars: yes
-
+    # Get Response with variables and set to root keys
+    - name: Obtain list of devices at location in variables from Nautobot
+      networktocode.nautobot.query_graphql:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        query: "{{ query_string }}"
+        graph_variables: "{{ graph_variables }}"
+        update_hostvars: yes
 
 
 
@@ -441,12 +423,13 @@ Return Values
 -------------
 Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Key
     - Description
@@ -466,9 +449,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       .. raw:: html
 
@@ -506,9 +489,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-graph_variables" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       .. raw:: html
 
@@ -546,9 +529,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-query" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -586,9 +569,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-url" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -629,12 +612,14 @@ Authors
 Collection links
 ~~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. ansible-links::
 
-  <p class="ansible-links">
-    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
-    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
-  </p>
+  - title: "Issue Tracker"
+    url: "https://github.com/nautobot/nautobot-ansible/issues"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/nautobot/nautobot-ansible"
+    external: true
+
 
 .. Parsing errors
-

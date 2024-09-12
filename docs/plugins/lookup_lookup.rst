@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -6,33 +5,14 @@
 .. |antsibull-internal-nbsp| unicode:: 0xA0
     :trim:
 
-.. role:: ansible-attribute-support-label
-.. role:: ansible-attribute-support-property
-.. role:: ansible-attribute-support-full
-.. role:: ansible-attribute-support-partial
-.. role:: ansible-attribute-support-none
-.. role:: ansible-attribute-support-na
-.. role:: ansible-option-type
-.. role:: ansible-option-elements
-.. role:: ansible-option-required
-.. role:: ansible-option-versionadded
-.. role:: ansible-option-aliases
-.. role:: ansible-option-choices
-.. role:: ansible-option-choices-default-mark
-.. role:: ansible-option-default-bold
-.. role:: ansible-option-configuration
-.. role:: ansible-option-returned-bold
-.. role:: ansible-option-sample-bold
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.lookup_lookup:
 
 .. Anchors: short name for ansible.builtin
-
-.. Anchors: aliases
-
-
 
 .. Title
 
@@ -42,7 +22,10 @@ networktocode.nautobot.lookup lookup -- Queries and returns elements from Nautob
 .. Collection note
 
 .. note::
-    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
+    This lookup plugin is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this lookup plugin,
@@ -92,12 +75,13 @@ The below requirements are needed on the local controller node that executes thi
 Terms
 -----
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -117,9 +101,9 @@ Terms
 
         <a class="ansibleOptionLink" href="#parameter-_terms" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
 
 
@@ -151,12 +135,13 @@ Keyword parameters
 This describes keyword parameters of the lookup. These are the values ``key1=value1``, ``key2=value2`` and so on in the following
 examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ...)`` and ``query('networktocode.nautobot.lookup', key1=value1, key2=value2, ...)``
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -176,9 +161,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-api_endpoint" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
 
 
@@ -220,9 +205,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-api_filter" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -257,9 +242,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-api_version" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       :ansible-option-versionadded:`added in networktocode.nautobot 4.1.0`
 
@@ -297,9 +282,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-num_retries" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -340,9 +325,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-plugin" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -377,9 +362,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-raw_data" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -414,9 +399,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-token" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -460,9 +445,9 @@ examples: ``lookup('networktocode.nautobot.lookup', key1=value1, key2=value2, ..
 
         <a class="ansibleOptionLink" href="#parameter-validate_certs" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
 
 
@@ -509,7 +494,6 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
     tasks:
       # query a list of devices
       - name: Obtain list of devices from Nautobot
@@ -564,7 +548,6 @@ Examples
 
 
 
-
 .. Facts
 
 
@@ -573,12 +556,13 @@ Examples
 Return Value
 ------------
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Key
     - Description
@@ -598,9 +582,9 @@ Return Value
 
         <a class="ansibleOptionLink" href="#return-_list" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
       .. raw:: html
 
@@ -643,12 +627,14 @@ Authors
 Collection links
 ~~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. ansible-links::
 
-  <p class="ansible-links">
-    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
-    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
-  </p>
+  - title: "Issue Tracker"
+    url: "https://github.com/nautobot/nautobot-ansible/issues"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/nautobot/nautobot-ansible"
+    external: true
+
 
 .. Parsing errors
-

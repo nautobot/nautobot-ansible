@@ -29,17 +29,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -66,17 +61,12 @@
                 "primary_ip4": "172.16.180.11",
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -90,17 +80,12 @@
                 "locations": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -133,17 +118,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -175,17 +155,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": [],
                 "tenant_group": "Test Tenant Group",
@@ -208,17 +183,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -237,17 +207,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -266,17 +231,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -295,17 +255,12 @@
                 ],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             },
@@ -319,17 +274,12 @@
                 "locations": [],
                 "status": {
                     "color": "4caf50",
-                    "created": "2024-03-27T00:00:00Z",
                     "custom_fields": {},
                     "description": "Unit is active",
                     "display": "Active",
-                    "id": "c3377784-68ed-4e2b-88fe-7095d0c2a195",
-                    "last_updated": "2024-03-27T17:37:43.694424Z",
                     "name": "Active",
-                    "natural_slug": "active_c337",
-                    "notes_url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/notes/",
-                    "object_type": "extras.status",
-                    "url": "http://127.0.0.1:8000/api/extras/statuses/c3377784-68ed-4e2b-88fe-7095d0c2a195/"
+                    "natural_slug": "active_e185",
+                    "object_type": "extras.status"
                 },
                 "tags": []
             }
@@ -338,38 +288,38 @@
     "active": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1",
             "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "all": {
         "children": [
-            "ungrouped",
-            "parent_test_location",
-            "main_test_rack",
-            "parent_rack_group",
-            "test_rack_role",
-            "core_switch",
-            "cisco_test",
-            "cisco",
             "active",
-            "parent_test_location_2",
-            "test_tenant",
-            "sub_test_rack",
             "child_rack_group",
+            "cisco",
+            "cisco_test",
+            "core_switch",
+            "is_virtual",
+            "main_test_rack",
             "nexus_parent",
+            "parent_rack_group",
+            "parent_test_location",
+            "parent_test_location_2",
+            "sub_test_rack",
             "test_cluster",
+            "test_cluster_2",
             "test_cluster_group",
             "test_cluster_type",
-            "is_virtual",
-            "test_cluster_2"
+            "test_rack_role",
+            "test_tenant",
+            "ungrouped"
         ]
     },
     "child_child_test_location": {
@@ -400,34 +350,34 @@
     "cisco": {
         "hosts": [
             "R1-Device",
-            "test100",
+            "Test Nexus One",
             "TestDeviceR1",
-            "Test Nexus One"
+            "test100"
         ]
     },
     "cisco_test": {
         "hosts": [
             "R1-Device",
-            "test100",
-            "TestDeviceR1"
+            "TestDeviceR1",
+            "test100"
         ]
     },
     "core_switch": {
         "hosts": [
             "R1-Device",
-            "test100",
+            "Test Nexus One",
             "TestDeviceR1",
-            "Test Nexus One"
+            "test100"
         ]
     },
     "is_virtual": {
         "hosts": [
+            "Test VM With Spaces",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "main_test_rack": {
@@ -481,8 +431,8 @@
     },
     "test_cluster_2": {
         "hosts": [
-            "test104-vm",
-            "Test VM With Spaces"
+            "Test VM With Spaces",
+            "test104-vm"
         ]
     },
     "test_cluster_group": {
@@ -495,12 +445,12 @@
     },
     "test_cluster_type": {
         "hosts": [
+            "Test VM With Spaces",
             "test100-vm",
             "test101-vm",
             "test102-vm",
             "test103-vm",
-            "test104-vm",
-            "Test VM With Spaces"
+            "test104-vm"
         ]
     },
     "test_rack_role": {

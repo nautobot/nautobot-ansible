@@ -1,0 +1,68 @@
+---
+##
+##
+### PYNAUTOBOT_GROUPS
+##
+##
+- name: "GROUPS 1: Necessary info creation"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test GROUPS One
+    state: present
+  register: test_one
+
+- name: "GROUPS 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['group']['name'] == "Test GROUPS One"
+      - test_one['msg'] == "group Test GROUPS One created"
+
+- name: "GROUPS 2: Create duplicate"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test GROUPS One
+    state: present
+  register: test_two
+
+- name: "GROUPS 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['group']['name'] == "Test GROUPS One"
+      - test_two['msg'] == "group Test GROUPS One already exists"
+
+# Update tests skipped due to only one parameter.
+
+- name: "GROUPS 3: ASSERT - Delete"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test GROUPS One"
+    state: absent
+  register: test_three
+
+- name: "GROUPS 3: ASSERT - Delete"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['group']['name'] == "Test GROUPS One"
+      - test_three['msg'] == "group Test GROUPS One deleted"
+
+- name: "GROUPS 4: ASSERT - Delete non existing"
+  networktocode.nautobot.admin_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test GROUPS One"
+    state: absent
+  register: test_four
+
+- name: "GROUPS 4: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "group Test GROUPS One already absent"

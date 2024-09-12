@@ -1,7 +1,9 @@
-
 .. Document meta section
 
 :orphan:
+
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Document body
 
@@ -19,7 +21,7 @@ The documentation for the filter plugin, networktocode.nautobot.graphql_string, 
 
 The errors were:
 
-* ::
+* .. code-block:: text
 
         Missing documentation or could not parse documentation: No documentation available for networktocode.nautobot.graphql_string (/root/.ansible/collections/ansible_collections/networktocode/nautobot/plugins/filter/graphql.py)
 

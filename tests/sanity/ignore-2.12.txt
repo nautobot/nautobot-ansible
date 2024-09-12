@@ -1,2 +1,0 @@
-tests/integration/entrypoint.sh shellcheck:SC2016 # Command requires what is there
-tests/integration/entrypoint.sh shellcheck:SC2086 # Command requires what is there

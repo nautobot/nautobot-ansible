@@ -99,13 +99,13 @@ It is almost the same as the ``QUERY_TYPE``, but this is used to build the query
 Create the Module Python File
 ----------------------------------
 
-Copy an existing module file from ``plugins/modules`` and name it ``versa_route_target.py``.
+Copy an existing module file from ``plugins/modules`` and name it ``route_target.py``.
 
 Now we need to update the ``DOCUMENTATION`` variable to match the module we're creating.
 
 .. note::
   There are builtin options that you shouldn't have to change such as ``url``, ``token``, ``state``,
-  ``query_params``, and ``validate_certs``.
+  ``query_params``, and ``validate_certs``. These are added to the documentation automatically with the ``extends_documentation_fragment`` option.
 
 .. code-block:: python
 
@@ -123,40 +123,26 @@ Now we need to update the ``DOCUMENTATION`` variable to match the module we're c
   requirements:
     - pynautobot
   version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
   options:
-    ...
-    data:
-      type: dict
+    name:
       description:
-        - Defines the route target configuration
-      suboptions:
-        name:
-          description:
-            - Route target name
-          required: true
-          type: str
-        tenant:
-          description:
-            - The tenant that the route target will be assigned to
-          required: false
-          type: raw
-        description:
-          description:
-            - Tag description
-          required: false
-          type: str
-        tags:
-          description:
-            - Any tags that the device may need to be associated with
-          required: false
-          type: list
-        custom_fields:
-          description:
-            - must exist in Nautobot
-          required: false
-          type: dict
+        - Route target name
       required: true
-    ...
+      type: str
+    tenant:
+      description:
+        - The tenant that the route target will be assigned to
+      required: false
+      type: raw
+    description:
+      description:
+        - Tag description
+      required: false
+      type: str
   """
 
 
@@ -243,16 +229,18 @@ Now we import the necessary components from the collection that make up the meat
 .. code-block:: python
 
   from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-      NautobotAnsibleModule,
       NAUTOBOT_ARG_SPEC,
+      TAGS_ARG_SPEC,
+      CUSTOM_FIELDS_ARG_SPEC,
   )
   from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
       NautobotIpamModule,
       NB_ROUTE_TARGETS,
   )
+  from ansible.module_utils.basic import AnsibleModule
   from copy import deepcopy
 
-We import our custom ``NautobotAnsibleModule`` to properly validate our data and our base argument spec (``NAUTOBOT_ARG_SPEC``) that all modules should implement.
+We import our base argument spec (``NAUTOBOT_ARG_SPEC``) that all modules should implement as well as the argument spec for tags and custom fields since this module will support those as well.
 
 .. code-block:: python
 
@@ -262,6 +250,7 @@ We import our custom ``NautobotAnsibleModule`` to properly validate our data and
       state=dict(required=False, default="present", choices=["present", "absent"]),
       query_params=dict(required=False, type="list", elements="str"),
       validate_certs=dict(type="raw", default=True),
+      api_version=dict(type="str", required=False),
   )
 
 Let's move onto the ``main()`` function in the module and take a look at the required argument spec.
@@ -273,6 +262,8 @@ Let's move onto the ``main()`` function in the module and take a look at the req
       Main entry point for module execution
       """
       argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+      argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+      argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
       argument_spec.update(
           dict(
               data=dict(
@@ -282,8 +273,6 @@ Let's move onto the ``main()`` function in the module and take a look at the req
                       name=dict(required=True, type="str"),
                       tenant=dict(required=False, type="raw"),
                       description=dict(required=False, type="str"),
-                      tags=dict(required=False, type="list"),
-                      custom_fields=dict(required=False, type="dict"),
                   ),
               ),
           )
@@ -296,12 +285,12 @@ the sanity tests that will run when a PR is submitted to the project and both th
 
   def main():
       ...
-      module = NautobotAnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+      module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
       route_target = NautobotIpamModule(module, NB_ROUTE_TARGETS)
       route_target.run()
 
-We then initialize our custom ``NautobotAnsibleModule`` that will be passed into our custom ``NautobotIpamModule`` and then execute the ``run`` method.
+We then initialize the standard ``AnsibleModule`` that will be passed into our custom ``NautobotIpamModule`` and then execute the ``run`` method.
 That is all that our module needs to implement at this point. We can test this locally by installing the collection locally and testing this within a playbook by following the directions :ref:`here<Build From Source>`.
 
 Here is the output of the a playbook I created using the examples we documented with the only changes being the ``url`` and ``token``.

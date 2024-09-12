@@ -164,6 +164,9 @@ def get_endpoint(nautobot, term):
     """
 
     endpoint_map = {
+        "admin-users": {"endpoint": nautobot.users.users},
+        "admin-groups": {"endpoint": nautobot.users.groups},
+        "admin-permissions": {"endpoint": nautobot.users.permissions},
         "aggregates": {"endpoint": nautobot.ipam.aggregates},
         "circuit-terminations": {"endpoint": nautobot.circuits.circuit_terminations},
         "circuit-types": {"endpoint": nautobot.circuits.circuit_types},
@@ -178,6 +181,7 @@ def get_endpoint(nautobot, term):
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
         "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
+        "contacts": {"endpoint": nautobot.extras.contacts},
         "custom-fields": {"endpoint": nautobot.extras.custom_fields},
         "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
@@ -225,6 +229,7 @@ def get_endpoint(nautobot, term):
         "services": {"endpoint": nautobot.ipam.services},
         "statuses": {"endpoint": nautobot.extras.statuses},
         "tags": {"endpoint": nautobot.extras.tags},
+        "teams": {"endpoint": nautobot.extras.teams},
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
         "tenants": {"endpoint": nautobot.tenancy.tenants},
         "topology-maps": {"endpoint": nautobot.extras.topology_maps},
@@ -233,6 +238,7 @@ def get_endpoint(nautobot, term):
         "virtualization-interfaces": {"endpoint": nautobot.virtualization.interfaces},
         "vlan-groups": {"endpoint": nautobot.ipam.vlan_groups},
         "vlans": {"endpoint": nautobot.ipam.vlans},
+        "vlan-location-assignments": {"endpoint": nautobot.ipam.vlan_location_assignments},
         "vrfs": {"endpoint": nautobot.ipam.vrfs},
     }
 

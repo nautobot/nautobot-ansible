@@ -29,9 +29,9 @@ jobs:
       INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ inputs.nautobot-version }}"
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Set up Python"
-        uses: "actions/setup-python@v3"
+        uses: "actions/setup-python@v5"
         with:
           python-version: "${{ inputs.python-version }}"
       - name: "Install invoke"

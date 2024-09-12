@@ -19,7 +19,7 @@ jobs:
     runs-on: "${{ inputs.runs-on }}"
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Install invoke"
         run: "pip install -U pip && pip install invoke"
       - name: "Linting"
@@ -30,14 +30,13 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
           - "3.10"
           - "3.11"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
       - name: "Check out repository code"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
       - name: "Install invoke"
         run: "pip install -U pip && pip install invoke"
       - name: "Tests"
@@ -52,14 +51,12 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
+          - "3.11"
         nautobot-version:
-          - "2.1"
-          # TODO: Change to 2.2 once it's released
-          # - "2.2"
+          - "2.3"
         ansible-version:
-          - "2.14"
-          - "2.15"
+          - "2.16"
+          - "2.17"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"
@@ -73,17 +70,16 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
           - "3.10"
           - "3.11"
         nautobot-version:
           - "2.0"
           - "2.1"
-          # TODO: Enable 2.2 once it's released
-          # - "2.2"
+          - "2.2"
+          - "2.3"
         ansible-version:
-          - "2.14"
-          - "2.15"
+          - "2.16"
+          - "2.17"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"

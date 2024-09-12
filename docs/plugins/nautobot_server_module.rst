@@ -1,4 +1,3 @@
-
 .. Document meta
 
 :orphan:
@@ -6,33 +5,14 @@
 .. |antsibull-internal-nbsp| unicode:: 0xA0
     :trim:
 
-.. role:: ansible-attribute-support-label
-.. role:: ansible-attribute-support-property
-.. role:: ansible-attribute-support-full
-.. role:: ansible-attribute-support-partial
-.. role:: ansible-attribute-support-none
-.. role:: ansible-attribute-support-na
-.. role:: ansible-option-type
-.. role:: ansible-option-elements
-.. role:: ansible-option-required
-.. role:: ansible-option-versionadded
-.. role:: ansible-option-aliases
-.. role:: ansible-option-choices
-.. role:: ansible-option-choices-default-mark
-.. role:: ansible-option-default-bold
-.. role:: ansible-option-configuration
-.. role:: ansible-option-returned-bold
-.. role:: ansible-option-sample-bold
+.. meta::
+  :antsibull-docs: 2.14.0
 
 .. Anchors
 
 .. _ansible_collections.networktocode.nautobot.nautobot_server_module:
 
 .. Anchors: short name for ansible.builtin
-
-.. Anchors: aliases
-
-
 
 .. Title
 
@@ -42,7 +22,10 @@ networktocode.nautobot.nautobot_server module -- Manages Nautobot Server applica
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/networktocode/nautobot>`_ (version 5.2.1).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+
+    It is not included in ``ansible-core``.
+    To check whether it is installed, run :code:`ansible-galaxy collection list`.
 
     To install it, use: :code:`ansible-galaxy collection install networktocode.nautobot`.
     You need further requirements to be able to use this module,
@@ -68,8 +51,8 @@ Synopsis
 
 .. Description
 
-- Manages Nautobot Server using the \ :literal:`nautobot-server`\  application frontend to \ :literal:`django-admin`\ . With the \ :literal:`virtualenv`\  parameter
-- all management commands will be executed by the given \ :literal:`virtualenv`\  installation.
+- Manages Nautobot Server using the :literal:`nautobot-server` application frontend to :literal:`django-admin`. With the :literal:`virtualenv` parameter
+- all management commands will be executed by the given :literal:`virtualenv` installation.
 
 
 .. Aliases
@@ -95,12 +78,13 @@ The below requirements are needed on the host that executes this module.
 Parameters
 ----------
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Parameter
     - Comments
@@ -120,9 +104,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-args" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`dictionary`
+        :ansible-option-type:`dictionary`
 
       .. raw:: html
 
@@ -133,8 +117,7 @@ Parameters
         <div class="ansible-option-cell">
 
       A dictionary of the optional arguments and their values used together with the command.
-          This translates {"name\_arg": "value\_arg"} to "--name\_arg value\_arg".
-          
+      This translates {"name\_arg": "value\_arg"} to "--name\_arg value\_arg".
 
 
       .. rst-class:: ansible-option-line
@@ -160,9 +143,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-command" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string` / :ansible-option-required:`required`
+        :ansible-option-type:`string` / :ansible-option-required:`required`
 
       .. raw:: html
 
@@ -172,11 +155,10 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The name of the Nautobot management command to run. Some command fully implemented are: \ :literal:`createsuperuser`\ ,
-          \ :literal:`migrate`\ , \ :literal:`makemigrations`\ , \ :literal:`post\_upgrade`\  and \ :literal:`collectstatic`\ .
-          Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
-          The module will perform some basic parameter validation, when applicable, to the commands.
-          
+      The name of the Nautobot management command to run. Some command fully implemented are: :literal:`createsuperuser`\ ,
+      :literal:`migrate`\ , :literal:`makemigrations`\ , :literal:`post\_upgrade` and :literal:`collectstatic`.
+      Other commands can be entered, but will fail if they're unknown to Nautobot or use positional arguments.
+      The module will perform some basic parameter validation, when applicable, to the commands.
 
 
       .. raw:: html
@@ -198,9 +180,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-db_password" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -232,9 +214,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-db_username" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -266,9 +248,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-flags" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
       .. raw:: html
 
@@ -278,7 +260,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      A list of flags to append to the command that is passed to \ :literal:`nautobot-server`\ , so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
+      A list of flags to append to the command that is passed to :literal:`nautobot-server`\ , so that ["flag1", "flag2"] is translated to "--flag1 --flag2".
 
 
       .. rst-class:: ansible-option-line
@@ -304,9 +286,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-positional_args" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
+        :ansible-option-type:`list` / :ansible-option-elements:`elements=string`
 
       .. raw:: html
 
@@ -316,7 +298,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      A list of additional arguments to append to the end of the command that is passed to \ :literal:`nautobot-server`\ .
+      A list of additional arguments to append to the end of the command that is passed to :literal:`nautobot-server`.
 
       These are appended to the end of the command, so that ["arg1", "arg2"] is translated to "arg1 arg2".
 
@@ -348,13 +330,11 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-project_path" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-aliases:`aliases: app_path, chdir`
+        :ansible-option-aliases:`aliases: app_path, chdir`
 
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`path`
+        :ansible-option-type:`path`
 
       .. raw:: html
 
@@ -364,7 +344,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      The path to the root of the Nautobot application where \ :strong:`nautobot-server`\  lives.
+      The path to the root of the Nautobot application where :strong:`nautobot-server` lives.
 
 
       .. rst-class:: ansible-option-line
@@ -392,13 +372,11 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-pythonpath" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-aliases:`aliases: python_path`
+        :ansible-option-aliases:`aliases: python_path`
 
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`path`
+        :ansible-option-type:`path`
 
       .. raw:: html
 
@@ -430,9 +408,9 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-settings" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`path`
+        :ansible-option-type:`path`
 
       .. raw:: html
 
@@ -466,13 +444,11 @@ Parameters
 
         <a class="ansibleOptionLink" href="#parameter-virtualenv" title="Permalink to this option"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-aliases:`aliases: virtual_env`
+        :ansible-option-aliases:`aliases: virtual_env`
 
-      .. rst-class:: ansible-option-type-line
-
-      :ansible-option-type:`path`
+        :ansible-option-type:`path`
 
       .. raw:: html
 
@@ -482,7 +458,7 @@ Parameters
 
         <div class="ansible-option-cell">
 
-      An optional path to a \ :emphasis:`virtualenv`\  installation to use while running the nautobot-server application.
+      An optional path to a :emphasis:`virtualenv` installation to use while running the nautobot-server application.
 
 
       .. raw:: html
@@ -499,9 +475,9 @@ Notes
 -----
 
 .. note::
-   - Inspired from Django\_manage (\ https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py\ ).
-   - To be able to use the \ :literal:`collectstatic`\  command, you must have enabled staticfiles in your nautbot\_config.py.
-   - Your \ :literal:`nautobot-server`\  application must be executable (rwxr-xr-x), and must have a valid shebang.
+   - Inspired from Django\_manage (\ `https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web\_infrastructure/django\_manage.py <https://github.com/ansible-collections/community.general/blob/main/plugins/modules/web_infrastructure/django_manage.py>`__\ ).
+   - To be able to use the :literal:`collectstatic` command, you must have enabled staticfiles in your nautbot\_config.py.
+   - Your :literal:`nautobot-server` application must be executable (rwxr-xr-x), and must have a valid shebang.
 
 .. Seealso
 
@@ -513,36 +489,34 @@ Examples
 
 .. code-block:: yaml+jinja
 
-    
-      - name: Createsuperuser
-        networktocode.nautobot.nautobot_server:
-          command: "createsuperuser"
-          args:
-            email: "admin93@example.com"
-            username: "superadmin7"
-          db_password: "{{ db_password }}"
-      - name: Collectstatic
-        networktocode.nautobot.nautobot_server:
-          command: "collectstatic"
-          db_password: "{{ db_password }}"
-      - name: Post Upgrade
-        networktocode.nautobot.nautobot_server:
-          command: "post_upgrade"
-      - name: Make Migrations for Plugin
-        networktocode.nautobot.nautobot_server:
-          command: "makemigrations"
-          positional_args: ["my_plugin_name"]
-          db_password: "{{ db_password }}"
-      - name: Migrate Plugin
-        networktocode.nautobot.nautobot_server:
-          command: "migrate"
-          args:
-            verbosity: 3
-          flags: ["merge"]
-          positional_args: ["my_plugin_name"]
-          db_username: "{{ db_username }}"
-          db_password: "{{ db_password }}"
-
+    - name: Createsuperuser
+      networktocode.nautobot.nautobot_server:
+        command: "createsuperuser"
+        args:
+          email: "admin93@example.com"
+          username: "superadmin7"
+        db_password: "{{ db_password }}"
+    - name: Collectstatic
+      networktocode.nautobot.nautobot_server:
+        command: "collectstatic"
+        db_password: "{{ db_password }}"
+    - name: Post Upgrade
+      networktocode.nautobot.nautobot_server:
+        command: "post_upgrade"
+    - name: Make Migrations for Plugin
+      networktocode.nautobot.nautobot_server:
+        command: "makemigrations"
+        positional_args: ["my_plugin_name"]
+        db_password: "{{ db_password }}"
+    - name: Migrate Plugin
+      networktocode.nautobot.nautobot_server:
+        command: "migrate"
+        args:
+          verbosity: 3
+        flags: ["merge"]
+        positional_args: ["my_plugin_name"]
+        db_username: "{{ db_username }}"
+        db_password: "{{ db_password }}"
 
 
 
@@ -555,12 +529,13 @@ Return Values
 -------------
 Common return values are documented :ref:`here <common_return_values>`, the following are the fields unique to this module:
 
-.. rst-class:: ansible-option-table
+.. tabularcolumns:: \X{1}{3}\X{2}{3}
 
 .. list-table::
   :width: 100%
   :widths: auto
   :header-rows: 1
+  :class: longtable ansible-option-table
 
   * - Key
     - Description
@@ -580,9 +555,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-changed" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`boolean`
+        :ansible-option-type:`boolean`
 
       .. raw:: html
 
@@ -625,9 +600,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-cmd" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -670,9 +645,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-out" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -715,9 +690,9 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <a class="ansibleOptionLink" href="#return-project_path" title="Permalink to this return value"></a>
 
-      .. rst-class:: ansible-option-type-line
+      .. ansible-option-type-line::
 
-      :ansible-option-type:`string`
+        :ansible-option-type:`string`
 
       .. raw:: html
 
@@ -727,7 +702,7 @@ Common return values are documented :ref:`here <common_return_values>`, the foll
 
         <div class="ansible-option-cell">
 
-      The path to the root of the Nautobot application where \ :strong:`nautobot-server`\  lives.
+      The path to the root of the Nautobot application where :strong:`nautobot-server` lives.
 
 
       .. rst-class:: ansible-option-line
@@ -763,12 +738,14 @@ Authors
 Collection links
 ~~~~~~~~~~~~~~~~
 
-.. raw:: html
+.. ansible-links::
 
-  <p class="ansible-links">
-    <a href="https://github.com/nautobot/nautobot-ansible/issues" aria-role="button" target="_blank" rel="noopener external">Issue Tracker</a>
-    <a href="https://github.com/nautobot/nautobot-ansible" aria-role="button" target="_blank" rel="noopener external">Repository (Sources)</a>
-  </p>
+  - title: "Issue Tracker"
+    url: "https://github.com/nautobot/nautobot-ansible/issues"
+    external: true
+  - title: "Repository (Sources)"
+    url: "https://github.com/nautobot/nautobot-ansible"
+    external: true
+
 
 .. Parsing errors
-

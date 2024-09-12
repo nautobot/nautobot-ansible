@@ -202,7 +202,7 @@
   vars:
     vlan_group2: "{{ lookup('networktocode.nautobot.lookup', 'vlan-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Vlan Group 2\"') }}"
 
-- name: "VLAN 5: ASSERT - Delete more than one result"
+- name: "VLAN 5: Delete more than one result"
   networktocode.nautobot.vlan:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -217,7 +217,7 @@
       - test_five is failed
       - test_five['msg'] == "More than one result returned for Test VLAN 500"
 
-- name: "VLAN 6: ASSERT - Delete"
+- name: "VLAN 6: Delete"
   networktocode.nautobot.vlan:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"

@@ -24,6 +24,7 @@ NB_RIRS = "rirs"
 NB_ROUTE_TARGETS = "route_targets"
 NB_VLANS = "vlans"
 NB_VLAN_GROUPS = "vlan_groups"
+NB_VLAN_LOCATIONS = "vlan_location_assignments"
 NB_VRFS = "vrfs"
 NB_SERVICES = "services"
 
@@ -144,8 +145,14 @@ class NautobotIpamModule(NautobotModule):
             name = data.get("address")
         elif self.endpoint in ["prefixes"]:
             name = data.get("prefix")
+        elif self.endpoint == "vlan_location_assignments":
+            name = data.get("display")
         else:
             name = data.get("name")
+
+        if self.endpoint in ["vlans", "prefixes"] and self.module.params.get("location"):
+            # Need to force the api_version to 2.0 when using `location` parameter
+            self.nb.api_version = "2.0"
 
         if self.module.params.get("first_available"):
             first_available = True
