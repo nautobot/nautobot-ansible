@@ -113,7 +113,7 @@
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
-                                    "display": "172.16.0.0/12",
+                                    "display": "172.16.0.0/12: Global",
                                     "ip_version": 4,
                                     "namespace": {
                                         "custom_fields": {},
@@ -270,7 +270,7 @@
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
-                                    "display": "172.16.0.0/12",
+                                    "display": "172.16.0.0/12: Global",
                                     "ip_version": 4,
                                     "namespace": {
                                         "custom_fields": {},
@@ -728,7 +728,7 @@
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
-                                    "display": "172.16.0.0/12",
+                                    "display": "172.16.0.0/12: Global",
                                     "ip_version": 4,
                                     "namespace": {
                                         "custom_fields": {},
@@ -889,7 +889,7 @@
                                     "custom_fields": {},
                                     "date_allocated": null,
                                     "description": "",
-                                    "display": "2001::/64",
+                                    "display": "2001::/64: Global",
                                     "ip_version": 6,
                                     "namespace": {
                                         "custom_fields": {},
