@@ -481,3 +481,4 @@ releases:
     changes:
       minor_changes:
       - (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
+      - (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
