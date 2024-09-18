@@ -172,6 +172,26 @@ def test_add_ip_address_no_ipv6(inventory_fixture, device_data):
     assert mydevice_host.vars.get("ansible_host") == "10.10.10.10"
 
 
+def test_add_ip_address_ipv4_none(inventory_fixture, device_data):
+    """Regression bug test for issue #426."""
+    # Set the primary_ip4 to None
+    device_data["primary_ip4"] = None
+    try:
+        inventory_fixture.add_ip_address(device_data, default_ip_version="ipv4")
+    except AttributeError:
+        pytest.fail("Hit regression bug, see issue #426.")
+
+
+def test_add_ip_address_ipv6_none(inventory_fixture, device_data):
+    """Regression bug test for issue #426."""
+    # Set the primary_ip6 to None
+    device_data["primary_ip6"] = None
+    try:
+        inventory_fixture.add_ip_address(device_data, default_ip_version="ipv6")
+    except AttributeError:
+        pytest.fail("Hit regression bug, see issue #426.")
+
+
 def test_ansible_platform(inventory_fixture, device_data):
     inventory_fixture.group_by = ["location"]
     inventory_fixture.create_groups(device_data)

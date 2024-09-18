@@ -249,6 +249,7 @@ GROUP_BY = {
     "role": "name",
     "location": "id",
 }
+DEFAULT_IP_VERSION_CHOICES = ["IPv4", "ipv4", "IPv6", "ipv6"]
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -278,15 +279,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Check to see what the primary IP host addition is, first case is IPv4, which is the default
         order_of_preference = ["primary_ip4"]
 
-        # if default_ip_version is IPv4, prepend, else add to the end
+        # if default_ip_version is IPv6, prepend, else add to the end
         if default_ip_version.lower() == "ipv6":
             order_of_preference.insert(0, "primary_ip6")
         else:
             order_of_preference.append("primary_ip6")
 
-        # Check of the address types in the order preference and if it find the first one, add that primary IP to the host
+        # Check of the address types in the order of preference and if it finds the first one, add that primary IP to the host
         for address_type in order_of_preference:
-            if address_type in device and device[address_type].get("host"):
+            if address_type in device and device[address_type] and device[address_type].get("host"):
                 self.add_variable(device["name"], device[address_type]["host"], "ansible_host")
                 return
 
@@ -457,6 +458,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if token:
             self.headers.update({"Authorization": "Token %s" % token})
 
+        self.default_ip_version = self.get_option("default_ip_version")
+        if self.default_ip_version not in DEFAULT_IP_VERSION_CHOICES:
+            raise AnsibleError(f"Invalid choice for default_ip_version: {self.default_ip_version}")
         self.gql_query = self.get_option("query")
         self.group_by = self.get_option("group_by")
         self.follow_redirects = self.get_option("follow_redirects")

@@ -5,6 +5,14 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.3.1
+======
+
+Minor Changes
+-------------
+- (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
+- (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
+
 v5.3.0
 ======
 

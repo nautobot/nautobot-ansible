@@ -22,7 +22,7 @@ networktocode.nautobot.rack_group module -- Create, update or delete racks group
 .. Collection note
 
 .. note::
-    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.0).
+    This module is part of the `networktocode.nautobot collection <https://galaxy.ansible.com/ui/repo/published/networktocode/nautobot/>`_ (version 5.3.1).
 
     It is not included in ``ansible-core``.
     To check whether it is installed, run :code:`ansible-galaxy collection list`.
