@@ -86,7 +86,11 @@ admin_users = [{"username": "a_admin_user", "is_staff": True, "is_superuser": Tr
 created_admin_users = make_nautobot_calls(nb.users.users, admin_users)
 
 # Create Admin User Groups
-admin_groups = [{"name": "A Test Admin User Group"}]
+admin_groups = [
+    {"name": "A Test Admin User Group"},
+    {"name": "A Test Admin User Group 2"},
+    {"name": "A Test Admin User Group 3"},
+]
 created_admin_groups = make_nautobot_calls(nb.users.groups, admin_groups)
 
 # Create TENANT GROUPS

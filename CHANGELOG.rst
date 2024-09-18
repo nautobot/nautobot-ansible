@@ -5,6 +5,13 @@ networktocode.nautobot Release Notes
 .. contents:: Topics
 
 
+v5.3.1
+======
+
+Minor Changes
+-------------
+- (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
+
 v5.3.0
 ======
 

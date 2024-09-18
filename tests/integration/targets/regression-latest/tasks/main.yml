@@ -240,3 +240,18 @@
       assert:
         that:
           - '"Invalid version" in test_invalid_api_version["msg"]'
+
+    - name: Verify that we can convert a list of strings to ID (Issue 421)
+      networktocode.nautobot.admin_permission:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Regression Permission Test One"
+        groups:
+          - "A Test Admin User Group"
+          - "A Test Admin User Group 2"
+          - "A Test Admin User Group 3"
+        actions:
+          - view
+        enabled: true
+        object_types:
+          - "dcim.device"

@@ -886,7 +886,7 @@ class NautobotModule:
                         else:
                             # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
                             # of approved query types, then it defaults to a q search
-                            temp_dict = {QUERY_TYPES.get(k, "q"): search}
+                            temp_dict = {QUERY_TYPES.get(k, "q"): list_item}
 
                         query_id = self._nb_endpoint_get(nb_endpoint, temp_dict, k)
                         if query_id:

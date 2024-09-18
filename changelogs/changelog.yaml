@@ -477,3 +477,7 @@ releases:
       - (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
       - (#415) Added `role` option to `vm_interface` module
       - (#416) Fixed `location_type` idempotency for `location` module
+  5.3.1:
+    changes:
+      minor_changes:
+      - (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
