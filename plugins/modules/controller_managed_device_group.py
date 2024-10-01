@@ -43,7 +43,7 @@ options:
     description:
       - parent group of the managed device group
     required: false
-    type: string
+    type: str
 """
 
 EXAMPLES = r"""
