@@ -18,7 +18,7 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Sven Winkelmann (@pugnacity)
-version_added: "5.3.2"
+version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
