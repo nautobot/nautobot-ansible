@@ -1,0 +1,36 @@
+---
+- debug:
+    msg: "{{ nautobot_version }}"
+
+- block:
+  - set_fact:
+      parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
+
+  - name: "CONTROLLER 1: Necessary info creation"
+    networktocode.nautobot.controller:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller One
+      location: "Parent Test Location"
+      state: present
+      status: "Active"
+    register: test_one_controller
+
+  - name: "CONTROLLER 2: Create Group"
+    networktocode.nautobot.controller_managed_device_groups:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Group One
+      controller: Test Controller One
+      state: present
+    register: test_two
+
+  - name: "CONTROLLER 2: ASSERT - Create Group"
+    assert:
+      that:
+        - test_two['changed']
+        - test_two['controller_managed_device_group']['name'] == "Test Controller Group One"
+
+  when:
+    # Controllers are only available on Nautobot 2.2+
+    - "nautobot_version is version('2.2', '>=')"
