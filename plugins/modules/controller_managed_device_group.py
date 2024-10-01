@@ -44,6 +44,11 @@ options:
       - parent group of the managed device group
     required: false
     type: str
+  devices:
+    description:
+      - devices which should be assigend to this group
+    type: list
+    elements: str
 """
 
 EXAMPLES = r"""
@@ -106,6 +111,7 @@ def main():
             name=dict(required=True, type="str"),
             controller=dict(required=True, type="str"),
             weight=dict(required=False, type="int"),
+            devices=dict(required=False, type="list", elements="str"),
             parent=dict(required=False, type="str"),
         )
     )
