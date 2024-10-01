@@ -22,6 +22,8 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
   termination_a_type:
     description:
