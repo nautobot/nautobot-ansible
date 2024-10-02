@@ -158,6 +158,12 @@ options:
     required: false
     type: raw
     version_added: "5.1.0"
+  controller_managed_device_group:
+    description:
+      - Device controller_managed_device_group the device will be assigned to
+    required: false
+    type: raw
+    version_added: "5.4.0"
   device_redundancy_group_priority:
     description:
       - Priority in the assigned device redundancy group
@@ -290,6 +296,7 @@ def main():
             vc_priority=dict(required=False, type="int"),
             comments=dict(required=False, type="str"),
             local_config_context_data=dict(required=False, type="dict"),
+            controller_managed_device_group=dict(required=False, type="raw"),
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
         )
