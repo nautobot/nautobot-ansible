@@ -70,7 +70,8 @@ EXAMPLES = r"""
       networktocode.nautobot.controller_managed_device_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: test_controller_group_3
+        name: "group_1"
+        controller: test_controller_group_3
         state: absent
 
 """
