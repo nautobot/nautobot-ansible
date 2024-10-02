@@ -634,27 +634,14 @@ if nautobot_version >= version.parse("2.2"):
 
     # Create Controller
     controller = [
-        {
-            "name": "controller_one", 
-            "location": "Child Test Location", 
-            "status": "Active" 
-        },
-        {
-            "name": "controller_two", 
-            "location": "Child Test Location", 
-            "status": "Active" 
-        } 
+        {"name": "controller_one", "location": "Child Test Location", "status": "Active"},
+        {"name": "controller_two", "location": "Child Test Location", "status": "Active"},
     ]
     created_controller = make_nautobot_calls(nb.extras.controller, controller)
 
     # Create Controller Managed Device Groups
-    controller_device_group = [
-        {
-            "name": "controller_group_one", 
-            "controller": "controller_one"
-        } 
-    ]
-    created_controller_device_group= make_nautobot_calls(nb.extras.controller_device_group, controller_device_group)
+    controller_device_group = [{"name": "controller_group_one", "controller": "controller_one"}]
+    created_controller_device_group = make_nautobot_calls(nb.extras.controller_device_group, controller_device_group)
 
 ###############
 # v2.3+ items #
