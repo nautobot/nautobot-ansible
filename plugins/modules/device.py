@@ -161,6 +161,7 @@ options:
   controller_managed_device_group:
     description:
       - Device controller_managed_device_group the device will be assigned to
+      - Requires Nautobot C(v2.2) or later
     required: false
     type: raw
     version_added: "5.4.0"
