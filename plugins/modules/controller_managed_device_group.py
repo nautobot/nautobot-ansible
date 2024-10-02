@@ -66,8 +66,8 @@ EXAMPLES = r"""
         controller: my_controller
         state: present
 
-    - name: Delete controller within nautobot
-      networktocode.nautobot.controller:
+    - name: Delete controller managed device group within nautobot
+      networktocode.nautobot.controller_managed_device_group:
         url: http://nautobot.local
         token: thisIsMyToken
         name: test_controller_group_3
