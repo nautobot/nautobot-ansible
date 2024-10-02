@@ -634,8 +634,8 @@ if nautobot_version >= version.parse("2.2"):
 
     # Create Controller
     controller = [
-        {"name": "controller_one", "location": "Child Test Location", "status": "Active"},
-        {"name": "controller_two", "location": "Child Test Location", "status": "Active"},
+        {"name": "controller_one", "location": "Child Test Location", "status": {"name": "Active"}},
+        {"name": "controller_two", "location": "Child Test Location", "status": {"name": "Active"}},
     ]
     created_controller = make_nautobot_calls(nb.extras.controller, controller)
 
