@@ -118,8 +118,8 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    controller = NautobotDcimModule(module, NB_CONTROLLER_MANAGED_DEVICE_GROUPS)
-    controller.run()
+    controller_group = NautobotDcimModule(module, NB_CONTROLLER_MANAGED_DEVICE_GROUPS)
+    controller_group.run()
 
 
 if __name__ == "__main__":  # pragma: no cover
