@@ -3,34 +3,86 @@
     msg: "{{ nautobot_version }}"
 
 - block:
-  - set_fact:
-      parent_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Parent Test Location\"') }}"
-
-  - name: "CONTROLLER 1: Necessary info creation"
-    networktocode.nautobot.controller:
-      url: "{{ nautobot_url }}"
-      token: "{{ nautobot_token }}"
-      name: Test Controller One
-      location: "Parent Test Location"
-      state: present
-      status: "Active"
-    register: test_one_controller
-
-  - name: "CONTROLLER 2: Create Group"
+  - name: "CONTROLLER GROUP 1: Create Group"
     networktocode.nautobot.controller_managed_device_groups:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
-      controller: Test Controller One
+      controller: controller_one
+      state: present
+    register: test_one
+
+  - name: "CONTROLLER 1: ASSERT - Create Group"
+    assert:
+      that:
+        - test_one['changed']
+        - test_one['controller_managed_device_group']['name'] == "Test Controller Group One"
+
+  - name: "CONTROLLER GROUP 2: Create duplicate"
+    networktocode.nautobot.controller_managed_device_groups:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Group One
+      controller: controller_one
       state: present
     register: test_two
 
-  - name: "CONTROLLER 2: ASSERT - Create Group"
+  - name: "CONTROLLER 2: ASSERT - Create duplicate"
     assert:
       that:
-        - test_two['changed']
-        - test_two['controller_managed_device_group']['name'] == "Test Controller Group One"
+        - not test_two['changed']
+        - test_two['controller_managed_device_groups']['name'] == "Test Controller Group One"
+        - test_two['msg'] == "Test Controller Group One already exists"
 
+  - name: "CONTROLLER GROUP 3: Update"
+    networktocode.nautobot.controller_managed_device_groups:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Group One
+      controller: controller_two
+    register: test_three
+
+  - debug:
+      msg: "{{ test_three}}"
+
+  - name: "CONTROLLER GROUP 3: ASSERT - Update"
+    assert:
+      that:
+        - test_three['changed']
+        - test_three['controller_managed_device_groups']['name'] == "Test Controller One"
+        - test_three['controller_managed_device_groups']['controller'] == "controller_two"
+        - test_three['msg'] == "Test Controller Group One updated"
+
+  - name: "CONTROLLER GROUP 4: ASSERT - Delete"
+    networktocode.nautobot.controller_managed_device_groups:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Group One
+      state: absent
+    register: test_four
+
+  - name: "CONTROLLER 4: ASSERT - Delete"
+    assert:
+      that:
+        - test_four is changed
+        - test_four['diff']['before']['state'] == "present"
+        - test_four['diff']['after']['state'] == "absent"
+        - test_four['msg'] == "Test Controller Group One deleted"
+
+  - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
+    networktocode.nautobot.controller_managed_device_groups:
+      url: "{{ nautobot_url }}"
+      token: "{{ nautobot_token }}"
+      name: Test Controller Two
+      state: absent
+    register: test_five
+
+  - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
+    assert:
+      that:
+        - not test_five['changed']
+        - test_five['controller_managed_device_groups'] == None
+        - test_five['msg'] == "controller Test Controller Two already absent"        
   when:
     # Controllers are only available on Nautobot 2.2+
     - "nautobot_version is version('2.2', '>=')"

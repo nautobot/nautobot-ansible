@@ -590,3 +590,12 @@
         - controller
   tags:
     - controller
+
+- name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
+  include_tasks:
+    file: "controller_managed_device_groups.yml"
+    apply:
+      tags:
+        - controller_managed_device_groups
+  tags:
+    - controller_managed_device_groups
