@@ -634,8 +634,8 @@ if nautobot_version >= version.parse("2.2"):
 
     # Create Controller
     controller = [
-        {"name": "controller_one", "location": "Child Test Location", "status": {"name": "Active"}},
-        {"name": "controller_two", "location": "Child Test Location", "status": {"name": "Active"}},
+        {"name": "controller_one", "location": location_child.id, "status": {"name": "Active"}},
+        {"name": "controller_two", "location": location_child.id, "status": {"name": "Active"}},
     ]
     created_controller = make_nautobot_calls(nb.dcim.controllers, controller)
 
