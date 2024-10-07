@@ -593,9 +593,9 @@
 
 - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
   include_tasks:
-    file: "controller_managed_device_groups.yml"
+    file: "controller_managed_device_group.yml"
     apply:
       tags:
-        - controller_managed_device_groups
+        - controller_managed_device_group
   tags:
-    - controller_managed_device_groups
+    - controller_managed_device_group

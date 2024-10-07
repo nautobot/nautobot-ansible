@@ -4,7 +4,7 @@
 
 - block:
   - name: "CONTROLLER GROUP 1: Create Group"
-    networktocode.nautobot.controller_managed_device_groups:
+    networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
@@ -19,7 +19,7 @@
         - test_one['controller_managed_device_group']['name'] == "Test Controller Group One"
 
   - name: "CONTROLLER GROUP 2: Create duplicate"
-    networktocode.nautobot.controller_managed_device_groups:
+    networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
@@ -31,11 +31,11 @@
     assert:
       that:
         - not test_two['changed']
-        - test_two['controller_managed_device_groups']['name'] == "Test Controller Group One"
+        - test_two['controller_managed_device_group']['name'] == "Test Controller Group One"
         - test_two['msg'] == "Test Controller Group One already exists"
 
   - name: "CONTROLLER GROUP 3: Update"
-    networktocode.nautobot.controller_managed_device_groups:
+    networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
@@ -49,12 +49,12 @@
     assert:
       that:
         - test_three['changed']
-        - test_three['controller_managed_device_groups']['name'] == "Test Controller One"
-        - test_three['controller_managed_device_groups']['controller'] == "controller_two"
+        - test_three['controller_managed_device_group']['name'] == "Test Controller One"
+        - test_three['controller_managed_device_group']['controller'] == "controller_two"
         - test_three['msg'] == "Test Controller Group One updated"
 
   - name: "CONTROLLER GROUP 4: ASSERT - Delete"
-    networktocode.nautobot.controller_managed_device_groups:
+    networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
@@ -70,7 +70,7 @@
         - test_four['msg'] == "Test Controller Group One deleted"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
-    networktocode.nautobot.controller_managed_device_groups:
+    networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Two
@@ -81,8 +81,9 @@
     assert:
       that:
         - not test_five['changed']
-        - test_five['controller_managed_device_groups'] == None
+        - test_five['controller_managed_device_group'] == None
         - test_five['msg'] == "controller Test Controller Two already absent"        
+        
   when:
     # Controllers are only available on Nautobot 2.2+
     - "nautobot_version is version('2.2', '>=')"

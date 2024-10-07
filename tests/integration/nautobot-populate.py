@@ -640,8 +640,9 @@ if nautobot_version >= version.parse("2.2"):
     created_controller = make_nautobot_calls(nb.dcim.controllers, controller)
 
     # Create Controller Managed Device Groups
-    controller_device_group = [{"name": "controller_group_one", "controller": "controller_one"}]
-    created_controller_device_group = make_nautobot_calls(nb.dcim.controller_device_groups, controller_device_group)
+    test_controller_one = nb.dcim.controllers.get(name="controller_one")
+    controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
+    created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
 
 ###############
 # v2.3+ items #
