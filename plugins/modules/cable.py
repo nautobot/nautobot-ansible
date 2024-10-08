@@ -22,6 +22,8 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
   termination_a_type:
     description:
@@ -174,7 +176,11 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CABLES,
@@ -188,6 +194,8 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             termination_a_type=dict(
