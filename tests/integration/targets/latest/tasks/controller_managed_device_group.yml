@@ -37,7 +37,7 @@
       that:
         - not test_two['changed']
         - test_two['controller_managed_device_group']['name'] == "Test Controller Group One"
-        - test_two['msg'] == "Test Controller Group One already exists"
+        - test_two['msg'] == "controller_managed_device_group Test Controller Group One already exists"
 
   - name: "CONTROLLER GROUP 3: Update"
     networktocode.nautobot.controller_managed_device_group:
