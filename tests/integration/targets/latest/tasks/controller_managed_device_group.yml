@@ -82,9 +82,6 @@
       state: absent
     register: test_five
 
-  - debug:
-      msg: "{{ test_five}}"
-
   - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
     assert:
       that:
