@@ -90,7 +90,7 @@
       that:
         - not test_five['changed']
         - test_five['controller_managed_device_group'] == None
-        - test_five['msg'] == "controller_managed_device_group Test Controller Two already absent"
+        - test_five['msg'] == "controller_managed_device_group Test Controller Group Two already absent"
 
   when:
     # Controllers are only available on Nautobot 2.2+
