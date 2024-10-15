@@ -48,9 +48,6 @@
       controller: controller_two
     register: test_three
 
-  - debug:
-      msg: "{{ test_three}}"
-
   - name: "CONTROLLER GROUP 3: ASSERT - Update"
     assert:
       that:
@@ -84,6 +81,9 @@
       controller: controller_two
       state: absent
     register: test_five
+
+  - debug:
+      msg: "{{ test_five}}"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
     assert:
