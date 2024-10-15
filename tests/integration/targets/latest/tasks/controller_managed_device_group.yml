@@ -24,10 +24,13 @@
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
-      controller: controller_one
+      controller: "{{ controller['key'] }}"
       weight: 1000
       state: present
     register: test_two
+    vars:
+        # yamllint disable-line rule:line-length
+        controller: "{{ lookup('networktocode.nautobot.lookup', 'controllers', validate_certs=documentation_nautobot.validate_certs, num_retries=3, api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=controller_one') }}"
 
   - name: "CONTROLLER 2: ASSERT - Create duplicate"
     assert:
@@ -52,15 +55,16 @@
     assert:
       that:
         - test_three['changed']
-        - test_three['controller_managed_device_group']['name'] == "Test Controller One"
+        - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
         - test_three['controller_managed_device_group']['controller'] == "controller_two"
-        - test_three['msg'] == "Test Controller Group One updated"
+        - test_three['msg'] == "controller_managed_device_group Test Controller Group One updated"
 
   - name: "CONTROLLER GROUP 4: ASSERT - Delete"
     networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
+      controller: controller_two
       state: absent
     register: test_four
 
@@ -70,13 +74,14 @@
         - test_four is changed
         - test_four['diff']['before']['state'] == "present"
         - test_four['diff']['after']['state'] == "absent"
-        - test_four['msg'] == "Test Controller Group One deleted"
+        - test_four['msg'] == "controller_managed_device_group Test Controller Group One deleted"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete non existing"
     networktocode.nautobot.controller_managed_device_group:
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
-      name: Test Controller Two
+      name: Test Controller Group Two
+      controller: controller_two
       state: absent
     register: test_five
 
@@ -85,7 +90,7 @@
       that:
         - not test_five['changed']
         - test_five['controller_managed_device_group'] == None
-        - test_five['msg'] == "controller Test Controller Two already absent"        
+        - test_five['msg'] == "controller_managed_device_group Test Controller Two already absent"    
         
   when:
     # Controllers are only available on Nautobot 2.2+
