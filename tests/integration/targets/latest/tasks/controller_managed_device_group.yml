@@ -24,13 +24,10 @@
       url: "{{ nautobot_url }}"
       token: "{{ nautobot_token }}"
       name: Test Controller Group One
-      controller: "{{ controller['key'] }}"
+      controller: controller_one
       weight: 1000
       state: present
     register: test_two
-    vars:
-        # yamllint disable-line rule:line-length
-        controller: "{{ lookup('networktocode.nautobot.lookup', 'controllers', validate_certs=documentation_nautobot.validate_certs, num_retries=3, api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=controller_one') }}"
 
   - name: "CONTROLLER 2: ASSERT - Create duplicate"
     assert:

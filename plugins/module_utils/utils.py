@@ -161,6 +161,7 @@ CONVERT_TO_ID = {
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
     "contacts": "contacts",
+    "controller": "controllers",
     "dcim.consoleport": "console_ports",
     "dcim.consoleserverport": "console_server_ports",
     "dcim.frontport": "front_ports",
