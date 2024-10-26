@@ -61,6 +61,7 @@ class NautobotDcimModule(NautobotModule):
         - controllers
         - device_bays
         - device_bay_templates
+        - device_interfaces
         - devices
         - device_types
         - front_ports
@@ -157,6 +158,29 @@ class NautobotDcimModule(NautobotModule):
         # This is logic to handle interfaces on a VC
         if self.endpoint == "interfaces":
             if self.nb_object:
+                # Handle Modules
+                if self.data['module_serial'] is not None:
+                    # Get the module via serial number if provided
+                    data['module'] = self.nb_object.modules.get(serial=self.data["module_serial"])
+                    # Remove device from the data dictionary as these are mutually exclusive of each other
+                    data.pop("device")
+
+                if self.data['module'] is not None:
+                    # Get the device name passed in
+                    device = self.nb_object.devices.get(name=self.data["device"])
+
+                    # Handle any errors
+                    if not device:
+                        self._handle_errors(msg="Could not find device %s" %(self.data["device"]))
+
+                    # Get the module with the device
+                    data['module'] = self.nb_object.modules.get(
+                        name=self.data["module"],
+                        parent_device=device.id,
+                    )
+                    # Remove device from the data dictionary as these are mutually exclusive of each other
+                    data.pop("device")
+
                 device = self.nb.dcim.devices.get(self.nb_object.device.id)
                 if device["virtual_chassis"] and self.nb_object.device.id != self.data["device"]:
                     if self.module.params.get("update_vc_child"):

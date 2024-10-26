@@ -30,6 +30,27 @@ options:
     required: true
     type: raw
     version_added: "3.0.0"
+  module_type:
+    description:
+      - The type of module
+      - If module_bays is set, the interface will be assigned to the module
+    required: false
+    type: raw
+    version_added: "5.4.0"
+  module_bays:
+    description:
+      - Bay the module resides in of the device
+      - If module_bays is set, the interface will be assigned to the module
+    required: false
+    type: int
+    version_added: "5.4.0"
+  module_serial:
+    description:
+      - The serial number of the module
+      - Must not be used with module_type, module_bays
+    required: false
+    type: str
+    version_added: "5.4.0"
   status:
     description:
       - The status of the interface
@@ -145,6 +166,22 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         device: test100
+        name: GigabitEthernet1
+        state: present
+    - name: Create interface within Nautobot module with only required information
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        module: module_object.id
+        device: ord01-router-01
+        name: GigabitEthernet1
+        state: present
+    - name: Create interface within Nautobot module with only serial number information 
+      networktocode.nautobot.device_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        module_serial: ade9827
+        device: ord01-router-01
         name: GigabitEthernet1
         state: present
     - name: Delete interface within nautobot
@@ -265,13 +302,15 @@ def main():
     """
     Main entry point for module execution
     """
-    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)  # Type is dictionary
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
             device=dict(required=True, type="raw"),
+            module=dict(required=False, type="raw"),
+            module_serial=dict(required=False, type="str"),
             status=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
@@ -291,6 +330,10 @@ def main():
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
+    # Check to see if module_bays and module_serial are both set
+    if module.params["module_bays"] is not None or module.params['module_type'] and module.params["module_serial"] is not None:
+        module.fail_json(msg="module_bays/module_type and module_serial cannot both be set, please use only one.")
 
     device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
