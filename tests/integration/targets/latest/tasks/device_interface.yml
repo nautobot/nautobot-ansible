@@ -376,7 +376,8 @@
     - name: 15 - SET ADDITIONAL FACTS
       set_fact:
         device_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Loop the Network\"' )}}"
-
+        wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+    
     - name: "15 - Create device interface with role"
       networktocode.nautobot.device_interface:
         url: "{{ nautobot_url }}"
