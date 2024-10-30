@@ -368,3 +368,60 @@
       - test_fourteen['interface']['name'] == "Bridge1"
       - test_fourteen['interface']['device'] == test100['key']
       - test_fourteen['interface']['bridge'] == test_twelve['interface']['id']
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - name: SET ADDITIONAL FACTS
+      set_fact:
+        device_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Loop the Network\"' )}}"
+
+    - name: "PYNAUTOBOT_DEVICE_INTERFACE 15: Created"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        device: test100
+        name: GigabitEthernet15
+        enabled: false
+        mtu: 9000
+        mac_address: "69:69:69:69:69:69"
+        description: "The interface that will cause the outage"
+        mode: Tagged
+        role: "Loop the Network"
+        status: "Active"
+        untagged_vlan:
+          name: Wireless
+          location: "Child Test Location"
+        tagged_vlans:
+          - name: Data
+            location: "Child Test Location"
+          - name: VoIP
+            location: "Child Test Location"
+        tags:
+          - "Schnozzberry"
+        state: present
+      register: test_fifteen
+
+    - debug:
+        msg: "{{ test_fifteen }}"
+
+    - name: "PYNAUTOBOT_DEVICE_INTERFACE 15: ASSERT - Created"
+      assert:
+        that:
+          - test_fifteen is changed
+          - test_fifteen['diff']['before']['state'] == "absent"
+          - test_fifteen['diff']['after']['state'] == "present"
+          - test_fifteen['interface']['name'] == "GigabitEthernet15"
+          - test_fifteen['interface']['status'] == active['key']
+          - test_fifteen['interface']['device'] == test100['key']
+          - test_fifteen['interface']['enabled'] == false
+          - test_fifteen['interface']['mtu'] == 9000
+          - test_fifteen['interface']['mac_address'] == "69:69:69:69:69:69"
+          - test_fifteen['interface']['description'] == "Updated test100"
+          - test_fifteen['interface']['mode'] == "tagged"
+          - test_fifteen['interface']['untagged_vlan'] == wireless['key']
+          - test_fifteen['interface']['tagged_vlans']|length == 2
+          - test_fifteen['interface']['tags'][0] == tag_schnozzberry['key']
+          - test_fifteen['interface']['role'] == device_interface_role['key']
+          - test_fifteen['msg'] == "interface GigabitEthernet15 created"
