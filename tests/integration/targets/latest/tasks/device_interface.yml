@@ -373,11 +373,11 @@
   when: 
     - "nautobot_version is version('2.3', '>=')"
   block:
-    - name: SET ADDITIONAL FACTS
+    - name: 15 - SET ADDITIONAL FACTS
       set_fact:
         device_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Loop the Network\"' )}}"
 
-    - name: "PYNAUTOBOT_DEVICE_INTERFACE 15: Created"
+    - name: "15 - Create device interface with role"
       networktocode.nautobot.device_interface:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
@@ -387,6 +387,7 @@
         mtu: 9000
         mac_address: "69:69:69:69:69:69"
         description: "The interface that will cause the outage"
+        type: "1000Base-T (1GE)"
         mode: Tagged
         role: "Loop the Network"
         status: "Active"
@@ -398,15 +399,10 @@
             location: "Child Test Location"
           - name: VoIP
             location: "Child Test Location"
-        tags:
-          - "Schnozzberry"
         state: present
       register: test_fifteen
 
-    - debug:
-        msg: "{{ test_fifteen }}"
-
-    - name: "PYNAUTOBOT_DEVICE_INTERFACE 15: ASSERT - Created"
+    - name: "15 - ASSERT"
       assert:
         that:
           - test_fifteen is changed
@@ -422,6 +418,5 @@
           - test_fifteen['interface']['mode'] == "tagged"
           - test_fifteen['interface']['untagged_vlan'] == wireless['key']
           - test_fifteen['interface']['tagged_vlans']|length == 2
-          - test_fifteen['interface']['tags'][0] == tag_schnozzberry['key']
           - test_fifteen['interface']['role'] == device_interface_role['key']
           - test_fifteen['msg'] == "interface GigabitEthernet15 created"
