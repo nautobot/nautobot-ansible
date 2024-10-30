@@ -414,7 +414,7 @@
           - test_fifteen['interface']['enabled'] == false
           - test_fifteen['interface']['mtu'] == 9000
           - test_fifteen['interface']['mac_address'] == "69:69:69:69:69:69"
-          - test_fifteen['interface']['description'] == "Updated test100"
+          - test_fifteen['interface']['description'] == "The interface that will cause the outage"
           - test_fifteen['interface']['mode'] == "tagged"
           - test_fifteen['interface']['untagged_vlan'] == wireless['key']
           - test_fifteen['interface']['tagged_vlans']|length == 2
