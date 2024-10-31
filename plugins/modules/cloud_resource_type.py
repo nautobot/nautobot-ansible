@@ -104,7 +104,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            manufacturer=dict(required=False, type="raw"),          
+            manufacturer=dict(required=False, type="raw"),
             content_types=dict(required=False, type="list", elements="str"),
         )
     )

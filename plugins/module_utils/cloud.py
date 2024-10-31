@@ -42,7 +42,6 @@ class NautobotCloudModule(NautobotModule):
             data["provider"] = data["manufacturer"]
             data.pop("manufacturer")
 
-
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
