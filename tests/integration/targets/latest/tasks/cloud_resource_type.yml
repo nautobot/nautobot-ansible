@@ -6,6 +6,8 @@
 ##
 
 - block:
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
   - set_fact:
       provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
 
@@ -21,7 +23,7 @@
 
   - name: "1 - ASSERT"
     assert:
-      that:git 
+      that: 
         - test_create_min is changed
         - test_create_min['diff']['before']['state'] == "absent"
         - test_create_min['diff']['after']['state'] == "present"
