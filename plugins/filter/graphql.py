@@ -8,6 +8,37 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+DOCUMENTATION = """
+name: graphql_string
+author: Mikhail Yohman (@FragmentedPacket)
+version_added: "3.4.0"
+short_description: The graphql_string filter plugin.
+description:
+  - The filter converts a dictionary to a GraphQL string.
+options:
+  query:
+    description:
+      - A dictionary mapping to the GraphQL call to be made.
+    type: dict
+    required: True
+  start:
+    description:
+      - The starting indentation when compiling the string.
+    type: int
+    required: False
+"""
+
+RETURN = """
+graphql_string:
+  description: GraphQL query string
+  returned: always
+  type: str
+"""
+
+EXAMPLES = """
+"""
+
+
 def build_graphql_filter_string(filter: dict) -> str:
     """Takes a dictionary and builds a graphql filter
 
