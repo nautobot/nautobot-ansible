@@ -590,3 +590,12 @@
         - controller
   tags:
     - controller
+
+- name: "PYNAUTOBOT_CLOUD_RESOURCE_TYPE TESTS"
+  include_tasks:
+    file: "cloud_resource_type.yml"
+    apply:
+      tags:
+        - cloud_resource_type
+  tags:
+    - cloud_resource_type
