@@ -1,6 +1,8 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -37,11 +39,6 @@ class NautobotCloudModule(NautobotModule):
         if data.get("name"):
             name = data["name"]
 
-        # This is to overcome a really bad naming clash with the new cloud models.  provider=manufacturer
-        if data.get("manufacturer"):
-            data["provider"] = data["manufacturer"]
-            data.pop("manufacturer")
-
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
 
@@ -54,12 +51,6 @@ class NautobotCloudModule(NautobotModule):
             serialized_object = self.nb_object.serialize()
         except AttributeError:
             serialized_object = self.nb_object
-
-        # This is to overcome a really bad naming clash with the new cloud models.  manufacturer=provider
-        if isinstance(serialized_object, dict):
-            if serialized_object.get("provider"):
-                serialized_object["manufacturer"] = serialized_object["provider"]
-                serialized_object.pop("provider")
 
         self.result.update({endpoint_name: serialized_object})
 

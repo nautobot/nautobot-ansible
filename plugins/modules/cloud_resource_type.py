@@ -36,7 +36,9 @@ options:
       - The description of the cloud_resource_type
     required: false
     type: str
-  manufacturer:
+  cloud_provider:
+    aliases:
+      - provider
     description:
       - Required if I(state=present) and the cloud_resource_type does not exist yet
     required: false
@@ -47,6 +49,11 @@ options:
       - e.g. cloud.cloudnetwork, cloud.cloudservice (more can be found in the examples)
     type: list
     elements: str
+  config_schema:
+    description:
+      - Arbitrary JSON data to define the config schema.
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -56,9 +63,9 @@ EXAMPLES = r"""
     url: http://nautobot.local
     token: thisIsMyToken
     name: Cisco Quantum Network
-    manufacturer: Cisco
+    cloud_provider: Cisco
     content_types:
-      - "cloud.cloud_network"
+      - "cloud.cloudnetwork"
     state: present
 
 - name: Delete a cloud_resource_type
@@ -104,8 +111,9 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            manufacturer=dict(required=False, type="raw"),
+            cloud_provider=dict(required=False, type="raw", aliases=["provider"]),
             content_types=dict(required=False, type="list", elements="str"),
+            config_schema=dict(required=False, type="dict"),
         )
     )
 

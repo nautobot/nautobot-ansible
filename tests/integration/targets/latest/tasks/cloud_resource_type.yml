@@ -10,14 +10,14 @@
     - "nautobot_version is version('2.3', '>=')"
   block:
     - set_fact:
-        provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
+        cisco_provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
 
     - name: "1 - Create cloud resource type within Nautobot with only required information"
       networktocode.nautobot.cloud_resource_type:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Network
-        manufacturer: Cisco
+        cloud_provider: Cisco
         content_types:
           - "cloud.cloudnetwork"
       register: test_create_min
@@ -80,15 +80,14 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Network Remix
-        manufacturer: Cisco
+        cloud_provider: Cisco
         description: Very fast network reimagined!
         content_types:
           - "cloud.cloudnetwork"
+        config_schema:
+          my_config:
+            foo: bar
       register: test_create_max
-
-    - name: DEBUG
-      debug:
-        msg: "{{ test_create_max }}"
 
     - name: "5 - ASSERT"
       assert:
@@ -97,16 +96,23 @@
           - test_create_max['diff']['before']['state'] == "absent"
           - test_create_max['diff']['after']['state'] == "present"
           - test_create_max['cloud_resource_type']['name'] == "Cisco Quantum Network Remix"
-          - test_create_max['cloud_resource_type']['manufacturer'] == provider['key']
+          - test_create_max['cloud_resource_type']['provider'] == cisco_provider['key']
           - test_create_max['cloud_resource_type']['description'] == "Very fast network reimagined!"
-          - test_create_max['cloud_resource_type']['content_types'] == ["cloud.cloudnetwork"]   
+          - test_create_max['cloud_resource_type']['content_types'] == ["cloud.cloudnetwork"]
+
+    - name: "5.1 - ASSERT"
+      assert:
+        that:
+          - cloud_resource_type['value']['config_schema']['my_config']['foo'] == "bar"
+      vars:
+        cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Network Remix\"') }}"
 
     - name: "6 - Duplicate create with all parameters"
       networktocode.nautobot.cloud_resource_type:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Network Remix
-        manufacturer: Cisco
+        cloud_provider: Cisco
         description: Very fast network reimagined!
         content_types:
           - "cloud.cloudnetwork"

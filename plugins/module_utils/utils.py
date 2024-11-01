@@ -102,6 +102,7 @@ QUERY_TYPES = dict(
     circuit="cid",
     circuit_termination="circuit",
     circuit_type="name",
+    cloud_provider="name",
     cluster="name",
     cluster_group="name",
     cluster_type="name",
@@ -156,6 +157,7 @@ CONVERT_TO_ID = {
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
+    "cloud_provider": "manufacturers",
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
@@ -434,6 +436,7 @@ REQUIRED_ID_FIND = {
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
+    "cloud_provider": "provider",
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_location_type": "parent",
