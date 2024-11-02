@@ -63,12 +63,12 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: Cisco Quantum Account
     cloud_provider: Cisco
+    description: A quantum account for Cisco
+    account_number: "654321"
     secrets_group: "{{ my_secrets_group['key'] }}"
     state: present
   vars:
     my_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Secrets Group\"') }}"
-
-    state: present
 
 - name: Delete a cloud_account
   networktocode.nautobot.cloud_account:
