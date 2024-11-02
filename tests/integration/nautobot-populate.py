@@ -659,8 +659,7 @@ if nautobot_version >= version.parse("2.3"):
     created_cloud_services = make_nautobot_calls(nb.cloud.cloud_services, cloud_services)
 
     cloud_networks = [
-        {"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"},
-        {"name": "CiscoCloudNetworkTwo", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}
+        {"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}
     ]
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 

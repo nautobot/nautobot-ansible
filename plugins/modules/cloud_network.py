@@ -9,10 +9,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: cloud_service
-short_description: Creates or removes cloud_service from Nautobot
+module: cloud_network
+short_description: Creates or removes cloud_network from Nautobot
 description:
-  - Creates or removes cloud_service from Nautobot
+  - Creates or removes cloud_network from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -28,48 +28,55 @@ extends_documentation_fragment:
 options:
   name:
     description:
-      - The name of the cloud_service
+      - The name of the cloud_network
     required: true
     type: str
   description:
     description:
-      - The description of the cloud_service
+      - The description of the cloud_network
     required: false
     type: str
   cloud_resource_type:
     description:
-      - Required if I(state=present) and the cloud_service does not exist yet
+      - Required if I(state=present) and the cloud_network does not exist yet
     required: false
     type: raw
   cloud_account:
     description:
-      - A cloud account for this service.
+      - Required if I(state=present) and the cloud_network does not exist yet
+    required: false
+    type: raw
+  parent_cloud_network:
+    aliases:
+      - parent
+    description:
+      - The parent cloud network this network should be child to
     required: false
     type: raw
 """
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_service
-  networktocode.nautobot.cloud_service:
+- name: Create a cloud_network
+  networktocode.nautobot.cloud_network:
     url: http://nautobot.local
     token: thisIsMyToken
-    name: Cisco Quantum Service
+    name: Cisco Quantum Network
     cloud_resource_type: Cisco Quantum Type
     cloud_account: Cisco Quantum Account
-    description: A quantum service for Cisco
+    description: A quantum network for Cisco
     state: present
 
-- name: Delete a cloud_service
-  networktocode.nautobot.cloud_service:
+- name: Delete a cloud_network
+  networktocode.nautobot.cloud_network:
     url: http://nautobot.local
     token: thisIsMyToken
-    name: Cisco Quantum Service
+    name: Cisco Quantum Network
     state: absent
 """
 
 RETURN = r"""
-cloud_service:
+cloud_network:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -86,7 +93,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
     NautobotCloudModule,
-    NB_CLOUD_SERVICES,
+    NB_CLOUD_NETWORKS,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -105,12 +112,13 @@ def main():
             description=dict(required=False, type="str"),
             cloud_resource_type=dict(required=False, type="raw"),
             cloud_account=dict(required=False, type="raw"),
+            parent_cloud_network=dict(required=False, type="raw", aliases=["parent"]),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    cloud_service = NautobotCloudModule(module, NB_CLOUD_SERVICES)
-    cloud_service.run()
+    cloud_network = NautobotCloudModule(module, NB_CLOUD_NETWORKS)
+    cloud_network.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

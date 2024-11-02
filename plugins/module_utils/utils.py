@@ -33,7 +33,7 @@ except ImportError:
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
     circuits=["circuits", "circuit_types", "circuit_terminations", "providers"],
-    cloud=["cloud_accounts", "cloud_resource_types", "cloud_services"],
+    cloud=["cloud_accounts", "cloud_networks", "cloud_resource_types", "cloud_services"],
     dcim=[
         "cables",
         "console_ports",
@@ -121,6 +121,7 @@ QUERY_TYPES = dict(
     master="name",
     nat_inside="address",
     nat_outside="address",
+    parent_cloud_network="name",
     parent_location="name",
     parent_location_type="name",
     parent_rack_group="name",
@@ -160,6 +161,8 @@ CONVERT_TO_ID = {
     "cloud_account": "cloud_accounts",
     "cloud_provider": "manufacturers",
     "cloud_resource_type": "cloud_resource_types",
+    "cloud_network": "cloud_networks",
+    "cloud_service": "cloud_services",
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
@@ -193,6 +196,7 @@ CONVERT_TO_ID = {
     "namespace": "namespaces",
     "platform": "platforms",
     "parent_rack_group": "rack_groups",
+    "parent_cloud_network": "cloud_networks",
     "parent_location": "locations",
     "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
@@ -235,6 +239,7 @@ ENDPOINT_NAME_MAPPING = {
     "circuit_types": "circuit_type",
     "circuits": "circuit",
     "cloud_accounts": "cloud_account",
+    "cloud_networks": "cloud_network",
     "cloud_resource_types": "cloud_resource_type",
     "cloud_services": "cloud_service",
     "clusters": "cluster",
@@ -305,6 +310,7 @@ ALLOWED_QUERY_PARAMS = {
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
     "cloud_account": set(["name"]),
+    "cloud_network": set(["name"]),
     "cloud_resource_type": set(["name"]),
     "cloud_service": set(["name"]),
     "cluster": set(["name", "type"]),
@@ -443,6 +449,7 @@ REQUIRED_ID_FIND = {
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
     "cloud_provider": "provider",
+    "parent_cloud_network": "parent",
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_location_type": "parent",

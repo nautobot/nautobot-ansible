@@ -591,15 +591,6 @@
   tags:
     - controller
 
-- name: "PYNAUTOBOT_CLOUD_RESOURCE_TYPE TESTS"
-  include_tasks:
-    file: "cloud_resource_type.yml"
-    apply:
-      tags:
-        - cloud_resource_type
-  tags:
-    - cloud_resource_type
-
 - name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
   include_tasks:
     file: "cloud_account.yml"
@@ -608,6 +599,24 @@
         - cloud_account
   tags:
     - cloud_account
+
+- name: "PYNAUTOBOT_CLOUD_NETWORK TESTS"
+  include_tasks:
+    file: "cloud_network.yml"
+    apply:
+      tags:
+        - cloud_network
+  tags:
+    - cloud_network
+
+- name: "PYNAUTOBOT_CLOUD_RESOURCE_TYPE TESTS"
+  include_tasks:
+    file: "cloud_resource_type.yml"
+    apply:
+      tags:
+        - cloud_resource_type
+  tags:
+    - cloud_resource_type
 
 - name: "PYNAUTOBOT_CLOUD_SERVICE TESTS"
   include_tasks:

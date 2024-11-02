@@ -12,7 +12,6 @@
     - set_fact:
         cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudServiceType') }}"
         cloud_account: "{{ lookup('networktocode.nautobot.lookup', 'cloud-accounts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudAccount') }}"
-        #cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
 
     - name: "1 - Create cloud service within Nautobot with only required information"
       networktocode.nautobot.cloud_service:
@@ -82,9 +81,6 @@
         name: Cisco Quantum Secreter Service
         cloud_resource_type: CiscoCloudServiceType
         cloud_account: CiscoCloudAccount
-        #cloud_network:
-        #  - CiscoCloudNetwork
-        #  - CiscoCloudNetworkTwo
         description: Super secreter quantum service!
       register: test_create_max
 
@@ -98,7 +94,6 @@
           - test_create_max['cloud_service']['cloud_resource_type'] == cloud_resource_type['key']
           - test_create_max['cloud_service']['cloud_account'] == cloud_account['key']
           - test_create_max['cloud_service']['description'] == "Super secreter quantum service!"
-          #- test_create_max['cloud_service']['cloud_network'] == "654321"
 
     - name: "5.1 - ASSERT"
       assert:
@@ -115,9 +110,6 @@
         name: Cisco Quantum Secreter Service
         cloud_resource_type: CiscoCloudServiceType
         cloud_account: CiscoCloudAccount
-        #cloud_network:
-        #  - CiscoCloudNetwork
-        #  - CiscoCloudNetworkTwo
         description: Super secreter quantum service!
       register: test_create_max_idem
 

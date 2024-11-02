@@ -12,6 +12,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 )
 
 NB_CLOUD_SERVICES = "cloud_services"
+NB_CLOUD_NETWORKS = "cloud_networks"
 NB_CLOUD_ACCOUNTS = "cloud_accounts"
 NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
 
@@ -23,6 +24,7 @@ class NautobotCloudModule(NautobotModule):
         to create/update/delete the endpoint objects
         Supported endpoints:
         - cloud_services
+        - cloud_networks
         - cloud_accounts
         - cloud_resource_types
         """
