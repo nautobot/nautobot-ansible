@@ -33,7 +33,7 @@ except ImportError:
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
     circuits=["circuits", "circuit_types", "circuit_terminations", "providers"],
-    cloud=["cloud_accounts", "cloud_resource_types"],
+    cloud=["cloud_accounts", "cloud_resource_types", "cloud_services"],
     dcim=[
         "cables",
         "console_ports",
@@ -157,7 +157,9 @@ CONVERT_TO_ID = {
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
+    "cloud_account": "cloud_accounts",
     "cloud_provider": "manufacturers",
+    "cloud_resource_type": "cloud_resource_types",
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
@@ -234,6 +236,7 @@ ENDPOINT_NAME_MAPPING = {
     "circuits": "circuit",
     "cloud_accounts": "cloud_account",
     "cloud_resource_types": "cloud_resource_type",
+    "cloud_services": "cloud_service",
     "clusters": "cluster",
     "cluster_groups": "cluster_group",
     "cluster_types": "cluster_type",
@@ -303,6 +306,7 @@ ALLOWED_QUERY_PARAMS = {
     "circuits.circuittermination": set(["circuit", "term_side"]),
     "cloud_account": set(["name"]),
     "cloud_resource_type": set(["name"]),
+    "cloud_service": set(["name"]),
     "cluster": set(["name", "type"]),
     "cluster_group": set(["name"]),
     "cluster_type": set(["name"]),

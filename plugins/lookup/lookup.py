@@ -175,6 +175,7 @@ def get_endpoint(nautobot, term):
         "cables": {"endpoint": nautobot.dcim.cables},
         "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
         "cloud-resource-types": {"endpoint": nautobot.cloud.cloud_resource_types},
+        "cloud-services": {"endpoint": nautobot.cloud.cloud_services},
         "cluster-groups": {"endpoint": nautobot.virtualization.cluster_groups},
         "cluster-types": {"endpoint": nautobot.virtualization.cluster_types},
         "clusters": {"endpoint": nautobot.virtualization.clusters},

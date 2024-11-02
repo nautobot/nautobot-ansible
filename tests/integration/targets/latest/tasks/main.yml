@@ -608,3 +608,12 @@
         - cloud_account
   tags:
     - cloud_account
+
+- name: "PYNAUTOBOT_CLOUD_SERVICE TESTS"
+  include_tasks:
+    file: "cloud_service.yml"
+    apply:
+      tags:
+        - cloud_service
+  tags:
+    - cloud_service
