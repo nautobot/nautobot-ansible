@@ -115,7 +115,7 @@ def main():
             description=dict(required=False, type="str"),
             account_number=dict(required=False, type="str"),
             cloud_provider=dict(required=False, type="raw", aliases=["provider"]),
-            secrets_group=dict(required=False, type="raw"),
+            secrets_group=dict(required=False, type="raw", no_log=True),
         )
     )
 

@@ -11,8 +11,9 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     ENDPOINT_NAME_MAPPING,
 )
 
-NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
+
 NB_CLOUD_ACCOUNTS = "cloud_accounts"
+NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
 
 
 class NautobotCloudModule(NautobotModule):
