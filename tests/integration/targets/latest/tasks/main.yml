@@ -599,3 +599,12 @@
         - cloud_resource_type
   tags:
     - cloud_resource_type
+
+- name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
+  include_tasks:
+    file: "cloud_account.yml"
+    apply:
+      tags:
+        - cloud_account
+  tags:
+    - cloud_account
