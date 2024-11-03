@@ -103,9 +103,9 @@
     - name: "5.1 - ASSERT"
       assert:
         that:
-          - cloud_resource_type['value']['config_schema']['my_config']['foo'] == "bar"
+          - test_cloud_resource_type['value']['config_schema']['my_config']['foo'] == "bar"
       vars:
-        cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Network Remix\"') }}"
+        test_cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Network Remix\"') }}"
 
     - name: "6 - Duplicate create with all parameters"
       networktocode.nautobot.cloud_resource_type:
