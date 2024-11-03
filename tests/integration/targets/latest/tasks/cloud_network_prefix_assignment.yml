@@ -18,7 +18,7 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
+        cloud_prefix: 10.10.0.0/16
       register: test_create_one
 
     - name: "1 - ASSERT"
@@ -36,7 +36,7 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
+        cloud_prefix: 10.10.0.0/16
       register: test_create_idem
 
     - name: "2 - ASSERT"
@@ -52,7 +52,7 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
+        cloud_prefix: 10.10.0.0/16
         state: absent
       register: test_delete
     
@@ -71,7 +71,7 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
+        cloud_prefix: 10.10.0.0/16
         state: absent
       register: test_delete_idem
 

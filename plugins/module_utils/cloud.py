@@ -57,9 +57,9 @@ class NautobotCloudModule(NautobotModule):
             )
         elif endpoint_name == "cloud_network_prefix_assignment":
             cloud_network = self.module.params["cloud_network"]
-            prefix = self.module.params["prefix"]
+            cloud_prefix = self.module.params["cloud_prefix"]
 
-            name = "%s <> %s" % (cloud_network, prefix)
+            name = "%s <> %s" % (cloud_network, cloud_prefix)
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)

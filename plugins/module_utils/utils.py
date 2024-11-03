@@ -109,6 +109,7 @@ QUERY_TYPES = dict(
     circuit="cid",
     circuit_termination="circuit",
     circuit_type="name",
+    cloud_prefix="prefix",
     cloud_provider="name",
     cluster="name",
     cluster_group="name",
@@ -137,7 +138,6 @@ QUERY_TYPES = dict(
     power_port="name",
     power_port_template="name",
     platform="name",
-    prefix="prefix",
     primary_ip="address",
     primary_ip4="address",
     primary_ip6="address",
@@ -167,6 +167,7 @@ CONVERT_TO_ID = {
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
     "cloud_account": "cloud_accounts",
+    "cloud_prefix": "prefixes",
     "cloud_provider": "manufacturers",
     "cloud_resource_type": "cloud_resource_types",
     "cloud_network": "cloud_networks",
@@ -213,7 +214,6 @@ CONVERT_TO_ID = {
     "power_panel": "power_panels",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
-    "prefix": "prefixes",
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
     "primary_ip6": "ip_addresses",
@@ -463,6 +463,7 @@ REQUIRED_ID_FIND = {
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
+    "cloud_prefix": "prefix",
     "cloud_provider": "provider",
     "parent_cloud_network": "parent",
     "parent_rack_group": "parent",

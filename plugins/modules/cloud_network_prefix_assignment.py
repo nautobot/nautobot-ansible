@@ -28,7 +28,9 @@ options:
       - Cloud network to associate with a prefix.
     required: true
     type: raw
-  prefix:
+  cloud_prefix:
+    aliases:
+      - prefix
     description:
       - Prefix to associate with a cloud network.
     required: true
@@ -42,7 +44,7 @@ EXAMPLES = r"""
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_network: Cisco Quantum Network
-    prefix: 10.1.198.0/23
+    cloud_prefix: 10.1.198.0/23
     state: present
 
 - name: Delete a cloud_network to prefix assignment
@@ -50,7 +52,7 @@ EXAMPLES = r"""
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_network: Cisco Quantum Network
-    prefix: 10.1.198.0/23
+    cloud_prefix: 10.1.198.0/23
     state: absent
 """
 
@@ -82,7 +84,7 @@ def main():
     argument_spec.update(
         dict(
             cloud_network=dict(required=True, type="raw"),
-            prefix=dict(required=True, type="raw"),
+            cloud_prefix=dict(required=True, type="raw", aliases=["prefix"]),
         )
     )
 
