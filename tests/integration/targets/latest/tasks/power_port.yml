@@ -132,7 +132,7 @@
       set_fact:
         module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
 
-    - name: "POWER_OUTLET 6: Create power port with module"
+    - name: "POWER_PORT 6: Create power port with module"
       networktocode.nautobot.power_port:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
@@ -141,7 +141,7 @@
         state: present
       register: test_six
 
-    - name: "POWER_OUTLET 6: ASSERT"
+    - name: "POWER_PORT 6: ASSERT"
       assert:
         that:
           - test_six is changed
