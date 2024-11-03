@@ -9,6 +9,7 @@
     circuit: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit"'') }}'
     circuit2: '{{ lookup(''networktocode.nautobot.lookup'', ''circuits'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''cid="Test Circuit Two"'') }}'
     provider_network: '{{ lookup(''networktocode.nautobot.lookup'', ''provider-networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Provider Network"'') }}'
+    cloud_network: '{{ lookup(''networktocode.nautobot.lookup'', ''cloud-networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="CiscoCloudNetwork"'') }}'
 
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 1: Create provider within Nautobot with only required information"
   networktocode.nautobot.circuit_termination:
@@ -122,10 +123,6 @@
     state: present
   register: test_five
 
-- name: "Debug Test Five output"
-  debug:
-    msg: "{{ test_five }}"
-
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Necessary info creation"
   assert:
     that:
@@ -147,7 +144,7 @@
     state: absent
   register: test_six
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Delete"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: ASSERT - Delete"
   assert:
     that:
       - test_six is changed
@@ -160,3 +157,26 @@
       - test_six['circuit_termination']['pp_info'] == "PP10-24"
       - test_six['circuit_termination']['description'] == "Test description"
       - test_six['msg'] == "circuit_termination test_circuit_a deleted"
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 7: Create connection to cloud_network within Nautobot with only required information"
+  networktocode.nautobot.circuit_termination:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    circuit: Test Circuit
+    term_side: A
+    cloud_network: "CiscoCloudNetwork"
+    port_speed: 10000
+    state: present
+  register: test_seven
+
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 7: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "absent"
+      - test_seven['diff']['after']['state'] == "present"
+      - test_seven['circuit_termination']['circuit'] == circuit['key']
+      - test_seven['circuit_termination']['term_side'] == "A"
+      - test_seven['circuit_termination']['cloud_network'] == cloud_network['key']
+      - test_seven['circuit_termination']['port_speed'] == 10000
+      - test_seven['msg'] == "circuit_termination test_circuit_a created"

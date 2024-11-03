@@ -79,6 +79,12 @@ options:
       - Connection to a provider_network type
     type: raw
     required: false
+  cloud_network:
+    version_added: "5.4.0"
+    description:
+      - Connection to a cloud_network type
+    type: raw
+    required: false
 """
 
 EXAMPLES = r"""
@@ -168,6 +174,7 @@ def main():
             pp_info=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             provider_network=dict(required=False, type="raw"),
+            cloud_network=dict(required=False, type="raw"),
         )
     )
 
