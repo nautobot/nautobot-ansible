@@ -13,6 +13,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 NB_CLOUD_SERVICES = "cloud_services"
 NB_CLOUD_NETWORKS = "cloud_networks"
+NB_CLOUD_NETWORK_PREFIX_ASSIGNMENTS = "cloud_network_prefix_assignments"
 NB_CLOUD_SERVICE_NETWORK_ASSIGNMENTS = "cloud_service_network_assignments"
 NB_CLOUD_ACCOUNTS = "cloud_accounts"
 NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
@@ -26,6 +27,7 @@ class NautobotCloudModule(NautobotModule):
         Supported endpoints:
         - cloud_services
         - cloud_networks
+        - cloud_network_prefix_assignments
         - cloud_service_network_assignments
         - cloud_accounts
         - cloud_resource_types
@@ -53,6 +55,11 @@ class NautobotCloudModule(NautobotModule):
                 cloud_service,
                 cloud_network,
             )
+        elif endpoint_name == "cloud_network_prefix_assignment":
+            cloud_network = self.module.params["cloud_network"]
+            prefix = self.module.params["prefix"]
+
+            name = "%s <> %s" % (cloud_network, prefix)
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)
