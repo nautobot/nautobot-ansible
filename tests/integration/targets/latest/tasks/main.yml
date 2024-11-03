@@ -626,3 +626,12 @@
         - cloud_service
   tags:
     - cloud_service
+
+- name: "PYNAUTOBOT_CLOUD_SERVICE_NETWORK_ASSIGNMENT TESTS"
+  include_tasks:
+    file: "cloud_service_network_assignment.yml"
+    apply:
+      tags:
+        - cloud_service_network_assignment
+  tags:
+    - cloud_service_network_assignment

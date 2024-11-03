@@ -177,6 +177,7 @@ def get_endpoint(nautobot, term):
         "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
         "cloud-resource-types": {"endpoint": nautobot.cloud.cloud_resource_types},
         "cloud-services": {"endpoint": nautobot.cloud.cloud_services},
+        "cloud-service-network-assignments": {"endpoint": nautobot.cloud.cloud_service_network_assignments},
         "cluster-groups": {"endpoint": nautobot.virtualization.cluster_groups},
         "cluster-types": {"endpoint": nautobot.virtualization.cluster_types},
         "clusters": {"endpoint": nautobot.virtualization.clusters},

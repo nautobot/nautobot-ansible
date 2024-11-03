@@ -33,7 +33,7 @@ except ImportError:
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
     circuits=["circuits", "circuit_types", "circuit_terminations", "providers"],
-    cloud=["cloud_accounts", "cloud_networks", "cloud_resource_types", "cloud_services"],
+    cloud=["cloud_accounts", "cloud_networks", "cloud_resource_types", "cloud_services", "cloud_service_network_assignments"],
     dcim=[
         "cables",
         "console_ports",
@@ -163,6 +163,7 @@ CONVERT_TO_ID = {
     "cloud_resource_type": "cloud_resource_types",
     "cloud_network": "cloud_networks",
     "cloud_service": "cloud_services",
+    "cloud_service_network_assignment": "cloud_service_network_assignments",
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
@@ -242,6 +243,7 @@ ENDPOINT_NAME_MAPPING = {
     "cloud_networks": "cloud_network",
     "cloud_resource_types": "cloud_resource_type",
     "cloud_services": "cloud_service",
+    "cloud_service_network_assignments": "cloud_service_network_assignment",
     "clusters": "cluster",
     "cluster_groups": "cluster_group",
     "cluster_types": "cluster_type",
@@ -313,6 +315,7 @@ ALLOWED_QUERY_PARAMS = {
     "cloud_network": set(["name"]),
     "cloud_resource_type": set(["name"]),
     "cloud_service": set(["name"]),
+    "cloud_service_network_assignment": set(["cloud_service", "cloud_network"]),
     "cluster": set(["name", "type"]),
     "cluster_group": set(["name"]),
     "cluster_type": set(["name"]),
