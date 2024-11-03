@@ -36,6 +36,26 @@ graphql_string:
 """
 
 EXAMPLES = """
+# Code:
+      set_fact:
+        gql_query: "{{ gql_dict | networktocode.nautobot.graphql_string }}"
+      vars:
+        gql_dict:
+          query:
+            devices:
+              name:
+              primary_ip4:
+                host:
+              platform:
+                napalm_driver:
+
+# Output:
+ok: [localhost] => {
+    "ansible_facts": {
+        "gql_query": "query {\n  devices {\n    name\n    primary_ip4 {\n      host\n    }\n    platform {\n      napalm_driver\n    }\n  }\n}"
+    },
+    "changed": false
+}
 """
 
 
