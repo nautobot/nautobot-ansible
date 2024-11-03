@@ -642,5 +642,19 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
+    # Create a module type
+    power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
+    created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
+
+    # Create a module bay
+    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}]
+    created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
+
+    # Assign module type to module bay
+    test_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
+    test_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
+    power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
+    created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
