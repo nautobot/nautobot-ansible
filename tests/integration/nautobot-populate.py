@@ -656,5 +656,12 @@ if nautobot_version >= version.parse("2.3"):
     power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
     created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
 
+    # Create role for device interfaces
+    device_interface_roles = [
+        {"name": "Loop the Network", "color": "111111", "vm_role": False, "content_types": ["dcim.interface"]},
+    ]
+    created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
+
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

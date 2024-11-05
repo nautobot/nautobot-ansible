@@ -49,6 +49,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  role:
+    description:
+      - The role of the interface
+    required: false
+    type: raw
+    version_added: "5.4.0"
   type:
     description:
       - |
@@ -186,6 +192,7 @@ EXAMPLES = r"""
         device: test100
         name: GigabitEthernet25
         enabled: false
+        role: Loopnetwork
         type: 1000Base-t (1GE)
         untagged_vlan:
           name: Wireless
@@ -275,6 +282,7 @@ def main():
             status=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
+            role=dict(required=False, type="raw"),
             type=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
             lag=dict(required=False, type="raw"),
