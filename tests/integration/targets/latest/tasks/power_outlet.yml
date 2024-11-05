@@ -159,3 +159,20 @@
           - test_six['power_outlet']['name'] == "Test Power Outlet"
           - test_six['power_outlet']['module'] == module['key']
           - test_six['msg'] == "power_outlet Test Power Outlet created"
+
+    - name: "7: Create duplicate"
+      networktocode.nautobot.power_outlet:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Test Power Outlet
+        module: HooverMaxProModel60
+        state: present
+      register: test_seven
+
+    - name: "7: ASSERT"
+      assert:
+        that:
+          - not test_seven['changed']
+          - test_seven['power_outlet']['name'] == "Test Power Outlet"
+          - test_seven['power_outlet']['module'] == module['key']
+          - test_seven['msg'] == "power_outlet Test Power Outlet already exists"
