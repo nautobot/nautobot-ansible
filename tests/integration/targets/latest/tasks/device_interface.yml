@@ -368,3 +368,56 @@
       - test_fourteen['interface']['name'] == "Bridge1"
       - test_fourteen['interface']['device'] == test100['key']
       - test_fourteen['interface']['bridge'] == test_twelve['interface']['id']
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - name: 15 - SET ADDITIONAL FACTS
+      set_fact:
+        device_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Loop the Network\"' )}}"
+        wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+    
+    - name: "15 - Create device interface with role"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        device: test100
+        name: GigabitEthernet15
+        enabled: false
+        mtu: 9000
+        mac_address: "69:69:69:69:69:69"
+        description: "The interface that will cause the outage"
+        type: "1000Base-T (1GE)"
+        mode: Tagged
+        role: "Loop the Network"
+        status: "Active"
+        untagged_vlan:
+          name: Wireless
+          location: "Child Test Location"
+        tagged_vlans:
+          - name: Data
+            location: "Child Test Location"
+          - name: VoIP
+            location: "Child Test Location"
+        state: present
+      register: test_fifteen
+
+    - name: "15 - ASSERT"
+      assert:
+        that:
+          - test_fifteen is changed
+          - test_fifteen['diff']['before']['state'] == "absent"
+          - test_fifteen['diff']['after']['state'] == "present"
+          - test_fifteen['interface']['name'] == "GigabitEthernet15"
+          - test_fifteen['interface']['status'] == active['key']
+          - test_fifteen['interface']['device'] == test100['key']
+          - test_fifteen['interface']['enabled'] == false
+          - test_fifteen['interface']['mtu'] == 9000
+          - test_fifteen['interface']['mac_address'] == "69:69:69:69:69:69"
+          - test_fifteen['interface']['description'] == "The interface that will cause the outage"
+          - test_fifteen['interface']['mode'] == "tagged"
+          - test_fifteen['interface']['untagged_vlan'] == wireless['key']
+          - test_fifteen['interface']['tagged_vlans']|length == 2
+          - test_fifteen['interface']['role'] == device_interface_role['key']
+          - test_fifteen['msg'] == "interface GigabitEthernet15 created"
