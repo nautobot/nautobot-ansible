@@ -150,3 +150,20 @@
           - test_six['power_port']['name'] == "Power Port 3"
           - test_six['power_port']['module'] == module['key']
           - test_six['msg'] == "power_port Power Port 3 created"
+
+    - name: "POWER_PORT 7: Create duplicate"
+      networktocode.nautobot.power_port:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Power Port 3
+        module: HooverMaxProModel60
+        state: present
+      register: test_seven
+
+    - name: "POWER_PORT 7: ASSERT - Create duplicate"
+      assert:
+        that:
+          - not test_seven['changed']
+          - test_seven['power_port']['name'] == "Power Port 3"
+          - test_seven['power_port']['module'] == module['key']
+          - test_seven['msg'] == "power_port Power Port 3 already exists"
