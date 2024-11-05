@@ -657,6 +657,11 @@ if nautobot_version >= version.parse("2.3"):
     cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 
+    # Create role for device interfaces
+    device_interface_roles = [
+        {"name": "Loop the Network", "color": "111111", "vm_role": False, "content_types": ["dcim.interface"]},
+    ]
+    created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
