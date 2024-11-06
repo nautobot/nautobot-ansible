@@ -209,6 +209,7 @@ def get_endpoint(nautobot, term):
         "locations": {"endpoint": nautobot.dcim.locations},
         "location-types": {"endpoint": nautobot.dcim.location_types},
         "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
+        "modules": {"endpoint": nautobot.dcim.modules},
         "namespaces": {"endpoint": nautobot.ipam.namespaces},
         "object-changes": {"endpoint": nautobot.extras.object_changes},
         "platforms": {"endpoint": nautobot.dcim.platforms},
