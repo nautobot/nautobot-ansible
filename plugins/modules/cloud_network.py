@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cloud_network
-short_description: Creates or removes cloud_network from Nautobot
+short_description: Creates or removes cloud network from Nautobot
 description:
-  - Creates or removes cloud_network from Nautobot
+  - Creates or removes cloud network from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -28,22 +28,22 @@ extends_documentation_fragment:
 options:
   name:
     description:
-      - The name of the cloud_network
+      - The name of the cloud network
     required: true
     type: str
   description:
     description:
-      - The description of the cloud_network
+      - The description of the cloud network
     required: false
     type: str
   cloud_resource_type:
     description:
-      - Required if I(state=present) and the cloud_network does not exist yet
+      - Required if I(state=present) and the cloud network does not exist yet
     required: false
     type: raw
   cloud_account:
     description:
-      - Required if I(state=present) and the cloud_network does not exist yet
+      - Required if I(state=present) and the cloud network does not exist yet
     required: false
     type: raw
   parent_cloud_network:
@@ -57,7 +57,7 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_network
+- name: Create a cloud network
   networktocode.nautobot.cloud_network:
     url: http://nautobot.local
     token: thisIsMyToken
@@ -67,7 +67,7 @@ EXAMPLES = r"""
     description: A quantum network for Cisco
     state: present
 
-- name: Delete a cloud_network
+- name: Delete a cloud network
   networktocode.nautobot.cloud_network:
     url: http://nautobot.local
     token: thisIsMyToken

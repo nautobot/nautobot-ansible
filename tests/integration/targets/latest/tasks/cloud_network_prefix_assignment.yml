@@ -11,7 +11,7 @@
   block:
     - set_fact:
         cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
-        prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=10.10.0.0/16') }}"
+        cloud_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=10.10.0.0/16') }}"
 
     - name: "1 - Create cloud network to prefix assignment"
       networktocode.nautobot.cloud_network_prefix_assignment:
@@ -28,7 +28,7 @@
           - test_create_one['diff']['before']['state'] == "absent"
           - test_create_one['diff']['after']['state'] == "present"
           - test_create_one['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_create_one['cloud_network_prefix_assignment']['prefix'] == prefix['key']
+          - test_create_one['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
           - "'created' in test_create_one['msg']"
 
     - name: "2 - Duplicate"
@@ -45,7 +45,7 @@
           - not test_create_idem['changed']
           - "'already exists' in test_create_idem['msg']"
           - test_create_idem['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_create_idem['cloud_network_prefix_assignment']['prefix'] == prefix['key']
+          - test_create_idem['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
     
     - name: "3 - Delete cloud_network_prefix_assignment"
       networktocode.nautobot.cloud_network_prefix_assignment:
@@ -63,7 +63,7 @@
           - test_delete['diff']['before']['state'] == "present"
           - test_delete['diff']['after']['state'] == "absent"
           - test_delete['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_delete['cloud_network_prefix_assignment']['prefix'] == prefix['key']
+          - test_delete['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
           - "'deleted' in test_delete['msg']"
     
     - name: "4 - Delete idempotent"

@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cloud_resource_type
-short_description: Creates or removes cloud_resource_type from Nautobot
+short_description: Creates or removes cloud resource type from Nautobot
 description:
-  - Creates or removes cloud_resource_type from Nautobot
+  - Creates or removes cloud resource type from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -28,25 +28,26 @@ extends_documentation_fragment:
 options:
   name:
     description:
-      - The name of the cloud_resource_type
+      - The name of the cloud resource type
     required: true
     type: str
   description:
     description:
-      - The description of the cloud_resource_type
+      - The description of the cloud resource type
     required: false
     type: str
   cloud_provider:
     aliases:
       - provider
     description:
-      - Required if I(state=present) and the cloud_resource_type does not exist yet
+      - Required if I(state=present) and the cloud resource type does not exist yet
     required: false
     type: raw
   content_types:
     description:
+      - Required if I(state=present) and the cloud resource type does not exist yet
       - Cloud Resource Type content type(s). These match app.endpoint and the endpoint is singular.
-      - e.g. cloud.cloudnetwork, cloud.cloudservice (more can be found in the examples)
+      - cloud.cloudnetwork, cloud.cloudservice
     type: list
     elements: str
   config_schema:
@@ -58,7 +59,7 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_resource_type
+- name: Create a cloud resource type
   networktocode.nautobot.cloud_resource_type:
     url: http://nautobot.local
     token: thisIsMyToken
@@ -68,8 +69,8 @@ EXAMPLES = r"""
       - "cloud.cloudnetwork"
     state: present
 
-- name: Delete a cloud_resource_type
-  networktocode.nautobot.contact:
+- name: Delete a cloud resource type
+  networktocode.nautobot.cloud_resource_type:
     url: http://nautobot.local
     token: thisIsMyToken
     name: Cisco Quantum Network

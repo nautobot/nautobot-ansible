@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cloud_account
-short_description: Creates or removes cloud_account from Nautobot
+short_description: Creates or removes cloud account from Nautobot
 description:
-  - Creates or removes cloud_account from Nautobot
+  - Creates or removes cloud account from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -28,36 +28,36 @@ extends_documentation_fragment:
 options:
   name:
     description:
-      - The name of the cloud_account
+      - The name of the cloud account
     required: true
     type: str
   account_number:
     description:
-      - Required if I(state=present) and the cloud_account does not exist yet
+      - Required if I(state=present) and the cloud account does not exist yet
     required: false
     type: str
   description:
     description:
-      - The description of the cloud_account
+      - The description of the cloud account
     required: false
     type: str
   cloud_provider:
     aliases:
       - provider
     description:
-      - Required if I(state=present) and the cloud_account does not exist yet
+      - Required if I(state=present) and the cloud account does not exist yet
     required: false
     type: raw
   secrets_group:
     description:
-      - The secrets group of the cloud_account
+      - The secrets group of the cloud account
     required: false
     type: raw
 """
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_account
+- name: Create a cloud account
   networktocode.nautobot.cloud_account:
     url: http://nautobot.local
     token: thisIsMyToken
@@ -70,7 +70,7 @@ EXAMPLES = r"""
   vars:
     my_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Secrets Group\"') }}"
 
-- name: Delete a cloud_account
+- name: Delete a cloud account
   networktocode.nautobot.cloud_account:
     url: http://nautobot.local
     token: thisIsMyToken

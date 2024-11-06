@@ -37,16 +37,16 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_service to cloud_network assignment
-  networktocode.nautobot.cloud_network:
+- name: Create a cloud service to cloud network assignment
+  networktocode.nautobot.cloud_service_network_assignment:
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_service: Cisco Quantum Service
     cloud_network: Cisco Quantum Network
     state: present
 
-- name: Delete a cloud_service to cloud_network assignment
-  networktocode.nautobot.cloud_network:
+- name: Delete a cloud service to cloud network assignment
+  networktocode.nautobot.cloud_service_network_assignment:
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_service: Cisco Quantum Service

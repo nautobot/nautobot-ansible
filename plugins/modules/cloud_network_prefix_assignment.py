@@ -39,16 +39,16 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_network to prefix assignment
-  networktocode.nautobot.cloud_network:
+- name: Create a cloud network to prefix assignment
+  networktocode.nautobot.cloud_network_prefix_assignment:
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_network: Cisco Quantum Network
     cloud_prefix: 10.1.198.0/23
     state: present
 
-- name: Delete a cloud_network to prefix assignment
-  networktocode.nautobot.cloud_network:
+- name: Delete a cloud network to prefix assignment
+  networktocode.nautobot.cloud_network_prefix_assignment:
     url: http://nautobot.local
     token: thisIsMyToken
     cloud_network: Cisco Quantum Network

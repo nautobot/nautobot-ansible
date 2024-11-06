@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cloud_service
-short_description: Creates or removes cloud_service from Nautobot
+short_description: Creates or removes cloud service from Nautobot
 description:
-  - Creates or removes cloud_service from Nautobot
+  - Creates or removes cloud service from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -28,17 +28,17 @@ extends_documentation_fragment:
 options:
   name:
     description:
-      - The name of the cloud_service
+      - The name of the cloud service
     required: true
     type: str
   description:
     description:
-      - The description of the cloud_service
+      - The description of the cloud service
     required: false
     type: str
   cloud_resource_type:
     description:
-      - Required if I(state=present) and the cloud_service does not exist yet
+      - Required if I(state=present) and the cloud service does not exist yet
     required: false
     type: raw
   cloud_account:
@@ -50,7 +50,7 @@ options:
 
 EXAMPLES = r"""
 ---
-- name: Create a cloud_service
+- name: Create a cloud service
   networktocode.nautobot.cloud_service:
     url: http://nautobot.local
     token: thisIsMyToken
@@ -60,7 +60,7 @@ EXAMPLES = r"""
     description: A quantum service for Cisco
     state: present
 
-- name: Delete a cloud_service
+- name: Delete a cloud service
   networktocode.nautobot.cloud_service:
     url: http://nautobot.local
     token: thisIsMyToken
