@@ -82,6 +82,9 @@
         cloud_resource_type: CiscoCloudServiceType
         cloud_account: CiscoCloudAccount
         description: Super secreter quantum service!
+        extra_config:
+          my_config:
+            foo: bar
       register: test_create_max
 
     - name: "5 - ASSERT"
@@ -99,9 +102,9 @@
       assert:
         that:
           - cloud_service['value']['name'] == "Cisco Quantum Secreter Service"
+          - cloud_service['value']['extra_config']['my_config']['foo'] == "bar"
       vars:
         cloud_service: "{{ lookup('networktocode.nautobot.lookup', 'cloud-services', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Secreter Service\"') }}"
-
 
     - name: "6 - Duplicate create with all parameters"
       networktocode.nautobot.cloud_service:

@@ -46,6 +46,11 @@ options:
       - A cloud account for this service.
     required: false
     type: raw
+  extra_config:
+    description:
+      - Arbitrary JSON data to define the extra config.
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -105,6 +110,7 @@ def main():
             description=dict(required=False, type="str"),
             cloud_resource_type=dict(required=False, type="raw"),
             cloud_account=dict(required=False, type="raw"),
+            extra_config=dict(required=False, type="dict"),
         )
     )
 
