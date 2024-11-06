@@ -107,6 +107,7 @@ API_APPS_ENDPOINTS = dict(
 # Used to normalize data for the respective query types used to find endpoints
 QUERY_TYPES = dict(
     circuit="cid",
+    circuit_provider="name",
     circuit_termination="circuit",
     circuit_type="name",
     cloud_network="name",
@@ -143,7 +144,6 @@ QUERY_TYPES = dict(
     primary_ip="address",
     primary_ip4="address",
     primary_ip6="address",
-    provider="name",
     rack="name",
     rack_group="name",
     rear_port="name",
@@ -165,6 +165,7 @@ QUERY_TYPES = dict(
 # Specifies keys within data that need to be converted to ID and the endpoint to be used when queried
 CONVERT_TO_ID = {
     "circuit": "circuits",
+    "circuit_provider": "providers",
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
@@ -219,7 +220,6 @@ CONVERT_TO_ID = {
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
     "primary_ip6": "ip_addresses",
-    "provider": "providers",
     "rack": "racks",
     "rack_group": "rack_groups",
     "rear_port": "rear_ports",
@@ -465,6 +465,7 @@ REQUIRED_ID_FIND = {
 
 # This is used to map non-clashing keys to Nautobot API compliant keys to prevent bad logic in code for similar keys but different modules
 CONVERT_KEYS = {
+    "circuit_provider": "provider",
     "cloud_prefix": "prefix",
     "cloud_provider": "provider",
     "parent_cloud_network": "parent",

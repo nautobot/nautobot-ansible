@@ -64,7 +64,7 @@ EXAMPLES = r"""
     url: http://nautobot.local
     token: thisIsMyToken
     name: Cisco Quantum Network
-    cloud_provider: Cisco
+    provider: Cisco
     content_types:
       - "cloud.cloudnetwork"
     state: present
