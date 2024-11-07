@@ -53,6 +53,11 @@ options:
       - The parent cloud network this network should be child to
     required: false
     type: raw
+  extra_config:
+    description:
+      - Arbitrary JSON data to define the extra config.
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -113,6 +118,7 @@ def main():
             cloud_resource_type=dict(required=False, type="raw"),
             cloud_account=dict(required=False, type="raw"),
             parent_cloud_network=dict(required=False, type="raw", aliases=["parent"]),
+            extra_config=dict(required=False, type="dict"),
         )
     )
 

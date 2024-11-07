@@ -97,6 +97,7 @@
           - test_create_max['cloud_service']['cloud_resource_type'] == cloud_resource_type['key']
           - test_create_max['cloud_service']['cloud_account'] == cloud_account['key']
           - test_create_max['cloud_service']['description'] == "Super secreter quantum service!"
+          - test_create_max['cloud_service']['extra_config']['my_config']['foo'] == "bar"
 
     - name: "5.1 - ASSERT"
       assert:
@@ -114,6 +115,9 @@
         cloud_resource_type: CiscoCloudServiceType
         cloud_account: CiscoCloudAccount
         description: Super secreter quantum service!
+        extra_config:
+          my_config:
+            foo: bar
       register: test_create_max_idem
 
     - name: "6 - ASSERT"
@@ -122,6 +126,7 @@
           - not test_create_max_idem['changed']
           - test_create_max_idem['msg'] == "cloud_service Cisco Quantum Secreter Service already exists"
           - test_create_max_idem['cloud_service']['name'] == "Cisco Quantum Secreter Service"
+          - test_create_max_idem['cloud_service']['extra_config']['my_config']['foo'] == "bar"
 
     - name: "7 - Delete cloud_service"
       networktocode.nautobot.cloud_service:

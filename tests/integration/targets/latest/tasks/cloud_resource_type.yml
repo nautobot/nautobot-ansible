@@ -99,6 +99,7 @@
           - test_create_max['cloud_resource_type']['provider'] == cisco_provider['key']
           - test_create_max['cloud_resource_type']['description'] == "Very fast network reimagined!"
           - test_create_max['cloud_resource_type']['content_types'] == ["cloud.cloudnetwork"]
+          - test_create_max['cloud_resource_type']['config_schema']['my_config']['foo'] == "bar"
 
     - name: "5.1 - ASSERT"
       assert:
@@ -116,6 +117,9 @@
         description: Very fast network reimagined!
         content_types:
           - "cloud.cloudnetwork"
+        config_schema:
+          my_config:
+            foo: bar
       register: test_create_max_idem
 
     - name: "6 - ASSERT"
@@ -124,6 +128,7 @@
           - not test_create_max_idem['changed']
           - test_create_max_idem['msg'] == "cloud_resource_type Cisco Quantum Network Remix already exists"
           - test_create_max_idem['cloud_resource_type']['name'] == "Cisco Quantum Network Remix"
+          - test_create_max_idem['cloud_resource_type']['config_schema']['my_config']['foo'] == "bar"
 
     - name: "7 - Delete cloud_resource_type"
       networktocode.nautobot.cloud_resource_type:
