@@ -32,6 +32,7 @@ NB_INVENTORY_ITEMS = "inventory_items"
 NB_LOCATIONS = "locations"
 NB_LOCATION_TYPES = "location_types"
 NB_MANUFACTURERS = "manufacturers"
+NB_MODULE_TYPES = "module_types"
 NB_NAMESPACES = "namespaces"
 NB_PLATFORMS = "platforms"
 NB_POWER_FEEDS = "power_feeds"
@@ -69,6 +70,7 @@ class NautobotDcimModule(NautobotModule):
         - interface_templates
         - inventory_items
         - manufacturers
+        - module_types
         - platforms
         - power_feeds
         - power_outlets

@@ -1,0 +1,157 @@
+---
+##
+##
+### PYNAUTOBOT_MODULE_TYPE
+##
+##
+- set_fact:
+    manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Manufacturer\"') }}"
+
+- name: "1 - Create module type with minimum information"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750
+    manufacturer: Test Manufacturer
+    state: present
+  register: test_one
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['module_type']['model'] == "ws-test-3750"
+      - test_one['module_type']['manufacturer'] == manufacturer['key']
+      - test_one['msg'] == "module_type ws-test-3750 created"
+
+- name: "2 - Create module type with minimum information idempotent"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: "ws-test-3750"
+    manufacturer: Test Manufacturer
+    state: present
+  register: test_two
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['module_type']['model'] == "ws-test-3750"
+      - test_two['module_type']['manufacturer'] == manufacturer['key']
+      - test_two['msg'] == "module_type ws-test-3750 already exists"
+
+- name: "3 - Update module type"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750
+    manufacturer: Test Manufacturer
+    part_number: ws-3750g-v2
+    comments: With great power comes great responsibility!
+    state: present
+  register: test_three
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['part_number'] == "ws-3750g-v2"
+      - test_three['module_type']['model'] == "ws-test-3750"
+      - test_three['module_type']['manufacturer'] == manufacturer['key']
+      - test_three['module_type']['comments'] == "With great power comes great responsibility!"
+      - test_three['module_type']['part_number'] == "ws-3750g-v2"
+      - test_three['msg'] == "module_type ws-test-3750 updated"
+
+- name: "4 - Update idempotent"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750
+    manufacturer: Test Manufacturer
+    part_number: ws-3750g-v2
+    comments: With great power comes great responsibility!
+    state: present
+  register: test_four
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['module_type']['model'] == "ws-test-3750"
+      - test_four['msg'] == "module_type ws-test-3750 already exists"
+
+- name: "5 - Create module type with all params"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750-2
+    manufacturer: Test Manufacturer
+    part_number: ws-3750g-v3
+    comments: With great power comes great responsibility!
+    state: present
+  register: test_five
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['module_type']['model'] == "ws-test-3750-2"
+      - test_five['module_type']['manufacturer'] == manufacturer['key']
+      - test_five['module_type']['comments'] == "With great power comes great responsibility!"
+      - test_five['module_type']['part_number'] == "ws-3750g-v3"
+      - test_five['msg'] == "module_type ws-test-3750-2 created"
+
+- name: "6 - Create module type with all params idempotent"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750-2
+    manufacturer: Test Manufacturer
+    part_number: ws-3750g-v3
+    comments: With great power comes great responsibility!
+    state: present
+  register: test_six
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['module_type']['model'] == "ws-test-3750-2"
+      - test_six['module_type']['manufacturer'] == manufacturer['key']
+      - test_six['module_type']['comments'] == "With great power comes great responsibility!"
+      - test_six['module_type']['part_number'] == "ws-3750g-v3"
+      - test_six['msg'] == "module_type ws-test-3750-2 already exists"
+
+- name: "7 - Delete"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: ws-test-3750-2
+    state: absent
+  register: test_seven
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "present"
+      - test_seven['diff']['after']['state'] == "absent"
+      - test_seven['msg'] == "module_type ws-test-3750-2 deleted"
+
+- name: "8 - Delete idempotent"
+  networktocode.nautobot.module_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    model: "ws-test-3750-2"
+    state: absent
+  register: test_eight
+
+- name: "8 - ASSERT`"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['module_type'] == None
+      - test_eight['msg'] == "module_type ws-test-3750-2 already absent"
