@@ -293,3 +293,15 @@ def make_docs(context):
     """Update ansible module docs before release."""
     command = "./hacking/make-docs.sh"
     context.run(command)
+
+
+# ------------------------------------------------------------------------------
+# DOCS
+# ------------------------------------------------------------------------------
+@task
+def docs(context):
+    """Build and serve docs locally for development."""
+    command = "ansible-galaxy collection install . -p ./collections --force"
+    context.run(command)
+    command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
+    context.run(command)

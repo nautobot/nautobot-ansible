@@ -64,4 +64,4 @@ If backwards incompatible changes are necessary, we plan to deprecate the old be
 
 ## History
 
-> This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021
+> This is a fork of the `netbox.netbox` Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021.

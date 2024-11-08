@@ -1,0 +1,111 @@
+---
+dev_addr: "127.0.0.1:8001"
+edit_uri: "edit/main/docs"
+#site_dir: "nautobot_dev_example/static/nautobot_dev_example/docs"
+site_name: "Nautobot Ansible Documentation"
+site_url: "https://docs.nautobot.com/projects/ansible/en/latest/"
+repo_url: "https://github.com/nautobot/nautobot-ansible"
+copyright: "Copyright &copy; The Authors"
+theme:
+  name: "material"
+  navigation_depth: 4
+  custom_dir: "docs/assets/overrides"
+  hljs_languages:
+    - "django"
+    - "yaml"
+  features:
+    - "content.action.edit"
+    - "content.action.view"
+    - "content.code.copy"
+    - "navigation.footer"
+    - "navigation.indexes"
+    - "navigation.tabs"
+    - "navigation.tabs.sticky"
+    - "navigation.tracking"
+    - "search.highlight"
+    - "search.share"
+    - "search.suggest"
+  favicon: "assets/favicon.ico"
+  logo: "assets/nautobot_logo.svg"
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: "default"
+      primary: "black"
+      toggle:
+        icon: "material/weather-sunny"
+        name: "Switch to dark mode"
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: "slate"
+      primary: "black"
+      toggle:
+        icon: "material/weather-night"
+        name: "Switch to light mode"
+extra_css:
+  - "assets/extra.css"
+
+# needed for RTD version flyout menu
+# jquery is not (yet) injected by RTD automatically and it might be dropped
+# as a dependency in the future
+# extra_javascript:
+#   - "https://code.jquery.com/jquery-3.6.0.min.js"
+
+extra:
+  generator: false
+  ntc_sponsor: true
+  social:
+    - icon: "fontawesome/solid/rss"
+      link: "https://blog.networktocode.com/blog/tags/nautobot"
+      name: "Network to Code Blog"
+    - icon: "fontawesome/brands/youtube"
+      link: "https://www.youtube.com/playlist?list=PLjA0bhxgryJ2Ts4GJMDA-tPzVWEncv4pb"
+      name: "Nautobot Videos"
+    - icon: "fontawesome/brands/slack"
+      link: "https://www.networktocode.com/community/"
+      name: "Network to Code Community"
+    - icon: "fontawesome/brands/github"
+      link: "https://github.com/nautobot/nautobot"
+      name: "GitHub Repo"
+    - icon: "fontawesome/brands/twitter"
+      link: "https://twitter.com/networktocode"
+      name: "Network to Code Twitter"
+markdown_extensions:
+  - "markdown_version_annotations":
+      admonition_tag: "???"
+  - "admonition"
+  - "toc":
+      permalink: true
+  - "attr_list"
+  - "md_in_html"
+  - "pymdownx.highlight":
+      anchor_linenums: true
+  - "pymdownx.inlinehilite"
+  - "pymdownx.snippets"
+  - "pymdownx.superfences":
+      custom_fences:
+        - name: "mermaid"
+          class: "mermaid"
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - "footnotes"
+plugins:
+  - "search"
+  - "ansible-collection":
+      collections:
+        - fqcn: "networktocode.nautobot"
+watch:
+  - "README.md"
+
+nav:
+  - Overview: "index.md"
+  - Getting Started:
+    # - "getting_started/index.md"
+    - Installation: "getting_started/installation.md"
+    - How to Use:
+      - Modules: "getting_started/how-to-use/modules.md"
+      - Inventory: "getting_started/how-to-use/inventory.md"
+      - Advanced Usage - Modules: "getting_started/how-to-use/advanced.md"
+  - Plugins: "networktocode.nautobot"
+  - Release Notes: "release_notes.md"
+  - Nautobot Docs Home ↗︎: "https://docs.nautobot.com"
