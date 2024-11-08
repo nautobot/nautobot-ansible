@@ -11,14 +11,14 @@
   block:
     - set_fact:
         cisco_provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
-        secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
+        cloud_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
 
     - name: "1 - Create cloud account within Nautobot with only required information"
       networktocode.nautobot.cloud_account:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Account
-        cloud_provider: Cisco
+        provider: Cisco
         account_number: "123456"
       register: test_create_min
 
@@ -80,10 +80,10 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Not So Root Account
-        cloud_provider: Cisco
+        provider: Cisco
         description: Rooty but not the rootest!
         account_number: "654321"
-        secrets_group: "{{ secrets_group['key'] }}"
+        secrets_group: "{{ cloud_secrets_group['key'] }}"
       register: test_create_max
 
     - name: "5 - ASSERT"
@@ -96,7 +96,7 @@
           - test_create_max['cloud_account']['provider'] == cisco_provider['key']
           - test_create_max['cloud_account']['description'] == "Rooty but not the rootest!"
           - test_create_max['cloud_account']['account_number'] == "654321"
-          - test_create_max['cloud_account']['secrets_group'] == secrets_group['key']
+          - test_create_max['cloud_account']['secrets_group'] == cloud_secrets_group['key']
 
     - name: "5.1 - ASSERT"
       assert:
@@ -111,10 +111,10 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Not So Root Account
-        cloud_provider: Cisco
+        provider: Cisco
         description: Rooty but not the rootest!
         account_number: "654321"
-        secrets_group: "{{ secrets_group['key'] }}"
+        secrets_group: "{{ cloud_secrets_group['key'] }}"
       register: test_create_max_idem
 
     - name: "6 - ASSERT"

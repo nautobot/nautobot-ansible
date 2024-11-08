@@ -113,7 +113,7 @@
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
         name: Cisco Quantum Network Remix
-        cloud_provider: Cisco
+        provider: Cisco
         description: Very fast network reimagined!
         content_types:
           - "cloud.cloudnetwork"

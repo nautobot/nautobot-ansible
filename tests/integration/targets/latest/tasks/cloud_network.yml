@@ -83,7 +83,7 @@
         name: Cisco Quantum Faster Network
         cloud_resource_type: CiscoCloudNetworkType
         cloud_account: CiscoCloudAccount
-        parent_cloud_network: CiscoCloudNetwork
+        parent: CiscoCloudNetwork
         description: Super faster quantum network!
         extra_config:
           my_config:
@@ -117,7 +117,7 @@
         name: Cisco Quantum Faster Network
         cloud_resource_type: CiscoCloudNetworkType
         cloud_account: CiscoCloudAccount
-        parent_cloud_network: CiscoCloudNetwork
+        parent: CiscoCloudNetwork
         description: Super faster quantum network!
         extra_config:
           my_config:
