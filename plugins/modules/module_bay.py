@@ -9,10 +9,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: module_bay_template
-short_description: Create, update or delete module bay templates within Nautobot
+module: module_bay
+short_description: Create, update or delete module bays within Nautobot
 description:
-  - Creates, updates or removes module bay templates from Nautobot
+  - Creates, updates or removes module bays from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -24,24 +24,24 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  device_type:
+  parent_device:
     description:
-      - The device type of the module bay template
+      - The parent device of the module bay
     required: false
     type: raw
-  module_type:
+  parent_module:
     description:
-      - The module type of the module bay template
+      - The parent module of the module bay
     required: false
     type: raw
   name:
     description:
-      - The name of the module bay template
+      - The name of the module bay
     required: true
     type: str
   label:
     description:
-      - The label of the module bay template
+      - The label of the module bay
     required: false
     type: str
   position:
@@ -51,34 +51,47 @@ options:
     type: str
   description:
     description:
-      - The description of the module bay template
+      - The description of the module bay
     required: false
     type: str
 """
 
 EXAMPLES = r"""
-- name: Create a module bay template
-  networktocode.nautobot.module_bay_template:
+- name: Create a module bay inside a device
+  networktocode.nautobot.module_bay:
     url: http://nautobot.local
     token: thisIsMyToken
-    module_type: HooverMaxProModel60
-    name: Edward Galbraith
-    label: Br Ba
-    position: "1"
-    description: Granite State
+    parent_device: test100
+    name: Watch Bay
+    label: watchbay
+    position: "42"
+    description: The bay of watches
     state: present
 
-- name: Delete a module bay template
-  networktocode.nautobot.module_bay_template:
+- name: Create a module bay inside a module
+  networktocode.nautobot.module_bay:
     url: http://nautobot.local
     token: thisIsMyToken
-    module_type: HooverMaxProModel60
-    name: Edward Galbraith
+    parent_module:
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ some_module_bay['key'] }}"
+    name: Fixing Good
+    label: FiXiNgGoOd
+    position: "321"
+    description: Good Fixing is better than Bad Breaking
+    state: present
+
+- name: Delete a module bay
+  networktocode.nautobot.module_bay:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    parent_device: test100
+    name: Watch Bay
     state: absent
 """
 
 RETURN = r"""
-module_bay_template:
+module_bay:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -95,7 +108,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
-    NB_MODULE_BAY_TEMPLATES,
+    NB_MODULE_BAYS,
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -110,8 +123,8 @@ def main():
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device_type=dict(required=False, type="raw"),
-            module_type=dict(required=False, type="raw"),
+            parent_device=dict(required=False, type="raw"),
+            parent_module=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
             position=dict(required=False, type="str"),
@@ -120,10 +133,10 @@ def main():
     )
 
     required_one_of = [
-        ("device_type", "module_type"),
+        ("parent_device", "parent_module"),
     ]
     mutually_exclusive = [
-        ("device_type", "module_type"),
+        ("parent_device", "parent_module"),
     ]
     module = AnsibleModule(
         argument_spec=argument_spec,
@@ -131,8 +144,8 @@ def main():
         required_one_of=required_one_of,
         mutually_exclusive=mutually_exclusive,
     )
-    module_bay_template = NautobotDcimModule(module, NB_MODULE_BAY_TEMPLATES)
-    module_bay_template.run()
+    module_bay = NautobotDcimModule(module, NB_MODULE_BAYS)
+    module_bay.run()
 
 
 if __name__ == "__main__":  # pragma: no cover
