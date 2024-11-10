@@ -119,6 +119,8 @@ location_content_types = [
 
 if nautobot_version >= version.parse("2.2"):
     location_content_types.append("dcim.controller")
+if nautobot_version >= version.parse("2.3"):
+    location_content_types.append("dcim.module")
 
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
 created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
@@ -267,6 +269,8 @@ device_roles = [
 
 if nautobot_version >= version.parse("2.2"):
     device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
+if nautobot_version >= version.parse("2.3"):
+    device_roles.append({"name": "Test Module Role", "color": "795548", "vm_role": False, "content_types": ["dcim.module"]})
 
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 
@@ -647,7 +651,7 @@ if nautobot_version >= version.parse("2.3"):
     created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
 
     # Create a module bay
-    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}]
+    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}, {"parent_device": test100.id, "name": "PowerStripTwo"}]
     created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
 
     # Assign module type to module bay

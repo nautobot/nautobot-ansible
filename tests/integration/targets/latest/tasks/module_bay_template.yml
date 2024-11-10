@@ -128,11 +128,11 @@
   assert:
     that:
       - not test_six['changed']
-      - test_five['module_bay_template']['name'] == "Test1234"
-      - test_five['module_bay_template']['label'] == "test1234"
-      - test_five['module_bay_template']['position'] == "42"
-      - test_five['module_bay_template']['description'] == "Cisco Test Module Bay"
-      - test_five['module_bay_template']['device_type'] == test_device_type['key']
+      - test_six['module_bay_template']['name'] == "Test1234"
+      - test_six['module_bay_template']['label'] == "test1234"
+      - test_six['module_bay_template']['position'] == "42"
+      - test_six['module_bay_template']['description'] == "Cisco Test Module Bay"
+      - test_six['module_bay_template']['device_type'] == test_device_type['key']
       - test_six['msg'] == "module_bay_template Test1234 already exists"
 
 - name: "7 - Delete"

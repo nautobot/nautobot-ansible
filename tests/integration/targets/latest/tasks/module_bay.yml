@@ -133,11 +133,11 @@
   assert:
     that:
       - not test_six['changed']
-      - test_five['module_bay']['name'] == "Fixing Good"
-      - test_five['module_bay']['label'] == "FiXiNgGoOd"
-      - test_five['module_bay']['position'] == "321"
-      - test_five['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
-      - test_five['module_bay']['parent_module'] == test_module['key']
+      - test_six['module_bay']['name'] == "Fixing Good"
+      - test_six['module_bay']['label'] == "FiXiNgGoOd"
+      - test_six['module_bay']['position'] == "321"
+      - test_six['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
+      - test_six['module_bay']['parent_module'] == test_module['key']
       - test_six['msg'] == "module_bay Fixing Good already exists"
 
 - name: "7 - Delete"
