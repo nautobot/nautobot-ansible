@@ -642,5 +642,41 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
+    cloud_resource_types = [
+        {"name": "CiscoCloudServiceType", "provider": "Cisco", "content_types": ["cloud.cloudservice"]},
+        {"name": "CiscoCloudNetworkType", "provider": "Cisco", "content_types": ["cloud.cloudnetwork"]},
+    ]
+    created_cloud_resource_types = make_nautobot_calls(nb.cloud.cloud_resource_types, cloud_resource_types)
+
+    cloud_accounts = [{"name": "CiscoCloudAccount", "provider": "Cisco", "account_number": "424242"}]
+    created_cloud_accounts = make_nautobot_calls(nb.cloud.cloud_accounts, cloud_accounts)
+
+    cloud_services = [{"name": "CiscoCloudService", "cloud_resource_type": "CiscoCloudServiceType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_services = make_nautobot_calls(nb.cloud.cloud_services, cloud_services)
+
+    cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
+
+    # Create a module type
+    power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
+    created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
+
+    # Create a module bay
+    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}]
+    created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
+
+    # Assign module type to module bay
+    test_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
+    test_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
+    power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
+    created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
+
+    # Create role for device interfaces
+    device_interface_roles = [
+        {"name": "Loop the Network", "color": "111111", "vm_role": False, "content_types": ["dcim.interface"]},
+    ]
+    created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
+
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
