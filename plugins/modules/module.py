@@ -41,7 +41,7 @@ options:
     type: str
   role:
     description:
-      - The asset tag of the module
+      - The role of the module
     required: false
     type: raw
   status:
@@ -162,8 +162,8 @@ def main():
         mutually_exclusive=mutually_exclusive,
     )
 
-    module = NautobotDcimModule(module, NB_MODULES)
-    module.run()
+    nb_module = NautobotDcimModule(module, NB_MODULES)
+    nb_module.run()
 
 
 if __name__ == "__main__":  # pragma: no cover
