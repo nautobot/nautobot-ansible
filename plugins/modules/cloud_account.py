@@ -62,7 +62,7 @@ EXAMPLES = r"""
     url: http://nautobot.local
     token: thisIsMyToken
     name: Cisco Quantum Account
-    cloud_provider: Cisco
+    provider: Cisco
     description: A quantum account for Cisco
     account_number: "654321"
     secrets_group: "{{ my_secrets_group['key'] }}"
