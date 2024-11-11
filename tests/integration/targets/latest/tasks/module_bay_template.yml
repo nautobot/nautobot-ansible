@@ -41,7 +41,7 @@
     that:
       - not test_two['changed']
       - test_two['module_bay_template']['name'] == "Edward Galbraith"
-      - test_one['module_bay_template']['module_type'] == test_module_type['key']
+      - test_two['module_bay_template']['module_type'] == test_module_type['key']
       - test_two['msg'] == "module_bay_template Edward Galbraith already exists"
 
 - name: "3 - Update module bay template"

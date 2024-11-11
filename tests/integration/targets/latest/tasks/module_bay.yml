@@ -42,7 +42,7 @@
     that:
       - not test_two['changed']
       - test_two['module_bay']['name'] == "Watch Bay"
-      - test_one['module_bay']['parent_device'] == test_device['key']
+      - test_two['module_bay']['parent_device'] == test_device['key']
       - test_two['msg'] == "module_bay Watch Bay already exists"
 
 - name: "3 - Update module bay"
