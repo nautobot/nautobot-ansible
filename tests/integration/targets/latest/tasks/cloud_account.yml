@@ -1,0 +1,156 @@
+---
+##
+##
+### PYNAUTOBOT_CLOUD_ACCOUNT
+##
+##
+
+- name: "NAUTOBOT 2.3+ CLOUD ACCOUNTS TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        cisco_provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
+        cloud_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
+
+    - name: "1 - Create cloud account within Nautobot with only required information"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+        provider: Cisco
+        account_number: "123456"
+      register: test_create_min
+
+    - name: "1 - ASSERT"
+      assert:
+        that: 
+          - test_create_min is changed
+          - test_create_min['diff']['before']['state'] == "absent"
+          - test_create_min['diff']['after']['state'] == "present"
+          - test_create_min['cloud_account']['name'] == "Cisco Quantum Account"
+          - test_create_min['msg'] == "cloud_account Cisco Quantum Account created"
+
+    - name: "2 - Duplicate"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+
+      register: test_create_idem
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_create_idem['changed']
+          - test_create_idem['msg'] == "cloud_account Cisco Quantum Account already exists"
+          - test_create_idem['cloud_account']['name'] == "Cisco Quantum Account"
+    
+    - name: "3 - Update cloud_account"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+        description: The rootest of all root accounts!
+      register: test_update
+    
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_update is changed
+          - test_update['diff']['before']['description'] == ""
+          - test_update['diff']['after']['description'] == "The rootest of all root accounts!"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+        description: The rootest of all root accounts!
+      register: test_update_idem
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_update_idem['changed']
+          - test_update_idem['msg'] == "cloud_account Cisco Quantum Account already exists"
+          - test_update_idem['cloud_account']['name'] == "Cisco Quantum Account"
+
+    - name: "5 - Create cloud_account with all parameters"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Not So Root Account
+        provider: Cisco
+        description: Rooty but not the rootest!
+        account_number: "654321"
+        secrets_group: "{{ cloud_secrets_group['key'] }}"
+      register: test_create_max
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_create_max is changed
+          - test_create_max['diff']['before']['state'] == "absent"
+          - test_create_max['diff']['after']['state'] == "present"
+          - test_create_max['cloud_account']['name'] == "Cisco Quantum Not So Root Account"
+          - test_create_max['cloud_account']['provider'] == cisco_provider['key']
+          - test_create_max['cloud_account']['description'] == "Rooty but not the rootest!"
+          - test_create_max['cloud_account']['account_number'] == "654321"
+          - test_create_max['cloud_account']['secrets_group'] == cloud_secrets_group['key']
+
+    - name: "5.1 - ASSERT"
+      assert:
+        that:
+          - cloud_account['value']['name'] == "Cisco Quantum Not So Root Account"
+      vars:
+        cloud_account: "{{ lookup('networktocode.nautobot.lookup', 'cloud-accounts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Not So Root Account\"') }}"
+
+
+    - name: "6 - Duplicate create with all parameters"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Not So Root Account
+        provider: Cisco
+        description: Rooty but not the rootest!
+        account_number: "654321"
+        secrets_group: "{{ cloud_secrets_group['key'] }}"
+      register: test_create_max_idem
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_create_max_idem['changed']
+          - test_create_max_idem['msg'] == "cloud_account Cisco Quantum Not So Root Account already exists"
+          - test_create_max_idem['cloud_account']['name'] == "Cisco Quantum Not So Root Account"
+
+    - name: "7 - Delete cloud_account"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+        state: absent
+      register: test_delete
+    
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_delete is changed
+          - test_delete['diff']['before']['state'] == "present"
+          - test_delete['diff']['after']['state'] == "absent"
+          - test_delete['cloud_account']['name'] == "Cisco Quantum Account"
+          - "'deleted' in test_delete['msg']"
+    
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.cloud_account:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Account
+        state: absent
+      register: test_delete_idem
+
+    - name: "8 - ASSERT"
+      assert:
+        that:
+          - not test_delete_idem['changed']
+          - "'already absent' in test_delete_idem['msg']"

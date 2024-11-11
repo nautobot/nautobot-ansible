@@ -31,7 +31,9 @@ options:
     required: true
     type: str
     version_added: "3.0.0"
-  provider:
+  circuit_provider:
+    aliases:
+      - provider
     description:
       - The provider of the circuit
     required: false
@@ -157,7 +159,7 @@ def main():
     argument_spec.update(
         dict(
             cid=dict(required=True, type="str"),
-            provider=dict(required=False, type="raw"),
+            circuit_provider=dict(required=False, type="raw", aliases=["provider"]),
             circuit_type=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
