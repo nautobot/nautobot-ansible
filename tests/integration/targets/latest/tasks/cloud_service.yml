@@ -1,0 +1,160 @@
+---
+##
+##
+### PYNAUTOBOT_CLOUD_SERVICE
+##
+##
+
+- name: "NAUTOBOT 2.3+ CLOUD SERVICES TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudServiceType') }}"
+        cloud_account: "{{ lookup('networktocode.nautobot.lookup', 'cloud-accounts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudAccount') }}"
+
+    - name: "1 - Create cloud service within Nautobot with only required information"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Service
+        cloud_resource_type: CiscoCloudServiceType
+      register: test_create_min
+
+    - name: "1 - ASSERT"
+      assert:
+        that: 
+          - test_create_min is changed
+          - test_create_min['diff']['before']['state'] == "absent"
+          - test_create_min['diff']['after']['state'] == "present"
+          - test_create_min['cloud_service']['name'] == "Cisco Quantum Service"
+          - test_create_min['msg'] == "cloud_service Cisco Quantum Service created"
+
+    - name: "2 - Duplicate"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Service
+
+      register: test_create_idem
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_create_idem['changed']
+          - test_create_idem['msg'] == "cloud_service Cisco Quantum Service already exists"
+          - test_create_idem['cloud_service']['name'] == "Cisco Quantum Service"
+    
+    - name: "3 - Update cloud_service"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Service
+        description: Super secret quantum service!
+      register: test_update
+    
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_update is changed
+          - test_update['diff']['before']['description'] == ""
+          - test_update['diff']['after']['description'] == "Super secret quantum service!"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Service
+        description: Super secret quantum service!
+      register: test_update_idem
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_update_idem['changed']
+          - test_update_idem['msg'] == "cloud_service Cisco Quantum Service already exists"
+          - test_update_idem['cloud_service']['name'] == "Cisco Quantum Service"
+
+    - name: "5 - Create cloud_service with all parameters"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Secreter Service
+        cloud_resource_type: CiscoCloudServiceType
+        cloud_account: CiscoCloudAccount
+        description: Super secreter quantum service!
+        extra_config:
+          my_config:
+            foo: bar
+      register: test_create_max
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_create_max is changed
+          - test_create_max['diff']['before']['state'] == "absent"
+          - test_create_max['diff']['after']['state'] == "present"
+          - test_create_max['cloud_service']['name'] == "Cisco Quantum Secreter Service"
+          - test_create_max['cloud_service']['cloud_resource_type'] == cloud_resource_type['key']
+          - test_create_max['cloud_service']['cloud_account'] == cloud_account['key']
+          - test_create_max['cloud_service']['description'] == "Super secreter quantum service!"
+          - test_create_max['cloud_service']['extra_config']['my_config']['foo'] == "bar"
+
+    - name: "5.1 - ASSERT"
+      assert:
+        that:
+          - cloud_service['value']['name'] == "Cisco Quantum Secreter Service"
+          - cloud_service['value']['extra_config']['my_config']['foo'] == "bar"
+      vars:
+        cloud_service: "{{ lookup('networktocode.nautobot.lookup', 'cloud-services', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Secreter Service\"') }}"
+
+    - name: "6 - Duplicate create with all parameters"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Secreter Service
+        cloud_resource_type: CiscoCloudServiceType
+        cloud_account: CiscoCloudAccount
+        description: Super secreter quantum service!
+        extra_config:
+          my_config:
+            foo: bar
+      register: test_create_max_idem
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_create_max_idem['changed']
+          - test_create_max_idem['msg'] == "cloud_service Cisco Quantum Secreter Service already exists"
+          - test_create_max_idem['cloud_service']['name'] == "Cisco Quantum Secreter Service"
+          - test_create_max_idem['cloud_service']['extra_config']['my_config']['foo'] == "bar"
+
+    - name: "7 - Delete cloud_service"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Secreter Service
+        state: absent
+      register: test_delete
+    
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_delete is changed
+          - test_delete['diff']['before']['state'] == "present"
+          - test_delete['diff']['after']['state'] == "absent"
+          - test_delete['cloud_service']['name'] == "Cisco Quantum Secreter Service"
+          - "'deleted' in test_delete['msg']"
+    
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.cloud_service:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Secreter Service
+        state: absent
+      register: test_delete_idem
+
+    - name: "8 - ASSERT"
+      assert:
+        that:
+          - not test_delete_idem['changed']
+          - "'already absent' in test_delete_idem['msg']"

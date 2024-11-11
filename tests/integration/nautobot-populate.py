@@ -642,6 +642,21 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
+    cloud_resource_types = [
+        {"name": "CiscoCloudServiceType", "provider": "Cisco", "content_types": ["cloud.cloudservice"]},
+        {"name": "CiscoCloudNetworkType", "provider": "Cisco", "content_types": ["cloud.cloudnetwork"]},
+    ]
+    created_cloud_resource_types = make_nautobot_calls(nb.cloud.cloud_resource_types, cloud_resource_types)
+
+    cloud_accounts = [{"name": "CiscoCloudAccount", "provider": "Cisco", "account_number": "424242"}]
+    created_cloud_accounts = make_nautobot_calls(nb.cloud.cloud_accounts, cloud_accounts)
+
+    cloud_services = [{"name": "CiscoCloudService", "cloud_resource_type": "CiscoCloudServiceType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_services = make_nautobot_calls(nb.cloud.cloud_services, cloud_services)
+
+    cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
+
     # Create a module type
     power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
     created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
