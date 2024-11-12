@@ -142,24 +142,17 @@ class NautobotDcimModule(NautobotModule):
             )
 
         elif endpoint_name == "module":
-            module_type_name = self.module.params["module_type"]
-            if isinstance(self.module.params["parent_module_bay"], dict):
-                parent_name = self.module.params["parent_module_bay"].get("name")
+            name = self.module.params["module_type"]
+            if isinstance(self.module.params["parent_module_bay"], str):
+                name = f"{self.module.params['parent_module_bay']} > {name}"
+            elif isinstance(self.module.params["parent_module_bay"], dict):
+                name = f"{self.module.params['parent_module_bay'].get('name')} > {name}"
                 if self.module.params["parent_module_bay"].get("parent_device"):
-                    parent_parent_name = self.module.params["parent_module_bay"].get("parent_device")
+                    name = f"{self.module.params['parent_module_bay'].get('parent_device')} > {name}"
                 elif self.module.params["parent_module_bay"].get("parent_module"):
-                    parent_parent_name = self.module.params["parent_module_bay"].get("parent_module")
+                    name = f"{self.module.params['parent_module_bay'].get('parent_module')} > {name}"
             elif isinstance(self.module.params["location"], dict):
-                parent_name = self.module.params["location"].get("name")
-                parent_parent_name = self.module.params["location"].get("parent", "—")
-            else:
-                parent_name = None
-                parent_parent_name = None
-
-            if not (parent_name or parent_parent_name):
-                self._handle_errors(msg=f"Could not resolve parent of new module {module_type_name}")
-            else:
-                name = f"{parent_parent_name} > {parent_name} > {module_type_name}"
+                name = f"{self.module.params['location'].get('parent', '—')} > {self.module.params['location'].get('name')} > {name}"
 
         # Make color params lowercase
         if data.get("color"):
