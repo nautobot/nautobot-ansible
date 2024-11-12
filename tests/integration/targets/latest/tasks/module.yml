@@ -16,6 +16,23 @@
         test_module_tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
         test_module_child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
 
+    - name: "0 - Verify error handling if parent_module_bay or location attributes are missing"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        parent_module_bay: "{{ test_module_bay['key']}}"
+        status: Active
+        state: present
+      ignore_errors: true
+      register: test_zero
+
+    - name: "0 - ASSERT"
+      assert:
+        that:
+          - not test_zero['changed']
+          - test_zero['msg'] == "Could not resolve parent of new module HooverMaxProModel60"
+
     - name: "1 - Create module with minimum information"
       networktocode.nautobot.module:
         url: "{{ nautobot_url }}"

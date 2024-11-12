@@ -143,17 +143,23 @@ class NautobotDcimModule(NautobotModule):
 
         elif endpoint_name == "module":
             module_type_name = self.module.params["module_type"]
-            if self.module.params["parent_module_bay"]:
+            if isinstance(self.module.params["parent_module_bay"], dict):
                 parent_name = self.module.params["parent_module_bay"].get("name")
                 if self.module.params["parent_module_bay"].get("parent_device"):
                     parent_parent_name = self.module.params["parent_module_bay"].get("parent_device")
                 elif self.module.params["parent_module_bay"].get("parent_module"):
                     parent_parent_name = self.module.params["parent_module_bay"].get("parent_module")
-            elif self.module.params["location"]:
+            elif isinstance(self.module.params["location"], dict):
                 parent_name = self.module.params["location"].get("name")
                 parent_parent_name = self.module.params["location"].get("parent", "—")
+            else:
+                parent_name = None
+                parent_parent_name = None
 
-            name = f"{parent_parent_name} > {parent_name} > {module_type_name}"
+            if not (parent_name or parent_parent_name):
+                self._handle_errors(msg=f"Could not resolve parent of new module {module_type_name}")
+            else:
+                name = f"{parent_parent_name} > {parent_name} > {module_type_name}"
 
         # Make color params lowercase
         if data.get("color"):
