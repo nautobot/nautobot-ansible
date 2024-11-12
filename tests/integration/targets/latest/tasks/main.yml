@@ -591,6 +591,42 @@
   tags:
     - controller
 
+- name: "PYNAUTOBOT_MODULE_TYPE TESTS"
+  include_tasks:
+    file: "module_type.yml"
+    apply:
+      tags:
+        - module_type
+  tags:
+    - module_type
+
+- name: "PYNAUTOBOT_MODULE_BAY_TEMPLATE TESTS"
+  include_tasks:
+    file: "module_bay_template.yml"
+    apply:
+      tags:
+        - module_bay_template
+  tags:
+    - module_bay_template
+
+- name: "PYNAUTOBOT_MODULE_BAY TESTS"
+  include_tasks:
+    file: "module_bay.yml"
+    apply:
+      tags:
+        - module_bay
+  tags:
+    - module_bay
+
+- name: "PYNAUTOBOT_MODULE TESTS"
+  include_tasks:
+    file: "module.yml"
+    apply:
+      tags:
+        - module
+  tags:
+    - module
+
 - name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
   include_tasks:
     file: "cloud_account.yml"
