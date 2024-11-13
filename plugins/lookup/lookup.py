@@ -102,7 +102,7 @@ tasks:
 # This example uses an API Filter with Depth set to get additional details from the lookup
 tasks:
   # query a list of devices, getting API Depth of 1 to get additional details
-  # Note the space and the use of depth. Note the location_name is set to the namae of the location
+  # Note the space and the use of depth. Note the location_name is set to the name of the location
     - name: "Obtain Location Information from Nautobot and print some facts."
       ansible.builtin.debug:
         msg: >
@@ -368,24 +368,12 @@ class LookupModule(LookupBase):
 
             if api_filter:
                 filter = build_filters(api_filter)
-
-                if "id" in filter:
-                    Display().vvvv("Filter is: %s and includes id, will use .get instead of .filter" % (filter))
-                    try:
-                        id = filter["id"][0]
-                        data = endpoint.get(id)
-                        data = dict(data)
-                        Display().vvvvv(pformat(data))
-                        return [data]
-                    except pynautobot.RequestError as e:
-                        raise AnsibleError(e.error)
-
                 Display().vvvv("filter is %s" % filter)
 
             # Make call to Nautobot API and capture any failures
-            data = make_call(endpoint, filters=filter if api_filter else None)
+            response = make_call(endpoint, filters=filter if api_filter else None)
 
-            for data in data:
+            for data in response:
                 data = dict(data)
                 Display().vvvvv(pformat(data))
 
