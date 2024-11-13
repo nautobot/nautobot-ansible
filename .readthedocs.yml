@@ -13,7 +13,7 @@ build:
     python: "3.10"
   jobs:
     post_install:
-      - "ansible-galaxy collection install . -p ./collections --force"
+      - "ansible-galaxy collection install . --force"
 
 
 mkdocs:
