@@ -177,7 +177,7 @@ class NautobotDcimModule(NautobotModule):
 
         # This is logic to handle interfaces on a VC
         if self.endpoint == "interfaces":
-            if self.nb_object:
+            if self.nb_object and not self.module.params["module"]:
                 device = self.nb.dcim.devices.get(self.nb_object.device.id)
                 if device["virtual_chassis"] and self.nb_object.device.id != self.data["device"]:
                     if self.module.params.get("update_vc_child"):
