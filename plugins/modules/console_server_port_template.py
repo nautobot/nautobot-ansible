@@ -43,7 +43,7 @@ options:
     version_added: "3.0.0"
   module_type:
     description:
-      - The module type the console port template is attached to
+      - The module type the console server port template is attached to
     required: false
     type: raw
     version_added: "5.4.0"
