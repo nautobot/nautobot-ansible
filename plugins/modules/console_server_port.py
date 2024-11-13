@@ -72,10 +72,10 @@ EXAMPLES = r"""
         state: present
 
     - name: Create console server port inside module
-      networktocode.nautobot.console_port:
+      networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console Port
+        name: Test Console Server Port
         module: HooverMaxProModel60
         state: present
 
