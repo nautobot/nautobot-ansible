@@ -2,9 +2,6 @@
 networktocode.nautobot Release Notes
 ====================================
 
-.. contents:: Topics
-
-
 v5.3.1
 ======
 
@@ -114,7 +111,7 @@ v5.0.0
 Release Summary
 ---------------
 
-This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes. 
+This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
 
 Breaking Changes / Porting Guide
 --------------------------------
