@@ -1,3 +1,1 @@
-# Release Notes
-
---8<-- "CHANGELOG.rst"
+--8<-- "CHANGELOG.md"

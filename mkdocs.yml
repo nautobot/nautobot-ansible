@@ -96,6 +96,7 @@ plugins:
         - fqcn: "networktocode.nautobot"
 watch:
   - "README.md"
+  - "CHANGELOG.md"
 
 nav:
   - Overview: "index.md"
