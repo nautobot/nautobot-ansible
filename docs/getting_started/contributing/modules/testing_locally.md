@@ -1,16 +1,12 @@
-==========================
-Testing Locally
-==========================
+# Testing Locally
 
-Testing Locally Overview
-------------------------------
+## Testing Locally Overview
 
 We provide the ability to run the tests locally to make sure the CI/CD pipeline will pass without having to wait for the CI/CD to run.
 
 The tests are provided by enabling the environment using Poetry to provide the Invoke commands to run the tests.
 
-Invoke Tasks
-----------------------
+## Invoke Tasks
 
 You can get the list of available Invoke commands available for running the tests after launching `poetry shell`.
 
@@ -57,8 +53,7 @@ You can then run `invoke integration` to run the integration tests against Nauto
 ❯ invoke integration
 ```
 
-Using Environment Variables
-------------------------------
+## Using Environment Variables
 
 You can use the following environment variables to test against different Python or Nautobot version.
 
