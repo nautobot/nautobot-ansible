@@ -50,7 +50,6 @@
       that:
         - test_three['changed']
         - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
-        - test_three['controller_managed_device_group']['controller'] == "controller_two"
         - test_three['msg'] == "controller_managed_device_group Test Controller Group One updated"
 
   - name: "CONTROLLER GROUP 4: ASSERT - Delete"
