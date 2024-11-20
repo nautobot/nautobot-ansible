@@ -1,0 +1,203 @@
+---
+##
+##
+### PYNAUTOBOT_MODULE
+##
+##
+- name: "NAUTOBOT 2.3+ MODULE TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
+        test_module_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Module Role\"') }}"
+        test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStripTwo"'') }}'
+        test_module_status: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+        test_module_tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+        test_module_child_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
+
+    - name: "1 - Create module with minimum information"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        parent_module_bay:
+          name: PowerStripTwo
+          parent_device: test100
+        status: Active
+        state: present
+      register: test_one
+
+    - name: "1 - ASSERT"
+      assert:
+        that:
+          - test_one is changed
+          - test_one['diff']['before']['state'] == "absent"
+          - test_one['diff']['after']['state'] == "present"
+          - test_one['module']['module_type'] == test_module_type['key']
+          - test_one['module']['parent_module_bay'] == test_module_bay['key']
+          - test_one['module']['status'] == test_module_status['key']
+          - test_one['msg'] == "module test100 > PowerStripTwo > HooverMaxProModel60 created"
+
+    - name: "2 - Create module with minimum information idempotent"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        parent_module_bay:
+          name: PowerStripTwo
+          parent_device: test100
+        status: Active
+        state: present
+      register: test_two
+
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_two['changed']
+          - test_two['module']['module_type'] == test_module_type['key']
+          - test_two['module']['parent_module_bay'] == test_module_bay['key']
+          - test_two['module']['status'] == test_module_status['key']
+          - test_two['msg'] == "module test100 > PowerStripTwo > HooverMaxProModel60 already exists"
+
+    - name: "3 - Update module"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        parent_module_bay:
+          name: PowerStripTwo
+          parent_device: test100
+        serial: "123456"
+        asset_tag: "654321"
+        state: present
+      register: test_three
+
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_three is changed
+          - test_three['diff']['after']['serial'] == "123456"
+          - test_three['diff']['after']['asset_tag'] == "654321"
+          - test_three['module']['module_type'] == test_module_type['key']
+          - test_three['module']['parent_module_bay'] == test_module_bay['key']
+          - test_three['module']['status'] == test_module_status['key']
+          - test_three['module']['serial'] == "123456"
+          - test_three['module']['asset_tag'] == "654321"
+          - test_three['msg'] == "module test100 > PowerStripTwo > HooverMaxProModel60 updated"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        parent_module_bay:
+          name: PowerStripTwo
+          parent_device: test100
+        serial: "123456"
+        asset_tag: "654321"
+        state: present
+      register: test_four
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_four['changed']
+          - test_four['module']['module_type'] == test_module_type['key']
+          - test_four['module']['parent_module_bay'] == test_module_bay['key']
+          - test_four['msg'] == "module test100 > PowerStripTwo > HooverMaxProModel60 already exists"
+
+    - name: "5 - Create module with all params"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
+        serial: "654321"
+        asset_tag: "123456"
+        role: Test Module Role
+        status: Active
+        tenant: Test Tenant
+        state: present
+      register: test_five
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_five is changed
+          - test_five['module']['module_type'] == test_module_type['key']
+          - test_five['module']['location'] == test_module_child_location['key']
+          - test_five['module']['serial'] == "654321"
+          - test_five['module']['asset_tag'] == "123456"
+          - test_five['module']['role'] == test_module_role['key']
+          - test_five['module']['status'] == test_module_status['key']
+          - test_five['module']['tenant'] == test_module_tenant['key']
+          - test_five['msg'] == "module Parent Test Location > Child Test Location > HooverMaxProModel60 created"
+
+    - name: "6 - Create module with all params idempotent"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
+        serial: "654321"
+        asset_tag: "123456"
+        role: Test Module Role
+        status: Active
+        tenant: Test Tenant
+        state: present
+      register: test_six
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_six['changed']
+          - test_six['module']['module_type'] == test_module_type['key']
+          - test_six['module']['location'] == test_module_child_location['key']
+          - test_six['module']['serial'] == "654321"
+          - test_six['module']['asset_tag'] == "123456"
+          - test_six['module']['role'] == test_module_role['key']
+          - test_six['module']['status'] == test_module_status['key']
+          - test_six['module']['tenant'] == test_module_tenant['key']
+          - test_six['msg'] == "module Parent Test Location > Child Test Location > HooverMaxProModel60 already exists"
+
+    - name: "7 - Delete"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
+        state: absent
+      register: test_seven
+
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_seven is changed
+          - test_seven['diff']['before']['state'] == "present"
+          - test_seven['diff']['after']['state'] == "absent"
+          - test_seven['msg'] == "module Parent Test Location > Child Test Location > HooverMaxProModel60 deleted"
+
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.module:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module_type: HooverMaxProModel60
+        location:
+          name: "Child Test Location"
+          parent: "Parent Test Location"
+        state: absent
+      register: test_eight
+
+    - name: "8 - ASSERT`"
+      assert:
+        that:
+          - not test_eight['changed']
+          - test_eight['module'] == None
+          - test_eight['msg'] == "module Parent Test Location > Child Test Location > HooverMaxProModel60 already absent"

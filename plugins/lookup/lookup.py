@@ -102,7 +102,7 @@ tasks:
 # This example uses an API Filter with Depth set to get additional details from the lookup
 tasks:
   # query a list of devices, getting API Depth of 1 to get additional details
-  # Note the space and the use of depth. Note the location_name is set to the namae of the location
+  # Note the space and the use of depth. Note the location_name is set to the name of the location
     - name: "Obtain Location Information from Nautobot and print some facts."
       ansible.builtin.debug:
         msg: >
@@ -175,6 +175,12 @@ def get_endpoint(nautobot, term):
         "cables": {"endpoint": nautobot.dcim.cables},
         "controllers": {"endpoint": nautobot.dcim.controllers},
         "controller-managed-device-groups": {"endpoint": nautobot.dcim.controller_managed_device_groups},
+        "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
+        "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
+        "cloud-network-prefix-assignments": {"endpoint": nautobot.cloud.cloud_network_prefix_assignments},
+        "cloud-resource-types": {"endpoint": nautobot.cloud.cloud_resource_types},
+        "cloud-services": {"endpoint": nautobot.cloud.cloud_services},
+        "cloud-service-network-assignments": {"endpoint": nautobot.cloud.cloud_service_network_assignments},
         "cluster-groups": {"endpoint": nautobot.virtualization.cluster_groups},
         "cluster-types": {"endpoint": nautobot.virtualization.cluster_types},
         "clusters": {"endpoint": nautobot.virtualization.clusters},
@@ -205,6 +211,10 @@ def get_endpoint(nautobot, term):
         "locations": {"endpoint": nautobot.dcim.locations},
         "location-types": {"endpoint": nautobot.dcim.location_types},
         "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
+        "module-bay-templates": {"endpoint": nautobot.dcim.module_bay_templates},
+        "module-bays": {"endpoint": nautobot.dcim.module_bays},
+        "module-types": {"endpoint": nautobot.dcim.module_types},
+        "modules": {"endpoint": nautobot.dcim.modules},
         "namespaces": {"endpoint": nautobot.ipam.namespaces},
         "object-changes": {"endpoint": nautobot.extras.object_changes},
         "platforms": {"endpoint": nautobot.dcim.platforms},
@@ -360,24 +370,12 @@ class LookupModule(LookupBase):
 
             if api_filter:
                 filter = build_filters(api_filter)
-
-                if "id" in filter:
-                    Display().vvvv("Filter is: %s and includes id, will use .get instead of .filter" % (filter))
-                    try:
-                        id = filter["id"][0]
-                        data = endpoint.get(id)
-                        data = dict(data)
-                        Display().vvvvv(pformat(data))
-                        return [data]
-                    except pynautobot.RequestError as e:
-                        raise AnsibleError(e.error)
-
                 Display().vvvv("filter is %s" % filter)
 
             # Make call to Nautobot API and capture any failures
-            data = make_call(endpoint, filters=filter if api_filter else None)
+            response = make_call(endpoint, filters=filter if api_filter else None)
 
-            for data in data:
+            for data in response:
                 data = dict(data)
                 Display().vvvvv(pformat(data))
 

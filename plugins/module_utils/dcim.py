@@ -33,6 +33,10 @@ NB_INVENTORY_ITEMS = "inventory_items"
 NB_LOCATIONS = "locations"
 NB_LOCATION_TYPES = "location_types"
 NB_MANUFACTURERS = "manufacturers"
+NB_MODULE_BAY_TEMPLATES = "module_bay_templates"
+NB_MODULE_BAYS = "module_bays"
+NB_MODULE_TYPES = "module_types"
+NB_MODULES = "modules"
 NB_NAMESPACES = "namespaces"
 NB_PLATFORMS = "platforms"
 NB_POWER_FEEDS = "power_feeds"
@@ -71,6 +75,10 @@ class NautobotDcimModule(NautobotModule):
         - interface_templates
         - inventory_items
         - manufacturers
+        - module_bay_templates
+        - module_bays
+        - module_types
+        - modules
         - platforms
         - power_feeds
         - power_outlets
@@ -134,6 +142,19 @@ class NautobotDcimModule(NautobotModule):
                 data.get("termination_b_type"),
                 termination_b_name,
             )
+
+        elif endpoint_name == "module":
+            name = self.module.params["module_type"]
+            if isinstance(self.module.params["parent_module_bay"], str):
+                name = f"{self.module.params['parent_module_bay']} > {name}"
+            elif isinstance(self.module.params["parent_module_bay"], dict):
+                name = f"{self.module.params['parent_module_bay'].get('name')} > {name}"
+                if self.module.params["parent_module_bay"].get("parent_device"):
+                    name = f"{self.module.params['parent_module_bay'].get('parent_device')} > {name}"
+                elif self.module.params["parent_module_bay"].get("parent_module"):
+                    name = f"{self.module.params['parent_module_bay'].get('parent_module')} > {name}"
+            elif isinstance(self.module.params["location"], dict):
+                name = f"{self.module.params['location'].get('parent', '—')} > {self.module.params['location'].get('name')} > {name}"
 
         # Make color params lowercase
         if data.get("color"):
