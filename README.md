@@ -1,10 +1,19 @@
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+![https://github.com/nautobot/nautobot-ansible/actions](https://github.com/nautobot/nautobot-ansible/actions/workflows/trigger_scheduled.yml/badge.svg?branch=develop)
+![https://docs.nautobot.com/projects/ansible/en/latest/](https://readthedocs.org/projects/nautobot-ansible/badge/)
+![https://github.com/psf/black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
-# Nautobot Modules for Ansible using Ansible Collections
+# Ansible Collection for Nautobot
 
-This collection provides Ansible modules to interact with Nautobot, an open-source Network Source of Truth and Network Automation Platform. The modules allow you to automate various tasks in Nautobot, such as managing devices, interfaces, IP addresses, and more. By using these modules, you can keep your Source of Truth (SOT) updated and ensure that your network data is accurate and consistent.
+
+This collection provides Ansible plugins (modules, inventory, lookup/filters) to interact with Nautobot, an open-source Network Source of Truth and Network Automation Platform. The plugins allow you to automate various tasks in Nautobot, such as managing devices, interfaces, IP addresses, and more. By using these plugins, you can keep your Source of Truth (SOT) updated and ensure that your network data is accurate and consistent.
 
 To keep the code simple, we only officially support the two latest releases of Nautobot and don't guarantee backwards compatibility beyond that.
+
+Full documentation for this App can be found over on the [Nautobot Docs](https://docs.nautobot.com) website:
+
+- [Plugins Reference](https://docs.nautobot.com/projects/ansible/en/latest/networktocode.nautobot/) - Documentation (parameters, examples, return values) for all plugins included in the collection.
+- [Installation Guide](https://docs.nautobot.com/projects/ansible/en/latest/getting_started/installation/)
+- [Release Notes](https://docs.nautobot.com/projects/ansible/en/latest/release_notes/)
 
 ## Requirements
 
@@ -12,9 +21,7 @@ To keep the code simple, we only officially support the two latest releases of N
 - Python 3.6+
 - Python modules: **pynautobot 2.x+**
 - Ansible 2.9+
-- Nautobot write-enabled token when using modules or read-only token for `lookup/inventory`
-
-We have a new docs site live that can be found [here](https://nautobot-ansible.readthedocs.io/en/latest/).
+- Nautobot write-enabled token when using `modules` or read-only token for `lookup/inventory`
 
 ## Keeping Your Source of Truth Updated
 
@@ -64,4 +71,4 @@ If backwards incompatible changes are necessary, we plan to deprecate the old be
 
 ## History
 
-> This is a fork of the netbox.netbox Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021
+> This is a fork of the `netbox.netbox` Ansible Galaxy collection found at [https://github.com/netbox-community/ansible_modules](https://github.com/netbox-community/ansible_modules) in February, 2021.

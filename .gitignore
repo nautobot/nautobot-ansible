@@ -13,6 +13,9 @@ pb.*.yml
 .env
 invoke.yml
 
+# Ignore folder created by `invoke docs`
+collections/
+
 # https://github.com/ansible/ansible/issues/68499
 # ansible_collections/
 

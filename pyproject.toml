@@ -4,6 +4,7 @@ version = "5.3.1"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -25,15 +26,20 @@ pyyaml = "*"
 mock = "*"
 importlib-metadata = "*"
 pylint = "*"
-sphinx_rtd_theme = "*"
 hypothesis = "*"
 pytest-pythonpath = "*"
 parameterized = "*"
 invoke = "*"
 bandit = "*"
-antsibull = "*"
-antsibull-docs = "*"
 pytest-forked = "*"
+# Rendering docs to HTML
+mkdocs = "1.6.1"
+# Material for MkDocs theme
+mkdocs-material = "9.5.30"
+# Render custom markdown for version added/changed/remove notes
+markdown-version-annotations = "1.0.1"
+# Render dynamic pages for Ansible Collections documentation
+mkdocs-ansible-collection = "0.2.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
