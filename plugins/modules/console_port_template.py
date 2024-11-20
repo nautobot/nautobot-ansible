@@ -26,7 +26,7 @@ options:
   device_type:
     description:
       - The device type the console port template is attached to
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
@@ -41,6 +41,12 @@ options:
     version_added: "3.0.0"
     required: false
     type: str
+  module_type:
+    description:
+      - The module type the console port template is attached to
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
@@ -101,9 +107,27 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(dict(device_type=dict(required=True, type="raw"), name=dict(required=True, type="str"), type=dict(required=False, type="str")))
+    argument_spec.update(
+        dict(
+            device_type=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
+            type=dict(required=False, type="str"),
+            module_type=dict(required=False, type="raw"),
+        )
+    )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("device_type", "module_type"),
+    ]
+    mutually_exclusive = [
+        ("device_type", "module_type"),
+    ]
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     console_port_template = NautobotDcimModule(module, NB_CONSOLE_PORT_TEMPLATES)
     console_port_template.run()

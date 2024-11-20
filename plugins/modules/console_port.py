@@ -27,7 +27,7 @@ options:
   device:
     description:
       - The device the console port is attached to
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
@@ -48,6 +48,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  module:
+    description:
+      - The attached module
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
@@ -63,6 +69,14 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Console Port
         device: Test Device
+        state: present
+
+    - name: Create console port inside module
+      networktocode.nautobot.console_port:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Console Port
+        module: HooverMaxProModel60
         state: present
 
     - name: Update console port with other fields
@@ -115,14 +129,26 @@ def main():
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=True, type="raw"),
+            device=dict(required=False, type="raw"),
+            module=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             type=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("device", "module"),
+    ]
+    mutually_exclusive = [
+        ("device", "module"),
+    ]
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     console_port = NautobotDcimModule(module, NB_CONSOLE_PORTS)
     console_port.run()

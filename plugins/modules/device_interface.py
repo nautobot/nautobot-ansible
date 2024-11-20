@@ -27,7 +27,7 @@ options:
   device:
     description:
       - Name of the device the interface will be associated with (case-sensitive)
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   status:
@@ -138,6 +138,12 @@ options:
         Use when master device is specified for C(device) and the specified interface exists on a child device
         and needs updated
     version_added: "3.0.0"
+  module:
+    description:
+      - The attached module
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
@@ -278,7 +284,8 @@ def main():
     argument_spec.update(
         dict(
             update_vc_child=dict(type="bool", required=False, default=False),
-            device=dict(required=True, type="raw"),
+            device=dict(required=False, type="raw"),
+            module=dict(required=False, type="raw"),
             status=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             label=dict(required=False, type="str"),
@@ -298,7 +305,18 @@ def main():
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("device", "module"),
+    ]
+    mutually_exclusive = [
+        ("device", "module"),
+    ]
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     device_interface = NautobotDcimModule(module, NB_INTERFACES, remove_keys=["update_vc_child"])
     device_interface.run()
