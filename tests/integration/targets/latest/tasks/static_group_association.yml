@@ -5,81 +5,85 @@
 ##
 ##
 
-- set_fact:
-    static_dynamic_group: "{{ lookup('networktocode.nautobot.lookup', 'dynamic-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"TestStaticAssociations\"') }}"
-    static_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
+- name: "NAUTOBOT 2.3+ STATIC GROUP ASSOCIATION TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        static_dynamic_group: "{{ lookup('networktocode.nautobot.lookup', 'dynamic-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"TestStaticAssociations\"') }}"
+        static_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
 
-- name: "STATIC GROUP ASSOCIATION 1: Necessary info creation"
-  networktocode.nautobot.static_group_association:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    dynamic_group: "TestStaticAssociations"
-    associated_object_type: "dcim.device"
-    associated_object_id: "{{ static_device['key'] }}"
-    state: present
-  register: test_one
+    - name: "STATIC GROUP ASSOCIATION 1: Necessary info creation"
+      networktocode.nautobot.static_group_association:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        dynamic_group: "TestStaticAssociations"
+        associated_object_type: "dcim.device"
+        associated_object_id: "{{ static_device['key'] }}"
+        state: present
+      register: test_one
 
-- name: "STATIC GROUP ASSOCIATION 1: ASSERT - Necessary info creation"
-  assert:
-    that:
-      - test_one is changed
-      - test_one['diff']['before']['state'] == "absent"
-      - test_one['diff']['after']['state'] == "present"
-      - test_one['static_group_association']['dynamic_group'] == static_dynamic_group['key']
-      - test_one['static_group_association']['associated_object_type'] == "dcim.device"
-      - test_one['static_group_association']['associated_object_id'] == static_device['key']
-      - "'created' in test_one['msg']"
+    - name: "STATIC GROUP ASSOCIATION 1: ASSERT - Necessary info creation"
+      assert:
+        that:
+          - test_one is changed
+          - test_one['diff']['before']['state'] == "absent"
+          - test_one['diff']['after']['state'] == "present"
+          - test_one['static_group_association']['dynamic_group'] == static_dynamic_group['key']
+          - test_one['static_group_association']['associated_object_type'] == "dcim.device"
+          - test_one['static_group_association']['associated_object_id'] == static_device['key']
+          - "'created' in test_one['msg']"
 
-- name: "STATIC GROUP ASSOCIATION 2: Test duplication association (Idempotency)"
-  networktocode.nautobot.static_group_association:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    dynamic_group: "{{ static_dynamic_group['key'] }}"
-    associated_object_type: "dcim.device"
-    associated_object_id: "{{ static_device['key'] }}"
-    state: present
-  register: test_two
+    - name: "STATIC GROUP ASSOCIATION 2: Test duplication association (Idempotency)"
+      networktocode.nautobot.static_group_association:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        dynamic_group: "{{ static_dynamic_group['key'] }}"
+        associated_object_type: "dcim.device"
+        associated_object_id: "{{ static_device['key'] }}"
+        state: present
+      register: test_two
 
-- name: "STATIC GROUP ASSOCIATION 2: ASSERT - Item already exists (Idempotency)"
-  assert:
-    that:
-      - test_two is not changed
-      - test_two['static_group_association']['dynamic_group'] == static_dynamic_group['key']
-      - "'already exists' in test_two['msg']"
+    - name: "STATIC GROUP ASSOCIATION 2: ASSERT - Item already exists (Idempotency)"
+      assert:
+        that:
+          - test_two is not changed
+          - test_two['static_group_association']['dynamic_group'] == static_dynamic_group['key']
+          - "'already exists' in test_two['msg']"
 
-- name: "STATIC GROUP ASSOCIATION 3: Test absent state"
-  networktocode.nautobot.static_group_association:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    dynamic_group: "{{ static_dynamic_group['key'] }}"
-    associated_object_type: "dcim.device"
-    associated_object_id: "{{ static_device['key'] }}"
-    state: absent
-  register: test_three
+    - name: "STATIC GROUP ASSOCIATION 3: Test absent state"
+      networktocode.nautobot.static_group_association:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        dynamic_group: "{{ static_dynamic_group['key'] }}"
+        associated_object_type: "dcim.device"
+        associated_object_id: "{{ static_device['key'] }}"
+        state: absent
+      register: test_three
 
-- name: "STATIC GROUP ASSOCIATION 3: ASSERT - Item removed"
-  assert:
-    that:
-      - test_three is changed
-      - test_three['diff']['before']['state'] == "present"
-      - test_three['diff']['after']['state'] == "absent"
-      - test_three['static_group_association']['dynamic_group'] == static_dynamic_group['key']
-      - test_three['static_group_association']['associated_object_type'] == "dcim.device"
-      - test_three['static_group_association']['associated_object_id'] == static_device['key']
-      - "'deleted' in test_three['msg']"
+    - name: "STATIC GROUP ASSOCIATION 3: ASSERT - Item removed"
+      assert:
+        that:
+          - test_three is changed
+          - test_three['diff']['before']['state'] == "present"
+          - test_three['diff']['after']['state'] == "absent"
+          - test_three['static_group_association']['dynamic_group'] == static_dynamic_group['key']
+          - test_three['static_group_association']['associated_object_type'] == "dcim.device"
+          - test_three['static_group_association']['associated_object_id'] == static_device['key']
+          - "'deleted' in test_three['msg']"
 
-- name: "STATIC GROUP ASSOCIATION 4: Test absent state (Idempotent)"
-  networktocode.nautobot.static_group_association:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    dynamic_group: "{{ static_dynamic_group['key'] }}"
-    associated_object_type: "dcim.device"
-    associated_object_id: "{{ static_device['key'] }}"
-    state: absent
-  register: test_four
+    - name: "STATIC GROUP ASSOCIATION 4: Test absent state (Idempotent)"
+      networktocode.nautobot.static_group_association:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        dynamic_group: "{{ static_dynamic_group['key'] }}"
+        associated_object_type: "dcim.device"
+        associated_object_id: "{{ static_device['key'] }}"
+        state: absent
+      register: test_four
 
-- name: "STATIC GROUP ASSOCIATION 4: ASSERT - Item not removed (Idempotent)"
-  assert:
-    that:
-      - test_four is not changed
-      - "'already absent' in test_four['msg']"
+    - name: "STATIC GROUP ASSOCIATION 4: ASSERT - Item not removed (Idempotent)"
+      assert:
+        that:
+          - test_four is not changed
+          - "'already absent' in test_four['msg']"

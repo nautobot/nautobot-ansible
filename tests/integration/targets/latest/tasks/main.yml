@@ -680,3 +680,12 @@
         - cloud_network_prefix_assignment
   tags:
     - cloud_network_prefix_assignment
+
+- name: "PYNAUTOBOT_STATIC_GROUP_ASSOCIATION TESTS"
+  include_tasks:
+    file: "static_group_association.yml"
+    apply:
+      tags:
+        - static_group_association
+  tags:
+    - static_group_association

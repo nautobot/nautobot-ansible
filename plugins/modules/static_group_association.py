@@ -22,7 +22,7 @@ extends_documentation_fragment:
 options:
   dynamic_group:
     description:
-      - The dynamic group UUID to add the association to
+      - The dynamic group to add the association to
     required: true
     type: raw
   associated_object_type:
