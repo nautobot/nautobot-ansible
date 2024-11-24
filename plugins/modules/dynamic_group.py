@@ -55,9 +55,9 @@ options:
     type: raw
   filter:
     description:
-      - A JSON-encoded dictionary of filter parameters defining membership of this group
+      - A dictionary of filter parameters defining membership of this group
     required: false
-    type: str
+    type: dict
 """
 
 EXAMPLES = r"""
