@@ -195,6 +195,7 @@ def get_endpoint(nautobot, term):
         "device-types": {"endpoint": nautobot.dcim.device_types},
         "device-redundancy-groups": {"endpoint": nautobot.dcim.device_redundancy_groups},
         "devices": {"endpoint": nautobot.dcim.devices},
+        "dynamic-groups": {"endpoint": nautobot.extras.dynamic_groups},
         "export-templates": {"endpoint": nautobot.dcim.export_templates},
         "front-port-templates": {"endpoint": nautobot.dcim.front_port_templates},
         "front-ports": {"endpoint": nautobot.dcim.front_ports},
