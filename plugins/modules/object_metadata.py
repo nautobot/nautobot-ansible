@@ -43,7 +43,7 @@ options:
   scoped_fields:
     description:
       - List of scoped fields, only direct fields on the model
-    required: true
+    required: false
     type: list
     elements: str
 """
