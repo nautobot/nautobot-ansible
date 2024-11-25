@@ -685,6 +685,12 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
 
+    # Create metadata_type for metadata_choices
+    metadata_types = [
+        {"name": "TestMetadataType", "data_type": "multi-select", "content_types": ["dcim.device"]},
+    ]
+    created_metadata_types = make_nautobot_calls(nb.extras.metadata_types, metadata_types)
+
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

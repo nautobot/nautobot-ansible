@@ -8,9 +8,6 @@
   when: 
     - "nautobot_version is version('2.3', '>=')"
   block:
-    - set_fact:
-        manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Manufacturer\"') }}"
-
     - name: "1 - Create metadata type with minimum information"
       networktocode.nautobot.metadata_type:
         url: "{{ nautobot_url }}"
