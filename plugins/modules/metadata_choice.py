@@ -26,7 +26,7 @@ options:
     description:
       - The name of the metadata type
     required: true
-    type: str
+    type: raw
   value:
     description:
       - The value of the metadata choice

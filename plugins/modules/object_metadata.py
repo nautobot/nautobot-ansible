@@ -24,7 +24,7 @@ options:
     description:
       - The name of the metadata type
     required: true
-    type: str
+    type: raw
   assigned_object_type:
     description:
       - The app_label.model for the object in the relationship
