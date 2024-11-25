@@ -38,7 +38,7 @@
       networktocode.nautobot.static_group_association:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
-        dynamic_group: "{{ static_dynamic_group['key'] }}"
+        dynamic_group: "TestStaticAssociations"
         associated_object_type: "dcim.device"
         associated_object_id: "{{ static_device['key'] }}"
         state: present
