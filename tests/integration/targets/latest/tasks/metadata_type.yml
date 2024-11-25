@@ -1,0 +1,176 @@
+---
+##
+##
+### PYNAUTOBOT_METADATA_TYPE
+##
+##
+- name: "NAUTOBOT 2.3+ METADATA TYPE TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Manufacturer\"') }}"
+
+    - name: "1 - Create metadata type with minimum information"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfo
+        data_type: text
+        content_types:
+          - dcim.device
+        state: present
+      register: test_one
+
+    - name: "1 - ASSERT"
+      assert:
+        that:
+          - test_one is changed
+          - test_one['diff']['before']['state'] == "absent"
+          - test_one['diff']['after']['state'] == "present"
+          - test_one['metadata_type']['name'] == "TopSecretInfo"
+          - test_one['metadata_type']['data_type'] == "text"
+          - test_one['metadata_type']['content_types'] == ['dcim.device']
+          - test_one['msg'] == "metadata_type TopSecretInfo created"
+
+    - name: "2 - Create metadata type with minimum information idempotent"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfo
+        data_type: text
+        content_types:
+          - dcim.device
+        state: present
+      register: test_two
+
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_two['changed']
+          - test_two['metadata_type']['name'] == "TopSecretInfo"
+          - test_two['metadata_type']['data_type'] == "text"
+          - test_two['metadata_type']['content_types'] == ['dcim.device']
+          - test_two['msg'] == "metadata_type TopSecretInfo already exists"
+
+    - name: "3 - Update metadata type"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfo
+        description: The topest secretest info
+        data_type: text
+        content_types:
+          - dcim.device
+          - dcim.location
+        state: present
+      register: test_three
+
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_three is changed
+          - test_three['diff']['after']['description'] == "The topest secretest info"
+          - test_three['diff']['after']['content_types'] == ['dcim.device', 'dcim.location']
+          - test_three['metadata_type']['name'] == "TopSecretInfo"
+          - test_three['metadata_type']['description'] == "The topest secretest info"
+          - test_three['metadata_type']['data_type'] == "text"
+          - test_three['metadata_type']['content_types'] == ['dcim.device', 'dcim.location']
+          - test_three['msg'] == "metadata_type TopSecretInfo updated"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfo
+        description: The topest secretest info
+        data_type: text
+        content_types:
+          - dcim.device
+          - dcim.location
+        state: present
+      register: test_four
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_four['changed']
+          - test_four['metadata_type']['name'] == "TopSecretInfo"
+          - test_four['msg'] == "metadata_type TopSecretInfo already exists"
+
+    - name: "5 - Create metadata type with all params"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfoToo
+        description: The topest secretest info too
+        data_type: text
+        content_types:
+          - dcim.device
+          - dcim.location
+        state: present
+      register: test_five
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_five is changed
+          - test_five['metadata_type']['name'] == "TopSecretInfoToo"
+          - test_five['metadata_type']['description'] == "The topest secretest info too"
+          - test_five['metadata_type']['data_type'] == "text"
+          - test_five['metadata_type']['content_types'] == ['dcim.device', 'dcim.location']
+          - test_five['msg'] == "metadata_type TopSecretInfoToo created"
+
+    - name: "6 - Create metadata type with all params idempotent"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfoToo
+        description: The topest secretest info too
+        data_type: text
+        content_types:
+          - dcim.device
+          - dcim.location
+        state: present
+      register: test_six
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_six['changed']
+          - test_six['metadata_type']['name'] == "TopSecretInfoToo"
+          - test_six['metadata_type']['description'] == "The topest secretest info too"
+          - test_six['metadata_type']['data_type'] == "text"
+          - test_six['metadata_type']['content_types'] == ['dcim.device', 'dcim.location']
+          - test_six['msg'] == "metadata_type TopSecretInfoToo already exists"
+
+    - name: "7 - Delete"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfoToo
+        state: absent
+      register: test_seven
+
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_seven is changed
+          - test_seven['diff']['before']['state'] == "present"
+          - test_seven['diff']['after']['state'] == "absent"
+          - test_seven['msg'] == "metadata_type TopSecretInfoToo deleted"
+
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.metadata_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TopSecretInfoToo
+        state: absent
+      register: test_eight
+
+    - name: "8 - ASSERT`"
+      assert:
+        that:
+          - not test_eight['changed']
+          - test_eight['metadata_type'] == None
+          - test_eight['msg'] == "metadata_type TopSecretInfoToo already absent"

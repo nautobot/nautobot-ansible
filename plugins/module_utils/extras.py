@@ -17,6 +17,7 @@ NB_CUSTOM_FIELDS = "custom_fields"
 NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
 NB_CONTACT = "contacts"
 NB_TEAM = "teams"
+NB_METADATA_TYPES = "metadata_types"
 
 
 class NautobotExtrasModule(NautobotModule):
