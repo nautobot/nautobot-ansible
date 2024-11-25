@@ -1,0 +1,170 @@
+---
+##
+##
+### PYNAUTOBOT_DYNAMIC_GROUP
+##
+##
+
+- name: "NAUTOBOT 2.3+ DYNAMIC GROUPS TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        test_tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+        test_tag: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Dynamic Group Tag\"') }}"
+
+    - name: "1 - Create dynamic group within Nautobot with only required information"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        group_type: dynamic-filter
+        content_type: dcim.device
+        filter: 
+          location:
+            - "Child-Child Test Location"
+      register: test_create_min
+
+    - name: "1 - ASSERT"
+      assert:
+        that: 
+          - test_create_min is changed
+          - test_create_min['diff']['before']['state'] == "absent"
+          - test_create_min['diff']['after']['state'] == "present"
+          - test_create_min['dynamic_group']['name'] == "TestFilterGroup"
+          - test_create_min['dynamic_group']['group_type'] == "dynamic-filter"
+          - test_create_min['dynamic_group']['content_type'] == "dcim.device"
+          - test_create_min['dynamic_group']['filter']['location'][0] == "Child-Child Test Location"
+          - test_create_min['msg'] == "dynamic_group TestFilterGroup created"
+
+    - name: "2 - Duplicate"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        group_type: dynamic-filter
+        content_type: dcim.device
+        filter: 
+          location:
+            - "Child-Child Test Location"
+
+      register: test_create_idem
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_create_idem['changed']
+          - test_create_idem['msg'] == "dynamic_group TestFilterGroup already exists"
+          - test_create_idem['dynamic_group']['name'] == "TestFilterGroup"
+    
+    - name: "3 - Update dynamic_group"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        description: An update to prove it updates
+      register: test_update
+    
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_update is changed
+          - test_update['diff']['before']['description'] == ""
+          - test_update['diff']['after']['description'] == "An update to prove it updates"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        description: An update to prove it updates
+      register: test_update_idem
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_update_idem['changed']
+          - test_update_idem['msg'] == "dynamic_group TestFilterGroup already exists"
+          - test_update_idem['dynamic_group']['name'] == "TestFilterGroup"
+          - test_update_idem['dynamic_group']['description'] == "An update to prove it updates"
+
+    - name: "5 - Create dynamic_group with all parameters"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestNestedGroup
+        description: A group of groups
+        group_type: dynamic-set
+        content_type: dcim.device
+        tenant: "Test Tenant"
+        tags:
+          - "Dynamic Group Tag"
+      register: test_create_max
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_create_max is changed
+          - test_create_max['diff']['before']['state'] == "absent"
+          - test_create_max['diff']['after']['state'] == "present"
+          - test_create_max['dynamic_group']['name'] == "TestNestedGroup"
+          - test_create_max['dynamic_group']['description'] == "A group of groups"
+          - test_create_max['dynamic_group']['group_type'] == "dynamic-set"
+          - test_create_max['dynamic_group']['content_type'] == "dcim.device"
+          - test_create_max['dynamic_group']['tenant'] == test_tenant['key']
+          - test_create_max['dynamic_group']['tags'][0] == test_tag['key']
+
+    - name: "6 - Duplicate create with all parameters"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestNestedGroup
+        description: A group of groups
+        group_type: dynamic-set
+        content_type: dcim.device
+        tenant: "Test Tenant"
+        tags:
+          - "Dynamic Group Tag"
+      register: test_create_max_idem
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_create_max_idem['changed']
+          - test_create_max_idem['msg'] == "dynamic_group TestNestedGroup already exists"
+          - test_create_max_idem['dynamic_group']['name'] == "TestNestedGroup"
+          - test_create_max_idem['dynamic_group']['description'] == "A group of groups"
+          - test_create_max_idem['dynamic_group']['group_type'] == "dynamic-set"
+          - test_create_max_idem['dynamic_group']['content_type'] == "dcim.device"
+          - test_create_max_idem['dynamic_group']['tenant'] == test_tenant['key']
+          - test_create_max_idem['dynamic_group']['tags'][0] == test_tag['key']
+
+    - name: "7 - Delete dynamic_group"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        state: absent
+      register: test_delete
+    
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_delete is changed
+          - test_delete['diff']['before']['state'] == "present"
+          - test_delete['diff']['after']['state'] == "absent"
+          - test_delete['dynamic_group']['name'] == "TestFilterGroup"
+          - "'deleted' in test_delete['msg']"
+    
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.dynamic_group:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: TestFilterGroup
+        state: absent
+      register: test_delete_idem
+
+    - name: "8 - ASSERT"
+      assert:
+        that:
+          - not test_delete_idem['changed']
+          - "'already absent' in test_delete_idem['msg']"
