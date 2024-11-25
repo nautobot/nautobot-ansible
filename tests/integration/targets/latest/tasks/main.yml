@@ -680,3 +680,30 @@
         - cloud_network_prefix_assignment
   tags:
     - cloud_network_prefix_assignment
+
+- name: "PYNAUTOBOT_METADATA_TYPE TESTS"
+  include_tasks:
+    file: "metadata_type.yml"
+    apply:
+      tags:
+        - metadata_type
+  tags:
+    - metadata_type
+
+- name: "PYNAUTOBOT_METADATA_CHOICE TESTS"
+  include_tasks:
+    file: "metadata_choice.yml"
+    apply:
+      tags:
+        - metadata_choice
+  tags:
+    - metadata_choice
+
+- name: "PYNAUTOBOT_OBJECT_METADATA TESTS"
+  include_tasks:
+    file: "object_metadata.yml"
+    apply:
+      tags:
+        - object_metadata
+  tags:
+    - object_metadata

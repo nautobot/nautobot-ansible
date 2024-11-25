@@ -17,6 +17,7 @@ NB_CUSTOM_FIELDS = "custom_fields"
 NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
 NB_CONTACT = "contacts"
 NB_TEAM = "teams"
+NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
 
@@ -53,6 +54,8 @@ class NautobotExtrasModule(NautobotModule):
         elif endpoint_name == "custom_field_choice":
             name = data["value"]
         elif endpoint_name == "metadata_choice":
+            name = data["value"]
+        elif endpoint_name == "object_metadata":
             name = data["value"]
         else:
             name = data.get("id")
