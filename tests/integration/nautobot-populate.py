@@ -685,6 +685,10 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
 
+    # Enable example job for job tests
+    example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
+    example_job_receiver.enabled = True
+    example_job_receiver.save()
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
