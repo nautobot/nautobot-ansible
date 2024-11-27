@@ -34,13 +34,13 @@ options:
       - Required if I(state=present) and the job button does not exist yet
     required: false
     type: list
-    element: str
+    elements: str
   job:
     description:
       - The job receiver to associate job with
       - Required if I(state=present) and the job button does not exist yet
     required: false
-    type: str
+    type: raw
   enabled:
     description:
       - Whether or not the button is enabled
