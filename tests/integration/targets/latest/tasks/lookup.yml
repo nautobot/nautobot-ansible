@@ -46,6 +46,7 @@
     tags:
       - "Nolookup"
     state: present
+  register: device_l1
 
 - name: "PYNAUTOBOT_LOOKUP 6: Add two of two devices for lookup filter test."
   networktocode.nautobot.device:
@@ -59,6 +60,7 @@
     tags:
       - "Lookup"
     state: present
+  register: device_l2
 
 - name: "PYNAUTOBOT_LOOKUP 7: Device query returns exactly the L2 device"
   assert:
@@ -85,3 +87,11 @@
     that: "query_result | count == 5"
   vars:
     query_result: "{{ query('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, num_retries=3) }}"
+
+- name: "PYNAUTOBOT_LOOKUP 11: Lookup with multiple ids"
+  assert:
+    that:
+      - query_result[0]['key'] == device_l1.device.id
+      - query_result[1]['key'] == device_l2.device.id
+  vars:
+    query_result: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='id=' + device_l1.device.id + ' id=' + device_l2.device.id) }}"

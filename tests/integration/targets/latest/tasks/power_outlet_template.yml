@@ -7,7 +7,7 @@
 ### PYNAUTOBOT_POWER_OUTLET_TEMPLATE
 ##
 ##
-- name: "POWER_PORT_TEMPLATE 0: Create device type for testing power ports"
+- name: "POWER_OUTLET_TEMPLATE 0: Create device type for testing power ports"
   networktocode.nautobot.device_type:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -15,7 +15,7 @@
     manufacturer: Test Manufacturer
     state: present
 
-- name: "POWER_PORT_TEMPLATE 1: Necessary info creation"
+- name: "POWER_OUTLET_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.power_port_template:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -124,3 +124,79 @@
       - test_five['diff']['before']['state'] == "present"
       - test_five['diff']['after']['state'] == "absent"
       - test_five['msg'] == "power_outlet_template Power Outlet Template 2 deleted"
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - name: "6 - SET ADDITIONAL FACTS"
+      set_fact:
+        test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
+        
+    - name: "POWER_OUTLET_TEMPLATE 6: Create power outlet template on module type"
+      networktocode.nautobot.power_outlet_template:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Power Outlet Template 3
+        module_type: HooverMaxProModel60
+        state: present
+      register: test_six
+
+    - name: "POWER_OUTLET_TEMPLATE 6: ASSERT"
+      assert:
+        that:
+          - test_six is changed
+          - test_six['diff']['before']['state'] == "absent"
+          - test_six['diff']['after']['state'] == "present"
+          - test_six['power_outlet_template']['name'] == "Power Outlet Template 3"
+          - test_six['power_outlet_template']['module_type'] == test_module_type['key']
+          - test_six['msg'] == "power_outlet_template Power Outlet Template 3 created"
+
+    - name: "POWER_OUTLET_TEMPLATE 7: Create duplicate"
+      networktocode.nautobot.power_outlet_template:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Power Outlet Template 3
+        module_type: HooverMaxProModel60
+        state: present
+      register: test_seven
+
+    - name: "POWER_OUTLET_TEMPLATE 7: ASSERT - Create duplicate"
+      assert:
+        that:
+          - not test_seven['changed']
+          - test_seven['power_outlet_template']['name'] == "Power Outlet Template 3"
+          - test_seven['power_outlet_template']['module_type'] == test_module_type['key']
+          - test_seven['msg'] == "power_outlet_template Power Outlet Template 3 already exists"
+
+    - name: "POWER_OUTLET_TEMPLATE 8: Delete Power Outlet Template on module type"
+      networktocode.nautobot.power_outlet_template:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Power Outlet Template 3
+        module_type: HooverMaxProModel60
+        state: absent
+      register: test_eight
+
+    - name: "POWER_OUTLET_TEMPLATE 8: ASSERT"
+      assert:
+        that:
+          - test_eight is changed
+          - test_eight['diff']['before']['state'] == "present"
+          - test_eight['diff']['after']['state'] == "absent"
+          - test_eight['msg'] == "power_outlet_template Power Outlet Template 3 deleted"
+
+    - name: "POWER_OUTLET_TEMPLATE 9: Delete Power Outlet Template on module type duplicate"
+      networktocode.nautobot.power_outlet_template:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Power Outlet Template 3
+        module_type: HooverMaxProModel60
+        state: absent
+      register: test_nine
+
+    - name: "POWER_OUTLET_TEMPLATE 9: ASSERT"
+      assert:
+        that:
+          - not test_nine['changed']
+          - "'already absent' in test_nine['msg']"

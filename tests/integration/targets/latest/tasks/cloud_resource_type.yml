@@ -1,0 +1,162 @@
+---
+##
+##
+### PYNAUTOBOT_CLOUD_RESOURCE_TYPE
+##
+##
+
+- name: "NAUTOBOT 2.3+ CLOUD RESOURCE TYPE TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        cisco_provider: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Cisco') }}"
+
+    - name: "1 - Create cloud resource type within Nautobot with only required information"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network
+        provider: Cisco
+        content_types:
+          - "cloud.cloudnetwork"
+      register: test_create_min
+
+    - name: "1 - ASSERT"
+      assert:
+        that: 
+          - test_create_min is changed
+          - test_create_min['diff']['before']['state'] == "absent"
+          - test_create_min['diff']['after']['state'] == "present"
+          - test_create_min['cloud_resource_type']['name'] == "Cisco Quantum Network"
+          - test_create_min['msg'] == "cloud_resource_type Cisco Quantum Network created"
+
+    - name: "2 - Duplicate"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network
+
+      register: test_create_idem
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_create_idem['changed']
+          - test_create_idem['msg'] == "cloud_resource_type Cisco Quantum Network already exists"
+          - test_create_idem['cloud_resource_type']['name'] == "Cisco Quantum Network"
+    
+    - name: "3 - Update cloud_resource_type"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network
+        description: Very fast network!
+      register: test_update
+    
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_update is changed
+          - test_update['diff']['before']['description'] == ""
+          - test_update['diff']['after']['description'] == "Very fast network!"
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network
+        description: Very fast network!
+      register: test_update_idem
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_update_idem['changed']
+          - test_update_idem['msg'] == "cloud_resource_type Cisco Quantum Network already exists"
+          - test_update_idem['cloud_resource_type']['name'] == "Cisco Quantum Network"
+
+    - name: "5 - Create cloud_resource_type with all parameters"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network Remix
+        provider: Cisco
+        description: Very fast network reimagined!
+        content_types:
+          - "cloud.cloudnetwork"
+        config_schema:
+          my_config:
+            foo: bar
+      register: test_create_max
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_create_max is changed
+          - test_create_max['diff']['before']['state'] == "absent"
+          - test_create_max['diff']['after']['state'] == "present"
+          - test_create_max['cloud_resource_type']['name'] == "Cisco Quantum Network Remix"
+          - test_create_max['cloud_resource_type']['provider'] == cisco_provider['key']
+          - test_create_max['cloud_resource_type']['description'] == "Very fast network reimagined!"
+          - test_create_max['cloud_resource_type']['content_types'] == ["cloud.cloudnetwork"]
+          - test_create_max['cloud_resource_type']['config_schema']['my_config']['foo'] == "bar"
+
+    - name: "5.1 - ASSERT"
+      assert:
+        that:
+          - test_cloud_resource_type['value']['config_schema']['my_config']['foo'] == "bar"
+      vars:
+        test_cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco Quantum Network Remix\"') }}"
+
+    - name: "6 - Duplicate create with all parameters"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network Remix
+        provider: Cisco
+        description: Very fast network reimagined!
+        content_types:
+          - "cloud.cloudnetwork"
+        config_schema:
+          my_config:
+            foo: bar
+      register: test_create_max_idem
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_create_max_idem['changed']
+          - test_create_max_idem['msg'] == "cloud_resource_type Cisco Quantum Network Remix already exists"
+          - test_create_max_idem['cloud_resource_type']['name'] == "Cisco Quantum Network Remix"
+          - test_create_max_idem['cloud_resource_type']['config_schema']['my_config']['foo'] == "bar"
+
+    - name: "7 - Delete cloud_resource_type"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network Remix
+        state: absent
+      register: test_delete
+    
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_delete is changed
+          - test_delete['diff']['before']['state'] == "present"
+          - test_delete['diff']['after']['state'] == "absent"
+          - test_delete['cloud_resource_type']['name'] == "Cisco Quantum Network Remix"
+          - "'deleted' in test_delete['msg']"
+    
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.cloud_resource_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Cisco Quantum Network Remix
+        state: absent
+      register: test_delete_idem
+
+    - name: "8 - ASSERT"
+      assert:
+        that:
+          - not test_delete_idem['changed']
+          - "'already absent' in test_delete_idem['msg']"

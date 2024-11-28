@@ -122,10 +122,6 @@
     state: present
   register: test_five
 
-- name: "Debug Test Five output"
-  debug:
-    msg: "{{ test_five }}"
-
 - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Necessary info creation"
   assert:
     that:
@@ -138,7 +134,7 @@
       - test_five['circuit_termination']['port_speed'] == 10000
       - test_five['msg'] == "circuit_termination test_circuit_two_z created"
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: Delete provider within nautobot"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: Delete provider termination within nautobot"
   networktocode.nautobot.circuit_termination:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -147,7 +143,7 @@
     state: absent
   register: test_six
 
-- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 5: ASSERT - Delete"
+- name: "PYNAUTOBOT_CIRCUIT_TERMINATION 6: ASSERT - Delete"
   assert:
     that:
       - test_six is changed
@@ -160,3 +156,88 @@
       - test_six['circuit_termination']['pp_info'] == "PP10-24"
       - test_six['circuit_termination']['description'] == "Test description"
       - test_six['msg'] == "circuit_termination test_circuit_a deleted"
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - name: "SET ADDITIONAL FACTS"
+      set_fact:
+        cloud_network: '{{ lookup(''networktocode.nautobot.lookup'', ''cloud-networks'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="CiscoCloudNetwork"'') }}'
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 7: Create connection to cloud_network within Nautobot with only required information"
+      networktocode.nautobot.circuit_termination:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        circuit: Test Circuit
+        term_side: A
+        cloud_network: "CiscoCloudNetwork"
+        port_speed: 10000
+        state: present
+      register: test_seven
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 7: ASSERT"
+      assert:
+        that:
+          - test_seven is changed
+          - test_seven['diff']['before']['state'] == "absent"
+          - test_seven['diff']['after']['state'] == "present"
+          - test_seven['circuit_termination']['circuit'] == circuit['key']
+          - test_seven['circuit_termination']['term_side'] == "A"
+          - test_seven['circuit_termination']['cloud_network'] == cloud_network['key']
+          - test_seven['circuit_termination']['port_speed'] == 10000
+          - test_seven['msg'] == "circuit_termination test_circuit_a created"
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 8: Create connection to cloud_network idempotent"
+      networktocode.nautobot.circuit_termination:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        circuit: Test Circuit
+        term_side: A
+        cloud_network: "CiscoCloudNetwork"
+        port_speed: 10000
+        state: present
+      register: test_eight
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 8: ASSERT"
+      assert:
+        that:
+          - not test_eight['changed']
+          - test_eight['circuit_termination']['circuit'] == circuit['key']
+          - test_eight['circuit_termination']['term_side'] == "A"
+          - test_eight['circuit_termination']['cloud_network'] == cloud_network['key']
+          - test_eight['circuit_termination']['port_speed'] == 10000
+          - test_eight['msg'] == "circuit_termination test_circuit_a already exists"
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 9: Delete cloud network termination"
+      networktocode.nautobot.circuit_termination:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        circuit: Test Circuit
+        term_side: A
+        state: absent
+      register: test_nine
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 9: ASSERT"
+      assert:
+        that:
+          - test_nine is changed
+          - test_nine['diff']['before']['state'] == "present"
+          - test_nine['diff']['after']['state'] == "absent"
+          - test_nine['circuit_termination']['circuit'] == circuit['key']
+          - "'deleted' in test_nine['msg']"
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 10: Delete cloud network termination idempotent"
+      networktocode.nautobot.circuit_termination:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        circuit: Test Circuit
+        term_side: A
+        state: absent
+      register: test_ten
+
+    - name: "PYNAUTOBOT_CIRCUIT_TERMINATION 10: ASSERT - Delete"
+      assert:
+        that:
+          - not test_ten['changed']
+          - "'already absent' in test_ten['msg']"

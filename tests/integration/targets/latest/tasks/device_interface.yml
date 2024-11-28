@@ -368,3 +368,138 @@
       - test_fourteen['interface']['name'] == "Bridge1"
       - test_fourteen['interface']['device'] == test100['key']
       - test_fourteen['interface']['bridge'] == test_twelve['interface']['id']
+
+- name: "NAUTOBOT 2.3+ TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - name: 15 - SET ADDITIONAL FACTS
+      set_fact:
+        device_interface_role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Loop the Network\"' )}}"
+        wireless: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless') }}"
+        device_interface_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
+        test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStrip"'') }}'
+ 
+    - name: "15 - Create device interface with role"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        device: test100
+        name: GigabitEthernet15
+        enabled: false
+        mtu: 9000
+        mac_address: "69:69:69:69:69:69"
+        description: "The interface that will cause the outage"
+        type: "1000Base-T (1GE)"
+        mode: Tagged
+        role: "Loop the Network"
+        status: "Active"
+        untagged_vlan:
+          name: Wireless
+          location: "Child Test Location"
+        tagged_vlans:
+          - name: Data
+            location: "Child Test Location"
+          - name: VoIP
+            location: "Child Test Location"
+        state: present
+      register: test_fifteen
+
+    - name: "15 - ASSERT"
+      assert:
+        that:
+          - test_fifteen is changed
+          - test_fifteen['diff']['before']['state'] == "absent"
+          - test_fifteen['diff']['after']['state'] == "present"
+          - test_fifteen['interface']['name'] == "GigabitEthernet15"
+          - test_fifteen['interface']['status'] == active['key']
+          - test_fifteen['interface']['device'] == test100['key']
+          - test_fifteen['interface']['enabled'] == false
+          - test_fifteen['interface']['mtu'] == 9000
+          - test_fifteen['interface']['mac_address'] == "69:69:69:69:69:69"
+          - test_fifteen['interface']['description'] == "The interface that will cause the outage"
+          - test_fifteen['interface']['mode'] == "tagged"
+          - test_fifteen['interface']['untagged_vlan'] == wireless['key']
+          - test_fifteen['interface']['tagged_vlans']|length == 2
+          - test_fifteen['interface']['role'] == device_interface_role['key']
+          - test_fifteen['msg'] == "interface GigabitEthernet15 created"
+
+    - name: "INTERFACE  16: Create device interface on module"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: GigabitEthernet42
+        status: Active
+        type: "1000Base-T (1GE)"
+        module: 
+          module_type: HooverMaxProModel60
+          parent_module_bay: "{{ test_module_bay['key'] }}"
+        state: present
+      register: test_sixteen
+
+    - name: "INTERFACE  16: ASSERT"
+      assert:
+        that:
+          - test_sixteen is changed
+          - test_sixteen['diff']['before']['state'] == "absent"
+          - test_sixteen['diff']['after']['state'] == "present"
+          - test_sixteen['interface']['name'] == "GigabitEthernet42"
+          - test_sixteen['interface']['module'] == device_interface_module['key']
+          - test_sixteen['msg'] == "interface GigabitEthernet42 created"
+
+    - name: "INTERFACE  17: Create duplicate"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: GigabitEthernet42
+        status: Active
+        type: "1000Base-T (1GE)"
+        module: HooverMaxProModel60
+        state: present
+      register: test_seventeen
+
+    - name: "INTERFACE  17: ASSERT - Create duplicate"
+      assert:
+        that:
+          - not test_seventeen['changed']
+          - test_seventeen['interface']['name'] == "GigabitEthernet42"
+          - test_seventeen['interface']['module'] == device_interface_module['key']
+          - test_seventeen['msg'] == "interface GigabitEthernet42 already exists"
+
+    - name: "INTERFACE  18: Delete device interface on module"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: GigabitEthernet42
+        status: Active
+        type: "1000Base-T (1GE)"
+        module: HooverMaxProModel60
+        state: absent
+      register: test_eighteen
+
+    - name: "INTERFACE  18: ASSERT"
+      assert:
+        that:
+          - test_eighteen is changed
+          - test_eighteen['diff']['before']['state'] == "present"
+          - test_eighteen['diff']['after']['state'] == "absent"
+          - test_eighteen['msg'] == "interface GigabitEthernet42 deleted"
+
+    - name: "INTERFACE  19: Delete device interface on module duplicate"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: GigabitEthernet42
+        status: Active
+        type: "1000Base-T (1GE)"
+        module: 
+          module_type: HooverMaxProModel60
+          parent_module_bay: "{{ test_module_bay['key'] }}"
+        state: absent
+      register: test_nineteen
+
+    - name: "INTERFACE  19: ASSERT"
+      assert:
+        that:
+          - not test_nineteen['changed']
+          - "'already absent' in test_nineteen['msg']"

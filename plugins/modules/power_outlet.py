@@ -27,7 +27,7 @@ options:
   device:
     description:
       - The device the power outlet is attached to
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
@@ -64,6 +64,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  module:
+    description:
+      - The attached module
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
@@ -133,16 +139,27 @@ def main():
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=True, type="raw"),
+            device=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             type=dict(required=False, type="str"),
+            module=dict(required=False, type="raw"),
             power_port=dict(required=False, type="raw"),
             feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
             description=dict(required=False, type="str"),
         )
     )
-
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("device", "module"),
+    ]
+    mutually_exclusive = [
+        ("device", "module"),
+    ]
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     power_outlet = NautobotDcimModule(module, NB_POWER_OUTLETS)
     power_outlet.run()

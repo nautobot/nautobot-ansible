@@ -119,6 +119,8 @@ location_content_types = [
 
 if nautobot_version >= version.parse("2.2"):
     location_content_types.append("dcim.controller")
+if nautobot_version >= version.parse("2.3"):
+    location_content_types.append("dcim.module")
 
 location_types = [{"name": "My Parent Location Type", "content_types": location_content_types, "nestable": True}]
 created_location_types = make_nautobot_calls(nb.dcim.location_types, location_types)
@@ -267,6 +269,8 @@ device_roles = [
 
 if nautobot_version >= version.parse("2.2"):
     device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
+if nautobot_version >= version.parse("2.3"):
+    device_roles.append({"name": "Test Module Role", "color": "795548", "vm_role": False, "content_types": ["dcim.module"]})
 
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 
@@ -641,6 +645,46 @@ if nautobot_version >= version.parse("2.3"):
         {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
     ]
     created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
+
+    cloud_resource_types = [
+        {"name": "CiscoCloudServiceType", "provider": "Cisco", "content_types": ["cloud.cloudservice"]},
+        {"name": "CiscoCloudNetworkType", "provider": "Cisco", "content_types": ["cloud.cloudnetwork"]},
+    ]
+    created_cloud_resource_types = make_nautobot_calls(nb.cloud.cloud_resource_types, cloud_resource_types)
+
+    cloud_accounts = [{"name": "CiscoCloudAccount", "provider": "Cisco", "account_number": "424242"}]
+    created_cloud_accounts = make_nautobot_calls(nb.cloud.cloud_accounts, cloud_accounts)
+
+    cloud_services = [{"name": "CiscoCloudService", "cloud_resource_type": "CiscoCloudServiceType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_services = make_nautobot_calls(nb.cloud.cloud_services, cloud_services)
+
+    cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
+    created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
+
+    # Create a module type
+    power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
+    created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
+
+    # Create a module bay
+    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}, {"parent_device": test100.id, "name": "PowerStripTwo"}]
+    created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
+
+    # Assign module type to module bay
+    test_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
+    test_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
+    power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
+    created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
+
+    # Create Module Rear Port Template
+    module_rear_port_templates = [{"name": "Test Module Rear Port Template", "module_type": test_module_type.id, "type": "bnc", "positions": 5}]
+    created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, module_rear_port_templates)
+
+    # Create role for device interfaces
+    device_interface_roles = [
+        {"name": "Loop the Network", "color": "111111", "vm_role": False, "content_types": ["dcim.interface"]},
+    ]
+    created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
+
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
