@@ -65,14 +65,14 @@
       controller: controller_two
     register: test_four
 
-- debug:
-      msg: "{{ test_four}}"
+  - debug:
+    msg: "{{ test_four}}"
 
   - name: "CONTROLLER GROUP 4: ASSERT - idempotent"
     assert:
       that:
         - not test_four['changed']
-        - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
+        - test_four['controller_managed_device_group']['name'] == "Test Controller Group One"
         - test_four['msg'] == "controller_managed_device_group Test Controller Group One not changed"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete"
