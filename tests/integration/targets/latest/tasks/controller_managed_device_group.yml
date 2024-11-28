@@ -53,6 +53,7 @@
       that:
         - test_three['changed']
         - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
+        - test_three['diff']['after']['weight'] == "2000"
         - test_three['msg'] == "controller_managed_device_group Test Controller Group One updated"
 
   - name: "CONTROLLER GROUP 4: idempotent"
@@ -64,12 +65,15 @@
       controller: controller_two
     register: test_four
 
+- debug:
+      msg: "{{ test_four}}"
+
   - name: "CONTROLLER GROUP 4: ASSERT - idempotent"
     assert:
       that:
         - not test_four['changed']
         - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
-        - test_four['msg'] == "controller_managed_device_group Test Controller Group One updated"
+        - test_four['msg'] == "controller_managed_device_group Test Controller Group One not changed"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete"
     networktocode.nautobot.controller_managed_device_group:
