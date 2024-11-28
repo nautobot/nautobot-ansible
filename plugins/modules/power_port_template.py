@@ -26,7 +26,7 @@ options:
   device_type:
     description:
       - The device type the power port is attached to
-    required: true
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
@@ -53,6 +53,12 @@ options:
     required: false
     type: int
     version_added: "3.0.0"
+  module_type:
+    description:
+      - The module type the power port template is attached to
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
@@ -117,15 +123,27 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            device_type=dict(required=True, type="raw"),
+            device_type=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
             type=dict(required=False, type="str"),
             allocated_draw=dict(required=False, type="int"),
             maximum_draw=dict(required=False, type="int"),
+            module_type=dict(required=False, type="raw"),
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("device_type", "module_type"),
+    ]
+    mutually_exclusive = [
+        ("device_type", "module_type"),
+    ]
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     power_port_template = NautobotDcimModule(module, NB_POWER_PORT_TEMPLATES)
     power_port_template.run()

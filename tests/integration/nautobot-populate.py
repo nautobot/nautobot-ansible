@@ -687,6 +687,10 @@ if nautobot_version >= version.parse("2.3"):
     power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
     created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
 
+    # Create Module Rear Port Template
+    module_rear_port_templates = [{"name": "Test Module Rear Port Template", "module_type": test_module_type.id, "type": "bnc", "positions": 5}]
+    created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, module_rear_port_templates)
+
     # Create role for device interfaces
     device_interface_roles = [
         {"name": "Loop the Network", "color": "111111", "vm_role": False, "content_types": ["dcim.interface"]},
