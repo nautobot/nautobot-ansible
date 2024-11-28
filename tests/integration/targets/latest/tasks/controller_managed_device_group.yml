@@ -45,9 +45,6 @@
       controller: controller_two
     register: test_three
 
-  - debug:
-      msg: "{{ test_three}}"
-
   - name: "CONTROLLER GROUP 3: ASSERT - Update"
     assert:
       that:
@@ -66,14 +63,14 @@
     register: test_four
 
   - debug:
-    msg: "{{ test_four}}"
+      msg: "{{ test_four}}"
 
   - name: "CONTROLLER GROUP 4: ASSERT - idempotent"
     assert:
       that:
         - not test_four['changed']
         - test_four['controller_managed_device_group']['name'] == "Test Controller Group One"
-        - test_four['msg'] == "controller_managed_device_group Test Controller Group One not changed"
+        - test_four['msg'] == "controller_managed_device_group Test Controller Group One already exists"
 
   - name: "CONTROLLER GROUP 5: ASSERT - Delete"
     networktocode.nautobot.controller_managed_device_group:
