@@ -19,7 +19,7 @@ author:
   - Travis Smith (@tsm1th)
 requirements:
   - pynautobot
-version_added: "5.4.0"
+version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
