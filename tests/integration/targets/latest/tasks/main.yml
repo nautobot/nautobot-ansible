@@ -680,3 +680,12 @@
         - cloud_network_prefix_assignment
   tags:
     - cloud_network_prefix_assignment
+
+- name: "PYNAUTOBOT_JOB_BUTTON TESTS"
+  include_tasks:
+    file: "job_button.yml"
+    apply:
+      tags:
+        - job_button
+  tags:
+    - job_button

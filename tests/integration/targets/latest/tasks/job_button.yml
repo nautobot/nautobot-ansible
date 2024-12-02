@@ -1,0 +1,182 @@
+---
+##
+##
+### PYNAUTOBOT_JOB_BUTTON
+##
+##
+- name: "NAUTOBOT 2.3+ JOB BUTTONS TESTS"
+  when: 
+    - "nautobot_version is version('2.3', '>=')"
+  block:
+    - set_fact:
+        test_job: "{{ lookup('networktocode.nautobot.lookup', 'jobs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Example Simple Job Button Receiver\"') }}"
+
+    - name: "1 - Create job button within Nautobot with only required information"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButton
+        content_types:
+            - dcim.device
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMe
+      register: test_create_min
+
+    - name: "1 - ASSERT"
+      assert:
+        that:
+          - test_create_min is changed
+          - test_create_min['diff']['before']['state'] == "absent"
+          - test_create_min['diff']['after']['state'] == "present"
+          - test_create_min['job_button']['name'] == "MyJobButton"
+          - test_create_min['job_button']['content_types'] == ['dcim.device']
+          - test_create_min['job_button']['job'] == test_job['key']
+          - test_create_min['job_button']['text'] == "SubmitMe"
+          - test_create_min['msg'] == "job_button MyJobButton created"
+
+    - name: "2 - Duplicate"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButton
+        content_types:
+            - dcim.device
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMe
+      register: test_create_idem
+
+    - name: "2 - ASSERT"
+      assert:
+        that:
+          - not test_create_idem['changed']
+          - test_create_idem['msg'] == "job_button MyJobButton already exists"
+          - test_create_idem['job_button']['name'] == "MyJobButton"
+
+    - name: "3 - Update job button"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButton
+        content_types:
+            - dcim.device
+            - dcim.location
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMe
+        confirmation: false
+      register: test_update
+
+    - name: "3 - ASSERT"
+      assert:
+        that:
+          - test_update is changed
+          - test_update['diff']['before']['content_types'] == ['dcim.device']
+          - test_update['diff']['before']['confirmation'] == true
+          - test_update['diff']['after']['content_types'] == ['dcim.device', 'dcim.location']
+          - test_update['diff']['after']['confirmation'] == false
+
+    - name: "4 - Update idempotent"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButton
+        content_types:
+            - dcim.device
+            - dcim.location
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMe
+        confirmation: false
+      register: test_update_idem
+
+    - name: "4 - ASSERT"
+      assert:
+        that:
+          - not test_update_idem['changed']
+          - test_update_idem['msg'] == "job_button MyJobButton already exists"
+          - test_update_idem['job_button']['name'] == "MyJobButton"
+
+    - name: "5 - Create job button with all parameters"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButtonTwo
+        content_types:
+            - dcim.device
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMeToo
+        enabled: false
+        confirmation: false
+        weight: 200
+        group_name: Groop
+        button_class: primary
+      register: test_create_max
+
+    - name: "5 - ASSERT"
+      assert:
+        that:
+          - test_create_max is changed
+          - test_create_max['diff']['before']['state'] == "absent"
+          - test_create_max['diff']['after']['state'] == "present"
+          - test_create_max['job_button']['name'] == "MyJobButtonTwo"
+          - test_create_max['job_button']['content_types'] == ['dcim.device']
+          - test_create_max['job_button']['job'] == test_job['key']
+          - test_create_max['job_button']['text'] == "SubmitMeToo"
+          - test_create_max['job_button']['enabled'] == false
+          - test_create_max['job_button']['confirmation'] == false
+          - test_create_max['job_button']['weight'] == 200
+          - test_create_max['job_button']['group_name'] == "Groop"
+          - test_create_max['job_button']['button_class'] == "primary"
+          - test_create_max['msg'] == "job_button MyJobButtonTwo created"
+
+    - name: "6 - Duplicate create with all parameters"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButtonTwo
+        content_types:
+            - dcim.device
+        job: "Example Simple Job Button Receiver"
+        text: SubmitMeToo
+        enabled: false
+        confirmation: false
+        weight: 200
+        group_name: Groop
+        button_class: primary
+      register: test_create_max_idem
+
+    - name: "6 - ASSERT"
+      assert:
+        that:
+          - not test_create_max_idem['changed']
+          - test_create_max_idem['msg'] == "job_button MyJobButtonTwo already exists"
+          - test_create_max_idem['job_button']['name'] == "MyJobButtonTwo"
+
+    - name: "7 - Delete job button"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButtonTwo
+        state: absent
+      register: test_delete
+
+    - name: "7 - ASSERT"
+      assert:
+        that:
+          - test_delete is changed
+          - test_delete['diff']['before']['state'] == "present"
+          - test_delete['diff']['after']['state'] == "absent"
+          - test_delete['job_button']['name'] == "MyJobButtonTwo"
+          - "'deleted' in test_delete['msg']"
+
+    - name: "8 - Delete idempotent"
+      networktocode.nautobot.job_button:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: MyJobButtonTwo
+        state: absent
+      register: test_delete_idem
+
+    - name: "8 - ASSERT"
+      assert:
+        that:
+          - not test_delete_idem['changed']
+          - "'already absent' in test_delete_idem['msg']"
