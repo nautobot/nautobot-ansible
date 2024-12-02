@@ -685,6 +685,10 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_device_interface_roles = make_nautobot_calls(nb.extras.roles, device_interface_roles)
 
+    # Create dynamic group of type static assignment
+    dynamic_groups = [{"name": "TestStaticAssociations", "content_type": "dcim.device", "group_type": "static"}]
+    created_dynamic_groups = make_nautobot_calls(nb.extras.dynamic_groups, dynamic_groups)
+
 
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
