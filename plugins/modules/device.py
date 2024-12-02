@@ -164,7 +164,7 @@ options:
       - Requires Nautobot C(v2.2) or later
     required: false
     type: raw
-    version_added: "5.4.0"
+    version_added: "5.5.0"
   device_redundancy_group_priority:
     description:
       - Priority in the assigned device redundancy group
