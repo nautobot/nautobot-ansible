@@ -10,6 +10,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     ENDPOINT_NAME_MAPPING,
 )
 
+NB_DYNAMIC_GROUPS = "dynamic_groups"
 NB_TAGS = "tags"
 NB_STATUS = "statuses"
 NB_RELATIONSHIP_ASSOCIATIONS = "relationship_associations"
