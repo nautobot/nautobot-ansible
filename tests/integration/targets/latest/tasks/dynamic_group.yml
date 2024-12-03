@@ -47,8 +47,8 @@
         filter: 
           location:
             - "Child-Child Test Location"
-
       register: test_create_idem
+
     - name: "2 - ASSERT"
       assert:
         that:

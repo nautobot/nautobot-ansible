@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: dynamic_group
-short_description: Creates or removes dynamic group from Nautobot
+short_description: Creates or removes dynamic groups from Nautobot
 description:
-  - Creates or removes dynamic group from Nautobot
+  - Creates or removes dynamic groups from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -39,7 +39,7 @@ options:
   group_type:
     description:
       - Required if I(state=present) and the dynamic group does not exist yet
-      - The group type of the dynamic group (dynamic-filter|dynamic-set|static)
+    choices: [ dynamic-filter, dynamic-set, static ]
     required: false
     type: str
   content_type:
@@ -117,7 +117,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            group_type=dict(required=False, type="str"),
+            group_type=dict(required=False, type="str", choices=["dynamic-filter", "dynamic-set", "static"]),
             content_type=dict(required=False, type="str"),
             tenant=dict(required=False, type="raw"),
             filter=dict(required=False, type="dict"),
