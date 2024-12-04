@@ -39,7 +39,6 @@ options:
   group_type:
     description:
       - Required if I(state=present) and the dynamic group does not exist yet
-      - V(static) is only a valid choice in Nautobot 2.3+
     choices: [ dynamic-filter, dynamic-set, static ]
     required: false
     type: str
