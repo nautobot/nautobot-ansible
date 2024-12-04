@@ -10,9 +10,9 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: object_metadata
-short_description: Creates or removes a object metadata from Nautobot
+short_description: Creates or removes object metadata from Nautobot
 description:
-  - Creates or removes a object metadata from Nautobot
+  - Creates or removes object metadata from Nautobot
 author:
   - Network to Code (@networktocode)
   - Travis Smith (@tsm1th)
@@ -38,8 +38,18 @@ options:
   value:
     description:
       - The value of the metadata
-    required: true
+    required: false
     type: str
+  contact:
+    description:
+      - The contact of the metadata
+    required: false
+    type: raw
+  team:
+    description:
+      - The team of the metadata
+    required: false
+    type: raw
   scoped_fields:
     description:
       - List of scoped fields, only direct fields on the model
@@ -107,12 +117,26 @@ def main():
             metadata_type=dict(required=True, type="raw"),
             assigned_object_type=dict(required=True, type="str"),
             assigned_object_id=dict(required=True, type="str"),
-            value=dict(required=True, type="str"),
+            value=dict(required=False, type="str"),
+            contact=dict(required=False, type="raw"),
+            team=dict(required=False, type="raw"),
             scoped_fields=dict(required=False, type="list", elements="str"),
         )
     )
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    required_one_of = [
+        ("value", "contact", "team"),
+    ]
+    mutually_exclusive = [
+        ("value", "contact", "team"),
+    ]
+
+    module = AnsibleModule(
+        argument_spec=argument_spec,
+        supports_check_mode=True,
+        required_one_of=required_one_of,
+        mutually_exclusive=mutually_exclusive,
+    )
 
     object_metadata = NautobotExtrasModule(module, NB_OBJECT_METADATA)
     object_metadata.run()

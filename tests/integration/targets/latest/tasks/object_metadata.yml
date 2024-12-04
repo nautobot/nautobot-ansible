@@ -10,6 +10,7 @@
   block:
     - set_fact:
         test_metadata_type: "{{ lookup('networktocode.nautobot.lookup', 'metadata-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"TestMetadataTextType\"') }}"
+        test_metadata_type_two: "{{ lookup('networktocode.nautobot.lookup', 'metadata-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"TestMetadataContactType\"') }}"
         test_metadata_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
 
     - name: "OBJECT METADATA 1: Create"
@@ -141,3 +142,56 @@
         that:
           - test_six is not changed
           - "'already absent' in test_six['msg']"
+
+    - name: "OBJECT METADATA 7: Create contact type metadata"
+      networktocode.nautobot.object_metadata:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        metadata_type: "TestMetadataContactType"
+        assigned_object_type: "dcim.device"
+        assigned_object_id: "{{ test_metadata_device['key'] }}"
+        contact: 
+          name: "My Contact"
+          phone: ""
+          email: ""
+        scoped_fields:
+            - name
+        state: present
+      register: test_seven
+
+    - name: "OBJECT METADATA 7: ASSERT - Create"
+      assert:
+        that:
+          - test_seven is changed
+          - test_seven['diff']['before']['state'] == "absent"
+          - test_seven['diff']['after']['state'] == "present"
+          - test_seven['object_metadata']['metadata_type'] == test_metadata_type_two['key']
+          - test_seven['object_metadata']['assigned_object_type'] == "dcim.device"
+          - test_seven['object_metadata']['assigned_object_id'] == test_metadata_device['key']
+          - test_seven['object_metadata']['scoped_fields'] == ["name"]
+          - "'created' in test_seven['msg']"
+
+    - name: "OBJECT METADATA 8: Test absent state"
+      networktocode.nautobot.object_metadata:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        metadata_type: "TestMetadataContactType"
+        assigned_object_type: "dcim.device"
+        assigned_object_id: "{{ test_metadata_device['key'] }}"
+        contact: 
+          name: "My Contact"
+          phone: ""
+          email: ""
+        state: absent
+      register: test_eight
+
+    - name: "OBJECT METADATA 8: ASSERT - Item removed"
+      assert:
+        that:
+          - test_eight is changed
+          - test_eight['diff']['before']['state'] == "present"
+          - test_eight['diff']['after']['state'] == "absent"
+          - test_eight['object_metadata']['metadata_type'] == test_metadata_type_two['key']
+          - test_eight['object_metadata']['assigned_object_type'] == "dcim.device"
+          - test_eight['object_metadata']['assigned_object_id'] == test_metadata_device['key']
+          - "'deleted' in test_eight['msg']"

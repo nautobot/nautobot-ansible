@@ -14,14 +14,12 @@ short_description: Create, update or delete metadata types within Nautobot
 description:
   - Creates, updates or removes metadata types from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Travis Smith (@tsm1th)
 version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
@@ -56,7 +54,7 @@ options:
   content_types:
     description:
       - Content types that this metadata type should be available for
-      - Required if I(state=present) and the custom field does not exist yet
+      - Required if I(state=present) and the metadata type does not exist yet
     required: false
     type: list
     elements: str
@@ -95,7 +93,6 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
     CUSTOM_FIELDS_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
@@ -111,7 +108,6 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(

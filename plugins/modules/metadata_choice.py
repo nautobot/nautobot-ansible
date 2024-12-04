@@ -14,7 +14,6 @@ short_description: Create, update or delete metadata choices within Nautobot
 description:
   - Creates, updates or removes metadata choices from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Travis Smith (@tsm1th)
@@ -26,7 +25,7 @@ options:
     description:
       - The name of the metadata type
     required: true
-    type: raw
+    type: str
   value:
     description:
       - The value of the metadata choice
@@ -85,7 +84,7 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            metadata_type=dict(required=True, type="raw"),
+            metadata_type=dict(required=True, type="str"),
             value=dict(required=True, type="str"),
             weight=dict(required=False, type="int"),
         )
