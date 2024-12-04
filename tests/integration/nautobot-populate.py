@@ -688,6 +688,7 @@ if nautobot_version >= version.parse("2.3"):
     # Create metadata_type for metadata_choices
     metadata_types = [
         {"name": "TestMetadataType", "data_type": "multi-select", "content_types": ["dcim.device"]},
+        {"name": "TestMetadataContactType", "data_type": "contact-or-team", "content_types": ["dcim.device"]},
         {"name": "TestMetadataTextType", "data_type": "text", "content_types": ["dcim.device"]},
     ]
     created_metadata_types = make_nautobot_calls(nb.extras.metadata_types, metadata_types)
