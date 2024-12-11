@@ -680,3 +680,12 @@
         - cloud_network_prefix_assignment
   tags:
     - cloud_network_prefix_assignment
+
+- name: "PYNAUTOBOT_DYNAMIC_GROUP TESTS"
+  include_tasks:
+    file: "dynamic_group.yml"
+    apply:
+      tags:
+        - dynamic_group
+  tags:
+    - dynamic_group
