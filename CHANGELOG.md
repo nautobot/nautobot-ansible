@@ -1,5 +1,30 @@
 # networktocode.nautobot Release Notes
 
+v5.4.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.cloud_account - Creates or removes cloud accounts from Nautobot
+- networktocode.nautobot.cloud_network - Creates or removes cloud networks from Nautobot
+- networktocode.nautobot.cloud_resource_type - Creates or removes cloud resource types from Nautobot
+- networktocode.nautobot.cloud_service - Creates or removes cloud services from Nautobot
+- networktocode.nautobot.cloud_service_network_assignment - Creates or removes cloud service network assignments from Nautobot
+- networktocode.nautobot.cloud_network_prefix_assignment - Creates or removes cloud network prefix assignments from Nautobot
+- networktocode.nautobot.module - Creates or removes modules from Nautobot
+- networktocode.nautobot.module_type - Creates or removes module types from Nautobot
+- networktocode.nautobot.module_bay - Creates or removes module bays from Nautobot
+- networktocode.nautobot.module_bay_template - Creates or removes module bay templates from Nautobot
+
+Minor Changes
+-------------
+- (#431) Added tags and custom fields options to `cable` module
+- (#433) Added role option to `device_interface` module
+- (#438) Added cloud_network option to `circuit_termination` module
+- (#446) Added module option to multiple existing modules
+- (#449) Changed lookup plugin to allow for multiple `id` filters
+
 v5.3.1
 ======
 
