@@ -152,8 +152,6 @@
         assigned_object_id: "{{ test_metadata_device['key'] }}"
         contact: 
           name: "My Contact"
-          phone: ""
-          email: ""
         scoped_fields:
             - name
         state: present
@@ -180,8 +178,6 @@
         assigned_object_id: "{{ test_metadata_device['key'] }}"
         contact: 
           name: "My Contact"
-          phone: ""
-          email: ""
         state: absent
       register: test_eight
 
