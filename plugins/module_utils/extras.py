@@ -18,6 +18,9 @@ NB_CUSTOM_FIELDS = "custom_fields"
 NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
 NB_CONTACT = "contacts"
 NB_TEAM = "teams"
+NB_OBJECT_METADATA = "object_metadata"
+NB_METADATA_CHOICES = "metadata_choices"
+NB_METADATA_TYPES = "metadata_types"
 
 
 class NautobotExtrasModule(NautobotModule):
@@ -49,8 +52,10 @@ class NautobotExtrasModule(NautobotModule):
             name = f"{data['source_type']} -> {data['destination_type']}"
         elif endpoint_name == "custom_field":
             name = data["label"]
-        elif endpoint_name == "custom_field_choice":
+        elif endpoint_name in ["custom_field_choice", "metadata_choice"]:
             name = data["value"]
+        elif endpoint_name in ["object_metadata"]:
+            name = data.get("value", data.get("contact", data.get("team")))
         else:
             name = data.get("id")
 
