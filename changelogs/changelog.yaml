@@ -482,3 +482,42 @@ releases:
       minor_changes:
       - (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
       - (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
+  5.4.0:
+    modules:
+    - description: Creates or removes cloud accounts from Nautobot
+      name: cloud_account
+      namespace: ''
+    - description: Creates or removes cloud networks from Nautobot
+      name: cloud_network
+      namespace: ''
+    - description: Creates or removes cloud resource types from Nautobot
+      name: cloud_resource_type
+      namespace: ''
+    - description: Creates or removes cloud services from Nautobot
+      name: cloud_service
+      namespace: ''
+    - description: Creates or removes cloud service network assignments from Nautobot
+      name: cloud_service_network_assignment
+      namespace: ''
+    - description: Creates or removes cloud network prefix assignments from Nautobot
+      name: cloud_network_prefix_assignment
+      namespace: ''
+    - description: Creates or removes modules from Nautobot
+      name: module
+      namespace: ''
+    - description: Creates or removes module types from Nautobot
+      name: module_type
+      namespace: ''
+    - description: Creates or removes module bays from Nautobot
+      name: module_bay
+      namespace: ''
+    - description: Creates or removes module bay templates from Nautobot
+      name: module_bay_template
+      namespace: ''
+    changes:
+      minor_changes:
+      - (#431) Added tags and custom fields options to `cable` module
+      - (#433) Added role option to `device_interface` module
+      - (#438) Added cloud_network option to `circuit_termination` module
+      - (#446) Added module option to multiple existing modules
+      - (#449) Changed lookup plugin to allow for multiple `id` filters

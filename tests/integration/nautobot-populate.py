@@ -76,6 +76,8 @@ tags = [
 
 if nautobot_version >= version.parse("2.2"):
     tags.append({"name": "Controller Tag", "content_types": ["dcim.controller"]})
+if nautobot_version >= version.parse("2.3"):
+    tags.append({"name": "Dynamic Group Tag", "content_types": ["extras.dynamicgroup"]})
 
 create_tags = make_nautobot_calls(nb.extras.tags, tags)
 
