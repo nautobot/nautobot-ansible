@@ -206,6 +206,7 @@ def get_endpoint(nautobot, term):
         "inventory-items": {"endpoint": nautobot.dcim.inventory_items},
         "ip-addresses": {"endpoint": nautobot.ipam.ip_addresses},
         "ip-address-to-interface": {"endpoint": nautobot.ipam.ip_address_to_interface},
+        "job-buttons": {"endpoint": nautobot.extras.job_buttons},
         "jobs": {"endpoint": nautobot.extras.jobs},
         "locations": {"endpoint": nautobot.dcim.locations},
         "location-types": {"endpoint": nautobot.dcim.location_types},
