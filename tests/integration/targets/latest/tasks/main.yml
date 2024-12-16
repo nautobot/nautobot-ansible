@@ -725,3 +725,12 @@
         - static_group_association
   tags:
     - static_group_association
+
+- name: "PYNAUTOBOT_JOB_BUTTON TESTS"
+  include_tasks:
+    file: "job_button.yml"
+    apply:
+      tags:
+        - job_button
+  tags:
+    - job_button
