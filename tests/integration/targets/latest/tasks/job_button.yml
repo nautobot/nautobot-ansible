@@ -5,8 +5,6 @@
 ##
 ##
 - name: "NAUTOBOT 2.3+ JOB BUTTONS TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
   block:
     - set_fact:
         test_job: "{{ lookup('networktocode.nautobot.lookup', 'jobs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Example Simple Job Button Receiver\"') }}"
@@ -103,7 +101,7 @@
             - dcim.device
         job: "Example Simple Job Button Receiver"
         text: SubmitMeToo
-        enabled: false
+        enabled: "{{ false if nautobot_version is version('2.3', '>=') else omit }}"
         confirmation: false
         weight: 200
         group_name: Groop
@@ -120,7 +118,6 @@
           - test_create_max['job_button']['content_types'] == ['dcim.device']
           - test_create_max['job_button']['job'] == test_job['key']
           - test_create_max['job_button']['text'] == "SubmitMeToo"
-          - test_create_max['job_button']['enabled'] == false
           - test_create_max['job_button']['confirmation'] == false
           - test_create_max['job_button']['weight'] == 200
           - test_create_max['job_button']['group_name'] == "Groop"
@@ -136,7 +133,7 @@
             - dcim.device
         job: "Example Simple Job Button Receiver"
         text: SubmitMeToo
-        enabled: false
+        enabled: "{{ false if nautobot_version is version('2.3', '>=') else omit }}"
         confirmation: false
         weight: 200
         group_name: Groop
