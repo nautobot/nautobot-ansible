@@ -14,6 +14,7 @@ NB_DYNAMIC_GROUPS = "dynamic_groups"
 NB_TAGS = "tags"
 NB_STATUS = "statuses"
 NB_RELATIONSHIP_ASSOCIATIONS = "relationship_associations"
+NB_STATIC_GROUP_ASSOCIATIONS = "static_group_associations"
 NB_CUSTOM_FIELDS = "custom_fields"
 NB_CUSTOM_FIELD_CHOICES = "custom_field_choices"
 NB_CONTACT = "contacts"
@@ -50,6 +51,8 @@ class NautobotExtrasModule(NautobotModule):
             name = data["name"]
         elif endpoint_name == "relationship_associations":
             name = f"{data['source_type']} -> {data['destination_type']}"
+        elif endpoint_name == "static_group_association":
+            name = f"{data['dynamic_group']} -> {data['associated_object_id']}"
         elif endpoint_name == "custom_field":
             name = data["label"]
         elif endpoint_name in ["custom_field_choice", "metadata_choice"]:

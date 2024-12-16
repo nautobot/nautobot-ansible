@@ -717,3 +717,11 @@
   tags:
     - object_metadata
 
+- name: "PYNAUTOBOT_STATIC_GROUP_ASSOCIATION TESTS"
+  include_tasks:
+    file: "static_group_association.yml"
+    apply:
+      tags:
+        - static_group_association
+  tags:
+    - static_group_association
