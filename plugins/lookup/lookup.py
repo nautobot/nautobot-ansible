@@ -238,6 +238,7 @@ def get_endpoint(nautobot, term):
         "secrets": {"endpoint": nautobot.extras.secrets},
         "secrets-groups": {"endpoint": nautobot.extras.secrets_groups},
         "services": {"endpoint": nautobot.ipam.services},
+        "static-group-associations": {"endpoint": nautobot.extras.static_group_associations},
         "statuses": {"endpoint": nautobot.extras.statuses},
         "tags": {"endpoint": nautobot.extras.tags},
         "teams": {"endpoint": nautobot.extras.teams},
