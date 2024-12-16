@@ -695,6 +695,10 @@ if nautobot_version >= version.parse("2.3"):
     ]
     created_metadata_types = make_nautobot_calls(nb.extras.metadata_types, metadata_types)
 
+    # Create dynamic group of type static assignment
+    dynamic_groups = [{"name": "TestStaticAssociations", "content_type": "dcim.device", "group_type": "static"}]
+    created_dynamic_groups = make_nautobot_calls(nb.extras.dynamic_groups, dynamic_groups)
+
     # Enable example job for job tests
     example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
     example_job_receiver.enabled = True
