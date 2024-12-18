@@ -374,10 +374,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             else:
                 self.display.display(f"Could not find value for tags.{tag_attr} on device {device_name}")
 
-    def main(self):
-        """Main function."""
-        if not HAS_NETUTILS:
-            raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
+    def get_results(self):
+        """Check the cache for the results and return it if it exists, otherwise query the API and return the results."""
+        json_data = None
+        cache_key = self.get_cache_key(self.api_endpoint)
+
+        user_cache_setting = self.get_option("cache")
+        attempt_to_read_cache = user_cache_setting and self.use_cache
+
+        need_to_fetch = True
+        if attempt_to_read_cache:
+            try:
+                json_data = self._cache[cache_key]
+                # Successfully read the cache, so we don't need to fetch the data
+                need_to_fetch = False
+            except KeyError:
+                self.display.v("Cache key not found in cache or it was expired.")
+
+        if not need_to_fetch:
+            self.display.v("Using cached results.")
+            self.display.vvvv(f"Cached response: {json_data}")
+            return json_data
 
         base_query = {
             "query": {
@@ -421,6 +438,19 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Error handling in case of a malformed query
         if "errors" in json_data:
             raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
+
+        if user_cache_setting:
+            # If we got here and the user has caching enabled, we need to cache the results
+            self._cache[cache_key] = json_data
+
+        return json_data
+
+    def main(self):
+        """Main function."""
+        if not HAS_NETUTILS:
+            raise AnsibleError("networktocode.nautobot.gql_inventory requires netutils. Please pip install netutils.")
+
+        json_data = self.get_results()
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
