@@ -4,179 +4,175 @@
 ### PYNAUTOBOT_MODULE_BAY
 ##
 ##
-- name: "NAUTOBOT 2.3+ MODULE BAY TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - set_fact:
-        test_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
-        test_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"test100\"') }}"
-        test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStrip"'') }}'
+- set_fact:
+    test_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
+    test_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"test100\"') }}"
+    test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStrip"'') }}'
 
-    - name: "1 - Create module bay with minimum information"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_device: test100
-        name: Watch Bay
-        state: present
-      register: test_one
+- name: "1 - Create module bay with minimum information"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_device: test100
+    name: Watch Bay
+    state: present
+  register: test_one
 
-    - name: "1 - ASSERT"
-      assert:
-        that:
-          - test_one is changed
-          - test_one['diff']['before']['state'] == "absent"
-          - test_one['diff']['after']['state'] == "present"
-          - test_one['module_bay']['name'] == "Watch Bay"
-          - test_one['module_bay']['parent_device'] == test_device['key']
-          - test_one['msg'] == "module_bay Watch Bay created"
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['module_bay']['name'] == "Watch Bay"
+      - test_one['module_bay']['parent_device'] == test_device['key']
+      - test_one['msg'] == "module_bay Watch Bay created"
 
-    - name: "2 - Create module bay with minimum information idempotent"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_device: test100
-        name: Watch Bay
-        state: present
-      register: test_two
+- name: "2 - Create module bay with minimum information idempotent"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_device: test100
+    name: Watch Bay
+    state: present
+  register: test_two
 
-    - name: "2 - ASSERT"
-      assert:
-        that:
-          - not test_two['changed']
-          - test_two['module_bay']['name'] == "Watch Bay"
-          - test_two['module_bay']['parent_device'] == test_device['key']
-          - test_two['msg'] == "module_bay Watch Bay already exists"
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['module_bay']['name'] == "Watch Bay"
+      - test_two['module_bay']['parent_device'] == test_device['key']
+      - test_two['msg'] == "module_bay Watch Bay already exists"
 
-    - name: "3 - Update module bay"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_device: test100
-        name: Watch Bay
-        label: watchbay
-        position: "42"
-        description: The bay of watches
-        state: present
-      register: test_three
+- name: "3 - Update module bay"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_device: test100
+    name: Watch Bay
+    label: watchbay
+    position: "42"
+    description: The bay of watches
+    state: present
+  register: test_three
 
-    - name: "3 - ASSERT"
-      assert:
-        that:
-          - test_three is changed
-          - test_three['diff']['after']['label'] == "watchbay"
-          - test_three['diff']['after']['position'] == "42"
-          - test_three['diff']['after']['description'] == "The bay of watches"
-          - test_three['module_bay']['name'] == "Watch Bay"
-          - test_three['module_bay']['parent_device'] == test_device['key']
-          - test_three['module_bay']['label'] == "watchbay"
-          - test_three['module_bay']['position'] == "42"
-          - test_three['module_bay']['description'] == "The bay of watches"
-          - test_three['msg'] == "module_bay Watch Bay updated"
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['label'] == "watchbay"
+      - test_three['diff']['after']['position'] == "42"
+      - test_three['diff']['after']['description'] == "The bay of watches"
+      - test_three['module_bay']['name'] == "Watch Bay"
+      - test_three['module_bay']['parent_device'] == test_device['key']
+      - test_three['module_bay']['label'] == "watchbay"
+      - test_three['module_bay']['position'] == "42"
+      - test_three['module_bay']['description'] == "The bay of watches"
+      - test_three['msg'] == "module_bay Watch Bay updated"
 
-    - name: "4 - Update idempotent"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_device: test100
-        name: Watch Bay
-        label: watchbay
-        position: "42"
-        description: The bay of watches
-        state: present
-      register: test_four
+- name: "4 - Update idempotent"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_device: test100
+    name: Watch Bay
+    label: watchbay
+    position: "42"
+    description: The bay of watches
+    state: present
+  register: test_four
 
-    - name: "4 - ASSERT"
-      assert:
-        that:
-          - not test_four['changed']
-          - test_four['module_bay']['name'] == "Watch Bay"
-          - test_four['msg'] == "module_bay Watch Bay already exists"
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['module_bay']['name'] == "Watch Bay"
+      - test_four['msg'] == "module_bay Watch Bay already exists"
 
-    - name: "5 - Create module bay with all params"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_module:
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        name: Fixing Good
-        label: FiXiNgGoOd
-        position: "321"
-        description: Good Fixing is better than Bad Breaking
-        state: present
-      register: test_five
+- name: "5 - Create module bay with all params"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_module:
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    name: Fixing Good
+    label: FiXiNgGoOd
+    position: "321"
+    description: Good Fixing is better than Bad Breaking
+    state: present
+  register: test_five
 
-    - name: "5 - ASSERT"
-      assert:
-        that:
-          - test_five is changed
-          - test_five['module_bay']['name'] == "Fixing Good"
-          - test_five['module_bay']['label'] == "FiXiNgGoOd"
-          - test_five['module_bay']['position'] == "321"
-          - test_five['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
-          - test_five['module_bay']['parent_module'] == test_module['key']
-          - test_five['msg'] == "module_bay Fixing Good created"
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['module_bay']['name'] == "Fixing Good"
+      - test_five['module_bay']['label'] == "FiXiNgGoOd"
+      - test_five['module_bay']['position'] == "321"
+      - test_five['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
+      - test_five['module_bay']['parent_module'] == test_module['key']
+      - test_five['msg'] == "module_bay Fixing Good created"
 
-    - name: "6 - Create module bay with all params idempotent"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_module:
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        name: Fixing Good
-        label: FiXiNgGoOd
-        position: "321"
-        description: Good Fixing is better than Bad Breaking
-        state: present
-      register: test_six
+- name: "6 - Create module bay with all params idempotent"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_module:
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    name: Fixing Good
+    label: FiXiNgGoOd
+    position: "321"
+    description: Good Fixing is better than Bad Breaking
+    state: present
+  register: test_six
 
-    - name: "6 - ASSERT"
-      assert:
-        that:
-          - not test_six['changed']
-          - test_six['module_bay']['name'] == "Fixing Good"
-          - test_six['module_bay']['label'] == "FiXiNgGoOd"
-          - test_six['module_bay']['position'] == "321"
-          - test_six['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
-          - test_six['module_bay']['parent_module'] == test_module['key']
-          - test_six['msg'] == "module_bay Fixing Good already exists"
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['module_bay']['name'] == "Fixing Good"
+      - test_six['module_bay']['label'] == "FiXiNgGoOd"
+      - test_six['module_bay']['position'] == "321"
+      - test_six['module_bay']['description'] == "Good Fixing is better than Bad Breaking"
+      - test_six['module_bay']['parent_module'] == test_module['key']
+      - test_six['msg'] == "module_bay Fixing Good already exists"
 
-    - name: "7 - Delete"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_module:
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        name: Fixing Good
-        state: absent
-      register: test_seven
+- name: "7 - Delete"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_module:
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    name: Fixing Good
+    state: absent
+  register: test_seven
 
-    - name: "7 - ASSERT"
-      assert:
-        that:
-          - test_seven is changed
-          - test_seven['diff']['before']['state'] == "present"
-          - test_seven['diff']['after']['state'] == "absent"
-          - test_seven['msg'] == "module_bay Fixing Good deleted"
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "present"
+      - test_seven['diff']['after']['state'] == "absent"
+      - test_seven['msg'] == "module_bay Fixing Good deleted"
 
-    - name: "8 - Delete idempotent"
-      networktocode.nautobot.module_bay:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        parent_module:
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        name: Fixing Good
-        state: absent
-      register: test_eight
+- name: "8 - Delete idempotent"
+  networktocode.nautobot.module_bay:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent_module:
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    name: Fixing Good
+    state: absent
+  register: test_eight
 
-    - name: "8 - ASSERT`"
-      assert:
-        that:
-          - not test_eight['changed']
-          - test_eight['module_bay'] == None
-          - test_eight['msg'] == "module_bay Fixing Good already absent"
+- name: "8 - ASSERT`"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['module_bay'] == None
+      - test_eight['msg'] == "module_bay Fixing Good already absent"

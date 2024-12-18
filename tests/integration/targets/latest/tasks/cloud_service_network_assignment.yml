@@ -4,79 +4,74 @@
 ### PYNAUTOBOT_CLOUD_SERVICE_NETWORK_ASSIGNMENT
 ##
 ##
+- set_fact:
+    cloud_service: "{{ lookup('networktocode.nautobot.lookup', 'cloud-services', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudService') }}"
+    cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
 
-- name: "NAUTOBOT 2.3+ CLOUD SERVICE NETWORK ASSIGNMENT TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - set_fact:
-        cloud_service: "{{ lookup('networktocode.nautobot.lookup', 'cloud-services', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudService') }}"
-        cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
+- name: "1 - Create cloud service to cloud network assignment"
+  networktocode.nautobot.cloud_service_network_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_service: CiscoCloudService
+    cloud_network: CiscoCloudNetwork
+  register: test_create_one
 
-    - name: "1 - Create cloud service to cloud network assignment"
-      networktocode.nautobot.cloud_service_network_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_service: CiscoCloudService
-        cloud_network: CiscoCloudNetwork
-      register: test_create_one
+- name: "1 - ASSERT"
+  assert:
+    that: 
+      - test_create_one is changed
+      - test_create_one['diff']['before']['state'] == "absent"
+      - test_create_one['diff']['after']['state'] == "present"
+      - test_create_one['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
+      - test_create_one['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
+      - "'created' in test_create_one['msg']"
 
-    - name: "1 - ASSERT"
-      assert:
-        that: 
-          - test_create_one is changed
-          - test_create_one['diff']['before']['state'] == "absent"
-          - test_create_one['diff']['after']['state'] == "present"
-          - test_create_one['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
-          - test_create_one['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
-          - "'created' in test_create_one['msg']"
+- name: "2 - Duplicate"
+  networktocode.nautobot.cloud_service_network_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_service: CiscoCloudService
+    cloud_network: CiscoCloudNetwork
+  register: test_create_idem
 
-    - name: "2 - Duplicate"
-      networktocode.nautobot.cloud_service_network_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_service: CiscoCloudService
-        cloud_network: CiscoCloudNetwork
-      register: test_create_idem
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - "'already exists' in test_create_idem['msg']"
+      - test_create_idem['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
+      - test_create_idem['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
 
-    - name: "2 - ASSERT"
-      assert:
-        that:
-          - not test_create_idem['changed']
-          - "'already exists' in test_create_idem['msg']"
-          - test_create_idem['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
-          - test_create_idem['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
-    
-    - name: "3 - Delete cloud_service_network_assignment"
-      networktocode.nautobot.cloud_service_network_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_service: CiscoCloudService
-        cloud_network: CiscoCloudNetwork
-        state: absent
-      register: test_delete
-    
-    - name: "3 - ASSERT"
-      assert:
-        that:
-          - test_delete is changed
-          - test_delete['diff']['before']['state'] == "present"
-          - test_delete['diff']['after']['state'] == "absent"
-          - test_delete['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
-          - test_delete['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
-          - "'deleted' in test_delete['msg']"
-    
-    - name: "4 - Delete idempotent"
-      networktocode.nautobot.cloud_service_network_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_service: CiscoCloudService
-        cloud_network: CiscoCloudNetwork
-        state: absent
-      register: test_delete_idem
+- name: "3 - Delete cloud_service_network_assignment"
+  networktocode.nautobot.cloud_service_network_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_service: CiscoCloudService
+    cloud_network: CiscoCloudNetwork
+    state: absent
+  register: test_delete
 
-    - name: "4 - ASSERT"
-      assert:
-        that:
-          - not test_delete_idem['changed']
-          - "'already absent' in test_delete_idem['msg']"
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['cloud_service_network_assignment']['cloud_service'] == cloud_service['key']
+      - test_delete['cloud_service_network_assignment']['cloud_network'] == cloud_network['key']
+      - "'deleted' in test_delete['msg']"
+
+- name: "4 - Delete idempotent"
+  networktocode.nautobot.cloud_service_network_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_service: CiscoCloudService
+    cloud_network: CiscoCloudNetwork
+    state: absent
+  register: test_delete_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"
