@@ -304,27 +304,27 @@
       - test_twelve['prefix']['location'] == test_child_location['key']
 
 - name: "13 - Get a new /24 inside 10.157.0.0/19 within Nautobot in Private namespace"
-networktocode.nautobot.prefix:
-  url: "{{ nautobot_url }}"
-  token: "{{ nautobot_token }}"
-  parent: 10.157.0.0/19
-  prefix_length: 24
-  location:
-    name: "Child Test Location"
-    parent: "Parent Test Location"
-  namespace: Private
-  status: "Active"
-  state: present
-  first_available: yes
-register: test_thirteen
+  networktocode.nautobot.prefix:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    parent: 10.157.0.0/19
+    prefix_length: 24
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    namespace: Private
+    status: "Active"
+    state: present
+    first_available: yes
+  register: test_thirteen
 
 - name: "13 - ASSERT"
-assert:
-  that:
-    - test_thirteen is changed
-    - test_thirteen['diff']['before']['state'] == "absent"
-    - test_thirteen['diff']['after']['state'] == "present"
-    - test_thirteen['msg'] == "prefix 10.157.0.0/24 created"
-    - test_thirteen['prefix']['prefix'] == "10.157.0.0/24"
-    - test_thirteen['prefix']['namespace'] == private_namespace['key']
-    - test_thirteen['prefix']['location'] == test_child_location['key']
+  assert:
+    that:
+      - test_thirteen is changed
+      - test_thirteen['diff']['before']['state'] == "absent"
+      - test_thirteen['diff']['after']['state'] == "present"
+      - test_thirteen['msg'] == "prefix 10.157.0.0/24 created"
+      - test_thirteen['prefix']['prefix'] == "10.157.0.0/24"
+      - test_thirteen['prefix']['namespace'] == private_namespace['key']
+      - test_thirteen['prefix']['location'] == test_child_location['key']
