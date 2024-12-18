@@ -418,6 +418,7 @@ ALLOWED_QUERY_PARAMS = {
     "namespace": set(["name"]),
     "nat_inside": set(["namespace", "address"]),
     "object_metadata": set(["metadata_type", "assigned_object_type", "assigned_object_id", "value"]),
+    "parent_location_type": set(["name"]),
     "parent_module_bay": set(["name", "parent_device", "parent_module"]),
     "parent_module": set(["module_type", "parent_module_bay"]),
     "parent_rack_group": set(["name"]),
