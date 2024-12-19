@@ -4,170 +4,166 @@
 ### PYNAUTOBOT_MODULE_BAY_TEMPLATE
 ##
 ##
-- name: "NAUTOBOT 2.3+ MODULE BAY TEMPLATE TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - set_fact:
-        test_module_type: "{{ lookup('networktocode.nautobot.lookup', 'module-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"HooverMaxProModel60\"') }}"
-        test_device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+- set_fact:
+    test_module_type: "{{ lookup('networktocode.nautobot.lookup', 'module-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"HooverMaxProModel60\"') }}"
+    test_device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
 
-    - name: "1 - Create module bay template with minimum information"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        module_type: HooverMaxProModel60
-        name: Edward Galbraith
-        state: present
-      register: test_one
+- name: "1 - Create module bay template with minimum information"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel60
+    name: Edward Galbraith
+    state: present
+  register: test_one
 
-    - name: "1 - ASSERT"
-      assert:
-        that:
-          - test_one is changed
-          - test_one['diff']['before']['state'] == "absent"
-          - test_one['diff']['after']['state'] == "present"
-          - test_one['module_bay_template']['name'] == "Edward Galbraith"
-          - test_one['module_bay_template']['module_type'] == test_module_type['key']
-          - test_one['msg'] == "module_bay_template Edward Galbraith created"
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['module_bay_template']['name'] == "Edward Galbraith"
+      - test_one['module_bay_template']['module_type'] == test_module_type['key']
+      - test_one['msg'] == "module_bay_template Edward Galbraith created"
 
-    - name: "2 - Create module bay template with minimum information idempotent"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        module_type: HooverMaxProModel60
-        name: Edward Galbraith
-        state: present
-      register: test_two
+- name: "2 - Create module bay template with minimum information idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel60
+    name: Edward Galbraith
+    state: present
+  register: test_two
 
-    - name: "2 - ASSERT"
-      assert:
-        that:
-          - not test_two['changed']
-          - test_two['module_bay_template']['name'] == "Edward Galbraith"
-          - test_two['module_bay_template']['module_type'] == test_module_type['key']
-          - test_two['msg'] == "module_bay_template Edward Galbraith already exists"
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['module_bay_template']['name'] == "Edward Galbraith"
+      - test_two['module_bay_template']['module_type'] == test_module_type['key']
+      - test_two['msg'] == "module_bay_template Edward Galbraith already exists"
 
-    - name: "3 - Update module bay template"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        module_type: HooverMaxProModel60
-        name: Edward Galbraith
-        label: Br Ba
-        position: "1"
-        description: Granite State
-        state: present
-      register: test_three
+- name: "3 - Update module bay template"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel60
+    name: Edward Galbraith
+    label: Br Ba
+    position: "1"
+    description: Granite State
+    state: present
+  register: test_three
 
-    - name: "3 - ASSERT"
-      assert:
-        that:
-          - test_three is changed
-          - test_three['diff']['after']['label'] == "Br Ba"
-          - test_three['diff']['after']['position'] == "1"
-          - test_three['diff']['after']['description'] == "Granite State"
-          - test_three['module_bay_template']['name'] == "Edward Galbraith"
-          - test_three['module_bay_template']['module_type'] == test_module_type['key']
-          - test_three['module_bay_template']['label'] == "Br Ba"
-          - test_three['module_bay_template']['position'] == "1"
-          - test_three['module_bay_template']['description'] == "Granite State"
-          - test_three['msg'] == "module_bay_template Edward Galbraith updated"
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['after']['label'] == "Br Ba"
+      - test_three['diff']['after']['position'] == "1"
+      - test_three['diff']['after']['description'] == "Granite State"
+      - test_three['module_bay_template']['name'] == "Edward Galbraith"
+      - test_three['module_bay_template']['module_type'] == test_module_type['key']
+      - test_three['module_bay_template']['label'] == "Br Ba"
+      - test_three['module_bay_template']['position'] == "1"
+      - test_three['module_bay_template']['description'] == "Granite State"
+      - test_three['msg'] == "module_bay_template Edward Galbraith updated"
 
-    - name: "4 - Update idempotent"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        module_type: HooverMaxProModel60
-        name: Edward Galbraith
-        label: Br Ba
-        position: "1"
-        description: Granite State
-        state: present
-      register: test_four
+- name: "4 - Update idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel60
+    name: Edward Galbraith
+    label: Br Ba
+    position: "1"
+    description: Granite State
+    state: present
+  register: test_four
 
-    - name: "4 - ASSERT"
-      assert:
-        that:
-          - not test_four['changed']
-          - test_four['module_bay_template']['name'] == "Edward Galbraith"
-          - test_four['msg'] == "module_bay_template Edward Galbraith already exists"
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['module_bay_template']['name'] == "Edward Galbraith"
+      - test_four['msg'] == "module_bay_template Edward Galbraith already exists"
 
-    - name: "5 - Create module bay template with all params"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        device_type: Cisco Test
-        name: Test1234
-        label: test1234
-        position: "42"
-        description: Cisco Test Module Bay
-        state: present
-      register: test_five
+- name: "5 - Create module bay template with all params"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test
+    name: Test1234
+    label: test1234
+    position: "42"
+    description: Cisco Test Module Bay
+    state: present
+  register: test_five
 
-    - name: "5 - ASSERT"
-      assert:
-        that:
-          - test_five is changed
-          - test_five['module_bay_template']['name'] == "Test1234"
-          - test_five['module_bay_template']['label'] == "test1234"
-          - test_five['module_bay_template']['position'] == "42"
-          - test_five['module_bay_template']['description'] == "Cisco Test Module Bay"
-          - test_five['module_bay_template']['device_type'] == test_device_type['key']
-          - test_five['msg'] == "module_bay_template Test1234 created"
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['module_bay_template']['name'] == "Test1234"
+      - test_five['module_bay_template']['label'] == "test1234"
+      - test_five['module_bay_template']['position'] == "42"
+      - test_five['module_bay_template']['description'] == "Cisco Test Module Bay"
+      - test_five['module_bay_template']['device_type'] == test_device_type['key']
+      - test_five['msg'] == "module_bay_template Test1234 created"
 
-    - name: "6 - Create module bay template with all params idempotent"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        device_type: Cisco Test
-        name: Test1234
-        label: test1234
-        position: "42"
-        description: Cisco Test Module Bay
-        state: present
-      register: test_six
+- name: "6 - Create module bay template with all params idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test
+    name: Test1234
+    label: test1234
+    position: "42"
+    description: Cisco Test Module Bay
+    state: present
+  register: test_six
 
-    - name: "6 - ASSERT"
-      assert:
-        that:
-          - not test_six['changed']
-          - test_six['module_bay_template']['name'] == "Test1234"
-          - test_six['module_bay_template']['label'] == "test1234"
-          - test_six['module_bay_template']['position'] == "42"
-          - test_six['module_bay_template']['description'] == "Cisco Test Module Bay"
-          - test_six['module_bay_template']['device_type'] == test_device_type['key']
-          - test_six['msg'] == "module_bay_template Test1234 already exists"
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['module_bay_template']['name'] == "Test1234"
+      - test_six['module_bay_template']['label'] == "test1234"
+      - test_six['module_bay_template']['position'] == "42"
+      - test_six['module_bay_template']['description'] == "Cisco Test Module Bay"
+      - test_six['module_bay_template']['device_type'] == test_device_type['key']
+      - test_six['msg'] == "module_bay_template Test1234 already exists"
 
-    - name: "7 - Delete"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        device_type: Cisco Test
-        name: Test1234
-        state: absent
-      register: test_seven
+- name: "7 - Delete"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test
+    name: Test1234
+    state: absent
+  register: test_seven
 
-    - name: "7 - ASSERT"
-      assert:
-        that:
-          - test_seven is changed
-          - test_seven['diff']['before']['state'] == "present"
-          - test_seven['diff']['after']['state'] == "absent"
-          - test_seven['msg'] == "module_bay_template Test1234 deleted"
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "present"
+      - test_seven['diff']['after']['state'] == "absent"
+      - test_seven['msg'] == "module_bay_template Test1234 deleted"
 
-    - name: "8 - Delete idempotent"
-      networktocode.nautobot.module_bay_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        device_type: Cisco Test
-        name: Test1234
-        state: absent
-      register: test_eight
+- name: "8 - Delete idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test
+    name: Test1234
+    state: absent
+  register: test_eight
 
-    - name: "8 - ASSERT`"
-      assert:
-        that:
-          - not test_eight['changed']
-          - test_eight['module_bay_template'] == None
-          - test_eight['msg'] == "module_bay_template Test1234 already absent"
+- name: "8 - ASSERT`"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['module_bay_template'] == None
+      - test_eight['msg'] == "module_bay_template Test1234 already absent"

@@ -4,79 +4,74 @@
 ### PYNAUTOBOT_CLOUD_NETWORK_PREFIX_ASSIGNMENT
 ##
 ##
+- set_fact:
+    cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
+    cloud_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=10.10.0.0/16') }}"
 
-- name: "NAUTOBOT 2.3+ CLOUD NETWORK PREFIX ASSIGNMENT TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - set_fact:
-        cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
-        cloud_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=10.10.0.0/16') }}"
+- name: "1 - Create cloud network to prefix assignment"
+  networktocode.nautobot.cloud_network_prefix_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_network: CiscoCloudNetwork
+    prefix: 10.10.0.0/16
+  register: test_create_one
 
-    - name: "1 - Create cloud network to prefix assignment"
-      networktocode.nautobot.cloud_network_prefix_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
-      register: test_create_one
+- name: "1 - ASSERT"
+  assert:
+    that: 
+      - test_create_one is changed
+      - test_create_one['diff']['before']['state'] == "absent"
+      - test_create_one['diff']['after']['state'] == "present"
+      - test_create_one['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
+      - test_create_one['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
+      - "'created' in test_create_one['msg']"
 
-    - name: "1 - ASSERT"
-      assert:
-        that: 
-          - test_create_one is changed
-          - test_create_one['diff']['before']['state'] == "absent"
-          - test_create_one['diff']['after']['state'] == "present"
-          - test_create_one['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_create_one['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
-          - "'created' in test_create_one['msg']"
+- name: "2 - Duplicate"
+  networktocode.nautobot.cloud_network_prefix_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_network: CiscoCloudNetwork
+    prefix: 10.10.0.0/16
+  register: test_create_idem
 
-    - name: "2 - Duplicate"
-      networktocode.nautobot.cloud_network_prefix_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
-      register: test_create_idem
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - "'already exists' in test_create_idem['msg']"
+      - test_create_idem['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
+      - test_create_idem['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
 
-    - name: "2 - ASSERT"
-      assert:
-        that:
-          - not test_create_idem['changed']
-          - "'already exists' in test_create_idem['msg']"
-          - test_create_idem['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_create_idem['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
-    
-    - name: "3 - Delete cloud_network_prefix_assignment"
-      networktocode.nautobot.cloud_network_prefix_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
-        state: absent
-      register: test_delete
-    
-    - name: "3 - ASSERT"
-      assert:
-        that:
-          - test_delete is changed
-          - test_delete['diff']['before']['state'] == "present"
-          - test_delete['diff']['after']['state'] == "absent"
-          - test_delete['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
-          - test_delete['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
-          - "'deleted' in test_delete['msg']"
-    
-    - name: "4 - Delete idempotent"
-      networktocode.nautobot.cloud_network_prefix_assignment:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        cloud_network: CiscoCloudNetwork
-        prefix: 10.10.0.0/16
-        state: absent
-      register: test_delete_idem
+- name: "3 - Delete cloud_network_prefix_assignment"
+  networktocode.nautobot.cloud_network_prefix_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_network: CiscoCloudNetwork
+    prefix: 10.10.0.0/16
+    state: absent
+  register: test_delete
 
-    - name: "4 - ASSERT"
-      assert:
-        that:
-          - not test_delete_idem['changed']
-          - "'already absent' in test_delete_idem['msg']"
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['cloud_network_prefix_assignment']['cloud_network'] == cloud_network['key']
+      - test_delete['cloud_network_prefix_assignment']['prefix'] == cloud_prefix['key']
+      - "'deleted' in test_delete['msg']"
+
+- name: "4 - Delete idempotent"
+  networktocode.nautobot.cloud_network_prefix_assignment:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    cloud_network: CiscoCloudNetwork
+    prefix: 10.10.0.0/16
+    state: absent
+  register: test_delete_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"
