@@ -231,7 +231,7 @@ def test_build_diff_returns_valid_diff(mock_module):
 def test_create_object_check_mode_false(mock_module, endpoint_mock, normalized_data, on_creation_diff):
     return_value = endpoint_mock.create().serialize()
     serialized_obj, diff = mock_module._create_object(endpoint_mock, normalized_data)
-    assert endpoint_mock.create.called_once_with(normalized_data)
+    endpoint_mock.create.assert_called_with(**normalized_data)
     assert serialized_obj.serialize() == return_value
     assert diff == on_creation_diff
 
@@ -239,7 +239,7 @@ def test_create_object_check_mode_false(mock_module, endpoint_mock, normalized_d
 def test_create_object_check_mode_true(mock_module, endpoint_mock, normalized_data, on_creation_diff):
     mock_module.check_mode = True
     serialized_obj, diff = mock_module._create_object(endpoint_mock, normalized_data)
-    assert endpoint_mock.create.not_called()
+    endpoint_mock.create.assert_not_called()
     assert serialized_obj == normalized_data
     assert diff == on_creation_diff
 
@@ -247,7 +247,7 @@ def test_create_object_check_mode_true(mock_module, endpoint_mock, normalized_da
 def test_delete_object_check_mode_false(mock_module, obj_mock, on_deletion_diff):
     mock_module.nb_object = obj_mock
     diff = mock_module._delete_object()
-    assert obj_mock.delete.called_once()
+    obj_mock.delete.assert_called_once()
     assert diff == on_deletion_diff
 
 
@@ -255,7 +255,7 @@ def test_delete_object_check_mode_true(mock_module, obj_mock, on_deletion_diff):
     mock_module.check_mode = True
     mock_module.object = obj_mock
     diff = mock_module._delete_object()
-    assert obj_mock.delete.not_called()
+    obj_mock.delete.assert_not_called()
     assert diff == on_deletion_diff
 
 
@@ -263,7 +263,7 @@ def test_update_object_no_changes(mock_module, obj_mock):
     mock_module.nb_object = obj_mock
     unchanged_data = obj_mock.serialize()
     serialized_object, diff = mock_module._update_object(unchanged_data)
-    assert obj_mock.update.not_called()
+    obj_mock.update.assert_not_called()
     assert serialized_object == unchanged_data
     assert diff is None
 
@@ -271,7 +271,7 @@ def test_update_object_no_changes(mock_module, obj_mock):
 def test_update_object_with_changes_check_mode_false(mock_module, obj_mock, changed_serialized_obj, on_update_diff):
     mock_module.nb_object = obj_mock
     serialized_obj, diff = mock_module._update_object(changed_serialized_obj)
-    assert obj_mock.update.called_once_with(changed_serialized_obj)
+    obj_mock.update.assert_called_once_with(changed_serialized_obj)
     assert serialized_obj == obj_mock.serialize()
     assert diff == on_update_diff
 
@@ -283,7 +283,7 @@ def test_update_object_with_changes_check_mode_true(mock_module, obj_mock, chang
     updated_serialized_obj.update(changed_serialized_obj)
 
     serialized_obj, diff = mock_module._update_object(changed_serialized_obj)
-    assert obj_mock.update.not_called()
+    obj_mock.update.assert_not_called()
     assert serialized_obj == updated_serialized_obj
     assert diff == on_update_diff
 
