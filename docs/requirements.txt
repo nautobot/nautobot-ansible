@@ -1,4 +1,4 @@
-ansible-core==2.15.12
+ansible-core==2.18
 mkdocs==1.6.1
 mkdocs-ansible-collection==0.2.0
 mkdocs-material==9.5.30

@@ -6,7 +6,7 @@ on: # yamllint disable
       runs-on:
         description: "The OS to run the job on"
         required: false
-        default: "ubuntu-22.04"
+        default: "ubuntu-24.04"
         type: string
       python-version:
         description: "The Python version to use"
