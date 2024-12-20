@@ -1,5 +1,23 @@
 # networktocode.nautobot Release Notes
 
+v5.5.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.job_button - Creates or removes job buttons from Nautobot
+- networktocode.nautobot.dynamic_group - Creates or removes dynamic groups from Nautobot
+- networktocode.nautobot.static_group_association - Creates or removes static group associations from Nautobot
+- networktocode.nautobot.metadata_type - Creates or removes metadata types from Nautobot
+- networktocode.nautobot.metadata_choice - Creates or removes metadata choices from Nautobot
+- networktocode.nautobot.object_metadata - Creates or removes object metadata from Nautobot
+
+Minor Changes
+-------------
+- (#464) Added full support for caching to GraphQL Inventory plugin
+- (#465) Changed `parent_location_type` to allow for explicit name attribute lookup
+
 v5.4.0
 ======
 
