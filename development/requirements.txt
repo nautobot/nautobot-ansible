@@ -1,1 +1,1 @@
-nautobot-bgp-models==0.20.0
+nautobot-bgp-models==2.3.0
