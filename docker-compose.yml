@@ -2,6 +2,8 @@
 x-args:
   &args
   PYTHON_VER: ${PYTHON_VER}
+  ANSIBLE_SANITY_ARGS: ${ANSIBLE_SANITY_ARGS:-}
+  ANSIBLE_UNIT_ARGS: ${ANSIBLE_UNIT_ARGS:-}
 # Build block with context and target default
 x-build:
   &build
