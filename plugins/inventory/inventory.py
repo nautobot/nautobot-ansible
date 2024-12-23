@@ -238,6 +238,9 @@ compose:
   foo: last_updated
   bar: display
   nested_variable: rack.display
+  # You can also use custom fields on the device or a nested object
+  device_owner: custom_fields.device_owner
+  ansible_network_os: platforms.custom_fields.ansible_network_os
 
 # You can use keyed_groups to group on properties of devices or VMs.
 # NOTE: It's only possible to key off direct items on the device/VM objects.
