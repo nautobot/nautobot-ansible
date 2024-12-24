@@ -352,6 +352,8 @@ class LookupModule(LookupBase):
             ssl_verify = True
         num_retries = kwargs.get("num_retries", "0")
         api_filter = kwargs.get("api_filter")
+        if api_filter:
+            api_filter = self._templar.do_template(api_filter)
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
         api_version = kwargs.get("api_version")
