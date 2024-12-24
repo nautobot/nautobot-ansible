@@ -2,7 +2,9 @@
     "_meta": {
         "hostvars": {
             "R1-Device": {
-                "custom_fields": {},
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -35,14 +37,15 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
-                "custom_fields": {},
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -71,7 +74,9 @@
                             "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
-                            "custom_fields": {},
+                            "custom_fields": {
+                                "my_device_custom_field": null
+                            },
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
@@ -87,7 +92,6 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "Test Nexus One",
-                            "natural_slug": "test-nexus-one__child-test-location_parent-test-location_725b",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -116,7 +120,6 @@
                         "display": "telnet (TCP/23)",
                         "ip_addresses": [],
                         "name": "telnet",
-                        "natural_slug": "telnet____test-nexus-one__child-test-location_parent-test-location_067d",
                         "object_type": "ipam.service",
                         "ports": [
                             23
@@ -135,7 +138,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -157,7 +159,6 @@
                         "display": "ssh (TCP/22)",
                         "ip_addresses": [],
                         "name": "ssh",
-                        "natural_slug": "ssh_test-cluster-2__test-vm-with-spaces_cad2",
                         "object_type": "ipam.service",
                         "ports": [
                             22
@@ -181,7 +182,6 @@
                             "local_config_context_schema": null,
                             "memory": null,
                             "name": "Test VM With Spaces",
-                            "natural_slug": "test-cluster-2__test-vm-with-spaces_8da0",
                             "object_type": "virtualization.virtualmachine",
                             "platform": null,
                             "primary_ip4": null,
@@ -202,13 +202,14 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
             },
             "TestDeviceR1": {
-                "custom_fields": {},
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -242,13 +243,14 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
             },
             "test100": {
-                "custom_fields": {},
+                "custom_fields": {
+                    "my_device_custom_field": "Test Device Custom Field Value"
+                },
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -280,7 +282,9 @@
                             "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
-                            "custom_fields": {},
+                            "custom_fields": {
+                                "my_device_custom_field": "Test Device Custom Field Value"
+                            },
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
@@ -300,7 +304,6 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -342,7 +345,6 @@
                                 "mask_length": 24,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_172-16-180-1_23b0",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "object_type": "ipam.prefix"
@@ -371,7 +373,6 @@
                                 "mask_length": 64,
                                 "nat_inside": null,
                                 "nat_outside_list": [],
-                                "natural_slug": "global_2001-1-1_ee95",
                                 "object_type": "ipam.ipaddress",
                                 "parent": {
                                     "object_type": "ipam.prefix"
@@ -386,7 +387,6 @@
                             }
                         ],
                         "name": "http",
-                        "natural_slug": "http____test100_test-tenant_child-test-location_parent-test-location_3116",
                         "object_type": "ipam.service",
                         "ports": [
                             80
@@ -406,7 +406,9 @@
                             "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
-                            "custom_fields": {},
+                            "custom_fields": {
+                                "my_device_custom_field": "Test Device Custom Field Value"
+                            },
                             "device_redundancy_group": null,
                             "device_redundancy_group_priority": null,
                             "device_type": {
@@ -426,7 +428,6 @@
                                 "object_type": "dcim.location"
                             },
                             "name": "test100",
-                            "natural_slug": "test100_test-tenant_child-test-location_parent-test-location_939c",
                             "object_type": "dcim.device",
                             "parent_bay": null,
                             "platform": null,
@@ -453,7 +454,6 @@
                         "display": "ssh (TCP/22)",
                         "ip_addresses": [],
                         "name": "ssh",
-                        "natural_slug": "ssh____test100_test-tenant_child-test-location_parent-test-location_bfcf",
                         "object_type": "ipam.service",
                         "ports": [
                             22
@@ -472,7 +472,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": [],
@@ -502,7 +501,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -528,7 +526,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -554,7 +551,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -580,7 +576,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -601,7 +596,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
