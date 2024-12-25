@@ -166,7 +166,8 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        parent: 10.156.0.0/19
+        parent: 
+          prefix: 10.156.0.0/19
         prefix_length: 24
         state: present
         first_available: yes
@@ -182,7 +183,8 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        parent: 10.156.0.0/19
+        parent: 
+          prefix: 10.156.0.0/19
         prefix_length: 24
         state: present
         first_available: yes
@@ -191,7 +193,8 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        parent: 10.157.0.0/19
+        parent: 
+          prefix: 10.157.0.0/19
         prefix_length: 24
         location:
           name: My Location
