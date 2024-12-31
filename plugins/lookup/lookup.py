@@ -344,6 +344,8 @@ class LookupModule(LookupBase):
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
+        if not api_endpoint or not api_token:
+            raise AnsibleError("Both api_endpoint and token are required")
         if kwargs.get("validate_certs") is not None:
             ssl_verify = kwargs.get("validate_certs")
         elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
@@ -362,7 +364,6 @@ class LookupModule(LookupBase):
             terms = [terms]
 
         nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify, retries=num_retries)
-
         results = []
         for term in terms:
             if plugin:
