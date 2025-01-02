@@ -9,10 +9,6 @@ import sys
 import pynautobot
 from packaging import version
 
-# NOTE: If anything depends on specific versions of Nautobot, can check INTEGRATION_TESTS in env
-# os.environ["INTEGRATION_TESTS"]
-
-
 # Set nb variable to connect to Nautobot and use the variable in future calls
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
 nb_token = os.getenv("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
@@ -623,8 +619,30 @@ custom_fields = [
         "type": "text",
         "content_types": ["circuits.circuit"],
     },
+    {
+        "label": "My Device Custom Field",
+        "key": "my_device_custom_field",
+        "type": "text",
+        "content_types": ["dcim.device"],
+    },
+    {
+        "label": "My Location Custom Field",
+        "key": "my_location_custom_field",
+        "type": "text",
+        "content_types": ["dcim.location"],
+    },
 ]
 created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
+
+# Set a custom field on a device
+test100 = nb.dcim.devices.get(name="test100")
+test100.custom_fields = {"my_device_custom_field": "Test Device Custom Field Value"}
+test100.save()
+
+# Set a custom field on the location for the device
+test100_location = nb.dcim.locations.get(id=test100.location.id)
+test100_location.custom_fields = {"my_location_custom_field": "Test Location Custom Field Value"}
+test100_location.save()
 
 # Enable example job for job tests
 example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")

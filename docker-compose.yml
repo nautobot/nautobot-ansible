@@ -16,7 +16,8 @@ x-service:
     ANSIBLE_INTEGRATION_ARGS: ${ANSIBLE_INTEGRATION_ARGS:-}
     ANSIBLE_SANITY_ARGS: ${ANSIBLE_SANITY_ARGS:-}
     ANSIBLE_UNIT_ARGS: ${ANSIBLE_UNIT_ARGS:-}
-    NAUTOBOT_VER: ${INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER:-}
+    NAUTOBOT_VER: ${NAUTOBOT_VER:-}
+    OUTPUT_INVENTORY_JSON: ${OUTPUT_INVENTORY_JSON:-}
 
 services:
   unit:
@@ -35,3 +36,6 @@ services:
     build:
       <<: *build
       target: integration
+    volumes:
+      # This allows us to update the inventory files from inside the container
+      - ${PWD}/tests/integration/targets/inventory/files/:/tmp/inventory_files/
