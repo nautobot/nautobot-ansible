@@ -348,6 +348,7 @@ devices = [
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
 test100 = nb.dcim.devices.get(name="test100")
+test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
 
 # Create rear port
 rear_ports = [{"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}]
@@ -356,6 +357,10 @@ created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
 # Create power ports
 power_ports = [{"name": "Test Power Port", "device": test100.id}]
 created_power_ports = make_nautobot_calls(nb.dcim.power_ports, power_ports)
+
+# Create power outlets
+power_outlets = [{"name": "R1 Power Outlet", "device": test_device_r1.id}]
+created_power_outlets = make_nautobot_calls(nb.dcim.power_outlets, power_outlets)
 
 # Create console ports
 console_ports = [{"name": "Test Console Port", "device": test100.id}]
@@ -392,7 +397,6 @@ nexus_child_eth1 = nb.dcim.interfaces.get(device_id=nexus_child.id, name="Ethern
 # Interface variables to be used later on
 test100_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=test100.id)
 test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.id)
-
 
 # Create IP Addresses
 ip_addresses = [
