@@ -479,10 +479,17 @@ IGNORE_ADDING_IDS = {
     "console_server_port",
     "power_port",
     "power_outlet",
+    "services",
+    # Cable termination types
+    "circuits.circuittermination",
     "dcim.consoleport",
     "dcim.consoleserverport",
-    "circuits.circuittermination",
-    "services",
+    "dcim.frontport",
+    "dcim.interface",
+    "dcim.powerfeed",
+    "dcim.poweroutlet",
+    "dcim.powerport",
+    "dcim.rearport",
 }
 
 REQUIRED_ID_FIND = {
