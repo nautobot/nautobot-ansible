@@ -34,7 +34,7 @@ namespace.configure(
         "nautobot_ansible": {
             "nautobot_ver": "2.0.0",
             "project_name": "nautobot_ansible",
-            "python_ver": "3.10",
+            "python_ver": "3.11",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
@@ -226,8 +226,8 @@ def post_upgrade(context):
 def lint(context):
     """Run linting tools"""
     context.run(
-        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from lint lint",
-        env={"PYTHON_VER": context["nautobot_ansible"]["python_ver"]},
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from lint lint",
+        env={"PYTHON_VER": context.nautobot_ansible.python_ver},
     )
 
 
@@ -239,27 +239,34 @@ def lint(context):
 )
 def unit(context, verbose=0):
     """Run unit tests"""
-    env = {"PYTHON_VER": context["nautobot_ansible"]["python_ver"]}
+    env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
     if verbose:
+        env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
-    context.run("docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from unit unit", env=env)
+    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit", env=env)
+    # Clean up after the tests
+    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
 
 
 @task(
     help={
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
         "tags": "Run specific test tags (e.g. 'device' or 'location'); can be provided multiple times (e.g. --tags device --tags location)",
+        "update_inventories": "Update the inventory integration test JSON files with the latest data",
     },
     iterable=["tags"],
     incrementable=["verbose"],
 )
-def integration(context, verbose=0, tags=None):
+def integration(context, verbose=0, tags=None, update_inventories=False):
     """Run all tests including integration tests"""
     build(context)
     # Destroy any existing containers and volumes that may be left over from a previous run
     destroy(context)
     start(context)
-    env = {"PYTHON_VER": context["nautobot_ansible"]["python_ver"]}
+    env = {
+        "PYTHON_VER": context.nautobot_ansible.python_ver,
+        "NAUTOBOT_VER": context.nautobot_ansible.nautobot_ver,
+    }
     ansible_args = []
     if verbose:
         ansible_args.append(f"-{'v' * verbose}")
@@ -267,8 +274,10 @@ def integration(context, verbose=0, tags=None):
         ansible_args.append(f"--tags {','.join(tags)}")
     if ansible_args:
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
+    if update_inventories:
+        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # nosec B108
     context.run(
-        "docker compose --project-name nautobot_ansible up --build --force-recreate --exit-code-from integration integration",
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from integration integration",
         env=env,
     )
     # Clean up after the tests

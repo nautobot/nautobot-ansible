@@ -61,6 +61,7 @@ options:
         Form factor of the interface:
         ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
         This has to be specified exactly as what is found within UI
+      - Required if I(state=present) and the interface does not exist yet
     required: false
     type: str
     version_added: "3.0.0"

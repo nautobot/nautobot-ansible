@@ -19,7 +19,7 @@ fi
 declare -a COMPARE_OPTIONS # empty array
 
 # OUTPUT_DIR is set by ansible-test
-# OUTPUT_INVENTORY_JSON is only set if running hacking/update_test_inventories.sh to update the test diff data
+# OUTPUT_INVENTORY_JSON is only set if running `invoke integration --update-inventories` to update the test diff data
 if [[ -n "${OUTPUT_INVENTORY_JSON:-}" ]]
 then
     OUTPUT_DIR="$OUTPUT_INVENTORY_JSON"
@@ -73,7 +73,7 @@ do
     fi
     # Check if NAUTOBOT_VER is within the specified range
     if ! printf "%s\n%s\n%s\n" $MIN_VERSION $NAUTOBOT_VER $MAX_VERSION | sort -V -C; then
-        # The sort statement will return non-zero if the versions are not in order (min <= nautobot_ver <= max)
+        # The sort statement will return non-zero if the versions are not in order (min <= nautobot_ver < max)
         echo "NAUTOBOT_VER is $NAUTOBOT_VER, skipping inventory test: $NAME"
         continue
     fi

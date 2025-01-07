@@ -11,6 +11,16 @@ compose:
   ansible_network_os: platform.network_driver
 ```
 
+You can also use custom fields on the device or a nested object.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+compose:
+  device_owner: custom_fields.device_owner
+  ansible_network_os: platforms.custom_fields.ansible_network_os
+```
+
 ## Using Keyed Groups to set `ansible_network_os` to Platform Network Driver
 
 ```yaml

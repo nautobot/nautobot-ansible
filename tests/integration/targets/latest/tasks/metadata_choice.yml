@@ -1,0 +1,107 @@
+---
+##
+##
+### PYNAUTOBOT_METADATA_CHOICE
+##
+##
+- set_fact:
+    test_metadata_type: "{{ lookup('networktocode.nautobot.lookup', 'metadata-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"TestMetadataType\"') }}"
+
+- name: "1 - Create metadata choice within Nautobot"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+    weight: 150
+  register: test_create
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create is changed
+      - test_create['diff']['before']['state'] == "absent"
+      - test_create['diff']['after']['state'] == "present"
+      - test_create['metadata_choice']['value'] == "Test Metadata Choice"
+      - test_create['metadata_choice']['weight'] == 150
+      - test_create['metadata_choice']['metadata_type'] == test_metadata_type['key']
+      - test_create['msg'] == "metadata_choice Test Metadata Choice created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "metadata_choice Test Metadata Choice already exists"
+      - test_create_idem['metadata_choice']['value'] == "Test Metadata Choice"
+
+- name: "3 - Update metadata choice"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+    weight: 200
+  register: test_update
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['diff']['before']['weight'] == 150
+      - test_update['diff']['after']['weight'] == 200
+
+- name: "4 - Update metadata choice idempotent"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+    weight: 200
+  register: test_update_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_update_idem['changed']
+      - test_update_idem['msg'] == "metadata_choice Test Metadata Choice already exists"
+      - test_update_idem['metadata_choice']['value'] == "Test Metadata Choice"
+
+- name: "5 - Delete metadata choice"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+    state: absent
+  register: test_delete
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - "'deleted' in test_delete['msg']"
+
+- name: "6 - Delete idempotent"
+  networktocode.nautobot.metadata_choice:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    metadata_type: "TestMetadataType"
+    value: "Test Metadata Choice"
+    state: absent
+  register: test_delete_idem
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"

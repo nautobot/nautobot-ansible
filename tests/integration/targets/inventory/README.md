@@ -37,3 +37,13 @@ We use `sort` - using the `-V` flag to designate we are sorting version numbers 
 ```
 
 > Note: We expand the **current** version to the full major.minor.patch version automatically in CI so the sorting works correctly with this pattern. If you verify with printf, make sure you use the full version number for the current version, but the short versions for the min and max to match what automation will do.
+
+## Updating Inventory JSON Files
+
+To update the inventory JSON files, you can run the `invoke integration` task with the `--update-inventories` flag.
+
+```bash
+invoke integration --update-inventories
+```
+
+> WARNING: This does not diff the files against any expected output, it simply overwrites the files with the latest data. You will need to manually verify the output is correct!

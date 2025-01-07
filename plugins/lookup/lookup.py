@@ -197,6 +197,7 @@ def get_endpoint(nautobot, term):
         "device-types": {"endpoint": nautobot.dcim.device_types},
         "device-redundancy-groups": {"endpoint": nautobot.dcim.device_redundancy_groups},
         "devices": {"endpoint": nautobot.dcim.devices},
+        "dynamic-groups": {"endpoint": nautobot.extras.dynamic_groups},
         "export-templates": {"endpoint": nautobot.dcim.export_templates},
         "front-port-templates": {"endpoint": nautobot.dcim.front_port_templates},
         "front-ports": {"endpoint": nautobot.dcim.front_ports},
@@ -208,15 +209,20 @@ def get_endpoint(nautobot, term):
         "inventory-items": {"endpoint": nautobot.dcim.inventory_items},
         "ip-addresses": {"endpoint": nautobot.ipam.ip_addresses},
         "ip-address-to-interface": {"endpoint": nautobot.ipam.ip_address_to_interface},
+        "job-buttons": {"endpoint": nautobot.extras.job_buttons},
+        "jobs": {"endpoint": nautobot.extras.jobs},
         "locations": {"endpoint": nautobot.dcim.locations},
         "location-types": {"endpoint": nautobot.dcim.location_types},
         "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
+        "metadata-choices": {"endpoint": nautobot.extras.metadata_choices},
+        "metadata-types": {"endpoint": nautobot.extras.metadata_types},
         "module-bay-templates": {"endpoint": nautobot.dcim.module_bay_templates},
         "module-bays": {"endpoint": nautobot.dcim.module_bays},
         "module-types": {"endpoint": nautobot.dcim.module_types},
         "modules": {"endpoint": nautobot.dcim.modules},
         "namespaces": {"endpoint": nautobot.ipam.namespaces},
         "object-changes": {"endpoint": nautobot.extras.object_changes},
+        "object-metadata": {"endpoint": nautobot.extras.object_metadata},
         "platforms": {"endpoint": nautobot.dcim.platforms},
         "power-connections": {"endpoint": nautobot.dcim.power_connections},
         "power-outlet-templates": {"endpoint": nautobot.dcim.power_outlet_templates},
@@ -239,6 +245,7 @@ def get_endpoint(nautobot, term):
         "secrets": {"endpoint": nautobot.extras.secrets},
         "secrets-groups": {"endpoint": nautobot.extras.secrets_groups},
         "services": {"endpoint": nautobot.ipam.services},
+        "static-group-associations": {"endpoint": nautobot.extras.static_group_associations},
         "statuses": {"endpoint": nautobot.extras.statuses},
         "tags": {"endpoint": nautobot.extras.tags},
         "teams": {"endpoint": nautobot.extras.teams},
@@ -339,6 +346,8 @@ class LookupModule(LookupBase):
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")
+        if not api_endpoint or not api_token:
+            raise AnsibleError("Both api_endpoint and token are required")
         if kwargs.get("validate_certs") is not None:
             ssl_verify = kwargs.get("validate_certs")
         elif os.getenv("NAUTOBOT_VALIDATE_CERTS") is not None:
@@ -347,6 +356,8 @@ class LookupModule(LookupBase):
             ssl_verify = True
         num_retries = kwargs.get("num_retries", "0")
         api_filter = kwargs.get("api_filter")
+        if api_filter:
+            api_filter = self._templar.do_template(api_filter)
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
         api_version = kwargs.get("api_version")
@@ -355,7 +366,6 @@ class LookupModule(LookupBase):
             terms = [terms]
 
         nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify, retries=num_retries)
-
         results = []
         for term in terms:
             if plugin:

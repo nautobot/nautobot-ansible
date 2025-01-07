@@ -111,6 +111,7 @@ def test_refresh_url(inventory_fixture, options, expected):
     assert result == tuple(expected)
 
 
+@pytest.mark.filterwarnings("ignore:Exception")
 def test_refresh_lookups(inventory_fixture):
     def raises_exception():
         raise Exception("Error from within a thread")

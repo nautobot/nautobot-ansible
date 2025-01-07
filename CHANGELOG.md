@@ -1,5 +1,48 @@
 # networktocode.nautobot Release Notes
 
+v5.5.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.job_button - Creates or removes job buttons from Nautobot
+- networktocode.nautobot.dynamic_group - Creates or removes dynamic groups from Nautobot
+- networktocode.nautobot.static_group_association - Creates or removes static group associations from Nautobot
+- networktocode.nautobot.metadata_type - Creates or removes metadata types from Nautobot
+- networktocode.nautobot.metadata_choice - Creates or removes metadata choices from Nautobot
+- networktocode.nautobot.object_metadata - Creates or removes object metadata from Nautobot
+
+Minor Changes
+-------------
+- (#464) Added full support for caching to GraphQL Inventory plugin
+- (#465) Changed `parent_location_type` to allow for explicit name attribute lookup
+
+v5.4.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.cloud_account - Creates or removes cloud accounts from Nautobot
+- networktocode.nautobot.cloud_network - Creates or removes cloud networks from Nautobot
+- networktocode.nautobot.cloud_resource_type - Creates or removes cloud resource types from Nautobot
+- networktocode.nautobot.cloud_service - Creates or removes cloud services from Nautobot
+- networktocode.nautobot.cloud_service_network_assignment - Creates or removes cloud service network assignments from Nautobot
+- networktocode.nautobot.cloud_network_prefix_assignment - Creates or removes cloud network prefix assignments from Nautobot
+- networktocode.nautobot.module - Creates or removes modules from Nautobot
+- networktocode.nautobot.module_type - Creates or removes module types from Nautobot
+- networktocode.nautobot.module_bay - Creates or removes module bays from Nautobot
+- networktocode.nautobot.module_bay_template - Creates or removes module bay templates from Nautobot
+
+Minor Changes
+-------------
+- (#431) Added tags and custom fields options to `cable` module
+- (#433) Added role option to `device_interface` module
+- (#438) Added cloud_network option to `circuit_termination` module
+- (#446) Added module option to multiple existing modules
+- (#449) Changed lookup plugin to allow for multiple `id` filters
+
 v5.3.1
 ======
 

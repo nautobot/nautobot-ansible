@@ -20,6 +20,7 @@
                 "manufacturers": [
                     "Cisco"
                 ],
+                "my_device_custom_field": null,
                 "rack_groups": [
                     "Parent Rack Group"
                 ],
@@ -33,7 +34,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -58,6 +58,7 @@
                 "manufacturers": [
                     "Cisco"
                 ],
+                "my_device_custom_field": null,
                 "primary_ip4": "172.16.180.11",
                 "status": {
                     "color": "4caf50",
@@ -65,7 +66,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -84,7 +84,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -109,6 +108,7 @@
                 "manufacturers": [
                     "Cisco"
                 ],
+                "my_device_custom_field": null,
                 "rack_groups": [
                     "Child Rack Group",
                     "Parent Rack Group"
@@ -122,7 +122,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -150,6 +149,7 @@
                 "manufacturers": [
                     "Cisco"
                 ],
+                "my_device_custom_field": "Test Device Custom Field Value",
                 "ntp_servers": [
                     "pool.ntp.org"
                 ],
@@ -159,7 +159,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": [],
@@ -187,7 +186,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -211,7 +209,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -235,7 +232,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -259,7 +255,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []
@@ -278,7 +273,6 @@
                     "description": "Unit is active",
                     "display": "Active",
                     "name": "Active",
-                    "natural_slug": "active_e185",
                     "object_type": "extras.status"
                 },
                 "tags": []

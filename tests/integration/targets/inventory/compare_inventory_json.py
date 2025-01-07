@@ -15,17 +15,9 @@ from operator import itemgetter
 
 # Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port
+# "natural_slug" will be different whenever we update the test data, which just causes noise in the diffs
 # Remove these from files saved in git as test data
-KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url", "notes_url"])
-
-# Ignore these when performing diffs as they will be different for each test run
-KEYS_IGNORE = frozenset(["natural_slug"])
-
-
-def all_keys_to_ignore():
-    keys = KEYS_REMOVE.union(KEYS_IGNORE)
-
-    return keys
+KEYS_REMOVE = frozenset(["created", "id", "last_updated", "rack_id", "url", "notes_url", "natural_slug"])
 
 
 # Assume the object will not be recursive, as it originally came from JSON
@@ -121,42 +113,44 @@ def main():
 
     args = parser.parse_args()
 
-    data_a = read_json(args.filename_a)
-
     if args.write:
-        # When writing test data, only remove "remove_keys" that will change on every git commit.
-        # This makes diffs more easily readable to ensure changes to test data look correct.
-        remove_keys(data_a, KEYS_REMOVE)
-        sort_hostvar_arrays(data_a)
-        sort_groups(data_a)
-        write_json(args.filename_b, data_a)
-
-    else:
+        # Read in the new file output by the ansible-inventory command
         data_b = read_json(args.filename_b)
 
-        # Ignore keys that we don't want to diff, in addition to the ones removed that change on every commit
-        keys = all_keys_to_ignore()
-        remove_keys(data_a, keys)
-        remove_keys(data_b, keys)
-
-        sort_hostvar_arrays(data_a)
+        # Remove keys that we don't want to diff, in addition to the ones removed that change on every commit
+        remove_keys(data_b, KEYS_REMOVE)
         sort_hostvar_arrays(data_b)
-
-        sort_groups(data_a)
         sort_groups(data_b)
+        # Write the cleaned data back to the file
+        write_json(args.filename_b, data_b)
+        # If we are writing new test data, we should always fail the test so we don't get false positives
+        sys.exit(1)
 
-        # Perform the diff
-        # syntax='symmetric' will produce output that prints both the before and after as "$insert" and "$delete"
-        # marshal=True removes any special types, allowing to be dumped as json
-        result = diff(data_a, data_b, marshal=True, syntax="symmetric")
+    data_a = read_json(args.filename_a)
+    data_b = read_json(args.filename_b)
 
-        if result:
-            # Dictionary is not empty - print differences
-            print(json.dumps(result, sort_keys=True, indent=4))
-            sys.exit(1)
-        else:
-            # Success, no differences
-            sys.exit(0)
+    # Remove keys that we don't want to diff, in addition to the ones removed that change on every commit
+    remove_keys(data_a, KEYS_REMOVE)
+    remove_keys(data_b, KEYS_REMOVE)
+
+    sort_hostvar_arrays(data_a)
+    sort_hostvar_arrays(data_b)
+
+    sort_groups(data_a)
+    sort_groups(data_b)
+
+    # Perform the diff
+    # syntax='symmetric' will produce output that prints both the before and after as "$insert" and "$delete"
+    # marshal=True removes any special types, allowing to be dumped as json
+    result = diff(data_a, data_b, marshal=True, syntax="symmetric")
+
+    if result:
+        # Dictionary is not empty - print differences
+        print(json.dumps(result, sort_keys=True, indent=4))
+        sys.exit(1)
+    else:
+        # Success, no differences
+        sys.exit(0)
 
 
 if __name__ == "__main__":
