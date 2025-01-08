@@ -535,8 +535,8 @@ CONVERT_KEYS = {
 
 
 NAUTOBOT_ARG_SPEC = dict(
-    url=dict(type="str", required=True, fallback=(env_fallback, ['NAUTOBOT_URL'])),
-    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ['NAUTOBOT_TOKEN'])),
+    url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
+    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
