@@ -18,7 +18,7 @@ from itertools import chain
 
 from ansible.module_utils.common.text.converters import to_text
 
-from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.basic import missing_required_lib, env_fallback
 from ansible.module_utils.urls import open_url
 
 PYNAUTOBOT_IMP_ERR = None
@@ -535,8 +535,8 @@ CONVERT_KEYS = {
 
 
 NAUTOBOT_ARG_SPEC = dict(
-    url=dict(type="str", required=True),
-    token=dict(type="str", required=True, no_log=True),
+    url=dict(type="str", required=True, fallback=(env_fallback, ['NAUTOBOT_URL'])),
+    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ['NAUTOBOT_TOKEN'])),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True),
