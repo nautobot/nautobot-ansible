@@ -51,6 +51,8 @@ compose:
   display: display
   rack_id: rack.id
   ntp_servers: config_context.ntp_servers
+  testing_device_cf: custom_fields.my_device_custom_field
+  testing_location_cf: location.custom_fields.my_location_custom_field
 
 keyed_groups:
   - prefix: rack

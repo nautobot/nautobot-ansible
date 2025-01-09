@@ -234,3 +234,34 @@
   vars:
     circuit_termination: "{{ lookup('networktocode.nautobot.lookup', 'circuit-terminations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='circuit=' ~ circuit['key'] ~ ' term_side=A') }}"
     interface: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="test100" name="GigabitEthernet2"'') }}'
+
+- name: "CABLE 7: Issue #320 - dcim.powerport and dcim.poweroutlet"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.powerport
+    termination_a:
+      device: test100
+      name: Test Power Port
+    termination_b_type: dcim.poweroutlet
+    termination_b:
+      device: TestDeviceR1
+      name: R1 Power Outlet
+    status: "Connected"
+    state: present
+  register: test_seven
+
+- name: "CABLE 7: ASSERT - Issue #320 - dcim.powerport and dcim.poweroutlet"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "absent"
+      - test_seven['diff']['after']['state'] == "present"
+      - test_seven['cable']['termination_a_type'] == "dcim.powerport"
+      - test_seven['cable']['termination_a_id'] == cable_test_seven_power_port['key']
+      - test_seven['cable']['termination_b_type'] == "dcim.poweroutlet"
+      - test_seven['cable']['termination_b_id'] == cable_test_seven_power_outlet['key']
+      - test_seven['msg'] == "cable dcim.powerport Test Power Port <> dcim.poweroutlet R1 Power Outlet created"
+  vars:
+    cable_test_seven_power_port: '{{ lookup(''networktocode.nautobot.lookup'', ''power-ports'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="test100" name="Test Power Port"'') }}'
+    cable_test_seven_power_outlet: '{{ lookup(''networktocode.nautobot.lookup'', ''power-outlets'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="TestDeviceR1" name="R1 Power Outlet"'') }}'

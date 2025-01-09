@@ -4,3 +4,4 @@
 # (integration_config.yml files are only helpful to ansible yaml-based tests)
 
 export NAUTOBOT_VER=${NAUTOBOT_VER}
+export OUTPUT_INVENTORY_JSON=${OUTPUT_INVENTORY_JSON:-}

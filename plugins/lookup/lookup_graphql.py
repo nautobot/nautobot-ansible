@@ -80,7 +80,7 @@ EXAMPLES = """
       graph_variables:
         location_name: DEN
       query_string: |
-        query ($location_name:String!) {
+        query ($location_name:[String]) {
             locations (name: $location_name) {
             id
             name

@@ -18,7 +18,7 @@ from itertools import chain
 
 from ansible.module_utils.common.text.converters import to_text
 
-from ansible.module_utils.basic import missing_required_lib
+from ansible.module_utils.basic import missing_required_lib, env_fallback
 from ansible.module_utils.urls import open_url
 
 PYNAUTOBOT_IMP_ERR = None
@@ -479,10 +479,17 @@ IGNORE_ADDING_IDS = {
     "console_server_port",
     "power_port",
     "power_outlet",
+    "services",
+    # Cable termination types
+    "circuits.circuittermination",
     "dcim.consoleport",
     "dcim.consoleserverport",
-    "circuits.circuittermination",
-    "services",
+    "dcim.frontport",
+    "dcim.interface",
+    "dcim.powerfeed",
+    "dcim.poweroutlet",
+    "dcim.powerport",
+    "dcim.rearport",
 }
 
 REQUIRED_ID_FIND = {
@@ -528,11 +535,11 @@ CONVERT_KEYS = {
 
 
 NAUTOBOT_ARG_SPEC = dict(
-    url=dict(type="str", required=True),
-    token=dict(type="str", required=True, no_log=True),
+    url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
+    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
-    validate_certs=dict(type="raw", default=True),
+    validate_certs=dict(type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])),
     api_version=dict(type="str", required=False),
 )
 

@@ -9,10 +9,6 @@ import sys
 import pynautobot
 from packaging import version
 
-# NOTE: If anything depends on specific versions of Nautobot, can check INTEGRATION_TESTS in env
-# os.environ["INTEGRATION_TESTS"]
-
-
 # Set nb variable to connect to Nautobot and use the variable in future calls
 nb_host = os.getenv("NAUTOBOT_URL", "http://nautobot:8000")
 nb_token = os.getenv("NAUTOBOT_TOKEN", "0123456789abcdef0123456789abcdef01234567")
@@ -352,6 +348,7 @@ devices = [
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
 test100 = nb.dcim.devices.get(name="test100")
+test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
 
 # Create rear port
 rear_ports = [{"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}]
@@ -360,6 +357,10 @@ created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
 # Create power ports
 power_ports = [{"name": "Test Power Port", "device": test100.id}]
 created_power_ports = make_nautobot_calls(nb.dcim.power_ports, power_ports)
+
+# Create power outlets
+power_outlets = [{"name": "R1 Power Outlet", "device": test_device_r1.id}]
+created_power_outlets = make_nautobot_calls(nb.dcim.power_outlets, power_outlets)
 
 # Create console ports
 console_ports = [{"name": "Test Console Port", "device": test100.id}]
@@ -396,7 +397,6 @@ nexus_child_eth1 = nb.dcim.interfaces.get(device_id=nexus_child.id, name="Ethern
 # Interface variables to be used later on
 test100_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=test100.id)
 test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.id)
-
 
 # Create IP Addresses
 ip_addresses = [
@@ -623,8 +623,30 @@ custom_fields = [
         "type": "text",
         "content_types": ["circuits.circuit"],
     },
+    {
+        "label": "My Device Custom Field",
+        "key": "my_device_custom_field",
+        "type": "text",
+        "content_types": ["dcim.device"],
+    },
+    {
+        "label": "My Location Custom Field",
+        "key": "my_location_custom_field",
+        "type": "text",
+        "content_types": ["dcim.location"],
+    },
 ]
 created_custom_fields = make_nautobot_calls(nb.extras.custom_fields, custom_fields)
+
+# Set a custom field on a device
+test100 = nb.dcim.devices.get(name="test100")
+test100.custom_fields = {"my_device_custom_field": "Test Device Custom Field Value"}
+test100.save()
+
+# Set a custom field on the location for the device
+test100_location = nb.dcim.locations.get(id=test100.location.id)
+test100_location.custom_fields = {"my_location_custom_field": "Test Location Custom Field Value"}
+test100_location.save()
 
 # Enable example job for job tests
 example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
