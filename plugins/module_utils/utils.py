@@ -539,7 +539,7 @@ NAUTOBOT_ARG_SPEC = dict(
     token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
-    validate_certs=dict(type="raw", default=True),
+    validate_certs=dict(type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])),
     api_version=dict(type="str", required=False),
 )
 
