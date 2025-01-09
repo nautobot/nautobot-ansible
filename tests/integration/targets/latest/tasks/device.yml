@@ -169,6 +169,7 @@
       parent: "Parent Test Location"
     rack: "Main Test Rack"
     status: "Active"
+    controller_managed_device_group: "{{ 'controller_group_one' if nautobot_version is version('2.2', '>=') else omit }}" 
     position: 35
     face: "Front"
     tags:

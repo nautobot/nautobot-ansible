@@ -665,6 +665,18 @@ if nautobot_version >= version.parse("2.2"):
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
 
+    # Create Controller
+    controller = [
+        {"name": "controller_one", "location": location_child.id, "status": {"name": "Active"}},
+        {"name": "controller_two", "location": location_child.id, "status": {"name": "Active"}},
+    ]
+    created_controller = make_nautobot_calls(nb.dcim.controllers, controller)
+
+    # Create Controller Managed Device Groups
+    test_controller_one = nb.dcim.controllers.get(name="controller_one")
+    controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
+    created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
+
 ###############
 # v2.3+ items #
 ###############
