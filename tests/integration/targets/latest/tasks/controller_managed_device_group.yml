@@ -1,7 +1,4 @@
 ---
-- debug:
-    msg: "{{ nautobot_version }}"
-
 - block:
   - name: "CONTROLLER GROUP 1: Create Group"
     networktocode.nautobot.controller_managed_device_group:
