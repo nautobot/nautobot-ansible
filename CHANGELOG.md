@@ -1,5 +1,19 @@
 # networktocode.nautobot Release Notes
 
+v5.6.0
+======
+
+Minor Changes
+-------------
+- (#470) Dropped support for Python 3.10 to follow ansible-core 2.18
+- (#472) Added documentation on using custom fields in compose variables with the `inventory` plugin
+- (#474) Fixed `lookup` plugin to properly handle templated variables in `api_filter`
+- (#475) Added documentation for the `device_interface` module that `type` is required when creating a new interface
+- (#477) Fixed query example in the `lookup_graphql` plugin documentation for compatibility with Nautobot 2.X
+- (#478) Fixed the `cable` module to properly work with all cable types
+- (#480) Fixed environment variable fallback for `url` and `token` in all modules
+- (#481) Fixed environment variable fallback for `validate_certs` in all modules
+
 v5.5.0
 ======
 
