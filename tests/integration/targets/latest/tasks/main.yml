@@ -610,19 +610,15 @@
       tags:
         - controller
 
-- name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
-  include_tasks:
-    file: "controller_managed_device_group.yml"
-    apply:
+    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
+      include_tasks:
+        file: "controller_managed_device_group.yml"
+        apply:
+          tags:
+            - controller_managed_device_group
       tags:
         - controller_managed_device_group
-  tags:
-    - controller_managed_device_group
 
-- name: "PYNAUTOBOT_MODULE_TYPE TESTS"
-  include_tasks:
-    file: "module_type.yml"
-    apply:
     - name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
       include_tasks:
         file: "vlan_location.yml"
