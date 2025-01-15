@@ -173,6 +173,8 @@ def get_endpoint(nautobot, term):
         "circuits": {"endpoint": nautobot.circuits.circuits},
         "circuit-providers": {"endpoint": nautobot.circuits.providers},
         "cables": {"endpoint": nautobot.dcim.cables},
+        "controllers": {"endpoint": nautobot.dcim.controllers},
+        "controller-managed-device-groups": {"endpoint": nautobot.dcim.controller_managed_device_groups},
         "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
         "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
         "cloud-network-prefix-assignments": {"endpoint": nautobot.cloud.cloud_network_prefix_assignments},
