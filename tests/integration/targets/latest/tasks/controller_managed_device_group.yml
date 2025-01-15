@@ -86,7 +86,7 @@
   networktocode.nautobot.controller_managed_device_group:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    name: Test Controller Group Two
+    name: Test Controller Group One
     controller: controller_two
     state: absent
   register: test_six
@@ -96,5 +96,5 @@
     that:
       - not test_six['changed']
       - test_six['controller_managed_device_group'] == None
-      - test_six['msg'] == "controller_managed_device_group Test Controller Group Two already absent"
+      - test_six['msg'] == "controller_managed_device_group Test Controller Group One already absent"
 
