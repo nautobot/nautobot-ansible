@@ -18,7 +18,7 @@ WORKDIR /usr/src/app
 RUN python -m pip install -U pip
 
 # Install poetry for dep management
-RUN curl -sSL https://install.python-poetry.org | python3 -
+RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.8.5
 ENV PATH="$PATH:/root/.local/bin"
 RUN poetry config virtualenvs.create false
 

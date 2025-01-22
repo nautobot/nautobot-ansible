@@ -156,7 +156,7 @@ def stop(context):
 def destroy(context):
     """Destroy all containers and volumes."""
     print("Destroying Nautobot...")
-    docker_compose(context, "down --volumes")
+    docker_compose(context, "down --volumes --remove-orphans")
 
 
 # ------------------------------------------------------------------------------
