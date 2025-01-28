@@ -1,5 +1,18 @@
 # networktocode.nautobot Release Notes
 
+v5.7.0
+======
+
+New Modules
+-----------
+
+- networktocode.nautobot.controller_managed_device_groups - Creates or removes controller managed device groups within Nautobot
+- networktocode.nautobot.software_version - Creates or removes software versions from Nautobot
+
+Minor Changes
+-------------
+- (#488) Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types
+
 v5.6.0
 ======
 

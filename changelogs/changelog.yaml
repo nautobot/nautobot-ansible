@@ -556,3 +556,14 @@ releases:
       - (#478) Fixed the `cable` module to properly work with all cable types
       - (#480) Fixed environment variable fallback for `url` and `token` in all modules
       - (#481) Fixed environment variable fallback for `validate_certs` in all modules
+  5.7.0:
+    modules:
+    - description: Creates or removes controller managed device groups from Nautobot
+      name: controller_managed_device_group
+      namespace: ''
+    - description: Creates or removes software versions from Nautobot
+      name: software_version
+      namespace: ''
+    changes:
+      minor_changes:
+      - (#488) Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types

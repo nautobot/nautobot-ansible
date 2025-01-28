@@ -580,7 +580,7 @@
 ##########################
 
 - name: "NAUTOBOT 2.2+ TESTS"
-  when: 
+  when:
     - "nautobot_version is version('2.2', '>=')"
   block:
     - name: "PYNAUTOBOT_CONTACT TESTS"
@@ -610,6 +610,15 @@
       tags:
         - controller
 
+    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
+      include_tasks:
+        file: "controller_managed_device_group.yml"
+        apply:
+          tags:
+            - controller_managed_device_group
+      tags:
+        - controller_managed_device_group
+
     - name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
       include_tasks:
         file: "vlan_location.yml"
@@ -619,6 +628,14 @@
       tags:
         - vlan_location
 
+    - name: "PYNAUTOBOT_SOFTWARE_VERSION TESTS"
+      include_tasks:
+        file: "software_version.yml"
+        apply:
+          tags:
+            - software_version
+      tags:
+        - software_version
 
 ##########################
 ##
@@ -627,7 +644,7 @@
 ##########################
 
 - name: "NAUTOBOT 2.3+ TESTS"
-  when: 
+  when:
     - "nautobot_version is version('2.3', '>=')"
   block:
     - name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"

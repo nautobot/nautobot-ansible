@@ -1,0 +1,151 @@
+---
+- set_fact:
+    cisco_ios_platform: "{{ lookup('networktocode.nautobot.lookup', 'platforms', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Cisco IOS\"') }}"
+
+- name: "SOFTWARE VERSION 1: Necessary info creation"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.0.0"
+    platform: "Cisco IOS"
+    status: "Active"
+    state: present
+  register: test_one
+
+- name: "SOFTWARE VERSION 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['software_version']['version'] == "1.0.0"
+      - test_one['msg'] == "software_version 1.0.0 created"
+
+- name: "SOFTWARE VERSION 2: Create duplicate"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.0.0"
+    platform: "Cisco IOS"
+    state: present
+  register: test_two_duplicate
+
+- name: "SOFTWARE VERSION 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two_duplicate['changed']
+      - test_two_duplicate['software_version']['version'] == "1.0.0"
+      - test_two_duplicate['msg'] == "software_version 1.0.0 already exists"
+
+- name: "SOFTWARE VERSION 3: Create with all info"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    platform: "Cisco IOS"
+    status: "Active"
+    release_date: "2024-01-01"
+    end_of_support_date: "2025-01-01"
+    documentation_url: "https://example.com"
+    long_term_support: true
+    pre_release: false
+    state: present
+  register: test_three
+
+- name: "SOFTWARE VERSION 3: ASSERT - Create with all info"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['state'] == "absent"
+      - test_three['diff']['after']['state'] == "present"
+      - test_three['software_version']['version'] == "1.1.0"
+      - test_three['software_version']['platform'] == cisco_ios_platform['key']
+      - test_three['software_version']['status'] == active['key']
+      - test_three['software_version']['release_date'] == "2024-01-01"
+      - test_three['software_version']['end_of_support_date'] == "2025-01-01"
+      - test_three['software_version']['documentation_url'] == "https://example.com"
+      - test_three['software_version']['long_term_support'] == true
+      - test_three['software_version']['pre_release'] == false
+      - test_three['msg'] == "software_version 1.1.0 created"
+
+- name: "SOFTWARE VERSION 4: Create with all info duplicate"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    platform: "Cisco IOS"
+    status: "Active"
+    release_date: "2024-01-01"
+    end_of_support_date: "2025-01-01"
+    documentation_url: "https://example.com"
+    long_term_support: true
+    pre_release: false
+    state: present
+  register: test_four
+
+- name: "SOFTWARE VERSION 4: ASSERT - Create with all info duplicate"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['software_version']['version'] == "1.1.0"
+      - test_four['msg'] == "software_version 1.1.0 already exists"
+
+- name: "SOFTWARE VERSION 5: Update"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    end_of_support_date: "2026-01-01"
+  register: test_five
+
+- name: "SOFTWARE VERSION 5: ASSERT - Update"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['end_of_support_date'] == "2025-01-01"
+      - test_five['diff']['after']['end_of_support_date'] == "2026-01-01"
+
+- name: "SOFTWARE VERSION 6: Update duplicate"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    end_of_support_date: "2026-01-01"
+  register: test_six
+
+- name: "SOFTWARE VERSION 6: ASSERT - Update duplicate"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['software_version']['version'] == "1.1.0"
+      - test_six['msg'] == "software_version 1.1.0 already exists"
+
+- name: "SOFTWARE VERSION 7: Delete"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    state: absent
+  register: test_seven
+
+- name: "SOFTWARE VERSION 7: ASSERT - Delete"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "present"
+      - test_seven['diff']['after']['state'] == "absent"
+      - test_seven['msg'] == "software_version 1.1.0 deleted"
+
+- name: "SOFTWARE VERSION 8: Delete non-existent"
+  networktocode.nautobot.software_version:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    version: "1.1.0"
+    state: absent
+  register: test_eight
+
+- name: "SOFTWARE VERSION 8: ASSERT - Delete non-existent"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['msg'] == "software_version 1.1.0 already absent"

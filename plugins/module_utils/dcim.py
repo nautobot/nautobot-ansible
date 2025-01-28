@@ -18,6 +18,7 @@ NB_CONSOLE_PORT_TEMPLATES = "console_port_templates"
 NB_CONSOLE_SERVER_PORTS = "console_server_ports"
 NB_CONSOLE_SERVER_PORT_TEMPLATES = "console_server_port_templates"
 NB_CONTROLLERS = "controllers"
+NB_CONTROLLER_MANAGED_DEVICE_GROUPS = "controller_managed_device_groups"
 NB_DEVICE_BAYS = "device_bays"
 NB_DEVICE_BAY_TEMPLATES = "device_bay_templates"
 NB_DEVICE_REDUNDANCY_GROUPS = "device_redundancy_groups"
@@ -48,6 +49,7 @@ NB_RACKS = "racks"
 NB_RACK_GROUPS = "rack_groups"
 NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
+NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
@@ -63,6 +65,7 @@ class NautobotDcimModule(NautobotModule):
         - console_server_ports
         - console_server_port_templates
         - controllers
+        - controller_managed_device_groups
         - device_bays
         - device_bay_templates
         - devices
@@ -115,6 +118,8 @@ class NautobotDcimModule(NautobotModule):
             name = self.module.params["data"]["master"]
         elif data.get("id"):
             name = data["id"]
+        elif endpoint_name == "software_version":
+            name = data["version"]
         elif endpoint_name == "cable":
             if self.module.params["termination_a"].get("name"):
                 termination_a_name = self.module.params["termination_a"]["name"]

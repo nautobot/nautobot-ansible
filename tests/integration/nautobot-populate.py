@@ -227,10 +227,14 @@ created_manufacturers = make_nautobot_calls(nb.dcim.manufacturers, manufacturers
 cisco_manu = nb.dcim.manufacturers.get(name="Cisco")
 arista_manu = nb.dcim.manufacturers.get(name="Arista")
 
+# Create Platforms
+platforms = [{"name": "Cisco IOS", "manufacturer": cisco_manu.id, "network_driver": "cisco_ios", "napalm_driver": "ios"}]
+created_platforms = make_nautobot_calls(nb.dcim.platforms, platforms)
 
 # Create Device Types
 device_types = [
     {"model": "Cisco Test", "manufacturer": cisco_manu.id},
+    {"model": "Cisco Test 2", "manufacturer": cisco_manu.id},
     {"model": "Arista Test", "manufacturer": arista_manu.id},
     {
         "model": "Nexus Parent",
@@ -665,6 +669,18 @@ if nautobot_version >= version.parse("2.2"):
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
 
+    # Create Controller
+    controller = [
+        {"name": "controller_one", "location": location_child.id, "status": {"name": "Active"}},
+        {"name": "controller_two", "location": location_child.id, "status": {"name": "Active"}},
+    ]
+    created_controller = make_nautobot_calls(nb.dcim.controllers, controller)
+
+    # Create Controller Managed Device Groups
+    test_controller_one = nb.dcim.controllers.get(name="controller_one")
+    controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
+    created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
+
 ###############
 # v2.3+ items #
 ###############
@@ -690,8 +706,11 @@ if nautobot_version >= version.parse("2.3"):
     cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 
-    # Create a module type
-    power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
+    # Create module types
+    power_outlet_module_types = [
+        {"manufacturer": "Cisco", "model": "HooverMaxProModel60"},
+        {"manufacturer": "Cisco", "model": "HooverMaxProModel61"},
+    ]
     created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
 
     # Create a module bay
