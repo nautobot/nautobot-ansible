@@ -628,6 +628,14 @@
       tags:
         - vlan_location
 
+    - name: "PYNAUTOBOT_SOFTWARE_VERSION TESTS"
+      include_tasks:
+        file: "software_version.yml"
+        apply:
+          tags:
+            - software_version
+      tags:
+        - software_version
 
 ##########################
 ##

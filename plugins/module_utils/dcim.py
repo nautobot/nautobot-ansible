@@ -49,6 +49,7 @@ NB_RACKS = "racks"
 NB_RACK_GROUPS = "rack_groups"
 NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
+NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
@@ -117,6 +118,8 @@ class NautobotDcimModule(NautobotModule):
             name = self.module.params["data"]["master"]
         elif data.get("id"):
             name = data["id"]
+        elif endpoint_name == "software_version":
+            name = data["version"]
         elif endpoint_name == "cable":
             if self.module.params["termination_a"].get("name"):
                 termination_a_name = self.module.params["termination_a"]["name"]
