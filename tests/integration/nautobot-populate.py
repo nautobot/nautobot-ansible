@@ -231,6 +231,7 @@ arista_manu = nb.dcim.manufacturers.get(name="Arista")
 # Create Device Types
 device_types = [
     {"model": "Cisco Test", "manufacturer": cisco_manu.id},
+    {"model": "Cisco Test 2", "manufacturer": cisco_manu.id},
     {"model": "Arista Test", "manufacturer": arista_manu.id},
     {
         "model": "Nexus Parent",
@@ -702,8 +703,11 @@ if nautobot_version >= version.parse("2.3"):
     cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 
-    # Create a module type
-    power_outlet_module_types = [{"manufacturer": "Cisco", "model": "HooverMaxProModel60"}]
+    # Create module types
+    power_outlet_module_types = [
+        {"manufacturer": "Cisco", "model": "HooverMaxProModel60"},
+        {"manufacturer": "Cisco", "model": "HooverMaxProModel61"},
+    ]
     created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
 
     # Create a module bay

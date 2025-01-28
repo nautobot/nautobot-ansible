@@ -416,7 +416,7 @@ ALLOWED_QUERY_PARAMS = {
     "master": set(["name"]),
     "metadata_choice": set(["value", "metadata_type"]),
     "metadata_type": set(["name"]),
-    "module_bay_template": set(["name"]),
+    "module_bay_template": set(["name", "device_type", "module_type"]),
     "module_bay": set(["name", "parent_device", "parent_module"]),
     "module_type": set(["model"]),
     "module": set(["module_type", "parent_module_bay", "location"]),

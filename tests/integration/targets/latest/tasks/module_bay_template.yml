@@ -6,7 +6,9 @@
 ##
 - set_fact:
     test_module_type: "{{ lookup('networktocode.nautobot.lookup', 'module-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"HooverMaxProModel60\"') }}"
+    test_module_type_2: "{{ lookup('networktocode.nautobot.lookup', 'module-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"HooverMaxProModel61\"') }}"
     test_device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+    test_device_type_2: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test 2\"') }}"
 
 - name: "1 - Create module bay template with minimum information"
   networktocode.nautobot.module_bay_template:
@@ -43,6 +45,42 @@
       - test_two['module_bay_template']['name'] == "Edward Galbraith"
       - test_two['module_bay_template']['module_type'] == test_module_type['key']
       - test_two['msg'] == "module_bay_template Edward Galbraith already exists"
+
+# Regression testing issue #486
+- name: "2.1 - Create module bay template with second module type"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel61
+    name: Edward Galbraith
+    state: present
+  register: test_two_one
+
+- name: "2.1 - ASSERT"
+  assert:
+    that:
+      - test_two_one is changed
+      - test_two_one['module_bay_template']['name'] == "Edward Galbraith"
+      - test_two_one['module_bay_template']['module_type'] == test_module_type_2['key']
+      - test_two_one['msg'] == "module_bay_template Edward Galbraith created"
+
+# Regression testing issue #486
+- name: "2.2 - Create module bay template with second module type idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module_type: HooverMaxProModel61
+    name: Edward Galbraith
+    state: present
+  register: test_two_two
+
+- name: "2.2 - ASSERT"
+  assert:
+    that:
+      - not test_two_two['changed']
+      - test_two_two['module_bay_template']['name'] == "Edward Galbraith"
+      - test_two_two['module_bay_template']['module_type'] == test_module_type_2['key']
+      - test_two_two['msg'] == "module_bay_template Edward Galbraith already exists"
 
 - name: "3 - Update module bay template"
   networktocode.nautobot.module_bay_template:
@@ -134,6 +172,48 @@
       - test_six['module_bay_template']['description'] == "Cisco Test Module Bay"
       - test_six['module_bay_template']['device_type'] == test_device_type['key']
       - test_six['msg'] == "module_bay_template Test1234 already exists"
+
+# Regression testing issue #486
+- name: "6.1 - Create module bay template with second device type"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test 2
+    name: Test1234
+    label: test1234
+    position: "42"
+    description: Cisco Test Module Bay
+    state: present
+  register: test_six_one
+
+- name: "6.1 - ASSERT"
+  assert:
+    that:
+      - test_six_one is changed
+      - test_six_one['module_bay_template']['name'] == "Test1234"
+      - test_six_one['module_bay_template']['device_type'] == test_device_type_2['key']
+      - test_six_one['msg'] == "module_bay_template Test1234 created"
+
+# Regression testing issue #486
+- name: "6.2 - Create module bay template with second device type idempotent"
+  networktocode.nautobot.module_bay_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: Cisco Test 2
+    name: Test1234
+    label: test1234
+    position: "42"
+    description: Cisco Test Module Bay
+    state: present
+  register: test_six_two
+
+- name: "6.2 - ASSERT"
+  assert:
+    that:
+      - not test_six_two['changed']
+      - test_six_two['module_bay_template']['name'] == "Test1234"
+      - test_six_two['module_bay_template']['device_type'] == test_device_type_2['key']
+      - test_six_two['msg'] == "module_bay_template Test1234 already exists"
 
 - name: "7 - Delete"
   networktocode.nautobot.module_bay_template:
