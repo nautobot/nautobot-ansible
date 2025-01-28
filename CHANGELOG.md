@@ -6,6 +6,7 @@ v5.7.0
 New Modules
 -----------
 
+- networktocode.nautobot.controller_managed_device_groups - Creates or removes controller managed device groups within Nautobot
 - networktocode.nautobot.software_version - Creates or removes software versions from Nautobot
 
 Minor Changes

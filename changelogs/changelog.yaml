@@ -558,6 +558,9 @@ releases:
       - (#481) Fixed environment variable fallback for `validate_certs` in all modules
   5.7.0:
     modules:
+    - description: Creates or removes controller managed device groups from Nautobot
+      name: controller_managed_device_group
+      namespace: ''
     - description: Creates or removes software versions from Nautobot
       name: software_version
       namespace: ''
