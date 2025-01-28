@@ -227,6 +227,9 @@ created_manufacturers = make_nautobot_calls(nb.dcim.manufacturers, manufacturers
 cisco_manu = nb.dcim.manufacturers.get(name="Cisco")
 arista_manu = nb.dcim.manufacturers.get(name="Arista")
 
+# Create Platforms
+platforms = [{"name": "Cisco IOS", "manufacturer": cisco_manu.id, "network_driver": "cisco_ios", "napalm_driver": "ios"}]
+created_platforms = make_nautobot_calls(nb.dcim.platforms, platforms)
 
 # Create Device Types
 device_types = [
