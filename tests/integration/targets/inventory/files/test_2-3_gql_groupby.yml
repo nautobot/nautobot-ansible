@@ -1,0 +1,54 @@
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: "http://nautobot:8000"
+token: "0123456789abcdef0123456789abcdef01234567"
+validate_certs: False
+
+query:
+  devices:
+    config_context:
+    _custom_field_data:
+    device_type: 
+      manufacturer: name
+      model:
+    interfaces: name
+    location: name
+    platform: name
+    rack:
+      name:
+      rack_group: name
+      role: name
+    role: name
+    services: name
+    status: name
+    tags: name
+    tenant: name
+  virtual_machines:
+    cluster:
+      name:
+      cluster_group: name
+      cluster_type: name
+      location: name
+    config_context:
+    _custom_field_data:
+    interfaces: name
+    services: name
+    status: name
+    tags: name
+    tenant: name
+
+group_by:
+  - location.name
+  - tenant.name
+  - rack.name
+  - rack.rack_group.name
+  - rack.rack_role.name
+  - tag.name
+  - role.name
+  - device_type.manufacturer.name
+  - device_type.model
+  - platform.name
+  - cluster.name
+  - cluster.cluster_group.name
+  - cluster.cluster_type.name
+  - service.name
+  - status.name
