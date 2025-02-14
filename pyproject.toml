@@ -9,7 +9,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 netutils = "^1.2"
-pynautobot = "^2.5.0"
+pynautobot = "^2.6.1"
 ansible-core = "^2.16"
 
 [tool.poetry.dev-dependencies]

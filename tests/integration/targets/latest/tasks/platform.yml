@@ -36,7 +36,7 @@
       - test_two['platform']['name'] == "Test Platform"
       - test_two['msg'] == "platform Test Platform already exists"
 
-- name: "PLATFORM 3: ASSERT - Update"
+- name: "PLATFORM 3: Update"
   networktocode.nautobot.platform:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -45,6 +45,7 @@
     napalm_driver: ios
     napalm_args:
       global_delay_factor: 2
+    network_driver: cisco_ios
     state: present
   register: test_three
 
@@ -58,27 +59,32 @@
       - test_three['platform']['manufacturer'] == manufacturer['key']
       - test_three['platform']['napalm_args']['global_delay_factor'] == 2
       - test_three['platform']['napalm_driver'] == "ios"
+      - test_three['platform']['network_driver'] == "cisco_ios"
       - test_three['msg'] == "platform Test Platform updated"
   vars:
     manufacturer: "{{ lookup('networktocode.nautobot.lookup', 'manufacturers', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Manufacturer\"') }}"
 
-- name: "PLATFORM 4: ASSERT - Delete"
+- name: "PLATFORM 4: Update duplicate"
   networktocode.nautobot.platform:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Platform
-    state: absent
+    manufacturer: Test Manufacturer
+    napalm_driver: ios
+    napalm_args:
+      global_delay_factor: 2
+    network_driver: cisco_ios
+    state: present
   register: test_four
 
-- name: "PLATFORM 4: ASSERT - Delete"
+- name: "PLATFORM 4: ASSERT - Update duplicate"
   assert:
     that:
-      - test_four is changed
-      - test_four['diff']['before']['state'] == "present"
-      - test_four['diff']['after']['state'] == "absent"
-      - test_four['msg'] == "platform Test Platform deleted"
+      - not test_four['changed']
+      - test_four['platform']['name'] == "Test Platform"
+      - test_four['msg'] == "platform Test Platform already exists"
 
-- name: "PLATFORM 5: ASSERT - Delete non existing"
+- name: "PLATFORM 5: Delete"
   networktocode.nautobot.platform:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -86,9 +92,25 @@
     state: absent
   register: test_five
 
-- name: "PLATFORM 5: ASSERT - Delete non existing`"
+- name: "PLATFORM 5: ASSERT - Delete"
   assert:
     that:
-      - not test_five['changed']
-      - test_five['platform'] == None
-      - test_five['msg'] == "platform Test Platform already absent"
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "platform Test Platform deleted"
+
+- name: "PLATFORM 6: Delete non existing"
+  networktocode.nautobot.platform:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Platform
+    state: absent
+  register: test_six
+
+- name: "PLATFORM 6: ASSERT - Delete non existing`"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['platform'] == None
+      - test_six['msg'] == "platform Test Platform already absent"
