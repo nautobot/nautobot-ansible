@@ -1,0 +1,80 @@
+[
+    {
+        "data": {
+            "devices": [
+                {
+                    "name": "R1-Device",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "test100",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "TestDeviceR1",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                }
+            ],
+            "virtual_machines": [
+                {
+                    "name": "test100-vm",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "test101-vm",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "test102-vm",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                }
+            ]
+        }
+    },
+    {
+        "data": {
+            "devices": [
+                {
+                    "name": "Test Nexus Child One",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "Test Nexus One",
+                    "primary_ip4": {
+                        "host": "172.16.180.11"
+                    },
+                    "primary_ip6": null,
+                    "platform": null
+                }
+            ],
+            "virtual_machines": [
+                {
+                    "name": "test103-vm",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                },
+                {
+                    "name": "test104-vm",
+                    "primary_ip4": null,
+                    "primary_ip6": null,
+                    "platform": null
+                }
+            ]
+        }
+    }
+]
