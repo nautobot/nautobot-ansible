@@ -14,7 +14,7 @@ services:
       context: "../"
       target: "nautobot"
       dockerfile: "development/Dockerfile"
-    command: "nautobot-server runserver 0.0.0.0:8000 --insecure"
+    command: "nautobot-server runserver 0.0.0.0:8000 --insecure --nothreading"
     ports:
       - "8000:8000"
     depends_on:

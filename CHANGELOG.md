@@ -1,5 +1,15 @@
 # networktocode.nautobot Release Notes
 
+v5.8.0
+======
+
+Minor Changes
+-------------
+- (#494) Updated `mkdocs-ansible-collection` dev dependency to `0.2.1` to fix documentation rendering issues
+- (#497) Added integration tests for the `gql_inventory` plugin
+- (#498) Added `network_driver` option to `platform` module
+- (#499) Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
+
 v5.7.0
 ======
 

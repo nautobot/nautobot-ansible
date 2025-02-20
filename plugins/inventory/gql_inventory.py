@@ -91,6 +91,11 @@ options:
       default: False
       type: boolean
       version_added: "4.6.0"
+  page_size:
+    description: Number of items to retrieve per page. Default is 0, which means all items will be retrieved.
+    type: int
+    default: 0
+    version_added: "5.8.0"
 """
 
 EXAMPLES = """
@@ -222,6 +227,7 @@ RETURN = """
     type: list
 """
 from collections.abc import Mapping
+from copy import deepcopy
 import json
 import os
 from sys import version as python_version
@@ -379,8 +385,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = None
         cache_key = self.get_cache_key(self.api_endpoint)
 
-        user_cache_setting = self.get_option("cache")
-        attempt_to_read_cache = user_cache_setting and self.use_cache
+        attempt_to_read_cache = self.user_cache_setting and self.use_cache
 
         need_to_fetch = True
         if attempt_to_read_cache:
@@ -416,6 +421,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             base_query["query"]["devices"].update(self.gql_query["devices"])
         if self.gql_query.get("virtual_machines"):
             base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
+
+        json_data = self._query_api_paginated(base_query) if self.page_size else self._query_api(base_query)
+
+        # Error handling in case of a malformed query
+        if "errors" in json_data:
+            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
+
+        if self.user_cache_setting:
+            # If we got here and the user has caching enabled, we need to cache the results
+            self._cache[cache_key] = json_data
+
+        return json_data
+
+    def _query_api(self, base_query):
+        """Query the API and return the results."""
         query = convert_to_graphql_string(base_query)
         data = {"query": query}
         self.display.vvv(f"GraphQL query:\n{query}")
@@ -435,15 +455,37 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = json.loads(response.read())
         self.display.vvvv(f"JSON response: {json_data}")
 
-        # Error handling in case of a malformed query
-        if "errors" in json_data:
-            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
-
-        if user_cache_setting:
-            # If we got here and the user has caching enabled, we need to cache the results
-            self._cache[cache_key] = json_data
-
         return json_data
+
+    def _query_api_paginated(self, base_query):
+        """Query the API and return the results."""
+        devices = []
+        virtual_machines = []
+        limit = self.page_size
+        offset = 0
+
+        while True:
+            # We need to copy the base query each time as filters get popped off the query before being sent to the API
+            query = deepcopy(base_query)
+            if query["query"].get("devices"):
+                query["query"]["devices"].setdefault("filters", {})
+                query["query"]["devices"]["filters"]["limit"] = limit
+                query["query"]["devices"]["filters"]["offset"] = offset
+            if query["query"].get("virtual_machines"):
+                query["query"]["virtual_machines"].setdefault("filters", {})
+                query["query"]["virtual_machines"]["filters"]["limit"] = limit
+                query["query"]["virtual_machines"]["filters"]["offset"] = offset
+
+            json_data = self._query_api(query)
+            if "errors" in json_data:
+                return json_data
+            devices.extend(json_data["data"]["devices"])
+            virtual_machines.extend(json_data["data"]["virtual_machines"])
+            offset += limit
+            if len(json_data["data"].get("devices", [])) < limit and len(json_data["data"].get("virtual_machines", [])) < limit:
+                break
+
+        return {"data": {"devices": devices, "virtual_machines": virtual_machines}}
 
     def main(self):
         """Main function."""
@@ -495,5 +537,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_by = self.get_option("group_by")
         self.follow_redirects = self.get_option("follow_redirects")
         self.group_names_raw = self.get_option("group_names_raw")
+        self.user_cache_setting = self.get_option("cache")
+        self.page_size = self.get_option("page_size")
 
         self.main()

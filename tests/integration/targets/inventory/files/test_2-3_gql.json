@@ -1,0 +1,73 @@
+{
+    "_meta": {
+        "hostvars": {
+            "R1-Device": {
+                "ansible_host": "R1-Device",
+                "name": "R1-Device"
+            },
+            "Test Nexus Child One": {
+                "ansible_host": "Test Nexus Child One",
+                "name": "Test Nexus Child One"
+            },
+            "Test Nexus One": {
+                "ansible_host": "172.16.180.11",
+                "name": "Test Nexus One",
+                "primary_ip4": {
+                    "host": "172.16.180.11"
+                }
+            },
+            "Test VM With Spaces": {
+                "ansible_host": "Test VM With Spaces",
+                "name": "Test VM With Spaces"
+            },
+            "TestDeviceR1": {
+                "ansible_host": "TestDeviceR1",
+                "name": "TestDeviceR1"
+            },
+            "test100": {
+                "ansible_host": "test100",
+                "name": "test100"
+            },
+            "test100-vm": {
+                "ansible_host": "test100-vm",
+                "name": "test100-vm"
+            },
+            "test101-vm": {
+                "ansible_host": "test101-vm",
+                "name": "test101-vm"
+            },
+            "test102-vm": {
+                "ansible_host": "test102-vm",
+                "name": "test102-vm"
+            },
+            "test103-vm": {
+                "ansible_host": "test103-vm",
+                "name": "test103-vm"
+            },
+            "test104-vm": {
+                "ansible_host": "test104-vm",
+                "name": "test104-vm"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    },
+    "ungrouped": {
+        "hosts": [
+            "R1-Device",
+            "Test Nexus Child One",
+            "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
+        ]
+    }
+}

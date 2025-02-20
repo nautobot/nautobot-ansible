@@ -52,6 +52,13 @@ options:
     required: false
     type: dict
     version_added: "3.0.0"
+  network_driver:
+    description:
+      - The normalized network driver to use when interacting with devices, e.g. cisco_ios, arista_eos, etc.
+      - Library-specific driver names will be derived from this setting as appropriate
+    required: false
+    type: str
+    version_added: "5.8.0"
 """
 
 EXAMPLES = r"""
@@ -77,6 +84,7 @@ EXAMPLES = r"""
         napalm_driver: ios
         napalm_args:
           global_delay_factor: 2
+        network_driver: cisco_ios
         state: present
 
     - name: Delete platform within nautobot
@@ -119,6 +127,7 @@ def main():
             manufacturer=dict(required=False, type="raw"),
             napalm_driver=dict(required=False, type="str"),
             napalm_args=dict(required=False, type="dict"),
+            network_driver=dict(required=False, type="str"),
         )
     )
 

@@ -14,7 +14,7 @@ from ansible.utils.display import Display
 from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.inventory.gql_inventory import InventoryModule
+    from ansible_collections.networktocode.nautobot.plugins.inventory import gql_inventory
 
 except ImportError:
     import sys
@@ -24,7 +24,7 @@ except ImportError:
 
     sys.path.append("plugins/inventory/")
     sys.path.append("tests")
-    from gql_inventory import InventoryModule
+    import gql_inventory
 
 
 def load_graphql_device_data(path, test_path):
@@ -38,7 +38,14 @@ load_relative_test_data = partial(load_graphql_device_data, os.path.dirname(os.p
 
 @pytest.fixture
 def inventory_fixture():
-    inventory = InventoryModule()
+    inventory = gql_inventory.InventoryModule()
+    inventory.api_endpoint = "http://localhost:8000/api"
+    inventory.headers = {"Authorization": "Token 1234567890"}
+    inventory.timeout = 10
+    inventory.validate_certs = False
+    inventory.follow_redirects = False
+    inventory.user_cache_setting = False
+    inventory.gql_query = {"devices": {}, "virtual_machines": {}}
     inventory.inventory = InventoryData()
     inventory.inventory.add_host("mydevice")
     inventory.group_names_raw = False
@@ -49,6 +56,12 @@ def inventory_fixture():
 @pytest.fixture
 def device_data():
     json_data = load_relative_test_data("graphql_groups")
+    return json_data
+
+
+@pytest.fixture
+def paginated_device_data():
+    json_data = load_relative_test_data("graphql_paginate")
     return json_data
 
 
@@ -248,3 +261,15 @@ def test_platform_none(inventory_fixture, device_data):
     """Regression testing for issue #347."""
     device_data["platform"] = None
     inventory_fixture.add_ansible_platform(device_data)
+
+
+@patch.object(gql_inventory, "open_url")
+def test_gql_inventory_paginated(mock_open_url, inventory_fixture, paginated_device_data):
+    mock_open_url.side_effect = [
+        Mock(read=Mock(return_value=json.dumps(paginated_device_data[0]))),
+        Mock(read=Mock(return_value=json.dumps(paginated_device_data[1]))),
+    ]
+    inventory_fixture.page_size = 3
+    results = inventory_fixture.get_results()
+    assert len(results["data"]["devices"]) == 5
+    assert len(results["data"]["virtual_machines"]) == 5
