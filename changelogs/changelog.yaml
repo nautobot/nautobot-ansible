@@ -567,3 +567,10 @@ releases:
     changes:
       minor_changes:
       - (#488) Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types
+  5.8.0:
+    changes:
+      minor_changes:
+      - (#494) Updated `mkdocs-ansible-collection` dev dependency to `0.2.1` to fix documentation rendering issues
+      - (#497) Added integration tests for the `gql_inventory` plugin
+      - (#498) Added `network_driver` option to `platform` module
+      - (#499) Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
