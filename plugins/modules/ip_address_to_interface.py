@@ -19,6 +19,7 @@ notes:
 author:
   - Mikhail Yohman (@FragmentedPacket)
   - Anthony Ruhier (@Anthony25)
+  - Chris Tomkins (@ChrisTomkins25)
 version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
@@ -60,24 +61,24 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address_to_interface:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
-        ip_address: "{{ ip_address['key'] }}"
+        ip_address:
+          address: "10.100.0.1/32"
+          namespace: "Global"
         interface:
           name: GigabitEthernet4
           device: test100
-      vars:
-        ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
 
     - name: "Delete IP address on GigabitEthernet4 - test100"
       networktocode.nautobot.ip_address_to_interface:
         url: "{{ nautobot_url }}"
         token: "{{ nautobot_token }}"
-        ip_address: "{{ ip_address['key'] }}"
+        ip_address:
+          address: "10.100.0.1/32"
+          namespace: "Global"
         interface:
           name: GigabitEthernet4
           device: test100
         state: absent
-      vars:
-        ip_address: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=10.100.0.1/32') }}"
 
 """
 

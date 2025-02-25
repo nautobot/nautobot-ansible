@@ -219,6 +219,7 @@ CONVERT_TO_ID = {
     "installed_device": "devices",
     "interface": "interfaces",
     "interface_template": "interface_templates",
+    "ip_address": "ip_addresses",
     "ip_addresses": "ip_addresses",
     "ipaddresses": "ip_addresses",
     "job": "jobs",
