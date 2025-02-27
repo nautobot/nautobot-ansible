@@ -116,10 +116,73 @@
     state: absent
   register: test_six
 
-- name: "3 - ASSERT"
+- name: "6 - ASSERT"
   assert:
     that:
       - test_six is changed
       - test_six['diff']['before']['state'] == "present"
       - test_six['diff']['after']['state'] == "absent"
       - "'deleted' in test_six['msg']"
+
+- name: "7 - Add IP address on GigabitEthernet4 - test100 (with ip_address dict)"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address:
+      address: "10.100.0.1/32"
+      namespace: "Global"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+  register: test_seven
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "absent"
+      - test_seven['diff']['after']['state'] == "present"
+      - "'created' in test_seven['msg']"
+      - test_seven['ip_address_to_interface']['ip_address'] == ip_address_dev['key']
+      - test_seven['ip_address_to_interface']['interface'] == test100_gi4['key']
+
+- name: "8 - Duplicate IP address on GigabitEthernet4 - test100 (with ip_address dict)"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address:
+      address: "10.100.0.1/32"
+      namespace: "Global"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+  register: test_eight
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - not test_eight is changed
+      - "'already exists' in test_eight['msg']"
+      - test_eight['ip_address_to_interface']['ip_address'] == ip_address_dev['key']
+      - test_eight['ip_address_to_interface']['interface'] == test100_gi4['key']
+
+- name: "9 - Delete IP address on GigabitEthernet4 - test100 (with ip_address dict)"
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address:
+      address: "10.100.0.1/32"
+      namespace: "Global"
+    interface:
+      name: GigabitEthernet4
+      device: test100
+    state: absent
+  register: test_nine
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - test_nine is changed
+      - test_nine['diff']['before']['state'] == "present"
+      - test_nine['diff']['after']['state'] == "absent"
+      - "'deleted' in test_nine['msg']"
