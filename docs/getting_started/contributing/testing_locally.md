@@ -18,10 +18,14 @@ You can get the list of available Invoke commands available for running the test
 ❯ invoke --list
 Available tasks:
 
+  build             Build Nautobot docker image.
   cli               Launch a bash shell inside the running Nautobot container.
   createsuperuser   Create a new Nautobot superuser account (default: "admin"), will prompt for password.
   debug             Start Nautobot and its dependencies in debug mode.
   destroy           Destroy all containers and volumes.
+  docs              Build and serve docs locally for development.
+  galaxy-build      Build the collection.
+  galaxy-install    Install the collection to ./collections.
   integration       Run all tests including integration tests
   lint              Run linting tools
   makemigrations    Perform makemigrations operation in Django.

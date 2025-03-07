@@ -107,11 +107,13 @@ nav:
       - Modules: "getting_started/how-to-use/modules.md"
       - Inventory: "getting_started/how-to-use/inventory.md"
       - Advanced Usage - Modules: "getting_started/how-to-use/advanced.md"
-    - Contributing - Modules:
-      - "getting_started/contributing/modules/architecture.md"
-      - "getting_started/contributing/modules/new_module.md"
-      - "getting_started/contributing/modules/update_module.md"
-      - "getting_started/contributing/modules/testing_locally.md"
+    - Contributing:
+      - Modules:
+        - Module Architecture: "getting_started/contributing/modules/architecture.md"
+        - New Module: "getting_started/contributing/modules/new_module.md"
+        - Update Module: "getting_started/contributing/modules/update_module.md"
+      - Testing Locally: "getting_started/contributing/testing_locally.md"
+      - Debugging: "getting_started/contributing/debugging.md"
   - Plugins: "networktocode.nautobot"
   - Release Notes: "release_notes.md"
   - Nautobot Docs Home ↗︎: "https://docs.nautobot.com"
