@@ -1,5 +1,13 @@
 # networktocode.nautobot Release Notes
 
+v5.8.1
+======
+
+Minor Changes
+-------------
+- (#502) Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
+- (#503) Added VS Code development workspace config file and documentation for use
+
 v5.8.0
 ======
 
