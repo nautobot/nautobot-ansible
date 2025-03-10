@@ -574,3 +574,7 @@ releases:
       - (#497) Added integration tests for the `gql_inventory` plugin
       - (#498) Added `network_driver` option to `platform` module
       - (#499) Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
+  5.8.1:
+    changes:
+      minor_changes:
+      - (#502) Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
