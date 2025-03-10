@@ -297,13 +297,25 @@ def galaxy_build(context, force=False):
     context.run(command)
 
 
+@task(
+    help={
+        "force": "Force the install command to update the destination folder, replacing any existing files.",
+    },
+)
+def galaxy_install(context, force=False):
+    """Install the collection to ./collections."""
+    command = "ansible-galaxy collection install . -p ./collections"
+    if force:
+        command += " --force"
+    context.run(command)
+
+
 # ------------------------------------------------------------------------------
 # DOCS
 # ------------------------------------------------------------------------------
 @task
 def docs(context):
     """Build and serve docs locally for development."""
-    command = "ansible-galaxy collection install . -p ./collections --force"
-    context.run(command)
+    galaxy_install(context, force=True)
     command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
     context.run(command)

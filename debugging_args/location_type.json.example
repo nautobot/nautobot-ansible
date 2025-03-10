@@ -1,0 +1,14 @@
+{
+    "ANSIBLE_MODULE_ARGS": {
+        "_ansible_check_mode": false,
+        "url": "http://localhost:8000",
+        "token": "0123456789abcdef0123456789abcdef01234567",
+        "name": "My Location Type",
+        "description": "My Location Type Description",
+        "nestable": false,
+        "content_types": [
+            "dcim.device"
+        ],
+        "state": "present"
+    }
+}
