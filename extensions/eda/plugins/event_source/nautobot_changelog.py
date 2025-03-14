@@ -1,23 +1,49 @@
+import asyncio
+import time
+import os
+from typing import Any, Dict
+import aiohttp
+
+
+DOCUMENTATION = r"""
+---
+short_description: Source plugin for Nautobot Changelog via Object-Changes.
+description:
+  - An event-driven-ansible source plugin for Nautobot Changelog
+    via /extras/object-changes/.
+    Poll Nautobot API for new changelog records
+    Only retrieves logs created after the script began executing
+    This script can be tested outside of ansible-rulebook by specifying
+    environment variables for NAUTOBOT_HOST, NAUTOBOT_TOKEN.
+options:
+  instance:
+    description:
+      - Nautobot instance (e.g. https://demo.nautobot.com).
+    type: str
+    default: "http://localhost:8080"
+  token:
+    description:
+      - Nautobot API Token.
+    type: str
+    default: "0123456789abcdef0123456789abcdef01234567"
+  query:
+    description:
+      - Logs to query. Defaults to Logs created today.
+    type: str
+    default: "today"
+  interval:
+    description:
+      - How often to poll for new changelogs. Defaults to 5 seconds.
+    type: int
+    default: "5"
 """
-nautobot_changelog.py.
 
-event-driven-ansible source plugin for Nautobot Changelog via /extras/object-changes/
 
-Poll Nautobot API for new changelog records
-Only retrieves logs created after the script began executing
-This script can be tested outside of ansible-rulebook by specifying
-environment variables for NAUTOBOT_HOST, NAUTOBOT_TOKEN
-
-Arguments:
-  - instance: Nautobot instance (e.g. https://demo.nautobot.com)
-  - token: Nautobot API Token
-  - query:    (optional) Logs to query. Defaults to Logs created today
-  - interval: (optional) How often to poll for new changelogs. Defaults to 5 seconds
-
+EXAMPLES = r"""
 - name: Watch for new changelog entries
   hosts: localhost
   sources:
-    - jeffkala.nautobot_eda.nautobot_changelog:
+    - nautobot_ansible.eda.nautobot_changelog:
         instance: https://demo.nautobot.com)
         token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         interval: 1
@@ -27,12 +53,6 @@ Arguments:
       action:
         debug:
 """
-
-import asyncio
-import time
-import os
-from typing import Any, Dict
-import aiohttp
 
 
 async def main(queue: asyncio.Queue, args: Dict[str, Any]):
@@ -48,7 +68,6 @@ async def main(queue: asyncio.Queue, args: Dict[str, Any]):
     headers = {
         "Authorization": f"Token {token}",
         "Content-Type": "application/json",
-        # "version": "1.5",
         "Accept": "application/json",
     }
     if query:
@@ -64,7 +83,7 @@ async def main(queue: asyncio.Queue, args: Dict[str, Any]):
                         # "time": "2023-02-22T03:07:51.453470Z",
                         if record["time"] > start_time_str and record["id"] not in printed_records:
                             printed_records.add(record["id"])
-                            await queue.put(record['object_data'])
+                            await queue.put(record["object_data"])
 
                 else:
                     print(f"Error {resp.status}")
