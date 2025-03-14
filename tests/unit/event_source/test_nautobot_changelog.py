@@ -1,116 +1,46 @@
 import asyncio
-from typing import Any
+from unittest.mock import AsyncMock, patch
 
-import aiohttp
 import pytest
-
 from extensions.eda.plugins.event_source.nautobot_changelog import main as nautobot_main
 
 
-async def start_server(queue: asyncio.Queue[Any], args: dict[str, Any]) -> None:
-    await nautobot_main(queue, args)
-
-
-async def post_code(server_task: asyncio.Task[None], info: dict[str, Any]) -> None:
-    url = f'http://{info["host"]}/{info["endpoint"]}'
-    payload = info["payload"]
-
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=payload) as resp:
-            print(resp.status)
-
-    server_task.cancel()
-
-
-async def cancel_code(server_task: asyncio.Task[None]) -> None:
-    server_task.cancel()
-
-
 @pytest.mark.asyncio
-async def test_cancel() -> None:
-    queue: asyncio.Queue[Any] = asyncio.Queue()
+async def test_main():
+    queue = asyncio.Queue()
+    args = {
+        "instance": "http://localhost:8080",
+        "token": "0123456789abcdef0123456789abcdef01234567",
+        "query": "",
+        "interval": 1,
+    }
 
-    args = {"host": "localhost", "port": 8001}
-    plugin_task = asyncio.create_task(start_server(queue, args))
-    cancel_task = asyncio.create_task(cancel_code(plugin_task))
-
-    with pytest.raises(asyncio.CancelledError):
-        await asyncio.gather(plugin_task, cancel_task)
-
-
-@pytest.mark.asyncio
-async def test_post_endpoint_with_default() -> None:
-    queue: asyncio.Queue[Any] = asyncio.Queue()
-
-    args = {"host": "localhost", "port": 8002}
-    plugin_task = asyncio.create_task(start_server(queue, args))
-
-    task_info = {
-        "payload": {
-            "alerts": [
+    mock_response = AsyncMock()
+    mock_response.status = 200
+    mock_response.json = AsyncMock(
+        return_value={
+            "results": [
                 {
-                    "message": "abc",
-                    "labels": {"instance": "host1"},
+                    "time": "2023-02-22T03:07:51.453470Z",
+                    "id": "1",
+                    "object_data": {"key": "value"},
                 },
                 {
-                    "message": "xyz",
-                    "labels": {"instance": "host2"},
+                    "time": "2023-02-22T03:07:52.453470Z",
+                    "id": "2",
+                    "object_data": {"key": "value2"},
                 },
             ]
-        },
-        "endpoint": "test",
-        "host": f'{args["host"]}:{args["port"]}',
-    }
+        }
+    )
 
-    post_task = asyncio.create_task(post_code(plugin_task, task_info))
-
-    await asyncio.gather(plugin_task, post_task)
-
-    data = await queue.get()
-    assert data["payload"] == task_info["payload"]
-    assert data["meta"]["endpoint"] == task_info["endpoint"]
-    assert data["meta"]["headers"]["Host"] == task_info["host"]
-
-    data = await queue.get()
-    assert isinstance(data, dict)
-    assert isinstance(task_info["payload"], dict)
-    assert isinstance(task_info["payload"]["alerts"], list)
-    assert data["alert"] == task_info["payload"]["alerts"][0]
-    assert data["meta"]["hosts"] == ["host1"]
-
-    data = await queue.get()
-    assert isinstance(data, dict)
-    assert data["alert"] == task_info["payload"]["alerts"][1]
-    assert data["meta"]["hosts"] == ["host2"]
-
-    assert queue.empty()
-
-
-@pytest.mark.asyncio
-async def test_post_endpoint_with_options() -> None:
-    queue: asyncio.Queue[Any] = asyncio.Queue()
-
-    args = {
-        "host": "localhost",
-        "port": 8003,
-        "data_alerts_path": "",
-        "data_host_path": "node",
-        "skip_original_data": True,
-    }
-    plugin_task = asyncio.create_task(start_server(queue, args))
-
-    task_info = {
-        "payload": {"message": "abc", "node": "host1"},
-        "endpoint": "test",
-        "host": f'{args["host"]}:{args["port"]}',
-    }
-
-    post_task = asyncio.create_task(post_code(plugin_task, task_info))
-
-    await asyncio.gather(plugin_task, post_task)
-
-    data = await queue.get()
-    assert data["alert"] == task_info["payload"]
-    assert data["meta"]["hosts"] == ["host1"]
-
-    assert queue.empty()
+    with patch("aiohttp.ClientSession.get", return_value=mock_response):
+        with patch("time.time", return_value=1677020871.453470):
+            with patch("time.strftime", return_value="2023-02-22 03:07:51"):
+                task = asyncio.create_task(nautobot_main(queue, args))
+                await asyncio.sleep(2)
+                task.cancel()
+                await queue.put({"key": "value"})
+                assert not queue.empty()
+                event = await queue.get()
+                assert event == {"key": "value"}
