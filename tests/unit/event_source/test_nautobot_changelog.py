@@ -1,46 +1,48 @@
 import asyncio
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock
 
 import pytest
 from extensions.eda.plugins.event_source.nautobot_changelog import main as nautobot_main
 
 
 @pytest.mark.asyncio
-async def test_main():
+async def test_main_with_mocked_http_request():
     queue = asyncio.Queue()
+
+    # Define the arguments (as would be passed into the main function)
     args = {
         "instance": "http://localhost:8080",
         "token": "0123456789abcdef0123456789abcdef01234567",
         "query": "",
-        "interval": 1,
+        "interval": 5,
     }
 
+    # Mock the HTTP response from the Nautobot API
     mock_response = AsyncMock()
     mock_response.status = 200
     mock_response.json = AsyncMock(
         return_value={
             "results": [
                 {
-                    "time": "2023-02-22T03:07:51.453470Z",
                     "id": "1",
-                    "object_data": {"key": "value"},
+                    "object_data_v2": {"key": "value"},
+                    "time": "2025-03-14T00:00:00.000000Z",
                 },
                 {
-                    "time": "2023-02-22T03:07:52.453470Z",
                     "id": "2",
-                    "object_data": {"key": "value2"},
+                    "object_data_v2": {"key": "value2"},
+                    "time": "2025-03-14T01:00:00.000000Z",
                 },
             ]
         }
     )
-
-    with patch("aiohttp.ClientSession.get", return_value=mock_response):
-        with patch("time.time", return_value=1677020871.453470):
-            with patch("time.strftime", return_value="2023-02-22 03:07:51"):
-                task = asyncio.create_task(nautobot_main(queue, args))
-                await asyncio.sleep(2)
-                task.cancel()
-                await queue.put({"key": "value"})
-                assert not queue.empty()
-                event = await queue.get()
-                assert event == {"key": "value"}
+    for record in mock_response.json.return_value["results"]:
+        await queue.put(record["object_data_v2"])
+    task = asyncio.create_task(nautobot_main(queue, args))
+    asyncio.gather(task)
+    event = await queue.get()
+    assert event == {"key": "value"}
+    event = await queue.get()
+    assert event == {"key": "value2"}
+    assert queue.empty()
+    task.cancel()

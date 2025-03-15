@@ -4,12 +4,12 @@
 - name: "Watch for new changelog entries"
   hosts: "localhost"
   sources:
-    - jeffkala.nautobot_eda.nautobot_changelog:
+    - networktocode.nautobot.nautobot_changelog:
         instance: "https://demo.nautobot.com"
         token: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         interval: 5
         # query: "?time__gte={{ '2024-07-15 12:00:00' | to_datetime }}"
-        query: "depth=0"
+        query: ""
 
   rules:
     - name: "New changelog created"
