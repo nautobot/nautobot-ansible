@@ -1,0 +1,21 @@
+---
+# This example changes the polling interval to 5 seconds. It also adds query params to filter down the events coming into the platform.
+
+- name: "Watch for new changelog entries"
+  hosts: "localhost"
+  sources:
+    - networktocode.nautobot.nautobot_changelog:
+        instance: "https://demo.nautobot.com"
+        token: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        interval: 5
+        # query: "?time__gte={{ '2024-07-15 12:00:00' | to_datetime }}"
+        query: ""
+
+  rules:
+    - name: "New changelog created"
+      condition: "event.id is defined"
+      # Action is triggered if condition is `true`.
+      action:
+        # For simple examples just print the event as a debug message.
+        debug:
+...
