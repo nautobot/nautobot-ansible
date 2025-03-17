@@ -44,7 +44,7 @@ EXAMPLES = r"""
   hosts: localhost
   sources:
     - nautobot_ansible.eda.nautobot_changelog:
-        instance: https://demo.nautobot.com)
+        instance: https://demo.nautobot.com
         token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         interval: 1
   rules:
