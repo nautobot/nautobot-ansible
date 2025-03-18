@@ -1,5 +1,16 @@
 # networktocode.nautobot Release Notes
 
+v5.9.0
+======
+
+Release Summary
+---------------
+This is the first official release of an Ansible EDA Event Source plugin for Nautobot Changelog.
+
+New Plugins
+-----------
+- **networktocode.nautobot.nautobot_changelog**: Listen for Change Log events and trigger actions against those.
+
 v5.8.1
 ======
 

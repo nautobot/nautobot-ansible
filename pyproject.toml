@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "5.8.1"
+version = "5.9.0"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
@@ -11,6 +11,8 @@ python = ">=3.11,<4.0"
 netutils = "^1.2"
 pynautobot = "^2.6.1"
 ansible-core = "^2.16"
+aiohttp = "^3.11.13"
+asyncio = "^3.4.3"
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -19,6 +21,7 @@ jinja2 = "*"
 jmespath = "*"
 jsondiff = "*"
 pytest = "*"
+pytest-asyncio = "^0.25.3"
 pytest-mock = "*"
 pytest-xdist = "*"
 pyyaml = "*"
