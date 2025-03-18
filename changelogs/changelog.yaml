@@ -578,3 +578,12 @@ releases:
     changes:
       minor_changes:
       - (#502) Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
+  5.9.0:
+    changes:
+      release_summary: 'This is the first official release of an Ansible EDA Event Source
+        plugin for Nautobot Changelog.'
+    plugins:
+      event_source:
+      - name: "nautobot_changelog"
+        description: "Event source plugin for Nautobot Changelog"
+        namespace: "networktocode.nautobot"
