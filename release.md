@@ -2,7 +2,7 @@
 
 ## Release Checklist
 
-- poetry version minor
+- poetry version major/minor/patch
 - poetry update
 - Updated changelogs/changelog.yaml
 - Updated CHANGELOG.md
