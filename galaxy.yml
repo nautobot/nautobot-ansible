@@ -66,3 +66,5 @@ build_ignore:
   - "*.tar.gz"
   - "poetry.lock"
   - "pyproject.toml"
+  - ".venv"
+  - "venv"
