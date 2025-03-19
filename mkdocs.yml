@@ -114,6 +114,8 @@ nav:
         - Update Module: "getting_started/contributing/modules/update_module.md"
       - Testing Locally: "getting_started/contributing/testing_locally.md"
       - Debugging: "getting_started/contributing/debugging.md"
+      - Changelog Fragments: "getting_started/contributing/changelog_fragments.md"
+      - Release: "getting_started/contributing/release.md"
   - Plugins: "networktocode.nautobot"
   - Release Notes: "release_notes.md"
   - Nautobot Docs Home ↗︎: "https://docs.nautobot.com"
