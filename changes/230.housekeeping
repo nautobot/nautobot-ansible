@@ -1,0 +1,2 @@
+Added the towncrier library to dev dependencies to help generate release notes.
+Added documentation on how to create changelog fragments.

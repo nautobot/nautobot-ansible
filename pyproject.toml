@@ -42,6 +42,7 @@ mkdocs-material = "9.5.30"
 markdown-version-annotations = "1.0.1"
 # Render dynamic pages for Ansible Collections documentation
 mkdocs-ansible-collection = "0.2.1"
+towncrier = "^24.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -83,3 +84,56 @@ exclude = '''
 disable = """,
     line-too-long
     """
+
+[tool.towncrier]
+name = "nautobot-ansible"
+directory = "changes"
+filename = "CHANGELOG.md"
+template = "changes/towncrier_template.j2"
+start_string = "<!-- towncrier release notes start -->\n"
+issue_format = "[#{issue}](https://github.com/nautobot/nautobot-ansible/issues/{issue})"
+
+[[tool.towncrier.type]]
+directory = "added"
+name = "Added"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "changed"
+name = "Changed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "dependencies"
+name = "Dependencies"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "deprecated"
+name = "Deprecated"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "documentation"
+name = "Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "fixed"
+name = "Fixed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "housekeeping"
+name = "Housekeeping"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removed"
+name = "Removed"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "security"
+name = "Security"
+showcontent = true

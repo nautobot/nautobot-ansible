@@ -319,3 +319,19 @@ def docs(context):
     galaxy_install(context, force=True)
     command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
     context.run(command)
+
+
+@task(
+    help={
+        "version": "Version of nautobot-ansible to generate the release notes for.",
+    }
+)
+def generate_release_notes(context, version=""):
+    """Generate Release Notes using Towncrier."""
+    command = "poetry run towncrier build"
+    if version:
+        command += f" --version {version}"
+    else:
+        command += " --version `poetry version -s`"
+    # Due to issues with git repo ownership in the containers, this must always run locally.
+    context.run(command)
