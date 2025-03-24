@@ -14,7 +14,7 @@ This is the first official release of an Ansible EDA Event Source plugin for Nau
 
 - **networktocode.nautobot.nautobot_changelog**: Listen for Change Log events and trigger actions against those.
 
-## [v5.8.1](https://github.com/nautobot/pynautobot/releases/tag/v5.8.1)
+## [v5.8.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.8.1)
 
 ### Added
 
