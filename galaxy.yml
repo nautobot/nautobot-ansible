@@ -71,4 +71,5 @@ build_ignore:
   - "hacking"
   - "poetry.lock"
   - "pyproject.toml"
+  - "tests"
   - "venv"
