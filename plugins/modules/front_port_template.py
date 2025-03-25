@@ -82,7 +82,6 @@ EXAMPLES = r"""
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
         name: Test Front Port Template
         device_type: Test Device Type
         type: bnc
