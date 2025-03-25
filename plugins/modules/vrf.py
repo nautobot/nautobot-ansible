@@ -40,7 +40,7 @@ options:
   rd:
     description:
       - The RD of the VRF. Must be quoted to pass as a string.
-    required: true
+    required: false
     type: str
     version_added: "3.0.0"
   tenant:
