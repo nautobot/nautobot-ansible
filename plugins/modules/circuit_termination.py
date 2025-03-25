@@ -91,7 +91,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create circuit termination within Nautobot with only required information
@@ -112,7 +112,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         circuit: Test Circuit
         term_side: Z
-        provider_network: 
+        provider_network:
           name: "Provider A"
         port_speed: 10000
         state: present

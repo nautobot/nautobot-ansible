@@ -140,7 +140,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot location module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create location
       networktocode.nautobot.location:
@@ -159,7 +159,14 @@ EXAMPLES = r"""
         id: "{{ location_to_delete['key'] }}"
         state: absent
       vars:
-        location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Location\" parent_location=\"Location Parent\" location_type=\"Main Type\"') }}"
+        location_to_delete: >-
+          {{ lookup(
+            'networktocode.nautobot.lookup',
+            'locations',
+            api_endpoint=nautobot_url,
+            token=nautobot_token,
+            api_filter='name="My Location" parent_location="Location Parent" location_type="Main Type"'
+          ) }}
 
     - name: Create location with all parameters
       networktocode.nautobot.location:

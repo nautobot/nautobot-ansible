@@ -52,7 +52,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create controller managed device group within Nautobot with only required information
@@ -70,7 +70,6 @@ EXAMPLES = r"""
         name: "group_1"
         controller: test_controller_group_3
         state: absent
-
 """
 
 RETURN = r"""

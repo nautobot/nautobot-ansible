@@ -75,7 +75,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create vrf within Nautobot with only required information
@@ -84,6 +84,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VRF
         state: present
+        rd: "65000:1"
 
     - name: Delete vrf within nautobot
       networktocode.nautobot.vrf:
@@ -91,6 +92,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VRF
         state: absent
+        rd: "65000:1"
 
     - name: Create vrf with all information
       networktocode.nautobot.vrf:

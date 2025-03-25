@@ -15,6 +15,7 @@ aiohttp = "^3.11.13"
 asyncio = "^3.4.3"
 
 [tool.poetry.dev-dependencies]
+ansible-lint = "*"
 black = "*"
 cryptography = "*"
 jinja2 = "*"

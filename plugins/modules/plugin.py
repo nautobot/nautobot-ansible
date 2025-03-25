@@ -53,7 +53,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot Plugin Module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create LCM CVE
       networktocode.nautobot.plugin:
@@ -102,7 +102,7 @@ EXAMPLES = r"""
         attrs:
           description: "Authentication Administration Accounting"
         state: present
-        
+
     - name: Create FW address-object
       networktocode.nautobot.plugin:
         url: http://nautobot.local

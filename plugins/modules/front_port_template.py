@@ -65,7 +65,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create front port template within Nautobot with only required information
@@ -82,7 +82,6 @@ EXAMPLES = r"""
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
         name: Test Front Port Template
         device_type: Test Device Type
         type: bnc

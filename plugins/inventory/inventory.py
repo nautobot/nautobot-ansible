@@ -203,8 +203,8 @@ EXAMPLES = """
 
 plugin: networktocode.nautobot.inventory
 api_endpoint: http://localhost:8000
-validate_certs: True
-config_context: False
+validate_certs: true
+config_context: false
 group_by:
   - device_roles
 query_filters:

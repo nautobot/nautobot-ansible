@@ -39,7 +39,7 @@ services:
     #   test: ["CMD", "bash", "-c", "nautobot-server celery inspect ping --destination celery@$$HOSTNAME"]  ## $$ because of docker-compose
     ###########################
     depends_on:
-      - "nautobot"  
+      - "nautobot"
     <<: *nautobot-base
   postgres:
     image: "postgres:13"

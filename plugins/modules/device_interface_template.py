@@ -74,7 +74,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot interface template module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create interface template within Nautobot with only required information
       networktocode.nautobot.device_interface_template:

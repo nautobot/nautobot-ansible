@@ -69,7 +69,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create power port within Nautobot with only required information
@@ -87,7 +87,7 @@ EXAMPLES = r"""
         name: Test Power Outlet
         device_type: Test Device Type
         type: iec-60320-c6
-        power_port: Test Power Port
+        power_port_template: Test Power Port
         feed_leg: A
         state: present
 
