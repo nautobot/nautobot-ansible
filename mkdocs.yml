@@ -72,13 +72,13 @@ extra:
       link: "https://twitter.com/networktocode"
       name: "Network to Code Twitter"
 markdown_extensions:
+  - "admonition"
+  - "attr_list"
+  - "footnotes"
   - "markdown_version_annotations":
       admonition_tag: "???"
-  - "admonition"
-  - "toc":
-      permalink: true
-  - "attr_list"
   - "md_in_html"
+  - "pymdownx.details"
   - "pymdownx.highlight":
       anchor_linenums: true
   - "pymdownx.inlinehilite"
@@ -88,7 +88,8 @@ markdown_extensions:
         - name: "mermaid"
           class: "mermaid"
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - "footnotes"
+  - "toc":
+      permalink: true
 plugins:
   - "search"
   - "ansible-collection":
@@ -107,7 +108,8 @@ nav:
       - Modules: "getting_started/how-to-use/modules.md"
       - Inventory: "getting_started/how-to-use/inventory.md"
       - Advanced Usage - Modules: "getting_started/how-to-use/advanced.md"
-    - Contributing:
+    - Contributing: 
+      - "getting_started/index.md"
       - Modules:
         - Module Architecture: "getting_started/contributing/modules/architecture.md"
         - New Module: "getting_started/contributing/modules/new_module.md"
