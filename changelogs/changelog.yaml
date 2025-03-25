@@ -587,8 +587,8 @@ releases:
   5.9.0:
     changes:
       release_summary: This is the first official release of an Ansible EDA Event Source plugin for Nautobot Changelog.
-    minor_changes:
-      event_source:
-        - name: nautobot_changelog
-          description: Event source plugin for Nautobot Changelog
-          namespace: networktocode.nautobot
+      minor_changes:
+        event_source:
+          - name: nautobot_changelog
+            description: Event source plugin for Nautobot Changelog
+            namespace: networktocode.nautobot
