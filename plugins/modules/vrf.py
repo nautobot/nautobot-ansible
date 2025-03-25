@@ -40,7 +40,7 @@ options:
   rd:
     description:
       - The RD of the VRF. Must be quoted to pass as a string.
-    required: false
+    required: true
     type: str
     version_added: "3.0.0"
   tenant:
@@ -84,6 +84,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VRF
         state: present
+        rd: "65000:1"
 
     - name: Delete vrf within nautobot
       networktocode.nautobot.vrf:
@@ -91,6 +92,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test VRF
         state: absent
+        rd: "65000:1"
 
     - name: Create vrf with all information
       networktocode.nautobot.vrf:
@@ -144,7 +146,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             namespace=dict(required=False, type="str", default="Global"),
-            rd=dict(required=False, type="str"),
+            rd=dict(required=True, type="str"),
             tenant=dict(required=False, type="raw"),
             import_targets=dict(required=False, type="list", elements="str"),
             export_targets=dict(required=False, type="list", elements="str"),
