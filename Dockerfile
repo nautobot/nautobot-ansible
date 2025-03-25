@@ -45,7 +45,7 @@ RUN echo 'Running Black' && \
     echo 'Running Bandit' && \
     bandit --recursive ./ --configfile .bandit.yml && \
     echo 'Running Ansible Lint' && \
-    ansible-lint .
+    ansible-lint
 
 
 ############
