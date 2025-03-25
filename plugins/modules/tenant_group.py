@@ -71,7 +71,6 @@ EXAMPLES = r"""
         name: Tenant Group ABC
         parent: Customer Tenants
         state: present
-
 """
 
 RETURN = r"""

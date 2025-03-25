@@ -70,7 +70,6 @@ EXAMPLES = r"""
         name: "group_1"
         controller: test_controller_group_3
         state: absent
-
 """
 
 RETURN = r"""

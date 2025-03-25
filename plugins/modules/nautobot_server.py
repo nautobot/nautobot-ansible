@@ -95,34 +95,34 @@ notes:
 """
 
 EXAMPLES = r"""
-  - name: Createsuperuser
-    networktocode.nautobot.nautobot_server:
-      command: "createsuperuser"
-      args:
-        email: "admin93@example.com"
-        username: "superadmin7"
-      db_password: "{{ db_password }}"
-  - name: Collectstatic
-    networktocode.nautobot.nautobot_server:
-      command: "collectstatic"
-      db_password: "{{ db_password }}"
-  - name: Post Upgrade
-    networktocode.nautobot.nautobot_server:
-      command: "post_upgrade"
-  - name: Make Migrations for Plugin
-    networktocode.nautobot.nautobot_server:
-      command: "makemigrations"
-      positional_args: ["my_plugin_name"]
-      db_password: "{{ db_password }}"
-  - name: Migrate Plugin
-    networktocode.nautobot.nautobot_server:
-      command: "migrate"
-      args:
-        verbosity: 3
-      flags: ["merge"]
-      positional_args: ["my_plugin_name"]
-      db_username: "{{ db_username }}"
-      db_password: "{{ db_password }}"
+- name: Createsuperuser
+  networktocode.nautobot.nautobot_server:
+    command: "createsuperuser"
+    args:
+      email: "admin93@example.com"
+      username: "superadmin7"
+    db_password: "{{ db_password }}"
+- name: Collectstatic
+  networktocode.nautobot.nautobot_server:
+    command: "collectstatic"
+    db_password: "{{ db_password }}"
+- name: Post Upgrade
+  networktocode.nautobot.nautobot_server:
+    command: "post_upgrade"
+- name: Make Migrations for Plugin
+  networktocode.nautobot.nautobot_server:
+    command: "makemigrations"
+    positional_args: ["my_plugin_name"]
+    db_password: "{{ db_password }}"
+- name: Migrate Plugin
+  networktocode.nautobot.nautobot_server:
+    command: "migrate"
+    args:
+      verbosity: 3
+    flags: ["merge"]
+    positional_args: ["my_plugin_name"]
+    db_username: "{{ db_username }}"
+    db_password: "{{ db_password }}"
 """
 
 RETURN = r"""

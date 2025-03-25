@@ -102,7 +102,7 @@ EXAMPLES = r"""
         attrs:
           description: "Authentication Administration Accounting"
         state: present
-        
+
     - name: Create FW address-object
       networktocode.nautobot.plugin:
         url: http://nautobot.local

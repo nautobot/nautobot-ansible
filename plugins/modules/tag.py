@@ -103,7 +103,6 @@ EXAMPLES = r"""
       loop:
         - { name: mgmt, description: "management" }
         - { name: tun, description: "tunnel" }
-      
 
     - name: Delete tags
       networktocode.nautobot.tag:

@@ -1,4 +1,3 @@
-ancestor: null
 releases:
   1.0.0:
     changes:
@@ -7,297 +6,297 @@ releases:
 
         This project is forked from the ``netbox.netbox`` Ansible Collection.'
     fragments:
-    - release-v1.0.0.yml
+      - release-v1.0.0.yml
     modules:
-    - description: Creates or removes aggregates from Nautobot
-      name: aggregate
-      namespace: ''
-    - description: Create, update or delete cables within Nautobot
-      name: cable
-      namespace: ''
-    - description: Create, update or delete circuits within Nautobot
-      name: circuit
-      namespace: ''
-    - description: Create, update or delete circuit terminations within Nautobot
-      name: circuit_termination
-      namespace: ''
-    - description: Create, update or delete circuit types within Nautobot
-      name: circuit_type
-      namespace: ''
-    - description: Create, update or delete clusters within Nautobot
-      name: cluster
-      namespace: ''
-    - description: Create, update or delete cluster groups within Nautobot
-      name: cluster_group
-      namespace: ''
-    - description: Create, update or delete cluster types within Nautobot
-      name: cluster_type
-      namespace: ''
-    - description: Create, update or delete console ports within Nautobot
-      name: console_port
-      namespace: ''
-    - description: Create, update or delete console port templates within Nautobot
-      name: console_port_template
-      namespace: ''
-    - description: Create, update or delete console server ports within Nautobot
-      name: console_server_port
-      namespace: ''
-    - description: Create, update or delete console server port templates within Nautobot
-      name: console_server_port_template
-      namespace: ''
-    - description: Create, update or delete devices within Nautobot
-      name: device
-      namespace: ''
-    - description: Create, update or delete device bays within Nautobot
-      name: device_bay
-      namespace: ''
-    - description: Create, update or delete device bay templates within Nautobot
-      name: device_bay_template
-      namespace: ''
-    - description: Creates or removes interfaces on devices from Nautobot
-      name: device_interface
-      namespace: ''
-    - description: Creates or removes interfaces on devices from Nautobot
-      name: device_interface_template
-      namespace: ''
-    - description: Create, update or delete devices roles within Nautobot
-      name: device_role
-      namespace: ''
-    - description: Create, update or delete device types within Nautobot
-      name: device_type
-      namespace: ''
-    - description: Create, update or delete front ports within Nautobot
-      name: front_port
-      namespace: ''
-    - description: Create, update or delete front port templates within Nautobot
-      name: front_port_template
-      namespace: ''
-    - description: Creates or removes inventory items from Nautobot
-      name: inventory_item
-      namespace: ''
-    - description: Creates or removes IP addresses from Nautobot
-      name: ip_address
-      namespace: ''
-    - description: Creates or removes ipam roles from Nautobot
-      name: ipam_role
-      namespace: ''
-    - description: Create or delete manufacturers within Nautobot
-      name: manufacturer
-      namespace: ''
-    - description: Create or delete platforms within Nautobot
-      name: platform
-      namespace: ''
-    - description: Create, update or delete power feeds within Nautobot
-      name: power_feed
-      namespace: ''
-    - description: Create, update or delete power outlets within Nautobot
-      name: power_outlet
-      namespace: ''
-    - description: Create, update or delete power outlet templates within Nautobot
-      name: power_outlet_template
-      namespace: ''
-    - description: Create, update or delete power panels within Nautobot
-      name: power_panel
-      namespace: ''
-    - description: Create, update or delete power ports within Nautobot
-      name: power_port
-      namespace: ''
-    - description: Create, update or delete power port templates within Nautobot
-      name: power_port_template
-      namespace: ''
-    - description: Creates or removes prefixes from Nautobot
-      name: prefix
-      namespace: ''
-    - description: Create, update or delete providers within Nautobot
-      name: provider
-      namespace: ''
-    - description: Create, update or delete racks within Nautobot
-      name: rack
-      namespace: ''
-    - description: Create, update or delete racks groups within Nautobot
-      name: rack_group
-      namespace: ''
-    - description: Create, update or delete racks roles within Nautobot
-      name: rack_role
-      namespace: ''
-    - description: Create, update or delete rear ports within Nautobot
-      name: rear_port
-      namespace: ''
-    - description: Create, update or delete rear port templates within Nautobot
-      name: rear_port_template
-      namespace: ''
-    - description: Creates or removes regions from Nautobot
-      name: region
-      namespace: ''
-    - description: Create, update or delete RIRs within Nautobot
-      name: rir
-      namespace: ''
-    - description: Creates or removes route targets from Nautobot
-      name: route_target
-      namespace: ''
-    - description: Creates or removes service from Nautobot
-      name: service
-      namespace: ''
-    - description: Creates or removes sites from Nautobot
-      name: site
-      namespace: ''
-    - description: Creates or removes status from Nautobot
-      name: status
-      namespace: ''
-    - description: Creates or removes tags from Nautobot
-      name: tag
-      namespace: ''
-    - description: Creates or removes tenants from Nautobot
-      name: tenant
-      namespace: ''
-    - description: Creates or removes tenant groups from Nautobot
-      name: tenant_group
-      namespace: ''
-    - description: Create, update or delete virtual chassis within Nautobot
-      name: virtual_chassis
-      namespace: ''
-    - description: Create, update or delete virtual_machines within Nautobot
-      name: virtual_machine
-      namespace: ''
-    - description: Create, update or delete vlans within Nautobot
-      name: vlan
-      namespace: ''
-    - description: Create, update or delete vlans groups within Nautobot
-      name: vlan_group
-      namespace: ''
-    - description: Creates or removes interfaces from virtual machines in Nautobot
-      name: vm_interface
-      namespace: ''
-    - description: Create, update or delete vrfs within Nautobot
-      name: vrf
-      namespace: ''
+      - description: Creates or removes aggregates from Nautobot
+        name: aggregate
+        namespace: ''
+      - description: Create, update or delete cables within Nautobot
+        name: cable
+        namespace: ''
+      - description: Create, update or delete circuits within Nautobot
+        name: circuit
+        namespace: ''
+      - description: Create, update or delete circuit terminations within Nautobot
+        name: circuit_termination
+        namespace: ''
+      - description: Create, update or delete circuit types within Nautobot
+        name: circuit_type
+        namespace: ''
+      - description: Create, update or delete clusters within Nautobot
+        name: cluster
+        namespace: ''
+      - description: Create, update or delete cluster groups within Nautobot
+        name: cluster_group
+        namespace: ''
+      - description: Create, update or delete cluster types within Nautobot
+        name: cluster_type
+        namespace: ''
+      - description: Create, update or delete console ports within Nautobot
+        name: console_port
+        namespace: ''
+      - description: Create, update or delete console port templates within Nautobot
+        name: console_port_template
+        namespace: ''
+      - description: Create, update or delete console server ports within Nautobot
+        name: console_server_port
+        namespace: ''
+      - description: Create, update or delete console server port templates within Nautobot
+        name: console_server_port_template
+        namespace: ''
+      - description: Create, update or delete devices within Nautobot
+        name: device
+        namespace: ''
+      - description: Create, update or delete device bays within Nautobot
+        name: device_bay
+        namespace: ''
+      - description: Create, update or delete device bay templates within Nautobot
+        name: device_bay_template
+        namespace: ''
+      - description: Creates or removes interfaces on devices from Nautobot
+        name: device_interface
+        namespace: ''
+      - description: Creates or removes interfaces on devices from Nautobot
+        name: device_interface_template
+        namespace: ''
+      - description: Create, update or delete devices roles within Nautobot
+        name: device_role
+        namespace: ''
+      - description: Create, update or delete device types within Nautobot
+        name: device_type
+        namespace: ''
+      - description: Create, update or delete front ports within Nautobot
+        name: front_port
+        namespace: ''
+      - description: Create, update or delete front port templates within Nautobot
+        name: front_port_template
+        namespace: ''
+      - description: Creates or removes inventory items from Nautobot
+        name: inventory_item
+        namespace: ''
+      - description: Creates or removes IP addresses from Nautobot
+        name: ip_address
+        namespace: ''
+      - description: Creates or removes ipam roles from Nautobot
+        name: ipam_role
+        namespace: ''
+      - description: Create or delete manufacturers within Nautobot
+        name: manufacturer
+        namespace: ''
+      - description: Create or delete platforms within Nautobot
+        name: platform
+        namespace: ''
+      - description: Create, update or delete power feeds within Nautobot
+        name: power_feed
+        namespace: ''
+      - description: Create, update or delete power outlets within Nautobot
+        name: power_outlet
+        namespace: ''
+      - description: Create, update or delete power outlet templates within Nautobot
+        name: power_outlet_template
+        namespace: ''
+      - description: Create, update or delete power panels within Nautobot
+        name: power_panel
+        namespace: ''
+      - description: Create, update or delete power ports within Nautobot
+        name: power_port
+        namespace: ''
+      - description: Create, update or delete power port templates within Nautobot
+        name: power_port_template
+        namespace: ''
+      - description: Creates or removes prefixes from Nautobot
+        name: prefix
+        namespace: ''
+      - description: Create, update or delete providers within Nautobot
+        name: provider
+        namespace: ''
+      - description: Create, update or delete racks within Nautobot
+        name: rack
+        namespace: ''
+      - description: Create, update or delete racks groups within Nautobot
+        name: rack_group
+        namespace: ''
+      - description: Create, update or delete racks roles within Nautobot
+        name: rack_role
+        namespace: ''
+      - description: Create, update or delete rear ports within Nautobot
+        name: rear_port
+        namespace: ''
+      - description: Create, update or delete rear port templates within Nautobot
+        name: rear_port_template
+        namespace: ''
+      - description: Creates or removes regions from Nautobot
+        name: region
+        namespace: ''
+      - description: Create, update or delete RIRs within Nautobot
+        name: rir
+        namespace: ''
+      - description: Creates or removes route targets from Nautobot
+        name: route_target
+        namespace: ''
+      - description: Creates or removes service from Nautobot
+        name: service
+        namespace: ''
+      - description: Creates or removes sites from Nautobot
+        name: site
+        namespace: ''
+      - description: Creates or removes status from Nautobot
+        name: status
+        namespace: ''
+      - description: Creates or removes tags from Nautobot
+        name: tag
+        namespace: ''
+      - description: Creates or removes tenants from Nautobot
+        name: tenant
+        namespace: ''
+      - description: Creates or removes tenant groups from Nautobot
+        name: tenant_group
+        namespace: ''
+      - description: Create, update or delete virtual chassis within Nautobot
+        name: virtual_chassis
+        namespace: ''
+      - description: Create, update or delete virtual_machines within Nautobot
+        name: virtual_machine
+        namespace: ''
+      - description: Create, update or delete vlans within Nautobot
+        name: vlan
+        namespace: ''
+      - description: Create, update or delete vlans groups within Nautobot
+        name: vlan_group
+        namespace: ''
+      - description: Creates or removes interfaces from virtual machines in Nautobot
+        name: vm_interface
+        namespace: ''
+      - description: Create, update or delete vrfs within Nautobot
+        name: vrf
+        namespace: ''
     plugins:
       lookup:
-      - description: Queries and returns elements from Nautobot
-        name: lookup
-        namespace: null
+        - description: Queries and returns elements from Nautobot
+          name: lookup
+          namespace: null
     release_date: '2021-02-20'
   1.0.1:
     changes:
       release_summary: Removes dependency on ansible.netcommon and uses builtin ipaddress
         module
     fragments:
-    - v1.0.1.yml
+      - v1.0.1.yml
     release_date: '2021-03-03'
   1.0.2:
     changes:
       bugfixes:
-      - Remove code related to fetching secrets due to secrets not existing in Nautobot.
+        - Remove code related to fetching secrets due to secrets not existing in Nautobot.
     release_date: '2021-03-07'
   1.0.3:
     changes:
       bugfixes:
-      - Validate if value is already a UUID, return UUID and do not attempt to resolve
-        [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+        - Validate if value is already a UUID, return UUID and do not attempt to resolve
+          [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
     fragments:
-    - v1.0.3.yml
+      - v1.0.3.yml
     release_date: '2021-03-13'
   1.0.4:
     changes:
       bugfixes:
-      - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
-      - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+        - Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
+        - ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
     fragments:
-    - v1.0.4.yml
+      - v1.0.4.yml
     release_date: '2021-03-14'
   1.1.0:
     fragments:
-    - v1.1.0.yml
+      - v1.1.0.yml
     modules:
-    - description: Lookup plugin to query Nautobot GraphQL API endpoint
-      name: lookup_graphql
-      namespace: networktocode.nautobot
-    - description: Action plugin to query Nautobot GraphQL API endpoint
-      name: query_graphql
-      namespace: networktocode.nautobot
+      - description: Lookup plugin to query Nautobot GraphQL API endpoint
+        name: lookup_graphql
+        namespace: networktocode.nautobot
+      - description: Action plugin to query Nautobot GraphQL API endpoint
+        name: query_graphql
+        namespace: networktocode.nautobot
     release_date: '2021-04-12'
   2.0.0:
     changes:
       bugfixes:
-      - (#26) Add missing description to tenant_group
-      - (#29) Add missing field to vlan_group
-      - (#32) Fixed query on Virtual Chassis
-      - (#35) Add Site, Device Tracebacks due to changes in Nautobot
+        - (#26) Add missing description to tenant_group
+        - (#29) Add missing field to vlan_group
+        - (#32) Fixed query on Virtual Chassis
+        - (#35) Add Site, Device Tracebacks due to changes in Nautobot
       major_changes:
-      - (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+        - (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
       release_summary: Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
   2.0.1:
     changes:
       bugfixes:
-      - (#44) Add Interface Label Support
-      - (#45) SSL Verify Keyword Consistency Update
+        - (#44) Add Interface Label Support
+        - (#45) SSL Verify Keyword Consistency Update
       release_summary: Bug fix updates for label support and SSL version consistency
   3.0.0:
     changes:
       major_changes:
-      - (#66) Remove data sub-dictionary from modules
+        - (#66) Remove data sub-dictionary from modules
       minor_changes:
-      - (#57) Adds nautobot-server module
-      - (#75) Device Interface module supports custom_fields
+        - (#57) Adds nautobot-server module
+        - (#75) Device Interface module supports custom_fields
       release_summary: Updates format for modules to support Ansible 4 / ansible-core
         2.11 arg spec verification changes
     release_date: '2021-09-06'
   3.1.0:
     changes:
       minor_changes:
-      - (#53) Adds inventory plugin using GraphQL API
+        - (#53) Adds inventory plugin using GraphQL API
       release_summary: Adds inventory plugin leveraging Nautobot's GraphQL API
     modules:
-    - description: Inventory plugin leveraging Nautobot's GraphQL API
-      name: gql_inventory
-      namespace: networktocode.nautobot
+      - description: Inventory plugin leveraging Nautobot's GraphQL API
+        name: gql_inventory
+        namespace: networktocode.nautobot
     release_date: '2021-09-22'
   3.1.1:
     changes:
       bugfixes:
-      - (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID
-        for a resolvable field
+        - (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID
+          for a resolvable field
       release_summary: Quick bugfix release for not attempting to resolve IDs for
         fields that a user has passed in an ID/UUID for
     release_date: '2021-10-15'
   3.2.0:
     changes:
       minor_changes:
-      - (#105) Documentation updates
-      - (#107) Add `tenant_group` to `group_by` to `inventory` plugin
-      - (#108) Add choices to `group_by` in `gql_inventory` plugin
-      - (#109) token is explicitly required within `gql_inventory` plugin. (This was
-        always true, but never enforced.)
+        - (#105) Documentation updates
+        - (#107) Add `tenant_group` to `group_by` to `inventory` plugin
+        - (#108) Add choices to `group_by` in `gql_inventory` plugin
+        - (#109) token is explicitly required within `gql_inventory` plugin. (This was
+          always true, but never enforced.)
       release_summary: A few updates to the inventory plugins to support new options
         or require existing parameters.
     release_date: '2021-11-10'
   3.2.1:
     changes:
       bugfixes:
-      - Remove bad code in plugins/inventory/inventory.yml when locally built to publish
-        that prevented it from grabbing all hosts
+        - Remove bad code in plugins/inventory/inventory.yml when locally built to publish
+          that prevented it from grabbing all hosts
       release_summary: Unbreak plugins/inventory/inventory.yml
     release_date: '2021-11-18'
   3.3.0:
     changes:
       minor_changes:
-      - (#110) Allow users to define any path for defining GroupBy Group names
-      - (#115) Documentation fixes
+        - (#110) Allow users to define any path for defining GroupBy Group names
+        - (#115) Documentation fixes
     release_date: '2021-12-17'
   3.3.1:
     changes:
       bugfixes:
-      - (#116) Fix graphql action plugin to support check mode
-      - (#119) Documentation fixes
-      - (#120) Documentation permission fixes
+        - (#116) Fix graphql action plugin to support check mode
+        - (#119) Documentation fixes
+        - (#120) Documentation permission fixes
     release_date: '2021-02-25'
   3.4.0:
     changes:
       bugfixes:
-      - (#124) Removes CIDR from the ansible_host variable.
+        - (#124) Removes CIDR from the ansible_host variable.
       minor_changes:
-      - (#122) Add ability to add nested GraphQL relationships and non-relationship
-        fields such as serial, asset_tag, etc.
+        - (#122) Add ability to add nested GraphQL relationships and non-relationship
+          fields such as serial, asset_tag, etc.
       release_summary: This release only changes the GraphQL inventory plugin. It
         fixes the ansible_host by removing the CIDR. The last change is the ability
         to specify nested relationships as well as fields that don't have a relationship
@@ -305,285 +304,291 @@ releases:
   3.4.1:
     changes:
       minor_changes:
-      - (#132) Adds deprecation notice on GraphQL Inventory Plugin
-      - (#133) Update documentation for query_graphql module and add try/except for
-        HTTP call.
-      - (#135) Account for bug in networktocode.nautobot.inventory for API bug in
-        Nautobot 1.3.1 due to OpenAPI paths changing.
-      - Sanity tests and updates requested by Ansible for collection inclusion.
+        - (#132) Adds deprecation notice on GraphQL Inventory Plugin
+        - (#133) Update documentation for query_graphql module and add try/except for
+          HTTP call.
+        - (#135) Account for bug in networktocode.nautobot.inventory for API bug in
+          Nautobot 1.3.1 due to OpenAPI paths changing.
+        - Sanity tests and updates requested by Ansible for collection inclusion.
       release_summary: This release adds a deprecation notice for the GraphQL Inventory
         Plugin. There will be changes to the structure requiring changes to the inventory
         file.
   4.0.0:
     changes:
       breaking_changes:
-      - (#130) Refactors GraphQL Inventory plugin to allow custom GraphQL queries
-        with nested levels. Allows virtual machines to be fetched as well. The following
-        options; additonal_variables (all top level keys are now set as host_vars)
-        and filters (these are set within the query now).
+        - (#130) Refactors GraphQL Inventory plugin to allow custom GraphQL queries
+          with nested levels. Allows virtual machines to be fetched as well. The following
+          options; additonal_variables (all top level keys are now set as host_vars)
+          and filters (these are set within the query now).
       release_summary: This release refactors the GraphQL inventory plugin to allow
         fetching virtual machines and a more flexible approach to allow users to use
         most of GraphQL's native capabilities.
     modules:
-    - description: Creates or removes a relationship association from Nautobot
-      name: relationship_association
-      namespace: ''
+      - description: Creates or removes a relationship association from Nautobot
+        name: relationship_association
+        namespace: ''
   4.0.1:
     changes:
       bugfixes:
-      - (#150) GraphQL inventory plugin - boolean filters are invalid
-      - (#151) GraphQL inventory plugin - using group_by can crash if there are empty
-        values
-      - (#154) Fixes antsibull import for RTD builds
+        - (#150) GraphQL inventory plugin - boolean filters are invalid
+        - (#151) GraphQL inventory plugin - using group_by can crash if there are empty
+          values
+        - (#154) Fixes antsibull import for RTD builds
       release_summary: Fixes GraphQL inventory plugin bugs and RTD builds.
   4.1.0:
     changes:
       bugfixes:
-      - (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers
-        from legacy forked code.
+        - (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers
+          from legacy forked code.
       minor_changes:
-      - (#139) - Add API versioning to compatible plugins.
+        - (#139) - Add API versioning to compatible plugins.
       release_summary: Fix minor bugs and add API versioning to collection.
   4.1.1:
     changes:
       bugfixes:
-      - (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot
-        1.4.
+        - (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
       release_summary: Fix incorrect filter parameters
   4.2.0:
     changes:
       minor_changes:
-      - (#171) Add provider_network to circuit_termination module
-      - (#172) Add description to manufacturer
+        - (#171) Add provider_network to circuit_termination module
+        - (#172) Add description to manufacturer
   4.3.0:
     changes:
       minor_changes:
-      - (#185) Updated Doc Fragments
-      - (#187) Updated Tag documentation
-      - (#191) Added locations and location_type modules
+        - (#185) Updated Doc Fragments
+        - (#187) Updated Tag documentation
+        - (#191) Added locations and location_type modules
   4.3.1:
     changes:
       bugfixes:
-      - (#196) Virtual Chassis return multiple result at times
+        - (#196) Virtual Chassis return multiple result at times
   4.4.0:
     changes:
       minor_changes:
-      - (#203) Adds plugin module
-      - (#209) Catches HTTPError for GraphQL query and enables Ansible retries
-      - (#211) Removes codecov from dev dependencies
+        - (#203) Adds plugin module
+        - (#209) Catches HTTPError for GraphQL query and enables Ansible retries
+        - (#211) Removes codecov from dev dependencies
   4.5.0:
     changes:
       bugfixes:
-      - (#209) Catches HTTPError for `query_graphql` and fails to enable ansible retries
-      - (#223) Inventory Hosts Empty On Error
-      - (#228) Fixes graphql inventory grouping by tags
+        - (#209) Catches HTTPError for `query_graphql` and fails to enable ansible retries
+        - (#223) Inventory Hosts Empty On Error
+        - (#228) Fixes graphql inventory grouping by tags
       minor_changes:
-      - (#211) Removes codecov from dev dependencies
-      - (#217) Fixes and enables testing for Nautobot 1.5
-      - (#220) Adds status option to device_interface module
+        - (#211) Removes codecov from dev dependencies
+        - (#217) Fixes and enables testing for Nautobot 1.5
+        - (#220) Adds status option to device_interface module
       release_summary: Fixes error handling in inventory to not erase inventories,
         minor bug fixes, and introduces Plugin module
   5.0.0:
     changes:
       breaking_changes:
-      - (#234) Updates for Nautobot 2.0 Compatibility
+        - (#234) Updates for Nautobot 2.0 Compatibility
       release_summary: 'This release updates collection code for compatibility code
         with Nautobot 2.0, where API has breaking changes. '
     modules:
-    - description: Creates or removes associations between IP and interface.
-      name: ip_address_to_interface
-      namespace: ''
-    - description: Creates or removes a role. Collapsed from several role modules
-        in DCIM and IPAM.
-      name: role
-      namespace: ''
+      - description: Creates or removes associations between IP and interface.
+        name: ip_address_to_interface
+        namespace: ''
+      - description: Creates or removes a role. Collapsed from several role modules
+          in DCIM and IPAM.
+        name: role
+        namespace: ''
   5.0.1:
     changes:
       minor_changes:
-      - (#257) Fix plugin module.
+        - (#257) Fix plugin module.
   5.0.2:
     changes:
       minor_changes:
-      - (#248) Remove choices from various modules, in favor of pynaubot choices()
-        method.
-      - (#269) Fix SSL verification.
+        - (#248) Remove choices from various modules, in favor of pynaubot choices()
+          method.
+        - (#269) Fix SSL verification.
   5.1.0:
     changes:
       minor_changes:
-      - (#273) Adds custom_fields option the vm_interface module
-      - (#275) Adds more options to location module
-      - (#283) Fixes lookup plugins to with proper name
-      - (#287) Adds more allowed values for location options
+        - (#273) Adds custom_fields option the vm_interface module
+        - (#275) Adds more options to location module
+        - (#283) Fixes lookup plugins to with proper name
+        - (#287) Adds more allowed values for location options
     modules:
-    - description: Creates or removes device redundancy groups.
-      name: device_redundancy_group
-      namespace: ''
-    - description: Creates or removes custom fields.
-      name: custom_field
-      namespace: ''
-    - description: Creates or removes custom field choices.
-      name: custom_field_choice
-      namespace: ''
-    - description: Creates or removes namespaces.
-      name: namespace
-      namespace: ''
+      - description: Creates or removes device redundancy groups.
+        name: device_redundancy_group
+        namespace: ''
+      - description: Creates or removes custom fields.
+        name: custom_field
+        namespace: ''
+      - description: Creates or removes custom field choices.
+        name: custom_field_choice
+        namespace: ''
+      - description: Creates or removes namespaces.
+        name: namespace
+        namespace: ''
   5.1.1:
     changes:
       minor_changes:
-      - (#298) Removes `status` option from being required unless creating a new object for various modules
-      - (#299) Added example for using the `depth` option in the `lookup` module
-      - (#304) Fixed the ability to look up `parent_location` by name instead of UUID in the `location` module
+        - (#298) Removes `status` option from being required unless creating a new object
+          for various modules
+        - (#299) Added example for using the `depth` option in the `lookup` module
+        - (#304) Fixed the ability to look up `parent_location` by name instead of UUID
+          in the `location` module
   5.2.0:
     changes:
       minor_changes:
-      - (#310) Fixed `parent` for location_type to convert to UUID for idempotency
-      - (#319) Added `custom_fields` to `tag`, `vlan_group` and `role` modules
-      - (#321) Updated documentation and examples for the `lookup` plugin
-      - (#323) Added constructed features and inventory cache to the `gql_inventory` plugin
-      - (#335) Fixed custom field idempotency for various modules
-      - (#336) Added `custom_fields` to the `inventory_item` module
-      - (#338) Added `num_retries` to the `lookup` plugin
-      - (#340) Added `label` and `description` to the `device_interface_template` module
+        - (#310) Fixed `parent` for location_type to convert to UUID for idempotency
+        - (#319) Added `custom_fields` to `tag`, `vlan_group` and `role` modules
+        - (#321) Updated documentation and examples for the `lookup` plugin
+        - (#323) Added constructed features and inventory cache to the `gql_inventory`
+          plugin
+        - (#335) Fixed custom field idempotency for various modules
+        - (#336) Added `custom_fields` to the `inventory_item` module
+        - (#338) Added `num_retries` to the `lookup` plugin
+        - (#340) Added `label` and `description` to the `device_interface_template`
+          module
   5.2.1:
     changes:
       minor_changes:
-      - (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
-      - (#348) Fixed GraphQL Inventory plugin bug when device platform is None
+        - (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL
+          verification
+        - (#348) Fixed GraphQL Inventory plugin bug when device platform is None
   5.3.0:
     modules:
-    - description: Creates or removes Location assignments to VLANs from Nautobot
-      name: vlan_location
-      namespace: ''
-    - description: Creates or removes contacts from Nautobot
-      name: contact
-      namespace: ''
-    - description: Creates or removes teams from Nautobot
-      name: team
-      namespace: ''
-    - description: Creates or removes controllers from Nautobot
-      name: controller
-      namespace: ''
-    - description: Creates or removes users from Nautobot
-      name: admin_user
-      namespace: ''
-    - description: Creates or removes groups from Nautobot
-      name: admin_group
-      namespace: ''
-    - description: Creates or removes permissions from Nautobot
-      name: admin_permission
-      namespace: ''
+      - description: Creates or removes Location assignments to VLANs from Nautobot
+        name: vlan_location
+        namespace: ''
+      - description: Creates or removes contacts from Nautobot
+        name: contact
+        namespace: ''
+      - description: Creates or removes teams from Nautobot
+        name: team
+        namespace: ''
+      - description: Creates or removes controllers from Nautobot
+        name: controller
+        namespace: ''
+      - description: Creates or removes users from Nautobot
+        name: admin_user
+        namespace: ''
+      - description: Creates or removes groups from Nautobot
+        name: admin_group
+        namespace: ''
+      - description: Creates or removes permissions from Nautobot
+        name: admin_permission
+        namespace: ''
     changes:
       minor_changes:
-      - (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
-      - (#415) Added `role` option to `vm_interface` module
-      - (#416) Fixed `location_type` idempotency for `location` module
+        - (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
+        - (#415) Added `role` option to `vm_interface` module
+        - (#416) Fixed `location_type` idempotency for `location` module
   5.3.1:
     changes:
       minor_changes:
-      - (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
-      - (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
+        - (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
+        - (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
   5.4.0:
     modules:
-    - description: Creates or removes cloud accounts from Nautobot
-      name: cloud_account
-      namespace: ''
-    - description: Creates or removes cloud networks from Nautobot
-      name: cloud_network
-      namespace: ''
-    - description: Creates or removes cloud resource types from Nautobot
-      name: cloud_resource_type
-      namespace: ''
-    - description: Creates or removes cloud services from Nautobot
-      name: cloud_service
-      namespace: ''
-    - description: Creates or removes cloud service network assignments from Nautobot
-      name: cloud_service_network_assignment
-      namespace: ''
-    - description: Creates or removes cloud network prefix assignments from Nautobot
-      name: cloud_network_prefix_assignment
-      namespace: ''
-    - description: Creates or removes modules from Nautobot
-      name: module
-      namespace: ''
-    - description: Creates or removes module types from Nautobot
-      name: module_type
-      namespace: ''
-    - description: Creates or removes module bays from Nautobot
-      name: module_bay
-      namespace: ''
-    - description: Creates or removes module bay templates from Nautobot
-      name: module_bay_template
-      namespace: ''
+      - description: Creates or removes cloud accounts from Nautobot
+        name: cloud_account
+        namespace: ''
+      - description: Creates or removes cloud networks from Nautobot
+        name: cloud_network
+        namespace: ''
+      - description: Creates or removes cloud resource types from Nautobot
+        name: cloud_resource_type
+        namespace: ''
+      - description: Creates or removes cloud services from Nautobot
+        name: cloud_service
+        namespace: ''
+      - description: Creates or removes cloud service network assignments from Nautobot
+        name: cloud_service_network_assignment
+        namespace: ''
+      - description: Creates or removes cloud network prefix assignments from Nautobot
+        name: cloud_network_prefix_assignment
+        namespace: ''
+      - description: Creates or removes modules from Nautobot
+        name: module
+        namespace: ''
+      - description: Creates or removes module types from Nautobot
+        name: module_type
+        namespace: ''
+      - description: Creates or removes module bays from Nautobot
+        name: module_bay
+        namespace: ''
+      - description: Creates or removes module bay templates from Nautobot
+        name: module_bay_template
+        namespace: ''
     changes:
       minor_changes:
-      - (#431) Added tags and custom fields options to `cable` module
-      - (#433) Added role option to `device_interface` module
-      - (#438) Added cloud_network option to `circuit_termination` module
-      - (#446) Added module option to multiple existing modules
-      - (#449) Changed lookup plugin to allow for multiple `id` filters
+        - (#431) Added tags and custom fields options to `cable` module
+        - (#433) Added role option to `device_interface` module
+        - (#438) Added cloud_network option to `circuit_termination` module
+        - (#446) Added module option to multiple existing modules
+        - (#449) Changed lookup plugin to allow for multiple `id` filters
   5.5.0:
     modules:
-    - description: Creates or removes job buttons from Nautobot
-      name: job_button
-      namespace: ''
-    - description: Creates or removes dynamic groups from Nautobot
-      name: dynamic_group
-      namespace: ''
-    - description: Creates or removes static group associations from Nautobot
-      name: static_group_association
-      namespace: ''
-    - description: Creates or removes metadata types from Nautobot
-      name: metadata_type
-      namespace: ''
-    - description: Creates or removes metadata choices from Nautobot
-      name: metadata_choice
-      namespace: ''
-    - description: Creates or removes object metadata from Nautobot
-      name: object_metadata
-      namespace: ''
+      - description: Creates or removes job buttons from Nautobot
+        name: job_button
+        namespace: ''
+      - description: Creates or removes dynamic groups from Nautobot
+        name: dynamic_group
+        namespace: ''
+      - description: Creates or removes static group associations from Nautobot
+        name: static_group_association
+        namespace: ''
+      - description: Creates or removes metadata types from Nautobot
+        name: metadata_type
+        namespace: ''
+      - description: Creates or removes metadata choices from Nautobot
+        name: metadata_choice
+        namespace: ''
+      - description: Creates or removes object metadata from Nautobot
+        name: object_metadata
+        namespace: ''
     changes:
       minor_changes:
-      - (#464) Added full support for caching to GraphQL Inventory plugin
-      - (#465) Changed `parent_location_type` to allow for explicit name attribute lookup
+        - (#464) Added full support for caching to GraphQL Inventory plugin
+        - (#465) Changed `parent_location_type` to allow for explicit name attribute lookup
   5.6.0:
     changes:
       minor_changes:
-      - (#470) Dropped support for Python 3.10 to follow ansible-core 2.18
-      - (#472) Added documentation on using custom fields in compose variables with the `inventory` plugin
-      - (#474) Fixed `lookup` plugin to properly handle templated variables in `api_filter`
-      - (#475) Added documentation for the `device_interface` module that `type` is required when creating a new interface
-      - (#477) Fixed query example in the `lookup_graphql` plugin documentation for compatibility with Nautobot 2.X
-      - (#478) Fixed the `cable` module to properly work with all cable types
-      - (#480) Fixed environment variable fallback for `url` and `token` in all modules
-      - (#481) Fixed environment variable fallback for `validate_certs` in all modules
+        - (#470) Dropped support for Python 3.10 to follow ansible-core 2.18
+        - (#472) Added documentation on using custom fields in compose variables with
+          the `inventory` plugin
+        - (#474) Fixed `lookup` plugin to properly handle templated variables in `api_filter`
+        - (#475) Added documentation for the `device_interface` module that `type` is
+          required when creating a new interface
+        - (#477) Fixed query example in the `lookup_graphql` plugin documentation for
+          compatibility with Nautobot 2.X
+        - (#478) Fixed the `cable` module to properly work with all cable types
+        - (#480) Fixed environment variable fallback for `url` and `token` in all modules
+        - (#481) Fixed environment variable fallback for `validate_certs` in all modules
   5.7.0:
     modules:
-    - description: Creates or removes controller managed device groups from Nautobot
-      name: controller_managed_device_group
-      namespace: ''
-    - description: Creates or removes software versions from Nautobot
-      name: software_version
-      namespace: ''
+      - description: Creates or removes controller managed device groups from Nautobot
+        name: controller_managed_device_group
+        namespace: ''
+      - description: Creates or removes software versions from Nautobot
+        name: software_version
+        namespace: ''
     changes:
       minor_changes:
-      - (#488) Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types
+        - (#488) Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types
   5.8.0:
     changes:
       minor_changes:
-      - (#494) Updated `mkdocs-ansible-collection` dev dependency to `0.2.1` to fix documentation rendering issues
-      - (#497) Added integration tests for the `gql_inventory` plugin
-      - (#498) Added `network_driver` option to `platform` module
-      - (#499) Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
+        - (#494) Updated `mkdocs-ansible-collection` dev dependency to `0.2.1` to fixdocumentation rendering issues
+        - (#497) Added integration tests for the `gql_inventory` plugin
+        - (#498) Added `network_driver` option to `platform` module
+        - (#499) Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
   5.8.1:
     changes:
       minor_changes:
-      - (#502) Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
+        - (#502) Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
   5.9.0:
     changes:
-      release_summary: 'This is the first official release of an Ansible EDA Event Source
-        plugin for Nautobot Changelog.'
+      release_summary: This is the first official release of an Ansible EDA Event Source plugin for Nautobot Changelog.
     plugins:
       event_source:
-      - name: "nautobot_changelog"
-        description: "Event source plugin for Nautobot Changelog"
-        namespace: "networktocode.nautobot"
+        - name: nautobot_changelog
+          description: Event source plugin for Nautobot Changelog
+          namespace: networktocode.nautobot

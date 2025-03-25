@@ -76,7 +76,7 @@ EXAMPLES = r"""
         name: My Redundancy Group
         status: Active
         state: present
-    
+
     - name: Create device redundancy group within Nautobot with all information
       networktocode.nautobot.device_redundancy_group:
         url: http://nautobot.local
@@ -92,15 +92,21 @@ EXAMPLES = r"""
           my_field: my_value
         state: present
       vars:
-        my_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Secrets Group\"') }}"
-    
+        my_secrets_group: >-
+          {{ lookup(
+            'networktocode.nautobot.lookup',
+            'secrets-groups',
+            api_endpoint=nautobot_url,
+            token=nautobot_token,
+            api_filter='name="My Secrets Group"'
+          ) }}
+
     - name: Delete device redundancy group within nautobot
       networktocode.nautobot.device_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
         name: My Redundancy Group
         state: absent
-
 """
 
 RETURN = r"""

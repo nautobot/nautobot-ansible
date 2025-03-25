@@ -96,7 +96,7 @@ EXAMPLES = r"""
         manufacturer: Test Manufacturer
         part_number: ws-3750g-v2
         u_height: 1
-        is_full_depth: False
+        is_full_depth: false
         subdevice_role: parent
         state: present
 

@@ -79,7 +79,6 @@ EXAMPLES = r"""
           name: GigabitEthernet4
           device: test100
         state: absent
-
 """
 
 RETURN = r"""

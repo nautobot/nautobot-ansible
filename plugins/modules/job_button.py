@@ -90,7 +90,7 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: MyJobButton
     content_types:
-        - dcim.device
+      - dcim.device
     job: MyJob
     text: SubmitMe
     state: present

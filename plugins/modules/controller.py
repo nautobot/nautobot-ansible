@@ -113,7 +113,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: test_controller_3
         state: absent
-
 """
 
 RETURN = r"""

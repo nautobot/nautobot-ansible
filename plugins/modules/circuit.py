@@ -105,7 +105,6 @@ EXAMPLES = r"""
       networktocode.nautobot.circuit:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
         cid: Test-Circuit-1000
         provider: Test Provider
         circuit_type: Test Circuit Type

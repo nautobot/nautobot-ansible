@@ -43,7 +43,9 @@ COPY . .
 RUN echo 'Running Black' && \
     black --check --diff . && \
     echo 'Running Bandit' && \
-    bandit --recursive ./ --configfile .bandit.yml
+    bandit --recursive ./ --configfile .bandit.yml && \
+    echo 'Running Ansible Lint' && \
+    ansible-lint .
 
 
 ############

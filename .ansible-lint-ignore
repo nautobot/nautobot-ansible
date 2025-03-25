@@ -1,0 +1,3 @@
+plugins/inventory/inventory.py yaml[key-duplicates]
+plugins/inventory/gql_inventory.py yaml[key-duplicates]
+changelogs/changelog.yaml schema[changelog]

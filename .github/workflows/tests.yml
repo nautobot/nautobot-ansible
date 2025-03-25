@@ -43,6 +43,15 @@ jobs:
         run: "pip install -U pip && pip install invoke"
       - name: "Linting"
         run: "invoke lint"
+  ansible-lint:
+    runs-on: "${{ inputs.runs-on }}"
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v4"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke"
+      - name: "Linting"
+        run: "invoke ansible-lint"
   unit:
     runs-on: "${{ inputs.runs-on }}"
     strategy:
