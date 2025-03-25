@@ -61,10 +61,14 @@ homepage: https://nautobot-ansible.readthedocs.io/en/latest/
 issues: https://github.com/nautobot/nautobot-ansible/issues
 
 build_ignore:
+  - ".github"
   - ".pytest_cache"
+  - ".venv"
   - ".vscode"
   - "*.tar.gz"
+  - "debugging_args"
+  - "development"
+  - "hacking"
   - "poetry.lock"
   - "pyproject.toml"
-  - ".venv"
   - "venv"
