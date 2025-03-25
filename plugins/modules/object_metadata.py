@@ -62,7 +62,7 @@ EXAMPLES = r"""
 - name: "Test object metadata creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create object metadata
       networktocode.nautobot.object_metadata:

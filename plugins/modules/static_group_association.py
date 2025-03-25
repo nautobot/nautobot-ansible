@@ -42,7 +42,7 @@ EXAMPLES = r"""
 - name: "Test static group association creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create static group association
       networktocode.nautobot.static_group_association:

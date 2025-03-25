@@ -144,7 +144,7 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             namespace=dict(required=False, type="str", default="Global"),
-            rd=dict(required=True, type="str"),
+            rd=dict(required=False, type="str"),
             tenant=dict(required=False, type="raw"),
             import_targets=dict(required=False, type="list", elements="str"),
             export_targets=dict(required=False, type="list", elements="str"),

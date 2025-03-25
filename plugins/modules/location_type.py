@@ -60,7 +60,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot location type module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create location type
       networktocode.nautobot.location_type:

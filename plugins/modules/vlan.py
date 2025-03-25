@@ -75,13 +75,19 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  group:
+    description:
+      - The group of the VLAN.
+    required: false
+    type: raw
+    version_added: "3.0.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create vlan within Nautobot with only required information
@@ -162,6 +168,7 @@ def main():
             status=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            group=dict(required=False, type="raw"),
         )
     )
 

@@ -54,7 +54,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create tenant within Nautobot with only required information
       networktocode.nautobot.tenant:

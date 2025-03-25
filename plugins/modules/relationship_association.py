@@ -51,7 +51,7 @@ EXAMPLES = r"""
 - name: "Test relationship association creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create relationship association
       networktocode.nautobot.relationship_association:

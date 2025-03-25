@@ -55,7 +55,7 @@ EXAMPLES = r"""
 - name: "Test status creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create status
       networktocode.nautobot.status:

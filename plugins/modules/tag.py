@@ -55,7 +55,7 @@ EXAMPLES = r"""
 - name: "Test tags creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create tags
       networktocode.nautobot.tag:

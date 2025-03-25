@@ -53,7 +53,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot Plugin Module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create LCM CVE
       networktocode.nautobot.plugin:

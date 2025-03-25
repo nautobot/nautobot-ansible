@@ -54,7 +54,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot IP address to interface module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: "Add IP address on GigabitEthernet4 - test100"
