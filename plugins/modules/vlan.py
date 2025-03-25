@@ -80,7 +80,7 @@ options:
       - The group of the VLAN.
     required: false
     type: raw
-    version_added: "3.0.0"
+    version_added: "5.10.0"
 """
 
 EXAMPLES = r"""

@@ -87,6 +87,7 @@ EXAMPLES = r"""
         name: Test Power Outlet
         device_type: Test Device Type
         type: iec-60320-c6
+        power_port_template: Test Power Port
         feed_leg: A
         state: present
 

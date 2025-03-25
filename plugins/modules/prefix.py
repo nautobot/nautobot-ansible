@@ -145,6 +145,7 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
+        ip_version: 4
         prefix: 10.156.32.0/19
         location: My Location
         tenant: Test Tenant

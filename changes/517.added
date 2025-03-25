@@ -1,1 +1,2 @@
 Added Ansible Lint to the project.
+Added VLAN Group capability to vlan module.

@@ -26,3 +26,4 @@ ansible.cfg
 # Ignore any debugging args except the example(s)
 debugging_args/*
 !debugging_args/*.example
+nautobot-ansible.code-workspace
