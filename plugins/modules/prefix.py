@@ -145,7 +145,6 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        family: 4
         prefix: 10.156.32.0/19
         location: My Location
         tenant: Test Tenant
@@ -169,7 +168,7 @@ EXAMPLES = r"""
         parent: 10.156.0.0/19
         prefix_length: 24
         state: present
-        first_available: yes
+        first_available: true
 
     - name: Create prefix within Nautobot with only required information
       networktocode.nautobot.prefix:
@@ -185,7 +184,7 @@ EXAMPLES = r"""
         parent: 10.156.0.0/19
         prefix_length: 24
         state: present
-        first_available: yes
+        first_available: true
 
     - name: Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values
       networktocode.nautobot.prefix:
@@ -197,7 +196,7 @@ EXAMPLES = r"""
           name: My Location
           parent: Parent Location
         state: present
-        first_available: yes
+        first_available: true
 """
 
 RETURN = r"""
