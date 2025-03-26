@@ -97,4 +97,3 @@
       - not test_six['changed']
       - test_six['controller_managed_device_group'] == None
       - test_six['msg'] == "controller_managed_device_group Test Controller Group One already absent"
-

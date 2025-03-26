@@ -7,11 +7,9 @@ import json
 import os
 
 from functools import partial
-from unittest.mock import patch, MagicMock, Mock, call
+from unittest.mock import patch, Mock
 from ansible.inventory.data import InventoryData
-from ansible.errors import AnsibleError
 from ansible.utils.display import Display
-from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.inventory import gql_inventory

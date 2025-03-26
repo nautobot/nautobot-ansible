@@ -1,2 +1,3 @@
 Updated the release documentation to reflect the latest processes.
 Added links to existing entries in `CHANGELOG.md`.
+Fixed many ansible-lint and ansible-test issues.

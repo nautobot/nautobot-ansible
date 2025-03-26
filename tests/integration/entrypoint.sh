@@ -27,6 +27,7 @@ function main {
     render "./tests/integration/targets/inventory/runme_config.template" > ./tests/integration/targets/inventory/runme_config
 
     echo "# Checking to make sure Nautobot server is reachable.."
+    # shellcheck disable=SC2016
     timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
 
     echo "# Populating Nautobot for running integration tests.."
@@ -35,7 +36,9 @@ function main {
     echo "# Running..."
     # shellcheck disable=SC2086
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" inventory "$@"
+    # shellcheck disable=SC2086
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" regression-latest "$@"
+    # shellcheck disable=SC2086
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report --requirements
 }

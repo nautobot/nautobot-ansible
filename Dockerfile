@@ -43,8 +43,9 @@ COPY . .
 RUN echo 'Running Black' && \
     black --check --diff . && \
     echo 'Running Bandit' && \
-    bandit --recursive ./ --configfile .bandit.yml
-
+    bandit --recursive ./ --configfile .bandit.yml && \
+    echo 'Running Pylint' && \
+    pylint **/*.py
 
 ############
 # Unit Tests
@@ -85,7 +86,6 @@ WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 RUN echo 'Running Ansible Sanity Tests.' && \
     ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
-    --skip-test pep8 \
     --python ${PYTHON_VER} \
     plugins/ && \
     echo 'Running Ansible Lint' && \

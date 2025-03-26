@@ -11,9 +11,7 @@ import pytest
 import os
 from hypothesis import given, settings, HealthCheck, strategies as st
 from functools import partial
-from unittest.mock import patch, MagicMock, Mock
-from ansible.module_utils.basic import AnsibleModule
-from ansible.errors import AnsibleError
+from unittest.mock import patch, MagicMock
 import pynautobot
 
 try:
@@ -364,5 +362,5 @@ def test_validate_certs_override():
 def test_validate_certs_invalid():
     """Test that the default SSL verify is set as false via environment variable."""
     with pytest.raises(ValueError) as exc:
-        _ = NautobotApiBase(url="https://nautobot.example.com", token="abc123")
+        _ = NautobotApiBase(url="https://nautobot.example.com", token="abc123")  # pylint: disable=disallowed-name
     assert "Invalid truthy value" in str(exc.value)

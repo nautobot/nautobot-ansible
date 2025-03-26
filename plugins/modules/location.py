@@ -30,7 +30,7 @@ options:
     description:
       - Primary Key of the location, used to delete the location.
       - Because of hierarchical nature of locations and name being not unique across locations,
-      - it's a user responsibility to query location and pass its id(PK) to the task to delete the location. 
+      - it's a user responsibility to query location and pass its id(PK) to the task to delete the location.
     required: false
     type: str
   name:
