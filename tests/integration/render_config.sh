@@ -15,7 +15,9 @@ set -o pipefail # don't hide errors within pipes
 function main()
 {
     readonly template="$1"
-    readonly content="$(cat "${template}")"
+    local content
+    content="$(cat "${template}")"
+    readonly content
 
     eval "echo \"$content\""
 }

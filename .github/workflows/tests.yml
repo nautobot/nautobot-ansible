@@ -61,7 +61,6 @@ jobs:
       - name: "Tests"
         run: "invoke unit"
     needs:
-      - "changelog"
       - "lint"
   integration_partial:
     # Only run a subset of integration tests on normal PRs

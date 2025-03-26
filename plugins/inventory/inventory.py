@@ -6,195 +6,196 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
-    name: inventory
-    author:
-        - Remy Leone (@sieben)
-        - Anthony Ruhier (@Anthony25)
-        - Nikhil Singh Baliyan (@nikkytub)
-        - Sander Steffann (@steffann)
-        - Douglas Heriot (@DouglasHeriot)
-    short_description: Nautobot inventory source
-    description:
-        - Get inventory hosts from Nautobot
-        - "Note: If gathering an endpoint that has significant number of objects (such as interfaces), you may have failures caused by gathering too much data. Look to leverage the GraphQL inventory or gather data as a first task in the playbook rather than in inventory."
-    extends_documentation_fragment:
-        - constructed
-        - inventory_cache
-    options:
-        plugin:
-            description: token that ensures this is a source file for the 'nautobot' plugin.
-            required: True
-            choices: ['networktocode.nautobot.inventory']
-        api_endpoint:
-            description: Endpoint of the Nautobot API
-            required: True
-            env:
-                - name: NAUTOBOT_URL
-        api_version:
-            description: The version of the Nautobot REST API.
-            required: False
-            version_added: "4.1.0"
-        validate_certs:
-            description:
-                - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
-            default: True
-            type: boolean
-        follow_redirects:
-            description:
-                - Determine how redirects are followed.
-                - By default, I(follow_redirects) is set to uses urllib2 default behavior.
-            default: urllib2
-            choices: ['urllib2', 'all', 'yes', 'safe', 'none']
-        config_context:
-            description:
-                - If True, it adds config_context in host vars.
-                - Config-context enables the association of arbitrary data to devices and virtual machines grouped by
-                  location, role, platform, and/or tenant. Please check official nautobot docs for more info.
-            default: False
-            type: boolean
-        flatten_config_context:
-            description:
-                - If I(config_context) is enabled, by default it's added as a host var named config_context.
-                - If flatten_config_context is set to True, the config context variables will be added directly to the host instead.
-            default: False
-            type: boolean
-            version_added: "1.0.0"
-        flatten_local_context_data:
-            description:
-                - If I(local_context_data) is enabled, by default it's added as a host var named local_context_data.
-                - If flatten_local_context_data is set to True, the config context variables will be added directly to the host instead.
-            default: False
-            type: boolean
-            version_added: "1.0.0"
-        flatten_custom_fields:
-            description:
-                - By default, host custom fields are added as a dictionary host var named custom_fields.
-                - If flatten_custom_fields is set to True, the fields will be added directly to the host instead.
-            default: False
-            type: boolean
-            version_added: "1.0.0"
-        token:
-            required: False
-            description:
-              - Nautobot API token to be able to read against Nautobot.
-              - This may not be required depending on the Nautobot setup.
-            env:
-                # in order of precedence
-                - name: NAUTOBOT_TOKEN
-        plurals:
-            description:
-                - If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
-                - Group names will be plural (ie. "locations_mylocation" instead of "location_mylocation")
-                - The choices of I(group_by) will be changed by this option.
-            default: True
-            type: boolean
-            version_added: "1.0.0"
-        interfaces:
-            description:
-                - If True, it adds the device or virtual machine interface information in host vars.
-            default: False
-            type: boolean
-            version_added: "1.0.0"
-        services:
-            description:
-                - If True, it adds the device or virtual machine services information in host vars.
-            default: True
-            type: boolean
-            version_added: "1.0.0"
-        fetch_all:
-            description:
-                - By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.
-                - When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device_id and virtual_machine_id.
-                - If you are using the various query_filters options to reduce the number of devices, querying Nautobot may be faster with fetch_all False.
-                - For efficiency, when False, these requests will be batched, for example /api/dcim/interfaces?limit=0&device_id=1&device_id=2&device_id=3
-                - These GET request URIs can become quite large for a large number of devices.
-                - If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.
-            default: True
-            type: boolean
-            version_added: "1.0.0"
-        group_by:
-            description: Keys used to create groups. The I(plurals) option controls which of these are valid.
-            type: list
-            elements: str
-            choices:
-                - locations
-                - location
-                - tenants
-                - tenant
-                - tenant_group
-                - racks
-                - rack
-                - rack_group
-                - rack_role
-                - tags
-                - tag
-                - device_roles
-                - role
-                - device_types
-                - device_type
-                - manufacturers
-                - manufacturer
-                - platforms
-                - platform
-                - cluster
-                - cluster_type
-                - cluster_group
-                - is_virtual
-                - services
-                - status
-            default: []
-        group_names_raw:
-            description: Will not add the group_by choice name to the group names
-            default: False
-            type: boolean
-            version_added: "1.0.0"
-        query_filters:
-            description: List of parameters passed to the query string for both devices and VMs (Multiple values may be separated by commas)
-            type: list
-            elements: str
-            default: []
-        device_query_filters:
-            description: List of parameters passed to the query string for devices (Multiple values may be separated by commas)
-            type: list
-            elements: str
-            default: []
-        vm_query_filters:
-            description: List of parameters passed to the query string for VMs (Multiple values may be separated by commas)
-            type: list
-            elements: str
-            default: []
-        timeout:
-            description: Timeout for Nautobot requests in seconds
-            type: int
-            default: 60
-        max_uri_length:
-            description:
-                - When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).
-                - You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.
-            type: int
-            default: 4000
-            version_added: "1.0.0"
-        virtual_chassis_name:
-            description:
-                - When a device is part of a virtual chassis, use the virtual chassis name as the Ansible inventory hostname.
-                - The host var values will be from the virtual chassis master.
-            type: boolean
-            default: False
-        dns_name:
-            description:
-                - Force IP Addresses to be fetched so that the dns_name for the primary_ip of each device or VM is set as a host_var.
-                - Setting interfaces will also fetch IP addresses and the dns_name host_var will be set.
-            type: boolean
-            default: False
-        ansible_host_dns_name:
-            description:
-                - If True, sets DNS Name (fetched from primary_ip) to be used in ansible_host variable, instead of IP Address.
-            type: boolean
-            default: False
-        compose:
-            description: List of custom ansible host vars to create from the device object fetched from Nautobot
-            default: {}
-            type: dict
+  name: inventory
+  author:
+    - Remy Leone (@sieben)
+    - Anthony Ruhier (@Anthony25)
+    - Nikhil Singh Baliyan (@nikkytub)
+    - Sander Steffann (@steffann)
+    - Douglas Heriot (@DouglasHeriot)
+  short_description: Nautobot inventory source
+  description:
+    - Get inventory hosts from Nautobot
+    - "Note: If gathering an endpoint that has significant number of objects (such as interfaces), you may have failures caused by gathering too much data."
+    - "Look to leverage the GraphQL inventory or gather data as a first task in the playbook rather than in inventory."
+  extends_documentation_fragment:
+    - constructed
+    - inventory_cache
+  options:
+    plugin:
+      description: token that ensures this is a source file for the 'nautobot' plugin.
+      required: True
+      choices: ['networktocode.nautobot.inventory']
+    api_endpoint:
+      description: Endpoint of the Nautobot API
+      required: True
+      env:
+        - name: NAUTOBOT_URL
+    api_version:
+      description: The version of the Nautobot REST API.
+      required: False
+      version_added: "4.1.0"
+    validate_certs:
+      description:
+        - Allows connection when SSL certificates are not valid. Set to C(false) when certificates are not trusted.
+      default: True
+      type: boolean
+    follow_redirects:
+      description:
+        - Determine how redirects are followed.
+        - By default, I(follow_redirects) is set to uses urllib2 default behavior.
+      default: urllib2
+      choices: ['urllib2', 'all', 'yes', 'safe', 'none']
+    config_context:
+      description:
+        - If True, it adds config_context in host vars.
+        - Config-context enables the association of arbitrary data to devices and virtual machines grouped by
+          location, role, platform, and/or tenant. Please check official nautobot docs for more info.
+      default: False
+      type: boolean
+    flatten_config_context:
+      description:
+        - If I(config_context) is enabled, by default it's added as a host var named config_context.
+        - If flatten_config_context is set to True, the config context variables will be added directly to the host instead.
+      default: False
+      type: boolean
+      version_added: "1.0.0"
+    flatten_local_context_data:
+      description:
+        - If I(local_context_data) is enabled, by default it's added as a host var named local_context_data.
+        - If flatten_local_context_data is set to True, the config context variables will be added directly to the host instead.
+      default: False
+      type: boolean
+      version_added: "1.0.0"
+    flatten_custom_fields:
+      description:
+        - By default, host custom fields are added as a dictionary host var named custom_fields.
+        - If flatten_custom_fields is set to True, the fields will be added directly to the host instead.
+      default: False
+      type: boolean
+      version_added: "1.0.0"
+    token:
+      required: False
+      description:
+        - Nautobot API token to be able to read against Nautobot.
+        - This may not be required depending on the Nautobot setup.
+      env:
+        # in order of precedence
+        - name: NAUTOBOT_TOKEN
+    plurals:
+      description:
+        - If True, all host vars are contained inside single-element arrays for legacy compatibility with old versions of this plugin.
+        - Group names will be plural (ie. "locations_mylocation" instead of "location_mylocation")
+        - The choices of I(group_by) will be changed by this option.
+      default: True
+      type: boolean
+      version_added: "1.0.0"
+    interfaces:
+      description:
+        - If True, it adds the device or virtual machine interface information in host vars.
+      default: False
+      type: boolean
+      version_added: "1.0.0"
+    services:
+      description:
+        - If True, it adds the device or virtual machine services information in host vars.
+      default: True
+      type: boolean
+      version_added: "1.0.0"
+    fetch_all:
+      description:
+        - By default, fetching interfaces and services will get all of the contents of Nautobot regardless of query_filters applied to devices and VMs.
+        - When set to False, separate requests will be made fetching interfaces, services, and IP addresses for each device_id and virtual_machine_id.
+        - If you are using the various query_filters options to reduce the number of devices, querying Nautobot may be faster with fetch_all False.
+        - For efficiency, when False, these requests will be batched, for example /api/dcim/interfaces?limit=0&device_id=1&device_id=2&device_id=3
+        - These GET request URIs can become quite large for a large number of devices.
+        - If you run into HTTP 414 errors, you can adjust the max_uri_length option to suit your web server.
+      default: True
+      type: boolean
+      version_added: "1.0.0"
+    group_by:
+      description: Keys used to create groups. The I(plurals) option controls which of these are valid.
+      type: list
+      elements: str
+      choices:
+        - locations
+        - location
+        - tenants
+        - tenant
+        - tenant_group
+        - racks
+        - rack
+        - rack_group
+        - rack_role
+        - tags
+        - tag
+        - device_roles
+        - role
+        - device_types
+        - device_type
+        - manufacturers
+        - manufacturer
+        - platforms
+        - platform
+        - cluster
+        - cluster_type
+        - cluster_group
+        - is_virtual
+        - services
+        - status
+      default: []
+    group_names_raw:
+      description: Will not add the group_by choice name to the group names
+      default: False
+      type: boolean
+      version_added: "1.0.0"
+    query_filters:
+      description: List of parameters passed to the query string for both devices and VMs (Multiple values may be separated by commas)
+      type: list
+      elements: str
+      default: []
+    device_query_filters:
+      description: List of parameters passed to the query string for devices (Multiple values may be separated by commas)
+      type: list
+      elements: str
+      default: []
+    vm_query_filters:
+      description: List of parameters passed to the query string for VMs (Multiple values may be separated by commas)
+      type: list
+      elements: str
+      default: []
+    timeout:
+      description: Timeout for Nautobot requests in seconds
+      type: int
+      default: 60
+    max_uri_length:
+      description:
+        - When fetch_all is False, GET requests to Nautobot may become quite long and return a HTTP 414 (URI Too Long).
+        - You can adjust this option to be smaller to avoid 414 errors, or larger for a reduced number of requests.
+      type: int
+      default: 4000
+      version_added: "1.0.0"
+    virtual_chassis_name:
+      description:
+        - When a device is part of a virtual chassis, use the virtual chassis name as the Ansible inventory hostname.
+        - The host var values will be from the virtual chassis master.
+      type: boolean
+      default: False
+    dns_name:
+      description:
+        - Force IP Addresses to be fetched so that the dns_name for the primary_ip of each device or VM is set as a host_var.
+        - Setting interfaces will also fetch IP addresses and the dns_name host_var will be set.
+      type: boolean
+      default: False
+    ansible_host_dns_name:
+      description:
+        - If True, sets DNS Name (fetched from primary_ip) to be used in ansible_host variable, instead of IP Address.
+      type: boolean
+      default: False
+    compose:
+      description: List of custom ansible host vars to create from the device object fetched from Nautobot
+      default: {}
+      type: dict
 """
 
 EXAMPLES = """

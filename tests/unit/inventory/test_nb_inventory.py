@@ -9,7 +9,7 @@ __metaclass__ = type
 import pytest
 import os
 from functools import partial
-from unittest.mock import patch, MagicMock, Mock, call
+from unittest.mock import Mock, call
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import InventoryModule

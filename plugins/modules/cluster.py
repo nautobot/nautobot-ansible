@@ -32,7 +32,7 @@ options:
     version_added: "3.0.0"
   cluster_type:
     description:
-      - type of the cluster. Required if I(state=present) and the cluster does not exist yet 
+      - type of the cluster. Required if I(state=present) and the cluster does not exist yet
     required: false
     type: raw
     version_added: "3.0.0"

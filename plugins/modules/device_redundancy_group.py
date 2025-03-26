@@ -150,7 +150,7 @@ def main():
                 type="str",
                 choices=["active-active", "active-passive"],
             ),
-            secrets_group=dict(required=False, type="raw"),
+            secrets_group=dict(required=False, type="raw", no_log=False),
         )
     )
 

@@ -5,3 +5,4 @@ exclude_dirs:
   - "./tests/"
   # Ignore locally installed collection
   - "./collections/"
+  - "./.ansible/collections"

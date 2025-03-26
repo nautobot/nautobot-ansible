@@ -2,10 +2,9 @@
 
 # pylint: disable=invalid-envvar-default
 import os
-import sys
 
-from nautobot.core.settings import *  # noqa: F403  # pylint: disable=wildcard-import,unused-wildcard-import
-from nautobot.core.settings_funcs import parse_redis_connection, is_truthy
+from nautobot.core.settings import *  # noqa: F403  # pylint: disable=wildcard-import,unused-wildcard-import,import-error
+from nautobot.core.settings_funcs import parse_redis_connection  # pylint: disable=import-error
 
 
 #
