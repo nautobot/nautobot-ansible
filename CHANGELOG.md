@@ -4,6 +4,30 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.10.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.10.0)
+
+### Added
+
+- [#517](https://github.com/nautobot/nautobot-ansible/issues/517) - Added Ansible Lint to the project.
+- [#521](https://github.com/nautobot/nautobot-ansible/issues/521) - Added VLAN Group capability to vlan module.
+
+### Changed
+
+- [#515](https://github.com/nautobot/nautobot-ansible/issues/515) - Updated meta/runtime.yml minimum Ansible version to 2.16.
+
+### Documentation
+
+- [#518](https://github.com/nautobot/nautobot-ansible/issues/518) - Updated documentation on the primary README and the contributing.
+
+### Housekeeping
+
+- [#230](https://github.com/nautobot/nautobot-ansible/issues/230) - Added the towncrier library to dev dependencies to help generate release notes.
+- [#230](https://github.com/nautobot/nautobot-ansible/issues/230) - Added documentation on how to create changelog fragments.
+- [#512](https://github.com/nautobot/nautobot-ansible/issues/512) - Updated the directories included in the build process.
+- Updated the release documentation to reflect the latest processes.
+- Added links to existing entries in `CHANGELOG.md`.
+- Fixed many ansible-lint and ansible-test issues.
+
 ## [v5.9.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.9.0)
 
 ### Release Summary

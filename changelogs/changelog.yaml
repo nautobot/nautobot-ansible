@@ -589,3 +589,16 @@ releases:
       release_summary: This is the first official release of an Ansible EDA Event Source plugin for Nautobot Changelog.
       minor_changes:
         - (#504) Added nautobot_changelog as an Event source plugin for Nautobot Changelog
+  5.10.0:
+    changes:
+      minor_changes:
+        - (#517) Added Ansible Lint to the project.
+        - (#521) Added VLAN Group capability to vlan module.
+        - (#515) Updated meta/runtime.yml minimum Ansible version to 2.16.
+        - (#518) Updated documentation on the primary README and the contributing.
+        - (#230) Added the towncrier library to dev dependencies to help generate release notes.
+        - (#230) Added documentation on how to create changelog fragments.
+        - (#512) Updated the directories included in the build process.
+        - Updated the release documentation to reflect the latest processes.
+        - Added links to existing entries in `CHANGELOG.md`.
+        - Fixed many ansible-lint and ansible-test issues.

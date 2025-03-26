@@ -12,7 +12,7 @@ This collection provides Ansible plugins (modules, inventory, lookup/filters) to
 
 To keep the code simple, we only officially support the two latest releases of Nautobot and don't guarantee backwards compatibility beyond that.
 
-Full documentation for this App can be found over on the [Nautobot Docs](https://docs.nautobot.com) website:
+Full documentation for this App can be found over on the [Nautobot Docs](https://docs.nautobot.com/projects/ansible/en/stable/) website:
 
 - [Plugins Reference](https://docs.nautobot.com/projects/ansible/en/latest/networktocode.nautobot/) - Documentation (parameters, examples, return values) for all plugins included in the collection.
 - [Installation Guide](https://docs.nautobot.com/projects/ansible/en/latest/getting_started/installation/)
