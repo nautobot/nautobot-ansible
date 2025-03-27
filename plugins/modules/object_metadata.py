@@ -62,7 +62,7 @@ EXAMPLES = r"""
 - name: "Test object metadata creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create object metadata
       networktocode.nautobot.object_metadata:
@@ -73,7 +73,7 @@ EXAMPLES = r"""
         assigned_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
         value: foobar
         scoped_fields:
-            - name
+          - name
     - name: Delete object metadata
       networktocode.nautobot.object_metadata:
         url: http://nautobot.local
@@ -83,7 +83,7 @@ EXAMPLES = r"""
         assigned_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
         value: foobar
         scoped_fields:
-            - name
+          - name
         state: absent
 """
 

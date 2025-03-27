@@ -40,7 +40,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create RIR within Nautobot with only required information
@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test RIR One
-        is_private: True
+        is_private: true
         state: present
 
     - name: Delete RIR within nautobot

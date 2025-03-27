@@ -48,7 +48,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot tenant group module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create tenant within Nautobot with only required information
       networktocode.nautobot.tenant_group:
@@ -71,7 +71,6 @@ EXAMPLES = r"""
         name: Tenant Group ABC
         parent: Customer Tenants
         state: present
-
 """
 
 RETURN = r"""

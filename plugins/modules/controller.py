@@ -81,7 +81,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create controller within Nautobot with only required information
@@ -113,7 +113,6 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: test_controller_3
         state: absent
-
 """
 
 RETURN = r"""

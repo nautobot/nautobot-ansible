@@ -151,7 +151,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot interface module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create interface within Nautobot with only required information
       networktocode.nautobot.device_interface:
@@ -220,7 +220,7 @@ EXAMPLES = r"""
         device: test100
         name: GigabitEthernet2/0/1
         enabled: false
-        update_vc_child: True
+        update_vc_child: true
     - name: |
         Create an interface and update custom_field data point,
         setting the value to True
@@ -231,7 +231,7 @@ EXAMPLES = r"""
         name: GigabitEthernet1/1/1
         enabled: false
         custom_fields:
-          monitored: True
+          monitored: true
     - name: Create child interface
       networktocode.nautobot.device_interface:
         url: http://nautobot.local

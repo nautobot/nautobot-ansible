@@ -69,7 +69,7 @@ EXAMPLES = r"""
     name: TestFilterGroup
     group_type: dynamic-filter
     content_type: dcim.device
-    filter: 
+    filter:
       location:
         - "Child-Child Test Location"
     state: present

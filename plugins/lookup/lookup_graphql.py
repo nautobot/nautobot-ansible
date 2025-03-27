@@ -55,46 +55,46 @@ DOCUMENTATION = """
 """
 
 EXAMPLES = """
-  # Make API Query without variables
-  - name: SET FACT OF STRING
-    set_fact:
-      query_string: |
-        query {
-          locations {
-            id
+# Make API Query without variables
+- name: SET FACT OF STRING
+  set_fact:
+    query_string: |
+      query {
+        locations {
+          id
+          name
+          parent {
             name
-            parent {
-              name
-            }
           }
         }
+      }
 
-  # Make query to GraphQL Endpoint
-  - name: Obtain list of locations from Nautobot
-    set_fact:
-      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
+# Make query to GraphQL Endpoint
+- name: Obtain list of locations from Nautobot
+  set_fact:
+    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
-  # Example with variables
-  - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
-    set_fact:
-      graph_variables:
-        location_name: DEN
-      query_string: |
-        query ($location_name:[String]) {
-            locations (name: $location_name) {
-            id
+# Example with variables
+- name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
+  set_fact:
+    graph_variables:
+      location_name: DEN
+    query_string: |
+      query ($location_name:[String]) {
+        locations (name: $location_name) {
+          id
+          name
+          parent {
             name
-            parent {
-                name
-            }
-            }
+          }
         }
+      }
 
-  # Get Response with variables
-  - name: Obtain list of devices from Nautobot
-    set_fact:
-      query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
-        url='https://nautobot.example.com', token='<redact>') }}"
+# Get Response with variables
+- name: Obtain list of devices from Nautobot
+  set_fact:
+    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
+    url='https://nautobot.example.com', token='<redact>') }}"
 """
 
 RETURN = """

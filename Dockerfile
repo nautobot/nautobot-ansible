@@ -43,8 +43,9 @@ COPY . .
 RUN echo 'Running Black' && \
     black --check --diff . && \
     echo 'Running Bandit' && \
-    bandit --recursive ./ --configfile .bandit.yml
-
+    bandit --recursive ./ --configfile .bandit.yml && \
+    echo 'Running Pylint' && \
+    pylint **/*.py
 
 ############
 # Unit Tests
@@ -82,11 +83,13 @@ RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz -p ${ANSIBLE_
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 
 # Run sanity tests
-RUN ansible-test sanity $ANSIBLE_SANITY_ARGS \
+RUN echo 'Running Ansible Sanity Tests.' && \
+    ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
-    --skip-test pep8 \
     --python ${PYTHON_VER} \
-    plugins/
+    plugins/ && \
+    echo 'Running Ansible Lint' && \
+    ansible-lint
 
 # Run unit tests
 RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --requirements --python ${PYTHON_VERSION}

@@ -194,7 +194,7 @@ def main():
         dict(
             label=dict(required=True, type="str"),
             grouping=dict(required=False, type="str"),
-            key=dict(required=False, type="str"),
+            key=dict(required=False, type="str", no_log=False),
             type=dict(required=False, choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"], type="str"),
             weight=dict(required=False, type="int"),
             description=dict(required=False, type="str"),

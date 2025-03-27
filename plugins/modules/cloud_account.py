@@ -68,7 +68,14 @@ EXAMPLES = r"""
     secrets_group: "{{ my_secrets_group['key'] }}"
     state: present
   vars:
-    my_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Secrets Group\"') }}"
+    my_secrets_group: >-
+      {{ lookup(
+        'networktocode.nautobot.lookup',
+        'secrets-groups',
+        api_endpoint=nautobot_url,
+        token=nautobot_token,
+        api_filter='name="My Secrets Group"'
+      ) }}
 
 - name: Delete a cloud account
   networktocode.nautobot.cloud_account:

@@ -72,7 +72,7 @@ EXAMPLES = r"""
 - name: "Create nautobot service"
   connection: local
   hosts: all
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create service
@@ -93,7 +93,7 @@ EXAMPLES = r"""
 - name: "Delete nautobot service"
   connection: local
   hosts: all
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Delete service

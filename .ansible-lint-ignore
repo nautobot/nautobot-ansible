@@ -1,0 +1,2 @@
+plugins/inventory/inventory.py yaml[key-duplicates]  # Disabled due to proper examples
+plugins/inventory/gql_inventory.py yaml[key-duplicates]  # Disabled due to proper examples
