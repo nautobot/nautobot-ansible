@@ -115,6 +115,7 @@ nav:
         - New Module: "getting_started/contributing/modules/new_module.md"
         - Update Module: "getting_started/contributing/modules/update_module.md"
       - Testing Locally: "getting_started/contributing/testing_locally.md"
+      - Testing with GitHub Actions: "getting_started/contributing/testing_with_gha.md"
       - Debugging: "getting_started/contributing/debugging.md"
       - Changelog Fragments: "getting_started/contributing/changelog_fragments.md"
       - Release: "getting_started/contributing/release.md"

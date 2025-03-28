@@ -1,0 +1,31 @@
+---
+name: "Galaxy Importer Manual Test"
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build collection artifact
+    uses: ansible-community/github-action-build-collection/.github/workflows/build-collection.yml@main
+
+  test:
+    name: Test Collection with Galaxy importer
+    runs-on: "ubuntu-24.04"
+    needs:
+      - build
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Create config file
+        run: |
+          echo "[galaxy-importer]
+          RUN_ANSIBLE_TEST = True" > galaxy-importer.cfg
+
+      - name: Test import
+        uses: ansible-community/github-action-test-galaxy-import@main
+        with:
+          artifact-path: ${{ needs.build.outputs.artifact-filename }}
+          importer-config-path: galaxy-importer.cfg
