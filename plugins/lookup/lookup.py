@@ -231,6 +231,7 @@ def get_endpoint(nautobot, term):
         "power-port-templates": {"endpoint": nautobot.dcim.power_port_templates},
         "power-ports": {"endpoint": nautobot.dcim.power_ports},
         "prefixes": {"endpoint": nautobot.ipam.prefixes},
+        "prefix-location-assignments": {"endpoint": nautobot.ipam.prefix_location_assignments},
         "provider-networks": {"endpoint": nautobot.circuits.provider_networks},
         "rack-groups": {"endpoint": nautobot.dcim.rack_groups},
         "rack-reservations": {"endpoint": nautobot.dcim.rack_reservations},

@@ -637,6 +637,15 @@
       tags:
         - software_version
 
+    - name: "PYNAUTOBOT_PREFIX_LOCATION TESTS"
+      include_tasks:
+        file: "prefix_location.yml"
+        apply:
+          tags:
+            - prefix_location
+      tags:
+        - prefix_location
+
 ##########################
 ##
 ### NAUTOBOT 2.3+ TESTS

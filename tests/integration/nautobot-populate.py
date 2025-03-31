@@ -178,6 +178,7 @@ prefixes = [
     {"prefix": "10.10.0.0/16", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Private"}},
+    {"prefix": "192.0.2.0/24", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "2001::1:0/64", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
 ]
 created_prefixes = make_nautobot_calls(nb.ipam.prefixes, prefixes)
