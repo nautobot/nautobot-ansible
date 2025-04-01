@@ -22,7 +22,9 @@ version_added: "5.11.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
-  prefix:
+  location_prefix:
+    aliases:
+      - prefix
     description:
       - The Prefix to associate with the location
     required: true
@@ -89,7 +91,7 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            prefix=dict(required=True, type="raw"),
+            location_prefix=dict(required=True, type="raw", aliases=["prefix"]),
             location=dict(required=True, type="raw"),
         )
     )
