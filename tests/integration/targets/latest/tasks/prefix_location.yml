@@ -6,7 +6,7 @@
 ##
 - set_fact:
     test_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"192.0.2.0/24\"') }}"
-    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Test Location\" parent=\"Parent Test Location\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Prefix Test Location\"') }}"
 
 - name: "Assert pre-testing conditions are correct"
   assert:
@@ -21,9 +21,7 @@
     prefix:
       prefix: "192.0.2.0/24"
       namespace: Global
-    location:
-      name: "Child Test Location"
-      parent: "Parent Test Location"
+    location: "Prefix Test Location"
     state: "present"
   register: test_one
 
@@ -35,7 +33,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['prefix_location_assignments']['prefix'] == test_prefix['key']
       - test_one['prefix_location_assignments']['location'] == test_location['key']
-      - test_one['msg'] == "prefix_location_assignments 192.0.2.0/24: Child Test Location created"
+      - test_one['msg'] == "prefix_location_assignments 192.0.2.0/24: Prefix Test Location created"
 
 - name: "Skipping remaining prefix_location tests for Nautobot 2.3 and below"
   # Prefix to Location assignments were added in Nautobot v2.2,
@@ -52,9 +50,7 @@
         prefix:
           prefix: "192.0.2.0/24"
           namespace: Global
-        location:
-          name: "Child Test Location"
-          parent: "Parent Test Location"
+        location: "Prefix Test Location"
         state: "present"
       register: test_two
 
@@ -64,7 +60,7 @@
           - test_two is not changed
           - test_two['prefix_location_assignments']['prefix'] == test_prefix['key']
           - test_two['prefix_location_assignments']['location'] == test_location['key']
-          - test_two['msg'] == "prefix_location_assignments 192.0.2.0/24: Child Test Location already exists"
+          - test_two['msg'] == "prefix_location_assignments 192.0.2.0/24: Prefix Test Location already exists"
 
     - name: "Prefix Location 3: Delete Prefix Location assignment"
       networktocode.nautobot.prefix_location:
@@ -73,9 +69,7 @@
         prefix:
           prefix: "192.0.2.0/24"
           namespace: Global
-        location:
-          name: "Child Test Location"
-          parent: "Parent Test Location"
+        location: "Prefix Test Location"
         state: "absent"
       register: test_three
 
@@ -94,9 +88,7 @@
         prefix:
           prefix: "192.0.2.0/24"
           namespace: Global
-        location:
-          name: "Child Test Location"
-          parent: "Parent Test Location"
+        location: "Prefix Test Location"
         state: "absent"
       register: test_four
 

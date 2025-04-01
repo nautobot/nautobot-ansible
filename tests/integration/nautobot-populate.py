@@ -140,6 +140,7 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 parent_location_attrs = [
     {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
     {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {"name": "Prefix Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 
