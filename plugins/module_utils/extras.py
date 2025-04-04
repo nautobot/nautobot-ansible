@@ -23,6 +23,7 @@ NB_JOB_BUTTONS = "job_buttons"
 NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
+NB_SECRET = "secrets"  # nosec B105
 
 
 class NautobotExtrasModule(NautobotModule):

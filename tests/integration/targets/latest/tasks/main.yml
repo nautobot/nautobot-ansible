@@ -573,6 +573,15 @@
   tags:
     - job_button
 
+- name: "PYNAUTOBOT_SECRET TESTS"
+  include_tasks:
+    file: "secret.yml"
+    apply:
+      tags:
+        - secret
+  tags:
+    - secret
+
 ##########################
 ##
 ### NAUTOBOT 2.2+ TESTS
