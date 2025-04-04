@@ -140,6 +140,7 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 parent_location_attrs = [
     {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
     {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {"name": "Prefix Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 
@@ -178,6 +179,7 @@ prefixes = [
     {"prefix": "10.10.0.0/16", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Private"}},
+    {"prefix": "192.0.2.0/24", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "2001::1:0/64", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
 ]
 created_prefixes = make_nautobot_calls(nb.ipam.prefixes, prefixes)

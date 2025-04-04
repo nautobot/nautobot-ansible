@@ -1,0 +1,99 @@
+---
+##
+##
+### PYNAUTOBOT_PREFIX_LOCATION
+##
+##
+- set_fact:
+    test_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"192.0.2.0/24\"') }}"
+    test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Prefix Test Location\"') }}"
+
+- name: "Assert pre-testing conditions are correct"
+  assert:
+    that:
+      - test_prefix['value']['locations'] == []
+      - test_location['value']['prefix_count'] == 0
+
+- name: "Prefix Location 1: Create Prefix Location assignment"
+  networktocode.nautobot.prefix_location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    prefix:
+      prefix: "192.0.2.0/24"
+      namespace: Global
+    location: "Prefix Test Location"
+    state: "present"
+  register: test_one
+
+- name: "Prefix Location 1: ASSERT - Create Prefix Location assignment"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['prefix_location_assignments']['prefix'] == test_prefix['key']
+      - test_one['prefix_location_assignments']['location'] == test_location['key']
+      - test_one['msg'] == "prefix_location_assignments 192.0.2.0/24: Prefix Test Location created"
+
+- name: "Skipping remaining prefix_location tests for Nautobot 2.3 and below"
+  # Prefix to Location assignments were added in Nautobot v2.2,
+  # but there was a bug that was fixed in v2.4.4 
+  # so we are only testing this in v2.4+ CI runs
+  # https://github.com/nautobot/nautobot/issues/5851
+  when:
+    - "nautobot_version is version('2.4', '>=')"
+  block:
+    - name: "Prefix Location 2: Create idempotent"
+      networktocode.nautobot.prefix_location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        prefix:
+          prefix: "192.0.2.0/24"
+          namespace: Global
+        location: "Prefix Test Location"
+        state: "present"
+      register: test_two
+
+    - name: "Prefix Location 2: ASSERT - Create idempotent"
+      assert:
+        that:
+          - test_two is not changed
+          - test_two['prefix_location_assignments']['prefix'] == test_prefix['key']
+          - test_two['prefix_location_assignments']['location'] == test_location['key']
+          - test_two['msg'] == "prefix_location_assignments 192.0.2.0/24: Prefix Test Location already exists"
+
+    - name: "Prefix Location 3: Delete Prefix Location assignment"
+      networktocode.nautobot.prefix_location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        prefix:
+          prefix: "192.0.2.0/24"
+          namespace: Global
+        location: "Prefix Test Location"
+        state: "absent"
+      register: test_three
+
+    - name: "Prefix Location 3: ASSERT - Delete Prefix Location assignment"
+      assert:
+        that:
+          - test_three is changed
+          - test_three['diff']['before']['state'] == "present"
+          - test_three['diff']['after']['state'] == "absent"
+          - "'deleted' in test_three['msg']"
+
+    - name: "Prefix Location 4: Delete idempotent"
+      networktocode.nautobot.prefix_location:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        prefix:
+          prefix: "192.0.2.0/24"
+          namespace: Global
+        location: "Prefix Test Location"
+        state: "absent"
+      register: test_four
+
+    - name: "Prefix Location 4: ASSERT - Delete idempotent"
+      assert:
+        that:
+          - test_four is not changed
+          - "'already absent' in test_four['msg']"

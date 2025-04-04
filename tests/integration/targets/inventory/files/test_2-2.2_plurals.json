@@ -2047,6 +2047,7 @@
             "is_virtual",
             "location_parent_test_location",
             "location_parent_test_location_2",
+            "location_prefix_test_location",
             "locations_child_child_test_location",
             "locations_child_test_location",
             "locations_parent_test_location",
