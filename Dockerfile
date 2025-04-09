@@ -34,18 +34,25 @@ RUN poetry install --only main
 # Runs all necessary non Ansible linting and code checks
 FROM base AS lint
 
+ARG SKIP_LINT_TESTS
+ENV SKIP_LINT_TESTS=${SKIP_LINT_TESTS}
+
 # Install dev dependencies
 RUN poetry install
 
 # Copy in the application source and everything not explicitly banned by .dockerignore
 COPY . .
 
-RUN echo 'Running Black' && \
+RUN if [ "${SKIP_LINT_TESTS}" != "true" ]; then \
+    echo 'Running Black' && \
     black --check --diff . && \
     echo 'Running Bandit' && \
     bandit --recursive ./ --configfile .bandit.yml && \
     echo 'Running Pylint' && \
-    pylint **/*.py
+    pylint **/*.py; \
+    else \
+    echo 'Skipping linting'; \
+    fi
 
 ############
 # Unit Tests
@@ -69,6 +76,10 @@ ARG ANSIBLE_SANITY_ARGS
 ENV ANSIBLE_SANITY_ARGS=${ANSIBLE_SANITY_ARGS}
 ARG ANSIBLE_UNIT_ARGS
 ENV ANSIBLE_UNIT_ARGS=${ANSIBLE_UNIT_ARGS}
+ARG SKIP_SANITY_TESTS
+ENV SKIP_SANITY_TESTS=${SKIP_SANITY_TESTS}
+ARG SKIP_UNIT_TESTS
+ENV SKIP_UNIT_TESTS=${SKIP_UNIT_TESTS}
 
 # For Module unit tests as we use some testing features avaiable in this collection
 RUN ansible-galaxy collection install community.general
@@ -83,16 +94,25 @@ RUN ansible-galaxy collection install ./dist/networktocode*.tar.gz -p ${ANSIBLE_
 WORKDIR ${ANSIBLE_COLLECTIONS_PATH}/ansible_collections/networktocode/nautobot
 
 # Run sanity tests
-RUN echo 'Running Ansible Sanity Tests.' && \
+RUN if [ "${SKIP_SANITY_TESTS}" != "true" ]; then \
+    echo 'Running Ansible Sanity Tests.' && \
     ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
     --python ${PYTHON_VER} \
     plugins/ && \
     echo 'Running Ansible Lint' && \
-    ansible-lint
+    ansible-lint; \
+    else \
+    echo 'Skipping sanity tests'; \
+    fi
 
 # Run unit tests
-RUN ansible-test units $ANSIBLE_UNIT_ARGS --coverage --requirements --python ${PYTHON_VERSION}
+RUN if [ "${SKIP_UNIT_TESTS}" != "true" ]; then \
+    echo 'Running Ansible Unit Tests.' && \
+    ansible-test units $ANSIBLE_UNIT_ARGS --coverage --requirements --python ${PYTHON_VERSION}; \
+    else \
+    echo 'Skipping unit tests'; \
+    fi
 
 ############
 # Integration Tests
@@ -100,6 +120,10 @@ FROM unittests AS integration
 
 ARG ANSIBLE_INTEGRATION_ARGS
 ENV ANSIBLE_INTEGRATION_ARGS=${ANSIBLE_INTEGRATION_ARGS}
+ARG SKIP_INVENTORY_TESTS
+ENV SKIP_INVENTORY_TESTS=${SKIP_INVENTORY_TESTS}
+ARG SKIP_REGRESSION_TESTS
+ENV SKIP_REGRESSION_TESTS=${SKIP_REGRESSION_TESTS}
 ARG NAUTOBOT_VER
 ENV NAUTOBOT_VER=${NAUTOBOT_VER}
 

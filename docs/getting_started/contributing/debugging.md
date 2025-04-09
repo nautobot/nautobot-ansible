@@ -70,7 +70,7 @@ The program exited via sys.exit(). Exit status: 0
 
 For users of VS Code, the following file(s) are included to ease development. The specific uses are covered in more detail in later sections:
 
-- `./nautobot-ansible.code-workspace - VS Code workspace configuration file
+- `./nautobot-ansible.code-workspace.example` - VS Code workspace configuration file. Remove the `.example` suffix to keep a local copy including your own customisations. It will be ignored by `git`.
 
 ### VS Code tasks
 

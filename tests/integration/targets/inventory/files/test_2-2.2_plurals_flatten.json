@@ -306,6 +306,7 @@
             "parent_rack_group",
             "parent_test_location",
             "parent_test_location_2",
+            "prefix_test_location",
             "sub_test_rack",
             "test_cluster",
             "test_cluster_2",

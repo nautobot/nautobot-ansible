@@ -4,6 +4,32 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.11.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.11.0)
+
+### Added
+
+- [#359](https://github.com/nautobot/nautobot-ansible/issues/359) - Added the `prefix_location` module for managing prefix to location assignments.
+- [#531](https://github.com/nautobot/nautobot-ansible/issues/531) - Added the `secret` module for managing secrets in Nautobot.
+- [#535](https://github.com/nautobot/nautobot-ansible/issues/535) - Added the `secrets_group` module for managing secrets groups in Nautobot.
+- [#535](https://github.com/nautobot/nautobot-ansible/issues/535) - Added the `secrets_groups_association` module for associating secrets to secrets groups in Nautobot.
+
+### Dependencies
+
+- [#531](https://github.com/nautobot/nautobot-ansible/issues/531) - Updated pynautobot to v2.6.2 for proper idempotency of the `secret` module.
+
+### Documentation
+
+- [#525](https://github.com/nautobot/nautobot-ansible/issues/525) - Fixed a missing \` in the docs and added a little detail about the fact that the `.code-workspace` file is now an `.example`.
+- Added documentation for running the tests manually via GitHub Actions.
+- Updated the copyright documentation footer.
+
+### Housekeeping
+
+- [#527](https://github.com/nautobot/nautobot-ansible/issues/527) - Changed Python versions in test suite.
+- [#527](https://github.com/nautobot/nautobot-ansible/issues/527) - Disabled duplicate keys in testing.
+- [#528](https://github.com/nautobot/nautobot-ansible/issues/528) - Added a Manual CI workflow to test the collection with Galaxy Importer.
+- [#537](https://github.com/nautobot/nautobot-ansible/issues/537) - Added the ability to skip specific test suites when running tests via `invoke unit` and `invoke integration`.
+
 ## [v5.10.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.10.0)
 
 ### Added

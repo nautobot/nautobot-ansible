@@ -19,6 +19,7 @@ NB_IP_ADDRESSES = "ip_addresses"
 NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
 NB_NAMESPACES = "namespaces"
 NB_PREFIXES = "prefixes"
+NB_PREFIX_LOCATIONS = "prefix_location_assignments"
 NB_IPAM_ROLES = "roles"
 NB_RIRS = "rirs"
 NB_ROUTE_TARGETS = "route_targets"
@@ -145,7 +146,7 @@ class NautobotIpamModule(NautobotModule):
             name = data.get("address")
         elif self.endpoint in ["prefixes"]:
             name = data.get("prefix")
-        elif self.endpoint == "vlan_location_assignments":
+        elif self.endpoint in ["vlan_location_assignments", "prefix_location_assignments"]:
             name = data.get("display")
         else:
             name = data.get("name")

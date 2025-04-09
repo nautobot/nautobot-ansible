@@ -573,6 +573,33 @@
   tags:
     - job_button
 
+- name: "PYNAUTOBOT_SECRET TESTS"
+  include_tasks:
+    file: "secret.yml"
+    apply:
+      tags:
+        - secret
+  tags:
+    - secret
+
+- name: "PYNAUTOBOT_SECRETS_GROUP TESTS"
+  include_tasks:
+    file: "secrets_group.yml"
+    apply:
+      tags:
+        - secrets_group
+  tags:
+    - secrets_group
+
+- name: "PYNAUTOBOT_SECRETS_GROUPS_ASSOCIATION TESTS"
+  include_tasks:
+    file: "secrets_groups_association.yml"
+    apply:
+      tags:
+        - secrets_groups_association
+  tags:
+    - secrets_groups_association
+
 ##########################
 ##
 ### NAUTOBOT 2.2+ TESTS
@@ -636,6 +663,15 @@
             - software_version
       tags:
         - software_version
+
+    - name: "PYNAUTOBOT_PREFIX_LOCATION TESTS"
+      include_tasks:
+        file: "prefix_location.yml"
+        apply:
+          tags:
+            - prefix_location
+      tags:
+        - prefix_location
 
 ##########################
 ##
