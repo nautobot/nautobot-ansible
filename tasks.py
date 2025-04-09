@@ -234,15 +234,24 @@ def lint(context):
 @task(
     help={
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
+        "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times (e.g. --skip lint --skip sanity)",
     },
+    iterable=["skip"],
     incrementable=["verbose"],
 )
-def unit(context, verbose=0):
+def unit(context, verbose=0, skip=None):
     """Run unit tests"""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
+    if skip is not None:
+        if "lint" in skip:
+            env["SKIP_LINT_TESTS"] = "true"
+        if "sanity" in skip:
+            env["SKIP_SANITY_TESTS"] = "true"
+        if "unit" in skip:
+            env["SKIP_UNIT_TESTS"] = "true"
     context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit", env=env)
     # Clean up after the tests
     context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
@@ -253,11 +262,12 @@ def unit(context, verbose=0):
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
         "tags": "Run specific test tags (e.g. 'device' or 'location'); can be provided multiple times (e.g. --tags device --tags location)",
         "update_inventories": "Update the inventory integration test JSON files with the latest data",
+        "skip": "Skip specific tests (choices: lint, sanity, unit, inventory, regression); can be provided multiple times (e.g. --skip lint --skip sanity)",
     },
-    iterable=["tags"],
+    iterable=["tags", "skip"],
     incrementable=["verbose"],
 )
-def integration(context, verbose=0, tags=None, update_inventories=False):
+def integration(context, verbose=0, tags=None, update_inventories=False, skip=None):
     """Run all tests including integration tests"""
     build(context)
     # Destroy any existing containers and volumes that may be left over from a previous run
@@ -276,6 +286,17 @@ def integration(context, verbose=0, tags=None, update_inventories=False):
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     if update_inventories:
         env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # nosec B108
+    if skip is not None:
+        if "lint" in skip:
+            env["SKIP_LINT_TESTS"] = "true"
+        if "sanity" in skip:
+            env["SKIP_SANITY_TESTS"] = "true"
+        if "unit" in skip:
+            env["SKIP_UNIT_TESTS"] = "true"
+        if "inventory" in skip:
+            env["SKIP_INVENTORY_TESTS"] = "true"
+        if "regression" in skip:
+            env["SKIP_REGRESSION_TESTS"] = "true"
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from integration integration",
         env=env,
