@@ -24,6 +24,7 @@ NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
 NB_SECRET = "secrets"  # nosec B105
+NB_SECRETS_GROUP = "secrets_groups"
 
 
 class NautobotExtrasModule(NautobotModule):

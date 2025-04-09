@@ -582,6 +582,15 @@
   tags:
     - secret
 
+- name: "PYNAUTOBOT_SECRETS_GROUP TESTS"
+  include_tasks:
+    file: "secrets_group.yml"
+    apply:
+      tags:
+        - secrets_group
+  tags:
+    - secrets_group
+
 ##########################
 ##
 ### NAUTOBOT 2.2+ TESTS
