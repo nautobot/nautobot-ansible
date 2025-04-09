@@ -34,10 +34,18 @@ function main {
     python ./tests/integration/nautobot-populate.py
 
     echo "# Running..."
-    # shellcheck disable=SC2086
-    ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" inventory "$@"
-    # shellcheck disable=SC2086
-    ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" regression-latest "$@"
+    if [ "${SKIP_INVENTORY_TESTS}" != "true" ]; then
+        # shellcheck disable=SC2086
+        ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" inventory "$@"
+    else
+        echo "# Skipping inventory tests"
+    fi
+    if [ "${SKIP_REGRESSION_TESTS}" != "true" ]; then
+        # shellcheck disable=SC2086
+        ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" regression-latest "$@"
+    else
+        echo "# Skipping regression tests"
+    fi
     # shellcheck disable=SC2086
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report --requirements
