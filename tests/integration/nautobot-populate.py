@@ -587,7 +587,12 @@ secrets = [
         "parameters": {
             "variable": "TEST_ENV_VAR",
         },
-    }
+    },
+    {
+        "name": "Test Secret Two",
+        "provider": "environment-variable",
+        "parameters": {"variable": "TEST_ENV_VAR_TWO"},
+    },
 ]
 created_secrets = make_nautobot_calls(nb.extras.secrets, secrets)
 test_secret = nb.extras.secrets.get(name="Test Secret")
@@ -602,7 +607,8 @@ secrets_groups = [
                 "secret_type": "secret",
             }
         ],
-    }
+    },
+    {"name": "Test Secrets Group Two"},
 ]
 created_secrets_groups = make_nautobot_calls(nb.extras.secrets_groups, secrets_groups)
 

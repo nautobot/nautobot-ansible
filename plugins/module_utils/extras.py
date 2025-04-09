@@ -25,6 +25,7 @@ NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
 NB_SECRET = "secrets"  # nosec B105
 NB_SECRETS_GROUP = "secrets_groups"
+NB_SECRETS_GROUPS_ASSOCIATION = "secrets_groups_associations"
 
 
 class NautobotExtrasModule(NautobotModule):
@@ -62,6 +63,8 @@ class NautobotExtrasModule(NautobotModule):
             name = data["value"]
         elif endpoint_name in ["object_metadata"]:
             name = data.get("value", data.get("contact", data.get("team")))
+        elif endpoint_name == "secrets_groups_association":
+            name = f"{data['secrets_group']} -> {data['secret']}"
         else:
             name = data.get("id")
 
