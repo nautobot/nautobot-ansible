@@ -1,2 +1,0 @@
-Added the `secrets_group` module for managing secrets groups in Nautobot.
-Added the `secrets_groups_association` module for associating secrets to secrets groups in Nautobot.

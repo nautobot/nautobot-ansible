@@ -602,3 +602,27 @@ releases:
         - Updated the release documentation to reflect the latest processes.
         - Added links to existing entries in `CHANGELOG.md`.
         - Fixed many ansible-lint and ansible-test issues.
+  5.11.0:
+    modules:
+      - description: Creates or removes prefix to location assignments from Nautobot
+        name: prefix_location
+        namespace: ''
+      - description: Creates or removes secrets from Nautobot
+        name: secret
+        namespace: ''
+      - description: Creates or removes secrets groups from Nautobot
+        name: secrets_group
+        namespace: ''
+      - description: Creates or removes associations between secrets and secrets groups from Nautobot
+        name: secrets_groups_association
+        namespace: ''
+    changes:
+      minor_changes:
+        - (#531) - Updated pynautobot to v2.6.2 for proper idempotency of the `secret` module.
+        - (#525) - Fixed a missing \` in the docs and added a little detail about the fact that the `.code-workspace` file is now an `.example`.
+        - Added documentation for running the tests manually via GitHub Actions.
+        - Updated the copyright documentation footer.
+        - (#527) - Changed Python versions in test suite.
+        - (#527) - Disabled duplicate keys in testing.
+        - (#528) - Added a Manual CI workflow to test the collection with Galaxy Importer.
+        - (#537) - Added the ability to skip specific test suites when running tests via `invoke unit` and `invoke integration`.
