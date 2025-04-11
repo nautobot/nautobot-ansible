@@ -276,6 +276,7 @@ from ansible.module_utils._text import to_text, to_native
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
+from ansible.utils.unsafe_proxy import wrap_var
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -1165,6 +1166,29 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
         return group.replace("-", "_").replace(" ", "_").lower()
 
+    def chk_needs_wrapping(self, value):
+        """
+        Recursively checks lists and dictionaries, and checks strings directly,
+        to see if they need to be wrapped for safety due to containing
+        Jinja2 delimiters.
+        """
+        if isinstance(value, str):
+            # Check for Jinja2 template markers
+            return "{{" in value or "{%" in value
+        elif isinstance(value, dict):
+            # Check all dictionary values
+            return any(self.chk_needs_wrapping(v) for v in value.values())
+        elif isinstance(value, list):
+            # Check all list items
+            return any(self.chk_needs_wrapping(item) for item in value)
+        return False
+
+    def set_inv_var_safely(self, hostname, variable_name, value):
+        """Set inventory variable with conditional wrapping only where needed"""
+        if self.chk_needs_wrapping(value):
+            value = wrap_var(value)
+        self.inventory.set_variable(hostname, variable_name, value)
+
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
@@ -1277,9 +1301,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, value)
+                    self.set_inv_var_safely(hostname, key, value)
             else:
-                self.inventory.set_variable(hostname, attribute, extracted_value)
+                self.set_inv_var_safely(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
