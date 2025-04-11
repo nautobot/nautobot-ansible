@@ -1151,6 +1151,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
         return group.replace("-", "_").replace(" ", "_").lower()
 
+    def set_variable_safely(self, hostname, variable_name, value):
+        """Set inventory variable with automatic wrapping if needed due to containing Jinja2"""
+        # Wrap value if it's a string containing template markers
+        if isinstance(value, str) and ("{{" in value or "{%" in value):
+            value = wrap_var(value)
+        self.inventory.set_variable(hostname, variable_name, value)
+
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
@@ -1263,9 +1270,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, wrap_var(value))
+                    self.inventory.set_variable(hostname, key, value)
             else:
-                self.inventory.set_variable(hostname, attribute, wrap_var(extracted_value))
+                self.inventory.set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
