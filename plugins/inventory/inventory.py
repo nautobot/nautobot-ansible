@@ -1183,7 +1183,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if not groups_for_host:
                 continue
-             
 
             # Make groups_for_host a list if it isn't already
             if not isinstance(groups_for_host, list):
