@@ -268,6 +268,7 @@ from ansible.module_utils._text import to_text, to_native
 from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
+from ansible.utils.unsafe_proxy import wrap_var
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -1182,6 +1183,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if not groups_for_host:
                 continue
+             
 
             # Make groups_for_host a list if it isn't already
             if not isinstance(groups_for_host, list):
@@ -1262,9 +1264,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, value)
+                    self.inventory.set_variable(hostname, key, wrap_var(value))
             else:
-                self.inventory.set_variable(hostname, attribute, extracted_value)
+                self.inventory.set_variable(hostname, attribute, wrap_var(extracted_value))
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
