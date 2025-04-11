@@ -1,0 +1,1 @@
+Fixed some potentially unsafe variables not being wrapped correctly.
