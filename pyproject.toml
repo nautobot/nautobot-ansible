@@ -80,3 +80,8 @@ exclude = '''
 disable = """,
     line-too-long
     """
+
+[tool.ruff.lint]
+ignore = [
+    "E402",  # pycodestyle: module-import-not-at-top-of-file
+]

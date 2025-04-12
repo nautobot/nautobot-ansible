@@ -1,0 +1,110 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+DOCUMENTATION = r"""
+---
+module: {{ model_name }}
+short_description: Creates or removes {{ model.model_name_plural.replace("-", " ") }} from Nautobot
+description:
+  - Creates or removes {{ model.model_name_plural.replace("-", " ") }} from Nautobot
+notes:
+{% if "tags" in model.methods.post.properties %}
+  - Tags should be defined as a YAML list
+{% endif %}
+  - This should be ran with connection C(local) and hosts C(localhost)
+author:
+  - Network To Code (@networktocode)
+requirements:
+  - pynautobot
+version_added: "5.4.0"
+{# TODO - Add version #}
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
+{% if "tags" in model.methods.post.properties %}
+  - networktocode.nautobot.fragments.tags
+{% endif %}
+{% if "custom_fields" in model.methods.post.properties %}
+  - networktocode.nautobot.fragments.custom_fields
+{% endif %}
+options:
+{% for field in model.fields.values() | rejectattr("name", "in", ["custom_fields", "tags"]) %}
+  {{ field.name }}:
+    description:
+      - "TODO: Add description for fields"
+    required: {{ "true" if field.required else "false" }}
+    type: {{ field.type }}
+{% endfor %}
+"""
+
+EXAMPLES = r"""
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
+
+  tasks:
+    - name: Create {{ model_name }} within Nautobot with only required information
+      networktocode.nautobot.{{ model_name }}:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        {# TODO - Add required fields #}
+        name: Test {{ model_name.title() }}
+        state: present
+        description: The test {{ model_name }}
+
+    - name: Delete {{ model_name }} within nautobot
+      networktocode.nautobot.{{ model_name }}:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test {{ model_name.title() }}
+        state: absent
+"""
+
+RETURN = r"""
+{{ model_name }}:
+  description: Serialized object as created or already existent within Nautobot
+  returned: success (when I(state=present))
+  type: dict
+msg:
+  description: Message indicating failure or info about what has been achieved
+  returned: always
+  type: str
+"""
+
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NautobotDcimModule,
+    NB_MANUFACTURERS,
+)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
+
+
+def main():
+    """
+    Main entry point for module execution
+    """
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(
+        dict(
+            {# TODO - Add fields to the argspec #}
+            name=dict(required=True, type="str"),
+            description=dict(required=False, type="str"),
+        )
+    )
+
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
+    {# TODO - Add logic to the module #}
+    {{ model_name }} = NautobotDcimModule(module, NB_MANUFACTURERS)
+    {{ model_name }}.run()
+
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
