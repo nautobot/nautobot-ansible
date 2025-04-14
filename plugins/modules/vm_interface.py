@@ -91,6 +91,12 @@ options:
     required: false
     type: raw
     version_added: "5.3.0"
+  vrf:
+    description:
+      - The VRF assigned to the interface
+    required: false
+    type: raw
+    version_added: "CHANGEME"
 """
 
 EXAMPLES = r"""
@@ -192,6 +198,7 @@ def main():
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
+            vrf=dict(required=False, type="raw"),
         )
     )
 
