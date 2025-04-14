@@ -594,6 +594,21 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
 )
 
 
+def check_needs_wrapping(value):
+    """
+    Recursively checks lists and dictionaries, and checks strings directly,
+    to see if they need to be wrapped for safety, due to containing
+    Jinja2 delimiters.
+    """
+    if isinstance(value, str):
+        return "{{" in value or "{%" in value
+    elif isinstance(value, dict):
+        return any(check_needs_wrapping(v) for v in value.values())
+    elif isinstance(value, list):
+        return any(check_needs_wrapping(item) for item in value)
+    return False
+
+
 def is_truthy(arg):
     """
     Convert "truthy" strings into Booleans.

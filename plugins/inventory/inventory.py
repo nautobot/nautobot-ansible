@@ -278,6 +278,8 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.utils.unsafe_proxy import wrap_var
 
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import check_needs_wrapping
+
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
@@ -1166,23 +1168,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
         return group.replace("-", "_").replace(" ", "_").lower()
 
-    def chk_needs_wrapping(self, value):
-        """
-        Recursively checks lists and dictionaries, and checks strings directly,
-        to see if they need to be wrapped for safety, due to containing
-        Jinja2 delimiters.
-        """
-        if isinstance(value, str):
-            return "{{" in value or "{%" in value
-        elif isinstance(value, dict):
-            return any(self.chk_needs_wrapping(v) for v in value.values())
-        elif isinstance(value, list):
-            return any(self.chk_needs_wrapping(item) for item in value)
-        return False
-
     def set_inv_var_safely(self, hostname, variable_name, value):
         """Set inventory variable with conditional wrapping only where needed"""
-        if self.chk_needs_wrapping(value):
+        if check_needs_wrapping(value):
             value = wrap_var(value)
         self.inventory.set_variable(hostname, variable_name, value)
 
@@ -1339,7 +1327,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             hostname = self.extract_name(host=host)
 
-            if self.chk_needs_wrapping(hostname):
+            if check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
 
             self.inventory.add_host(host=hostname)
