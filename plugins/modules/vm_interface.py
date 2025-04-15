@@ -96,7 +96,7 @@ options:
       - The VRF assigned to the interface
     required: false
     type: raw
-    version_added: "CHANGEME"
+    version_added: "5.12.0"
 """
 
 EXAMPLES = r"""
