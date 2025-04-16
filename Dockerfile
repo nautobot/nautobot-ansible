@@ -44,10 +44,9 @@ RUN poetry install
 COPY . .
 
 RUN if [ "${SKIP_LINT_TESTS}" != "true" ]; then \
-    echo 'Running Black' && \
-    black --check --diff . && \
-    echo 'Running Bandit' && \
-    bandit --recursive ./ --configfile .bandit.yml && \
+    echo 'Running Ruff' && \
+    ruff format . && \
+    ruff check . && \
     echo 'Running Pylint' && \
     pylint **/*.py; \
     else \

@@ -7,11 +7,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import sys
-import json
 import argparse
-from jsondiff import diff
+import json
+import sys
 from operator import itemgetter
+
+from jsondiff import diff
 
 # Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port

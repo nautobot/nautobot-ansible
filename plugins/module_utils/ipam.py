@@ -7,13 +7,12 @@ __metaclass__ = type
 
 # Import necessary packages
 from ipaddress import ip_interface
+
 from ansible.module_utils._text import to_text
-
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_IP_ADDRESSES = "ip_addresses"
 NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
@@ -113,7 +112,8 @@ class NautobotIpamModule(NautobotModule):
             self.result["msg"] = "No available prefixes within %s" % (data["parent"])
 
     def run(self):
-        """
+        """Run the Nautobot IPAM module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:

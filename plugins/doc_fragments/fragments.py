@@ -8,6 +8,8 @@ __metaclass__ = type
 
 
 class ModuleDocFragment(object):
+    """Doc Fragments for Ansible Modules."""
+
     BASE = r"""
 requirements:
   - pynautobot

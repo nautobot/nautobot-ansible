@@ -7,8 +7,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
 
 NB_CLOUD_SERVICES = "cloud_services"
@@ -21,7 +21,8 @@ NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
 
 class NautobotCloudModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Cloud module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
