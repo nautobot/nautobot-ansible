@@ -2,7 +2,7 @@
 # Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-A lookup function designed to return data from the Nautobot GraphQL endpoint
+A lookup function designed to return data from the Nautobot GraphQL endpoint.
 """
 
 from __future__ import absolute_import, division, print_function
@@ -106,9 +106,9 @@ RETURN = """
 
 import os
 
-from ansible.plugins.lookup import LookupBase
-from ansible.errors import AnsibleLookupError, AnsibleError
+from ansible.errors import AnsibleError, AnsibleLookupError
 from ansible.module_utils.six import raise_from
+from ansible.plugins.lookup import LookupBase
 
 try:
     import pynautobot
@@ -131,7 +131,7 @@ from ansible.utils.display import Display
 
 
 def nautobot_lookup_graphql(**kwargs):
-    """Lookup functionality, broken out to assist with testing
+    """Lookup functionality, broken out to assist with testing.
 
     Returns:
         [type]: [description]
@@ -200,11 +200,11 @@ def nautobot_lookup_graphql(**kwargs):
 
 class LookupModule(LookupBase):
     """
-    LookupModule(LookupBase) is defined by Ansible
+    LookupModule(LookupBase) is defined by Ansible.
     """
 
     def run(self, terms, variables=None, graph_variables=None, **kwargs):
-        """Runs Ansible Lookup Plugin for using Nautobot GraphQL endpoint
+        """Runs Ansible Lookup Plugin for using Nautobot GraphQL endpoint.
 
         Raises:
             AnsibleLookupError: Error in data loaded into the plugin
@@ -219,7 +219,9 @@ class LookupModule(LookupBase):
             )
 
         # Terms comes in as a list, this needs to be moved to string for pynautobot
-        lookup_info = nautobot_lookup_graphql(query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs)
+        lookup_info = nautobot_lookup_graphql(
+            query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs
+        )
 
         # Results should be the data response of the query to be returned as a lookup
         return lookup_info

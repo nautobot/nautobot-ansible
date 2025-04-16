@@ -7,10 +7,9 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_CABLES = "cables"
 NB_CONSOLE_PORTS = "console_ports"
@@ -55,7 +54,8 @@ NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 class NautobotDcimModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot DCIM module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
@@ -188,7 +188,9 @@ class NautobotDcimModule(NautobotModule):
                     if self.module.params.get("update_vc_child"):
                         data["device"] = self.nb_object.device.id
                     else:
-                        self._handle_errors(msg="Must set update_vc_child to True to allow child device interface modification")
+                        self._handle_errors(
+                            msg="Must set update_vc_child to True to allow child device interface modification"
+                        )
 
         if self.state == "present":
             self._ensure_object_exists(nb_endpoint, endpoint_name, name, data)

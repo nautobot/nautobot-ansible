@@ -91,21 +91,22 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_METADATA_TYPES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_METADATA_TYPES,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
@@ -115,7 +116,20 @@ def main():
             description=dict(required=False, type="str"),
             data_type=dict(
                 required=False,
-                choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown", "contact-or-team", "datetime", "float"],
+                choices=[
+                    "text",
+                    "integer",
+                    "boolean",
+                    "date",
+                    "url",
+                    "select",
+                    "multi-select",
+                    "json",
+                    "markdown",
+                    "contact-or-team",
+                    "datetime",
+                    "float",
+                ],
                 type="str",
             ),
             content_types=dict(required=False, type="list", elements="str"),

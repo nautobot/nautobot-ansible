@@ -6,10 +6,9 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_PROVIDERS = "providers"
 NB_CIRCUIT_TYPES = "circuit_types"
@@ -19,7 +18,8 @@ NB_CIRCUITS = "circuits"
 
 class NautobotCircuitsModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Circuits module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:

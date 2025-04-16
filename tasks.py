@@ -1,7 +1,9 @@
 """Tasks for use with Invoke."""
 
-from invoke import Collection, task as invoke_task
 import os
+
+from invoke import Collection, Exit
+from invoke import task as invoke_task
 
 
 def is_truthy(arg):
@@ -64,6 +66,7 @@ def task(function=None, *args, **kwargs):
 
 def docker_compose(context, command, **kwargs):
     """Helper function for running a specific docker compose command with all appropriate parameters and environment.
+
     Args:
         context (obj): Used to run specific commands
         command (str): Command string to append to the "docker compose ..." command, such as "build", "up", etc.
@@ -204,8 +207,8 @@ def migrate(context):
 
 @task(help={})
 def post_upgrade(context):
-    """
-    Performs Nautobot common post-upgrade operations using a single entrypoint.
+    """Performs Nautobot common post-upgrade operations using a single entrypoint.
+
     This will run the following management commands with default settings, in order:
     - migrate
     - trace_paths
@@ -224,7 +227,7 @@ def post_upgrade(context):
 # ------------------------------------------------------------------------------
 @task
 def lint(context):
-    """Run linting tools"""
+    """Run linting tools."""
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from lint lint",
         env={"PYTHON_VER": context.nautobot_ansible.python_ver},
@@ -240,7 +243,7 @@ def lint(context):
     incrementable=["verbose"],
 )
 def unit(context, verbose=0, skip=None):
-    """Run unit tests"""
+    """Run unit tests."""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
@@ -252,7 +255,10 @@ def unit(context, verbose=0, skip=None):
             env["SKIP_SANITY_TESTS"] = "true"
         if "unit" in skip:
             env["SKIP_UNIT_TESTS"] = "true"
-    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit", env=env)
+    context.run(
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit",
+        env=env,
+    )
     # Clean up after the tests
     context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
 
@@ -268,7 +274,7 @@ def unit(context, verbose=0, skip=None):
     incrementable=["verbose"],
 )
 def integration(context, verbose=0, tags=None, update_inventories=False, skip=None):
-    """Run all tests including integration tests"""
+    """Run all tests including integration tests."""
     build(context)
     # Destroy any existing containers and volumes that may be left over from a previous run
     destroy(context)
@@ -285,7 +291,7 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
     if ansible_args:
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     if update_inventories:
-        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # nosec B108
+        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # noqa: S108
     if skip is not None:
         if "lint" in skip:
             env["SKIP_LINT_TESTS"] = "true"
@@ -356,3 +362,48 @@ def generate_release_notes(context, version=""):
         command += " --version `poetry version -s`"
     # Due to issues with git repo ownership in the containers, this must always run locally.
     context.run(command)
+
+
+@task(aliases=("a",))
+def autoformat(context):
+    """Run code autoformatting."""
+    ruff(context, action=["format"], fix=True)
+
+
+@task(
+    help={
+        "action": "Available values are `['lint', 'format']`. Can be used multiple times. (default: `['lint', 'format']`)",
+        "target": "File or directory to inspect, repeatable (default: all files in the project will be inspected)",
+        "fix": "Automatically fix selected actions. May not be able to fix all issues found. (default: False)",
+        "output_format": "See https://docs.astral.sh/ruff/settings/#output-format for details. (default: `concise`)",
+    },
+    iterable=["action", "target"],
+)
+def ruff(context, action=None, target=None, fix=False, output_format="concise"):
+    """Run ruff to perform code formatting and/or linting."""
+    if not action:
+        action = ["lint", "format"]
+    if not target:
+        target = ["."]
+
+    exit_code = 0
+
+    if "format" in action:
+        command = "ruff format "
+        if not fix:
+            command += "--check "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if "lint" in action:
+        command = "ruff check "
+        if fix:
+            command += "--fix "
+        command += f"--output-format {output_format} "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if exit_code != 0:
+        raise Exit(code=exit_code)
