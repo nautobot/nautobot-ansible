@@ -231,15 +231,17 @@ from copy import deepcopy
 import json
 import os
 from sys import version as python_version
+
 from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
 from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils.urls import open_url
-
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.common.text.converters import to_native
+from ansible.utils.unsafe_proxy import wrap_var
 
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import check_needs_wrapping
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -278,6 +280,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
+
+        if check_needs_wrapping(var):
+            var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
 
     def add_ip_address(self, device, default_ip_version="ipv4"):
@@ -496,6 +501,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
+            if check_needs_wrapping(hostname):
+                hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
