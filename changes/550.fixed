@@ -1,0 +1,1 @@
+Fixed parsing of inventory with `networktocode.nautobot.inventory` plugin when using `interfaces` option and module interfaces are present.
