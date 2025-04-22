@@ -877,6 +877,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for interface in device_interfaces:
             interface_id = interface["id"]
+            if not interface.get("device"):
+                continue
             device_id = interface["device"]["id"]
 
             # Check if device_id is actually a device we've fetched, and was not filtered out by query_filters
