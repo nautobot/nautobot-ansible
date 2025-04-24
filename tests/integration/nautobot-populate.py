@@ -356,6 +356,12 @@ created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 test100 = nb.dcim.devices.get(name="test100")
 test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
 
+# Create inventory items
+inventory_items = [
+    {"name": "Test Parent Inventory Item", "device": test100.id, "label": "Test Parent Inventory Item"},
+]
+created_inventory_items = make_nautobot_calls(nb.dcim.inventory_items, inventory_items)
+
 # Create rear port
 rear_ports = [{"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}]
 created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
@@ -688,6 +694,18 @@ if nautobot_version >= version.parse("2.2"):
     test_controller_one = nb.dcim.controllers.get(name="controller_one")
     controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
     created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
+
+    software_versions = [
+        {"version": "3.2.1", "platform": "Cisco IOS", "status": "Active"},
+    ]
+    created_software_versions = make_nautobot_calls(nb.dcim.software_versions, software_versions)
+    test_software_version = nb.dcim.software_versions.get(version="3.2.1", platform="Cisco IOS")
+
+    software_image_files = [
+        {"image_file_name": "test_software_image_file.bin", "software_version": test_software_version.id, "status": "Active"},
+        {"image_file_name": "test_software_image_file_two.bin", "software_version": test_software_version.id, "status": "Active"},
+    ]
+    created_software_image_files = make_nautobot_calls(nb.dcim.software_image_files, software_image_files)
 
 ###############
 # v2.3+ items #
