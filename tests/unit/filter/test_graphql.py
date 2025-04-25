@@ -1,10 +1,11 @@
 """Tests for Nautobot GraphQL filter plugins."""
 
 import json
+
 import pytest
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
-    convert_to_graphql_string,
     build_graphql_filter_string,
+    convert_to_graphql_string,
 )
 
 

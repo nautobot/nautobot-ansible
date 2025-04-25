@@ -114,13 +114,14 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_JOB_BUTTONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_JOB_BUTTONS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 
 def main():
@@ -135,7 +136,11 @@ def main():
             text=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
             group_name=dict(required=False, type="str"),
-            button_class=dict(required=False, choices=["default", "primary", "success", "info", "warning", "danger", "link"], type="str"),
+            button_class=dict(
+                required=False,
+                choices=["default", "primary", "success", "info", "warning", "danger", "link"],
+                type="str",
+            ),
             confirmation=dict(required=False, type="bool"),
         )
     )

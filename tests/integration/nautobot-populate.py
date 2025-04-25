@@ -6,6 +6,7 @@ __metaclass__ = type
 
 import os
 import sys
+
 import pynautobot
 from packaging import version
 
@@ -138,9 +139,24 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 
 # Create locations
 parent_location_attrs = [
-    {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
-    {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
-    {"name": "Prefix Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {
+        "name": "Parent Test Location",
+        "location_type": parent_location_type.id,
+        "tenant": test_tenant.id,
+        "status": {"name": "Active"},
+    },
+    {
+        "name": "Parent Test Location 2",
+        "location_type": parent_location_type.id,
+        "tenant": test_tenant.id,
+        "status": {"name": "Active"},
+    },
+    {
+        "name": "Prefix Test Location",
+        "location_type": parent_location_type.id,
+        "tenant": test_tenant.id,
+        "status": {"name": "Active"},
+    },
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 
@@ -148,15 +164,30 @@ make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 location_parent = nb.dcim.locations.get(name="Parent Test Location")
 location_parent2 = nb.dcim.locations.get(name="Parent Test Location 2")
 child_location_attrs = [
-    {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent.id, "status": {"name": "Active"}},
+    {
+        "name": "Child Test Location",
+        "location_type": child_location_type.id,
+        "parent": location_parent.id,
+        "status": {"name": "Active"},
+    },
     # Creating an intentionally duplicate location name with different parent to test looking up by parent
-    {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent2.id, "status": {"name": "Active"}},
+    {
+        "name": "Child Test Location",
+        "location_type": child_location_type.id,
+        "parent": location_parent2.id,
+        "status": {"name": "Active"},
+    },
 ]
 make_nautobot_calls(nb.dcim.locations, child_location_attrs)
 location_child = nb.dcim.locations.get(name="Child Test Location", parent="Parent Test Location")
 
 child_child_location_attrs = [
-    {"name": "Child-Child Test Location", "location_type": child_location_type.id, "parent": location_child.id, "status": {"name": "Active"}},
+    {
+        "name": "Child-Child Test Location",
+        "location_type": child_location_type.id,
+        "parent": location_child.id,
+        "status": {"name": "Active"},
+    },
 ]
 make_nautobot_calls(nb.dcim.locations, child_child_location_attrs)
 location_child_child = nb.dcim.locations.get(name="Child-Child Test Location")
@@ -174,7 +205,12 @@ created_namespaces = make_nautobot_calls(nb.ipam.namespaces, namespaces)
 
 # Create PREFIXES
 prefixes = [
-    {"prefix": "192.168.0.0/16", "location": location_parent.id, "status": {"name": "Active"}, "namespace": {"name": "Global"}},
+    {
+        "prefix": "192.168.0.0/16",
+        "location": location_parent.id,
+        "status": {"name": "Active"},
+        "namespace": {"name": "Global"},
+    },
     {"prefix": "10.0.0.0/8", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "10.10.0.0/16", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
     {"prefix": "172.16.0.0/12", "status": {"name": "Active"}, "namespace": {"name": "Global"}},
@@ -230,7 +266,9 @@ cisco_manu = nb.dcim.manufacturers.get(name="Cisco")
 arista_manu = nb.dcim.manufacturers.get(name="Arista")
 
 # Create Platforms
-platforms = [{"name": "Cisco IOS", "manufacturer": cisco_manu.id, "network_driver": "cisco_ios", "napalm_driver": "ios"}]
+platforms = [
+    {"name": "Cisco IOS", "manufacturer": cisco_manu.id, "network_driver": "cisco_ios", "napalm_driver": "ios"}
+]
 created_platforms = make_nautobot_calls(nb.dcim.platforms, platforms)
 
 # Create Device Types
@@ -268,13 +306,22 @@ created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, r
 device_roles = [
     {"name": "Core Switch", "color": "aa1409", "vm_role": False, "content_types": ["dcim.device"]},
     {"name": "Test VM Role", "color": "e91e63", "vm_role": True, "content_types": ["virtualization.virtualmachine"]},
-    {"name": "Test VM Role 1", "color": "e91e65", "vm_role": True, "content_types": ["dcim.device", "virtualization.virtualmachine"]},
+    {
+        "name": "Test VM Role 1",
+        "color": "e91e65",
+        "vm_role": True,
+        "content_types": ["dcim.device", "virtualization.virtualmachine"],
+    },
 ]
 
 if nautobot_version >= version.parse("2.2"):
-    device_roles.append({"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]})
+    device_roles.append(
+        {"name": "Test Controller Role", "color": "e91e65", "vm_role": False, "content_types": ["dcim.controller"]}
+    )
 if nautobot_version >= version.parse("2.3"):
-    device_roles.append({"name": "Test Module Role", "color": "795548", "vm_role": False, "content_types": ["dcim.module"]})
+    device_roles.append(
+        {"name": "Test Module Role", "color": "795548", "vm_role": False, "content_types": ["dcim.module"]}
+    )
 
 created_device_roles = make_nautobot_calls(nb.extras.roles, device_roles)
 
@@ -301,8 +348,19 @@ rack_role1 = nb.extras.roles.get(name="Test Rack Role")
 
 # Create Racks
 racks = [
-    {"name": "Sub Test Rack", "location": location_child_child.id, "rack_group": rack_group_child.id, "status": {"name": "Active"}},
-    {"name": "Main Test Rack", "location": location_child.id, "rack_group": rack_group_parent.id, "role": rack_role1.id, "status": {"name": "Active"}},
+    {
+        "name": "Sub Test Rack",
+        "location": location_child_child.id,
+        "rack_group": rack_group_child.id,
+        "status": {"name": "Active"},
+    },
+    {
+        "name": "Main Test Rack",
+        "location": location_child.id,
+        "rack_group": rack_group_parent.id,
+        "role": rack_role1.id,
+        "status": {"name": "Active"},
+    },
 ]
 created_racks = make_nautobot_calls(nb.dcim.racks, racks)
 main_test_rack = nb.dcim.racks.get(name="Main Test Rack")
@@ -487,7 +545,12 @@ test_cluster_type = nb.virtualization.cluster_types.get(name="Test Cluster Type"
 
 # Create Cluster
 clusters = [
-    {"name": "Test Cluster", "cluster_type": test_cluster_type.id, "cluster_group": test_cluster_group.id, "location": location_child.id},
+    {
+        "name": "Test Cluster",
+        "cluster_type": test_cluster_type.id,
+        "cluster_group": test_cluster_group.id,
+        "location": location_child.id,
+    },
     {"name": "Test Cluster 2", "cluster_type": test_cluster_type.id},
 ]
 created_clusters = make_nautobot_calls(nb.virtualization.clusters, clusters)
@@ -556,14 +619,26 @@ test_circuit_type = nb.circuits.circuit_types.get(name="Test Circuit Type")
 
 # Create Circuit
 circuits = [
-    {"cid": "Test Circuit", "provider": test_provider.id, "circuit_type": test_circuit_type.id, "status": {"name": "Active"}},
-    {"cid": "Test Circuit Two", "provider": test_provider.id, "circuit_type": test_circuit_type.id, "status": {"name": "Active"}},
+    {
+        "cid": "Test Circuit",
+        "provider": test_provider.id,
+        "circuit_type": test_circuit_type.id,
+        "status": {"name": "Active"},
+    },
+    {
+        "cid": "Test Circuit Two",
+        "provider": test_provider.id,
+        "circuit_type": test_circuit_type.id,
+        "status": {"name": "Active"},
+    },
 ]
 created_circuits = make_nautobot_calls(nb.circuits.circuits, circuits)
 test_circuit_two = nb.circuits.circuits.get(cid="Test Circuit Two")
 
 # Create Circuit Termination
-circuit_terms = [{"circuit": test_circuit_two.id, "term_side": "A", "port_speed": 10000, "location": location_parent.id}]
+circuit_terms = [
+    {"circuit": test_circuit_two.id, "term_side": "A", "port_speed": 10000, "location": location_parent.id}
+]
 created_circuit_terms = make_nautobot_calls(nb.circuits.circuit_terminations, circuit_terms)
 
 route_targets = [
@@ -693,7 +768,9 @@ if nautobot_version >= version.parse("2.2"):
     # Create Controller Managed Device Groups
     test_controller_one = nb.dcim.controllers.get(name="controller_one")
     controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
-    created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
+    created_controller_device_group = make_nautobot_calls(
+        nb.dcim.controller_managed_device_groups, controller_device_group
+    )
 
     software_versions = [
         {"version": "3.2.1", "platform": "Cisco IOS", "status": "Active"},
@@ -713,7 +790,12 @@ if nautobot_version >= version.parse("2.2"):
 if nautobot_version >= version.parse("2.3"):
     # Create role for virtual machine interfaces
     vm_interface_roles = [
-        {"name": "Test VM Interface Role", "color": "aa1409", "vm_role": False, "content_types": ["virtualization.vminterface"]},
+        {
+            "name": "Test VM Interface Role",
+            "color": "aa1409",
+            "vm_role": False,
+            "content_types": ["virtualization.vminterface"],
+        },
     ]
     created_vm_interface_roles = make_nautobot_calls(nb.extras.roles, vm_interface_roles)
 
@@ -726,10 +808,22 @@ if nautobot_version >= version.parse("2.3"):
     cloud_accounts = [{"name": "CiscoCloudAccount", "provider": "Cisco", "account_number": "424242"}]
     created_cloud_accounts = make_nautobot_calls(nb.cloud.cloud_accounts, cloud_accounts)
 
-    cloud_services = [{"name": "CiscoCloudService", "cloud_resource_type": "CiscoCloudServiceType", "cloud_account": "CiscoCloudAccount"}]
+    cloud_services = [
+        {
+            "name": "CiscoCloudService",
+            "cloud_resource_type": "CiscoCloudServiceType",
+            "cloud_account": "CiscoCloudAccount",
+        }
+    ]
     created_cloud_services = make_nautobot_calls(nb.cloud.cloud_services, cloud_services)
 
-    cloud_networks = [{"name": "CiscoCloudNetwork", "cloud_resource_type": "CiscoCloudNetworkType", "cloud_account": "CiscoCloudAccount"}]
+    cloud_networks = [
+        {
+            "name": "CiscoCloudNetwork",
+            "cloud_resource_type": "CiscoCloudNetworkType",
+            "cloud_account": "CiscoCloudAccount",
+        }
+    ]
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 
     # Create module types
@@ -740,17 +834,24 @@ if nautobot_version >= version.parse("2.3"):
     created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
 
     # Create a module bay
-    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}, {"parent_device": test100.id, "name": "PowerStripTwo"}]
+    power_outlet_module_bays = [
+        {"parent_device": test100.id, "name": "PowerStrip"},
+        {"parent_device": test100.id, "name": "PowerStripTwo"},
+    ]
     created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
 
     # Assign module type to module bay
     test_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
     test_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
-    power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
+    power_outlet_modules = [
+        {"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}
+    ]
     created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
 
     # Create Module Rear Port Template
-    module_rear_port_templates = [{"name": "Test Module Rear Port Template", "module_type": test_module_type.id, "type": "bnc", "positions": 5}]
+    module_rear_port_templates = [
+        {"name": "Test Module Rear Port Template", "module_type": test_module_type.id, "type": "bnc", "positions": 5}
+    ]
     created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, module_rear_port_templates)
 
     # Create role for device interfaces

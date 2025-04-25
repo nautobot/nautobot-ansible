@@ -178,13 +178,14 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_CUSTOM_FIELDS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_CUSTOM_FIELDS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 
 def main():
@@ -195,7 +196,11 @@ def main():
             label=dict(required=True, type="str"),
             grouping=dict(required=False, type="str"),
             key=dict(required=False, type="str", no_log=False),
-            type=dict(required=False, choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"], type="str"),
+            type=dict(
+                required=False,
+                choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"],
+                type="str",
+            ),
             weight=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
             required=dict(required=False, type="bool"),

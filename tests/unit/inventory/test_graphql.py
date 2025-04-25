@@ -2,12 +2,12 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import pytest
 import json
 import os
-
 from functools import partial
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
+
+import pytest
 from ansible.inventory.data import InventoryData
 from ansible.utils.display import Display
 
@@ -130,14 +130,18 @@ def test_no_chain_value(mock_display, inventory_fixture, device_data):
 def test_no_name_or_display_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call("No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
+    mock_display.assert_any_call(
+        "No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
+    )
 
 
 @patch.object(Display, "display")
 def test_group_name_dict(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call("No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
+    mock_display.assert_any_call(
+        "No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
+    )
 
 
 def test_group_by_empty_string(inventory_fixture, device_data):
