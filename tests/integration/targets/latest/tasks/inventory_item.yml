@@ -106,3 +106,49 @@
       - test_four['inventory_item']['part_id'] == "10G-SFP+"
       - test_four['inventory_item']['tags'][0] == tag_schnozzberry['key']
       - test_four['msg'] == "inventory_item 10G-SFP+ deleted"
+
+- name: "NAUTOBOT 2.2+ INVENTORY ITEM TESTS"
+  when:
+    - "nautobot_version is version('2.2', '>=')"
+  block:
+    - name: "INVENTORY_ITEM 5: Create child item with software version"
+      networktocode.nautobot.inventory_item:
+            url: "{{ nautobot_url }}"
+            token: "{{ nautobot_token }}"
+            device: "test100"
+            name: "Test Child Inventory Item"
+            parent: "Test Parent Inventory Item"
+            software_version:
+              version: "3.2.1"
+              platform: "Cisco IOS"
+            software_image_files:
+              - "test_software_image_file.bin"
+              - "test_software_image_file_two.bin"
+      register: test_five
+
+    - name: "INVENTORY_ITEM 5: ASSERT - Create child item with software version"
+      assert:
+        that:
+          - test_five is changed
+          - test_five['msg'] == "inventory_item Test Child Inventory Item created"
+
+    - name: "INVENTORY_ITEM 6: Duplicate child item with software version"
+      networktocode.nautobot.inventory_item:
+            url: "{{ nautobot_url }}"
+            token: "{{ nautobot_token }}"
+            device: "test100"
+            name: "Test Child Inventory Item"
+            parent: "Test Parent Inventory Item"
+            software_version:
+              version: "3.2.1"
+              platform: "Cisco IOS"
+            software_image_files:
+              - "test_software_image_file.bin"
+              - "test_software_image_file_two.bin"
+      register: test_six
+
+    - name: "INVENTORY_ITEM 6: ASSERT - Duplicate child item with software version"
+      assert:
+        that:
+          - not test_six['changed']
+          - test_six['msg'] == "inventory_item Test Child Inventory Item already exists"
