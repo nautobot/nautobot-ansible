@@ -75,7 +75,7 @@ exclude = '''
     | dist
   )/
   | settings.py     # This is where you define files that should not be stylized by black
-                     # the root of the project
+  | collections     # Locally installed collections
 )
 '''
 

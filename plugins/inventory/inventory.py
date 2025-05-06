@@ -96,6 +96,14 @@ DOCUMENTATION = """
       default: False
       type: boolean
       version_added: "1.0.0"
+    module_interfaces:
+      description:
+        - If True, it adds module interfaces to the list of device interfaces in the inventory.
+        - Modules are only available in Nautobot v2.3.0+
+        - Requires I(interfaces) to be enabled as well.
+      default: False
+      type: boolean
+      version_added: "5.12.0"
     services:
       description:
         - If True, it adds the device or virtual machine services information in host vars.
@@ -845,7 +853,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.vm_services_lookup[service["virtual_machine"]["id"]][service_id] = service
 
     def refresh_interfaces(self):
-        url_device_interfaces = self.api_endpoint + "/api/dcim/interfaces/?limit=0&depth=1"
+        # Device information on Parent Module Bays are only available at depth=2
+        depth = "2" if self.module_interfaces else "1"
+        url_device_interfaces = self.api_endpoint + f"/api/dcim/interfaces/?limit=0&depth={depth}"
         url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0&depth=1"
 
         device_interfaces = []
@@ -877,7 +887,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for interface in device_interfaces:
             interface_id = interface["id"]
-            device_id = interface["device"]["id"]
+            if interface.get("device"):
+                device_id = interface["device"]["id"]
+            elif self.module_interfaces and interface.get("module", {}).get("parent_module_bay", {}).get("parent_device"):
+                device_id = interface["module"]["parent_module_bay"]["parent_device"]["id"]
+            else:
+                continue
 
             # Check if device_id is actually a device we've fetched, and was not filtered out by query_filters
             if device_id not in self.devices_lookup:
@@ -1341,6 +1356,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.flatten_custom_fields = self.get_option("flatten_custom_fields")
         self.plurals = self.get_option("plurals")
         self.interfaces = self.get_option("interfaces")
+        self.module_interfaces = self.get_option("module_interfaces")
         self.services = self.get_option("services")
         self.fetch_all = self.get_option("fetch_all")
         self.headers = {
