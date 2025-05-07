@@ -54,7 +54,9 @@ class TestContactAssociationModule(unittest.TestCase):
             "state": "present",
         }
         set_module_args(args)
-        with patch("ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run") as mock_run:
+        with patch(
+            "ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run"
+        ) as mock_run:
             mock_run.return_value = None
             with self.assertRaises(AnsibleExitJson):
                 contact_association.main()
@@ -70,7 +72,9 @@ class TestContactAssociationModule(unittest.TestCase):
             "state": "absent",
         }
         set_module_args(args)
-        with patch("ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run") as mock_run:
+        with patch(
+            "ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run"
+        ) as mock_run:
             mock_run.return_value = None
             with self.assertRaises(AnsibleExitJson):
                 contact_association.main()

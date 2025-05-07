@@ -11,12 +11,11 @@ DOCUMENTATION = r"""
 ---
 module: contact_association
 short_description: Creates or removes contact associations from Nautobot
-version_added: "5.4.0"
+version_added: "5.12.0"
 description:
   - Creates or removes contact associations from Nautobot using the /api/extras/contact-associations/ endpoint.
 author:
-  - Network to Code (@networktocode)
-  - Joe Wesch (@joewesch)
+  - Josh VanDeraa (@jvanderaa)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
 options:
@@ -85,6 +84,7 @@ from copy import deepcopy
 
 NB_CONTACT_ASSOCIATIONS = "contact_associations"
 
+
 def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
@@ -99,6 +99,7 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     contact_association = NautobotExtrasModule(module, NB_CONTACT_ASSOCIATIONS)
     contact_association.run()
+
 
 if __name__ == "__main__":  # pragma: no cover
     main()
