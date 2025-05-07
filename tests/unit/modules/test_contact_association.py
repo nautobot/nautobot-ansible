@@ -8,25 +8,32 @@ try:
     from ansible_collections.networktocode.nautobot.plugins.modules import contact_association
 except ImportError:
     import sys
+
     sys.path.append("plugins/modules")
     import contact_association
+
 
 def set_module_args(args):
     args = json.dumps({"ANSIBLE_MODULE_ARGS": args})
     basic._ANSIBLE_ARGS = to_bytes(args)
 
+
 class AnsibleExitJson(Exception):
     pass
+
 
 class AnsibleFailJson(Exception):
     pass
 
+
 def exit_json(*args, **kwargs):
     raise AnsibleExitJson(kwargs)
+
 
 def fail_json(*args, **kwargs):
     kwargs["failed"] = True
     raise AnsibleFailJson(kwargs)
+
 
 class TestContactAssociationModule(unittest.TestCase):
     def setUp(self):
@@ -54,9 +61,7 @@ class TestContactAssociationModule(unittest.TestCase):
             "state": "present",
         }
         set_module_args(args)
-        with patch(
-            "ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run"
-        ) as mock_run:
+        with patch("ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run") as mock_run:
             mock_run.return_value = None
             with self.assertRaises(AnsibleExitJson):
                 contact_association.main()
@@ -72,9 +77,7 @@ class TestContactAssociationModule(unittest.TestCase):
             "state": "absent",
         }
         set_module_args(args)
-        with patch(
-            "ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run"
-        ) as mock_run:
+        with patch("ansible_collections.networktocode.nautobot.plugins.module_utils.extras.NautobotExtrasModule.run") as mock_run:
             mock_run.return_value = None
             with self.assertRaises(AnsibleExitJson):
                 contact_association.main()
