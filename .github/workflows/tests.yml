@@ -72,7 +72,6 @@ jobs:
       matrix:
         python-version:
           - "3.12"
-          - "3.13"
         nautobot-version:
           - "2.4"
         ansible-version:
