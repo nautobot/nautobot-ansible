@@ -15,6 +15,7 @@ version_added: "5.12.0"
 description:
   - Creates or removes contact associations from Nautobot using the /api/extras/contact-associations/ endpoint.
 author:
+  - Network to Code (@networktocode)
   - Josh VanDeraa (@jvanderaa)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
