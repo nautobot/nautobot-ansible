@@ -1,0 +1,89 @@
+---
+# Integration tests for the ContactAssociation module
+- name: Lookup test contact
+  set_fact:
+    test_contact: "{{ lookup('networktocode.nautobot.lookup', 'contacts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Test Contact') }}"
+
+- name: Lookup test device
+  set_fact:
+    test_device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=TestDeviceR1') }}"
+
+- name: 1 - Create contact association
+  networktocode.nautobot.contact_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    contact:
+      id: "{{ test_contact['key'] }}"
+    object_type: "dcim.device"
+    object_id: "{{ test_device['key'] }}"
+    role: technical
+    state: present
+  register: test_create
+
+- name: 1 - ASSERT
+  assert:
+    that:
+      - test_create is changed
+      - test_create['diff']['before']['state'] == "absent"
+      - test_create['diff']['after']['state'] == "present"
+      - test_create['contact_association']['contact'] == test_contact['key']
+      - test_create['contact_association']['object_type'] == "dcim.device"
+      - test_create['contact_association']['object_id'] == test_device['key']
+      - test_create['contact_association']['role'] == "technical"
+      - "created" in test_create['msg']
+
+- name: 2 - Idempotent create
+  networktocode.nautobot.contact_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    contact:
+      id: "{{ test_contact['key'] }}"
+    object_type: "dcim.device"
+    object_id: "{{ test_device['key'] }}"
+    role: technical
+    state: present
+  register: test_create_idem
+
+- name: 2 - ASSERT
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['contact_association']['contact'] == test_contact['key']
+      - "already exists" in test_create_idem['msg']
+
+- name: 3 - Delete contact association
+  networktocode.nautobot.contact_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    contact:
+      id: "{{ test_contact['key'] }}"
+    object_type: "dcim.device"
+    object_id: "{{ test_device['key'] }}"
+    state: absent
+  register: test_delete
+
+- name: 3 - ASSERT
+  assert:
+    that:
+      - test_delete is changed
+      - test_delete['diff']['before']['state'] == "present"
+      - test_delete['diff']['after']['state'] == "absent"
+      - test_delete['contact_association']['contact'] == test_contact['key']
+      - "deleted" in test_delete['msg']
+
+- name: 4 - Idempotent delete
+  networktocode.nautobot.contact_association:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    contact:
+      id: "{{ test_contact['key'] }}"
+    object_type: "dcim.device"
+    object_id: "{{ test_device['key'] }}"
+    state: absent
+  register: test_delete_idem
+
+- name: 4 - ASSERT
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "already absent" in test_delete_idem['msg']

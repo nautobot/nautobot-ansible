@@ -1,0 +1,1 @@
+Added new ContactAssociation module to manage associations between contacts/teams and other objects via the /api/extras/contact-associations/ endpoint.
