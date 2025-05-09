@@ -28,7 +28,7 @@ function main {
 
     echo "# Checking to make sure Nautobot server is reachable.."
     # shellcheck disable=SC2016
-    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
+    timeout 600 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
 
     echo "# Populating Nautobot for running integration tests.."
     python ./tests/integration/nautobot-populate.py

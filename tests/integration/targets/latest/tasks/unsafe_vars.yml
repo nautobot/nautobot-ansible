@@ -1,0 +1,149 @@
+---
+##
+##
+### UNSAFE VARIABLE HANDLING TESTS
+##
+##
+
+## All of the asserts included here have also manually been tested and found to pass using ansible.builtin.debug as per issue #114., e.g.:
+##   ansible.builtin.debug:
+##     msg: "{{ lookup('list', [j2_lookup_graphql_query_response[0].data.devices[0].config_context.normal_string]) }}"
+
+## These tests will unavoidably trigger "[WARNING]: conditional statements should not include jinja2 templating" due to using raw/endraw in the assert comparisons.
+
+- set_fact:
+    active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    device_type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+    parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Parent Location Type\"') }}"
+    role: "{{ lookup('networktocode.nautobot.lookup', 'roles', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Core Switch\"') }}"
+    staged: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Staged') }}"
+
+- name: "1 - Create location record with Jinja2 in name string"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "{% raw %}{{ SEE ISSUE 114 }} Test Location 3{% endraw %}"
+    status: Active
+    location_type: "{{ parent_location_type['key'] }}"
+  register: test_one
+
+- name: "1 - Assert location record with Jinja2 in name string created correctly"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['location']['name'] == "{% raw %}{{ SEE ISSUE 114 }} Test Location 3{% endraw %}"
+      - test_one['location']['status'] == active['key']
+      - test_one['location']['location_type'] == parent_location_type["key"]
+      - test_one['msg'] == "{% raw %}location {{ SEE ISSUE 114 }} Test Location 3 created{% endraw %}"
+
+- name: "2 - Create device record with Jinja2 in name and location string"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "{% raw %}{{ SEE ISSUE 114 }} Test Location 3{% endraw %}"
+    local_config_context_data:
+      normal_string: "this is a normal string"
+      string_containing_jinja2tags: "this is a string containing Jinja2 tags {% raw %}{{ SEE ISSUE 114 }}{% endraw %}"
+    status: "Staged"
+    state: present
+  register: test_two
+
+- name: "2 - Assert device record with Jinja2 in name and location string created correctly"
+  assert:
+    that:
+      - test_two is changed
+      - test_two['diff']['before']['state'] == 'absent'
+      - test_two['diff']['after']['state'] == 'present'
+      - test_two['device']['name'] == "{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"
+      - test_two['device']['role'] == role['key']
+      - test_two['device']['device_type'] == device_type['key']
+      - test_two['device']['location'] == test_one['location']['id']
+      - test_two['device']['status'] == staged['key']
+      - test_two['msg'] == "{% raw %}device R2 {{ SEE ISSUE 114 }} created{% endraw %}"
+
+# Grab lookup AND lookup_graphql plugin responses to test against
+- set_fact:
+    j2_lookup_query_response: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}\"') }}"
+    j2_lookup_graphql_query_response: >-
+      {{ query(
+          'networktocode.nautobot.lookup_graphql',
+          '{% raw %}query { devices(name: "R2 {{ SEE ISSUE 114 }}") { name id config_context location { name id } } }{% endraw %}',
+          url=nautobot_url,
+          token=nautobot_token
+      ) }}
+
+- name: "2.1 - lookup plugin - Assert looked up normal string in local config context is returned"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["local_config_context_data"]["normal_string"] == "this is a normal string"
+
+- name: "2.2 - lookup plugin - Assert list lookup of normal string returns a list with the string as its only element"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_query_response["value"]["local_config_context_data"]["normal_string"]]) == ["this is a normal string"]
+
+- name: "2.3 - lookup plugin - Assert looked up string with Jinja2 tags in local config context is returned as a raw string with Jinja2 tags intact"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["local_config_context_data"]["string_containing_jinja2tags"] == "{% raw %}this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}{% endraw %}"
+
+- name: "2.4 - lookup plugin - Assert list lookup of string with Jinja2 tags returns a list with the raw string as its only element with Jinja2 tags intact"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_query_response["value"]["local_config_context_data"]["string_containing_jinja2tags"]]) == ["{% raw %}this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}{% endraw %}"]
+
+- name: "2.5 - lookup plugin - Assert hostname with Jinja2 tags is returned as a raw name with Jinja2 tags intact"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["name"] == "{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"
+
+- name: "2.6 - lookup plugin - Assert list lookup of hostname with Jinja2 tags returns a list with the raw name as its only element with Jinja2 tags intact"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_query_response["value"]["name"]]) == ["{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"]
+
+- name: "2.7 - lookup_graphql plugin - Assert device name is returned as raw string with Jinja2 tags intact"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["name"] == "{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"
+
+- name: "2.8 - lookup_graphql plugin - Assert list lookup of device name returns a list with the raw string"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_graphql_query_response[0]["data"]["devices"][0]["name"]]) == ["{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}"]
+
+- name: "2.9 - lookup_graphql plugin - Assert location name is returned as raw string with Jinja2 tags intact"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["location"]["name"] == "{% raw %}{{ SEE ISSUE 114 }} Test Location 3{% endraw %}"
+
+- name: "2.10 - lookup_graphql plugin - Assert list lookup of location name returns a list with the raw string"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_graphql_query_response[0]["data"]["devices"][0]["location"]["name"]]) == ["{% raw %}{{ SEE ISSUE 114 }} Test Location 3{% endraw %}"]
+
+- name: "2.11 - lookup_graphql plugin - Assert config_context.normal_string is returned as expected"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["normal_string"] == "this is a normal string"
+
+- name: "2.12 - lookup_graphql plugin - Assert list lookup of config_context.normal_string returns list with that string"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["normal_string"]]) == ["this is a normal string"]
+
+- name: "2.13 - lookup_graphql plugin - Assert config_context.string_containing_jinja2tags is returned as raw string"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["string_containing_jinja2tags"] == "{% raw %}this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}{% endraw %}"
+
+- name: "2.14 - lookup_graphql plugin - Assert list lookup of config_context.string_containing_jinja2tags returns list with raw string"
+  assert:
+    that:
+      - lookup('list', [j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["string_containing_jinja2tags"]]) == ["{% raw %}this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}{% endraw %}"]
