@@ -595,8 +595,7 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
 
 
 def check_needs_wrapping(value):
-    """Recursively checks lists and dictionaries, and checks strings directly, to see if they need to be wrapped for safety, due to containing Jinja2 delimiters.
-    """
+    """Recursively checks lists and dictionaries, and checks strings directly, to see if they need to be wrapped for safety, due to containing Jinja2 delimiters."""
     if isinstance(value, str):
         return "{{" in value or "{%" in value
     elif isinstance(value, dict):
