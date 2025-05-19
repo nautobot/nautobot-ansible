@@ -619,6 +619,15 @@ def is_truthy(arg):
         raise ValueError(f"Invalid truthy value: `{arg}`")
 
 
+def sort_dict_with_lists(data):
+    """Recursively sort a dictionary with lists for better comparison."""
+    if isinstance(data, dict):
+        return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
+    if isinstance(data, list):
+        return sorted(sort_dict_with_lists(v) for v in data)
+    return data
+
+
 class NautobotModule:
     """
     Initialize connection to Nautobot, sets AnsibleModule passed in to
@@ -1121,7 +1130,7 @@ class NautobotModule:
             serialized_nb_obj["tags"] = set(serialized_nb_obj["tags"])
             updated_obj["tags"] = set(data["tags"])
 
-        if serialized_nb_obj == updated_obj:
+        if sort_dict_with_lists(serialized_nb_obj) == sort_dict_with_lists(updated_obj):
             return serialized_nb_obj, None
         else:
             data_before, data_after = {}, {}
