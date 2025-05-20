@@ -22,6 +22,7 @@ jobs:
         python-version:
           - "3.11"
           - "3.12"
+          - "3.13"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
