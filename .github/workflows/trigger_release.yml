@@ -42,6 +42,7 @@ jobs:
         python-version:
           - "3.11"
           - "3.12"
+          - "3.13"
         nautobot-version:
           - "2.0"
           - "2.1"
