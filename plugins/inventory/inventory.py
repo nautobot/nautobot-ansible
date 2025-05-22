@@ -209,8 +209,9 @@ DOCUMENTATION = """
           - Rename variables evaluated by nb_inventory, before writing them.
           - Each list entry contains a dict with a 'pattern' and a 'repl'.
           - Both 'pattern' and 'repl' are regular expressions.
+          - e.g., C([{"pattern": r"cluster(.*)", "repl": r"nautobot_cluster\1"}])
           - The first matching expression is used, subsequent matches are ignored.
-          - Internally `re.sub` is used.
+          - Internally C(re.sub) is used.
       type: list
       elements: dict
       default: []
