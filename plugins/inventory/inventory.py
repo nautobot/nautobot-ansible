@@ -1240,6 +1240,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if parent_location_id is not None and parent_location_id in location_transformed_group_names:
                 parent_location_name = location_transformed_group_names[parent_location_id]
                 self.inventory.add_child(parent_location_name, location_group_name)
+
     def _set_variable(self, hostname, key, value):
         for item in self.rename_variables:
             if item["pattern"].match(key):
@@ -1393,16 +1394,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.virtual_chassis_name = self.get_option("virtual_chassis_name")
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
-       
+
         # Compile regular expressions, if any
-        self.rename_variables = self.parse_rename_variables(
-            self.get_option("rename_variables")
-        )
+        self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
 
         self.main()
 
     def parse_rename_variables(self, rename_variables):
-        return [
-            {"pattern": re.compile(i["pattern"]), "repl": i["repl"]}
-            for i in rename_variables or ()
-        ]
+        return [{"pattern": re.compile(i["pattern"]), "repl": i["repl"]} for i in rename_variables or ()]
