@@ -204,6 +204,16 @@ DOCUMENTATION = """
       description: List of custom ansible host vars to create from the device object fetched from Nautobot
       default: {}
       type: dict
+    rename_variables:
+      description:
+          - Rename variables evaluated by nb_inventory, before writing them.
+          - Each list entry contains a dict with a 'pattern' and a 'repl'.
+          - Both 'pattern' and 'repl' are regular expressions.
+          - The first matching expression is used, subsequent matches are ignored.
+          - Internally `re.sub` is used.
+      type: list
+      elements: dict
+      default: []
 """
 
 EXAMPLES = """
@@ -257,11 +267,19 @@ plugin: networktocode.nautobot.inventory
 keyed_groups:
   - prefix: status
     key: status.value
+
+# You can use rename_variables to change variable names before the inventory gets loaded.
+rename_variables:
+  - pattern: "cluster"
+    repl: "nautobot_cluster"
+  - pattern: "ansible_host"
+    repl: "host"
 """
 
 import json
 import uuid
 import math
+import re
 from functools import partial
 from sys import version as python_version
 from threading import Thread
@@ -1230,6 +1248,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 parent_location_name = location_transformed_group_names[parent_location_id]
                 self.inventory.add_child(parent_location_name, location_group_name)
 
+    def _set_variable(self, hostname, key, value):
+        for item in self.rename_variables:
+            if item["pattern"].match(key):
+                key = item["pattern"].sub(item["repl"], key)
+                break
+
+        self.inventory.set_variable(hostname, key, value)
+
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
@@ -1277,9 +1303,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, value)
+                    self._set_variable(hostname, key, value)
             else:
-                self.inventory.set_variable(hostname, attribute, extracted_value)
+                self._set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
@@ -1376,4 +1402,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
 
+        # Compile regular expressions, if any
+        self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
+
         self.main()
+
+    def parse_rename_variables(self, rename_variables):
+        return [{"pattern": re.compile(i["pattern"]), "repl": i["repl"]} for i in rename_variables or ()]
