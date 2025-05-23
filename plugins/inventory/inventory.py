@@ -210,11 +210,6 @@ DOCUMENTATION = """
           - Each list entry contains a dict with a 'pattern' and a 'repl'.
           - Both 'pattern' and 'repl' are regular expressions.
           - You can use rename_variables to change variable names before the inventory gets loaded.
-          - rename_variables:
-          - `  - pattern: "cluster"`
-          - `    repl: "nautobot_cluster"`
-          - `  - pattern: "ansible_host"`
-          - `    repl: "host"`
           - The first matching expression is used, subsequent matches are ignored.
           - Internally `re.sub` is used.
       type: list
@@ -273,6 +268,11 @@ plugin: networktocode.nautobot.inventory
 keyed_groups:
   - prefix: status
     key: status.value
+- rename_variables:
+  - pattern: "cluster"`
+    repl: "nautobot_cluster"`
+  - pattern: "ansible_host"`
+    repl: "host"`
 """
 
 import json
