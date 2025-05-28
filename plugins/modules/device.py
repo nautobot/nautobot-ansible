@@ -97,6 +97,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  software_version:
+    description:
+      - The software version of the device
+    required: false
+    type: str
+    version_added: "3.0.0"
   status:
     description:
       - The status of the device
@@ -237,6 +243,18 @@ EXAMPLES = r"""
         position: 10
         face: Front
         state: present
+    
+    - name: Update device with software version
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test-Device
+        device_type: C9410R
+        role: Core Switch
+        location: My Location
+        status: active
+        software_version: "15.2(7)E"
+        state: present
 """
 
 RETURN = r"""
@@ -300,6 +318,7 @@ def main():
             controller_managed_device_group=dict(required=False, type="raw"),
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
+            software_version=dict(required=False, type="raw"),
         )
     )
 

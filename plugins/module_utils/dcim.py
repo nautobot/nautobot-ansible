@@ -54,6 +54,40 @@ NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
 class NautobotDcimModule(NautobotModule):
+    def _find_software_version(self, version_identifier):
+        """
+        Helper method to find a SoftwareVersion object by version string, ID, or name.
+        Args:
+            version_identifier (str or dict): The version string, ID, or dict with version details.
+        Returns:
+            dict: SoftwareVersion object with 'id' field, or None if not found.
+        """
+        if not version_identifier:
+            return None
+
+        # If version_identifier is already a dict with an ID (e.g., from API lookup)
+        if isinstance(version_identifier, dict) and version_identifier.get("id"):
+            return {"id": version_identifier["id"]}
+
+        # Try to find by ID or version string
+        try:
+            # Assume version_identifier is an ID
+            software_version = self.nb.dcim.software_versions.get(version_identifier)
+            if software_version:
+                return {"id": software_version.id}
+        except ValueError:
+            pass
+
+        # Try to find by version string
+        software_versions = self.nb.dcim.software_versions.filter(version=version_identifier)
+        if software_versions:
+            # Return the first match (assumes version strings are unique)
+            return {"id": software_versions[0].id}
+
+        # If not found, raise an error
+        self._handle_errors(msg=f"Could not find software version: {version_identifier}")
+        return None
+    
     def run(self):
         """
         This function should have all necessary code for endpoints within the application
@@ -108,6 +142,14 @@ class NautobotDcimModule(NautobotModule):
         # # Include config context for device endpoint
         # if endpoint_name == "device":
         #     nb_endpoint.url = f"{nb_endpoint.url}/?&include=config_context_data"
+        
+        # Handle software_version for devices
+        if endpoint_name == "device" and "software_version" in data:
+            software_version = self._find_software_version(data["software_version"])
+            if software_version:
+                data["software_version"] = software_version
+            else:
+                data.pop("software_version", None)  # Remove if not found to avoid API errors
 
         # Used for msg output
         if data.get("name"):
