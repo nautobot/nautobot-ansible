@@ -22,6 +22,7 @@ jobs:
         python-version:
           - "3.11"
           - "3.12"
+          - "3.13"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
@@ -41,6 +42,7 @@ jobs:
         python-version:
           - "3.11"
           - "3.12"
+          - "3.13"
         nautobot-version:
           - "2.0"
           - "2.1"
@@ -52,12 +54,10 @@ jobs:
           - "2.17"
           - "2.18"
         exclude:
-          - python-version: "3.12"
-            nautobot-version: "2.0"
-          - python-version: "3.12"
-            nautobot-version: "2.1"
-          - python-version: "3.12"
-            nautobot-version: "2.2"
+          - python-version: "3.13"
+            ansible-version: "2.16"
+          - python-version: "3.13"
+            ansible-version: "2.17"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"
