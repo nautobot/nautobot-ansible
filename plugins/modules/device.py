@@ -171,6 +171,12 @@ options:
     required: false
     type: int
     version_added: "5.1.0"
+  secrets_group:
+    description:
+      - The secrets_group of the device
+    required: false
+    type: raw
+    version_added: "5.12.0"
 """
 
 EXAMPLES = r"""
@@ -226,6 +232,18 @@ EXAMPLES = r"""
           bgp: "65000"
         tags:
           - Schnozzberry
+        state: present
+
+    - name: Create device within Nautobot with secrets_group
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: TopSecretDevice
+        device_type: C9410R
+        role: Core Switch
+        location: My Location
+        secrets_group: "Test Secrets Group"
+        status: active
         state: present
 
     - name: Update the rack and position of an existing device
@@ -300,6 +318,7 @@ def main():
             controller_managed_device_group=dict(required=False, type="raw"),
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
+            secrets_group=dict(required=False, type="raw"),
         )
     )
 
