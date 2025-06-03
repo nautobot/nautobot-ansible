@@ -318,7 +318,7 @@ def main():
             controller_managed_device_group=dict(required=False, type="raw"),
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
-            secrets_group=dict(required=False, type="raw"),
+            secrets_group=dict(required=False, type="raw", no_log=False),
         )
     )
 
