@@ -1,1 +1,0 @@
-Added `label`, `parent`, `software_version`, and `software_image_files` options to the `inventory_item` module.

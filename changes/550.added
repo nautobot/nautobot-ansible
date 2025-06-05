@@ -1,1 +1,0 @@
-Added option to fetch module interfaces in addition to device interfaces on the `networktocode.nautobot.inventory` plugin.
