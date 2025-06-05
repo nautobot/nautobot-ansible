@@ -2,8 +2,6 @@
 
 import os
 
-import toml
-import yaml
 from invoke import Collection, task as invoke_task
 from invoke.exceptions import Exit
 
@@ -365,6 +363,10 @@ def generate_release_notes(context, version=""):
 @task
 def check_versions(_):
     """Check that galaxy.yml and pyproject.toml versions match."""
+    # In CI, we use invoke to install the dependencies so we need to import toml and yaml here
+    import toml  # pylint: disable=import-outside-toplevel
+    import yaml  # pylint: disable=import-outside-toplevel
+
     # Read galaxy.yml version
     with open("galaxy.yml", encoding="utf-8") as f:
         galaxy_data = yaml.safe_load(f)
