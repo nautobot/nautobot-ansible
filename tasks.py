@@ -1,7 +1,11 @@
 """Tasks for use with Invoke."""
 
-from invoke import Collection, task as invoke_task
 import os
+
+import toml
+import yaml
+from invoke import Collection, task as invoke_task
+from invoke.exceptions import Exit
 
 
 def is_truthy(arg):
@@ -356,3 +360,21 @@ def generate_release_notes(context, version=""):
         command += " --version `poetry version -s`"
     # Due to issues with git repo ownership in the containers, this must always run locally.
     context.run(command)
+
+
+@task
+def check_versions(_):
+    """Check that galaxy.yml and pyproject.toml versions match."""
+    # Read galaxy.yml version
+    with open("galaxy.yml", encoding="utf-8") as f:
+        galaxy_data = yaml.safe_load(f)
+        galaxy_version = galaxy_data["version"]
+
+    # Read pyproject.toml version
+    with open("pyproject.toml", encoding="utf-8") as f:
+        pyproject_data = toml.load(f)
+        pyproject_version = pyproject_data["tool"]["poetry"]["version"]
+
+    if galaxy_version != pyproject_version:
+        raise Exit(f"Version mismatch: galaxy.yml ({galaxy_version}) != " f"pyproject.toml ({pyproject_version})", code=1)
+    print(f"Galaxy.yml and pyproject.toml versions match: {galaxy_version}")
