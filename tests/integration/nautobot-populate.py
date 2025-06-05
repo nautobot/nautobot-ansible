@@ -356,6 +356,12 @@ created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 test100 = nb.dcim.devices.get(name="test100")
 test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
 
+# Create inventory items
+inventory_items = [
+    {"name": "Test Parent Inventory Item", "device": test100.id, "label": "Test Parent Inventory Item"},
+]
+created_inventory_items = make_nautobot_calls(nb.dcim.inventory_items, inventory_items)
+
 # Create rear port
 rear_ports = [{"name": "Test Rear Port", "device": test100.id, "type": "bnc", "positions": 5}]
 created_rear_ports = make_nautobot_calls(nb.dcim.rear_ports, rear_ports)
@@ -689,6 +695,18 @@ if nautobot_version >= version.parse("2.2"):
     controller_device_group = [{"name": "controller_group_one", "weight": "1000", "controller": test_controller_one.id}]
     created_controller_device_group = make_nautobot_calls(nb.dcim.controller_managed_device_groups, controller_device_group)
 
+    software_versions = [
+        {"version": "3.2.1", "platform": "Cisco IOS", "status": "Active"},
+    ]
+    created_software_versions = make_nautobot_calls(nb.dcim.software_versions, software_versions)
+    test_software_version = nb.dcim.software_versions.get(version="3.2.1", platform="Cisco IOS")
+
+    software_image_files = [
+        {"image_file_name": "test_software_image_file.bin", "software_version": test_software_version.id, "status": "Active"},
+        {"image_file_name": "test_software_image_file_two.bin", "software_version": test_software_version.id, "status": "Active"},
+    ]
+    created_software_image_files = make_nautobot_calls(nb.dcim.software_image_files, software_image_files)
+
 ###############
 # v2.3+ items #
 ###############
@@ -715,25 +733,54 @@ if nautobot_version >= version.parse("2.3"):
     created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 
     # Create module types
-    power_outlet_module_types = [
+    module_types = [
         {"manufacturer": "Cisco", "model": "HooverMaxProModel60"},
         {"manufacturer": "Cisco", "model": "HooverMaxProModel61"},
+        {"manufacturer": "Cisco", "model": "C9300-NM-8X"},
     ]
-    created_power_outlet_module_types = make_nautobot_calls(nb.dcim.module_types, power_outlet_module_types)
+    created_module_types = make_nautobot_calls(nb.dcim.module_types, module_types)
 
     # Create a module bay
-    power_outlet_module_bays = [{"parent_device": test100.id, "name": "PowerStrip"}, {"parent_device": test100.id, "name": "PowerStripTwo"}]
-    created_power_outlet_module_bays = make_nautobot_calls(nb.dcim.module_bays, power_outlet_module_bays)
+    module_bays = [
+        {"parent_device": test100.id, "name": "PowerStrip"},
+        {
+            "parent_device": test100.id,
+            "name": "PowerStripTwo",
+        },
+        {"parent_device": test100.id, "name": "NetworkModuleBay 1"},
+        {"parent_device": test100.id, "name": "NetworkModuleBay 2"},
+    ]
+    created_module_bays = make_nautobot_calls(nb.dcim.module_bays, module_bays)
 
     # Assign module type to module bay
-    test_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
-    test_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
-    power_outlet_modules = [{"module_type": test_module_type.id, "status": "Active", "parent_module_bay": test_module_bay.id}]
-    created_power_outlet_modules = make_nautobot_calls(nb.dcim.modules, power_outlet_modules)
+    power_outlet_module_type = nb.dcim.module_types.get(model="HooverMaxProModel60")
+    power_outlet_module_bay = nb.dcim.module_bays.get(name="PowerStrip")
+    power_outlet_modules = [{"module_type": power_outlet_module_type.id, "status": "Active", "parent_module_bay": power_outlet_module_bay.id}]
+
+    network_module_type = nb.dcim.module_types.get(model="C9300-NM-8X")
+    network_module_bay_1 = nb.dcim.module_bays.get(name="NetworkModuleBay 1")
+    network_module_bay_2 = nb.dcim.module_bays.get(name="NetworkModuleBay 2")
+    network_modules = [
+        {"module_type": network_module_type.id, "status": "Active", "parent_module_bay": network_module_bay_1.id},
+        {"module_type": network_module_type.id, "status": "Active", "parent_module_bay": network_module_bay_2.id},
+    ]
+
+    modules = power_outlet_modules + network_modules
+    created_modules = make_nautobot_calls(nb.dcim.modules, modules)
 
     # Create Module Rear Port Template
-    module_rear_port_templates = [{"name": "Test Module Rear Port Template", "module_type": test_module_type.id, "type": "bnc", "positions": 5}]
+    module_rear_port_templates = [{"name": "Test Module Rear Port Template", "module_type": power_outlet_module_type.id, "type": "bnc", "positions": 5}]
     created_rear_port_templates = make_nautobot_calls(nb.dcim.rear_port_templates, module_rear_port_templates)
+
+    # Create module interfaces
+    network_module_1 = nb.dcim.modules.get(parent_module_bay=network_module_bay_1.id)
+    network_module_2 = nb.dcim.modules.get(parent_module_bay=network_module_bay_2.id)
+    module_interfaces = [
+        {"name": "Interface 1", "module": network_module_1.id, "status": "Active", "type": "virtual"},
+        # Intentionally duplicate interface name to test lookup by module
+        {"name": "Interface 1", "module": network_module_2.id, "status": "Active", "type": "virtual"},
+    ]
+    created_module_interfaces = make_nautobot_calls(nb.dcim.interfaces, module_interfaces)
 
     # Create role for device interfaces
     device_interface_roles = [

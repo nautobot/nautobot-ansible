@@ -96,6 +96,14 @@ DOCUMENTATION = """
       default: False
       type: boolean
       version_added: "1.0.0"
+    module_interfaces:
+      description:
+        - If True, it adds module interfaces to the list of device interfaces in the inventory.
+        - Modules are only available in Nautobot v2.3.0+
+        - Requires I(interfaces) to be enabled as well.
+      default: False
+      type: boolean
+      version_added: "5.12.0"
     services:
       description:
         - If True, it adds the device or virtual machine services information in host vars.
@@ -196,6 +204,16 @@ DOCUMENTATION = """
       description: List of custom ansible host vars to create from the device object fetched from Nautobot
       default: {}
       type: dict
+    rename_variables:
+      description:
+          - Rename variables evaluated by nb_inventory, before writing them.
+          - Each list entry contains a dict with a 'pattern' and a 'repl'.
+          - Both 'pattern' and 'repl' are regular expressions.
+          - The first matching expression is used, subsequent matches are ignored.
+          - Internally `re.sub` is used.
+      type: list
+      elements: dict
+      default: []
 """
 
 EXAMPLES = """
@@ -249,11 +267,19 @@ plugin: networktocode.nautobot.inventory
 keyed_groups:
   - prefix: status
     key: status.value
+
+# You can use rename_variables to change variable names before the inventory gets loaded.
+rename_variables:
+  - pattern: "cluster"
+    repl: "nautobot_cluster"
+  - pattern: "ansible_host"
+    repl: "host"
 """
 
 import json
 import uuid
 import math
+import re
 from functools import partial
 from sys import version as python_version
 from threading import Thread
@@ -845,7 +871,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.vm_services_lookup[service["virtual_machine"]["id"]][service_id] = service
 
     def refresh_interfaces(self):
-        url_device_interfaces = self.api_endpoint + "/api/dcim/interfaces/?limit=0&depth=1"
+        # Device information on Parent Module Bays are only available at depth=2
+        depth = "2" if self.module_interfaces else "1"
+        url_device_interfaces = self.api_endpoint + f"/api/dcim/interfaces/?limit=0&depth={depth}"
         url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0&depth=1"
 
         device_interfaces = []
@@ -877,7 +905,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for interface in device_interfaces:
             interface_id = interface["id"]
-            device_id = interface["device"]["id"]
+            if interface.get("device"):
+                device_id = interface["device"]["id"]
+            elif self.module_interfaces and interface.get("module", {}).get("parent_module_bay", {}).get("parent_device"):
+                device_id = interface["module"]["parent_module_bay"]["parent_device"]["id"]
+            else:
+                continue
 
             # Check if device_id is actually a device we've fetched, and was not filtered out by query_filters
             if device_id not in self.devices_lookup:
@@ -1215,6 +1248,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 parent_location_name = location_transformed_group_names[parent_location_id]
                 self.inventory.add_child(parent_location_name, location_group_name)
 
+    def _set_variable(self, hostname, key, value):
+        for item in self.rename_variables:
+            if item["pattern"].match(key):
+                key = item["pattern"].sub(item["repl"], key)
+                break
+
+        self.inventory.set_variable(hostname, key, value)
+
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
@@ -1262,9 +1303,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, value)
+                    self._set_variable(hostname, key, value)
             else:
-                self.inventory.set_variable(hostname, attribute, extracted_value)
+                self._set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
@@ -1341,6 +1382,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.flatten_custom_fields = self.get_option("flatten_custom_fields")
         self.plurals = self.get_option("plurals")
         self.interfaces = self.get_option("interfaces")
+        self.module_interfaces = self.get_option("module_interfaces")
         self.services = self.get_option("services")
         self.fetch_all = self.get_option("fetch_all")
         self.headers = {
@@ -1360,4 +1402,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
 
+        # Compile regular expressions, if any
+        self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
+
         self.main()
+
+    def parse_rename_variables(self, rename_variables):
+        return [{"pattern": re.compile(i["pattern"]), "repl": i["repl"]} for i in rename_variables or ()]

@@ -73,6 +73,32 @@ options:
     default: false
     type: bool
     version_added: "3.0.0"
+  label:
+    description:
+      - The label of the inventory item
+    required: false
+    type: str
+    version_added: "5.12.0"
+  parent_inventory_item:
+    aliases:
+      - parent
+    description:
+      - The parent item of the inventory item
+    required: false
+    type: raw
+    version_added: "5.12.0"
+  software_version:
+    description:
+      - The software version of the inventory item
+    required: false
+    type: raw
+    version_added: "5.12.0"
+  software_image_files:
+    description:
+      - Override the software image files associated with the software version for this inventory item
+    required: false
+    type: raw
+    version_added: "5.12.0"
 """
 
 EXAMPLES = r"""
@@ -152,6 +178,10 @@ def main():
             asset_tag=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             discovered=dict(required=False, type="bool", default=False),
+            label=dict(required=False, type="str"),
+            parent_inventory_item=dict(required=False, type="raw", aliases=["parent"]),
+            software_version=dict(required=False, type="raw"),
+            software_image_files=dict(required=False, type="raw"),
         )
     )
 

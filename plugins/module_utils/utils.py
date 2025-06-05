@@ -78,6 +78,7 @@ API_APPS_ENDPOINTS = dict(
         "rear_ports",
         "rear_port_templates",
         "software_versions",
+        "software_image_files",
         "virtual_chassis",
     ],
     extras=[
@@ -160,6 +161,7 @@ QUERY_TYPES = dict(
     parent_location_type="name",
     parent_rack_group="name",
     parent_tenant_group="name",
+    parent_inventory_item="name",
     power_panel="name",
     power_port="name",
     power_port_template="name",
@@ -177,6 +179,7 @@ QUERY_TYPES = dict(
     secrets_group="name",
     secrets_groups_association="name",
     software_version="version",
+    software_image_file="image_file_name",
     status="name",
     tenant="name",
     tenant_group="name",
@@ -254,6 +257,7 @@ CONVERT_TO_ID = {
     "parent_location": "locations",
     "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
+    "parent_inventory_item": "inventory_items",
     "power_panel": "power_panels",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
@@ -270,6 +274,8 @@ CONVERT_TO_ID = {
     "secret": "secrets",
     "secrets_group": "secrets_groups",
     "services": "services",
+    "software_version": "software_versions",
+    "software_image_files": "software_image_files",
     "status": "statuses",
     "tags": "tags",
     "tagged_vlans": "vlans",
@@ -362,6 +368,7 @@ ENDPOINT_NAME_MAPPING = {
     "services": "services",
     "static_group_associations": "static_group_association",
     "software_versions": "software_version",
+    "software_image_files": "software_image_file",
     "statuses": "statuses",
     "tags": "tags",
     "teams": "team",
@@ -401,26 +408,26 @@ ALLOWED_QUERY_PARAMS = {
     "controller_managed_device_group": set(["name"]),
     "custom_field": set(["label"]),
     "custom_field_choice": set(["value", "custom_field"]),
-    "dcim.consoleport": set(["name", "device"]),
-    "dcim.consoleserverport": set(["name", "device"]),
-    "dcim.frontport": set(["name", "device", "rear_port"]),
-    "dcim.interface": set(["name", "device", "virtual_machine"]),
+    "dcim.consoleport": set(["name", "device", "module"]),
+    "dcim.consoleserverport": set(["name", "device", "module"]),
+    "dcim.frontport": set(["name", "device", "module", "rear_port"]),
+    "dcim.interface": set(["name", "device", "module", "virtual_machine"]),
     "dcim.powerfeed": set(["name", "power_panel"]),
-    "dcim.poweroutlet": set(["name", "device"]),
-    "dcim.powerport": set(["name", "device"]),
-    "dcim.rearport": set(["name", "device"]),
+    "dcim.poweroutlet": set(["name", "device", "module"]),
+    "dcim.powerport": set(["name", "device", "module"]),
+    "dcim.rearport": set(["name", "device", "module"]),
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
     "device": set(["name"]),
     "device_redundancy_group": set(["name"]),
     "device_type": set(["model"]),
     "dynamic_group": set(["name"]),
-    "front_port": set(["name", "device", "rear_port"]),
+    "front_port": set(["name", "device", "module", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "group": set(["name"]),
     "groups": set(["name"]),
     "installed_device": set(["name"]),
-    "interface": set(["name", "device", "virtual_machine"]),
+    "interface": set(["name", "device", "module", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
     "ip_address": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
@@ -448,6 +455,7 @@ ALLOWED_QUERY_PARAMS = {
     "parent_module": set(["module_type", "parent_module_bay"]),
     "parent_rack_group": set(["name"]),
     "parent_tenant_group": set(["name"]),
+    "parent_inventory_item": set(["name", "device"]),
     "permission": set(["name"]),
     "platform": set(["name"]),
     "power_feed": set(["name", "power_panel"]),
@@ -474,6 +482,8 @@ ALLOWED_QUERY_PARAMS = {
     "secrets_groups_association": set(["secrets_group", "secret", "access_type", "secret_type"]),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
     "software_version": set(["version", "platform"]),
+    "software_image_file": set(["image_file_name", "software_version"]),
+    "software_image_files": set(["image_file_name", "software_version"]),
     "static_group_association": set(["dynamic_group", "associated_object_type", "associated_object_id"]),
     "statuses": set(["name"]),
     "tags": set(["name"]),
@@ -559,6 +569,7 @@ CONVERT_KEYS = {
     "parent_location": "parent",
     "parent_location_type": "parent",
     "parent_tenant_group": "parent",
+    "parent_inventory_item": "parent",
     "rear_port_template_position": "rear_port_position",
     "termination_a": "termination_a_id",
     "termination_b": "termination_b_id",
@@ -606,6 +617,15 @@ def is_truthy(arg):
         return False
     else:
         raise ValueError(f"Invalid truthy value: `{arg}`")
+
+
+def sort_dict_with_lists(data):
+    """Recursively sort a dictionary with lists for better comparison."""
+    if isinstance(data, dict):
+        return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
+    if isinstance(data, list):
+        return sorted(sort_dict_with_lists(v) for v in data)
+    return data
 
 
 class NautobotModule:
@@ -1110,7 +1130,7 @@ class NautobotModule:
             serialized_nb_obj["tags"] = set(serialized_nb_obj["tags"])
             updated_obj["tags"] = set(data["tags"])
 
-        if serialized_nb_obj == updated_obj:
+        if sort_dict_with_lists(serialized_nb_obj) == sort_dict_with_lists(updated_obj):
             return serialized_nb_obj, None
         else:
             data_before, data_after = {}, {}
