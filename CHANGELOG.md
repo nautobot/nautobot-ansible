@@ -4,6 +4,30 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.12.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.0)
+
+### Added
+
+- [#545](https://github.com/nautobot/nautobot-ansible/issues/545) - Added support for the `vrf` parameter to the `device_interface` and `vm_interface` modules.
+- [#549](https://github.com/nautobot/nautobot-ansible/issues/549) - Added `label`, `parent`, `software_version`, and `software_image_files` options to the `inventory_item` module.
+- [#550](https://github.com/nautobot/nautobot-ansible/issues/550) - Added option to fetch module interfaces in addition to device interfaces on the `networktocode.nautobot.inventory` plugin.
+- [#559](https://github.com/nautobot/nautobot-ansible/issues/559) - Added the ability to rename variables set on the host for the inventory plugin.
+- [#560](https://github.com/nautobot/nautobot-ansible/issues/560) - Added support for the `secrets_group` parameter to the `device` module.
+
+### Dependencies
+
+- [#555](https://github.com/nautobot/nautobot-ansible/issues/555) - Updated to mkdocs-ansible-collection 1.0.0
+
+### Fixed
+
+- [#526](https://github.com/nautobot/nautobot-ansible/issues/526) - Fixed the comparison of dictionaries with lists for better idempotency.
+- [#548](https://github.com/nautobot/nautobot-ansible/issues/548) - Fixed identification of module interfaces when using `networktocode.nautobot.device_interfaces` plugin.
+- [#550](https://github.com/nautobot/nautobot-ansible/issues/550) - Fixed parsing of inventory with `networktocode.nautobot.inventory` plugin when using `interfaces` option and module interfaces are present.
+
+### Housekeeping
+
+- [#547](https://github.com/nautobot/nautobot-ansible/issues/547) - Added Python 3.13 to the CI testing matrix.
+
 ## [v5.11.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.11.0)
 
 ### Added

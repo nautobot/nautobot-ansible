@@ -1,1 +1,0 @@
-Fixed the comparison of dictionaries with lists for better idempotency.
