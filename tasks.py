@@ -378,3 +378,13 @@ def check_versions(_):
     if galaxy_version != pyproject_version:
         raise Exit(f"Version mismatch: galaxy.yml ({galaxy_version}) != " f"pyproject.toml ({pyproject_version})", code=1)
     print(f"Galaxy.yml and pyproject.toml versions match: {galaxy_version}")
+
+    # Read changelogs/changelog.yaml
+    with open("changelogs/changelog.yaml", encoding="utf-8") as f:
+        changelog_data = yaml.safe_load(f)
+        # Check if the pyproject.toml version is in the changelog
+        changelog_version = changelog_data["releases"].get(pyproject_version, None)
+
+    if changelog_version is None:
+        raise Exit(f"Version {pyproject_version} missing from changelogs/changelog.yaml", code=1)
+    print(f"Changelogs/changelog.yaml version found: {pyproject_version}")
