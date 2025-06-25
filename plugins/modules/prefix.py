@@ -171,7 +171,7 @@ EXAMPLES = r"""
         state: present
         first_available: true
 
-    - name: Create prefix within Nautobot with only required information
+    - name: Create prefix within Nautobot
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -88,7 +88,7 @@ EXAMPLES = r"""
         manufacturer: Test Manufacturer
         state: present
 
-    - name: Create device type within Nautobot with only required information
+    - name: Create device type within Nautobot
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken
