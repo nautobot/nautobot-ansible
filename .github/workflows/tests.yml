@@ -17,7 +17,7 @@ on: # yamllint disable
 jobs:
   changelog:
     if: >
-      contains(fromJson('["develop","ltm-1.6","next"]'), github.base_ref) &&
+      contains(fromJson('["develop","ltm-1.6","next","next-3.0"]'), github.base_ref) &&
       (github.head_ref != 'main') && (!startsWith(github.head_ref, 'release')) &&
       github.event_name != 'workflow_dispatch'
     runs-on: "${{ inputs.runs-on }}"
@@ -73,7 +73,9 @@ jobs:
         python-version:
           - "3.12"
         nautobot-version:
-          - "2.4"
+          # TODO: Add proper version tag after 3.0 is released
+          # - "3.0"
+          - "next"
         ansible-version:
           - "2.17"
           - "2.18"
@@ -99,6 +101,9 @@ jobs:
           - "2.2"
           - "2.3"
           - "2.4"
+          # TODO: Add proper version tag after 3.0 is released
+          # - "3.0"
+          - "next"
         ansible-version:
           - "2.16"
           - "2.17"

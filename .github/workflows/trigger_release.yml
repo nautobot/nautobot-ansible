@@ -49,6 +49,9 @@ jobs:
           - "2.2"
           - "2.3"
           - "2.4"
+          # TODO: Add proper version tag after 3.0 is released
+          # - "3.0"
+          - "next"
         ansible-version:
           - "2.16"
           - "2.17"
