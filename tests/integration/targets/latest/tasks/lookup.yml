@@ -4,7 +4,7 @@
 ### PYNAUTOBOT_LOOKUP
 ##
 ##
-- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly six locations"
+- name: "PYNAUTOBOT_LOOKUP 1: Lookup returns exactly seven locations"
   assert:
     that: "query_result | count == 7"
   vars:
