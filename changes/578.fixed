@@ -1,0 +1,1 @@
+Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.
