@@ -1,1 +1,1 @@
-Virtual machines are now grouped by role and manufacturer.
+Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.

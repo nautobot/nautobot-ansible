@@ -598,7 +598,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_manufacturer(self, host):
         try:
-            if host['is_virtual']:
+            if host["is_virtual"]:
                 return self._pluralize(self.manufacturers_lookup[host["platform"]["manufacturer"]["id"]])
             return self._pluralize(self.manufacturers_lookup[host["device_type"]["manufacturer"]["id"]])
         except Exception:
@@ -806,7 +806,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_device_roles_lookup(self):
         url = self.api_endpoint + "/api/extras/roles/?limit=0"
         roles = self.get_resource_list(api_url=url)
-        self.device_roles_lookup = dict((role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"] or "virtualization.virtualmachine" in role["content_types"])
+        self.device_roles_lookup = dict(
+            (role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"] or "virtualization.virtualmachine" in role["content_types"]
+        )
 
     def refresh_device_types_lookup(self):
         url = self.api_endpoint + "/api/dcim/device-types/?limit=0"
