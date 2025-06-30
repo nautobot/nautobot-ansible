@@ -1,0 +1,210 @@
+{
+    "data": {
+        "custom_fields": {
+            "dvswitch": "MGM-DVS-101",
+            "management": true,
+            "metadata": {
+                "base_image": {
+                    "details": {
+                        "display_name": "ESXi",
+                        "display_version": "8.0 U3e - 24674464",
+                        "quick_patch_compatible_versions": {},
+                        "release_date": "2025-04-09T22:00:00.000Z"
+                    },
+                    "version": "8.0.3-0.70.24674464"
+                },
+                "cluster": {
+                    "datacenter": "datacenter_name",
+                    "dpm_default_dpm_behavior": "automated",
+                    "dpm_enabled": false,
+                    "dpm_host_power_action_rate": 3,
+                    "drs_default_vm_behavior": "fullyAutomated",
+                    "drs_enable_vm_behavior_overrides": true,
+                    "drs_enabled": true,
+                    "drs_vmotion_rate": 3,
+                    "ha_admission_control_enabled": true,
+                    "ha_enabled": true,
+                    "ha_failover_level": 2,
+                    "ha_host_monitoring": "enabled",
+                    "ha_restart_priority": "medium",
+                    "ha_vm_failure_interval": 30,
+                    "ha_vm_max_failure_window": -1,
+                    "ha_vm_max_failures": 3,
+                    "ha_vm_min_up_time": 120,
+                    "ha_vm_monitoring": "vmMonitoringDisabled",
+                    "ha_vm_tools_monitoring": "vmMonitoringDisabled",
+                    "hosts": [
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r04.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r03.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r01.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r02.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r01.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r04.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r03.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r02.cluster.domain.tld"
+                        }
+                    ],
+                    "moid": "domain-cXXX",
+                    "resource_summary": {
+                        "cpuCapacityMHz": 587520,
+                        "cpuUsedMHz": 362123,
+                        "memCapacityMB": 8377040,
+                        "memUsedMB": 4070060,
+                        "pMemAvailableMB": 0,
+                        "pMemCapacityMB": 0,
+                        "storageCapacityMB": 85981696,
+                        "storageUsedMB": 41002713
+                    },
+                    "tags": [],
+                    "vsan_auto_claim_storage": false,
+                    "vsan_enabled": false
+                },
+                "components": {
+                    "NetApp-NetAppNasPlugin": {
+                        "details": {
+                            "display_name": "NetApp NAS VAAI Module for ESX Server",
+                            "display_version": "2.0.1 - Build 0001",
+                            "vendor": "NetApp"
+                        },
+                        "version": "2.0.1-16"
+                    },
+                    "VMware-VM-Tools": {
+                        "details": {
+                            "display_name": "VMware Tools Async Release",
+                            "display_version": "12.5.2",
+                            "vendor": "VMware"
+                        },
+                        "version": "12.5.2.24697584-24705409"
+                    }
+                }
+            }
+        }
+    },
+    "expected": {
+        "custom_fields": {
+            "dvswitch": "MGM-DVS-101",
+            "management": true,
+            "metadata": {
+                "base_image": {
+                    "details": {
+                        "display_name": "ESXi",
+                        "display_version": "8.0 U3e - 24674464",
+                        "quick_patch_compatible_versions": {},
+                        "release_date": "2025-04-09T22:00:00.000Z"
+                    },
+                    "version": "8.0.3-0.70.24674464"
+                },
+                "cluster": {
+                    "datacenter": "datacenter_name",
+                    "dpm_default_dpm_behavior": "automated",
+                    "dpm_enabled": false,
+                    "dpm_host_power_action_rate": 3,
+                    "drs_default_vm_behavior": "fullyAutomated",
+                    "drs_enable_vm_behavior_overrides": true,
+                    "drs_enabled": true,
+                    "drs_vmotion_rate": 3,
+                    "ha_admission_control_enabled": true,
+                    "ha_enabled": true,
+                    "ha_failover_level": 2,
+                    "ha_host_monitoring": "enabled",
+                    "ha_restart_priority": "medium",
+                    "ha_vm_failure_interval": 30,
+                    "ha_vm_max_failure_window": -1,
+                    "ha_vm_max_failures": 3,
+                    "ha_vm_min_up_time": 120,
+                    "ha_vm_monitoring": "vmMonitoringDisabled",
+                    "ha_vm_tools_monitoring": "vmMonitoringDisabled",
+                    "hosts": [
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r01.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r02.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r03.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-11esx-41-1r04.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r01.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r02.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r03.cluster.domain.tld"
+                        },
+                        {
+                            "folder": "/datacenter_name/host/cluster-name",
+                            "name": "bn-12esx-41-1r04.cluster.domain.tld"
+                        }
+                    ],
+                    "moid": "domain-cXXX",
+                    "resource_summary": {
+                        "cpuCapacityMHz": 587520,
+                        "cpuUsedMHz": 362123,
+                        "memCapacityMB": 8377040,
+                        "memUsedMB": 4070060,
+                        "pMemAvailableMB": 0,
+                        "pMemCapacityMB": 0,
+                        "storageCapacityMB": 85981696,
+                        "storageUsedMB": 41002713
+                    },
+                    "tags": [],
+                    "vsan_auto_claim_storage": false,
+                    "vsan_enabled": false
+                },
+                "components": {
+                    "NetApp-NetAppNasPlugin": {
+                        "details": {
+                            "display_name": "NetApp NAS VAAI Module for ESX Server",
+                            "display_version": "2.0.1 - Build 0001",
+                            "vendor": "NetApp"
+                        },
+                        "version": "2.0.1-16"
+                    },
+                    "VMware-VM-Tools": {
+                        "details": {
+                            "display_name": "VMware Tools Async Release",
+                            "display_version": "12.5.2",
+                            "vendor": "VMware"
+                        },
+                        "version": "12.5.2.24697584-24705409"
+                    }
+                }
+            }
+        }
+    }
+}

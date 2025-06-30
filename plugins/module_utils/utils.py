@@ -624,7 +624,7 @@ def sort_dict_with_lists(data):
     if isinstance(data, dict):
         return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
     if isinstance(data, list):
-        return sorted(sort_dict_with_lists(v) for v in data)
+        return sorted([sort_dict_with_lists(v) for v in data], key=lambda x: json.dumps(x, sort_keys=True))
     return data
 
 
