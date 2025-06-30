@@ -4,6 +4,13 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.12.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.1)
+
+### Fixed
+
+- [#568](https://github.com/nautobot/nautobot-ansible/issues/568) - Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
+- [#578](https://github.com/nautobot/nautobot-ansible/issues/578) - Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.
+
 ## [v5.12.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.0)
 
 ### Added
