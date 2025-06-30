@@ -637,3 +637,8 @@ releases:
         - (#526) - Fixed the comparison of dictionaries with lists for better idempotency.
         - (#548) - Fixed identification of module interfaces when using `networktocode.nautobot.device_interfaces` plugin.
         - (#550) - Fixed parsing of inventory with `networktocode.nautobot.inventory` plugin when using `interfaces` option and module interfaces are present.
+  5.12.1:
+    changes:
+      bugfixes:
+        - (#568) - Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
+        - (#578) - Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.
