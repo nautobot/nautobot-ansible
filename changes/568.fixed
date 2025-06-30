@@ -1,0 +1,1 @@
+Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
