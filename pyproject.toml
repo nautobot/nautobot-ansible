@@ -42,7 +42,7 @@ mkdocs-material = "9.5.30"
 # Render custom markdown for version added/changed/remove notes
 markdown-version-annotations = "1.0.1"
 # Render dynamic pages for Ansible Collections documentation
-mkdocs-ansible-collection = "1.0.0"
+mkdocs-ansible-collection = "1.1.0"
 towncrier = "^24.8.0"
 toml = "^0.10.2"
 
