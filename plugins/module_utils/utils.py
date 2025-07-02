@@ -495,6 +495,7 @@ ALLOWED_QUERY_PARAMS = {
     "software_image_files": set(["image_file_name", "software_version"]),
     "static_group_association": set(["dynamic_group", "associated_object_type", "associated_object_id"]),
     "statuses": set(["name"]),
+    "supported_data_rate": set(["standard", "rate"]),
     "supported_data_rates": set(["standard", "rate"]),
     "tags": set(["name"]),
     "tagged_vlans": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
