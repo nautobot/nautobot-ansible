@@ -1,0 +1,1 @@
+Fixed an issue retrieving valid non-string (e.g. integer) choice values.
