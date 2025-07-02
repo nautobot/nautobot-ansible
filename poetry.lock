@@ -1676,13 +1676,13 @@ extra = ["pygments (>=2.19.1)"]
 
 [[package]]
 name = "pynautobot"
-version = "2.6.3"
+version = "2.6.5"
 description = "Nautobot API client library"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "pynautobot-2.6.3-py3-none-any.whl", hash = "sha256:ff21fa2fd986ac007394bff633604e70e01d824b92c2b34dfc403e2dcb64e445"},
-    {file = "pynautobot-2.6.3.tar.gz", hash = "sha256:3ea6d2e20a53189b90a6ab20c016b070d2e82b9e5cb83cc5dd95ad87f9b4ee23"},
+    {file = "pynautobot-2.6.5-py3-none-any.whl", hash = "sha256:da9a775992ab451308f7d41a4103c9f67b06a7173079ffc10632123bee53b14a"},
+    {file = "pynautobot-2.6.5.tar.gz", hash = "sha256:2a3e844b7aa533bc3640971c12ac3b75b0e741238f4485f3f65e78f516eb58ce"},
 ]
 
 [package.dependencies]
@@ -2611,4 +2611,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "c410fea9915581e877d1e54c891f66a800f94a848d66ddae58716926c6e6d259"
+content-hash = "e1e12335185647f4521d9a7187cbafaafd037324a440281655286c76c8ea342f"

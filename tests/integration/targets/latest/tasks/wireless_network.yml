@@ -1,0 +1,170 @@
+---
+##
+##
+### PYNAUTOBOT_WIRELESS_NETWORK
+##
+##
+- set_fact:
+    wireless_network_secrets_group: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
+    wireless_network_tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+
+- name: "1 - Create wireless network with required fields"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network"
+    ssid: "My SSID"
+    mode: "Central"
+    authentication: "WPA2 Personal"
+    state: present
+  register: test_create_min
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_min is changed
+      - test_create_min['diff']['before']['state'] == "absent"
+      - test_create_min['diff']['after']['state'] == "present"
+      - test_create_min['wireless_network']['name'] == "My Wireless Network"
+      - test_create_min['wireless_network']['ssid'] == "My SSID"
+      - test_create_min['wireless_network']['mode'] == "Central"
+      - test_create_min['wireless_network']['authentication'] == "WPA2 Personal"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network"
+    ssid: "My SSID"
+    mode: "Central"
+    authentication: "WPA2 Personal"
+    state: present
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "wireless_network My Wireless Network already exists"
+
+- name: "3 - Create wireless network with all fields"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    ssid: "My SSID 2"
+    mode: "Fabric"
+    authentication: "WPA3 Personal"
+    enabled: true
+    hidden: false
+    secrets_group: "Test Secrets Group"
+    tenant: "Test Tenant"
+    state: present
+  register: test_create_all
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_create_all is changed
+      - test_create_all['diff']['before']['state'] == "absent"
+      - test_create_all['diff']['after']['state'] == "present"
+      - test_create_all['wireless_network']['name'] == "My Wireless Network 2"
+      - test_create_all['wireless_network']['ssid'] == "My SSID 2"
+      - test_create_all['wireless_network']['mode'] == "Fabric"
+      - test_create_all['wireless_network']['authentication'] == "WPA3 Personal"
+      - test_create_all['wireless_network']['enabled'] == true
+      - test_create_all['wireless_network']['hidden'] == false
+      - test_create_all['wireless_network']['secrets_group'] == wireless_network_secrets_group['key']
+      - test_create_all['wireless_network']['tenant'] == wireless_network_tenant['key']
+
+- name: "4 - Duplicate create with all fields"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    ssid: "My SSID 2"
+    mode: "Fabric"
+    authentication: "WPA3 Personal"
+    enabled: true
+    hidden: false
+    secrets_group: "Test Secrets Group"
+    tenant: "Test Tenant"
+    state: present
+  register: test_create_all_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_create_all_idem['changed']
+      - test_create_all_idem['msg'] == "wireless_network My Wireless Network 2 already exists"
+
+- name: "5 - Update wireless network"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    ssid: "My SSID 2 (New)"
+    mode: "Mesh"
+    authentication: "WPA3 Enterprise"
+    enabled: false
+    hidden: true
+    state: present
+  register: test_update
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['wireless_network']['name'] == "My Wireless Network 2"
+      - test_update['wireless_network']['ssid'] == "My SSID 2 (New)"
+      - test_update['wireless_network']['mode'] == "Mesh"
+      - test_update['wireless_network']['authentication'] == "WPA3 Enterprise"
+      - test_update['wireless_network']['enabled'] == false
+      - test_update['wireless_network']['hidden'] == true
+
+- name: "6 - Update duplicate"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    ssid: "My SSID 2 (New)"
+    mode: "Mesh"
+    authentication: "WPA3 Enterprise"
+    enabled: false
+    hidden: true
+    state: present
+  register: test_update_idem
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_update_idem['changed']
+      - test_update_idem['msg'] == "wireless_network My Wireless Network 2 already exists"
+
+- name: "7 - Delete wireless network"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    state: absent
+  register: test_delete
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - "'deleted' in test_delete['msg']"
+
+- name: "8 - Duplicate delete"
+  networktocode.nautobot.wireless_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Wireless Network 2"
+    state: absent
+  register: test_delete_idem
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"

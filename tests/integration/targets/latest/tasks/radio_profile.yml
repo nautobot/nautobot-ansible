@@ -1,0 +1,209 @@
+---
+##
+##
+### PYNAUTOBOT_WIRELESS_RADIO_PROFILE
+##
+##
+- set_fact:
+    rate_802_11n: "{{ lookup('networktocode.nautobot.lookup', 'supported-data-rates', api_endpoint=nautobot_url, token=nautobot_token, api_filter='standard=802.11n') }}"
+    rate_802_11ac_10000: "{{ lookup('networktocode.nautobot.lookup', 'supported-data-rates', api_endpoint=nautobot_url, token=nautobot_token, api_filter='standard=802.11ac rate=10000') }}"
+    rate_802_11ac_20000: "{{ lookup('networktocode.nautobot.lookup', 'supported-data-rates', api_endpoint=nautobot_url, token=nautobot_token, api_filter='standard=802.11ac rate=20000') }}"
+
+- name: "1 - Create radio profile with required fields"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile"
+    regulatory_domain: "US"
+    state: present
+  register: test_create_min
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_min is changed
+      - test_create_min['diff']['before']['state'] == "absent"
+      - test_create_min['diff']['after']['state'] == "present"
+      - test_create_min['radio_profile']['name'] == "My Radio Profile"
+      - test_create_min['radio_profile']['regulatory_domain'] == "US"
+      - test_create_min['msg'] == "radio_profile My Radio Profile created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile"
+    regulatory_domain: "US"
+    state: present
+  register: test_create_idem
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idem['changed']
+      - test_create_idem['msg'] == "radio_profile My Radio Profile already exists"
+      - test_create_idem['radio_profile']['name'] == "My Radio Profile"
+      - test_create_idem['radio_profile']['regulatory_domain'] == "US"
+
+- name: "3 - Create radio profile with all fields"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    regulatory_domain: "US"
+    channel_width:
+      - 20
+    allowed_channel_list:
+      - 1
+      - 6
+      - 11
+    frequency: "2.4GHz"
+    tx_power_min: 10
+    tx_power_max: 20
+    rx_power_min: 30
+    supported_data_rates:
+      # Testing using just the standard
+      - standard: "802.11n"
+      # Testing using standard and rate when 2 standards exist
+      - standard: "802.11ac"
+        rate: 10000
+    state: present
+  register: test_create_all
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_create_all is changed
+      - test_create_all['diff']['before']['state'] == "absent"
+      - test_create_all['diff']['after']['state'] == "present"
+      - test_create_all['radio_profile']['name'] == "My Radio Profile 2"
+      - test_create_all['radio_profile']['regulatory_domain'] == "US"
+      - test_create_all['radio_profile']['channel_width'][0] == 20
+      - test_create_all['radio_profile']['allowed_channel_list'] == [1, 6, 11]
+      - test_create_all['radio_profile']['frequency'] == "2.4GHz"
+      - test_create_all['radio_profile']['tx_power_min'] == 10
+      - test_create_all['radio_profile']['tx_power_max'] == 20
+      - test_create_all['radio_profile']['rx_power_min'] == 30
+      - test_create_all['radio_profile']['supported_data_rates'][0] == rate_802_11ac_10000['key']
+      - test_create_all['radio_profile']['supported_data_rates'][1] == rate_802_11n['key']
+      - test_create_all['msg'] == "radio_profile My Radio Profile 2 created"
+
+- name: "4 - Duplicate create with all fields"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    regulatory_domain: "US"
+    channel_width:
+      - 20
+    allowed_channel_list:
+      - 1
+      - 6
+      - 11
+    frequency: "2.4GHz"
+    tx_power_min: 10
+    tx_power_max: 20
+    rx_power_min: 30
+    supported_data_rates:
+      - standard: "802.11n"
+      - standard: "802.11ac"
+        rate: 10000
+    state: present
+  register: test_create_all_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_create_all_idem['changed']
+      - test_create_all_idem['msg'] == "radio_profile My Radio Profile 2 already exists"
+
+- name: "5 - Update radio profile"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    regulatory_domain: "MX"
+    channel_width:
+      - 40
+    allowed_channel_list:
+      - 3
+      - 10
+    frequency: "5GHz"
+    tx_power_min: 40
+    tx_power_max: 50
+    rx_power_min: 60
+    supported_data_rates:
+      - standard: "802.11ac"
+        rate: 20000
+    state: present
+  register: test_update
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_update is changed
+      - test_update['radio_profile']['name'] == "My Radio Profile 2"
+      - test_update['radio_profile']['regulatory_domain'] == "MX"
+      - test_update['radio_profile']['channel_width'][0] == 40
+      - test_update['radio_profile']['allowed_channel_list'] == [3, 10]
+      - test_update['radio_profile']['frequency'] == "5GHz"
+      - test_update['radio_profile']['tx_power_min'] == 40
+      - test_update['radio_profile']['tx_power_max'] == 50
+      - test_update['radio_profile']['rx_power_min'] == 60
+      - test_update['radio_profile']['supported_data_rates'][0] == rate_802_11ac_20000['key']
+      - test_update['msg'] == "radio_profile My Radio Profile 2 updated"
+
+- name: "6 - Duplicate update"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    regulatory_domain: "MX"
+    channel_width:
+      - 40
+    allowed_channel_list:
+      - 3
+      - 10
+    frequency: "5GHz"
+    tx_power_min: 40
+    tx_power_max: 50
+    rx_power_min: 60
+    supported_data_rates:
+      - standard: "802.11ac"
+        rate: 20000
+    state: present
+  register: test_update_idem
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_update_idem['changed']
+      - test_update_idem['msg'] == "radio_profile My Radio Profile 2 already exists"
+
+- name: "7 - Delete radio profile"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    state: absent
+  register: test_delete
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_delete is changed
+      - "'deleted' in test_delete['msg']"
+
+- name: "8 - Duplicate delete"
+  networktocode.nautobot.radio_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Radio Profile 2"
+    state: absent
+  register: test_delete_idem
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idem['changed']
+      - "'already absent' in test_delete_idem['msg']"
