@@ -1,5 +1,5 @@
 ansible-core==2.18
 mkdocs==1.6.1
-mkdocs-ansible-collection==0.2.1
+mkdocs-ansible-collection==1.1.0
 mkdocs-material==9.5.30
 markdown-version-annotations==1.0.1

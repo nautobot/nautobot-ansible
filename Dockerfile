@@ -44,6 +44,8 @@ RUN poetry install
 COPY . .
 
 RUN if [ "${SKIP_LINT_TESTS}" != "true" ]; then \
+    echo 'Checking versions' && \
+    invoke check-versions && \
     echo 'Running Black' && \
     black --check --diff . && \
     echo 'Running Bandit' && \

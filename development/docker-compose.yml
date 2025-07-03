@@ -10,7 +10,6 @@ services:
     build:
       args:
         NAUTOBOT_VER: "${NAUTOBOT_VER}"
-        PYTHON_VER: "${PYTHON_VER}"
       context: "../"
       target: "nautobot"
       dockerfile: "development/Dockerfile"

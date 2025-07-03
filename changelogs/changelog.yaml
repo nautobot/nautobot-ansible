@@ -626,3 +626,19 @@ releases:
         - (#527) - Disabled duplicate keys in testing.
         - (#528) - Added a Manual CI workflow to test the collection with Galaxy Importer.
         - (#537) - Added the ability to skip specific test suites when running tests via `invoke unit` and `invoke integration`.
+  5.12.0:
+    changes:
+      minor_changes:
+        - (#545) - Added support for the `vrf` parameter to the `device_interface` and `vm_interface` modules.
+        - (#549) - Added `label`, `parent`, `software_version`, and `software_image_files` options to the `inventory_item` module.
+        - (#550) - Added option to fetch module interfaces in addition to device interfaces on the `networktocode.nautobot.inventory` plugin.
+        - (#559) - Added the ability to rename variables set on the host for the inventory plugin.
+        - (#560) - Added support for the `secrets_group` parameter to the `device` module.
+        - (#526) - Fixed the comparison of dictionaries with lists for better idempotency.
+        - (#548) - Fixed identification of module interfaces when using `networktocode.nautobot.device_interfaces` plugin.
+        - (#550) - Fixed parsing of inventory with `networktocode.nautobot.inventory` plugin when using `interfaces` option and module interfaces are present.
+  5.12.1:
+    changes:
+      bugfixes:
+        - (#568) - Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
+        - (#578) - Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.

@@ -204,6 +204,16 @@ DOCUMENTATION = """
       description: List of custom ansible host vars to create from the device object fetched from Nautobot
       default: {}
       type: dict
+    rename_variables:
+      description:
+          - Rename variables evaluated by nb_inventory, before writing them.
+          - Each list entry contains a dict with a 'pattern' and a 'repl'.
+          - Both 'pattern' and 'repl' are regular expressions.
+          - The first matching expression is used, subsequent matches are ignored.
+          - Internally `re.sub` is used.
+      type: list
+      elements: dict
+      default: []
 """
 
 EXAMPLES = """
@@ -257,11 +267,19 @@ plugin: networktocode.nautobot.inventory
 keyed_groups:
   - prefix: status
     key: status.value
+
+# You can use rename_variables to change variable names before the inventory gets loaded.
+rename_variables:
+  - pattern: "cluster"
+    repl: "nautobot_cluster"
+  - pattern: "ansible_host"
+    repl: "host"
 """
 
 import json
 import uuid
 import math
+import re
 from functools import partial
 from sys import version as python_version
 from threading import Thread
@@ -583,6 +601,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_manufacturer(self, host):
         try:
+            if host["is_virtual"]:
+                return self._pluralize(self.manufacturers_lookup[host["platform"]["manufacturer"]["id"]])
             return self._pluralize(self.manufacturers_lookup[host["device_type"]["manufacturer"]["id"]])
         except Exception:
             return
@@ -789,7 +809,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_device_roles_lookup(self):
         url = self.api_endpoint + "/api/extras/roles/?limit=0"
         roles = self.get_resource_list(api_url=url)
-        self.device_roles_lookup = dict((role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"])
+        self.device_roles_lookup = dict(
+            (role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"] or "virtualization.virtualmachine" in role["content_types"]
+        )
 
     def refresh_device_types_lookup(self):
         url = self.api_endpoint + "/api/dcim/device-types/?limit=0"
@@ -1239,6 +1261,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 parent_location_name = location_transformed_group_names[parent_location_id]
                 self.inventory.add_child(parent_location_name, location_group_name)
 
+    def _set_variable(self, hostname, key, value):
+        for item in self.rename_variables:
+            if item["pattern"].match(key):
+                key = item["pattern"].sub(item["repl"], key)
+                break
+
+        self.inventory.set_variable(hostname, key, value)
+
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
@@ -1389,4 +1419,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
 
+        # Compile regular expressions, if any
+        self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
+
         self.main()
+
+    def parse_rename_variables(self, rename_variables):
+        return [{"pattern": re.compile(i["pattern"]), "repl": i["repl"]} for i in rename_variables or ()]
