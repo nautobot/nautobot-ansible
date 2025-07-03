@@ -1,0 +1,61 @@
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: 1 - inventory - Show normal config_context string via hostvars to verify working okay
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.debug:
+        msg: "{{ hostvars[inventory_hostname].config_context[0].normal_string }}"
+
+    - name: 2 - inventory - Show string with Jinja2 tags via hostvars to verify it renders raw
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.debug:
+        msg: "{{ hostvars[inventory_hostname].config_context[0].string_containing_jinja2tags }}"
+
+    - name: 3 - inventory - Use lookup on normal string to verify access
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.debug:
+        msg: "{{ lookup('list', [config_context[0].normal_string]) }}"
+
+    - name: 4 - inventory - Use lookup on string with Jinja2 tags to check embedded Jinja2 not evaluated
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.debug:
+        msg: "{{ lookup('list', [config_context[0].string_containing_jinja2tags]) }}"
+
+    - name: 5 - inventory - Assert test100-vm inventory_hostname is of type str to validate no unnecessary wrap
+      when: inventory_hostname == "test100-vm"
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].inventory_hostname.__class__.__name__ == "str"
+
+    - name: 6 - inventory - Assert R2... inventory_hostname is of type AnsibleUnsafeText to validate necessary wrap
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].inventory_hostname.__class__.__name__ == "AnsibleUnsafeText"
+
+    - name: 7 - inventory - Assert status.name for both is of type str to validate no unnecessary wrap
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].status.name.__class__.__name__ == "str"
+
+    - name: 8 - inventory - Assert normal_string is AnsibleUnsafeText due to config_context containing Jinja2 tags in other strings
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].config_context[0].normal_string.__class__.__name__ == "AnsibleUnsafeText"
+
+    - name: 9 - inventory - Assert string_containing_jinja2tags is AnsibleUnsafeText due to containing Jinja2 tags
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].config_context[0].string_containing_jinja2tags.__class__.__name__ == "AnsibleUnsafeText"
+
+    - name: 10 - inventory - Assert test100-vm cluster name is of type str to validate no unnecessary wrap
+      when: inventory_hostname == "test100-vm"
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].cluster.__class__.__name__ == "str"
+
+    - name: 11 - inventory - Assert R2... location name is of type AnsibleUnsafeText to validate necessary wrap
+      when: inventory_hostname.startswith("R2")
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].location.__class__.__name__ == "AnsibleUnsafeText"
+
+    - name: 12 - inventory - Assert test100-vm location name is of type AnsibleUnsafeText to validate no unnecessary wrap
+      when: inventory_hostname == "test100-vm"
+      ansible.builtin.assert:
+        that: hostvars[inventory_hostname].location.__class__.__name__ == "str"
