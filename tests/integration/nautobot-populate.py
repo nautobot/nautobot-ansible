@@ -140,6 +140,7 @@ child_location_type = nb.dcim.location_types.get(name="My Child Location Type")
 parent_location_attrs = [
     {"name": "Parent Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
     {"name": "Parent Test Location 2", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
+    {"name": "{{ SEE ISSUE 114 }}Parent Test Location 3", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
     {"name": "Prefix Test Location", "location_type": parent_location_type.id, "tenant": test_tenant.id, "status": {"name": "Active"}},
 ]
 make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
@@ -147,6 +148,7 @@ make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 # Location variables to be used later on
 location_parent = nb.dcim.locations.get(name="Parent Test Location")
 location_parent2 = nb.dcim.locations.get(name="Parent Test Location 2")
+location_parent3 = nb.dcim.locations.get(name="{{ SEE ISSUE 114 }}Parent Test Location 3")
 child_location_attrs = [
     {"name": "Child Test Location", "location_type": child_location_type.id, "parent": location_parent.id, "status": {"name": "Active"}},
     # Creating an intentionally duplicate location name with different parent to test looking up by parent
@@ -284,11 +286,13 @@ core_switch = nb.extras.roles.get(name="Core Switch")
 # Create Rack Groups
 rack_groups = [
     {"name": "Parent Rack Group", "location": location_child.id},
+    {"name": "Parent3 Rack Group", "location": location_parent3.id},
     {"name": "Child Rack Group", "location": location_child_child.id},
 ]
 created_rack_groups = make_nautobot_calls(nb.dcim.rack_groups, rack_groups)
 
 rack_group_parent = nb.dcim.rack_groups.get(name="Parent Rack Group")
+rack_group_parent3 = nb.dcim.rack_groups.get(name="Parent3 Rack Group")
 rack_group_child = nb.dcim.rack_groups.get(name="Child Rack Group")
 # Create Rack Group Parent relationship
 rack_group_child.parent = rack_group_parent.id
@@ -303,10 +307,12 @@ rack_role1 = nb.extras.roles.get(name="Test Rack Role")
 racks = [
     {"name": "Sub Test Rack", "location": location_child_child.id, "rack_group": rack_group_child.id, "status": {"name": "Active"}},
     {"name": "Main Test Rack", "location": location_child.id, "rack_group": rack_group_parent.id, "role": rack_role1.id, "status": {"name": "Active"}},
+    {"name": "Another Test Rack", "location": location_parent3.id, "rack_group": rack_group_parent3.id, "role": rack_role1.id, "status": {"name": "Active"}},
 ]
 created_racks = make_nautobot_calls(nb.dcim.racks, racks)
 main_test_rack = nb.dcim.racks.get(name="Main Test Rack")
 sub_test_rack = nb.dcim.racks.get(name="Sub Test Rack")
+another_test_rack = nb.dcim.racks.get(name="Another Test Rack")
 
 
 # Create Devices
@@ -350,11 +356,24 @@ devices = [
         "location": location_child.id,
         "status": {"name": "Active"},
     },
+    {
+        "name": "R2 {{ SEE ISSUE 114 }}",
+        "device_type": cisco_test.id,
+        "role": core_switch.id,
+        "location": location_parent3.id,
+        "rack": another_test_rack.id,
+        "local_config_context_data": {
+            "normal_string": "this is a normal string",
+            "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}",
+        },
+        "status": {"name": "Active"},
+    },
 ]
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
 test100 = nb.dcim.devices.get(name="test100")
 test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
+test_device_r2 = nb.dcim.devices.get(name="R2 {{ SEE ISSUE 114 }}")
 
 # Create inventory items
 inventory_items = [
@@ -401,6 +420,7 @@ dev_interfaces = [
     {"name": "GigabitEthernet2", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
     {"name": "GigabitEthernet3", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
     {"name": "GigabitEthernet4", "device": test100.id, "type": "1000base-t", "status": {"name": "Active"}},
+    {"name": "GigabitEthernet1", "device": test_device_r2.id, "type": "1000base-t", "status": {"name": "Active"}},
 ]
 created_interfaces = make_nautobot_calls(nb.dcim.interfaces, dev_interfaces)
 nexus_eth1 = nb.dcim.interfaces.get(device_id=nexus.id, name="Ethernet1/1")
@@ -409,6 +429,7 @@ nexus_child_eth1 = nb.dcim.interfaces.get(device_id=nexus_child.id, name="Ethern
 # Interface variables to be used later on
 test100_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=test100.id)
 test100_gi2 = nb.dcim.interfaces.get(name="GigabitEthernet2", device_id=test100.id)
+test_device_r2_gi1 = nb.dcim.interfaces.get(name="GigabitEthernet1", device_id=test_device_r2.id)
 
 # Create IP Addresses
 ip_addresses = [
@@ -434,6 +455,12 @@ ip_addresses = [
         "dns_name": "nexus.example.com",
         "status": {"name": "Active"},
     },
+    {
+        "address": "172.16.180.13/24",
+        "namespace": {"name": "Global"},
+        "dns_name": "r2.example.com",
+        "status": {"name": "Active"},
+    },
     {"address": "172.16.180.254/24", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
     {"address": "10.100.0.1/32", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
     {"address": "10.100.10.1/32", "namespace": {"name": "Global"}, "status": {"name": "Active"}},
@@ -445,6 +472,7 @@ ip1 = nb.ipam.ip_addresses.get(address="172.16.180.1/24")
 ip2 = nb.ipam.ip_addresses.get(address="2001::1:1/64")
 ip3 = nb.ipam.ip_addresses.get(address="172.16.180.11/24")
 ip4 = nb.ipam.ip_addresses.get(address="172.16.180.12/24")
+ip5 = nb.ipam.ip_addresses.get(address="172.16.180.13/24")
 
 # Assign IP to interfaces
 ip_to_intf = [
@@ -464,12 +492,18 @@ ip_to_intf = [
         "ip_address": ip4.id,
         "interface": nexus_child_eth1.id,
     },
+    {
+        "ip_address": ip5.id,
+        "interface": test_device_r2_gi1.id,
+    },
 ]
 created_ip_to_intf = make_nautobot_calls(nb.ipam.ip_address_to_interface, ip_to_intf)
 
-# Assign Primary IP
+# Assign Primary IPs
 nexus_eth1_ip = nb.ipam.ip_addresses.get(address="172.16.180.11/24", interfaces=[nexus_eth1.id])
 nexus.update({"primary_ip4": nexus_eth1_ip})
+test_device_r2_ip = nb.ipam.ip_addresses.get(address="172.16.180.13/24", interfaces=[test_device_r2_gi1.id])
+test_device_r2.update({"primary_ip4": test_device_r2_ip})
 
 # Create RIRs
 rirs = [{"name": "Example RIR"}]

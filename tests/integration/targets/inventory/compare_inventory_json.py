@@ -64,7 +64,7 @@ def sort_groups(obj):
         if group.get("children"):
             group["children"] = sorted(group["children"])
         elif group.get("hosts"):
-            group["hosts"] = sorted(group["hosts"])
+            group["hosts"] = sorted(group["hosts"], key=extract_sort_value)
 
 
 def read_json(filename):
@@ -75,6 +75,12 @@ def read_json(filename):
 def write_json(filename, data):
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
+
+
+def extract_sort_value(item):
+    if isinstance(item, dict) and list(item.keys()) == ["__ansible_unsafe"]:
+        return item["__ansible_unsafe"]
+    return item
 
 
 def main():

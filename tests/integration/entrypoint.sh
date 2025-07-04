@@ -28,7 +28,7 @@ function main {
 
     echo "# Checking to make sure Nautobot server is reachable.."
     # shellcheck disable=SC2016
-    timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
+    timeout 600 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' nautobot:8000/health/)" != "200" ]]; do echo "waiting for Nautobot"; sleep 5; done' || false
 
     echo "# Populating Nautobot for running integration tests.."
     python ./tests/integration/nautobot-populate.py
@@ -43,6 +43,9 @@ function main {
     if [ "${SKIP_REGRESSION_TESTS}" != "true" ]; then
         # shellcheck disable=SC2086
         ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" regression-latest "$@"
+        echo "# Running inventory regression tests using ansible-playbook due to the need for dynamic inventory..."
+        ansible-playbook -i ./tests/integration/inventory-regression/gql_inventory_plugin_inventory.yml ./tests/integration/inventory-regression/gql_inventory_plugin_playbook.yml
+        ansible-playbook -i ./tests/integration/inventory-regression/inventory_plugin_inventory.yml ./tests/integration/inventory-regression/inventory_plugin_playbook.yml --limit "R2*:test100-vm"
     else
         echo "# Skipping regression tests"
     fi
