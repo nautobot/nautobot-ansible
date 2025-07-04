@@ -52,9 +52,6 @@ function main {
     # shellcheck disable=SC2086
     ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" latest "$@"
     ansible-test coverage report --requirements
-
-    # TEMP REMOVE
-    exit 1
 }
 
 main "$@"

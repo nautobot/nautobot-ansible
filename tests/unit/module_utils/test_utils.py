@@ -162,6 +162,7 @@ def test_regression_issue_568() -> None:
 
     assert sort_dict_with_lists(data) == expected
 
+
 @pytest.mark.parametrize(
     "value, expected",
     [
