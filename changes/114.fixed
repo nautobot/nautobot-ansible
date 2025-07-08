@@ -1,0 +1,1 @@
+Fixed some variables (potentially unsafe) not being wrapped correctly in the `inventory` and `gql_inventory` plugins.

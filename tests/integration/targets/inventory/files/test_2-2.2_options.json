@@ -1,4 +1,11 @@
 {
+    "___see_issue_114___parent_test_location_3": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
+        ]
+    },
     "_meta": {
         "hostvars": {
             "R1-Device": {
@@ -31,6 +38,49 @@
                 "tags": [],
                 "testing_device_cf": "",
                 "testing_location_cf": "Test Location Custom Field Value"
+            },
+            "R2 {{ SEE ISSUE 114 }}": {
+                "ansible_host": "r2.example.com",
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
+                "device_type": "Cisco Test",
+                "dns_name": "r2.example.com",
+                "is_virtual": false,
+                "local_context_data": {
+                    "normal_string": {
+                        "__ansible_unsafe": "this is a normal string"
+                    },
+                    "string_containing_jinja2tags": {
+                        "__ansible_unsafe": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}"
+                    }
+                },
+                "location": {
+                    "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
+                },
+                "locations": [
+                    {
+                        "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
+                    }
+                ],
+                "manufacturer": "Cisco",
+                "primary_ip4": "172.16.180.13",
+                "rack": "Another Test Rack",
+                "rack_groups": [
+                    "Parent3 Rack Group"
+                ],
+                "rack_role": "Test Rack Role",
+                "role": "Core Switch",
+                "status": {
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "object_type": "extras.status"
+                },
+                "tags": [],
+                "testing_device_cf": ""
             },
             "Test VM With Spaces": {
                 "cluster": "Test Cluster 2",
@@ -253,6 +303,9 @@
     "active": {
         "hosts": [
             "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
             "Test VM With Spaces",
             "TestDeviceR1",
             "VC1",
@@ -266,7 +319,9 @@
     },
     "all": {
         "children": [
+            "___see_issue_114___parent_test_location_3",
             "active",
+            "another_test_rack",
             "child_child_test_location",
             "child_rack_group",
             "child_test_location",
@@ -277,6 +332,7 @@
             "jinja_test_group",
             "main_test_rack",
             "nexus_parent",
+            "parent3_rack_group",
             "parent_rack_group",
             "parent_test_location",
             "sub_test_rack",
@@ -287,6 +343,13 @@
             "test_rack_role",
             "test_tenant",
             "ungrouped"
+        ]
+    },
+    "another_test_rack": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
         ]
     },
     "child_child_test_location": {
@@ -314,6 +377,9 @@
     "cisco": {
         "hosts": [
             "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
             "TestDeviceR1",
             "VC1",
             "test100"
@@ -322,6 +388,9 @@
     "cisco_test": {
         "hosts": [
             "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
             "TestDeviceR1",
             "test100"
         ]
@@ -329,6 +398,9 @@
     "core_switch": {
         "hosts": [
             "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
             "TestDeviceR1",
             "VC1",
             "test100"
@@ -358,6 +430,13 @@
     "nexus_parent": {
         "hosts": [
             "VC1"
+        ]
+    },
+    "parent3_rack_group": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
         ]
     },
     "parent_rack_group": {
@@ -417,7 +496,10 @@
     },
     "test_rack_role": {
         "hosts": [
-            "R1-Device"
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
         ]
     },
     "test_tenant": {
