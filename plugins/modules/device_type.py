@@ -88,7 +88,7 @@ EXAMPLES = r"""
         manufacturer: Test Manufacturer
         state: present
 
-    - name: Create device type within Nautobot with only required information
+    - name: Create device type within Nautobot with all fields
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken
@@ -119,22 +119,23 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_DEVICE_TYPES,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_DEVICE_TYPES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))

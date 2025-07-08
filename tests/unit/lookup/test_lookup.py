@@ -1,13 +1,13 @@
 """Tests for Nautobot Query Lookup Plugin."""
 
-from ansible.errors import AnsibleError
-from ansible.template import Templar
-from ansible.parsing.dataloader import DataLoader
-from ansible.vars.manager import VariableManager
-from ansible.inventory.manager import InventoryManager
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
+import pytest
+from ansible.errors import AnsibleError
+from ansible.inventory.manager import InventoryManager
+from ansible.parsing.dataloader import DataLoader
+from ansible.template import Templar
+from ansible.vars.manager import VariableManager
 
 try:
     from plugins.lookup.lookup import LookupModule
@@ -40,7 +40,9 @@ def test_basic_run(mock_pynautobot, lookup):
     }
     result = lookup.run(terms, **kwargs)
 
-    mock_pynautobot.assert_called_once_with("https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0")
+    mock_pynautobot.assert_called_once_with(
+        "https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0"
+    )
     assert result == [{"key": 1, "value": {"id": 1, "name": "device1"}}], "Expected a successful result"
 
 
@@ -84,7 +86,9 @@ def test_run_with_static_filter(mock_pynautobot, lookup):
     }
     result = lookup.run(terms, **kwargs)
 
-    mock_pynautobot.assert_called_once_with("https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0")
+    mock_pynautobot.assert_called_once_with(
+        "https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0"
+    )
     mock_api.dcim.devices.filter.assert_called_once_with(_raw_params=["{'name':", "'device1'}"])
     assert result == [{"key": 1, "value": {"id": 1, "name": "device1"}}], "Expected a successful result"
 
@@ -110,6 +114,8 @@ def test_run_with_dynamic_filter(mock_pynautobot, lookup):
     }
     result = lookup.run(terms, **kwargs)
 
-    mock_pynautobot.assert_called_once_with("https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0")
+    mock_pynautobot.assert_called_once_with(
+        "https://nautobot.local", token="fake-token", api_version=None, verify=True, retries="0"
+    )
     mock_api.dcim.devices.filter.assert_called_once_with(_raw_params=["{'name':", "'device1'}"])
     assert result == [{"key": 1, "value": {"id": 1, "name": "device1"}}], "Expected a successful result"

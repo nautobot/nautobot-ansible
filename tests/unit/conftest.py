@@ -1,7 +1,7 @@
 """Pytest conftest setup."""
 
-import pytest
 import pynautobot
+import pytest
 
 try:
     from plugins.module_utils.utils import NautobotApiBase

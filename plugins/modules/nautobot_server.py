@@ -168,23 +168,38 @@ def _fail(module, cmd, out, err, **kwargs):
 
 
 def createsuperuser_changed(line):
+    """Check if the createsuperuser command was successful."""
     return "Superuser created successfully" in line
 
 
 def migrate_changed(line):
-    return ("Migrating forwards " in line) or ("Installed" in line and "Installed 0 object" not in line) or ("Applying" in line)
+    """Check if the migrate command was successful."""
+    return (
+        ("Migrating forwards " in line)
+        or ("Installed" in line and "Installed 0 object" not in line)
+        or ("Applying" in line)
+    )
 
 
 def makemigrations_changed(line):
-    return ("Alter field" in line) or ("Add field" in line) or ("Run Python" in line) or ("Rename field" in line) or ("Remove field" in line)
+    """Check if the makemigrations command was successful."""
+    return (
+        ("Alter field" in line)
+        or ("Add field" in line)
+        or ("Run Python" in line)
+        or ("Rename field" in line)
+        or ("Remove field" in line)
+    )
 
 
 def post_upgrade_changed(line):
+    """Check if the post_upgrade command was successful."""
     # post_upgrade always changes the state, even only removing state and invalidating cache.
     return True
 
 
 def collectstatic_changed(line):
+    """Check if the collectstatic command was successful."""
     return line and "0 static files" not in line
 
 
@@ -192,6 +207,7 @@ def collectstatic_changed(line):
 
 
 def main():
+    """Main entry point for module execution."""
     # Commands that are known to use the --noinput flag
     commands_with_noinput = {
         "createsuperuser",

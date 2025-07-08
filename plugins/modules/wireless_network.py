@@ -138,22 +138,23 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.wireless import (
-    NautobotWirelessModule,
     NB_WIRELESS_NETWORKS,
+    NautobotWirelessModule,
 )
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
@@ -162,11 +163,24 @@ def main():
         dict(
             name=dict(required=True, type="str"),
             ssid=dict(required=False, type="str"),
-            mode=dict(required=False, type="str", choices=["Central", "Fabric", "Standalone (Autonomous)", "Local (Flex)", "Mesh", "Bridge"]),
+            mode=dict(
+                required=False,
+                type="str",
+                choices=["Central", "Fabric", "Standalone (Autonomous)", "Local (Flex)", "Mesh", "Bridge"],
+            ),
             authentication=dict(
                 required=False,
                 type="str",
-                choices=["Open", "WPA2 Personal", "WPA2 Enterprise", "Enhanced Open", "WPA3 Personal", "WPA3 SAE", "WPA3 Enterprise", "WPA3 Enterprise 192Bit"],
+                choices=[
+                    "Open",
+                    "WPA2 Personal",
+                    "WPA2 Enterprise",
+                    "Enhanced Open",
+                    "WPA3 Personal",
+                    "WPA3 SAE",
+                    "WPA3 Enterprise",
+                    "WPA3 Enterprise 192Bit",
+                ],
             ),
             description=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
