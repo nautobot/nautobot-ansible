@@ -2110,6 +2110,7 @@
                                     "object_type": "dcim.manufacturer"
                                 },
                                 "model": "C9300-NM-8X",
+                                "module_family": null,
                                 "object_type": "dcim.moduletype",
                                 "part_number": ""
                             },
@@ -2119,13 +2120,15 @@
                                 "description": "",
                                 "display": "test100 (NetworkModuleBay 1)",
                                 "label": "",
+                                "module_family": null,
                                 "name": "NetworkModuleBay 1",
                                 "object_type": "dcim.modulebay",
                                 "parent_device": {
                                     "object_type": "dcim.device"
                                 },
                                 "parent_module": null,
-                                "position": ""
+                                "position": "",
+                                "requires_first_party_modules": false
                             },
                             "role": null,
                             "serial": null,
@@ -2194,6 +2197,7 @@
                                     "object_type": "dcim.manufacturer"
                                 },
                                 "model": "C9300-NM-8X",
+                                "module_family": null,
                                 "object_type": "dcim.moduletype",
                                 "part_number": ""
                             },
@@ -2203,13 +2207,15 @@
                                 "description": "",
                                 "display": "test100 (NetworkModuleBay 2)",
                                 "label": "",
+                                "module_family": null,
                                 "name": "NetworkModuleBay 2",
                                 "object_type": "dcim.modulebay",
                                 "parent_device": {
                                     "object_type": "dcim.device"
                                 },
                                 "parent_module": null,
-                                "position": ""
+                                "position": "",
+                                "requires_first_party_modules": false
                             },
                             "role": null,
                             "serial": null,
