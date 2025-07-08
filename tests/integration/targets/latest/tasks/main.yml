@@ -845,3 +845,20 @@
             - wireless_network
       tags:
         - wireless_network
+
+##########################
+##
+### UNSAFE VARIABLE HANDLING TESTS
+##
+##########################
+
+- name: "UNSAFE VARIABLE HANDLING TESTS"
+  block:
+    - name: "UNSAFE VARIABLE HANDLING TESTS"
+      include_tasks:
+        file: "unsafe_vars.yml"
+        apply:
+          tags:
+            - unsafe_vars
+      tags:
+        - unsafe_vars
