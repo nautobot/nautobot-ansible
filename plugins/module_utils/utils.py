@@ -120,6 +120,7 @@ API_APPS_ENDPOINTS = dict(
     tenancy=["tenants", "tenant_groups"],
     users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
+    wireless=["wireless_networks", "radio_profiles", "supported_data_rates"],
 )
 
 # Used to normalize data for the respective query types used to find endpoints
@@ -171,6 +172,7 @@ QUERY_TYPES = dict(
     primary_ip6="address",
     rack="name",
     rack_group="name",
+    radio_profile="name",
     rear_port="name",
     rear_port_template="name",
     rir="name",
@@ -181,6 +183,7 @@ QUERY_TYPES = dict(
     software_version="version",
     software_image_file="image_file_name",
     status="name",
+    supported_data_rate="standard",
     tenant="name",
     tenant_group="name",
     time_zone="timezone",
@@ -190,6 +193,7 @@ QUERY_TYPES = dict(
     vlan="name",
     vlan_group="name",
     vrf="name",
+    wireless_network="name",
 )
 
 # Specifies keys within data that need to be converted to ID and the endpoint to be used when queried
@@ -277,6 +281,7 @@ CONVERT_TO_ID = {
     "software_version": "software_versions",
     "software_image_files": "software_image_files",
     "status": "statuses",
+    "supported_data_rates": "supported_data_rates",
     "tags": "tags",
     "tagged_vlans": "vlans",
     "teams": "teams",
@@ -356,6 +361,7 @@ ENDPOINT_NAME_MAPPING = {
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
+    "radio_profiles": "radio_profile",
     "rear_ports": "rear_port",
     "rear_port_templates": "rear_port_template",
     "relationship_associations": "relationship_associations",
@@ -370,6 +376,7 @@ ENDPOINT_NAME_MAPPING = {
     "software_versions": "software_version",
     "software_image_files": "software_image_file",
     "statuses": "statuses",
+    "supported_data_rates": "supported_data_rate",
     "tags": "tags",
     "teams": "team",
     "tenants": "tenant",
@@ -381,6 +388,7 @@ ENDPOINT_NAME_MAPPING = {
     "vlan_groups": "vlan_group",
     "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
+    "wireless_networks": "wireless_network",
 }
 
 # What makes the search unique
@@ -471,6 +479,7 @@ ALLOWED_QUERY_PARAMS = {
     "provider": set(["name"]),
     "rack": set(["name", "location"]),
     "rack_group": set(["name"]),
+    "radio_profile": set(["name"]),
     "rear_port": set(["name", "device"]),
     "rear_port_template": set(["name", "device_type"]),
     "relationship_associations": set(["source_id", "destination_id"]),
@@ -486,6 +495,8 @@ ALLOWED_QUERY_PARAMS = {
     "software_image_files": set(["image_file_name", "software_version"]),
     "static_group_association": set(["dynamic_group", "associated_object_type", "associated_object_id"]),
     "statuses": set(["name"]),
+    "supported_data_rate": set(["standard", "rate"]),
+    "supported_data_rates": set(["standard", "rate"]),
     "tags": set(["name"]),
     "tagged_vlans": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "team": set(["name", "phone", "email"]),
@@ -503,6 +514,7 @@ ALLOWED_QUERY_PARAMS = {
     "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
+    "wireless_network": set(["name"]),
 }
 
 QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
@@ -532,7 +544,9 @@ IGNORE_ADDING_IDS = {
     "dcim.rearport",
 }
 
-REQUIRED_ID_FIND = {
+# This is used to standardize choice fields to a single value
+# (e.g. {"display": "Foo", "value": "foo"} => "foo").
+CONVERT_CHOICES = {
     "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),
     "console_ports": set(["type"]),
     "console_port_templates": set(["type"]),
@@ -552,6 +566,7 @@ REQUIRED_ID_FIND = {
     "power_ports": set(["type"]),
     "power_port_templates": set(["type"]),
     "racks": set(["outer_unit", "type"]),
+    "radio_profiles": set(["channel_width"]),
     "rear_ports": set(["type"]),
     "rear_port_templates": set(["type"]),
     "services": set(["protocol"]),
@@ -960,10 +975,11 @@ class NautobotModule:
 
         choices = list(chain.from_iterable(endpoint_choices.values()))
 
+        search_term = search.lower() if isinstance(search, str) else search
         for item in choices:
-            if item["display"].lower() == search.lower():
+            if item["display"].lower() == search_term:
                 return item["value"]
-            elif item["value"] == search.lower():
+            if item["value"] == search_term:
                 return item["value"]
         valid_choices = [choice["value"] for choice in choices]
         self._handle_errors(msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}")
@@ -975,14 +991,16 @@ class NautobotModule:
         :params endpoint (str): The endpoint that will be used for mapping to required _choices
         :params data (dict): User defined data passed into the module
         """
-        if REQUIRED_ID_FIND.get(endpoint):
-            required_choices = REQUIRED_ID_FIND[endpoint]
+        if CONVERT_CHOICES.get(endpoint):
+            required_choices = CONVERT_CHOICES[endpoint]
             for choice in required_choices:
                 if data.get(choice):
                     if isinstance(data[choice], int) or self.is_valid_uuid(data[choice]):
                         continue
-                    choice_value = self._fetch_choice_value(data[choice], endpoint)
-                    data[choice] = choice_value
+                    if isinstance(data[choice], list):
+                        data[choice] = [self._fetch_choice_value(item, endpoint) for item in data[choice]]
+                    else:
+                        data[choice] = self._fetch_choice_value(data[choice], endpoint)
 
         return data
 

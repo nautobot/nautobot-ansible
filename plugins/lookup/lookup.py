@@ -236,6 +236,7 @@ def get_endpoint(nautobot, term):
         "rack-groups": {"endpoint": nautobot.dcim.rack_groups},
         "rack-reservations": {"endpoint": nautobot.dcim.rack_reservations},
         "racks": {"endpoint": nautobot.dcim.racks},
+        "radio-profiles": {"endpoint": nautobot.wireless.radio_profiles},
         "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
         "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
         "relationships": {"endpoint": nautobot.extras.relationships},
@@ -249,6 +250,7 @@ def get_endpoint(nautobot, term):
         "services": {"endpoint": nautobot.ipam.services},
         "static-group-associations": {"endpoint": nautobot.extras.static_group_associations},
         "statuses": {"endpoint": nautobot.extras.statuses},
+        "supported-data-rates": {"endpoint": nautobot.wireless.supported_data_rates},
         "tags": {"endpoint": nautobot.extras.tags},
         "teams": {"endpoint": nautobot.extras.teams},
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
@@ -261,6 +263,7 @@ def get_endpoint(nautobot, term):
         "vlans": {"endpoint": nautobot.ipam.vlans},
         "vlan-location-assignments": {"endpoint": nautobot.ipam.vlan_location_assignments},
         "vrfs": {"endpoint": nautobot.ipam.vrfs},
+        "wireless-networks": {"endpoint": nautobot.wireless.wireless_networks},
     }
 
     return endpoint_map[term]["endpoint"]

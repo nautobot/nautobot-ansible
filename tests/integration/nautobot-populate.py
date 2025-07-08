@@ -835,5 +835,18 @@ if nautobot_version >= version.parse("2.3"):
     created_dynamic_groups = make_nautobot_calls(nb.extras.dynamic_groups, dynamic_groups)
 
 
+###############
+# v2.4+ items #
+###############
+if nautobot_version >= version.parse("2.4"):
+    # Create supported data rates
+    supported_data_rates = [
+        {"standard": "802.11n", "rate": 10000},
+        {"standard": "802.11ac", "rate": 10000},
+        # Purposely duplicate standard to test lookup by both standard and rate
+        {"standard": "802.11ac", "rate": 20000},
+    ]
+    created_supported_data_rates = make_nautobot_calls(nb.wireless.supported_data_rates, supported_data_rates)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")
