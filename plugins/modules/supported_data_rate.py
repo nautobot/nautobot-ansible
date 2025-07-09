@@ -82,29 +82,34 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.wireless import (
-    NautobotWirelessModule,
     NB_WIRELESS_SUPPORTED_DATA_RATES,
+    NautobotWirelessModule,
 )
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            standard=dict(required=True, type="str", choices=["802.11a", "802.11b", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be"]),
+            standard=dict(
+                required=True,
+                type="str",
+                choices=["802.11a", "802.11b", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be"],
+            ),
             rate=dict(required=True, type="int"),
             mcs_index=dict(required=False, type="int"),
         )

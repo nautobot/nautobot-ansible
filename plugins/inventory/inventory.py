@@ -277,26 +277,27 @@ rename_variables:
 """
 
 import json
-import uuid
 import math
 import re
+import uuid
+from collections import defaultdict
 from functools import partial
+from itertools import chain
 from sys import version as python_version
 from threading import Thread
 from typing import Iterable
-from itertools import chain
-from collections import defaultdict
 
-from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
-from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils._text import to_text, to_native
-from ansible.module_utils.urls import open_url
+from ansible.module_utils._text import to_native, to_text
+from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
+from ansible.module_utils.urls import open_url
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
 from ansible.utils.unsafe_proxy import wrap_var
-
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import check_needs_wrapping
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    check_needs_wrapping,
+)
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -356,6 +357,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def get_resource_list(self, api_url):
         """Retrieves resource list from nautobot API.
+
         Returns:
            A list of all resource from nautobot API.
         """
@@ -810,7 +812,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         url = self.api_endpoint + "/api/extras/roles/?limit=0"
         roles = self.get_resource_list(api_url=url)
         self.device_roles_lookup = dict(
-            (role["id"], role["name"]) for role in roles if "dcim.device" in role["content_types"] or "virtualization.virtualmachine" in role["content_types"]
+            (role["id"], role["name"])
+            for role in roles
+            if "dcim.device" in role["content_types"] or "virtualization.virtualmachine" in role["content_types"]
         )
 
     def refresh_device_types_lookup(self):
@@ -914,7 +918,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             interface_id = interface["id"]
             if interface.get("device"):
                 device_id = interface["device"]["id"]
-            elif self.module_interfaces and interface.get("module", {}).get("parent_module_bay", {}).get("parent_device"):
+            elif self.module_interfaces and interface.get("module", {}).get("parent_module_bay", {}).get(
+                "parent_device"
+            ):
                 device_id = interface["module"]["parent_module_bay"]["parent_device"]["id"]
             else:
                 continue
@@ -1070,7 +1076,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
         vm_path = (
-            "/api/virtualization/virtual-machines/" if "/api/virtualization/virtual-machines/" in openapi["paths"] else "/virtualization/virtual-machines/"
+            "/api/virtualization/virtual-machines/"
+            if "/api/virtualization/virtual-machines/" in openapi["paths"]
+            else "/virtualization/virtual-machines/"
         )
 
         self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"][device_path]["get"]["parameters"]]
@@ -1115,15 +1123,23 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         # Add query_filtes to both devices and vms query, if they're valid
         if isinstance(self.query_filters, Iterable):
-            device_query_parameters.extend(self.filter_query_parameters(self.query_filters, self.allowed_device_query_parameters))
+            device_query_parameters.extend(
+                self.filter_query_parameters(self.query_filters, self.allowed_device_query_parameters)
+            )
 
-            vm_query_parameters.extend(self.filter_query_parameters(self.query_filters, self.allowed_vm_query_parameters))
+            vm_query_parameters.extend(
+                self.filter_query_parameters(self.query_filters, self.allowed_vm_query_parameters)
+            )
 
         if isinstance(self.device_query_filters, Iterable):
-            device_query_parameters.extend(self.filter_query_parameters(self.device_query_filters, self.allowed_device_query_parameters))
+            device_query_parameters.extend(
+                self.filter_query_parameters(self.device_query_filters, self.allowed_device_query_parameters)
+            )
 
         if isinstance(self.vm_query_filters, Iterable):
-            vm_query_parameters.extend(self.filter_query_parameters(self.vm_query_filters, self.allowed_vm_query_parameters))
+            vm_query_parameters.extend(
+                self.filter_query_parameters(self.vm_query_filters, self.allowed_vm_query_parameters)
+            )
 
         # When query_filters is Iterable, and is not empty:
         # - If none of the filters are valid for devices, do not fetch any devices
@@ -1191,7 +1207,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return group.replace("-", "_").replace(" ", "_").lower()
 
     def set_inv_var_safely(self, hostname, variable_name, value):
-        """Set inventory variable with conditional wrapping only where needed"""
+        """Set inventory variable with conditional wrapping only where needed."""
         if check_needs_wrapping(value):
             value = wrap_var(value)
         self.inventory.set_variable(hostname, variable_name, value)
@@ -1221,7 +1237,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         for grouping in self.group_by:
             if grouping not in self.group_extractors:
                 raise AnsibleError(
-                    'group_by option "%s" is not valid. (Maybe check the plurals option? It can determine what group_by options are valid)' % grouping
+                    'group_by option "%s" is not valid. (Maybe check the plurals option? It can determine what group_by options are valid)'
+                    % grouping
                 )
 
             groups_for_host = self.group_extractors[grouping](host)

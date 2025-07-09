@@ -1,11 +1,10 @@
 import json
-
 import unittest
 from unittest.mock import patch
-from parameterized import parameterized
 
 from ansible.module_utils import basic
 from ansible.module_utils.common.text.converters import to_bytes
+from parameterized import parameterized
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.modules import nautobot_server
@@ -90,23 +89,40 @@ class TestNautobotServer(unittest.TestCase):
                 "Superuser created successfully",
                 True,
                 ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
-                {"cwd": "/some/other", "environ_update": {"NAUTOBOT_ROOT": "/some/other", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/some/other",
+                    "environ_update": {"NAUTOBOT_ROOT": "/some/other", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
-                {"command": "createsuperuser", "args": {"username": "admin", "email": "admin@example.com"}, "db_password": "secret_password"},
+                {
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
+                    "db_password": "secret_password",
+                },
                 AnsibleExitJson,
                 "Superuser created successfully",
                 True,
                 ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
-                {"command": "createsuperuser", "args": {"username": "admin", "email": "admin@example.com"}, "db_password": "secret_password"},
+                {
+                    "command": "createsuperuser",
+                    "args": {"username": "admin", "email": "admin@example.com"},
+                    "db_password": "secret_password",
+                },
                 AnsibleExitJson,
                 "username is already taken",
                 False,
                 ["nautobot-server createsuperuser --noinput --username=admin --email=admin@example.com"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "migrate", "db_password": "secret_password"},
@@ -114,15 +130,26 @@ class TestNautobotServer(unittest.TestCase):
                 "Migrating forwards ",
                 True,
                 ["nautobot-server migrate --noinput"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
-                {"command": "migrate", "db_password": "secret_password", "flags": ["merge"], "positional_args": ["my_plugin_name"]},
+                {
+                    "command": "migrate",
+                    "db_password": "secret_password",
+                    "flags": ["merge"],
+                    "positional_args": ["my_plugin_name"],
+                },
                 AnsibleExitJson,
                 "Migrating forwards ",
                 True,
                 ["nautobot-server migrate --noinput --merge my_plugin_name"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "migrate", "db_password": "secret_password"},
@@ -130,7 +157,10 @@ class TestNautobotServer(unittest.TestCase):
                 "No migrations to apply",
                 False,
                 ["nautobot-server migrate --noinput"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "makemigrations", "db_password": "secret_password"},
@@ -138,7 +168,10 @@ class TestNautobotServer(unittest.TestCase):
                 "Alter field",
                 True,
                 ["nautobot-server makemigrations --noinput"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "makemigrations", "db_password": "secret_password"},
@@ -146,7 +179,10 @@ class TestNautobotServer(unittest.TestCase):
                 "",
                 False,
                 ["nautobot-server makemigrations --noinput"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "makemigrations", "db_password": "secret_password", "positional_args": ["my_plugin_name"]},
@@ -154,7 +190,10 @@ class TestNautobotServer(unittest.TestCase):
                 "",
                 False,
                 ["nautobot-server makemigrations --noinput my_plugin_name"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "collectstatic", "db_password": "secret_password"},
@@ -162,7 +201,10 @@ class TestNautobotServer(unittest.TestCase):
                 "972 static files copied",
                 True,
                 ["nautobot-server collectstatic --noinput"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
             [
                 {"command": "post_upgrade", "db_password": "secret_password"},
@@ -170,7 +212,10 @@ class TestNautobotServer(unittest.TestCase):
                 "",
                 True,
                 ["nautobot-server post_upgrade"],
-                {"cwd": "/opt/nautobot", "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"}},
+                {
+                    "cwd": "/opt/nautobot",
+                    "environ_update": {"NAUTOBOT_ROOT": "/opt/nautobot", "NAUTOBOT_DB_PASSWORD": "secret_password"},
+                },
             ],
         ]
     )

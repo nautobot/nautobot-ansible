@@ -4,9 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-nautobot.py
-
-A lookup function designed to return data from the Nautobot application
+A lookup function designed to return data from the Nautobot application.
 """
 
 from __future__ import absolute_import, division, print_function
@@ -133,15 +131,15 @@ RETURN = """
     type: list
 """
 
-import os
 import functools
+import os
 from pprint import pformat
 
 from ansible.errors import AnsibleError
-from ansible.plugins.lookup import LookupBase
-from ansible.parsing.splitter import parse_kv, split_args
-from ansible.utils.display import Display
 from ansible.module_utils.six import raise_from
+from ansible.parsing.splitter import parse_kv, split_args
+from ansible.plugins.lookup import LookupBase
+from ansible.utils.display import Display
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     is_truthy,
 )
@@ -155,14 +153,15 @@ else:
 
 
 def get_endpoint(nautobot, term):
-    """
-    get_endpoint(nautobot, term)
-        nautobot: a predefined pynautobot.api() pointing to a valid instance
-                of Nautobot
-        term: the term passed to the lookup function upon which the api
-              call will be identified
-    """
+    """Get the endpoint for the given term.
 
+    Args:
+        nautobot (pynautobot.api): a predefined pynautobot.api() pointing to a valid instance of Nautobot
+        term (str): the term passed to the lookup function upon which the api call will be identified
+
+    Returns:
+        dict: The endpoint for the given term.
+    """
     endpoint_map = {
         "admin-users": {"endpoint": nautobot.users.users},
         "admin-groups": {"endpoint": nautobot.users.groups},
@@ -294,13 +293,15 @@ def build_filters(filters):
 
 
 def get_plugin_endpoint(nautobot, plugin, term):
-    """
-    get_plugin_endpoint(nautobot, plugin, term)
-        nautobot: a predefined pynautobot.api() pointing to a valid instance
-                of Nautobot
-        plugin: a string referencing the plugin name
-        term: the term passed to the lookup function upon which the api
-              call will be identified
+    """Get the plugin endpoint for the given plugin and term.
+
+    Args:
+        nautobot (pynautobot.api): a predefined pynautobot.api() pointing to a valid instance of Nautobot
+        plugin (str): a string referencing the plugin name
+        term (str): the term passed to the lookup function upon which the api call will be identified
+
+    Returns:
+        object: The plugin endpoint for the given plugin and term.
     """
     attr = "plugins.%s.%s" % (plugin, term)
 
@@ -310,7 +311,7 @@ def get_plugin_endpoint(nautobot, plugin, term):
     return functools.reduce(_getattr, [nautobot] + attr.split("."))
 
 
-def make_call(endpoint, filters=None):
+def make_call(endpoint, filters=None):  # noqa: D417
     """
     Wrapper for calls to Nautobot and handle any possible errors.
 
@@ -330,7 +331,9 @@ def make_call(endpoint, filters=None):
             results = endpoint.all()
     except pynautobot.RequestError as e:
         if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError("{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(e.error))
+            raise AnsibleError(
+                f"{e.error} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint."
+            )
         else:
             raise AnsibleError(e.error)
 
@@ -339,10 +342,11 @@ def make_call(endpoint, filters=None):
 
 class LookupModule(LookupBase):
     """
-    LookupModule(LookupBase) is defined by Ansible
+    LookupModule(LookupBase) is defined by Ansible.
     """
 
     def run(self, terms, variables=None, **kwargs):
+        """Run the lookup."""
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
                 AnsibleError("pynautobot must be installed to use this plugin"),
@@ -370,7 +374,13 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify, retries=num_retries)
+        nautobot = pynautobot.api(
+            api_endpoint,
+            token=api_token if api_token else None,
+            api_version=api_version,
+            verify=ssl_verify,
+            retries=num_retries,
+        )
         results = []
         for term in terms:
             if plugin:
@@ -381,7 +391,9 @@ class LookupModule(LookupBase):
                 except KeyError:
                     raise AnsibleError("Unrecognised term %s. Check documentation" % term)
 
-            Display().vvvv("Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter))
+            Display().vvvv(
+                "Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter)
+            )
 
             if api_filter:
                 filter = build_filters(api_filter)

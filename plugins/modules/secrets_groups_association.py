@@ -95,25 +95,30 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_SECRETS_GROUPS_ASSOCIATION,
+    NautobotExtrasModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NAUTOBOT_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_SECRETS_GROUPS_ASSOCIATION,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(
         dict(
-            access_type=dict(required=True, type="str", choices=["Generic", "Console", "gNMI", "HTTP(S)", "NETCONF", "REST", "RESTCONF", "SNMP", "SSH"]),
+            access_type=dict(
+                required=True,
+                type="str",
+                choices=["Generic", "Console", "gNMI", "HTTP(S)", "NETCONF", "REST", "RESTCONF", "SNMP", "SSH"],
+            ),
             secret_type=dict(required=True, type="str", choices=["key", "password", "secret", "token", "username"]),
             secrets_group=dict(required=True, type="str", no_log=False),
             secret=dict(required=True, type="str", no_log=False),

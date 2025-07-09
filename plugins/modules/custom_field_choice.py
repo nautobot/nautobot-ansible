@@ -66,13 +66,14 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_CUSTOM_FIELD_CHOICES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_CUSTOM_FIELD_CHOICES,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 
 def main():

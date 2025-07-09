@@ -9,16 +9,14 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 # Import necessary packages
-import traceback
 import json
 import os
-
-from uuid import UUID
+import traceback
 from itertools import chain
+from uuid import UUID
 
+from ansible.module_utils.basic import env_fallback, missing_required_lib
 from ansible.module_utils.common.text.converters import to_text
-
-from ansible.module_utils.basic import missing_required_lib, env_fallback
 from ansible.module_utils.urls import open_url
 
 PYNAUTOBOT_IMP_ERR = None
@@ -177,7 +175,7 @@ QUERY_TYPES = dict(
     rear_port_template="name",
     rir="name",
     route_targets="name",
-    secret="name",  # nosec B106
+    secret="name",  # noqa: S106
     secrets_group="name",
     secrets_groups_association="name",
     software_version="version",
@@ -517,7 +515,21 @@ ALLOWED_QUERY_PARAMS = {
     "wireless_network": set(["name"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
+QUERY_PARAMS_IDS = set(
+    [
+        "circuit",
+        "cluster",
+        "device",
+        "group",
+        "interface",
+        "rir",
+        "vrf",
+        "tenant",
+        "type",
+        "virtual_machine",
+        "vminterface",
+    ]
+)
 
 # Some API endpoints dropped '_id' in filter fields in 2.0, ignore them here.
 IGNORE_ADDING_IDS = {
@@ -632,7 +644,6 @@ def is_truthy(arg):
         arg (str): Truthy string (True values are y, yes, t, true, on and 1; false values are n, no,
         f, false, off and 0. Raises ValueError if val is anything else.
     """
-
     if isinstance(arg, bool):
         return arg
 
@@ -655,7 +666,8 @@ def sort_dict_with_lists(data):
 
 
 class NautobotModule:
-    """
+    """Run the Nautobot module.
+
     Initialize connection to Nautobot, sets AnsibleModule passed in to
     self.module to be used throughout the class
     :params module (obj): Ansible Module object
@@ -664,6 +676,7 @@ class NautobotModule:
     """
 
     def __init__(self, module, endpoint, client=None, remove_keys=None):
+        """Initialize the Nautobot module."""
         self.module = module
         self.state = self.module.params["state"]
         self.check_mode = self.module.check_mode
@@ -718,6 +731,7 @@ class NautobotModule:
         Args:
             greater (str): decimal string
             lesser (str): decimal string
+            greater_or_equal (bool): If True, return True if the major version is equal and the minor version is greater or equal
         """
         g_major, g_minor = greater.split(".")
         l_major, l_minor = lesser.split(".")
@@ -796,17 +810,19 @@ class NautobotModule:
 
     def _handle_errors(self, msg):
         """
-        Returns message and changed = False
+        Returns message and changed = False.
+
         :params msg (str): Message indicating why there is no change
         """
         self.module.fail_json(msg=msg, changed=False)
 
     def _build_diff(self, before=None, after=None):
-        """Builds diff of before and after changes"""
+        """Builds diff of before and after changes."""
         return {"before": before, "after": after}
 
     def _convert_identical_keys(self, data):
-        """
+        """Convert non-clashing keys for each module into identical keys that are required.
+
         Used to change non-clashing keys for each module into identical keys that are required
         to be passed to pynautobot
         ex. rack_role back into role to pass to Nautobot
@@ -826,7 +842,9 @@ class NautobotModule:
         return temp_dict
 
     def _remove_arg_spec_default(self, data):
-        """Used to remove any data keys that were not provided by user, but has the arg spec
+        """Remove any data keys that were not provided by user, but has the arg spec.
+
+        Used to remove any data keys that were not provided by user, but has the arg spec
         default values
         """
         new_dict = dict()
@@ -848,12 +866,13 @@ class NautobotModule:
         return str(uuid_obj) == match
 
     def _get_query_param_id(self, match, data):
-        """Used to find IDs of necessary searches when required under _build_query_params
+        """Find IDs of necessary searches when required under _build_query_params.
+
+        Used to find IDs of necessary searches when required under _build_query_params
         :returns id (int) or data (dict): Either returns the ID or original data passed in
         :params match (str): The key within the user defined data that is required to have an ID
         :params data (dict): User defined data passed into the module
         """
-
         match_value = data.get(match)
         if isinstance(match_value, int) or self.is_valid_uuid(match_value):
             return match_value
@@ -873,7 +892,8 @@ class NautobotModule:
             return data
 
     def _build_query_params(self, parent, module_data, user_query_params=None, child=None):
-        """
+        """Build a query dictionary for Nautobot endpoints.
+
         :returns dict(query_dict): Returns a query dictionary built using mappings to dynamically
         build available query params for Nautobot endpoints
         :params parent(str): This is either a key from `_find_ids` or a string passed in to determine
@@ -982,10 +1002,14 @@ class NautobotModule:
             if item["value"] == search_term:
                 return item["value"]
         valid_choices = [choice["value"] for choice in choices]
-        self._handle_errors(msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}")
+        self._handle_errors(
+            msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}"
+        )
 
     def _change_choices_id(self, endpoint, data):
-        """Used to change data that is static and under _choices for the application.
+        """Change data that is static and under _choices for the application.
+
+        Used to change data that is static and under _choices for the application.
         ex. DEVICE_STATUS
         :returns data (dict): Returns the user defined data back with updated fields for _choices
         :params endpoint (str): The endpoint that will be used for mapping to required _choices
@@ -1005,7 +1029,9 @@ class NautobotModule:
         return data
 
     def _find_app(self, endpoint):
-        """Dynamically finds application of endpoint passed in using the
+        """Finds the application of the endpoint passed in.
+
+        Dynamically finds application of endpoint passed in using the
         API_APPS_ENDPOINTS for mapping
         :returns nb_app (str): The application the endpoint lives under
         :params endpoint (str): The endpoint requiring resolution to application
@@ -1016,7 +1042,8 @@ class NautobotModule:
         return nb_app
 
     def _find_ids(self, data, user_query_params):
-        """Will find the IDs of all user specified data if resolvable
+        """Find the IDs of all user specified data if resolvable.
+
         :returns data (dict): Returns the updated dict with the IDs of user specified data
         :params data (dict): User defined data passed into the module
         """
@@ -1085,7 +1112,8 @@ class NautobotModule:
         return data
 
     def _normalize_data(self, data):
-        """
+        """Normalize module data to formats accepted by Nautobot searches.
+
         :returns data (dict): Normalized module data to formats accepted by Nautobot searches
         :params data (dict): Original data from Nautobot module
         """
@@ -1132,6 +1160,7 @@ class NautobotModule:
 
     def _delete_object(self):
         """Delete a Nautobot object.
+
         :returns diff (dict): Ansible diff
         """
         if not self.check_mode:
@@ -1152,7 +1181,9 @@ class NautobotModule:
         if "custom_fields" in serialized_nb_obj:
             custom_fields = serialized_nb_obj.get("custom_fields", {})
             shared_keys = custom_fields.keys() & data.get("custom_fields", {}).keys()
-            serialized_nb_obj["custom_fields"] = {key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None}
+            serialized_nb_obj["custom_fields"] = {
+                key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None
+            }
         updated_obj = serialized_nb_obj.copy()
         updated_obj.update(data)
         if serialized_nb_obj.get("tags") and data.get("tags"):
@@ -1184,7 +1215,9 @@ class NautobotModule:
             return updated_obj, diff
 
     def _ensure_object_exists(self, nb_endpoint, endpoint_name, name, data):
-        """Used when `state` is present to make sure object exists or if the object exists
+        """Ensure an object exists or is updated.
+
+        Used when `state` is present to make sure object exists or if the object exists
         that it is updated
         :params nb_endpoint (pynautobot endpoint object): This is the nb endpoint to be used
         to create or update the object
@@ -1209,7 +1242,9 @@ class NautobotModule:
                 self.result["msg"] = "%s %s already exists" % (endpoint_name, name)
 
     def _ensure_object_absent(self, endpoint_name, name):
-        """Used when `state` is absent to make sure object does not exist
+        """Ensure an object is absent.
+
+        Used when `state` is absent to make sure object does not exist
         :params endpoint_name (str): Endpoint name that was created/updated. ex. device
         :params name (str): Name of the object
         """
@@ -1223,13 +1258,14 @@ class NautobotModule:
 
     def run(self):
         """
-        Must be implemented in subclasses
+        Must be implemented in subclasses.
         """
         raise NotImplementedError
 
 
 class NautobotApiBase:
     def __init__(self, **kwargs):
+        """Initialize the Nautobot API base."""
         self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         if kwargs.get("ssl_verify") is not None:
@@ -1246,6 +1282,7 @@ class NautobotApiBase:
 
 class NautobotGraphQL:
     def __init__(self, query_str, api=None, variables=None):
+        """Initialize the Nautobot GraphQL class."""
         self.query_str = query_str
         self.pynautobot = api.api
         self.variables = variables

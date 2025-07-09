@@ -16,7 +16,6 @@ asyncio = "^3.4.3"
 
 [tool.poetry.dev-dependencies]
 ansible-lint = "*"
-black = "*"
 cryptography = "*"
 jinja2 = "*"
 jmespath = "*"
@@ -33,7 +32,6 @@ hypothesis = "*"
 pytest-pythonpath = "*"
 parameterized = "*"
 invoke = "*"
-bandit = "*"
 pytest-forked = "*"
 # Rendering docs to HTML
 mkdocs = "1.6.1"
@@ -45,6 +43,7 @@ markdown-version-annotations = "1.0.1"
 mkdocs-ansible-collection = "1.1.0"
 towncrier = "^24.8.0"
 toml = "^0.10.2"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -57,35 +56,67 @@ testpaths = [
 python_paths = "./"
 addopts = "-vv"
 
-[tool.black]
-line-length = 160
-target-version = ['py37']
-include = '\.pyi?$'
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-  )/
-  | settings.py     # This is where you define files that should not be stylized by black
-  | collections     # Locally installed collections
-)
-'''
-
 [tool.pylint.messages_control]
-# Line length is enforced by Black, so pylint doesn't need to check it.
-# Pylint and Black disagree about how to format multi-line arrays; Black wins.
+# Line length is enforced by Ruff, so pylint doesn't need to check it.
+# Pylint and Ruff disagree about how to format multi-line arrays; Ruff wins.
 disable = """,
     line-too-long
     """
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "D",  # pydocstyle
+    "F", "E", "W",  # flake8
+    "S",  # bandit
+    "I",  # isort
+]
+ignore = [
+    # warning: `one-blank-line-before-class` (D203) and `no-blank-line-before-class` (D211) are incompatible.
+    "D203", # 1 blank line required before class docstring
+
+    # D212 is enabled by default in google convention, and complains if we have a docstring like:
+    # """
+    # My docstring is on the line after the opening quotes instead of on the same line as them.
+    # """
+    # We've discussed and concluded that we consider this to be a valid style choice.
+    "D212", # Multi-line docstring summary should start at the first line
+    "D213", # Multi-line docstring summary should start at the second line
+
+    # Produces a lot of issues in the current codebase.
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D200", # One-line docstring should fit on one line
+    "D205", # 1 blank line required between summary line and description
+    "D401", # First line of docstring should be in imperative mood
+    "D407", # Missing dashed underline after section
+    "D416", # Section name ends in colon
+    "E501", # Line too long
+
+    # Ansible conventions
+    "D100", # Missing docstring in public module
+    # Conflicts with ansible sanity test "empty-init"
+    "D104", # Missing docstring in public package
+    "E402", # Module level import not at top of file
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D",
+    "F",
+    "S"
+]
+"development/*" = [
+    "D",
+    "F",
+    "S"
+]
 
 [tool.towncrier]
 name = "nautobot-ansible"

@@ -226,22 +226,25 @@ RETURN = """
       - list of composed dictionaries with key and value
     type: list
 """
-from collections.abc import Mapping
-from copy import deepcopy
 import json
 import os
+from collections.abc import Mapping
+from copy import deepcopy
 from sys import version as python_version
 
-from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
-from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils.urls import open_url
-from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.module_utils.common.text.converters import to_native
+from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.urls import open_url
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
 from ansible.utils.unsafe_proxy import wrap_var
-
-from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import check_needs_wrapping
+from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
+    convert_to_graphql_string,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    check_needs_wrapping,
+)
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -261,6 +264,8 @@ DEFAULT_IP_VERSION_CHOICES = ["IPv4", "ipv4", "IPv6", "ipv6"]
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
+    """Inventory plugin for Nautobot using GraphQL."""
+
     NAME = "networktocode.nautobot.gql_inventory"
 
     def verify_file(self, path):
@@ -280,7 +285,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-
         if check_needs_wrapping(var):
             var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
@@ -307,11 +311,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.add_variable(device["name"], device["name"], "ansible_host")
 
     def add_ansible_platform(self, device):
-        """Add network platform to host"""
+        """Add network platform to host."""
         if device.get("platform") and "napalm_driver" in device["platform"]:
             self.add_variable(
                 device["name"],
-                ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
+                ANSIBLE_LIB_MAPPER_REVERSE.get(
+                    NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])
+                ),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
 
@@ -333,7 +339,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if parent_attr == "tags":
                 if not chain or len(chain) > 1:
-                    self.display.display(f"Tags must be grouped by name or display. {group_by_path} is not a valid path.")
+                    self.display.display(
+                        f"Tags must be grouped by name or display. {group_by_path} is not a valid path."
+                    )
                     continue
                 self.create_tag_groups(device, chain[0])
                 continue
@@ -350,7 +358,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     try:
                         group_name = device_attr[group_name]
                     except KeyError:
-                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}.")
+                        self.display.display(
+                            f"Could not find value for {group_name} in {group_by_path} on device {device_name}."
+                        )
                         break
 
             if isinstance(group_name, Mapping):
@@ -359,7 +369,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 elif "display" in group_name:
                     group_name = group_name["display"]
                 else:
-                    self.display.display(f"No display or name value for {group_name} in {group_by_path} on device {device_name}.")
+                    self.display.display(
+                        f"No display or name value for {group_name} in {group_by_path} on device {device_name}."
+                    )
 
             if not group_name:
                 # If the value is empty, it can't be grouped
@@ -487,7 +499,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             devices.extend(json_data["data"]["devices"])
             virtual_machines.extend(json_data["data"]["virtual_machines"])
             offset += limit
-            if len(json_data["data"].get("devices", [])) < limit and len(json_data["data"].get("virtual_machines", [])) < limit:
+            if (
+                len(json_data["data"].get("devices", [])) < limit
+                and len(json_data["data"].get("virtual_machines", [])) < limit
+            ):
                 break
 
         return {"data": {"devices": devices, "virtual_machines": virtual_machines}}
@@ -520,6 +535,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self._add_host_to_keyed_groups(self.get_option("keyed_groups"), device, hostname, strict=strict)
 
     def parse(self, inventory, loader, path, cache=True):
+        """Parse the inventory."""
         super(InventoryModule, self).parse(inventory, loader, path)
         self._read_config_data(path=path)
         self.use_cache = cache
