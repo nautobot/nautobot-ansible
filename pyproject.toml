@@ -11,7 +11,7 @@ python = ">=3.11,<4.0"
 netutils = "^1.2"
 pynautobot = "^2.6.5"
 ansible-core = "^2.16"
-aiohttp = "^3.11.13"
+aiohttp = "^3.12.14"
 asyncio = "^3.4.3"
 
 [tool.poetry.dev-dependencies]
