@@ -110,6 +110,8 @@ class NautobotDcimModule(NautobotModule):
         #     nb_endpoint.url = f"{nb_endpoint.url}/?&include=config_context_data"
 
         # Used for msg output
+        if data.get("id") and endpoint_name == "device":
+            user_query_params = {"id": data["id"]}
         if data.get("name"):
             name = data["name"]
         elif data.get("model"):

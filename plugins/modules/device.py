@@ -293,6 +293,7 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
+            id=dict(required=False, type="str"),
             device_type=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
