@@ -56,6 +56,16 @@ options:
     type: str
 """
 
+    ID = r"""
+options:
+  id:
+    description:
+      - "The UUID of the object to operate on"
+    required: false
+    type: str
+    version_added: "5.13.0"
+"""
+
     TAGS = r"""
 options:
   tags:

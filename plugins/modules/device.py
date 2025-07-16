@@ -23,24 +23,27 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the device
-    required: true
+    required: false
     type: str
     version_added: "3.0.0"
   device_type:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
   role:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
@@ -71,6 +74,7 @@ options:
   location:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
@@ -186,7 +190,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device within Nautobot with only required information
+    - name: Create device within Nautobot with name
       networktocode.nautobot.device:
         url: http://nautobot.local
         token: thisIsMyToken
@@ -197,24 +201,26 @@ EXAMPLES = r"""
         status: active
         state: present
 
-    - name: Create device within Nautobot with empty string name to generate UUID
-      networktocode.nautobot.device:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: ""
-        device_type: C9410R
-        role: Core Switch
-        location:
-          name: My Location
-          parent: Parent Location
-        status: active
-        state: present
-
-    - name: Delete device within nautobot
+    - name: Delete device within nautobot with name
       networktocode.nautobot.device:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Device
+        state: absent
+
+    - name: Rename device via ID
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
+        name: New Name
+        state: present
+
+    - name: Delete device via ID
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
         state: absent
 
     - name: Create device with tags
@@ -278,6 +284,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -288,11 +295,12 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             device_type=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),

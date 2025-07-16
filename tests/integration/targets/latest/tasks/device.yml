@@ -336,3 +336,55 @@
       - test_nine_dot_one['diff']['after']['secrets_group'] == secrets_group_two['key']
       - test_nine_dot_one['device']['name'] == "TopSecretDevice"
       - test_nine_dot_one['msg'] == "device TopSecretDevice updated"
+
+- name: "10 - Create device without name"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: "Cisco Test 2"
+    role: "Core Switch"
+    location: Parent Test Location
+    status: "Staged"
+  register: test_ten
+
+- name: "10 - ASSERT"
+  assert:
+    that:
+      - test_ten is changed
+      - test_ten['diff']['before']['state'] == 'absent'
+      - test_ten['diff']['after']['state'] == 'present'
+      - test_ten['device']['name'] == None
+      - test_ten['msg'] == "device Unnamed device created"
+
+- name: "11 - Duplicate create device without name"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device_type: "Cisco Test 2"
+    role: "Core Switch"
+    location: Parent Test Location
+    status: "Staged"
+    state: present
+  register: test_eleven
+
+- name: "11 - ASSERT"
+  assert:
+    that:
+      - not test_eleven['changed']
+      - test_eleven['msg'] == "device Unnamed device already exists"
+
+- name: "12 - Delete device by id"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    id: "{{ test_ten['device']['id'] }}"
+    state: absent
+  register: test_twelve
+
+- name: "12 - ASSERT"
+  assert:
+    that:
+      - test_twelve is changed
+      - test_twelve['diff']['before']['state'] == 'present'
+      - test_twelve['diff']['after']['state'] == 'absent'
+      - "'deleted' in test_twelve['msg']"
