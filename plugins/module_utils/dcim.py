@@ -158,6 +158,10 @@ class NautobotDcimModule(NautobotModule):
                     name = f"{self.module.params['parent_module_bay'].get('parent_module')} > {name}"
             elif isinstance(self.module.params["location"], dict):
                 name = f"{self.module.params['location'].get('parent', '—')} > {self.module.params['location'].get('name')} > {name}"
+        elif data.get("id"):
+            name = data["id"]
+        elif endpoint_name == "device":
+            name = "Unnamed device"
 
         # Make color params lowercase
         if data.get("color"):

@@ -1,0 +1,1 @@
+Changed the `name` parameter to be optional for the device module.

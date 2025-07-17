@@ -424,7 +424,7 @@ ALLOWED_QUERY_PARAMS = {
     "dcim.rearport": set(["name", "device", "module"]),
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
-    "device": set(["name"]),
+    "device": set(["name", "location", "role", "device_type", "tenant"]),
     "device_redundancy_group": set(["name"]),
     "device_type": set(["model"]),
     "dynamic_group": set(["name"]),
@@ -603,6 +603,7 @@ CONVERT_KEYS = {
 }
 
 
+# Options not sent for filtering
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
     token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
@@ -610,6 +611,10 @@ NAUTOBOT_ARG_SPEC = dict(
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])),
     api_version=dict(type="str", required=False),
+)
+
+ID_ARG_SPEC = dict(
+    id=dict(type="str", required=False),
 )
 
 TAGS_ARG_SPEC = dict(
@@ -902,6 +907,10 @@ class NautobotModule:
         :params child(dict): This is used within `_find_ids` and passes the inner dictionary
         to build the appropriate `query_dict` for the parent
         """
+        # If they provided the ID, it's the only query param we need
+        if module_data.get("id"):
+            return {"id": module_data["id"]}
+
         # This is to change the parent key to use the proper ALLOWED_QUERY_PARAMS below for termination searches.
         if parent == "termination_a" and module_data.get("termination_a_type"):
             parent = module_data["termination_a_type"]
