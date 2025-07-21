@@ -22,12 +22,14 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   termination_a_type:
     description:
       - The type of the termination a
+      - Required if I(state=present) and the cable does not exist yet
     choices:
       - circuits.circuittermination
       - dcim.consoleport
@@ -38,18 +40,20 @@ options:
       - dcim.poweroutlet
       - dcim.powerport
       - dcim.rearport
-    required: true
+    required: false
     type: str
     version_added: "3.0.0"
   termination_a:
     description:
       - The termination a
-    required: true
+      - Required if I(state=present) and the cable does not exist yet
+    required: false
     type: raw
     version_added: "3.0.0"
   termination_b_type:
     description:
       - The type of the termination b
+      - Required if I(state=present) and the cable does not exist yet
     choices:
       - circuits.circuittermination
       - dcim.consoleport
@@ -60,13 +64,14 @@ options:
       - dcim.poweroutlet
       - dcim.powerport
       - dcim.rearport
-    required: true
+    required: false
     type: str
     version_added: "3.0.0"
   termination_b:
     description:
       - The termination b
-    required: true
+      - Required if I(state=present) and the cable does not exist yet
+    required: false
     type: raw
     version_added: "3.0.0"
   type:
@@ -163,6 +168,13 @@ EXAMPLES = r"""
           device: Test Nexus Child One
           name: Ethernet2/1
         state: absent
+
+    - name: Delete cable by id
+      networktocode.nautobot.cable:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -185,6 +197,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -195,12 +208,13 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             termination_a_type=dict(
-                required=True,
+                required=False,
                 choices=[
                     "circuits.circuittermination",
                     "dcim.consoleport",
@@ -214,9 +228,9 @@ def main():
                 ],
                 type="str",
             ),
-            termination_a=dict(required=True, type="raw"),
+            termination_a=dict(required=False, type="raw"),
             termination_b_type=dict(
-                required=True,
+                required=False,
                 choices=[
                     "circuits.circuittermination",
                     "dcim.consoleport",
@@ -230,7 +244,7 @@ def main():
                 ],
                 type="str",
             ),
-            termination_b=dict(required=True, type="raw"),
+            termination_b=dict(required=False, type="raw"),
             type=dict(required=False, type="str"),
             status=dict(required=False, type="str"),
             label=dict(required=False, type="str"),

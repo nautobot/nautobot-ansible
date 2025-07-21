@@ -21,18 +21,21 @@ author:
 version_added: "5.7.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the controller managed device groups
-    required: true
+      - Required if I(state=present) and the controller managed device group does not exist yet
+    required: false
     type: str
   controller:
     description:
       - The name of the controller for this group
-    required: true
+      - Required if I(state=present) and the controller managed device group does not exist yet
+    required: false
     type: str
   weight:
     description:
@@ -70,6 +73,13 @@ EXAMPLES = r"""
         name: "group_1"
         controller: test_controller_group_3
         state: absent
+
+    - name: Delete controller managed device group by id
+      networktocode.nautobot.controller_managed_device_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -92,6 +102,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -102,12 +113,13 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
-            controller=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            controller=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
             parent_cloud_network=dict(required=False, type="raw", aliases=["parent"]),
         )

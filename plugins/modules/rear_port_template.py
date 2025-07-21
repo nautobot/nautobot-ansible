@@ -22,23 +22,27 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   device_type:
     description:
       - The device type the rear port template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the rear port template does not exist yet
     required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - The name of the rear port template
-    required: true
+      - Required if I(state=present) and the rear port template does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   type:
     description:
       - The type of the rear port
-    required: true
+      - Required if I(state=present) and the rear port template does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   positions:
@@ -50,6 +54,7 @@ options:
   module_type:
     description:
       - The module type the rear port template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the rear port template does not exist yet
     required: false
     type: raw
     version_added: "5.4.0"
@@ -89,6 +94,13 @@ EXAMPLES = r"""
         device_type: Test Device Type
         type: bnc
         state: absent
+
+    - name: Delete rear port template by id
+      networktocode.nautobot.rear_port_template:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -109,7 +121,10 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
     NB_REAR_PORT_TEMPLATES,
     NautobotDcimModule,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
@@ -117,28 +132,18 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
             device_type=dict(required=False, type="raw"),
-            name=dict(required=True, type="str"),
-            type=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            type=dict(required=False, type="str"),
             positions=dict(required=False, type="int"),
             module_type=dict(required=False, type="raw"),
         )
     )
 
-    required_one_of = [
-        ("device_type", "module_type"),
-    ]
-    mutually_exclusive = [
-        ("device_type", "module_type"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     rear_port_template = NautobotDcimModule(module, NB_REAR_PORT_TEMPLATES)
     rear_port_template.run()

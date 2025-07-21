@@ -21,18 +21,21 @@ author:
 version_added: "5.11.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   location_prefix:
     aliases:
       - prefix
     description:
       - The Prefix to associate with the location
-    required: true
+      - Required if I(state=present) and the prefix to location assignment does not exist yet
+    required: false
     type: raw
   location:
     description:
       - The location the Prefix will be associated to
-    required: true
+      - Required if I(state=present) and the prefix to location assignment does not exist yet
+    required: false
     type: raw
 """
 
@@ -62,6 +65,13 @@ EXAMPLES = r"""
         prefix: "192.0.2.0/24"
         location: My Location
         state: absent
+
+    - name: Delete prefix to location assignment by id
+      networktocode.nautobot.prefix_location:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -82,7 +92,10 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import
     NB_PREFIX_LOCATIONS,
     NautobotIpamModule,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
@@ -90,10 +103,11 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            location_prefix=dict(required=True, type="raw", aliases=["prefix"]),
-            location=dict(required=True, type="raw"),
+            location_prefix=dict(required=False, type="raw", aliases=["prefix"]),
+            location=dict(required=False, type="raw"),
         )
     )
 

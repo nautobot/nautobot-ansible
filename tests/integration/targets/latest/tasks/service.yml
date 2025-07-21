@@ -155,26 +155,6 @@
       - test_service_ip_addresses['services']['ip_addresses'] is defined
       - test_service_ip_addresses['msg'] == "services node-exporter-udp created"
 
-- name: "PYNAUTOBOT_SERVICE: Missing both device & virtual_machine options - Tests required_one_of"
-  networktocode.nautobot.service:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "node-exporter-udp"
-    ports:
-      - 9100
-    protocol: UDP
-    ip_addresses:
-      - address: "172.16.180.1/24"
-    state: present
-  ignore_errors: yes
-  register: test_service_required_one_of
-
-- name: "PYNAUTOBOT_SERVICE ASSERT - Failed due to missing arguments"
-  assert:
-    that:
-      - test_service_required_one_of is failed
-      - 'test_service_required_one_of["msg"] == "one of the following is required: device, virtual_machine"'
-
 - name: "PYNAUTOBOT_SERVICE: Create new service on virtual_machine"
   networktocode.nautobot.service:
     url: "{{ nautobot_url }}"

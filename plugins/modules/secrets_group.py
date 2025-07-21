@@ -23,12 +23,14 @@ requirements:
 version_added: "5.11.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the secrets group
-    required: true
+      - Required if I(state=present) and the secrets group does not exist yet
+    required: false
     type: str
   description:
     description:
@@ -52,6 +54,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: my_secrets_group
     state: absent
+
+- name: Delete a secrets group by id
+  networktocode.nautobot.secrets_group:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -74,6 +83,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.extras impo
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
 )
 
@@ -83,10 +93,11 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
         )
     )
