@@ -389,9 +389,9 @@
       - test_twelve['diff']['after']['state'] == 'absent'
       - "'deleted' in test_twelve['msg']"
 
-- name: "NAUTOBOT 2.2+ DEVICE TESTS"
+- name: "NAUTOBOT 2.3+ DEVICE TESTS"
   when:
-    - "nautobot_version is version('2.2', '>=')"
+    - "nautobot_version is version('2.3', '>=')"
   block:
     - set_fact:
         device_software_version: "{{ lookup('networktocode.nautobot.lookup', 'software-versions', api_endpoint=nautobot_url, token=nautobot_token, api_filter='version=3.2.1 platform=\"Cisco IOS\"') }}"
