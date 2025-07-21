@@ -10,7 +10,6 @@ __metaclass__ = type
 import argparse
 import json
 import sys
-from operator import itemgetter
 
 from jsondiff import diff
 
@@ -53,11 +52,11 @@ def sort_hostvar_arrays(obj):
     for hostname, host in hostvars.items():
         interfaces = host.get("interfaces")
         if interfaces:
-            host["interfaces"] = sorted(interfaces, key=itemgetter("name"))
+            host["interfaces"] = sorted(interfaces, key=lambda x: json.dumps(x, sort_keys=True))
 
         services = host.get("services")
         if services:
-            host["services"] = sorted(services, key=itemgetter("name"))
+            host["services"] = sorted(services, key=lambda x: json.dumps(x, sort_keys=True))
 
 
 def sort_groups(obj):

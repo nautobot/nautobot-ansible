@@ -4,6 +4,39 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.13.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.0)
+
+### Release Summary
+
+This release adds the ability to manage all objects by ID. You may now use the `id` parameter to update or delete existing objects. To accommodate for this, all previously required parameters are now optional. All required fields will be validated via the Nautobot API and returned as an error if they are not present.
+
+### Added
+
+- [#575](https://github.com/nautobot/nautobot-ansible/issues/575) - Added the `supported_data_rate` module for managing wireless supported data rates in Nautobot.
+- [#576](https://github.com/nautobot/nautobot-ansible/issues/576) - Added the `radio_profile` module for managing radio profiles in Nautobot.
+- [#577](https://github.com/nautobot/nautobot-ansible/issues/577) - Added the `wireless_network` module for managing wireless networks in Nautobot.
+- [#589](https://github.com/nautobot/nautobot-ansible/issues/589), [#591](https://github.com/nautobot/nautobot-ansible/issues/591) - Added the `id` parameter to all object based modules.
+- [#594](https://github.com/nautobot/nautobot-ansible/issues/594) - Added `software_version` and `software_image_files` parameters to the device module.
+
+### Changed
+
+- [#589](https://github.com/nautobot/nautobot-ansible/issues/589), [#591](https://github.com/nautobot/nautobot-ansible/issues/591) - Changed all required parameters to be optional for all object based modules. All required fields will be validated via the Nautobot API.
+
+### Dependencies
+
+- [#584](https://github.com/nautobot/nautobot-ansible/issues/584) - Updated to mkdocs-ansible-collection 1.1.0
+- Updated pynautobot to v2.6.5 to incorporate fixes with choice list parsing and serializing.
+
+### Fixed
+
+- [#114](https://github.com/nautobot/nautobot-ansible/issues/114) - Fixed some variables (potentially unsafe) not being wrapped correctly in the `inventory` and `gql_inventory` plugins.
+- Fixed an issue retrieving valid non-string (e.g. integer) choice values.
+
+### Housekeeping
+
+- [#542](https://github.com/nautobot/nautobot-ansible/issues/542) - Replaced black and bandit with ruff.
+- [#586](https://github.com/nautobot/nautobot-ansible/issues/586) - Updated 2.4 inventory tests to account for new `module_family` field.
+
 ## [v5.12.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.1)
 
 ### Fixed
