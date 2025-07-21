@@ -36,6 +36,8 @@ This release adds the ability to manage all objects by ID. You may now use the `
 
 - [#542](https://github.com/nautobot/nautobot-ansible/issues/542) - Replaced black and bandit with ruff.
 - [#586](https://github.com/nautobot/nautobot-ansible/issues/586) - Updated 2.4 inventory tests to account for new `module_family` field.
+- Fixed sorting of duplicate interface and service names during the inventory integration tests.
+- Fixed the `device` module integration tests to run certain tests on Nautobot 2.3+ to account for changes to the model validation.
 
 ## [v5.12.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.1)
 
