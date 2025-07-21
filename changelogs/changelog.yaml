@@ -642,3 +642,25 @@ releases:
       bugfixes:
         - (#568) - Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
         - (#578) - Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.
+  5.13.0:
+    changes:
+      release_summary: 'This release adds the ability to manage all objects by ID.
+
+        You may now use the `id` parameter to update or delete existing objects.
+        To accommodate for this, all previously required parameters are now optional.
+        All required fields will be validated via the Nautobot API and returned as an error if they are not present.'
+      minor_changes:
+        - (#591) - Added the `id` parameter to all object based modules.
+        - (#594) - Added `software_version` and `software_image_files` parameters to the device module.
+        - (#114) - Fixed some variables (potentially unsafe) not being wrapped correctly in the `inventory` and `gql_inventory` plugins.
+        - Fixed an issue retrieving valid non-string (e.g. integer) choice values.
+    modules:
+      - name: wireless_network
+        description: Creates or removes wireless networks from Nautobot
+        namespace: ''
+      - name: radio_profile
+        description: Creates or removes radio profiles from Nautobot
+        namespace: ''
+      - name: supported_data_rate
+        description: Creates or removes supported data rates from Nautobot
+        namespace: ''
