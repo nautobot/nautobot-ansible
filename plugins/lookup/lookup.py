@@ -247,6 +247,8 @@ def get_endpoint(nautobot, term):
         "secrets-groups": {"endpoint": nautobot.extras.secrets_groups},
         "secrets-groups-associations": {"endpoint": nautobot.extras.secrets_groups_associations},
         "services": {"endpoint": nautobot.ipam.services},
+        "software-image-files": {"endpoint": nautobot.dcim.software_image_files},
+        "software-versions": {"endpoint": nautobot.dcim.software_versions},
         "static-group-associations": {"endpoint": nautobot.extras.static_group_associations},
         "statuses": {"endpoint": nautobot.extras.statuses},
         "supported-data-rates": {"endpoint": nautobot.wireless.supported_data_rates},

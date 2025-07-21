@@ -181,6 +181,18 @@ options:
     required: false
     type: raw
     version_added: "5.12.0"
+  software_version:
+    description:
+      - The software version associated with the device
+    required: false
+    type: raw
+    version_added: "5.13.0"
+  software_image_files:
+    description:
+      - Override the software image files associated with the software version for this inventory item
+    required: false
+    type: raw
+    version_added: "5.13.0"
 """
 
 EXAMPLES = r"""
@@ -328,6 +340,8 @@ def main():
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
             secrets_group=dict(required=False, type="raw", no_log=False),
+            software_version=dict(required=False, type="raw"),
+            software_image_files=dict(required=False, type="raw"),
         )
     )
 
