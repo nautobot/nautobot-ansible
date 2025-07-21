@@ -22,18 +22,21 @@ requirements:
 version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   cloud_network:
     description:
       - Cloud network to associate with a prefix.
-    required: true
+      - Required if I(state=present) and the cloud network to prefix assignment does not exist yet
+    required: false
     type: raw
   cloud_prefix:
     aliases:
       - prefix
     description:
       - Prefix to associate with a cloud network.
-    required: true
+      - Required if I(state=present) and the cloud network to prefix assignment does not exist yet
+    required: false
     type: raw
 """
 
@@ -54,6 +57,13 @@ EXAMPLES = r"""
     cloud_network: Cisco Quantum Network
     cloud_prefix: 10.1.198.0/23
     state: absent
+
+- name: Delete a cloud network to prefix assignment by id
+  networktocode.nautobot.cloud_network_prefix_assignment:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -67,24 +77,26 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
-    NautobotCloudModule,
-    NB_CLOUD_NETWORK_PREFIX_ASSIGNMENTS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
+    NB_CLOUD_NETWORK_PREFIX_ASSIGNMENTS,
+    NautobotCloudModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            cloud_network=dict(required=True, type="raw"),
-            cloud_prefix=dict(required=True, type="raw", aliases=["prefix"]),
+            cloud_network=dict(required=False, type="raw"),
+            cloud_prefix=dict(required=False, type="raw", aliases=["prefix"]),
         )
     )
 

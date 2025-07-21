@@ -60,7 +60,7 @@ EXAMPLES = r"""
 
 
 def build_graphql_filter_string(filter: dict) -> str:
-    """Takes a dictionary and builds a graphql filter
+    """Takes a dictionary and builds a graphql filter.
 
     Args:
         filter (dict): Key/Value pairs to build filter from

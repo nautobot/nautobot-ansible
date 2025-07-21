@@ -6,8 +6,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
 
 NB_DYNAMIC_GROUPS = "dynamic_groups"
@@ -23,14 +23,15 @@ NB_JOB_BUTTONS = "job_buttons"
 NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
-NB_SECRET = "secrets"  # nosec B105
+NB_SECRET = "secrets"  # noqa: S105
 NB_SECRETS_GROUP = "secrets_groups"
 NB_SECRETS_GROUPS_ASSOCIATION = "secrets_groups_associations"
 
 
 class NautobotExtrasModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Extras module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:

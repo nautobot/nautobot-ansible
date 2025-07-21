@@ -19,31 +19,37 @@ author:
 version_added: "4.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   relationship:
     description:
       - The Relationship UUID to add the association to
-    required: true
+      - Required if I(state=present) and the relationship association does not exist yet
+    required: false
     type: raw
   source_type:
     description:
       - The app_label.model for the source of the relationship
-    required: true
+      - Required if I(state=present) and the relationship association does not exist yet
+    required: false
     type: str
   source_id:
     description:
       - The UUID of the source of the relationship
-    required: true
+      - Required if I(state=present) and the relationship association does not exist yet
+    required: false
     type: str
   destination_type:
     description:
       - The app_label.model for the destination of the relationship
-    required: true
+      - Required if I(state=present) and the relationship association does not exist yet
+    required: false
     type: str
   destination_id:
     description:
       - The UUID of the destination of the relationship
-    required: true
+      - Required if I(state=present) and the relationship association does not exist yet
+    required: false
     type: str
 """
 
@@ -73,6 +79,13 @@ EXAMPLES = r"""
         destination_type: ipam.vrf
         destination_id: 01234567-abcd-0123-abcd-123456789012
         state: absent
+
+    - name: Delete relationship association by id
+      networktocode.nautobot.relationship_association:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -86,27 +99,32 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_RELATIONSHIP_ASSOCIATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_RELATIONSHIP_ASSOCIATIONS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            relationship=dict(required=True, type="raw"),
-            source_type=dict(required=True, type="str"),
-            source_id=dict(required=True, type="str"),
-            destination_type=dict(required=True, type="str"),
-            destination_id=dict(required=True, type="str"),
+            relationship=dict(required=False, type="raw"),
+            source_type=dict(required=False, type="str"),
+            source_id=dict(required=False, type="str"),
+            destination_type=dict(required=False, type="str"),
+            destination_id=dict(required=False, type="str"),
         )
     )
 

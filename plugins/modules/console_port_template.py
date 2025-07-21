@@ -22,17 +22,20 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   device_type:
     description:
       - The device type the console port template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the console port template does not exist yet
     required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - The name of the console port template
-    required: true
+      - Required if I(state=present) and the console port template does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   type:
@@ -44,6 +47,7 @@ options:
   module_type:
     description:
       - The module type the console port template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the console port template does not exist yet
     required: false
     type: raw
     version_added: "5.4.0"
@@ -80,6 +84,13 @@ EXAMPLES = r"""
         name: Test Console Port Template
         device_type: Test Device Type
         state: absent
+
+    - name: Delete console port template by id
+      networktocode.nautobot.console_port_template:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -93,41 +104,32 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_CONSOLE_PORT_TEMPLATES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_CONSOLE_PORT_TEMPLATES,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
             device_type=dict(required=False, type="raw"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             type=dict(required=False, type="str"),
             module_type=dict(required=False, type="raw"),
         )
     )
 
-    required_one_of = [
-        ("device_type", "module_type"),
-    ]
-    mutually_exclusive = [
-        ("device_type", "module_type"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     console_port_template = NautobotDcimModule(module, NB_CONSOLE_PORT_TEMPLATES)
     console_port_template.run()

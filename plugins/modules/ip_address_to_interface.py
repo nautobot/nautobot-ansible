@@ -23,31 +23,29 @@ author:
 version_added: "5.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   ip_address:
     description:
       - IP address to associate with an interface.
-    required: true
+      - Required if I(state=present) and the IP address to interface association does not exist yet
+    required: false
     type: raw
     version_added: "5.0.0"
   interface:
     description:
       - Device interface to associate with an IP.
+      - Requires one of I(interface) or I(vm_interface) when I(state=present) and the IP address to interface association does not exist yet
     required: false
     type: raw
     version_added: "5.0.0"
   vm_interface:
     description:
       - VM interface to associate with an IP.
+      - Requires one of I(interface) or I(vm_interface) when I(state=present) and the IP address to interface association does not exist yet
     required: false
     type: raw
     version_added: "5.0.0"
-  state:
-    description:
-      - Use C(present) or C(absent) for adding, or removing.
-    choices: [ absent, present ]
-    default: present
-    type: str
 """
 
 EXAMPLES = r"""
@@ -79,6 +77,13 @@ EXAMPLES = r"""
           name: GigabitEthernet4
           device: test100
         state: absent
+
+    - name: Delete IP address to interface association by id
+      networktocode.nautobot.ip_address_to_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -92,39 +97,33 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
-    NautobotIpamModule,
-    NB_IP_ADDRESS_TO_INTERFACE,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+    NB_IP_ADDRESS_TO_INTERFACE,
+    NautobotIpamModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            ip_address=dict(required=True, type="raw"),
+            ip_address=dict(required=False, type="raw"),
             interface=dict(required=False, type="raw"),
             vm_interface=dict(required=False, type="raw"),
         )
     )
-    required_one_of = [
-        ("interface", "vm_interface"),
-    ]
-    mutually_exclusive = [
-        ("interface", "vm_interface"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     ip_address = NautobotIpamModule(module, NB_IP_ADDRESS_TO_INTERFACE)
     ip_address.run()

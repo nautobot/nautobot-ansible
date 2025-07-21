@@ -10,7 +10,8 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 class NautobotPluginModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot plugin module.
+
         This function should have all necessary code for endpoints within the plugin application
         to create/update/delete the endpoint objects.
         """

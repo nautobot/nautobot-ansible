@@ -808,3 +808,57 @@
             - static_group_association
       tags:
         - static_group_association
+
+##########################
+##
+### NAUTOBOT 2.4+ TESTS
+##
+##########################
+
+- name: "NAUTOBOT 2.4+ TESTS"
+  when:
+    - "nautobot_version is version('2.4', '>=')"
+  block:
+    - name: "PYNAUTOBOT_WIRELESS_SUPPORTED_DATA_RATE TESTS"
+      include_tasks:
+        file: "supported_data_rate.yml"
+        apply:
+          tags:
+            - supported_data_rate
+      tags:
+        - supported_data_rate
+
+    - name: "PYNAUTOBOT_WIRELESS_RADIO_PROFILE TESTS"
+      include_tasks:
+        file: "radio_profile.yml"
+        apply:
+          tags:
+            - radio_profile
+      tags:
+        - radio_profile
+
+    - name: "PYNAUTOBOT_WIRELESS_NETWORK TESTS"
+      include_tasks:
+        file: "wireless_network.yml"
+        apply:
+          tags:
+            - wireless_network
+      tags:
+        - wireless_network
+
+##########################
+##
+### UNSAFE VARIABLE HANDLING TESTS
+##
+##########################
+
+- name: "UNSAFE VARIABLE HANDLING TESTS"
+  block:
+    - name: "UNSAFE VARIABLE HANDLING TESTS"
+      include_tasks:
+        file: "unsafe_vars.yml"
+        apply:
+          tags:
+            - unsafe_vars
+      tags:
+        - unsafe_vars

@@ -4,10 +4,11 @@ import json
 from typing import Any
 
 import pytest
+
 from plugins.module_utils.utils import sort_dict_with_lists
 
 try:
-    from plugins.module_utils.utils import is_truthy
+    from plugins.module_utils.utils import check_needs_wrapping, is_truthy
 except ImportError:
     import sys
 
@@ -68,16 +69,25 @@ def test_is_truthy_raises_exception_on_invalid_type() -> None:
         # Nested dictionaries
         ({"b": {"d": 4, "c": 3}, "a": {"f": 6, "e": 5}}, {"a": {"e": 5, "f": 6}, "b": {"c": 3, "d": 4}}),
         # Lists of dictionaries
-        ({"users": [{"id": 2, "name": "Bob"}, {"id": 1, "name": "Alice"}]}, {"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]}),
+        (
+            {"users": [{"id": 2, "name": "Bob"}, {"id": 1, "name": "Alice"}]},
+            {"users": [{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]},
+        ),
         # Mixed nested structures
         (
             {"config": {"servers": [{"port": 8080, "host": "server2"}, {"port": 80, "host": "server1"}]}},
             {"config": {"servers": [{"host": "server1", "port": 80}, {"host": "server2", "port": 8080}]}},
         ),
         # Lists with mixed types
-        ({"mixed": [{"b": 2, "a": 1}, [3, 1, 2], "string", 42]}, {"mixed": ["string", 42, [1, 2, 3], {"a": 1, "b": 2}]}),
+        (
+            {"mixed": [{"b": 2, "a": 1}, [3, 1, 2], "string", 42]},
+            {"mixed": ["string", 42, [1, 2, 3], {"a": 1, "b": 2}]},
+        ),
         # Deep nesting
-        ({"level1": {"level2": {"level3": {"items": [3, 1, 2]}}}}, {"level1": {"level2": {"level3": {"items": [1, 2, 3]}}}}),
+        (
+            {"level1": {"level2": {"level3": {"items": [3, 1, 2]}}}},
+            {"level1": {"level2": {"level3": {"items": [1, 2, 3]}}}},
+        ),
         # Empty structures
         ({}, {}),
         ({"empty_list": [], "empty_dict": {}}, {"empty_dict": {}, "empty_list": []}),
@@ -88,11 +98,30 @@ def test_is_truthy_raises_exception_on_invalid_type() -> None:
         # Dictionary with boolean values
         ({"b": False, "a": True, "c": False}, {"a": True, "b": False, "c": False}),
         # Dictionary with string values
-        ({"zebra": "animal", "apple": "fruit", "banana": "fruit"}, {"apple": "fruit", "banana": "fruit", "zebra": "animal"}),
+        (
+            {"zebra": "animal", "apple": "fruit", "banana": "fruit"},
+            {"apple": "fruit", "banana": "fruit", "zebra": "animal"},
+        ),
         # Complex nested structure
         (
-            {"api": {"endpoints": [{"methods": ["POST", "GET"], "path": "/users"}, {"methods": ["PUT", "DELETE"], "path": "/items"}]}, "version": "1.0"},
-            {"api": {"endpoints": [{"methods": ["DELETE", "PUT"], "path": "/items"}, {"methods": ["GET", "POST"], "path": "/users"}]}, "version": "1.0"},
+            {
+                "api": {
+                    "endpoints": [
+                        {"methods": ["POST", "GET"], "path": "/users"},
+                        {"methods": ["PUT", "DELETE"], "path": "/items"},
+                    ]
+                },
+                "version": "1.0",
+            },
+            {
+                "api": {
+                    "endpoints": [
+                        {"methods": ["DELETE", "PUT"], "path": "/items"},
+                        {"methods": ["GET", "POST"], "path": "/users"},
+                    ]
+                },
+                "version": "1.0",
+            },
         ),
     ],
 )
@@ -146,9 +175,19 @@ def test_sort_dict_with_lists_edge_cases() -> None:
 
 def test_sort_dict_with_lists_nested_empty_structures() -> None:
     """Test sort_dict_with_lists with nested empty structures."""
-    data = {"empty_dict": {}, "empty_list": [], "nested_empty": {"inner_dict": {}, "inner_list": []}, "mixed_empty": {"dict": {}, "list": [], "value": 42}}
+    data = {
+        "empty_dict": {},
+        "empty_list": [],
+        "nested_empty": {"inner_dict": {}, "inner_list": []},
+        "mixed_empty": {"dict": {}, "list": [], "value": 42},
+    }
 
-    expected = {"empty_dict": {}, "empty_list": [], "mixed_empty": {"dict": {}, "list": [], "value": 42}, "nested_empty": {"inner_dict": {}, "inner_list": []}}
+    expected = {
+        "empty_dict": {},
+        "empty_list": [],
+        "mixed_empty": {"dict": {}, "list": [], "value": 42},
+        "nested_empty": {"inner_dict": {}, "inner_list": []},
+    }
 
     assert sort_dict_with_lists(data) == expected
 
@@ -161,3 +200,28 @@ def test_regression_issue_568() -> None:
         expected = jason["expected"]
 
     assert sort_dict_with_lists(data) == expected
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        ("simplestring", False),
+        ("simple multi word string", False),
+        ("{{stringneedswrapping}}", True),
+        ("{{ stringneedswrapping }}", True),
+        ("this{{ stringneedswrapping }}", True),
+        ("{% this stringneedswrapping %}", True),
+        ("{% this stringneedswrapping", True),
+        ("this {{ stringneedswrapping", True),
+        (["nojinja", "stillnojinja"], False),
+        (["safe", "{{ unsafe }}"], True),
+        ({"key": "nojinja"}, False),
+        ({"key": "{{jinja}}"}, True),
+        ({"outer": {"inner": "{%jinja%}"}}, True),
+        (["nest", {"deep": ["safe", "{% unsafe %}"]}], True),
+        ([], False),
+        ({}, False),
+    ],
+)
+def test_check_needs_wrapping(value: Any, expected: bool) -> None:
+    assert check_needs_wrapping(value) == expected
