@@ -21,13 +21,15 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the virtual machine
-    required: true
+      - Required if I(state=present) and the virtual machine does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   cluster:
@@ -148,6 +150,13 @@ EXAMPLES = r"""
         memory: 8
         disk: 8
         state: present
+
+    - name: Delete virtual machine by id
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -166,6 +175,7 @@ from copy import deepcopy
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -180,11 +190,12 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             cluster=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             vcpus=dict(required=False, type="int"),

@@ -23,12 +23,14 @@ requirements:
 version_added: "4.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - Name of the location type to be created
-    required: true
+      - Required if I(state=present) and the location type does not exist yet
+    required: false
     type: str
   description:
     description:
@@ -88,6 +90,13 @@ EXAMPLES = r"""
         content_types:
           - "dcim.device"
         state: present
+
+    - name: Delete location type by id
+      networktocode.nautobot.location_type:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -110,6 +119,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
 )
 
@@ -119,10 +129,11 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             parent_location_type=dict(required=False, type="raw", aliases=["parent"]),
             nestable=dict(required=False, type="bool"),

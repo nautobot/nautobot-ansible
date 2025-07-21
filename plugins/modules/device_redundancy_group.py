@@ -23,13 +23,15 @@ requirements:
 version_added: "5.1.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the device redundancy group
-    required: true
+      - Required if I(state=present) and the device redundancy group does not exist yet
+    required: false
     type: str
     version_added: "5.1.0"
   status:
@@ -107,6 +109,13 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: My Redundancy Group
         state: absent
+
+    - name: Delete device redundancy group by id
+      networktocode.nautobot.device_redundancy_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -129,6 +138,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -139,11 +149,12 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             status=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             failover_strategy=dict(

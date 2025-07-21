@@ -23,13 +23,15 @@ requirements:
 version_added: "5.13.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   standard:
     description:
       - The standard of the supported data rate
-    required: true
+      - Required if I(state=present) and the supported data rate does not exist yet
+    required: false
     type: str
     choices:
       - "802.11a"
@@ -42,7 +44,8 @@ options:
   rate:
     description:
       - The rate in Kbps
-    required: true
+      - Required if I(state=present) and the supported data rate does not exist yet
+    required: false
     type: int
   mcs_index:
     description:
@@ -69,6 +72,13 @@ EXAMPLES = r"""
     standard: "802.11a"
     rate: 1000000
     state: absent
+
+- name: Delete a supported data rate by id
+  networktocode.nautobot.supported_data_rate:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -87,6 +97,7 @@ from copy import deepcopy
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -101,16 +112,17 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             standard=dict(
-                required=True,
+                required=False,
                 type="str",
                 choices=["802.11a", "802.11b", "802.11g", "802.11n", "802.11ac", "802.11ax", "802.11be"],
             ),
-            rate=dict(required=True, type="int"),
+            rate=dict(required=False, type="int"),
             mcs_index=dict(required=False, type="int"),
         )
     )

@@ -22,16 +22,19 @@ requirements:
 version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   cloud_service:
     description:
       - Cloud service to associate with a cloud network.
-    required: true
+      - Required if I(state=present) and the cloud service network assignment does not exist yet
+    required: false
     type: raw
   cloud_network:
     description:
       - Cloud network to associate with a cloud service.
-    required: true
+      - Required if I(state=present) and the cloud service network assignment does not exist yet
+    required: false
     type: raw
 """
 
@@ -51,6 +54,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     cloud_service: Cisco Quantum Service
     cloud_network: Cisco Quantum Network
+    state: absent
+
+- name: Delete a cloud service to cloud network assignment by id
+  networktocode.nautobot.cloud_service_network_assignment:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
     state: absent
 """
 
@@ -72,7 +82,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud impor
     NB_CLOUD_SERVICE_NETWORK_ASSIGNMENTS,
     NautobotCloudModule,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
@@ -80,10 +90,11 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            cloud_service=dict(required=True, type="raw"),
-            cloud_network=dict(required=True, type="raw"),
+            cloud_service=dict(required=False, type="raw"),
+            cloud_network=dict(required=False, type="raw"),
         )
     )
 

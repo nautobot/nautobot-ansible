@@ -21,13 +21,15 @@ author:
 version_added: "5.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the controller
-    required: true
+      - Required if I(state=present) and the controller does not exist yet
+    required: false
     type: str
   description:
     description:
@@ -113,6 +115,13 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: test_controller_3
         state: absent
+
+    - name: Delete controller by id
+      networktocode.nautobot.controller:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -135,6 +144,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -145,11 +155,12 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             controller_device=dict(required=False, type="str"),
             external_integration=dict(required=False, type="str"),
             description=dict(required=False, type="str"),

@@ -23,13 +23,15 @@ requirements:
 version_added: "5.13.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the radio profile
-    required: true
+      - Required if I(state=present) and the radio profile does not exist yet
+    required: false
     type: str
   regulatory_domain:
     description:
@@ -123,6 +125,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: "My Radio Profile"
     state: absent
+
+- name: Delete a radio profile by id
+  networktocode.nautobot.radio_profile:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -141,6 +150,7 @@ from copy import deepcopy
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -155,11 +165,12 @@ def main():
     Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             regulatory_domain=dict(required=False, type="str"),
             channel_width=dict(required=False, type="list", elements="int", choices=[20, 40, 80, 160]),
             allowed_channel_list=dict(required=False, type="list", elements="int"),
