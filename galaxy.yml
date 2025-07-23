@@ -76,5 +76,4 @@ build_ignore:
   - "poetry.lock"
   - "pyproject.toml"
   - "tasks.py"
-  - "tests"
   - "venv"
