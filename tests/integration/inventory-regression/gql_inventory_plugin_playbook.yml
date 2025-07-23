@@ -14,7 +14,7 @@
 # before the fix, failed as described in the issue).
 
 # We also test that, only where necessary, returned data is of type
-# "AnsibleUnsafeText", which is Ansible’s internal wrapper for strings that may
+# "AnsibleUnsafeText", which is Ansible's internal wrapper for strings that may
 # contain templated or unsafe content.
 - hosts: all
   gather_facts: false

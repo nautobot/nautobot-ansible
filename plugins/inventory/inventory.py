@@ -243,12 +243,14 @@ query_filters:
 
 # See the Nautobot documentation at https://nautobot.readthedocs.io/en/latest/api/overview/
 # the query_filters work as a logical **OR**
-#
+
+---
 # Prefix any custom fields with cf_ and pass the field value with the regular Nautobot query string
 
 query_filters:
   - cf_foo: bar
 
+---
 # Nautobot inventory plugin also supports Constructable semantics
 # You can fill your hosts vars using the compose option:
 

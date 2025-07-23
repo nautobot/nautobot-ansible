@@ -1,0 +1,2 @@
+plugins/modules/device_redundancy_group.py jinja[invalid]
+plugins/modules/location.py jinja[invalid]
