@@ -99,8 +99,7 @@ RUN if [ "${SKIP_SANITY_TESTS}" != "true" ]; then \
     echo 'Running Ansible Sanity Tests.' && \
     ansible-test sanity $ANSIBLE_SANITY_ARGS \
     --requirements \
-    --python ${PYTHON_VER} \
-    plugins/ && \
+    --python ${PYTHON_VER} && \
     echo 'Running Ansible Lint' && \
     ansible-lint; \
     else \
