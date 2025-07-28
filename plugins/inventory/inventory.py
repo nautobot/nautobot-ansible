@@ -214,6 +214,11 @@ DOCUMENTATION = """
       type: list
       elements: dict
       default: []
+    allow_unsafe:
+      description:
+        - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
+      default: False
+      type: boolean
 """
 
 EXAMPLES = """
@@ -1208,7 +1213,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def set_inv_var_safely(self, hostname, variable_name, value):
         """Set inventory variable with conditional wrapping only where needed."""
-        if check_needs_wrapping(value):
+        if self.wrap_variables and check_needs_wrapping(value):
             value = wrap_var(value)
         self.inventory.set_variable(hostname, variable_name, value)
 
@@ -1374,7 +1379,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             hostname = self.extract_name(host=host)
 
-            if check_needs_wrapping(hostname):
+            if self.wrap_variables and check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
 
             self.inventory.add_host(host=hostname)
@@ -1435,6 +1440,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.virtual_chassis_name = self.get_option("virtual_chassis_name")
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
+        self.wrap_variables = not self.get_option("allow_unsafe")
 
         # Compile regular expressions, if any
         self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))

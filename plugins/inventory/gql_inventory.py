@@ -87,15 +87,20 @@ options:
     elements: str
     default: []
   group_names_raw:
-      description: Will not add the group_by choice name to the group names
-      default: False
-      type: boolean
-      version_added: "4.6.0"
+    description: Will not add the group_by choice name to the group names
+    default: False
+    type: boolean
+    version_added: "4.6.0"
   page_size:
     description: Number of items to retrieve per page. Default is 0, which means all items will be retrieved.
     type: int
     default: 0
     version_added: "5.8.0"
+  allow_unsafe:
+    description:
+      - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
+    default: False
+    type: boolean
 """
 
 EXAMPLES = """
@@ -285,7 +290,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-        if check_needs_wrapping(var):
+        if self.wrap_variables and check_needs_wrapping(var):
             var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
 
@@ -516,7 +521,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
-            if check_needs_wrapping(hostname):
+            if self.wrap_variables and check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
@@ -562,5 +567,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_names_raw = self.get_option("group_names_raw")
         self.user_cache_setting = self.get_option("cache")
         self.page_size = self.get_option("page_size")
+        self.wrap_variables = not self.get_option("allow_unsafe")
 
         self.main()
