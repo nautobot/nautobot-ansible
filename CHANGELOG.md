@@ -4,6 +4,20 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.13.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.1)
+
+### Added
+
+- [#601](https://github.com/nautobot/nautobot-ansible/issues/601) - Added an option to the inventory plugins to disable the wrapping of unsafe variables.
+
+### Dependencies
+
+- Changed the minimum version of ansible-core to 2.17.
+
+### Housekeeping
+
+- [#602](https://github.com/nautobot/nautobot-ansible/issues/602) - Updated various documentation segments to pass ansible-lint.
+
 ## [v5.13.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.0)
 
 ### Release Summary
