@@ -238,6 +238,7 @@ device_query_filters:
 
 # has_primary_ip is a useful way to filter out patch panels and other passive devices
 
+---
 # Query filters are passed directly as an argument to the fetching queries.
 # You can repeat tags in the query string.
 
@@ -248,12 +249,14 @@ query_filters:
 
 # See the Nautobot documentation at https://nautobot.readthedocs.io/en/latest/api/overview/
 # the query_filters work as a logical **OR**
-#
+
+---
 # Prefix any custom fields with cf_ and pass the field value with the regular Nautobot query string
 
 query_filters:
   - cf_foo: bar
 
+---
 # Nautobot inventory plugin also supports Constructable semantics
 # You can fill your hosts vars using the compose option:
 
@@ -266,6 +269,7 @@ compose:
   device_owner: custom_fields.device_owner
   ansible_network_os: platforms.custom_fields.ansible_network_os
 
+---
 # You can use keyed_groups to group on properties of devices or VMs.
 # NOTE: It's only possible to key off direct items on the device/VM objects.
 plugin: networktocode.nautobot.inventory

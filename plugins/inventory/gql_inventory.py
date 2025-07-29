@@ -136,6 +136,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #   }
 # }
 
+---
 # This module will automatically add the ansible_host key and set it equal to primary_ip4.host
 # as well as the ansible_network_os key and set it to platform.napalm_driver via netutils mapping
 # if the primary_ip4.host and platform.napalm_driver are present on the device in Nautobot.
@@ -157,6 +158,7 @@ query:
     tags: name
     tenant: name
 
+---
 # Add the default IP version to be used for the ansible_host
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
@@ -175,6 +177,7 @@ query:
     tags: name
     tenant: name
 
+---
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
 # Ensure all paths are also included in the query.
@@ -199,6 +202,7 @@ group_by:
   - tenant.name
   - status.display
 
+---
 # Filter output using any supported parameters.
 # To get supported parameters check the api/docs page for devices.
 # Add `filters` to any level of the dictionary and a filter will be added to the GraphQL query at that level.
@@ -215,6 +219,7 @@ query:
       name:
       ip_addresses: address
 
+---
 # You can filter to just devices/virtual_machines by filtering the opposite type to a name that doesn't exist.
 # For example, to only get devices:
 plugin: networktocode.nautobot.gql_inventory

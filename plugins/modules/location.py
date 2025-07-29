@@ -156,17 +156,8 @@ EXAMPLES = r"""
       networktocode.nautobot.location:
         url: http://nautobot.local
         token: thisIsMyToken
-        id: "{{ location_to_delete['key'] }}"
+        id: "00000000-0000-0000-0000-000000000000"
         state: absent
-      vars:
-        location_to_delete: >-
-          {{ lookup(
-            'networktocode.nautobot.lookup',
-            'locations',
-            api_endpoint=nautobot_url,
-            token=nautobot_token,
-            api_filter='name="My Location" parent_location="Location Parent" location_type="Main Type"'
-          ) }}
 
     - name: Create location with all parameters
       networktocode.nautobot.location:
