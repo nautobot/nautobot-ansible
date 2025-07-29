@@ -87,15 +87,20 @@ options:
     elements: str
     default: []
   group_names_raw:
-      description: Will not add the group_by choice name to the group names
-      default: False
-      type: boolean
-      version_added: "4.6.0"
+    description: Will not add the group_by choice name to the group names
+    default: False
+    type: boolean
+    version_added: "4.6.0"
   page_size:
     description: Number of items to retrieve per page. Default is 0, which means all items will be retrieved.
     type: int
     default: 0
     version_added: "5.8.0"
+  allow_unsafe:
+    description:
+      - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
+    default: False
+    type: boolean
 """
 
 EXAMPLES = """
@@ -131,6 +136,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #   }
 # }
 
+---
 # This module will automatically add the ansible_host key and set it equal to primary_ip4.host
 # as well as the ansible_network_os key and set it to platform.napalm_driver via netutils mapping
 # if the primary_ip4.host and platform.napalm_driver are present on the device in Nautobot.
@@ -152,6 +158,7 @@ query:
     tags: name
     tenant: name
 
+---
 # Add the default IP version to be used for the ansible_host
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
@@ -170,6 +177,7 @@ query:
     tags: name
     tenant: name
 
+---
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
 # Ensure all paths are also included in the query.
@@ -194,6 +202,7 @@ group_by:
   - tenant.name
   - status.display
 
+---
 # Filter output using any supported parameters.
 # To get supported parameters check the api/docs page for devices.
 # Add `filters` to any level of the dictionary and a filter will be added to the GraphQL query at that level.
@@ -210,6 +219,7 @@ query:
       name:
       ip_addresses: address
 
+---
 # You can filter to just devices/virtual_machines by filtering the opposite type to a name that doesn't exist.
 # For example, to only get devices:
 plugin: networktocode.nautobot.gql_inventory
@@ -285,7 +295,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-        if check_needs_wrapping(var):
+        if self.wrap_variables and check_needs_wrapping(var):
             var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
 
@@ -516,7 +526,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
             hostname = device["name"]
-            if check_needs_wrapping(hostname):
+            if self.wrap_variables and check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
@@ -562,5 +572,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_names_raw = self.get_option("group_names_raw")
         self.user_cache_setting = self.get_option("cache")
         self.page_size = self.get_option("page_size")
+        self.wrap_variables = not self.get_option("allow_unsafe")
 
         self.main()

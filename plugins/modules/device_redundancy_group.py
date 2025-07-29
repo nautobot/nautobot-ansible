@@ -87,21 +87,12 @@ EXAMPLES = r"""
         status: Active
         description: My Description
         failover_strategy: active-active
-        secrets_group: "{{ my_secrets_group['key'] }}"
+        secrets_group: "My Secrets Group"
         tags:
           - My Tag
         custom_fields:
           my_field: my_value
         state: present
-      vars:
-        my_secrets_group: >-
-          {{ lookup(
-            'networktocode.nautobot.lookup',
-            'secrets-groups',
-            api_endpoint=nautobot_url,
-            token=nautobot_token,
-            api_filter='name="My Secrets Group"'
-          ) }}
 
     - name: Delete device redundancy group within nautobot
       networktocode.nautobot.device_redundancy_group:
