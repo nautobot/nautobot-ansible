@@ -664,3 +664,7 @@ releases:
       - name: supported_data_rate
         description: Creates or removes supported data rates from Nautobot
         namespace: ''
+  5.13.1:
+    changes:
+      minor_changes:
+        - (#601) - Added an option to the inventory plugins to disable the wrapping of unsafe variables.
