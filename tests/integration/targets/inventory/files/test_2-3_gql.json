@@ -5,6 +5,15 @@
                 "ansible_host": "R1-Device",
                 "name": "R1-Device"
             },
+            "R2 {{ SEE ISSUE 114 }}": {
+                "ansible_host": "172.16.180.13",
+                "name": {
+                    "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+                },
+                "primary_ip4": {
+                    "host": "172.16.180.13"
+                }
+            },
             "Test Nexus Child One": {
                 "ansible_host": "Test Nexus Child One",
                 "name": "Test Nexus Child One"
@@ -58,6 +67,9 @@
     "ungrouped": {
         "hosts": [
             "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
             "Test Nexus Child One",
             "Test Nexus One",
             "Test VM With Spaces",

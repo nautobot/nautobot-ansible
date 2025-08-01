@@ -21,19 +21,22 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   device:
     description:
       - Name of the device the inventory item belongs to
-    required: true
+      - Required if I(state=present) and the inventory item does not exist yet
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - Name of the inventory item to be created
-    required: true
+      - Required if I(state=present) and the inventory item does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   manufacturer:
@@ -135,6 +138,13 @@ EXAMPLES = r"""
         device: test100
         name: "10G-SFP+"
         state: absent
+
+    - name: Delete inventory item by id
+      networktocode.nautobot.inventory_item:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -148,30 +158,33 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_INVENTORY_ITEMS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_INVENTORY_ITEMS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=True, type="raw"),
-            name=dict(required=True, type="str"),
+            device=dict(required=False, type="raw"),
+            name=dict(required=False, type="str"),
             manufacturer=dict(required=False, type="raw"),
             part_id=dict(required=False, type="str"),
             serial=dict(required=False, type="str"),

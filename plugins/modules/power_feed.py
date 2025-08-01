@@ -22,13 +22,15 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   power_panel:
     description:
       - The power panel the power feed is terminated on
-    required: true
+      - Required if I(state=present) and the power feed does not exist yet
+    required: false
     type: raw
     version_added: "3.0.0"
   rack:
@@ -40,7 +42,8 @@ options:
   name:
     description:
       - The name of the power feed
-    required: true
+      - Required if I(state=present) and the power feed does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   status:
@@ -142,6 +145,13 @@ EXAMPLES = r"""
         name: Test Power Feed
         power_panel: Test Power Panel
         state: absent
+
+    - name: Delete power feed by id
+      networktocode.nautobot.power_feed:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -155,31 +165,34 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_POWER_FEEDS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_POWER_FEEDS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            power_panel=dict(required=True, type="raw"),
+            power_panel=dict(required=False, type="raw"),
             rack=dict(required=False, type="raw"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             status=dict(
                 required=False,
                 type="str",

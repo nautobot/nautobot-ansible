@@ -21,21 +21,24 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   circuit:
     description:
       - The circuit to assign to circuit termination
-    required: true
+      - Required if I(state=present) and the circuit termination does not exist yet
+    required: false
     version_added: "3.0.0"
     type: raw
   term_side:
     version_added: "3.0.0"
     description:
       - The side of the circuit termination
+      - Required if I(state=present) and the circuit termination does not exist yet
     choices:
       - A
       - Z
-    required: true
+    required: false
     type: str
   location:
     version_added: "3.0.0"
@@ -136,6 +139,13 @@ EXAMPLES = r"""
         circuit: Test Circuit
         term_side: A
         state: absent
+
+    - name: Delete circuit termination by id
+      networktocode.nautobot.circuit_termination:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -149,24 +159,26 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
-    NautobotCircuitsModule,
-    NB_CIRCUIT_TERMINATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
+    NB_CIRCUIT_TERMINATIONS,
+    NautobotCircuitsModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            circuit=dict(required=True, type="raw"),
-            term_side=dict(required=True, choices=["A", "Z"]),
+            circuit=dict(required=False, type="raw"),
+            term_side=dict(required=False, choices=["A", "Z"]),
             location=dict(required=False, type="raw"),
             port_speed=dict(required=False, type="int"),
             upstream_speed=dict(required=False, type="int"),
