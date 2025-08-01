@@ -1607,8 +1607,11 @@ name = "pynautobot"
 version = "2.6.5"
 description = "Nautobot API client library"
 optional = false
-python-versions = "^3.10"
-files = []
+python-versions = "<4.0,>=3.9"
+files = [
+    {file = "pynautobot-2.6.5-py3-none-any.whl", hash = "sha256:da9a775992ab451308f7d41a4103c9f67b06a7173079ffc10632123bee53b14a"},
+    {file = "pynautobot-2.6.5.tar.gz", hash = "sha256:2a3e844b7aa533bc3640971c12ac3b75b0e741238f4485f3f65e78f516eb58ce"},
+]
 develop = false
 
 [package.dependencies]
@@ -2550,4 +2553,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "9ab1749979d45f3af2a92a4592f00d7f62acd508d792d8c333313d71bc4d7f82"
+content-hash = "56f20f04702ee09f37e3b547ec4da0c5bcf11af7ba1d5a19342a3e0597bbfc9b"
