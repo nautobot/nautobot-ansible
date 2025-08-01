@@ -22,12 +22,14 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
 options:
   name:
     description:
-      - Name
-    required: true
+      - Name of the virtual chassis
+      - Required if I(state=present) and the virtual chassis does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   master:
@@ -73,6 +75,13 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: "Virtual Chassis 1"
         state: absent
+
+    - name: Delete virtual chassis by id
+      networktocode.nautobot.virtual_chassis:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -86,27 +95,30 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_VIRTUAL_CHASSIS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_VIRTUAL_CHASSIS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             master=dict(required=False, type="raw"),
             domain=dict(required=False, type="str"),
         )

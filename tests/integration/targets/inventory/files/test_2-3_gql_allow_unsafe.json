@@ -1,0 +1,23 @@
+{
+    "_meta": {
+        "hostvars": {
+            "R2 {{ SEE ISSUE 114 }}": {
+                "ansible_host": "172.16.180.13",
+                "name": "R2 {{ SEE ISSUE 114 }}",
+                "primary_ip4": {
+                    "host": "172.16.180.13"
+                }
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    },
+    "ungrouped": {
+        "hosts": [
+            "R2 {{ SEE ISSUE 114 }}"
+        ]
+    }
+}

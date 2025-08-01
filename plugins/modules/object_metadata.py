@@ -19,35 +19,42 @@ author:
 version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   metadata_type:
     description:
       - The name of the metadata type
-    required: true
+      - Required if I(state=present) and the object metadata does not exist yet
+    required: false
     type: raw
   assigned_object_type:
     description:
       - The app_label.model for the object in the relationship
-    required: true
+      - Required if I(state=present) and the object metadata does not exist yet
+    required: false
     type: str
   assigned_object_id:
     description:
       - The UUID of the object in the relationship
-    required: true
+      - Required if I(state=present) and the object metadata does not exist yet
+    required: false
     type: str
   value:
     description:
       - The value of the metadata
+      - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
     required: false
     type: str
   contact:
     description:
       - The contact of the metadata
+      - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
     required: false
     type: raw
   team:
     description:
       - The team of the metadata
+      - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
     required: false
     type: raw
   scoped_fields:
@@ -85,6 +92,13 @@ EXAMPLES = r"""
         scoped_fields:
           - name
         state: absent
+
+    - name: Delete object metadata by id
+      networktocode.nautobot.object_metadata:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -98,25 +112,30 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_OBJECT_METADATA,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_OBJECT_METADATA,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            metadata_type=dict(required=True, type="raw"),
-            assigned_object_type=dict(required=True, type="str"),
-            assigned_object_id=dict(required=True, type="str"),
+            metadata_type=dict(required=False, type="raw"),
+            assigned_object_type=dict(required=False, type="str"),
+            assigned_object_id=dict(required=False, type="str"),
             value=dict(required=False, type="str"),
             contact=dict(required=False, type="raw"),
             team=dict(required=False, type="raw"),
@@ -124,19 +143,7 @@ def main():
         )
     )
 
-    required_one_of = [
-        ("value", "contact", "team"),
-    ]
-    mutually_exclusive = [
-        ("value", "contact", "team"),
-    ]
-
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     object_metadata = NautobotExtrasModule(module, NB_OBJECT_METADATA)
     object_metadata.run()

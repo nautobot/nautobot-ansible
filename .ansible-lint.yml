@@ -2,5 +2,3 @@
 exclude_paths:
   - "tests/"
   - "mkdocs.yml"
-warn_list:
-  - "yaml[key-duplicates]"

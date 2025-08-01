@@ -2,6 +2,7 @@ import asyncio
 from unittest.mock import AsyncMock
 
 import pytest
+
 from extensions.eda.plugins.event_source.nautobot_changelog import main as nautobot_main
 
 

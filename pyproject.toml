@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "5.12.0"
+version = "5.13.1"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
@@ -11,13 +11,12 @@ python = ">=3.11,<4.0"
 netutils = "^1.2"
 # TODO: Add proper version tag after 3.0 is released
 pynautobot = { git = "https://github.com/nautobot/pynautobot.git", branch = "next-3.0" }
-ansible-core = "^2.16"
+ansible-core = ">=2.17,<2.19"
 aiohttp = "^3.11.13"
 asyncio = "^3.4.3"
 
 [tool.poetry.dev-dependencies]
 ansible-lint = "*"
-black = "*"
 cryptography = "*"
 jinja2 = "*"
 jmespath = "*"
@@ -34,7 +33,6 @@ hypothesis = "*"
 pytest-pythonpath = "*"
 parameterized = "*"
 invoke = "*"
-bandit = "*"
 pytest-forked = "*"
 # Rendering docs to HTML
 mkdocs = "1.6.1"
@@ -43,9 +41,10 @@ mkdocs-material = "9.5.30"
 # Render custom markdown for version added/changed/remove notes
 markdown-version-annotations = "1.0.1"
 # Render dynamic pages for Ansible Collections documentation
-mkdocs-ansible-collection = "1.0.0"
+mkdocs-ansible-collection = "1.1.0"
 towncrier = "^24.8.0"
 toml = "^0.10.2"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -58,35 +57,67 @@ testpaths = [
 python_paths = "./"
 addopts = "-vv"
 
-[tool.black]
-line-length = 160
-target-version = ['py37']
-include = '\.pyi?$'
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-  )/
-  | settings.py     # This is where you define files that should not be stylized by black
-  | collections     # Locally installed collections
-)
-'''
-
 [tool.pylint.messages_control]
-# Line length is enforced by Black, so pylint doesn't need to check it.
-# Pylint and Black disagree about how to format multi-line arrays; Black wins.
+# Line length is enforced by Ruff, so pylint doesn't need to check it.
+# Pylint and Ruff disagree about how to format multi-line arrays; Ruff wins.
 disable = """,
     line-too-long
     """
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+select = [
+    "D",  # pydocstyle
+    "F", "E", "W",  # flake8
+    "S",  # bandit
+    "I",  # isort
+]
+ignore = [
+    # warning: `one-blank-line-before-class` (D203) and `no-blank-line-before-class` (D211) are incompatible.
+    "D203", # 1 blank line required before class docstring
+
+    # D212 is enabled by default in google convention, and complains if we have a docstring like:
+    # """
+    # My docstring is on the line after the opening quotes instead of on the same line as them.
+    # """
+    # We've discussed and concluded that we consider this to be a valid style choice.
+    "D212", # Multi-line docstring summary should start at the first line
+    "D213", # Multi-line docstring summary should start at the second line
+
+    # Produces a lot of issues in the current codebase.
+    "D101", # Missing docstring in public class
+    "D102", # Missing docstring in public method
+    "D200", # One-line docstring should fit on one line
+    "D205", # 1 blank line required between summary line and description
+    "D401", # First line of docstring should be in imperative mood
+    "D407", # Missing dashed underline after section
+    "D416", # Section name ends in colon
+    "E501", # Line too long
+
+    # Ansible conventions
+    "D100", # Missing docstring in public module
+    # Conflicts with ansible sanity test "empty-init"
+    "D104", # Missing docstring in public package
+    "E402", # Module level import not at top of file
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "D",
+    "F",
+    "S"
+]
+"development/*" = [
+    "D",
+    "F",
+    "S"
+]
 
 [tool.towncrier]
 name = "nautobot-ansible"

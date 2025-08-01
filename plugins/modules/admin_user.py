@@ -21,11 +21,13 @@ author:
 version_added: "5.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   username:
     description:
       - The name of the user
-    required: true
+      - Required if I(state=present) and the user does not exist yet
+    required: false
     type: str
   is_superuser:
     description:
@@ -91,6 +93,13 @@ EXAMPLES = r"""
         first_name: nb
         last_name: user
         state: absent
+
+    - name: Delete user by id
+      networktocode.nautobot.admin_user:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -104,23 +113,25 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.users import (
-    NautobotUsersModule,
-    NB_USERS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.users import (
+    NB_USERS,
+    NautobotUsersModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            username=dict(required=True, type="str"),
+            username=dict(required=False, type="str"),
             is_superuser=dict(required=False, type="bool"),
             is_active=dict(required=False, type="bool"),
             is_staff=dict(required=False, type="bool"),

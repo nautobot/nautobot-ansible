@@ -22,11 +22,13 @@ requirements:
 version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   name:
     description:
       - The name of the job button
-    required: true
+      - Required if I(state=present) and the job button does not exist yet
+    required: false
     type: str
   content_types:
     description:
@@ -101,6 +103,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: MyJobButton
     state: absent
+
+- name: Delete job button by id
+  networktocode.nautobot.job_button:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -114,28 +123,37 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_JOB_BUTTONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_JOB_BUTTONS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """Execute job button module."""
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             content_types=dict(required=False, type="list", elements="str"),
             job=dict(required=False, type="raw"),
             enabled=dict(required=False, type="bool"),
             text=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
             group_name=dict(required=False, type="str"),
-            button_class=dict(required=False, choices=["default", "primary", "success", "info", "warning", "danger", "link"], type="str"),
+            button_class=dict(
+                required=False,
+                choices=["default", "primary", "success", "info", "warning", "danger", "link"],
+                type="str",
+            ),
             confirmation=dict(required=False, type="bool"),
         )
     )

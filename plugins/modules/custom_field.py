@@ -22,11 +22,13 @@ requirements:
 version_added: "5.1.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   label:
     description:
       - Name of the field as displayed to users
-    required: true
+      - Required if I(state=present) and the custom field does not exist yet
+    required: false
     type: str
     version_added: "5.1.0"
   grouping:
@@ -165,6 +167,13 @@ EXAMPLES = r"""
     validation_maximum: 100
     validation_regex: ^[a-z]+$
     state: present
+
+- name: Delete a custom field by id
+  networktocode.nautobot.custom_field:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -178,24 +187,30 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_CUSTOM_FIELDS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_CUSTOM_FIELDS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """Execute custom field module."""
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            label=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
             grouping=dict(required=False, type="str"),
             key=dict(required=False, type="str", no_log=False),
-            type=dict(required=False, choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"], type="str"),
+            type=dict(
+                required=False,
+                choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"],
+                type="str",
+            ),
             weight=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
             required=dict(required=False, type="bool"),

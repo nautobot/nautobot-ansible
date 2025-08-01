@@ -20,16 +20,19 @@ author:
 version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   metadata_type:
     description:
       - The name of the metadata type
-    required: true
+      - Required if I(state=present) and the metadata choice does not exist yet
+    required: false
     type: str
   value:
     description:
       - The value of the metadata choice
-    required: true
+      - Required if I(state=present) and the metadata choice does not exist yet
+    required: false
     type: str
   weight:
     description:
@@ -55,6 +58,13 @@ EXAMPLES = r"""
     value: "Choice 1"
     metadata_type: "TopSecretInfo"
     state: absent
+
+- name: Delete a metadata choice by id
+  networktocode.nautobot.metadata_choice:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -68,24 +78,29 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NautobotExtrasModule,
-    NB_METADATA_CHOICES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_METADATA_CHOICES,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            metadata_type=dict(required=True, type="str"),
-            value=dict(required=True, type="str"),
+            metadata_type=dict(required=False, type="str"),
+            value=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
         )
     )

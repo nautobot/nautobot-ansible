@@ -1,0 +1,60 @@
+---
+##
+##
+### UNSAFE VARIABLE HANDLING TESTS
+##
+##
+
+# As per docs at https://docs.ansible.com/ansible/latest/plugins/lookup.html -
+
+# "By default, lookup return values are marked as unsafe for security reasons.
+# If you trust the outside source for your lookup accesses, pass allow_unsafe=
+# True to allow Jinja2 templates to evaluate lookup values."
+
+# So, here we just need to prove that the data is returned as AnsibleUnsafeText
+
+# Grab lookup AND lookup_graphql plugin responses to test against
+- set_fact:
+    j2_lookup_query_response: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"{% raw %}R2 {{ SEE ISSUE 114 }}{% endraw %}\"') }}"
+    j2_lookup_graphql_query_response: >-
+      {{ query(
+          'networktocode.nautobot.lookup_graphql',
+          '{% raw %}query { devices(name: "R2 {{ SEE ISSUE 114 }}") { name id config_context location { name id } } }{% endraw %}',
+          url=nautobot_url,
+          token=nautobot_token
+      ) }}
+
+- name: "1.1 - lookup plugin - Assert looked up normal string in local config context is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["local_config_context_data"]["normal_string"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "1.2 - lookup plugin - Assert looked up string with Jinja2 tags in local config context is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["local_config_context_data"]["string_containing_jinja2tags"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "1.3 - lookup plugin - Assert looked up hostname with Jinja2 tags is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_query_response["value"]["name"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "2.1 - lookup_graphql plugin - Assert looked up device name is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["name"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "2.2 - lookup_graphql plugin - Assert looked up location name is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["location"]["name"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "2.3 - lookup_graphql plugin - Assert looked up config_context.normal_string is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["normal_string"].__class__.__name__ == "AnsibleUnsafeText"
+
+- name: "2.4 - lookup_graphql plugin - Assert looked up config_context.string_containing_jinja2tags is type AnsibleUnsafeText"
+  assert:
+    that:
+      - j2_lookup_graphql_query_response[0]["data"]["devices"][0]["config_context"]["string_containing_jinja2tags"].__class__.__name__ == "AnsibleUnsafeText"

@@ -21,12 +21,14 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the vlan group
-    required: true
+      - Required if I(state=present) and the vlan group does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   location:
@@ -66,6 +68,13 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test vlan group
         state: absent
+
+    - name: Delete vlan group by id
+      networktocode.nautobot.vlan_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -79,27 +88,30 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
-    NautobotIpamModule,
-    NB_VLAN_GROUPS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+    NB_VLAN_GROUPS,
+    NautobotIpamModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
         )

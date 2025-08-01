@@ -21,13 +21,15 @@ author:
 version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   module_type:
     description:
       - The module type of the module
-    required: true
+      - Required if I(state=present) and the module does not exist yet
+    required: false
     type: raw
   serial:
     description:
@@ -58,11 +60,13 @@ options:
   location:
     description:
       - The location of the module
+      - Requires one of I(location) or I(parent_module_bay) when I(state=present) and the module does not exist yet
     required: false
     type: raw
   parent_module_bay:
     description:
       - The parent module bay of the module
+      - Requires one of I(location) or I(parent_module_bay) when I(state=present) and the module does not exist yet
     required: false
     type: raw
 """
@@ -103,6 +107,13 @@ EXAMPLES = r"""
       name: PowerStripTwo
       parent_device: test100
     state: absent
+
+- name: Delete a module by id
+  networktocode.nautobot.module:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -116,29 +127,32 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_MODULES,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_MODULES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            module_type=dict(required=True, type="raw"),
+            module_type=dict(required=False, type="raw"),
             serial=dict(required=False, type="str"),
             asset_tag=dict(required=False, type="str"),
             role=dict(required=False, type="raw"),
@@ -149,18 +163,7 @@ def main():
         )
     )
 
-    required_one_of = [
-        ("location", "parent_module_bay"),
-    ]
-    mutually_exclusive = [
-        ("location", "parent_module_bay"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     nb_module = NautobotDcimModule(module, NB_MODULES)
     nb_module.run()

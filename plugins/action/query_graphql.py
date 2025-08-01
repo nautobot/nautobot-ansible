@@ -7,8 +7,8 @@ from __future__ import absolute_import, division, print_function
 
 import os
 
-from ansible.module_utils.six import raise_from
 from ansible.errors import AnsibleError
+from ansible.module_utils.six import raise_from
 from ansible.plugins.action import ActionBase
 
 try:
@@ -25,19 +25,18 @@ except ImportError as imp_exc:
 else:
     REQUESTS_IMPORT_ERROR = None
 
+from ansible.utils.display import Display
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     NautobotApiBase,
     NautobotGraphQL,
     is_truthy,
 )
-from ansible.utils.display import Display
 
 __metaclass__ = type
 
 
 def nautobot_action_graphql(args):
     """Ansible Action module execution for Nautobot query_graphql."""
-
     url = args.get("url") or os.getenv("NAUTOBOT_URL")
     Display().v("URL: %s" % url)
 
@@ -60,7 +59,7 @@ def nautobot_action_graphql(args):
         raise AnsibleError("validate_certs must be a boolean")
 
     update_hostvars = args.get("update_hostvars", False)
-    Display().vv("Update hostvars is set to: %s" % update_hostvars)  # nosec
+    Display().vv("Update hostvars is set to: %s" % update_hostvars)  # noqa: S608
 
     # Verify SSL Verify is of boolean
     if not isinstance(update_hostvars, bool):

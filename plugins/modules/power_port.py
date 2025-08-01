@@ -22,18 +22,21 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
 options:
   device:
     description:
       - The device the power port is attached to
+      - Requires one of I(device) or I(module) when I(state=present) and the power port does not exist yet
     required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - The name of the power port
-    required: true
+      - Required if I(state=present) and the power port does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   type:
@@ -63,6 +66,7 @@ options:
   module:
     description:
       - The attached module
+      - Requires one of I(device) or I(module) when I(state=present) and the power port does not exist yet
     required: false
     type: raw
     version_added: "5.4.0"
@@ -102,6 +106,13 @@ EXAMPLES = r"""
         name: Test Power Port
         device: Test Device
         state: absent
+
+    - name: Delete power port by id
+      networktocode.nautobot.power_port:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -115,47 +126,39 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_POWER_PORTS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_POWER_PORTS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
             device=dict(required=False, type="raw"),
             module=dict(required=False, type="raw"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             type=dict(required=False, type="str"),
             allocated_draw=dict(required=False, type="int"),
             maximum_draw=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
         )
     )
-    required_one_of = [
-        ("device", "module"),
-    ]
-    mutually_exclusive = [
-        ("device", "module"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     power_port = NautobotDcimModule(module, NB_POWER_PORTS)
     power_port.run()
