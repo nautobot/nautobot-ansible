@@ -600,6 +600,15 @@
   tags:
     - secrets_groups_association
 
+- name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
+  include_tasks:
+    file: "vrf_device_assignment.yml"
+    apply:
+      tags:
+        - vrf_device_assignment
+  tags:
+    - vrf_device_assignment
+
 ##########################
 ##
 ### NAUTOBOT 2.2+ TESTS
