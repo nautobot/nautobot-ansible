@@ -83,7 +83,7 @@ tasks:
                     api_version='2.0',
                     token='<redacted>') }}"
 
-# This example uses an API Filter
+  # This example uses an API Filter
   # query a list of devices
   - name: Obtain list of devices from Nautobot
     debug:
@@ -122,6 +122,20 @@ tasks:
                      api_version='2.0',
                      token='<redacted>',
                      plugin='mycustomstuff') }}"
+
+  # In Ansible 2.19+, you can no longer use templated variables as values for options (e.g., api_filter='name={{ item }}').
+  # Instead, you will need to have Ansible render the variable template before passing it to the lookup.
+  # Here is an example of how to use a templated variable for the api_filter.
+  - name: "Get Device UUIDs"
+    debug:
+      msg: "{{ lookup('networktocode.nautobot.lookup',
+        'devices',
+        api_endpoint=nautobot_url,
+        token=nautobot_token,
+        api_filter=api_filter) }}"
+    vars:
+      api_filter: "name={{ item }}"
+    loop: "{{ device_names }}"
 """
 
 RETURN = """
