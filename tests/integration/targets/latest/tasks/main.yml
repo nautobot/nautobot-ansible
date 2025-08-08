@@ -673,6 +673,16 @@
       tags:
         - prefix_location
 
+    # The REST API endpoint for this module wasn't added until v2.2
+    - name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "vrf_device_assignment.yml"
+        apply:
+          tags:
+            - vrf_device_assignment
+      tags:
+        - vrf_device_assignment
+
 ##########################
 ##
 ### NAUTOBOT 2.3+ TESTS

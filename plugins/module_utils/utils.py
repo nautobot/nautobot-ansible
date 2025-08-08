@@ -112,6 +112,7 @@ API_APPS_ENDPOINTS = dict(
         "vlan_groups",
         "vlan_location_assignments",
         "vrfs",
+        "vrf_device_assignments",
     ],
     plugins=[],
     secrets=[],
@@ -386,6 +387,7 @@ ENDPOINT_NAME_MAPPING = {
     "vlan_groups": "vlan_group",
     "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
+    "vrf_device_assignments": "vrf_device_assignments",
     "wireless_networks": "wireless_network",
 }
 
@@ -512,6 +514,7 @@ ALLOWED_QUERY_PARAMS = {
     "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
+    "vrf_device_assignments": set(["vrf", "device", "virtual_machine", "virtual_device_context"]),
     "wireless_network": set(["name"]),
 }
 
@@ -544,6 +547,7 @@ IGNORE_ADDING_IDS = {
     "power_port",
     "power_outlet",
     "services",
+    "vrf_device_assignments",
     # Cable termination types
     "circuits.circuittermination",
     "dcim.consoleport",

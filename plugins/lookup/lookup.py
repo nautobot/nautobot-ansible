@@ -264,6 +264,7 @@ def get_endpoint(nautobot, term):
         "vlans": {"endpoint": nautobot.ipam.vlans},
         "vlan-location-assignments": {"endpoint": nautobot.ipam.vlan_location_assignments},
         "vrfs": {"endpoint": nautobot.ipam.vrfs},
+        "vrf-device-assignments": {"endpoint": nautobot.ipam.vrf_device_assignments},
         "wireless-networks": {"endpoint": nautobot.wireless.wireless_networks},
     }
 
