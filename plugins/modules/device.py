@@ -23,24 +23,27 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the device
-    required: true
+    required: false
     type: str
     version_added: "3.0.0"
   device_type:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
   role:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
@@ -71,6 +74,7 @@ options:
   location:
     description:
       - Required if I(state=present) and the device does not exist yet
+      - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
     required: false
     type: raw
     version_added: "3.0.0"
@@ -177,6 +181,18 @@ options:
     required: false
     type: raw
     version_added: "5.12.0"
+  software_version:
+    description:
+      - The software version associated with the device
+    required: false
+    type: raw
+    version_added: "5.13.0"
+  software_image_files:
+    description:
+      - Override the software image files associated with the software version for this inventory item
+    required: false
+    type: raw
+    version_added: "5.13.0"
 """
 
 EXAMPLES = r"""
@@ -186,7 +202,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device within Nautobot with only required information
+    - name: Create device within Nautobot with name
       networktocode.nautobot.device:
         url: http://nautobot.local
         token: thisIsMyToken
@@ -197,24 +213,26 @@ EXAMPLES = r"""
         status: active
         state: present
 
-    - name: Create device within Nautobot with empty string name to generate UUID
-      networktocode.nautobot.device:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: ""
-        device_type: C9410R
-        role: Core Switch
-        location:
-          name: My Location
-          parent: Parent Location
-        status: active
-        state: present
-
-    - name: Delete device within nautobot
+    - name: Delete device within nautobot with name
       networktocode.nautobot.device:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Device
+        state: absent
+
+    - name: Rename device via ID
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
+        name: New Name
+        state: present
+
+    - name: Delete device via ID
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
         state: absent
 
     - name: Create device with tags
@@ -268,30 +286,33 @@ msg:
   type: str
 """
 
+import uuid
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_DEVICES,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_DEVICES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
-import uuid
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             device_type=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
@@ -319,6 +340,8 @@ def main():
             device_redundancy_group=dict(required=False, type="raw"),
             device_redundancy_group_priority=dict(required=False, type="int"),
             secrets_group=dict(required=False, type="raw", no_log=False),
+            software_version=dict(required=False, type="raw"),
+            software_image_files=dict(required=False, type="raw"),
         )
     )
 

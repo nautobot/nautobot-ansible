@@ -23,13 +23,15 @@ requirements:
 version_added: "5.1.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the device redundancy group
-    required: true
+      - Required if I(state=present) and the device redundancy group does not exist yet
+    required: false
     type: str
     version_added: "5.1.0"
   status:
@@ -85,27 +87,25 @@ EXAMPLES = r"""
         status: Active
         description: My Description
         failover_strategy: active-active
-        secrets_group: "{{ my_secrets_group['key'] }}"
+        secrets_group: "My Secrets Group"
         tags:
           - My Tag
         custom_fields:
           my_field: my_value
         state: present
-      vars:
-        my_secrets_group: >-
-          {{ lookup(
-            'networktocode.nautobot.lookup',
-            'secrets-groups',
-            api_endpoint=nautobot_url,
-            token=nautobot_token,
-            api_filter='name="My Secrets Group"'
-          ) }}
 
     - name: Delete device redundancy group within nautobot
       networktocode.nautobot.device_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
         name: My Redundancy Group
+        state: absent
+
+    - name: Delete device redundancy group by id
+      networktocode.nautobot.device_redundancy_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -120,29 +120,32 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_DEVICE_REDUNDANCY_GROUPS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_DEVICE_REDUNDANCY_GROUPS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             status=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
             failover_strategy=dict(

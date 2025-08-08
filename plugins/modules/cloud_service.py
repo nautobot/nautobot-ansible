@@ -23,13 +23,15 @@ requirements:
 version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
       - The name of the cloud service
-    required: true
+      - Required if I(state=present) and the cloud service does not exist yet
+    required: false
     type: str
   description:
     description:
@@ -71,6 +73,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: Cisco Quantum Service
     state: absent
+
+- name: Delete a cloud service by id
+  networktocode.nautobot.cloud_service:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -84,29 +93,32 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
+    NB_CLOUD_SERVICES,
+    NautobotCloudModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
-    NautobotCloudModule,
-    NB_CLOUD_SERVICES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             cloud_resource_type=dict(required=False, type="raw"),
             cloud_account=dict(required=False, type="raw"),

@@ -8,6 +8,8 @@ __metaclass__ = type
 
 
 class ModuleDocFragment(object):
+    """Doc Fragments for Ansible Modules."""
+
     BASE = r"""
 requirements:
   - pynautobot
@@ -52,6 +54,16 @@ options:
       - "API Version Nautobot REST API"
     required: false
     type: str
+"""
+
+    ID = r"""
+options:
+  id:
+    description:
+      - "The UUID of the object to operate on"
+    required: false
+    type: str
+    version_added: "5.13.0"
 """
 
     TAGS = r"""

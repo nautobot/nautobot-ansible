@@ -156,17 +156,8 @@ EXAMPLES = r"""
       networktocode.nautobot.location:
         url: http://nautobot.local
         token: thisIsMyToken
-        id: "{{ location_to_delete['key'] }}"
+        id: "00000000-0000-0000-0000-000000000000"
         state: absent
-      vars:
-        location_to_delete: >-
-          {{ lookup(
-            'networktocode.nautobot.lookup',
-            'locations',
-            api_endpoint=nautobot_url,
-            token=nautobot_token,
-            api_filter='name="My Location" parent_location="Location Parent" location_type="Main Type"'
-          ) }}
 
     - name: Create location with all parameters
       networktocode.nautobot.location:
@@ -204,22 +195,23 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_LOCATIONS,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_LOCATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))

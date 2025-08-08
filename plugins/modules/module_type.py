@@ -21,6 +21,7 @@ author:
 version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
@@ -33,7 +34,8 @@ options:
   model:
     description:
       - The model of the module type
-    required: true
+      - Required if I(state=present) and the module type does not exist yet
+    required: false
     type: raw
   part_number:
     description:
@@ -62,6 +64,13 @@ EXAMPLES = r"""
     token: thisIsMyToken
     model: HooverMaxProModel60
     state: absent
+
+- name: Delete a module type by id
+  networktocode.nautobot.module_type:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -75,30 +84,33 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_MODULE_TYPES,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_MODULE_TYPES,
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             manufacturer=dict(required=False, type="raw"),
-            model=dict(required=True, type="raw"),
+            model=dict(required=False, type="raw"),
             part_number=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
         )

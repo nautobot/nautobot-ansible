@@ -7,16 +7,18 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import pytest
 import os
-from hypothesis import given, settings, HealthCheck, strategies as st
 from functools import partial
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pynautobot
+import pytest
+from hypothesis import HealthCheck, given, settings
+from hypothesis import strategies as st
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotModule, NautobotApiBase
     from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import NB_DEVICES
+    from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NautobotApiBase, NautobotModule
     from ansible_collections.networktocode.nautobot.tests.test_data import load_test_data
 
     MOCKER_PATCH_PATH = "ansible_collections.networktocode.nautobot.plugins.module_utils.utils.NautobotModule"
@@ -28,9 +30,9 @@ except ImportError:
 
     sys.path.append("plugins/module_utils")
     sys.path.append("tests")
-    from utils import NautobotModule, NautobotApiBase
     from dcim import NB_DEVICES
     from test_data import load_test_data
+    from utils import NautobotApiBase, NautobotModule
 
     MOCKER_PATCH_PATH = "utils.NautobotModule"
 

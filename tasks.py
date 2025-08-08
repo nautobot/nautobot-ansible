@@ -2,8 +2,8 @@
 
 import os
 
-from invoke import Collection, task as invoke_task
-from invoke.exceptions import Exit
+from invoke import Collection, Exit
+from invoke import task as invoke_task
 
 
 def is_truthy(arg):
@@ -66,6 +66,7 @@ def task(function=None, *args, **kwargs):
 
 def docker_compose(context, command, **kwargs):
     """Helper function for running a specific docker compose command with all appropriate parameters and environment.
+
     Args:
         context (obj): Used to run specific commands
         command (str): Command string to append to the "docker compose ..." command, such as "build", "up", etc.
@@ -206,8 +207,8 @@ def migrate(context):
 
 @task(help={})
 def post_upgrade(context):
-    """
-    Performs Nautobot common post-upgrade operations using a single entrypoint.
+    """Performs Nautobot common post-upgrade operations using a single entrypoint.
+
     This will run the following management commands with default settings, in order:
     - migrate
     - trace_paths
@@ -226,7 +227,7 @@ def post_upgrade(context):
 # ------------------------------------------------------------------------------
 @task
 def lint(context):
-    """Run linting tools"""
+    """Run linting tools."""
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from lint lint",
         env={"PYTHON_VER": context.nautobot_ansible.python_ver},
@@ -242,7 +243,7 @@ def lint(context):
     incrementable=["verbose"],
 )
 def unit(context, verbose=0, skip=None):
-    """Run unit tests"""
+    """Run unit tests."""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
@@ -254,7 +255,10 @@ def unit(context, verbose=0, skip=None):
             env["SKIP_SANITY_TESTS"] = "true"
         if "unit" in skip:
             env["SKIP_UNIT_TESTS"] = "true"
-    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit", env=env)
+    context.run(
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit",
+        env=env,
+    )
     # Clean up after the tests
     context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
 
@@ -270,7 +274,7 @@ def unit(context, verbose=0, skip=None):
     incrementable=["verbose"],
 )
 def integration(context, verbose=0, tags=None, update_inventories=False, skip=None):
-    """Run all tests including integration tests"""
+    """Run all tests including integration tests."""
     build(context)
     # Destroy any existing containers and volumes that may be left over from a previous run
     destroy(context)
@@ -287,7 +291,7 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
     if ansible_args:
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     if update_inventories:
-        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # nosec B108
+        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # noqa: S108
     if skip is not None:
         if "lint" in skip:
             env["SKIP_LINT_TESTS"] = "true"
@@ -378,7 +382,10 @@ def check_versions(_):
         pyproject_version = pyproject_data["tool"]["poetry"]["version"]
 
     if galaxy_version != pyproject_version:
-        raise Exit(f"Version mismatch: galaxy.yml ({galaxy_version}) != " f"pyproject.toml ({pyproject_version})", code=1)
+        raise Exit(
+            f"Version mismatch: galaxy.yml ({galaxy_version}) != pyproject.toml ({pyproject_version})",
+            code=1,
+        )
     print(f"Galaxy.yml and pyproject.toml versions match: {galaxy_version}")
 
     # Read changelogs/changelog.yaml
@@ -388,5 +395,53 @@ def check_versions(_):
         changelog_version = changelog_data["releases"].get(pyproject_version, None)
 
     if changelog_version is None:
-        raise Exit(f"Version {pyproject_version} missing from changelogs/changelog.yaml", code=1)
+        raise Exit(
+            f"Version {pyproject_version} missing from changelogs/changelog.yaml",
+            code=1,
+        )
     print(f"Changelogs/changelog.yaml version found: {pyproject_version}")
+
+
+@task(aliases=("a",))
+def autoformat(context):
+    """Run code autoformatting."""
+    ruff(context, action=["format"], fix=True)
+
+
+@task(
+    help={
+        "action": "Available values are `['lint', 'format']`. Can be used multiple times. (default: `['lint', 'format']`)",
+        "target": "File or directory to inspect, repeatable (default: all files in the project will be inspected)",
+        "fix": "Automatically fix selected actions. May not be able to fix all issues found. (default: False)",
+        "output_format": "See https://docs.astral.sh/ruff/settings/#output-format for details. (default: `concise`)",
+    },
+    iterable=["action", "target"],
+)
+def ruff(context, action=None, target=None, fix=False, output_format="concise"):
+    """Run ruff to perform code formatting and/or linting."""
+    if not action:
+        action = ["lint", "format"]
+    if not target:
+        target = ["."]
+
+    exit_code = 0
+
+    if "format" in action:
+        command = "ruff format "
+        if not fix:
+            command += "--check "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if "lint" in action:
+        command = "ruff check "
+        if fix:
+            command += "--fix "
+        command += f"--output-format {output_format} "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if exit_code != 0:
+        raise Exit(code=exit_code)

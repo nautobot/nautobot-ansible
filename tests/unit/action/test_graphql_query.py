@@ -1,7 +1,7 @@
 """Tests for Nautobot GraphQL Query Lookup Plugin."""
 
-from ansible.errors import AnsibleError
 import pytest
+from ansible.errors import AnsibleError
 
 try:
     from plugins.action.query_graphql import nautobot_action_graphql
