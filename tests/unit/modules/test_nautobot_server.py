@@ -1,9 +1,10 @@
 import json
+import sys
 import unittest
-from unittest.mock import patch
+from io import BytesIO
+from unittest.mock import Mock, patch
 
 from ansible.module_utils import basic
-from ansible.module_utils.common.text.converters import to_bytes
 from parameterized import parameterized
 
 try:
@@ -11,8 +12,6 @@ try:
 
     MOCKER_PATCH_PATH = "ansible_collections.networktocode.nautobot.plugins.modules.nautobot_server"
 except ImportError:
-    import sys
-
     # Not installed as a collection
     # Try importing relative to root directory of this ansible_modules project
     sys.path.append("tests")
@@ -20,12 +19,6 @@ except ImportError:
     MOCKER_PATCH_PATH = "plugins.modules.nautobot_server"
 
     import nautobot_server
-
-
-def set_module_args(args):
-    """prepare arguments so that they will be picked up during module creation"""
-    args = json.dumps({"ANSIBLE_MODULE_ARGS": args})
-    basic._ANSIBLE_ARGS = to_bytes(args)
 
 
 class AnsibleExitJson(Exception):
@@ -72,9 +65,12 @@ class TestNautobotServer(unittest.TestCase):
         self.addCleanup(self.mock_module_helper.stop)
 
     def test_module_fail_when_required_args_missing(self):
+        args = json.dumps({"ANSIBLE_MODULE_ARGS": {}})
+        mock_stdin = Mock()
+        mock_stdin.buffer = BytesIO(args.encode("utf-8"))
         with self.assertRaises(AnsibleFailJson):
-            set_module_args({})
-            nautobot_server.main()
+            with patch.object(sys, "stdin", mock_stdin):
+                nautobot_server.main()
 
     @parameterized.expand(
         [
@@ -220,21 +216,23 @@ class TestNautobotServer(unittest.TestCase):
         ]
     )
     def test_ensure_command_called(self, module_args, expected_exception, stdout, changed, args, kwargs):
-        set_module_args(module_args)
+        json_args_string = json.dumps({"ANSIBLE_MODULE_ARGS": module_args})
+        mock_stdin = Mock()
+        mock_stdin.buffer = BytesIO(json_args_string.encode("utf-8"))
 
-        with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
-            stderr = ""
-            rc = 0
-            mock_run_command.return_value = rc, stdout, stderr  # successful execution
+        with patch.object(sys, "stdin", mock_stdin):
+            with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
+                stderr = ""
+                rc = 0
+                mock_run_command.return_value = rc, stdout, stderr  # successful execution
 
-            with self.assertRaises(expected_exception) as result:
-                nautobot_server.main()
+                with self.assertRaises(expected_exception) as result:
+                    nautobot_server.main()
 
-            if expected_exception == AnsibleFailJson:
-                return
+                if expected_exception == AnsibleFailJson:
+                    return
 
-            self.assertEqual(result.exception.args[0]["changed"], changed)  # ensure result is changed
+                self.assertEqual(result.exception.args[0]["changed"], changed)  # ensure result is changed
 
-        self.assertEqual(mock_run_command.call_count, 1)
-
-        mock_run_command.assert_called_with(*args, **kwargs)
+                self.assertEqual(mock_run_command.call_count, 1)
+                mock_run_command.assert_called_with(*args, **kwargs)
