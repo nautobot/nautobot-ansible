@@ -668,3 +668,8 @@ releases:
     changes:
       minor_changes:
         - (#601) - Added an option to the inventory plugins to disable the wrapping of unsafe variables.
+  5.14.0:
+    modules:
+      - name: vrf_device_assignment
+        description: Creates or removes VRF to Device, VM or Virtual Device Context assignments from Nautobot
+        namespace: ''
