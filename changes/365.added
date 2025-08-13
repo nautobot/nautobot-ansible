@@ -1,1 +1,0 @@
-Added the `vrf_device_assignment` module for managing VRF to Device, VM or Virtual Device Context assignments in Nautobot.
