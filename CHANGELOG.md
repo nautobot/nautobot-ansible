@@ -4,6 +4,12 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.14.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.14.0)
+
+### Added
+
+- [#365](https://github.com/nautobot/nautobot-ansible/issues/365) - Added the `vrf_device_assignment` module for managing VRF to Device, VM or Virtual Device Context assignments in Nautobot.
+
 ## [v5.13.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.1)
 
 ### Added
