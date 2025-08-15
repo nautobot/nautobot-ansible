@@ -522,6 +522,15 @@ devices = [
         },
         "status": {"name": "Active"},
     },
+    {
+        # Creating a device explicitly with no name and a predictable UUID
+        # Note: the ability to set the UUID was added in v2.3.13, so versions prior to that will have a random UUID
+        "id": "00000000-0000-0000-0000-000000000000",
+        "device_type": cisco_test.id,
+        "role": core_switch.id,
+        "location": location_child.id,
+        "status": {"name": "Active"},
+    },
 ]
 created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
@@ -954,6 +963,28 @@ test100_location.save()
 example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
 example_job_receiver.enabled = True
 example_job_receiver.save()
+
+# GraphQL Query
+graphql_queries = [
+    {
+        "name": "No Name Devices",
+        "query": """
+query {
+  devices(name__isnull:true) {
+    id
+    name
+    primary_ip4 {
+      host
+    }
+    platform {
+      napalm_driver
+    }
+  }
+}
+""",
+    },
+]
+created_graphql_queries = make_nautobot_calls(nb.extras.graphql_queries, graphql_queries)
 
 ###############
 # v2.2+ items #
