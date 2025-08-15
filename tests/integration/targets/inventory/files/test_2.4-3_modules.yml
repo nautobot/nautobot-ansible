@@ -1,7 +1,0 @@
-plugin: networktocode.nautobot.inventory
-api_endpoint: "http://nautobot:8000"
-token: "0123456789abcdef0123456789abcdef01234567"
-validate_certs: False
-
-interfaces: True
-module_interfaces: True

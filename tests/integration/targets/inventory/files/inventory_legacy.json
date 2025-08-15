@@ -1,6 +1,39 @@
 {
     "_meta": {
         "hostvars": {
+            "00000000-0000-0000-0000-000000000000": {
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
+                "device_roles": [
+                    "Core Switch"
+                ],
+                "device_types": [
+                    "Cisco Test"
+                ],
+                "is_virtual": false,
+                "local_context_data": [
+                    null
+                ],
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
+                "manufacturers": [
+                    "Cisco"
+                ],
+                "services": [],
+                "status": {
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "object_type": "extras.status"
+                },
+                "tags": []
+            },
             "R1-Device": {
                 "custom_fields": {
                     "my_device_custom_field": null
@@ -125,6 +158,7 @@
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
+                            "controller_managed_device_group": null,
                             "custom_fields": {
                                 "my_device_custom_field": null
                             },
@@ -157,6 +191,7 @@
                             },
                             "secrets_group": null,
                             "serial": "",
+                            "software_version": null,
                             "status": {
                                 "object_type": "extras.status"
                             },
@@ -237,6 +272,7 @@
                             "primary_ip4": null,
                             "primary_ip6": null,
                             "role": null,
+                            "software_version": null,
                             "status": {
                                 "object_type": "extras.status"
                             },
@@ -330,6 +366,7 @@
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
+                            "controller_managed_device_group": null,
                             "custom_fields": {
                                 "my_device_custom_field": "Test Device Custom Field Value"
                             },
@@ -364,6 +401,7 @@
                             },
                             "secrets_group": null,
                             "serial": "",
+                            "software_version": null,
                             "status": {
                                 "object_type": "extras.status"
                             },
@@ -452,6 +490,7 @@
                             "asset_tag": null,
                             "cluster": null,
                             "comments": "",
+                            "controller_managed_device_group": null,
                             "custom_fields": {
                                 "my_device_custom_field": "Test Device Custom Field Value"
                             },
@@ -486,6 +525,7 @@
                             },
                             "secrets_group": null,
                             "serial": "",
+                            "software_version": null,
                             "status": {
                                 "object_type": "extras.status"
                             },
@@ -654,6 +694,7 @@
     },
     "ungrouped": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"

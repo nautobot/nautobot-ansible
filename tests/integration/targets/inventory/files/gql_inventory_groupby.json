@@ -1,6 +1,7 @@
 {
     "Active": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -36,6 +37,7 @@
     },
     "Child_Test_Location": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             "Test Nexus Child One",
             "Test Nexus One",
@@ -44,6 +46,7 @@
     },
     "Cisco": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -56,6 +59,7 @@
     },
     "Cisco_Test": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -66,6 +70,7 @@
     },
     "Core_Switch": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -154,6 +159,28 @@
     },
     "_meta": {
         "hostvars": {
+            "00000000-0000-0000-0000-000000000000": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
+                "ansible_host": "00000000-0000-0000-0000-000000000000",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "00000000-0000-0000-0000-000000000000",
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
             "R1-Device": {
                 "ansible_host": "R1-Device",
                 "device_type": {
