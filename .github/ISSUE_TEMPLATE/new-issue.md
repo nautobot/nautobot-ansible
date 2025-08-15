@@ -24,7 +24,7 @@ assignees: ''
 ##### SOFTWARE VERSIONS
 
 ###### pynautobot
-<!-- pynautobot veresion -->
+<!-- pynautobot version -->
 
 ###### Ansible:
 <!--- Ansible Version ansible --version -->
