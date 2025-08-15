@@ -27,3 +27,7 @@ ansible.cfg
 debugging_args/*
 !debugging_args/*.example
 nautobot-ansible.code-workspace
+
+# Ignore dev docker-compose overrides
+development/*.override.yml
+nautobot.sql
