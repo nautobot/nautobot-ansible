@@ -123,6 +123,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 # This will send the default GraphQL query of:
 # query {
 #   devices {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -132,6 +133,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #     }
 #   }
 #   virtual_machines {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -250,6 +252,7 @@ RETURN = """
 """
 import json
 import os
+import uuid
 from collections.abc import Mapping
 from copy import deepcopy
 from sys import version as python_version
@@ -564,7 +567,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = self.get_results()
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
-            hostname = device["name"]
+            # A host in an Ansible inventory requires a hostname.
+            # name is an unique but not required attribute for a device in Nautobot
+            # If id was included in the query, it will be used as the hostname
+            # If neither name nor id are present, a UUID will be generated
+            hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
+            # Save the hostname back to the device record so that it can be referenced later
+            device["name"] = hostname
             if self.wrap_variables and check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
