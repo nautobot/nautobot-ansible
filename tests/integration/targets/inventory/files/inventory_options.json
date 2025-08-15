@@ -8,6 +8,32 @@
     },
     "_meta": {
         "hostvars": {
+            "00000000-0000-0000-0000-000000000000": {
+                "custom_fields": {
+                    "my_device_custom_field": null
+                },
+                "device_type": "Cisco Test",
+                "display": "Cisco Cisco Test (00000000-0000-0000-0000-000000000000)",
+                "is_virtual": false,
+                "location": "Child Test Location",
+                "locations": [
+                    "Child Test Location",
+                    "Parent Test Location"
+                ],
+                "manufacturer": "Cisco",
+                "role": "Core Switch",
+                "status": {
+                    "color": "4caf50",
+                    "custom_fields": {},
+                    "description": "Unit is active",
+                    "display": "Active",
+                    "name": "Active",
+                    "object_type": "extras.status"
+                },
+                "tags": [],
+                "testing_device_cf": "",
+                "testing_location_cf": "Test Location Custom Field Value"
+            },
             "R1-Device": {
                 "custom_fields": {
                     "my_device_custom_field": null
@@ -302,6 +328,7 @@
     },
     "active": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -364,6 +391,7 @@
     },
     "child_test_location": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             "TestDeviceR1",
             "VC1",
@@ -376,6 +404,7 @@
     },
     "cisco": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -387,6 +416,7 @@
     },
     "cisco_test": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -397,6 +427,7 @@
     },
     "core_switch": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             {
                 "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
@@ -447,6 +478,7 @@
     },
     "parent_test_location": {
         "hosts": [
+            "00000000-0000-0000-0000-000000000000",
             "R1-Device",
             "TestDeviceR1",
             "VC1",

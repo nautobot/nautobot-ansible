@@ -1,0 +1,1 @@
+Changed the inventory tests to a single set of files that only run against the latest minor version of Nautobot.
