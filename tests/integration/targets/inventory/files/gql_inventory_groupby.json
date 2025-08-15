@@ -160,9 +160,6 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
-                "_custom_field_data": {
-                    "my_device_custom_field": null
-                },
                 "ansible_host": "00000000-0000-0000-0000-000000000000",
                 "device_type": {
                     "manufacturer": {
