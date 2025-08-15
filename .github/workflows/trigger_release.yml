@@ -11,7 +11,7 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@v4"
       - name: "Install invoke"
-        run: "pip install -U pip && pip install invoke"
+        run: "pip install -U pip && pip install invoke packaging"
       - name: "Linting"
         run: "invoke lint"
   unit:
@@ -29,7 +29,7 @@ jobs:
       - name: "Check out repository code"
         uses: "actions/checkout@v4"
       - name: "Install invoke"
-        run: "pip install -U pip && pip install invoke"
+        run: "pip install -U pip && pip install invoke packaging"
       - name: "Tests"
         run: "invoke unit"
     needs:
