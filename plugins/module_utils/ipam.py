@@ -138,23 +138,24 @@ class NautobotIpamModule(NautobotModule):
         user_query_params = self.module.params.get("query_params")
 
         data = self.data
-        if self.endpoint == "ip_addresses":
-            if data.get("address"):
-                try:
-                    data["address"] = to_text(ip_interface(data["address"]).with_prefixlen)
-                except ValueError:
-                    pass
+        if self.endpoint == "ip_addresses" and data.get("address"):
+            try:
+                data["address"] = to_text(ip_interface(data["address"]).with_prefixlen)
+            except ValueError:
+                pass
             name = data.get("address")
-        elif self.endpoint in ["prefixes"]:
+        elif self.endpoint in ["prefixes"] and data.get("prefix"):
             name = data.get("prefix")
         elif self.endpoint in [
             "vlan_location_assignments",
             "prefix_location_assignments",
             "vrf_device_assignments",
-        ]:
+        ] and data.get("display"):
             name = data.get("display")
-        else:
+        elif data.get("name"):
             name = data.get("name")
+        else:
+            name = data.get("id")
 
         if self.endpoint in ["vlans", "prefixes"] and self.module.params.get("location"):
             # Need to force the api_version to 2.0 when using `location` parameter

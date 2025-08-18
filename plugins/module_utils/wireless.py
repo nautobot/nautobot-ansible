@@ -42,8 +42,10 @@ class NautobotWirelessModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif self.endpoint == "supported_data_rates":
+        elif self.endpoint == "supported_data_rates" and data.get("standard") and data.get("rate"):
             name = f"{data['standard']} - {data['rate']}"
+        else:
+            name = data.get("id")
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)

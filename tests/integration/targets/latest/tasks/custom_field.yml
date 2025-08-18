@@ -153,3 +153,20 @@
     that:
       - not test_delete_idem['changed']
       - "'already absent' in test_delete_idem['msg']"
+
+- name: "8 - Delete custom field with id"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    id: "{{ test_create_min['custom_field']['id'] }}"
+    state: absent
+  register: test_delete_id
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - test_delete_id is changed
+      - test_delete_id['diff']['before']['state'] == "present"
+      - test_delete_id['diff']['after']['state'] == "absent"
+      - test_delete_id['custom_field']['label'] == "Test Custom Field"
+      - "'deleted' in test_delete_id['msg']"
