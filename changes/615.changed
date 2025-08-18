@@ -1,0 +1,1 @@
+Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.

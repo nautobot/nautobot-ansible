@@ -101,6 +101,12 @@ options:
       - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
     default: False
     type: boolean
+  saved_query:
+    description:
+      - The name of a saved query from Nautobot to use to retrieve the inventory.
+      - If this is set, the I(query) and I(page_size) options will be ignored.
+    type: str
+    version_added: "5.15.0"
 """
 
 EXAMPLES = """
@@ -117,6 +123,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 # This will send the default GraphQL query of:
 # query {
 #   devices {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -126,6 +133,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #     }
 #   }
 #   virtual_machines {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -228,6 +236,12 @@ query:
   virtual_machines:
     filters:
       name: EXCLUDE ALL
+
+---
+# Use a saved query from Nautobot to retrieve the inventory.
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: http://localhost:8000
+saved_query: "My Saved Query"
 """
 
 RETURN = """
@@ -238,6 +252,7 @@ RETURN = """
 """
 import json
 import os
+import uuid
 from collections.abc import Mapping
 from copy import deepcopy
 from sys import version as python_version
@@ -246,6 +261,7 @@ from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.module_utils.common.text.converters import to_native
 from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.six.moves.urllib.parse import quote
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
 from ansible.utils.unsafe_proxy import wrap_var
@@ -428,28 +444,34 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.display.vvvv(f"Cached response: {json_data}")
             return json_data
 
-        base_query = {
-            "query": {
-                "devices": {
-                    "name": None,
-                    "primary_ip4": "host",
-                    "primary_ip6": "host",
-                    "platform": "napalm_driver",
-                },
-                "virtual_machines": {
-                    "name": None,
-                    "primary_ip4": "host",
-                    "primary_ip6": "host",
-                    "platform": "name",
-                },
+        if self.saved_query:
+            base_query = self.saved_query
+            json_data = self._query_api(base_query, is_saved_query=True)
+        else:
+            base_query = {
+                "query": {
+                    "devices": {
+                        "id": None,
+                        "name": None,
+                        "primary_ip4": "host",
+                        "primary_ip6": "host",
+                        "platform": "napalm_driver",
+                    },
+                    "virtual_machines": {
+                        "id": None,
+                        "name": None,
+                        "primary_ip4": "host",
+                        "primary_ip6": "host",
+                        "platform": "name",
+                    },
+                }
             }
-        }
-        if self.gql_query.get("devices"):
-            base_query["query"]["devices"].update(self.gql_query["devices"])
-        if self.gql_query.get("virtual_machines"):
-            base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
+            if self.gql_query.get("devices"):
+                base_query["query"]["devices"].update(self.gql_query["devices"])
+            if self.gql_query.get("virtual_machines"):
+                base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
 
-        json_data = self._query_api_paginated(base_query) if self.page_size else self._query_api(base_query)
+            json_data = self._query_api_paginated(base_query) if self.page_size else self._query_api(base_query)
 
         # Error handling in case of a malformed query
         if "errors" in json_data:
@@ -461,9 +483,29 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         return json_data
 
-    def _query_api(self, base_query):
+    def _retrieve_saved_query(self, saved_query):
+        """Retrieve a saved query from Nautobot."""
+        if not saved_query:
+            return None
+
+        try:
+            response = open_url(
+                self.api_endpoint + f"/api/extras/graphql-queries/{quote(saved_query)}/",
+                method="get",
+                headers=self.headers,
+                timeout=self.timeout,
+                validate_certs=self.validate_certs,
+                follow_redirects=self.follow_redirects,
+            )
+        except urllib_error.HTTPError as err:
+            raise AnsibleParserError(to_native(err.fp.read()))
+        json_data = json.loads(response.read())
+        self.display.vvvv(f"Using saved query: {json_data['query']}")
+        return json_data["query"]
+
+    def _query_api(self, base_query, is_saved_query=False):
         """Query the API and return the results."""
-        query = convert_to_graphql_string(base_query)
+        query = convert_to_graphql_string(base_query) if not is_saved_query else base_query
         data = {"query": query}
         self.display.vvv(f"GraphQL query:\n{query}")
 
@@ -525,7 +567,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = self.get_results()
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
-            hostname = device["name"]
+            # A host in an Ansible inventory requires a hostname.
+            # name is an unique but not required attribute for a device in Nautobot
+            # If id was included in the query, it will be used as the hostname
+            # If neither name nor id are present, a UUID will be generated
+            hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
+            # Save the hostname back to the device record so that it can be referenced later
+            device["name"] = hostname
             if self.wrap_variables and check_needs_wrapping(hostname):
                 hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
@@ -573,5 +621,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.user_cache_setting = self.get_option("cache")
         self.page_size = self.get_option("page_size")
         self.wrap_variables = not self.get_option("allow_unsafe")
+        self.saved_query = self._retrieve_saved_query(self.get_option("saved_query"))
 
         self.main()

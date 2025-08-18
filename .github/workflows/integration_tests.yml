@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: "${{ inputs.python-version }}"
       - name: "Install invoke"
-        run: "pip install -U pip && pip install invoke"
+        run: "pip install -U pip && pip install invoke packaging"
       - name: "Install poetry"
         # Pinning poetry to v1 for now to avoid breaking changes
         run: "curl -sSL https://install.python-poetry.org | python3 - --version 1.8.5"
