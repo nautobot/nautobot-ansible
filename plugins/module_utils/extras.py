@@ -58,13 +58,13 @@ class NautobotExtrasModule(NautobotModule):
             name = f"{data['source_type']} -> {data['destination_type']}"
         elif endpoint_name == "static_group_association":
             name = f"{data['dynamic_group']} -> {data['associated_object_id']}"
-        elif endpoint_name == "custom_field":
+        elif endpoint_name == "custom_field" and data.get("label"):
             name = data["label"]
-        elif endpoint_name in ["custom_field_choice", "metadata_choice"]:
+        elif endpoint_name in ["custom_field_choice", "metadata_choice"] and data.get("value"):
             name = data["value"]
-        elif endpoint_name in ["object_metadata"]:
+        elif endpoint_name in ["object_metadata"] and data.get("value") or data.get("contact") or data.get("team"):
             name = data.get("value", data.get("contact", data.get("team")))
-        elif endpoint_name == "secrets_groups_association":
+        elif endpoint_name == "secrets_groups_association" and data.get("secrets_group") and data.get("secret"):
             name = f"{data['secrets_group']} -> {data['secret']}"
         else:
             name = data.get("id")
