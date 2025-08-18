@@ -1201,14 +1201,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             host["is_virtual"] = True
 
     def extract_name(self, host):
-        # An host in an Ansible inventory requires an hostname.
+        # A host in an Ansible inventory requires a hostname.
         # name is an unique but not required attribute for a device in Nautobot
-        # We default to an UUID for hostname in case the name is not set in Nautobot
+        # We default to the device ID for hostname in case the name is not set in Nautobot
         # Use virtual chassis name if set by the user.
         if self.virtual_chassis_name and self._get_host_virtual_chassis_master(host):
             return host["virtual_chassis"]["name"] or str(uuid.uuid4())
         else:
-            return host["name"] or str(uuid.uuid4())
+            return host["name"] or host["id"]
 
     @staticmethod
     def _remove_invalid_group_chars(group):

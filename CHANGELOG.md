@@ -4,6 +4,30 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.15.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.15.0)
+
+### Added
+
+- [#140](https://github.com/nautobot/nautobot-ansible/issues/140) - Added the ability to use a saved GraphQL query from Nautobot when using the gql_inventory plugin.
+- [#614](https://github.com/nautobot/nautobot-ansible/issues/614) - Added `id` to the default query for the gql_inventory plugin.
+
+### Changed
+
+- [#615](https://github.com/nautobot/nautobot-ansible/issues/615) - Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.
+
+### Documentation
+
+- Added documentation for using Docker Compose overrides and a custom Nautobot init file.
+
+### Fixed
+
+- [#614](https://github.com/nautobot/nautobot-ansible/issues/614) - Fixed an issue where the gql_inventory plugin would fail if a device had no name.
+- [#618](https://github.com/nautobot/nautobot-ansible/issues/618) - Fixed a bug when deleting certain objects with just an id.
+
+### Housekeeping
+
+- [#616](https://github.com/nautobot/nautobot-ansible/issues/616) - Changed the inventory tests to a single set of files that only run against the latest minor version of Nautobot.
+
 ## [v5.14.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.14.0)
 
 ### Added
