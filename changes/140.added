@@ -1,1 +1,0 @@
-Added the ability to use a saved GraphQL query from Nautobot when using the gql_inventory plugin.
