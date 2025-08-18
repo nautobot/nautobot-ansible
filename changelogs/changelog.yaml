@@ -673,3 +673,11 @@ releases:
       - name: vrf_device_assignment
         description: Creates or removes VRF to Device, VM or Virtual Device Context assignments from Nautobot
         namespace: ''
+  5.15.0:
+    changes:
+      minor_changes:
+        - (#140) - Added the ability to use a saved GraphQL query from Nautobot when using the gql_inventory plugin.
+        - (#614) - Added `id` to the default query for the gql_inventory plugin.
+        - (#614) - Fixed an issue where the gql_inventory plugin would fail if a device had no name.
+        - (#615) - Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.
+        - (#618) - Fixed a bug when deleting certain objects with just an id.
