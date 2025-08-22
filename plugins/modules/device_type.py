@@ -73,6 +73,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  device_family:
+    description:
+      - The device family of the device type
+    required: false
+    type: raw
+    version_added: "5.16.0"
 """
 
 EXAMPLES = r"""
@@ -164,6 +170,7 @@ def main():
                 type="str",
             ),
             comments=dict(required=False, type="str"),
+            device_family=dict(required=False, type="raw"),
         )
     )
 
