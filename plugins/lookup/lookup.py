@@ -193,6 +193,7 @@ def get_endpoint(nautobot, term):
         "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
+        "device-families": {"endpoint": nautobot.dcim.device_families},
         "device-types": {"endpoint": nautobot.dcim.device_types},
         "device-redundancy-groups": {"endpoint": nautobot.dcim.device_redundancy_groups},
         "devices": {"endpoint": nautobot.dcim.devices},
