@@ -108,7 +108,7 @@ files = [
 
 [package.dependencies]
 aiohappyeyeballs = ">=2.5.0"
-aiosignal = ">=1.4.0"
+aiosignal = ">=1.1.2"
 attrs = ">=17.3.0"
 frozenlist = ">=1.1.1"
 multidict = ">=4.5,<7.0"
@@ -185,7 +185,7 @@ files = [
 ]
 
 [package.dependencies]
-ansible-compat = ">=25.8.0"
+ansible-compat = ">=25.1.5"
 ansible-core = ">=2.16.11"
 black = ">=24.3.0"
 filelock = ">=3.8.2"
@@ -263,30 +263,6 @@ files = [
 
 [package.extras]
 dev = ["backports.zoneinfo", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata"]
-
-[[package]]
-name = "bandit"
-version = "1.8.5"
-description = "Security oriented static analyser for python code."
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "bandit-1.8.5-py3-none-any.whl", hash = "sha256:cb2e57524e99e33ced48833c6cc9c12ac78ae970bb6a450a83c4b506ecc1e2f9"},
-    {file = "bandit-1.8.5.tar.gz", hash = "sha256:db812e9c39b8868c0fed5278b77fffbbaba828b4891bc80e34b9c50373201cfd"},
-]
-
-[package.dependencies]
-colorama = {version = ">=0.3.9", markers = "platform_system == \"Windows\""}
-PyYAML = ">=5.3.1"
-rich = "*"
-stevedore = ">=1.20.0"
-
-[package.extras]
-baseline = ["GitPython (>=3.1.30)"]
-sarif = ["jschema-to-python (>=1.2.3)", "sarif-om (>=1.0.4)"]
-test = ["beautifulsoup4 (>=4.8.0)", "coverage (>=4.5.4)", "fixtures (>=3.0.0)", "flake8 (>=4.0.0)", "pylint (==1.9.4)", "stestr (>=2.5.0)", "testscenarios (>=0.5.0)", "testtools (>=2.3.0)"]
-toml = ["tomli (>=1.1.0)"]
-yaml = ["PyYAML"]
 
 [[package]]
 name = "black"
@@ -791,14 +767,14 @@ attrs = ">=22.2.0"
 sortedcontainers = ">=2.1.0,<3.0.0"
 
 [package.extras]
-all = ["black (>=20.8b0)", "click (>=7.0)", "crosshair-tool (>=0.0.93)", "django (>=4.2)", "dpcontracts (>=0.4)", "hypothesis-crosshair (>=0.0.24)", "lark (>=0.10.1)", "libcst (>=0.3.16)", "numpy (>=1.19.3)", "pandas (>=1.1)", "pytest (>=4.6)", "python-dateutil (>=1.4)", "pytz (>=2014.1)", "redis (>=3.0.0)", "rich (>=9.0.0)", "tzdata (>=2025.2)", "watchdog (>=4.0.0)"]
-cli = ["black (>=20.8b0)", "click (>=7.0)", "rich (>=9.0.0)"]
+all = ["black (>=19.10b0)", "click (>=7.0)", "crosshair-tool (>=0.0.88)", "django (>=4.2)", "dpcontracts (>=0.4)", "hypothesis-crosshair (>=0.0.23)", "lark (>=0.10.1)", "libcst (>=0.3.16)", "numpy (>=1.19.3)", "pandas (>=1.1)", "pytest (>=4.6)", "python-dateutil (>=1.4)", "pytz (>=2014.1)", "redis (>=3.0.0)", "rich (>=9.0.0)", "tzdata (>=2025.2)", "watchdog (>=4.0.0)"]
+cli = ["black (>=19.10b0)", "click (>=7.0)", "rich (>=9.0.0)"]
 codemods = ["libcst (>=0.3.16)"]
-crosshair = ["crosshair-tool (>=0.0.93)", "hypothesis-crosshair (>=0.0.24)"]
+crosshair = ["crosshair-tool (>=0.0.88)", "hypothesis-crosshair (>=0.0.23)"]
 dateutil = ["python-dateutil (>=1.4)"]
 django = ["django (>=4.2)"]
 dpcontracts = ["dpcontracts (>=0.4)"]
-ghostwriter = ["black (>=20.8b0)"]
+ghostwriter = ["black (>=19.10b0)"]
 lark = ["lark (>=0.10.1)"]
 numpy = ["numpy (>=1.19.3)"]
 pandas = ["pandas (>=1.1)"]
