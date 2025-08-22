@@ -663,6 +663,15 @@
   tags:
     - prefix_location
 
+- name: "PYNAUTOBOT_DEVICE_FAMILY TESTS"
+  include_tasks:
+    file: "device_family.yml"
+    apply:
+      tags:
+        - device_family
+  tags:
+    - device_family
+
 - name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
   include_tasks:
     file: "vrf_device_assignment.yml"

@@ -996,6 +996,10 @@ controller = [
 ]
 created_controller = make_nautobot_calls(nb.dcim.controllers, controller)
 
+# Create Device Families
+device_families = [{"name": "My Device Family"}]
+created_device_families = make_nautobot_calls(nb.dcim.device_families, device_families)
+
 # Create Controller Managed Device Groups
 test_controller_one = nb.dcim.controllers.get(name="controller_one")
 controller_device_group = [
