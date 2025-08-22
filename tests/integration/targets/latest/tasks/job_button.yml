@@ -99,7 +99,7 @@
         - dcim.device
     job: "Example Simple Job Button Receiver"
     text: SubmitMeToo
-    enabled: "{{ false if nautobot_version is version('2.3', '>=') else omit }}"
+    enabled: false
     confirmation: false
     weight: 200
     group_name: Groop
@@ -131,7 +131,7 @@
         - dcim.device
     job: "Example Simple Job Button Receiver"
     text: SubmitMeToo
-    enabled: "{{ false if nautobot_version is version('2.3', '>=') else omit }}"
+    enabled: false
     confirmation: false
     weight: 200
     group_name: Groop

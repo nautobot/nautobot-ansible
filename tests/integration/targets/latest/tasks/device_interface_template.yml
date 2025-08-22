@@ -116,82 +116,78 @@
       - test_five['interface_template']['device_type'] == dt_arista['key']
       - test_five['interface_template']['type'] == "lag"
 
-- name: "NAUTOBOT 2.3+ TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "6 - SET ADDITIONAL FACTS"
-      set_fact:
-        test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
+- name: "6 - SET ADDITIONAL FACTS"
+  set_fact:
+    test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
 
-    - name: "DEVICE_INTERFACE 6: Create interface template on module type"
-      networktocode.nautobot.device_interface_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: port channel template 3
-        type: lag
-        module_type: HooverMaxProModel60
-        state: present
-      register: test_six
+- name: "DEVICE_INTERFACE 6: Create interface template on module type"
+  networktocode.nautobot.device_interface_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: port channel template 3
+    type: lag
+    module_type: HooverMaxProModel60
+    state: present
+  register: test_six
 
-    - name: "DEVICE_INTERFACE 6: ASSERT"
-      assert:
-        that:
-          - test_six is changed
-          - test_six['diff']['before']['state'] == "absent"
-          - test_six['diff']['after']['state'] == "present"
-          - test_six['interface_template']['name'] == "port channel template 3"
-          - test_six['interface_template']['module_type'] == test_module_type['key']
-          - test_six['msg'] == "interface_template port channel template 3 created"
+- name: "DEVICE_INTERFACE 6: ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "absent"
+      - test_six['diff']['after']['state'] == "present"
+      - test_six['interface_template']['name'] == "port channel template 3"
+      - test_six['interface_template']['module_type'] == test_module_type['key']
+      - test_six['msg'] == "interface_template port channel template 3 created"
 
-    - name: "DEVICE_INTERFACE 7: Create duplicate"
-      networktocode.nautobot.device_interface_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: port channel template 3
-        type: lag
-        module_type: HooverMaxProModel60
-        state: present
-      register: test_seven
+- name: "DEVICE_INTERFACE 7: Create duplicate"
+  networktocode.nautobot.device_interface_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: port channel template 3
+    type: lag
+    module_type: HooverMaxProModel60
+    state: present
+  register: test_seven
 
-    - name: "DEVICE_INTERFACE 7: ASSERT - Create duplicate"
-      assert:
-        that:
-          - not test_seven['changed']
-          - test_seven['interface_template']['name'] == "port channel template 3"
-          - test_seven['interface_template']['module_type'] == test_module_type['key']
-          - test_seven['msg'] == "interface_template port channel template 3 already exists"
+- name: "DEVICE_INTERFACE 7: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_seven['changed']
+      - test_seven['interface_template']['name'] == "port channel template 3"
+      - test_seven['interface_template']['module_type'] == test_module_type['key']
+      - test_seven['msg'] == "interface_template port channel template 3 already exists"
 
-    - name: "DEVICE_INTERFACE 8: Delete interface template on module type"
-      networktocode.nautobot.device_interface_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: port channel template 3
-        type: lag
-        module_type: HooverMaxProModel60
-        state: absent
-      register: test_eight
+- name: "DEVICE_INTERFACE 8: Delete interface template on module type"
+  networktocode.nautobot.device_interface_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: port channel template 3
+    type: lag
+    module_type: HooverMaxProModel60
+    state: absent
+  register: test_eight
 
-    - name: "DEVICE_INTERFACE 8: ASSERT"
-      assert:
-        that:
-          - test_eight is changed
-          - test_eight['diff']['before']['state'] == "present"
-          - test_eight['diff']['after']['state'] == "absent"
-          - test_eight['msg'] == "interface_template port channel template 3 deleted"
+- name: "DEVICE_INTERFACE 8: ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['state'] == "present"
+      - test_eight['diff']['after']['state'] == "absent"
+      - test_eight['msg'] == "interface_template port channel template 3 deleted"
 
-    - name: "DEVICE_INTERFACE 9: Delete interface template on module type duplicate"
-      networktocode.nautobot.device_interface_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: port channel template 3
-        type: lag
-        module_type: HooverMaxProModel60
-        state: absent
-      register: test_nine
+- name: "DEVICE_INTERFACE 9: Delete interface template on module type duplicate"
+  networktocode.nautobot.device_interface_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: port channel template 3
+    type: lag
+    module_type: HooverMaxProModel60
+    state: absent
+  register: test_nine
 
-    - name: "DEVICE_INTERFACE 9: ASSERT"
-      assert:
-        that:
-          - not test_nine['changed']
-          - "'already absent' in test_nine['msg']"
+- name: "DEVICE_INTERFACE 9: ASSERT"
+  assert:
+    that:
+      - not test_nine['changed']
+      - "'already absent' in test_nine['msg']"

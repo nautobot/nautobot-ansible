@@ -22,6 +22,7 @@
 
 - set_fact:
     device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Device Power Tests"'') }}'
+    power_port_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
 
 - name: "POWER_PORT 1: Necessary info creation"
   networktocode.nautobot.power_port:
@@ -124,46 +125,38 @@
       - test_five['diff']['after']['state'] == "absent"
       - test_five['msg'] == "power_port Power Port 2 deleted"
 
-- name: "NAUTOBOT 2.3+ TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "6 - SET ADDITIONAL FACTS"
-      set_fact:
-        power_port_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
+- name: "POWER_PORT 6: Create power port with module"
+  networktocode.nautobot.power_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port 3
+    module: HooverMaxProModel60
+    state: present
+  register: test_six
 
-    - name: "POWER_PORT 6: Create power port with module"
-      networktocode.nautobot.power_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Power Port 3
-        module: HooverMaxProModel60
-        state: present
-      register: test_six
+- name: "POWER_PORT 6: ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "absent"
+      - test_six['diff']['after']['state'] == "present"
+      - test_six['power_port']['name'] == "Power Port 3"
+      - test_six['power_port']['module'] == power_port_module['key']
+      - test_six['msg'] == "power_port Power Port 3 created"
 
-    - name: "POWER_PORT 6: ASSERT"
-      assert:
-        that:
-          - test_six is changed
-          - test_six['diff']['before']['state'] == "absent"
-          - test_six['diff']['after']['state'] == "present"
-          - test_six['power_port']['name'] == "Power Port 3"
-          - test_six['power_port']['module'] == power_port_module['key']
-          - test_six['msg'] == "power_port Power Port 3 created"
+- name: "POWER_PORT 7: Create duplicate"
+  networktocode.nautobot.power_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Power Port 3
+    module: HooverMaxProModel60
+    state: present
+  register: test_seven
 
-    - name: "POWER_PORT 7: Create duplicate"
-      networktocode.nautobot.power_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Power Port 3
-        module: HooverMaxProModel60
-        state: present
-      register: test_seven
-
-    - name: "POWER_PORT 7: ASSERT - Create duplicate"
-      assert:
-        that:
-          - not test_seven['changed']
-          - test_seven['power_port']['name'] == "Power Port 3"
-          - test_seven['power_port']['module'] == power_port_module['key']
-          - test_seven['msg'] == "power_port Power Port 3 already exists"
+- name: "POWER_PORT 7: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_seven['changed']
+      - test_seven['power_port']['name'] == "Power Port 3"
+      - test_seven['power_port']['module'] == power_port_module['key']
+      - test_seven['msg'] == "power_port Power Port 3 already exists"
