@@ -1,0 +1,2 @@
+Added the `device_family` module for creating, updating, and deleting device families in Nautobot.
+Added the `device_family` option to the `device_type` module for associating a device type with a device family.
