@@ -48,7 +48,7 @@ options:
     version_added: "3.0.0"
   ports:
     description:
-      - Specifies which ports used by service (Nautobot 2.10 and newer).
+      - Specifies which ports used by service.
     type: list
     elements: int
     version_added: "3.0.0"
