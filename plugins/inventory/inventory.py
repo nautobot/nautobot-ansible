@@ -642,10 +642,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         try:
             tag_zero = host["tags"][0]
             # Check the type of the first element in the "tags" array.
-            # If a dictionary (Nautobot >= 2.9), return an array of tags' names.
             if isinstance(tag_zero, dict):
                 return list(sub["name"] for sub in host["tags"])
-            # If a string (Nautobot <= 2.8), return the original "tags" array.
             elif isinstance(tag_zero, str):
                 return host["tags"]
         # If tag_zero fails definition (no tags), return the empty array.
@@ -658,17 +656,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             interfaces = list(interfaces_lookup[host["id"]].values())
 
-            before_v29 = bool(self.ipaddresses_intf_lookup)
             # Attach IP Addresses to their interface
             for interface in interfaces:
-                if before_v29:
-                    interface["ip_addresses"] = list(self.ipaddresses_intf_lookup[interface["id"]].values())
-                else:
-                    interface["ip_addresses"] = list(
-                        self.vm_ipaddresses_intf_lookup[interface["id"]].values()
-                        if host["is_virtual"]
-                        else self.device_ipaddresses_intf_lookup[interface["id"]].values()
-                    )
+                interface["ip_addresses"] = list(
+                    self.vm_ipaddresses_intf_lookup[interface["id"]].values()
+                    if host["is_virtual"]
+                    else self.device_ipaddresses_intf_lookup[interface["id"]].values()
+                )
 
             return interfaces
         except Exception:
@@ -984,7 +978,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.ipaddresses_intf_lookup = defaultdict(dict)
         # Construct a dictionary of the IP addresses themselves
         self.ipaddresses_lookup = defaultdict(dict)
-        # Nautobot v2.9 and onwards
         self.vm_ipaddresses_intf_lookup = defaultdict(dict)
         self.vm_ipaddresses_lookup = defaultdict(dict)
         self.device_ipaddresses_intf_lookup = defaultdict(dict)

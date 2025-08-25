@@ -600,270 +600,239 @@
   tags:
     - secrets_groups_association
 
-##########################
-##
-### NAUTOBOT 2.2+ TESTS
-##
-##########################
-
-- name: "NAUTOBOT 2.2+ TESTS"
-  when:
-    - "nautobot_version is version('2.2', '>=')"
-  block:
-    - name: "PYNAUTOBOT_CONTACT TESTS"
-      include_tasks:
-        file: "contact.yml"
-        apply:
-          tags:
-            - contact
+- name: "PYNAUTOBOT_CONTACT TESTS"
+  include_tasks:
+    file: "contact.yml"
+    apply:
       tags:
         - contact
+  tags:
+    - contact
 
-    - name: "PYNAUTOBOT_TEAM TESTS"
-      include_tasks:
-        file: "team.yml"
-        apply:
-          tags:
-            - team
+- name: "PYNAUTOBOT_TEAM TESTS"
+  include_tasks:
+    file: "team.yml"
+    apply:
       tags:
         - team
+  tags:
+    - team
 
-    - name: "PYNAUTOBOT_CONTROLLER TESTS"
-      include_tasks:
-        file: "controller.yml"
-        apply:
-          tags:
-            - controller
+- name: "PYNAUTOBOT_CONTROLLER TESTS"
+  include_tasks:
+    file: "controller.yml"
+    apply:
       tags:
         - controller
+  tags:
+    - controller
 
-    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
-      include_tasks:
-        file: "controller_managed_device_group.yml"
-        apply:
-          tags:
-            - controller_managed_device_group
+- name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
+  include_tasks:
+    file: "controller_managed_device_group.yml"
+    apply:
       tags:
         - controller_managed_device_group
+  tags:
+    - controller_managed_device_group
 
-    - name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
-      include_tasks:
-        file: "vlan_location.yml"
-        apply:
-          tags:
-            - vlan_location
+- name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
+  include_tasks:
+    file: "vlan_location.yml"
+    apply:
       tags:
         - vlan_location
+  tags:
+    - vlan_location
 
-    - name: "PYNAUTOBOT_SOFTWARE_VERSION TESTS"
-      include_tasks:
-        file: "software_version.yml"
-        apply:
-          tags:
-            - software_version
+- name: "PYNAUTOBOT_SOFTWARE_VERSION TESTS"
+  include_tasks:
+    file: "software_version.yml"
+    apply:
       tags:
         - software_version
+  tags:
+    - software_version
 
-    - name: "PYNAUTOBOT_PREFIX_LOCATION TESTS"
-      include_tasks:
-        file: "prefix_location.yml"
-        apply:
-          tags:
-            - prefix_location
+- name: "PYNAUTOBOT_PREFIX_LOCATION TESTS"
+  include_tasks:
+    file: "prefix_location.yml"
+    apply:
       tags:
         - prefix_location
+  tags:
+    - prefix_location
 
-    - name: "PYNAUTOBOT_DEVICE_FAMILY TESTS"
-      include_tasks:
-        file: "device_family.yml"
-        apply:
-          tags:
-            - device_family
+- name: "PYNAUTOBOT_DEVICE_FAMILY TESTS"
+  include_tasks:
+    file: "device_family.yml"
+    apply:
       tags:
         - device_family
+  tags:
+    - device_family
 
-    # The REST API endpoint for this module wasn't added until v2.2
-    - name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
-      include_tasks:
-        file: "vrf_device_assignment.yml"
-        apply:
-          tags:
-            - vrf_device_assignment
+- name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
+  include_tasks:
+    file: "vrf_device_assignment.yml"
+    apply:
       tags:
         - vrf_device_assignment
+  tags:
+    - vrf_device_assignment
 
-##########################
-##
-### NAUTOBOT 2.3+ TESTS
-##
-##########################
-
-- name: "NAUTOBOT 2.3+ TESTS"
-  when:
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
-      include_tasks:
-        file: "cloud_account.yml"
-        apply:
-          tags:
-            - cloud_account
+- name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
+  include_tasks:
+    file: "cloud_account.yml"
+    apply:
       tags:
         - cloud_account
+  tags:
+    - cloud_account
 
-    - name: "PYNAUTOBOT_CLOUD_NETWORK TESTS"
-      include_tasks:
-        file: "cloud_network.yml"
-        apply:
-          tags:
-            - cloud_network
+- name: "PYNAUTOBOT_CLOUD_NETWORK TESTS"
+  include_tasks:
+    file: "cloud_network.yml"
+    apply:
       tags:
         - cloud_network
+  tags:
+    - cloud_network
 
-    - name: "PYNAUTOBOT_CLOUD_RESOURCE_TYPE TESTS"
-      include_tasks:
-        file: "cloud_resource_type.yml"
-        apply:
-          tags:
-            - cloud_resource_type
+- name: "PYNAUTOBOT_CLOUD_RESOURCE_TYPE TESTS"
+  include_tasks:
+    file: "cloud_resource_type.yml"
+    apply:
       tags:
         - cloud_resource_type
+  tags:
+    - cloud_resource_type
 
-    - name: "PYNAUTOBOT_CLOUD_SERVICE TESTS"
-      include_tasks:
-        file: "cloud_service.yml"
-        apply:
-          tags:
-            - cloud_service
+- name: "PYNAUTOBOT_CLOUD_SERVICE TESTS"
+  include_tasks:
+    file: "cloud_service.yml"
+    apply:
       tags:
         - cloud_service
+  tags:
+    - cloud_service
 
-    - name: "PYNAUTOBOT_CLOUD_SERVICE_NETWORK_ASSIGNMENT TESTS"
-      include_tasks:
-        file: "cloud_service_network_assignment.yml"
-        apply:
-          tags:
-            - cloud_service_network_assignment
+- name: "PYNAUTOBOT_CLOUD_SERVICE_NETWORK_ASSIGNMENT TESTS"
+  include_tasks:
+    file: "cloud_service_network_assignment.yml"
+    apply:
       tags:
         - cloud_service_network_assignment
+  tags:
+    - cloud_service_network_assignment
 
-    - name: "PYNAUTOBOT_CLOUD_NETWORK_PREFIX_ASSIGNMENT TESTS"
-      include_tasks:
-        file: "cloud_network_prefix_assignment.yml"
-        apply:
-          tags:
-            - cloud_network_prefix_assignment
+- name: "PYNAUTOBOT_CLOUD_NETWORK_PREFIX_ASSIGNMENT TESTS"
+  include_tasks:
+    file: "cloud_network_prefix_assignment.yml"
+    apply:
       tags:
         - cloud_network_prefix_assignment
+  tags:
+    - cloud_network_prefix_assignment
 
-    - name: "PYNAUTOBOT_METADATA_TYPE TESTS"
-      include_tasks:
-        file: "metadata_type.yml"
-        apply:
-          tags:
-            - metadata_type
+- name: "PYNAUTOBOT_METADATA_TYPE TESTS"
+  include_tasks:
+    file: "metadata_type.yml"
+    apply:
       tags:
         - metadata_type
+  tags:
+    - metadata_type
 
-    - name: "PYNAUTOBOT_METADATA_CHOICE TESTS"
-      include_tasks:
-        file: "metadata_choice.yml"
-        apply:
-          tags:
-            - metadata_choice
+- name: "PYNAUTOBOT_METADATA_CHOICE TESTS"
+  include_tasks:
+    file: "metadata_choice.yml"
+    apply:
       tags:
         - metadata_choice
+  tags:
+    - metadata_choice
 
-    - name: "PYNAUTOBOT_OBJECT_METADATA TESTS"
-      include_tasks:
-        file: "object_metadata.yml"
-        apply:
-          tags:
-            - object_metadata
+- name: "PYNAUTOBOT_OBJECT_METADATA TESTS"
+  include_tasks:
+    file: "object_metadata.yml"
+    apply:
       tags:
         - object_metadata
+  tags:
+    - object_metadata
 
-    - name: "PYNAUTOBOT_MODULE_TYPE TESTS"
-      include_tasks:
-        file: "module_type.yml"
-        apply:
-          tags:
-            - module_type
+- name: "PYNAUTOBOT_MODULE_TYPE TESTS"
+  include_tasks:
+    file: "module_type.yml"
+    apply:
       tags:
         - module_type
+  tags:
+    - module_type
 
-    - name: "PYNAUTOBOT_MODULE_BAY_TEMPLATE TESTS"
-      include_tasks:
-        file: "module_bay_template.yml"
-        apply:
-          tags:
-            - module_bay_template
+- name: "PYNAUTOBOT_MODULE_BAY_TEMPLATE TESTS"
+  include_tasks:
+    file: "module_bay_template.yml"
+    apply:
       tags:
         - module_bay_template
+  tags:
+    - module_bay_template
 
-    - name: "PYNAUTOBOT_MODULE_BAY TESTS"
-      include_tasks:
-        file: "module_bay.yml"
-        apply:
-          tags:
-            - module_bay
+- name: "PYNAUTOBOT_MODULE_BAY TESTS"
+  include_tasks:
+    file: "module_bay.yml"
+    apply:
       tags:
         - module_bay
+  tags:
+    - module_bay
 
-    - name: "PYNAUTOBOT_MODULE TESTS"
-      include_tasks:
-        file: "module.yml"
-        apply:
-          tags:
-            - module
+- name: "PYNAUTOBOT_MODULE TESTS"
+  include_tasks:
+    file: "module.yml"
+    apply:
       tags:
         - module
+  tags:
+    - module
 
-    - name: "PYNAUTOBOT_STATIC_GROUP_ASSOCIATION TESTS"
-      include_tasks:
-        file: "static_group_association.yml"
-        apply:
-          tags:
-            - static_group_association
+- name: "PYNAUTOBOT_STATIC_GROUP_ASSOCIATION TESTS"
+  include_tasks:
+    file: "static_group_association.yml"
+    apply:
       tags:
         - static_group_association
+  tags:
+    - static_group_association
 
-##########################
-##
-### NAUTOBOT 2.4+ TESTS
-##
-##########################
-
-- name: "NAUTOBOT 2.4+ TESTS"
-  when:
-    - "nautobot_version is version('2.4', '>=')"
-  block:
-    - name: "PYNAUTOBOT_WIRELESS_SUPPORTED_DATA_RATE TESTS"
-      include_tasks:
-        file: "supported_data_rate.yml"
-        apply:
-          tags:
-            - supported_data_rate
+- name: "PYNAUTOBOT_WIRELESS_SUPPORTED_DATA_RATE TESTS"
+  include_tasks:
+    file: "supported_data_rate.yml"
+    apply:
       tags:
         - supported_data_rate
+  tags:
+    - supported_data_rate
 
-    - name: "PYNAUTOBOT_WIRELESS_RADIO_PROFILE TESTS"
-      include_tasks:
-        file: "radio_profile.yml"
-        apply:
-          tags:
-            - radio_profile
+- name: "PYNAUTOBOT_WIRELESS_RADIO_PROFILE TESTS"
+  include_tasks:
+    file: "radio_profile.yml"
+    apply:
       tags:
         - radio_profile
+  tags:
+    - radio_profile
 
-    - name: "PYNAUTOBOT_WIRELESS_NETWORK TESTS"
-      include_tasks:
-        file: "wireless_network.yml"
-        apply:
-          tags:
-            - wireless_network
+- name: "PYNAUTOBOT_WIRELESS_NETWORK TESTS"
+  include_tasks:
+    file: "wireless_network.yml"
+    apply:
       tags:
         - wireless_network
+  tags:
+    - wireless_network
 
 ##########################
 ##
