@@ -14,53 +14,44 @@ short_description: Creates or removes secrets groups from Nautobot
 description:
   - Creates or removes secrets groups from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "5.11.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - The name of the secrets group
-      - Required if I(state=present) and the secrets group does not exist yet
+  id:
     required: false
     type: str
+  name:
+    required: true
+    type: str
   description:
-    description:
-      - A description of the secrets group
     required: false
     type: str
 """
 
 EXAMPLES = r"""
----
-- name: Create a secrets group
-  networktocode.nautobot.secrets_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: my_secrets_group
-    description: My secrets group
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
 
-- name: Delete a secrets group
-  networktocode.nautobot.secrets_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: my_secrets_group
-    state: absent
+  tasks:
+    - name: Create secrets_group within Nautobot with only required information
+      networktocode.nautobot.secrets_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Secrets_Group
+        state: present
 
-- name: Delete a secrets group by id
-  networktocode.nautobot.secrets_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete secrets_group within nautobot
+      networktocode.nautobot.secrets_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Secrets_Group
+        state: absent
 """
 
 RETURN = r"""
@@ -74,36 +65,32 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NB_SECRETS_GROUP,
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotExtrasModule,
+    NB_SECRETS_GROUPS,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
+            name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    secrets_group = NautobotExtrasModule(module, NB_SECRETS_GROUP)
+
+    secrets_group = NautobotExtrasModule(module, NB_SECRETS_GROUPS)
     secrets_group.run()
 
 

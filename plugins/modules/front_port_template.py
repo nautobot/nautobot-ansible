@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,105 +10,115 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: front_port_template
-short_description: Create, update or delete front port templates within Nautobot
+short_description: Creates or removes front port templates from Nautobot
 description:
-  - Creates, updates or removes front port templates from Nautobot
+  - Creates or removes front port templates from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device_type:
-    description:
-      - The device type the front port template is attached to
-      - Requires one of I(device_type) or I(module_type) when I(state=present) and the front port template does not exist yet
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the front port template
-      - Required if I(state=present) and the front port template does not exist yet
+    required: true
+    type: str
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
+  description:
+    required: false
+    type: str
   type:
-    description:
-      - The type of the front port template
-      - Required if I(state=present) and the front port template does not exist yet
-    required: false
+    required: true
     type: str
-    version_added: "3.0.0"
-  rear_port_template:
-    description:
-      - The rear_port_template the front port template is attached to
-      - Required if I(state=present) and the front port template does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  rear_port_template_position:
-    description:
-      - The position of the rear port template this front port template is connected to
+    choices:
+      - "8p8c"
+      - "8p6c"
+      - "8p4c"
+      - "8p2c"
+      - "6p6c"
+      - "6p4c"
+      - "6p2c"
+      - "4p4c"
+      - "4p2c"
+      - "gg45"
+      - "tera-4p"
+      - "tera-2p"
+      - "tera-1p"
+      - "110-punch"
+      - "bnc"
+      - "f"
+      - "n"
+      - "mrj21"
+      - "fc"
+      - "lc"
+      - "lc-pc"
+      - "lc-upc"
+      - "lc-apc"
+      - "lsh"
+      - "lsh-pc"
+      - "lsh-upc"
+      - "lsh-apc"
+      - "lx5"
+      - "lx5-pc"
+      - "lx5-upc"
+      - "lx5-apc"
+      - "mpo"
+      - "mtrj"
+      - "sc"
+      - "sc-pc"
+      - "sc-upc"
+      - "sc-apc"
+      - "st"
+      - "cs"
+      - "sn"
+      - "sma-905"
+      - "sma-906"
+      - "urm-p2"
+      - "urm-p4"
+      - "urm-p8"
+      - "splice"
+      - "other"
+  rear_port_position:
     required: false
     type: int
-    version_added: "3.0.0"
-  module_type:
-    description:
-      - The module type the front port template is attached to
-      - Requires one of I(device_type) or I(module_type) when I(state=present) and the front port template does not exist yet
+  device_type:
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: dict
+  module_type:
+    required: false
+    type: dict
+  rear_port_template:
+    required: true
+    type: dict
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: false
+  gather_facts: False
 
   tasks:
-    - name: Create front port template within Nautobot with only required information
+    - name: Create front_port_template within Nautobot with only required information
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front Port Template
-        device_type: Test Device Type
-        type: bnc
-        rear_port_template: Test Rear Port Template
+        name: Test Front_Port_Template
+        type: 8p8c
+        rear_port_template: None
         state: present
 
-    - name: Update front port template with other fields
+    - name: Delete front_port_template within nautobot
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front Port Template
-        device_type: Test Device Type
-        type: bnc
-        rear_port_template: Test Rear Port Template
-        rear_port_template_position: 5
-        state: present
-
-    - name: Delete front port template within nautobot
-      networktocode.nautobot.front_port_template:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Front Port Template
-        device_type: Test Device Type
-        type: bnc
-        rear_port_template: Test Rear Port Template
-        state: absent
-
-    - name: Delete front port template by id
-      networktocode.nautobot.front_port_template:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
+        name: Test Front_Port_Template
         state: absent
 """
 
@@ -124,33 +133,84 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NB_FRONT_PORT_TEMPLATES,
     NautobotDcimModule,
+    NB_FRONT_PORT_TEMPLATES,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device_type=dict(required=False, type="raw"),
-            name=dict(required=False, type="str"),
-            type=dict(required=False, type="str"),
-            rear_port_template=dict(required=False, type="raw"),
-            rear_port_template_position=dict(required=False, type="int"),
-            module_type=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            type=dict(
+                required=True,
+                type="str",
+                choices=[
+                    "8p8c",
+                    "8p6c",
+                    "8p4c",
+                    "8p2c",
+                    "6p6c",
+                    "6p4c",
+                    "6p2c",
+                    "4p4c",
+                    "4p2c",
+                    "gg45",
+                    "tera-4p",
+                    "tera-2p",
+                    "tera-1p",
+                    "110-punch",
+                    "bnc",
+                    "f",
+                    "n",
+                    "mrj21",
+                    "fc",
+                    "lc",
+                    "lc-pc",
+                    "lc-upc",
+                    "lc-apc",
+                    "lsh",
+                    "lsh-pc",
+                    "lsh-upc",
+                    "lsh-apc",
+                    "lx5",
+                    "lx5-pc",
+                    "lx5-upc",
+                    "lx5-apc",
+                    "mpo",
+                    "mtrj",
+                    "sc",
+                    "sc-pc",
+                    "sc-upc",
+                    "sc-apc",
+                    "st",
+                    "cs",
+                    "sn",
+                    "sma-905",
+                    "sma-906",
+                    "urm-p2",
+                    "urm-p4",
+                    "urm-p8",
+                    "splice",
+                    "other",
+                ],
+            ),
+            rear_port_position=dict(required=False, type="int"),
+            device_type=dict(required=False, type="dict"),
+            module_type=dict(required=False, type="dict"),
+            rear_port_template=dict(required=True, type="dict"),
         )
     )
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -17,66 +17,46 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "5.1.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
   name:
-    description:
-      - The name of the namespace
-      - Required if I(state=present) and the namespace does not exist yet
-    required: false
+    required: true
     type: str
-    version_added: "5.1.0"
   description:
-    description:
-      - The description of the namespace
     required: false
     type: str
-    version_added: "5.1.0"
   location:
-    description:
-      - The location of the namespace
     required: false
-    type: raw
-    version_added: "5.1.0"
+    type: dict
 """
 
 EXAMPLES = r"""
----
-- name: Create a namespace
-  networktocode.nautobot.namespace:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: My Namespace
-    location: My Location
-    description: My Description
-    tags:
-      - tag1
-      - tag2
-    custom_fields:
-      my_custom_field: my_value
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
 
-- name: Delete a namespace
-  networktocode.nautobot.namespace:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: My Namespace
-    state: absent
+  tasks:
+    - name: Create namespace within Nautobot with only required information
+      networktocode.nautobot.namespace:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Namespace
+        state: present
 
-- name: Delete a namespace by id
-  networktocode.nautobot.namespace:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete namespace within nautobot
+      networktocode.nautobot.namespace:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Namespace
+        state: absent
 """
 
 RETURN = r"""
@@ -90,39 +70,35 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NautobotIpamModule,
     NB_NAMESPACES,
-    NautobotDcimModule,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
+            name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            location=dict(required=False, type="raw"),
+            location=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    namespace = NautobotDcimModule(module, NB_NAMESPACES)
+
+    namespace = NautobotIpamModule(module, NB_NAMESPACES)
     namespace.run()
 
 

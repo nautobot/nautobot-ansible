@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,61 +10,50 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: metadata_choice
-short_description: Create, update or delete metadata choices within Nautobot
+short_description: Creates or removes metadata choices from Nautobot
 description:
-  - Creates, updates or removes metadata choices from Nautobot
+  - Creates or removes metadata choices from Nautobot
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Travis Smith (@tsm1th)
-version_added: "5.5.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
 options:
-  metadata_type:
-    description:
-      - The name of the metadata type
-      - Required if I(state=present) and the metadata choice does not exist yet
+  id:
     required: false
     type: str
   value:
-    description:
-      - The value of the metadata choice
-      - Required if I(state=present) and the metadata choice does not exist yet
-    required: false
+    required: true
     type: str
   weight:
-    description:
-      - Weight of this choice
     required: false
     type: int
+  metadata_type:
+    required: true
+    type: dict
 """
 
 EXAMPLES = r"""
-- name: Create a metadata choice
-  networktocode.nautobot.metadata_choice:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    value: "Choice 1"
-    weight: 100
-    metadata_type: "TopSecretInfo"
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
 
-- name: Delete a metadata choice
-  networktocode.nautobot.metadata_choice:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    value: "Choice 1"
-    metadata_type: "TopSecretInfo"
-    state: absent
+  tasks:
+    - name: Create metadata_choice within Nautobot with only required information
+      networktocode.nautobot.metadata_choice:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        value: "Test value"
+        metadata_type: None
+        state: present
 
-- name: Delete a metadata choice by id
-  networktocode.nautobot.metadata_choice:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete metadata_choice within nautobot
+      networktocode.nautobot.metadata_choice:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        state: absent
 """
 
 RETURN = r"""
@@ -78,30 +67,25 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NB_METADATA_CHOICES,
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotExtrasModule,
+    NB_METADATA_CHOICES,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            metadata_type=dict(required=False, type="str"),
-            value=dict(required=False, type="str"),
+            value=dict(required=True, type="str"),
             weight=dict(required=False, type="int"),
+            metadata_type=dict(required=True, type="dict"),
         )
     )
 

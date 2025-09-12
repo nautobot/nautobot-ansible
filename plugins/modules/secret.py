@@ -17,78 +17,50 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "5.11.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - The name of the secret
-      - Required if I(state=present) and the secret does not exist yet
+  id:
     required: false
     type: str
+  name:
+    required: true
+    type: str
   description:
-    description:
-      - A description of the secret
     required: false
     type: str
   provider:
-    description:
-      - The provider of the secret (e.g., environment-variable, text-file)
-      - Required if I(state=present) and the secret does not exist yet
-    required: false
+    required: true
     type: str
   parameters:
-    description:
-      - A dictionary of parameters for the secret
-      - Required if I(state=present) and the secret does not exist yet
     required: false
-    type: dict
+    type: str
 """
 
 EXAMPLES = r"""
----
-- name: Create an environment variable secret
-  networktocode.nautobot.secret:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: Device Password
-    description: Password for the device
-    provider: environment-variable
-    parameters:
-      variable: NAUTOBOT_NAPALM_PASSWORD
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: False
 
-- name: Create a text file secret
-  networktocode.nautobot.secret:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: Device Certificate
-    description: Certificate for the device
-    provider: text-file
-    parameters:
-      file: /path/to/device/certificate.pem
-    state: present
+  tasks:
+    - name: Create secret within Nautobot with only required information
+      networktocode.nautobot.secret:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Secret
+        provider: "Test provider"
+        state: present
 
-- name: Delete a secret
-  networktocode.nautobot.secret:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: My Secret
-    state: absent
-
-- name: Delete a secret by id
-  networktocode.nautobot.secret:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete secret within nautobot
+      networktocode.nautobot.secret:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Secret
+        state: absent
 """
 
 RETURN = r"""
@@ -102,40 +74,36 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
-    NB_SECRET,
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotExtrasModule,
+    NB_SECRETS,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
+            name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            provider=dict(required=False, type="str"),
-            parameters=dict(required=False, type="dict"),
+            provider=dict(required=True, type="str"),
+            parameters=dict(required=False, type="str"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    secret = NautobotExtrasModule(module, NB_SECRET)
+
+    secret = NautobotExtrasModule(module, NB_SECRETS)
     secret.run()
 
 

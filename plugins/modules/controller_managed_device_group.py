@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,75 +10,65 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: controller_managed_device_group
-short_description: Create, update or delete managed device groups within Nautobot
+short_description: Creates or removes controller managed device groups from Nautobot
 description:
-  - Creates, updates or removes managed device groups from Nautobot.
+  - Creates or removes controller managed device groups from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Sven Winkelmann (@pugnacity)
-version_added: "5.7.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - The name of the controller managed device groups
-      - Required if I(state=present) and the controller managed device group does not exist yet
+  id:
     required: false
     type: str
-  controller:
-    description:
-      - The name of the controller for this group
-      - Required if I(state=present) and the controller managed device group does not exist yet
+  capabilities:
+    required: false
+    type: list
+  name:
+    required: true
+    type: str
+  description:
     required: false
     type: str
   weight:
-    description:
-      - weight of the managed device group
     required: false
     type: int
-  parent_cloud_network:
-    aliases:
-      - parent
-    description:
-      - The parent cloud network this network should be child to
+  parent:
     required: false
-    type: raw
+    type: dict
+  controller:
+    required: true
+    type: dict
+  tenant:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: false
+  gather_facts: False
 
   tasks:
-    - name: Create controller managed device group within Nautobot with only required information
+    - name: Create controller_managed_device_group within Nautobot with only required information
       networktocode.nautobot.controller_managed_device_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: "group_1"
-        controller: my_controller
+        name: Test Controller_Managed_Device_Group
+        controller: None
         state: present
 
-    - name: Delete controller managed device group within nautobot
+    - name: Delete controller_managed_device_group within nautobot
       networktocode.nautobot.controller_managed_device_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: "group_1"
-        controller: test_controller_group_3
-        state: absent
-
-    - name: Delete controller managed device group by id
-      networktocode.nautobot.controller_managed_device_group:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
+        name: Test Controller_Managed_Device_Group
         state: absent
 """
 
@@ -93,42 +83,40 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NB_CONTROLLER_MANAGED_DEVICE_GROUPS,
     NautobotDcimModule,
+    NB_CONTROLLER_MANAGED_DEVICE_GROUPS,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
-            controller=dict(required=False, type="str"),
+            capabilities=dict(required=False, type="list"),
+            name=dict(required=True, type="str"),
+            description=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
-            parent_cloud_network=dict(required=False, type="raw", aliases=["parent"]),
+            parent=dict(required=False, type="dict"),
+            controller=dict(required=True, type="dict"),
+            tenant=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    controller_group = NautobotDcimModule(module, NB_CONTROLLER_MANAGED_DEVICE_GROUPS)
-    controller_group.run()
+    controller_managed_device_group = NautobotDcimModule(module, NB_CONTROLLER_MANAGED_DEVICE_GROUPS)
+    controller_managed_device_group.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,85 +10,75 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: console_port_template
-short_description: Create, update or delete console port templates within Nautobot
+short_description: Creates or removes console port templates from Nautobot
 description:
-  - Creates, updates or removes console port templates from Nautobot
+  - Creates or removes console port templates from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device_type:
-    description:
-      - The device type the console port template is attached to
-      - Requires one of I(device_type) or I(module_type) when I(state=present) and the console port template does not exist yet
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the console port template
-      - Required if I(state=present) and the console port template does not exist yet
+    required: true
+    type: str
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
+  description:
+    required: false
+    type: str
   type:
-    description:
-      - The type of the console port template
-    version_added: "3.0.0"
     required: false
     type: str
-  module_type:
-    description:
-      - The module type the console port template is attached to
-      - Requires one of I(device_type) or I(module_type) when I(state=present) and the console port template does not exist yet
+    choices:
+      - "de-9"
+      - "db-25"
+      - "rj-11"
+      - "rj-12"
+      - "rj-45"
+      - "mini-din-8"
+      - "usb-a"
+      - "usb-b"
+      - "usb-c"
+      - "usb-mini-a"
+      - "usb-mini-b"
+      - "usb-micro-a"
+      - "usb-micro-b"
+      - "usb-micro-ab"
+      - "other"
+  device_type:
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: dict
+  module_type:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: false
+  gather_facts: False
 
   tasks:
-    - name: Create console port template within Nautobot with only required information
+    - name: Create console_port_template within Nautobot with only required information
       networktocode.nautobot.console_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console Port Template
-        device_type: Test Device Type
+        name: Test Console_Port_Template
         state: present
 
-    - name: Update console port template with other fields
+    - name: Delete console_port_template within nautobot
       networktocode.nautobot.console_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console Port Template
-        device_type: Test Device Type
-        type: iec-60320-c6
-        state: present
-
-    - name: Delete console port template within nautobot
-      networktocode.nautobot.console_port_template:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Console Port Template
-        device_type: Test Device Type
-        state: absent
-
-    - name: Delete console port template by id
-      networktocode.nautobot.console_port_template:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
+        name: Test Console_Port_Template
         state: absent
 """
 
@@ -104,28 +93,50 @@ msg:
   type: str
 """
 
-from copy import deepcopy
-
-from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NB_CONSOLE_PORT_TEMPLATES,
     NautobotDcimModule,
+    NB_CONSOLE_PORT_TEMPLATES,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
+from ansible.module_utils.basic import AnsibleModule
+from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device_type=dict(required=False, type="raw"),
-            name=dict(required=False, type="str"),
-            type=dict(required=False, type="str"),
-            module_type=dict(required=False, type="raw"),
+            name=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
+            description=dict(required=False, type="str"),
+            type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "de-9",
+                    "db-25",
+                    "rj-11",
+                    "rj-12",
+                    "rj-45",
+                    "mini-din-8",
+                    "usb-a",
+                    "usb-b",
+                    "usb-c",
+                    "usb-mini-a",
+                    "usb-mini-b",
+                    "usb-micro-a",
+                    "usb-micro-b",
+                    "usb-micro-ab",
+                    "other",
+                ],
+            ),
+            device_type=dict(required=False, type="dict"),
+            module_type=dict(required=False, type="dict"),
         )
     )
 

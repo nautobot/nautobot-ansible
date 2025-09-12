@@ -87,7 +87,9 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    controller_managed_device_group_radio_profile_assignment = NautobotWirelessModule(module, NB_CONTROLLER_MANAGED_DEVICE_GROUP_RADIO_PROFILE_ASSIGNMENTS)
+    controller_managed_device_group_radio_profile_assignment = NautobotWirelessModule(
+        module, NB_CONTROLLER_MANAGED_DEVICE_GROUP_RADIO_PROFILE_ASSIGNMENTS
+    )
     controller_managed_device_group_radio_profile_assignment.run()
 
 
