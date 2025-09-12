@@ -45,7 +45,7 @@ EXAMPLES = r"""
       networktocode.nautobot.user_saved_view_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        view_name: "Test view_name"
+        view_name: "Test View Name"
         saved_view: None
         user: None
         state: present

@@ -45,7 +45,7 @@ EXAMPLES = r"""
       networktocode.nautobot.custom_field_choice:
         url: http://nautobot.local
         token: thisIsMyToken
-        value: "Test value"
+        value: "Test Value"
         custom_field: None
         state: present
 

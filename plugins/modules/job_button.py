@@ -73,7 +73,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Job Button
         content_types: None
-        text: "Test text"
+        text: "Test Text"
         job: None
         state: present
 

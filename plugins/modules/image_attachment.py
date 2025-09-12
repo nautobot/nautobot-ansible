@@ -54,9 +54,9 @@ EXAMPLES = r"""
       networktocode.nautobot.image_attachment:
         url: http://nautobot.local
         token: thisIsMyToken
-        content_type: "Test content_type"
-        object_id: "Test object_id"
-        image: "Test image"
+        content_type: "Test Content Type"
+        object_id: "Test Object Id"
+        image: "Test Image"
         image_height: None
         image_width: None
         state: present

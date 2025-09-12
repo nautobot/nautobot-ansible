@@ -48,9 +48,9 @@ EXAMPLES = r"""
       networktocode.nautobot.note:
         url: http://nautobot.local
         token: thisIsMyToken
-        assigned_object_type: "Test assigned_object_type"
-        assigned_object_id: "Test assigned_object_id"
-        note: "Test note"
+        assigned_object_type: "Test Assigned Object Type"
+        assigned_object_id: "Test Assigned Object Id"
+        note: "Test Note"
         state: present
 
     - name: Delete note within nautobot

@@ -61,7 +61,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Git Repository
-        remote_url: "Test remote_url"
+        remote_url: "Test Remote Url"
         state: present
 
     - name: Delete git_repository within nautobot

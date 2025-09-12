@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Saved View
-        view: "Test view"
+        view: "Test View"
         owner: None
         state: present
 

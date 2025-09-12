@@ -49,7 +49,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Graphql Query
-        query: "Test query"
+        query: "Test Query"
         state: present
 
     - name: Delete graphql_query within nautobot

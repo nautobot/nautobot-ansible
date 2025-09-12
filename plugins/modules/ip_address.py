@@ -73,7 +73,7 @@ EXAMPLES = r"""
       networktocode.nautobot.ip_address:
         url: http://nautobot.local
         token: thisIsMyToken
-        address: "Test address"
+        address: "Test Address"
         status: "Active"
         state: present
 

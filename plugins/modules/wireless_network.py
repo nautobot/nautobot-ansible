@@ -83,7 +83,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Wireless Network
-        ssid: "Test ssid"
+        ssid: "Test Ssid"
         mode: Central
         authentication: Open
         state: present

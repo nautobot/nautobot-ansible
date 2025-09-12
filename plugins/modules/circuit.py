@@ -66,7 +66,7 @@ EXAMPLES = r"""
       networktocode.nautobot.circuit:
         url: http://nautobot.local
         token: thisIsMyToken
-        cid: "Test cid"
+        cid: "Test Cid"
         status: "Active"
         provider: None
         circuit_type: None

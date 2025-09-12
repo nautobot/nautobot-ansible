@@ -66,7 +66,7 @@ EXAMPLES = r"""
       networktocode.nautobot.software_version:
         url: http://nautobot.local
         token: thisIsMyToken
-        version: "Test version"
+        version: "Test Version"
         platform: None
         status: "Active"
         state: present

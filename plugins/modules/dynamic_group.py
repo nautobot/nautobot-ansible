@@ -62,7 +62,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Dynamic Group
-        content_type: "Test content_type"
+        content_type: "Test Content Type"
         state: present
 
     - name: Delete dynamic_group within nautobot

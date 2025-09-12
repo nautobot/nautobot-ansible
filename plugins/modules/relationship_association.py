@@ -51,10 +51,10 @@ EXAMPLES = r"""
       networktocode.nautobot.relationship_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        source_type: "Test source_type"
-        destination_type: "Test destination_type"
-        source_id: "Test source_id"
-        destination_id: "Test destination_id"
+        source_type: "Test Source Type"
+        destination_type: "Test Destination Type"
+        source_id: "Test Source Id"
+        destination_id: "Test Destination Id"
         relationship: None
         state: present
 

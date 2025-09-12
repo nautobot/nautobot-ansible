@@ -46,8 +46,8 @@ EXAMPLES = r"""
       networktocode.nautobot.static_group_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        associated_object_type: "Test associated_object_type"
-        associated_object_id: "Test associated_object_id"
+        associated_object_type: "Test Associated Object Type"
+        associated_object_id: "Test Associated Object Id"
         dynamic_group: None
         state: present
 

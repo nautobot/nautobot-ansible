@@ -101,10 +101,10 @@ EXAMPLES = r"""
       networktocode.nautobot.cable:
         url: http://nautobot.local
         token: thisIsMyToken
-        termination_a_type: "Test termination_a_type"
-        termination_b_type: "Test termination_b_type"
-        termination_a_id: "Test termination_a_id"
-        termination_b_id: "Test termination_b_id"
+        termination_a_type: "Test Termination A Type"
+        termination_b_type: "Test Termination B Type"
+        termination_a_id: "Test Termination A Id"
+        termination_b_id: "Test Termination B Id"
         status: "Active"
         state: present
 

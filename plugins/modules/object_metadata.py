@@ -57,8 +57,8 @@ EXAMPLES = r"""
       networktocode.nautobot.object_metadata:
         url: http://nautobot.local
         token: thisIsMyToken
-        assigned_object_type: "Test assigned_object_type"
-        assigned_object_id: "Test assigned_object_id"
+        assigned_object_type: "Test Assigned Object Type"
+        assigned_object_id: "Test Assigned Object Id"
         metadata_type: None
         state: present
 

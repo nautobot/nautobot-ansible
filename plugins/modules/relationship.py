@@ -81,9 +81,9 @@ EXAMPLES = r"""
       networktocode.nautobot.relationship:
         url: http://nautobot.local
         token: thisIsMyToken
-        source_type: "Test source_type"
-        destination_type: "Test destination_type"
-        label: "Test label"
+        source_type: "Test Source Type"
+        destination_type: "Test Destination Type"
+        label: "Test Label"
         state: present
 
     - name: Delete relationship within nautobot

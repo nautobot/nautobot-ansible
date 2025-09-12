@@ -45,7 +45,7 @@ EXAMPLES = r"""
       networktocode.nautobot.metadata_choice:
         url: http://nautobot.local
         token: thisIsMyToken
-        value: "Test value"
+        value: "Test Value"
         metadata_type: None
         state: present
 

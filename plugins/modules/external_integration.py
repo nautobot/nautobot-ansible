@@ -73,7 +73,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test External Integration
-        remote_url: "Test remote_url"
+        remote_url: "Test Remote Url"
         state: present
 
     - name: Delete external_integration within nautobot

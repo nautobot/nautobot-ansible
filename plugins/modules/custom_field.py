@@ -79,7 +79,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         content_types: None
-        label: "Test label"
+        label: "Test Label"
         state: present
 
     - name: Delete custom_field within nautobot

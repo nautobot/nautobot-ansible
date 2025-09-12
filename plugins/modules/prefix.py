@@ -79,7 +79,7 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        prefix: "Test prefix"
+        prefix: "Test Prefix"
         status: "Active"
         state: present
 

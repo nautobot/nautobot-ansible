@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Cloud Account
-        account_number: "Test account_number"
+        account_number: "Test Account Number"
         provider: None
         state: present
 

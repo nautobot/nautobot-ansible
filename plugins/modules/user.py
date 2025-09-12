@@ -72,7 +72,7 @@ EXAMPLES = r"""
       networktocode.nautobot.user:
         url: http://nautobot.local
         token: thisIsMyToken
-        username: "Test username"
+        username: "Test Username"
         state: present
 
     - name: Delete user within nautobot

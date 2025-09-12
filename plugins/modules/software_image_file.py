@@ -76,7 +76,7 @@ EXAMPLES = r"""
       networktocode.nautobot.software_image_file:
         url: http://nautobot.local
         token: thisIsMyToken
-        image_file_name: "Test image_file_name"
+        image_file_name: "Test Image File Name"
         software_version: None
         status: "Active"
         state: present

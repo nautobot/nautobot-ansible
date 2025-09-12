@@ -86,7 +86,7 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Webhook
         content_types: None
-        payload_url: "Test payload_url"
+        payload_url: "Test Payload Url"
         state: present
 
     - name: Delete webhook within nautobot

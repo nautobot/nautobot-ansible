@@ -64,7 +64,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Vrf
-        rd: "Test rd"
+        rd: "Test Rd"
         state: present
 
     - name: Delete vrf within nautobot

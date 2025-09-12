@@ -55,7 +55,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         units: None
-        description: "Test description"
+        description: "Test Description"
         rack: None
         state: present
 

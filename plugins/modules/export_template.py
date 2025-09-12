@@ -61,8 +61,8 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Export Template
-        content_type: "Test content_type"
-        template_code: "Test template_code"
+        content_type: "Test Content Type"
+        template_code: "Test Template Code"
         state: present
 
     - name: Delete export_template within nautobot

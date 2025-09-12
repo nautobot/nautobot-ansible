@@ -52,7 +52,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Secret
-        provider: "Test provider"
+        provider: "Test Provider"
         state: present
 
     - name: Delete secret within nautobot

@@ -55,8 +55,8 @@ EXAMPLES = r"""
       networktocode.nautobot.contact_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        associated_object_type: "Test associated_object_type"
-        associated_object_id: "Test associated_object_id"
+        associated_object_type: "Test Associated Object Type"
+        associated_object_id: "Test Associated Object Id"
         role: None
         status: "Active"
         state: present

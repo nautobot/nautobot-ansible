@@ -61,9 +61,9 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Custom Link
-        content_type: "Test content_type"
-        text: "Test text"
-        target_url: "Test target_url"
+        content_type: "Test Content Type"
+        text: "Test Text"
+        target_url: "Test Target Url"
         new_window: None
         state: present
 

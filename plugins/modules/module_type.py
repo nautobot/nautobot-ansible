@@ -51,7 +51,7 @@ EXAMPLES = r"""
       networktocode.nautobot.module_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        model: "Test model"
+        model: "Test Model"
         manufacturer: None
         state: present
 

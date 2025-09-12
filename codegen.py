@@ -1,14 +1,13 @@
 import datetime
-import logging
-from pathlib import Path
 import json
+import logging
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 import jinja2
 from prance import ResolvingParser  # TODO: Add prance to poetry. Currently fails with incompatibility with pynautobot
-
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +71,7 @@ def field_example_value(field):
     if field["type"] == "string":
         if field["choices"] is not None:
             return field["choices"][0]
-        return f'"Test {field["name"]}"'
+        return f'"Test {field["name"].replace("_", " ").title()}"'
 
 
 def _get_field_type(field_name, field_properties):

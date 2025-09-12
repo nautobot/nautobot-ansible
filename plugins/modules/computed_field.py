@@ -63,9 +63,9 @@ EXAMPLES = r"""
       networktocode.nautobot.computed_field:
         url: http://nautobot.local
         token: thisIsMyToken
-        content_type: "Test content_type"
-        label: "Test label"
-        template: "Test template"
+        content_type: "Test Content Type"
+        label: "Test Label"
+        template: "Test Template"
         state: present
 
     - name: Delete computed_field within nautobot
