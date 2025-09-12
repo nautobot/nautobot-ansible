@@ -6,10 +6,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import pytest
 import os
 from functools import partial
-from unittest.mock import patch, MagicMock, Mock, call
+from unittest.mock import Mock, call
+
+import pytest
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import InventoryModule
@@ -28,6 +29,17 @@ except ImportError:
 load_relative_test_data = partial(load_test_data, os.path.dirname(os.path.abspath(__file__)))
 
 
+class MockInventory:
+    def __init__(self):
+        self.variables = {}
+
+    def set_variable(self, hostname, key, value):
+        if hostname not in self.variables:
+            self.variables[hostname] = {}
+
+        self.variables[hostname][key] = value
+
+
 @pytest.fixture
 def inventory_fixture(allowed_device_query_parameters_fixture, allowed_vm_query_parameters_fixture):
     inventory = InventoryModule()
@@ -37,6 +49,9 @@ def inventory_fixture(allowed_device_query_parameters_fixture, allowed_vm_query_
     inventory.api_version = None
     inventory.allowed_device_query_parameters = allowed_device_query_parameters_fixture
     inventory.allowed_vm_query_parameters = allowed_vm_query_parameters_fixture
+    # Inventory mock, to validate what has been set via inventory.inventory.set_variable
+    inventory.inventory = MockInventory()
+    inventory.wrap_variables = True
 
     return inventory
 
@@ -78,7 +93,9 @@ def allowed_vm_query_parameters_fixture():
 @pytest.mark.parametrize("parameter, expected", load_relative_test_data("validate_query_parameter"))
 def test_validate_query_parameter(inventory_fixture, parameter, expected):
     value = "some value, doesn't matter"
-    result = inventory_fixture.validate_query_parameter({parameter: value}, inventory_fixture.allowed_device_query_parameters)
+    result = inventory_fixture.validate_query_parameter(
+        {parameter: value}, inventory_fixture.allowed_device_query_parameters
+    )
     assert (result == (parameter, value)) == expected
 
 
@@ -170,3 +187,24 @@ def test_get_resource_list_chunked(inventory_fixture, api_url, max_uri_length, q
     mock_get_resource_list.assert_has_calls(map(call, expected))
     assert mock_get_resource_list.call_count == len(expected)
     assert resources == mock_get_resource_list.return_value * len(expected)
+
+
+def test_rename_variables(inventory_fixture):
+    inventory_fixture.rename_variables = inventory_fixture.parse_rename_variables(
+        (
+            {"pattern": r"cluster(.*)", "repl": r"nautobot_cluster\1"},
+            {"pattern": r"ansible_host", "repl": r"host"},
+        )
+    )
+
+    inventory_fixture._set_variable("host", "ansible_fqdn", "host.example.org")
+    inventory_fixture._set_variable("host", "ansible_host", "host")
+    inventory_fixture._set_variable("host", "cluster", "staging")
+    inventory_fixture._set_variable("host", "cluster_id", "0xdeadbeef")
+
+    assert inventory_fixture.inventory.variables["host"] == {
+        "ansible_fqdn": "host.example.org",
+        "host": "host",
+        "nautobot_cluster": "staging",
+        "nautobot_cluster_id": "0xdeadbeef",
+    }

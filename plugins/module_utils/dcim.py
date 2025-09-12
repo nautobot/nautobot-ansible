@@ -7,10 +7,9 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_CABLES = "cables"
 NB_CONSOLE_PORTS = "console_ports"
@@ -18,8 +17,10 @@ NB_CONSOLE_PORT_TEMPLATES = "console_port_templates"
 NB_CONSOLE_SERVER_PORTS = "console_server_ports"
 NB_CONSOLE_SERVER_PORT_TEMPLATES = "console_server_port_templates"
 NB_CONTROLLERS = "controllers"
+NB_CONTROLLER_MANAGED_DEVICE_GROUPS = "controller_managed_device_groups"
 NB_DEVICE_BAYS = "device_bays"
 NB_DEVICE_BAY_TEMPLATES = "device_bay_templates"
+NB_DEVICE_FAMILIES = "device_families"
 NB_DEVICE_REDUNDANCY_GROUPS = "device_redundancy_groups"
 NB_DEVICES = "devices"
 NB_ROLES = "roles"
@@ -48,12 +49,14 @@ NB_RACKS = "racks"
 NB_RACK_GROUPS = "rack_groups"
 NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
+NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
 
 
 class NautobotDcimModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot DCIM module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
@@ -63,6 +66,7 @@ class NautobotDcimModule(NautobotModule):
         - console_server_ports
         - console_server_port_templates
         - controllers
+        - controller_managed_device_groups
         - device_bays
         - device_bay_templates
         - devices
@@ -115,6 +119,8 @@ class NautobotDcimModule(NautobotModule):
             name = self.module.params["data"]["master"]
         elif data.get("id"):
             name = data["id"]
+        elif endpoint_name == "software_version":
+            name = data["version"]
         elif endpoint_name == "cable":
             if self.module.params["termination_a"].get("name"):
                 termination_a_name = self.module.params["termination_a"]["name"]
@@ -153,6 +159,10 @@ class NautobotDcimModule(NautobotModule):
                     name = f"{self.module.params['parent_module_bay'].get('parent_module')} > {name}"
             elif isinstance(self.module.params["location"], dict):
                 name = f"{self.module.params['location'].get('parent', '—')} > {self.module.params['location'].get('name')} > {name}"
+        elif data.get("id"):
+            name = data["id"]
+        elif endpoint_name == "device":
+            name = "Unnamed device"
 
         # Make color params lowercase
         if data.get("color"):
@@ -183,7 +193,9 @@ class NautobotDcimModule(NautobotModule):
                     if self.module.params.get("update_vc_child"):
                         data["device"] = self.nb_object.device.id
                     else:
-                        self._handle_errors(msg="Must set update_vc_child to True to allow child device interface modification")
+                        self._handle_errors(
+                            msg="Must set update_vc_child to True to allow child device interface modification"
+                        )
 
         if self.state == "present":
             self._ensure_object_exists(nb_endpoint, endpoint_name, name, data)

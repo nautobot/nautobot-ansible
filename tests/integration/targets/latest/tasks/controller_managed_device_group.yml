@@ -1,0 +1,99 @@
+---
+- name: "CONTROLLER GROUP 1: Create Group"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    controller: controller_one
+    weight: 1000
+    state: present
+  register: test_one
+
+- name: "CONTROLLER 1: ASSERT - Create Group"
+  assert:
+    that:
+      - test_one['changed']
+      - test_one['controller_managed_device_group']['name'] == "Test Controller Group One"
+
+- name: "CONTROLLER GROUP 2: Create duplicate"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    controller: controller_one
+    weight: 1000
+    state: present
+  register: test_two
+
+- name: "CONTROLLER 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['controller_managed_device_group']['name'] == "Test Controller Group One"
+      - test_two['msg'] == "controller_managed_device_group Test Controller Group One already exists"
+
+- name: "CONTROLLER GROUP 3: Update"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    weight: 2000
+    controller: controller_two
+  register: test_three
+
+- name: "CONTROLLER GROUP 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three['changed']
+      - test_three['controller_managed_device_group']['name'] == "Test Controller Group One"
+      - test_three['diff']['after']['weight'] == 2000
+      - test_three['msg'] == "controller_managed_device_group Test Controller Group One updated"
+
+- name: "CONTROLLER GROUP 4: idempotent"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    weight: 2000
+    controller: controller_two
+  register: test_four
+
+- name: "CONTROLLER GROUP 4: ASSERT - idempotent"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['controller_managed_device_group']['name'] == "Test Controller Group One"
+      - test_four['msg'] == "controller_managed_device_group Test Controller Group One already exists"
+
+- name: "CONTROLLER GROUP 5: ASSERT - Delete"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    controller: controller_two
+    state: absent
+  register: test_five
+
+- name: "CONTROLLER 5: ASSERT - Delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "controller_managed_device_group Test Controller Group One deleted"
+
+- name: "CONTROLLER GROUP 6: ASSERT - Delete non existing"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group One
+    controller: controller_two
+    state: absent
+  register: test_six
+
+- name: "CONTROLLER GROUP 6: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['controller_managed_device_group'] == None
+      - test_six['msg'] == "controller_managed_device_group Test Controller Group One already absent"

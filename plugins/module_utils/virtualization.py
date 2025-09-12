@@ -7,10 +7,9 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_VIRTUAL_MACHINES = "virtual_machines"
 NB_CLUSTERS = "clusters"
@@ -21,7 +20,8 @@ NB_VM_INTERFACES = "interfaces"
 
 class NautobotVirtualizationModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Virtualization module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:

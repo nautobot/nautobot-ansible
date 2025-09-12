@@ -1,0 +1,581 @@
+{
+    "Active": {
+        "hosts": [
+            "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
+            "Test Nexus Child One",
+            "Test Nexus One",
+            "Test VM With Spaces",
+            "TestDeviceR1",
+            "test100",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
+        ]
+    },
+    "Another_Test_Rack": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
+        ]
+    },
+    "Child_Child_Test_Location": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "Child_Rack_Group": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "Child_Test_Location": {
+        "hosts": [
+            "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            "Test Nexus Child One",
+            "Test Nexus One",
+            "test100"
+        ]
+    },
+    "Cisco": {
+        "hosts": [
+            "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
+            "Test Nexus Child One",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100"
+        ]
+    },
+    "Cisco_Test": {
+        "hosts": [
+            "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
+            "TestDeviceR1",
+            "test100"
+        ]
+    },
+    "Core_Switch": {
+        "hosts": [
+            "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
+            "Test Nexus Child One",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100"
+        ]
+    },
+    "Main_Test_Rack": {
+        "hosts": [
+            "R1-Device"
+        ]
+    },
+    "Nexus_Child": {
+        "hosts": [
+            "Test Nexus Child One"
+        ]
+    },
+    "Nexus_Parent": {
+        "hosts": [
+            "Test Nexus One"
+        ]
+    },
+    "Parent3_Rack_Group": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
+        ]
+    },
+    "Parent_Rack_Group": {
+        "hosts": [
+            "R1-Device"
+        ]
+    },
+    "Sub_Test_Rack": {
+        "hosts": [
+            "TestDeviceR1"
+        ]
+    },
+    "Test_Cluster": {
+        "hosts": [
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "Test_Cluster_2": {
+        "hosts": [
+            "Test VM With Spaces",
+            "test104-vm"
+        ]
+    },
+    "Test_Cluster_Group": {
+        "hosts": [
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm"
+        ]
+    },
+    "Test_Cluster_Type": {
+        "hosts": [
+            "Test VM With Spaces",
+            "test100-vm",
+            "test101-vm",
+            "test102-vm",
+            "test103-vm",
+            "test104-vm"
+        ]
+    },
+    "Test_Tenant": {
+        "hosts": [
+            "test100"
+        ]
+    },
+    "___SEE_ISSUE_114___Parent_Test_Location_3": {
+        "hosts": [
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            }
+        ]
+    },
+    "_meta": {
+        "hostvars": {
+            "00000000-0000-0000-0000-000000000000": {
+                "ansible_host": "00000000-0000-0000-0000-000000000000",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "00000000-0000-0000-0000-000000000000",
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "R1-Device": {
+                "ansible_host": "R1-Device",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "R1-Device",
+                "rack": {
+                    "name": "Main Test Rack",
+                    "rack_group": {
+                        "name": "Parent Rack Group"
+                    },
+                    "role": {
+                        "name": "Test Rack Role"
+                    }
+                },
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "R2 {{ SEE ISSUE 114 }}": {
+                "ansible_host": "172.16.180.13",
+                "config_context": {
+                    "normal_string": {
+                        "__ansible_unsafe": "this is a normal string"
+                    },
+                    "string_containing_jinja2tags": {
+                        "__ansible_unsafe": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}"
+                    }
+                },
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "interfaces": [
+                    {
+                        "name": "GigabitEthernet1"
+                    }
+                ],
+                "location": {
+                    "name": {
+                        "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
+                    }
+                },
+                "name": {
+                    "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+                },
+                "primary_ip4": {
+                    "host": "172.16.180.13"
+                },
+                "rack": {
+                    "name": "Another Test Rack",
+                    "rack_group": {
+                        "name": "Parent3 Rack Group"
+                    },
+                    "role": {
+                        "name": "Test Rack Role"
+                    }
+                },
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "Test Nexus Child One": {
+                "ansible_host": "Test Nexus Child One",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Nexus Child"
+                },
+                "interfaces": [
+                    {
+                        "name": "Ethernet2/1"
+                    }
+                ],
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "Test Nexus Child One",
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "Test Nexus One": {
+                "ansible_host": "172.16.180.11",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Nexus Parent"
+                },
+                "interfaces": [
+                    {
+                        "name": "Ethernet1/1"
+                    }
+                ],
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "Test Nexus One",
+                "primary_ip4": {
+                    "host": "172.16.180.11"
+                },
+                "role": {
+                    "name": "Core Switch"
+                },
+                "services": [
+                    {
+                        "name": "telnet"
+                    }
+                ],
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "Test VM With Spaces": {
+                "ansible_host": "Test VM With Spaces",
+                "cluster": {
+                    "cluster_group": null,
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": null,
+                    "name": "Test Cluster 2"
+                },
+                "interfaces": [
+                    {
+                        "name": "Eth0"
+                    },
+                    {
+                        "name": "Eth1"
+                    }
+                ],
+                "name": "Test VM With Spaces",
+                "services": [
+                    {
+                        "name": "ssh"
+                    }
+                ],
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "TestDeviceR1": {
+                "ansible_host": "TestDeviceR1",
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "location": {
+                    "name": "Child-Child Test Location"
+                },
+                "name": "TestDeviceR1",
+                "rack": {
+                    "name": "Sub Test Rack",
+                    "rack_group": {
+                        "name": "Child Rack Group"
+                    },
+                    "role": null
+                },
+                "role": {
+                    "name": "Core Switch"
+                },
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "test100": {
+                "_custom_field_data": {
+                    "my_device_custom_field": "Test Device Custom Field Value"
+                },
+                "ansible_host": "test100",
+                "config_context": {
+                    "ntp_servers": [
+                        "pool.ntp.org"
+                    ]
+                },
+                "device_type": {
+                    "manufacturer": {
+                        "name": "Cisco"
+                    },
+                    "model": "Cisco Test"
+                },
+                "interfaces": [
+                    {
+                        "name": "GigabitEthernet1"
+                    },
+                    {
+                        "name": "GigabitEthernet2"
+                    },
+                    {
+                        "name": "GigabitEthernet3"
+                    },
+                    {
+                        "name": "GigabitEthernet4"
+                    }
+                ],
+                "location": {
+                    "name": "Child Test Location"
+                },
+                "name": "test100",
+                "role": {
+                    "name": "Core Switch"
+                },
+                "services": [
+                    {
+                        "name": "http"
+                    },
+                    {
+                        "name": "ssh"
+                    }
+                ],
+                "status": {
+                    "name": "Active"
+                },
+                "tenant": {
+                    "name": "Test Tenant"
+                }
+            },
+            "test100-vm": {
+                "ansible_host": "test100-vm",
+                "cluster": {
+                    "cluster_group": {
+                        "name": "Test Cluster Group"
+                    },
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": {
+                        "name": "Child Test Location"
+                    },
+                    "name": "Test Cluster"
+                },
+                "interfaces": [
+                    {
+                        "name": "Eth0"
+                    },
+                    {
+                        "name": "Eth1"
+                    },
+                    {
+                        "name": "Eth2"
+                    },
+                    {
+                        "name": "Eth3"
+                    },
+                    {
+                        "name": "Eth4"
+                    }
+                ],
+                "name": "test100-vm",
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "test101-vm": {
+                "ansible_host": "test101-vm",
+                "cluster": {
+                    "cluster_group": {
+                        "name": "Test Cluster Group"
+                    },
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": {
+                        "name": "Child Test Location"
+                    },
+                    "name": "Test Cluster"
+                },
+                "interfaces": [
+                    {
+                        "name": "Eth0"
+                    },
+                    {
+                        "name": "Eth1"
+                    },
+                    {
+                        "name": "Eth2"
+                    },
+                    {
+                        "name": "Eth3"
+                    },
+                    {
+                        "name": "Eth4"
+                    }
+                ],
+                "name": "test101-vm",
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "test102-vm": {
+                "ansible_host": "test102-vm",
+                "cluster": {
+                    "cluster_group": {
+                        "name": "Test Cluster Group"
+                    },
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": {
+                        "name": "Child Test Location"
+                    },
+                    "name": "Test Cluster"
+                },
+                "name": "test102-vm",
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "test103-vm": {
+                "ansible_host": "test103-vm",
+                "cluster": {
+                    "cluster_group": {
+                        "name": "Test Cluster Group"
+                    },
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": {
+                        "name": "Child Test Location"
+                    },
+                    "name": "Test Cluster"
+                },
+                "name": "test103-vm",
+                "status": {
+                    "name": "Active"
+                }
+            },
+            "test104-vm": {
+                "ansible_host": "test104-vm",
+                "cluster": {
+                    "cluster_group": null,
+                    "cluster_type": {
+                        "name": "Test Cluster Type"
+                    },
+                    "location": null,
+                    "name": "Test Cluster 2"
+                },
+                "name": "test104-vm",
+                "status": {
+                    "name": "Active"
+                }
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "Active",
+            "Another_Test_Rack",
+            "Child_Child_Test_Location",
+            "Child_Rack_Group",
+            "Child_Test_Location",
+            "Cisco",
+            "Cisco_Test",
+            "Core_Switch",
+            "Main_Test_Rack",
+            "Nexus_Child",
+            "Nexus_Parent",
+            "Parent3_Rack_Group",
+            "Parent_Rack_Group",
+            "Sub_Test_Rack",
+            "Test_Cluster",
+            "Test_Cluster_2",
+            "Test_Cluster_Group",
+            "Test_Cluster_Type",
+            "Test_Tenant",
+            "___SEE_ISSUE_114___Parent_Test_Location_3",
+            "rack_role",
+            "ungrouped"
+        ]
+    },
+    "rack_role": {
+        "hosts": [
+            "R1-Device",
+            {
+                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
+            },
+            "TestDeviceR1"
+        ]
+    }
+}

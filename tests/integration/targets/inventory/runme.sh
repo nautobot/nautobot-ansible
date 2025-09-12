@@ -46,37 +46,12 @@ inventory () {
 
 RESULT=0
 
-# Convert NAUTOBOT_VER to just semantic version (strips any beta/rc/etc monikers)
-NAUTOBOT_VER=$(echo "$NAUTOBOT_VER" | cut -d'-' -f1)
-# Ensure NAUTOBOT_VER always has 3 sections of version (major.minor.patch) for proper min/max comparison below
-IFS='.' read -ra VER <<< "$NAUTOBOT_VER"
-if [[ ${#VER[@]} -eq 1 ]]; then
-    NAUTOBOT_VER="${VER[0]}.0.0"
-elif [[ ${#VER[@]} -eq 2 ]]; then
-    NAUTOBOT_VER="${VER[0]}.${VER[1]}.0"
-fi
-
 for INVENTORY in "$INVENTORIES_DIR"/*.yml
 do
     NAME="$(basename "$INVENTORY")"
     NAME_WITHOUT_EXTENSION="${NAME%.yml}"
 
     OUTPUT_JSON="$OUTPUT_DIR/$NAME_WITHOUT_EXTENSION.json"
-    # Extract min and max versions from the filename
-    VERSION_PATTERN="test_([0-9.]+)-([0-9.]+).*\.yml"
-    if [[ "$NAME" =~ $VERSION_PATTERN ]]; then
-        MIN_VERSION="${BASH_REMATCH[1]}"
-        MAX_VERSION="${BASH_REMATCH[2]}"
-    else
-        echo "Invalid filename format: $NAME"
-        exit 1
-    fi
-    # Check if NAUTOBOT_VER is within the specified range
-    if ! printf "%s\n%s\n%s\n" $MIN_VERSION $NAUTOBOT_VER $MAX_VERSION | sort -V -C; then
-        # The sort statement will return non-zero if the versions are not in order (min <= nautobot_ver < max)
-        echo "NAUTOBOT_VER is $NAUTOBOT_VER, skipping inventory test: $NAME"
-        continue
-    fi
 
     inventory -vvvv --list --inventory "$INVENTORY" --output="$OUTPUT_JSON"
 

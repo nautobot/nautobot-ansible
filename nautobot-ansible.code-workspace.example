@@ -1,0 +1,181 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "Build the collection.",
+				"type": "shell",
+				"command": "invoke galaxy-build",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Force (re-)build the collection.",
+				"type": "shell",
+				"command": "invoke galaxy-build --force",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Install the collection.",
+				"type": "shell",
+				"command": "invoke galaxy-install",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Force (re-)install the collection.",
+				"type": "shell",
+				"command": "invoke galaxy-install --force",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Build and serve docs locally for development.",
+				"type": "shell",
+				"command": "invoke docs",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "dedicated",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Build Nautobot docker image.",
+				"type": "shell",
+				"command": "invoke build",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Start Nautobot and its dependencies in detached mode.",
+				"type": "shell",
+				"command": "invoke start",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			},
+			{
+				"label": "Stop Nautobot and its dependencies.",
+				"type": "shell",
+				"command": "invoke stop",
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				},
+				"problemMatcher": [],
+				"presentation": {
+					"echo": true,
+					"reveal": "always",
+					"focus": false,
+					"panel": "shared",
+					"showReuseMessage": true,
+					"clear": true
+				}
+			}
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Debug Ansible module with JSON data from ./debugging_args.",
+				"type": "debugpy",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"module": "ansible_collections.networktocode.nautobot.plugins.modules.${fileBasenameNoExtension}",
+				"console": "internalConsole",
+				"args": [
+					"${workspaceFolder}/debugging_args/${fileBasenameNoExtension}.json"
+				],
+				"env": {
+					"PYTHONPATH": "${workspaceFolder}/collections"
+				},
+				"justMyCode": false,
+				"preLaunchTask": "Install the collection."				
+				// The below seems desirable, but unfortunately the file is deleted
+				// and recreated, so it clears any breakpoints that the user has
+				// set. Leaving this as a reminder for anyone wondering why we
+				// don't do this automatically, currently.
+				// "preLaunchTask": "Force install the collection."
+			}
+		]
+}

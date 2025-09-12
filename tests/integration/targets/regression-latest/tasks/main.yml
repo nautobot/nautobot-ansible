@@ -1,10 +1,10 @@
 ---
 ##
 ##
-### TEST PYNAUTOBOT CONNECTION FAILURE
+### NAUTOBOT ANSIBLE REGRESSION TESTS
 ##
 ##
-- name: "TEST PYNAUTOBOT CONNECTION FAILURE"
+- name: "NAUTOBOT ANSIBLE REGRESSION TESTS"
   connection: local
   block:
     - name: "1 - Device with required information"
@@ -255,3 +255,49 @@
         enabled: true
         object_types:
           - "dcim.device"
+
+    - name: "Set fact for Module Interface test"
+      when:
+        - "nautobot_version is version('2.3', '>=')"
+      set_fact:
+        test_548_module_bay: "{{ lookup('networktocode.nautobot.lookup', 'module-bays', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"NetworkModuleBay 1\"') }}"
+
+    - name: "Verify an interface can be identified by just name and associated module (Issue 548)"
+      when:
+        - "nautobot_version is version('2.3', '>=')"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        module:
+          parent_module_bay: "{{ test_548_module_bay['key'] }}"
+        name: "Interface 1"
+        mac_address: "00:00:00:00:00:01"
+        state: present
+
+    - name: "(Issue 526) Create a Location Type with unsorted content types"
+      networktocode.nautobot.location_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Issue 526 Location Type"
+        content_types:
+          - "ipam.prefix"
+          - "dcim.device"
+        state: present
+      register: test_526_location_type
+
+    - name: "(Issue 526) Create a Location Type with unsorted content types again to ensure idempotency"
+      networktocode.nautobot.location_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Issue 526 Location Type"
+        content_types:
+          - "ipam.prefix"
+          - "dcim.device"
+        state: present
+      register: test_526_location_type_2
+
+    - name: "(Issue 526) Assert that the location type was first changed and then not changed"
+      assert:
+        that:
+          - test_526_location_type is changed
+          - test_526_location_type_2 is not changed

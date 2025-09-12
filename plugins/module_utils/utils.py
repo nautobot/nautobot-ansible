@@ -9,16 +9,14 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 # Import necessary packages
-import traceback
 import json
 import os
-
-from uuid import UUID
+import traceback
 from itertools import chain
+from uuid import UUID
 
+from ansible.module_utils.basic import env_fallback, missing_required_lib
 from ansible.module_utils.common.text.converters import to_text
-
-from ansible.module_utils.basic import missing_required_lib, env_fallback
 from ansible.module_utils.urls import open_url
 
 PYNAUTOBOT_IMP_ERR = None
@@ -48,9 +46,11 @@ API_APPS_ENDPOINTS = dict(
         "console_server_ports",
         "console_server_port_templates",
         "controllers",
+        "controller_managed_device_groups",
         "device_bays",
         "device_bay_templates",
         "devices",
+        "device_families",
         "device_types",
         "device_redundancy_groups",
         "front_ports",
@@ -76,6 +76,8 @@ API_APPS_ENDPOINTS = dict(
         "rack_groups",
         "rear_ports",
         "rear_port_templates",
+        "software_versions",
+        "software_image_files",
         "virtual_chassis",
     ],
     extras=[
@@ -90,6 +92,9 @@ API_APPS_ENDPOINTS = dict(
         "job_buttons",
         "relationship_associations",
         "roles",
+        "secrets",
+        "secrets_groups",
+        "secrets_groups_associations",
         "static_group_associations",
         "statuses",
         "tags",
@@ -100,6 +105,7 @@ API_APPS_ENDPOINTS = dict(
         "ip_address_to_interface",
         "namespaces",
         "prefixes",
+        "prefix_location_assignments",
         "rirs",
         "route_targets",
         "services",
@@ -107,12 +113,14 @@ API_APPS_ENDPOINTS = dict(
         "vlan_groups",
         "vlan_location_assignments",
         "vrfs",
+        "vrf_device_assignments",
     ],
     plugins=[],
     secrets=[],
     tenancy=["tenants", "tenant_groups"],
     users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
+    wireless=["wireless_networks", "radio_profiles", "supported_data_rates"],
 )
 
 # Used to normalize data for the respective query types used to find endpoints
@@ -129,7 +137,9 @@ QUERY_TYPES = dict(
     cluster_group="name",
     cluster_type="name",
     controller="name",
+    controller_managed_device_group="name",
     device="name",
+    device_family="name",
     dynamic_group="name",
     role="name",
     device_type="model",
@@ -139,6 +149,7 @@ QUERY_TYPES = dict(
     installed_device="name",
     import_targets="name",
     location="name",
+    location_prefix="prefix",
     location_type="name",
     manufacturer="name",
     master="name",
@@ -152,6 +163,7 @@ QUERY_TYPES = dict(
     parent_location_type="name",
     parent_rack_group="name",
     parent_tenant_group="name",
+    parent_inventory_item="name",
     power_panel="name",
     power_port="name",
     power_port_template="name",
@@ -161,11 +173,18 @@ QUERY_TYPES = dict(
     primary_ip6="address",
     rack="name",
     rack_group="name",
+    radio_profile="name",
     rear_port="name",
     rear_port_template="name",
     rir="name",
     route_targets="name",
+    secret="name",  # noqa: S106
+    secrets_group="name",
+    secrets_groups_association="name",
+    software_version="version",
+    software_image_file="image_file_name",
     status="name",
+    supported_data_rate="standard",
     tenant="name",
     tenant_group="name",
     time_zone="timezone",
@@ -175,6 +194,7 @@ QUERY_TYPES = dict(
     vlan="name",
     vlan_group="name",
     vrf="name",
+    wireless_network="name",
 )
 
 # Specifies keys within data that need to be converted to ID and the endpoint to be used when queried
@@ -196,6 +216,7 @@ CONVERT_TO_ID = {
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
     "contacts": "contacts",
+    "controller": "controllers",
     "dcim.consoleport": "console_ports",
     "dcim.consoleserverport": "console_server_ports",
     "dcim.frontport": "front_ports",
@@ -214,11 +235,13 @@ CONVERT_TO_ID = {
     "installed_device": "devices",
     "interface": "interfaces",
     "interface_template": "interface_templates",
+    "ip_address": "ip_addresses",
     "ip_addresses": "ip_addresses",
     "ipaddresses": "ip_addresses",
     "job": "jobs",
     "lag": "interfaces",
     "location": "locations",
+    "location_prefix": "prefixes",
     "location_type": "location_types",
     "manufacturer": "manufacturers",
     "metadata_type": "metadata_types",
@@ -239,6 +262,7 @@ CONVERT_TO_ID = {
     "parent_location": "locations",
     "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
+    "parent_inventory_item": "inventory_items",
     "power_panel": "power_panels",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
@@ -252,8 +276,13 @@ CONVERT_TO_ID = {
     "rir": "rirs",
     "role": "roles",
     "route_targets": "route_targets",
+    "secret": "secrets",
+    "secrets_group": "secrets_groups",
     "services": "services",
+    "software_version": "software_versions",
+    "software_image_files": "software_image_files",
     "status": "statuses",
+    "supported_data_rates": "supported_data_rates",
     "tags": "tags",
     "tagged_vlans": "vlans",
     "teams": "teams",
@@ -291,11 +320,13 @@ ENDPOINT_NAME_MAPPING = {
     "console_server_port_templates": "console_server_port_template",
     "contacts": "contact",
     "controllers": "controller",
+    "controller_managed_device_groups": "controller_managed_device_group",
     "custom_fields": "custom_field",
     "custom_field_choices": "custom_field_choice",
     "device_bays": "device_bay",
     "device_bay_templates": "device_bay_template",
     "devices": "device",
+    "device_families": "device_family",
     "device_types": "device_type",
     "device_redundancy_groups": "device_redundancy_group",
     "dynamic_groups": "dynamic_group",
@@ -328,18 +359,26 @@ ENDPOINT_NAME_MAPPING = {
     "power_ports": "power_port",
     "power_port_templates": "power_port_template",
     "prefixes": "prefix",
+    "prefix_location_assignments": "prefix_location_assignments",
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
+    "radio_profiles": "radio_profile",
     "rear_ports": "rear_port",
     "rear_port_templates": "rear_port_template",
     "relationship_associations": "relationship_associations",
     "rirs": "rir",
     "roles": "role",
     "route_targets": "route_target",
+    "secrets": "secret",
+    "secrets_groups": "secrets_group",
+    "secrets_groups_associations": "secrets_groups_association",
     "services": "services",
     "static_group_associations": "static_group_association",
+    "software_versions": "software_version",
+    "software_image_files": "software_image_file",
     "statuses": "statuses",
+    "supported_data_rates": "supported_data_rate",
     "tags": "tags",
     "teams": "team",
     "tenants": "tenant",
@@ -351,6 +390,8 @@ ENDPOINT_NAME_MAPPING = {
     "vlan_groups": "vlan_group",
     "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
+    "vrf_device_assignments": "vrf_device_assignments",
+    "wireless_networks": "wireless_network",
 }
 
 # What makes the search unique
@@ -375,28 +416,30 @@ ALLOWED_QUERY_PARAMS = {
     "contact": set(["name", "phone", "email"]),
     "contacts": set(["name", "phone", "email"]),
     "controller": set(["name"]),
+    "controller_managed_device_group": set(["name"]),
     "custom_field": set(["label"]),
     "custom_field_choice": set(["value", "custom_field"]),
-    "dcim.consoleport": set(["name", "device"]),
-    "dcim.consoleserverport": set(["name", "device"]),
-    "dcim.frontport": set(["name", "device", "rear_port"]),
-    "dcim.interface": set(["name", "device", "virtual_machine"]),
+    "dcim.consoleport": set(["name", "device", "module"]),
+    "dcim.consoleserverport": set(["name", "device", "module"]),
+    "dcim.frontport": set(["name", "device", "module", "rear_port"]),
+    "dcim.interface": set(["name", "device", "module", "virtual_machine"]),
     "dcim.powerfeed": set(["name", "power_panel"]),
-    "dcim.poweroutlet": set(["name", "device"]),
-    "dcim.powerport": set(["name", "device"]),
-    "dcim.rearport": set(["name", "device"]),
+    "dcim.poweroutlet": set(["name", "device", "module"]),
+    "dcim.powerport": set(["name", "device", "module"]),
+    "dcim.rearport": set(["name", "device", "module"]),
     "device_bay": set(["name", "device"]),
     "device_bay_template": set(["name", "device_type"]),
-    "device": set(["name"]),
+    "device": set(["name", "location", "role", "device_type", "tenant"]),
+    "device_family": set(["name"]),
     "device_redundancy_group": set(["name"]),
     "device_type": set(["model"]),
     "dynamic_group": set(["name"]),
-    "front_port": set(["name", "device", "rear_port"]),
+    "front_port": set(["name", "device", "module", "rear_port"]),
     "front_port_template": set(["name", "device_type", "rear_port_template"]),
     "group": set(["name"]),
     "groups": set(["name"]),
     "installed_device": set(["name"]),
-    "interface": set(["name", "device", "virtual_machine"]),
+    "interface": set(["name", "device", "module", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
     "ip_address": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
@@ -406,12 +449,13 @@ ALLOWED_QUERY_PARAMS = {
     "job_button": set(["name"]),
     "lag": set(["name"]),
     "location": set(["name", "id", "parent"]),
+    "location_prefix": set(["prefix", "namespace"]),
     "location_type": set(["name"]),
     "manufacturer": set(["name"]),
     "master": set(["name"]),
     "metadata_choice": set(["value", "metadata_type"]),
     "metadata_type": set(["name"]),
-    "module_bay_template": set(["name"]),
+    "module_bay_template": set(["name", "device_type", "module_type"]),
     "module_bay": set(["name", "parent_device", "parent_module"]),
     "module_type": set(["model"]),
     "module": set(["module_type", "parent_module_bay", "location"]),
@@ -423,6 +467,7 @@ ALLOWED_QUERY_PARAMS = {
     "parent_module": set(["module_type", "parent_module_bay"]),
     "parent_rack_group": set(["name"]),
     "parent_tenant_group": set(["name"]),
+    "parent_inventory_item": set(["name", "device"]),
     "permission": set(["name"]),
     "platform": set(["name"]),
     "power_feed": set(["name", "power_panel"]),
@@ -432,20 +477,30 @@ ALLOWED_QUERY_PARAMS = {
     "power_port": set(["name", "device"]),
     "power_port_template": set(["name", "device_type"]),
     "prefix": set(["prefix", "namespace"]),
+    "prefix_location_assignments": set(["prefix", "location"]),
     "primary_ip4": set(["address", "namespace"]),
     "primary_ip6": set(["address", "namespace"]),
     "provider": set(["name"]),
     "rack": set(["name", "location"]),
     "rack_group": set(["name"]),
+    "radio_profile": set(["name"]),
     "rear_port": set(["name", "device"]),
     "rear_port_template": set(["name", "device_type"]),
     "relationship_associations": set(["source_id", "destination_id"]),
     "rir": set(["name"]),
     "role": set(["name"]),
     "route_target": set(["name"]),
+    "secret": set(["name"]),
+    "secrets_group": set(["name"]),
+    "secrets_groups_association": set(["secrets_group", "secret", "access_type", "secret_type"]),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
+    "software_version": set(["version", "platform"]),
+    "software_image_file": set(["image_file_name", "software_version"]),
+    "software_image_files": set(["image_file_name", "software_version"]),
     "static_group_association": set(["dynamic_group", "associated_object_type", "associated_object_id"]),
     "statuses": set(["name"]),
+    "supported_data_rate": set(["standard", "rate"]),
+    "supported_data_rates": set(["standard", "rate"]),
     "tags": set(["name"]),
     "tagged_vlans": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "team": set(["name", "phone", "email"]),
@@ -463,9 +518,25 @@ ALLOWED_QUERY_PARAMS = {
     "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
+    "vrf_device_assignments": set(["vrf", "device", "virtual_machine", "virtual_device_context"]),
+    "wireless_network": set(["name"]),
 }
 
-QUERY_PARAMS_IDS = set(["circuit", "cluster", "device", "group", "interface", "rir", "vrf", "tenant", "type", "virtual_machine", "vminterface"])
+QUERY_PARAMS_IDS = set(
+    [
+        "circuit",
+        "cluster",
+        "device",
+        "group",
+        "interface",
+        "rir",
+        "vrf",
+        "tenant",
+        "type",
+        "virtual_machine",
+        "vminterface",
+    ]
+)
 
 # Some API endpoints dropped '_id' in filter fields in 2.0, ignore them here.
 IGNORE_ADDING_IDS = {
@@ -480,6 +551,7 @@ IGNORE_ADDING_IDS = {
     "power_port",
     "power_outlet",
     "services",
+    "vrf_device_assignments",
     # Cable termination types
     "circuits.circuittermination",
     "dcim.consoleport",
@@ -492,7 +564,9 @@ IGNORE_ADDING_IDS = {
     "dcim.rearport",
 }
 
-REQUIRED_ID_FIND = {
+# This is used to standardize choice fields to a single value
+# (e.g. {"display": "Foo", "value": "foo"} => "foo").
+CONVERT_CHOICES = {
     "cables": set(["termination_a_type", "termination_b_type", "type", "length_unit"]),
     "console_ports": set(["type"]),
     "console_port_templates": set(["type"]),
@@ -512,6 +586,7 @@ REQUIRED_ID_FIND = {
     "power_ports": set(["type"]),
     "power_port_templates": set(["type"]),
     "racks": set(["outer_unit", "type"]),
+    "radio_profiles": set(["channel_width"]),
     "rear_ports": set(["type"]),
     "rear_port_templates": set(["type"]),
     "services": set(["protocol"]),
@@ -523,17 +598,20 @@ CONVERT_KEYS = {
     "circuit_provider": "provider",
     "cloud_prefix": "prefix",
     "cloud_provider": "provider",
+    "location_prefix": "prefix",
     "parent_cloud_network": "parent",
     "parent_rack_group": "parent",
     "parent_location": "parent",
     "parent_location_type": "parent",
     "parent_tenant_group": "parent",
+    "parent_inventory_item": "parent",
     "rear_port_template_position": "rear_port_position",
     "termination_a": "termination_a_id",
     "termination_b": "termination_b_id",
 }
 
 
+# Options not sent for filtering
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
     token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
@@ -543,6 +621,10 @@ NAUTOBOT_ARG_SPEC = dict(
     api_version=dict(type="str", required=False),
 )
 
+ID_ARG_SPEC = dict(
+    id=dict(type="str", required=False),
+)
+
 TAGS_ARG_SPEC = dict(
     tags=dict(required=False, type="list", elements="raw"),
 )
@@ -550,6 +632,17 @@ TAGS_ARG_SPEC = dict(
 CUSTOM_FIELDS_ARG_SPEC = dict(
     custom_fields=dict(required=False, type="dict"),
 )
+
+
+def check_needs_wrapping(value):
+    """Recursively checks lists and dictionaries, and checks strings directly, to see if they need to be wrapped due to containing Jinja2 delimiters."""
+    if isinstance(value, str):
+        return "{{" in value or "{%" in value
+    elif isinstance(value, dict):
+        return any(check_needs_wrapping(v) for v in value.values())
+    elif isinstance(value, list):
+        return any(check_needs_wrapping(item) for item in value)
+    return False
 
 
 def is_truthy(arg):
@@ -564,7 +657,6 @@ def is_truthy(arg):
         arg (str): Truthy string (True values are y, yes, t, true, on and 1; false values are n, no,
         f, false, off and 0. Raises ValueError if val is anything else.
     """
-
     if isinstance(arg, bool):
         return arg
 
@@ -577,8 +669,18 @@ def is_truthy(arg):
         raise ValueError(f"Invalid truthy value: `{arg}`")
 
 
+def sort_dict_with_lists(data):
+    """Recursively sort a dictionary with lists for better comparison."""
+    if isinstance(data, dict):
+        return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
+    if isinstance(data, list):
+        return sorted([sort_dict_with_lists(v) for v in data], key=lambda x: json.dumps(x, sort_keys=True))
+    return data
+
+
 class NautobotModule:
-    """
+    """Run the Nautobot module.
+
     Initialize connection to Nautobot, sets AnsibleModule passed in to
     self.module to be used throughout the class
     :params module (obj): Ansible Module object
@@ -587,6 +689,7 @@ class NautobotModule:
     """
 
     def __init__(self, module, endpoint, client=None, remove_keys=None):
+        """Initialize the Nautobot module."""
         self.module = module
         self.state = self.module.params["state"]
         self.check_mode = self.module.check_mode
@@ -641,6 +744,7 @@ class NautobotModule:
         Args:
             greater (str): decimal string
             lesser (str): decimal string
+            greater_or_equal (bool): If True, return True if the major version is equal and the minor version is greater or equal
         """
         g_major, g_minor = greater.split(".")
         l_major, l_minor = lesser.split(".")
@@ -719,17 +823,19 @@ class NautobotModule:
 
     def _handle_errors(self, msg):
         """
-        Returns message and changed = False
+        Returns message and changed = False.
+
         :params msg (str): Message indicating why there is no change
         """
         self.module.fail_json(msg=msg, changed=False)
 
     def _build_diff(self, before=None, after=None):
-        """Builds diff of before and after changes"""
+        """Builds diff of before and after changes."""
         return {"before": before, "after": after}
 
     def _convert_identical_keys(self, data):
-        """
+        """Convert non-clashing keys for each module into identical keys that are required.
+
         Used to change non-clashing keys for each module into identical keys that are required
         to be passed to pynautobot
         ex. rack_role back into role to pass to Nautobot
@@ -749,7 +855,9 @@ class NautobotModule:
         return temp_dict
 
     def _remove_arg_spec_default(self, data):
-        """Used to remove any data keys that were not provided by user, but has the arg spec
+        """Remove any data keys that were not provided by user, but has the arg spec.
+
+        Used to remove any data keys that were not provided by user, but has the arg spec
         default values
         """
         new_dict = dict()
@@ -771,12 +879,13 @@ class NautobotModule:
         return str(uuid_obj) == match
 
     def _get_query_param_id(self, match, data):
-        """Used to find IDs of necessary searches when required under _build_query_params
+        """Find IDs of necessary searches when required under _build_query_params.
+
+        Used to find IDs of necessary searches when required under _build_query_params
         :returns id (int) or data (dict): Either returns the ID or original data passed in
         :params match (str): The key within the user defined data that is required to have an ID
         :params data (dict): User defined data passed into the module
         """
-
         match_value = data.get(match)
         if isinstance(match_value, int) or self.is_valid_uuid(match_value):
             return match_value
@@ -796,7 +905,8 @@ class NautobotModule:
             return data
 
     def _build_query_params(self, parent, module_data, user_query_params=None, child=None):
-        """
+        """Build a query dictionary for Nautobot endpoints.
+
         :returns dict(query_dict): Returns a query dictionary built using mappings to dynamically
         build available query params for Nautobot endpoints
         :params parent(str): This is either a key from `_find_ids` or a string passed in to determine
@@ -805,6 +915,10 @@ class NautobotModule:
         :params child(dict): This is used within `_find_ids` and passes the inner dictionary
         to build the appropriate `query_dict` for the parent
         """
+        # If they provided the ID, it's the only query param we need
+        if module_data.get("id"):
+            return {"id": module_data["id"]}
+
         # This is to change the parent key to use the proper ALLOWED_QUERY_PARAMS below for termination searches.
         if parent == "termination_a" and module_data.get("termination_a_type"):
             parent = module_data["termination_a_type"]
@@ -898,34 +1012,43 @@ class NautobotModule:
 
         choices = list(chain.from_iterable(endpoint_choices.values()))
 
+        search_term = search.lower() if isinstance(search, str) else search
         for item in choices:
-            if item["display"].lower() == search.lower():
+            if item["display"].lower() == search_term:
                 return item["value"]
-            elif item["value"] == search.lower():
+            if item["value"] == search_term:
                 return item["value"]
         valid_choices = [choice["value"] for choice in choices]
-        self._handle_errors(msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}")
+        self._handle_errors(
+            msg=f"{search} was not found as a valid choice for {endpoint}, valid choices are: {valid_choices}"
+        )
 
     def _change_choices_id(self, endpoint, data):
-        """Used to change data that is static and under _choices for the application.
+        """Change data that is static and under _choices for the application.
+
+        Used to change data that is static and under _choices for the application.
         ex. DEVICE_STATUS
         :returns data (dict): Returns the user defined data back with updated fields for _choices
         :params endpoint (str): The endpoint that will be used for mapping to required _choices
         :params data (dict): User defined data passed into the module
         """
-        if REQUIRED_ID_FIND.get(endpoint):
-            required_choices = REQUIRED_ID_FIND[endpoint]
+        if CONVERT_CHOICES.get(endpoint):
+            required_choices = CONVERT_CHOICES[endpoint]
             for choice in required_choices:
                 if data.get(choice):
                     if isinstance(data[choice], int) or self.is_valid_uuid(data[choice]):
                         continue
-                    choice_value = self._fetch_choice_value(data[choice], endpoint)
-                    data[choice] = choice_value
+                    if isinstance(data[choice], list):
+                        data[choice] = [self._fetch_choice_value(item, endpoint) for item in data[choice]]
+                    else:
+                        data[choice] = self._fetch_choice_value(data[choice], endpoint)
 
         return data
 
     def _find_app(self, endpoint):
-        """Dynamically finds application of endpoint passed in using the
+        """Finds the application of the endpoint passed in.
+
+        Dynamically finds application of endpoint passed in using the
         API_APPS_ENDPOINTS for mapping
         :returns nb_app (str): The application the endpoint lives under
         :params endpoint (str): The endpoint requiring resolution to application
@@ -936,7 +1059,8 @@ class NautobotModule:
         return nb_app
 
     def _find_ids(self, data, user_query_params):
-        """Will find the IDs of all user specified data if resolvable
+        """Find the IDs of all user specified data if resolvable.
+
         :returns data (dict): Returns the updated dict with the IDs of user specified data
         :params data (dict): User defined data passed into the module
         """
@@ -1005,7 +1129,8 @@ class NautobotModule:
         return data
 
     def _normalize_data(self, data):
-        """
+        """Normalize module data to formats accepted by Nautobot searches.
+
         :returns data (dict): Normalized module data to formats accepted by Nautobot searches
         :params data (dict): Original data from Nautobot module
         """
@@ -1052,6 +1177,7 @@ class NautobotModule:
 
     def _delete_object(self):
         """Delete a Nautobot object.
+
         :returns diff (dict): Ansible diff
         """
         if not self.check_mode:
@@ -1072,14 +1198,16 @@ class NautobotModule:
         if "custom_fields" in serialized_nb_obj:
             custom_fields = serialized_nb_obj.get("custom_fields", {})
             shared_keys = custom_fields.keys() & data.get("custom_fields", {}).keys()
-            serialized_nb_obj["custom_fields"] = {key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None}
+            serialized_nb_obj["custom_fields"] = {
+                key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None
+            }
         updated_obj = serialized_nb_obj.copy()
         updated_obj.update(data)
         if serialized_nb_obj.get("tags") and data.get("tags"):
             serialized_nb_obj["tags"] = set(serialized_nb_obj["tags"])
             updated_obj["tags"] = set(data["tags"])
 
-        if serialized_nb_obj == updated_obj:
+        if sort_dict_with_lists(serialized_nb_obj) == sort_dict_with_lists(updated_obj):
             return serialized_nb_obj, None
         else:
             data_before, data_after = {}, {}
@@ -1104,7 +1232,9 @@ class NautobotModule:
             return updated_obj, diff
 
     def _ensure_object_exists(self, nb_endpoint, endpoint_name, name, data):
-        """Used when `state` is present to make sure object exists or if the object exists
+        """Ensure an object exists or is updated.
+
+        Used when `state` is present to make sure object exists or if the object exists
         that it is updated
         :params nb_endpoint (pynautobot endpoint object): This is the nb endpoint to be used
         to create or update the object
@@ -1129,7 +1259,9 @@ class NautobotModule:
                 self.result["msg"] = "%s %s already exists" % (endpoint_name, name)
 
     def _ensure_object_absent(self, endpoint_name, name):
-        """Used when `state` is absent to make sure object does not exist
+        """Ensure an object is absent.
+
+        Used when `state` is absent to make sure object does not exist
         :params endpoint_name (str): Endpoint name that was created/updated. ex. device
         :params name (str): Name of the object
         """
@@ -1143,13 +1275,14 @@ class NautobotModule:
 
     def run(self):
         """
-        Must be implemented in subclasses
+        Must be implemented in subclasses.
         """
         raise NotImplementedError
 
 
 class NautobotApiBase:
     def __init__(self, **kwargs):
+        """Initialize the Nautobot API base."""
         self.url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
         self.token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         if kwargs.get("ssl_verify") is not None:
@@ -1166,6 +1299,7 @@ class NautobotApiBase:
 
 class NautobotGraphQL:
     def __init__(self, query_str, api=None, variables=None):
+        """Initialize the Nautobot GraphQL class."""
         self.query_str = query_str
         self.pynautobot = api.api
         self.variables = variables

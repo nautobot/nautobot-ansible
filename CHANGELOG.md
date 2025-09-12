@@ -1,24 +1,222 @@
 # networktocode.nautobot Release Notes
 
-v5.6.0
-======
+This document describes all new features and changes in the release. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Minor Changes
--------------
-- (#470) Dropped support for Python 3.10 to follow ansible-core 2.18
-- (#472) Added documentation on using custom fields in compose variables with the `inventory` plugin
-- (#474) Fixed `lookup` plugin to properly handle templated variables in `api_filter`
-- (#475) Added documentation for the `device_interface` module that `type` is required when creating a new interface
-- (#477) Fixed query example in the `lookup_graphql` plugin documentation for compatibility with Nautobot 2.X
-- (#478) Fixed the `cable` module to properly work with all cable types
-- (#480) Fixed environment variable fallback for `url` and `token` in all modules
-- (#481) Fixed environment variable fallback for `validate_certs` in all modules
+<!-- towncrier release notes start -->
 
-v5.5.0
-======
+## [v5.15.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.15.0)
 
-New Modules
------------
+### Added
+
+- [#140](https://github.com/nautobot/nautobot-ansible/issues/140) - Added the ability to use a saved GraphQL query from Nautobot when using the gql_inventory plugin.
+- [#614](https://github.com/nautobot/nautobot-ansible/issues/614) - Added `id` to the default query for the gql_inventory plugin.
+
+### Changed
+
+- [#615](https://github.com/nautobot/nautobot-ansible/issues/615) - Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.
+
+### Documentation
+
+- Added documentation for using Docker Compose overrides and a custom Nautobot init file.
+
+### Fixed
+
+- [#614](https://github.com/nautobot/nautobot-ansible/issues/614) - Fixed an issue where the gql_inventory plugin would fail if a device had no name.
+- [#618](https://github.com/nautobot/nautobot-ansible/issues/618) - Fixed a bug when deleting certain objects with just an id.
+
+### Housekeeping
+
+- [#616](https://github.com/nautobot/nautobot-ansible/issues/616) - Changed the inventory tests to a single set of files that only run against the latest minor version of Nautobot.
+
+## [v5.14.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.14.0)
+
+### Added
+
+- [#365](https://github.com/nautobot/nautobot-ansible/issues/365) - Added the `vrf_device_assignment` module for managing VRF to Device, VM or Virtual Device Context assignments in Nautobot.
+
+## [v5.13.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.1)
+
+### Added
+
+- [#601](https://github.com/nautobot/nautobot-ansible/issues/601) - Added an option to the inventory plugins to disable the wrapping of unsafe variables.
+
+### Dependencies
+
+- Changed the minimum version of ansible-core to 2.17.
+
+### Housekeeping
+
+- [#602](https://github.com/nautobot/nautobot-ansible/issues/602) - Updated various documentation segments to pass ansible-lint.
+
+## [v5.13.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.13.0)
+
+### Release Summary
+
+This release adds the ability to manage all objects by ID. You may now use the `id` parameter to update or delete existing objects. To accommodate for this, all previously required parameters are now optional. All required fields will be validated via the Nautobot API and returned as an error if they are not present.
+
+### Added
+
+- [#575](https://github.com/nautobot/nautobot-ansible/issues/575) - Added the `supported_data_rate` module for managing wireless supported data rates in Nautobot.
+- [#576](https://github.com/nautobot/nautobot-ansible/issues/576) - Added the `radio_profile` module for managing radio profiles in Nautobot.
+- [#577](https://github.com/nautobot/nautobot-ansible/issues/577) - Added the `wireless_network` module for managing wireless networks in Nautobot.
+- [#589](https://github.com/nautobot/nautobot-ansible/issues/589), [#591](https://github.com/nautobot/nautobot-ansible/issues/591) - Added the `id` parameter to all object based modules.
+- [#594](https://github.com/nautobot/nautobot-ansible/issues/594) - Added `software_version` and `software_image_files` parameters to the device module.
+
+### Changed
+
+- [#589](https://github.com/nautobot/nautobot-ansible/issues/589), [#591](https://github.com/nautobot/nautobot-ansible/issues/591) - Changed all required parameters to be optional for all object based modules. All required fields will be validated via the Nautobot API.
+
+### Dependencies
+
+- [#584](https://github.com/nautobot/nautobot-ansible/issues/584) - Updated to mkdocs-ansible-collection 1.1.0
+- Updated pynautobot to v2.6.5 to incorporate fixes with choice list parsing and serializing.
+
+### Fixed
+
+- [#114](https://github.com/nautobot/nautobot-ansible/issues/114) - Fixed some variables (potentially unsafe) not being wrapped correctly in the `inventory` and `gql_inventory` plugins.
+- Fixed an issue retrieving valid non-string (e.g. integer) choice values.
+
+### Housekeeping
+
+- [#542](https://github.com/nautobot/nautobot-ansible/issues/542) - Replaced black and bandit with ruff.
+- [#586](https://github.com/nautobot/nautobot-ansible/issues/586) - Updated 2.4 inventory tests to account for new `module_family` field.
+- Fixed sorting of duplicate interface and service names during the inventory integration tests.
+- Fixed the `device` module integration tests to run certain tests on Nautobot 2.3+ to account for changes to the model validation.
+
+## [v5.12.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.1)
+
+### Fixed
+
+- [#568](https://github.com/nautobot/nautobot-ansible/issues/568) - Fixed an issue with a utility function that was not able to sort some nested JSON custom fields.
+- [#578](https://github.com/nautobot/nautobot-ansible/issues/578) - Fixed an issue with the inventory plugin when trying to group virtual machines by role or manufacturer.
+
+## [v5.12.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.12.0)
+
+### Added
+
+- [#545](https://github.com/nautobot/nautobot-ansible/issues/545) - Added support for the `vrf` parameter to the `device_interface` and `vm_interface` modules.
+- [#549](https://github.com/nautobot/nautobot-ansible/issues/549) - Added `label`, `parent`, `software_version`, and `software_image_files` options to the `inventory_item` module.
+- [#550](https://github.com/nautobot/nautobot-ansible/issues/550) - Added option to fetch module interfaces in addition to device interfaces on the `networktocode.nautobot.inventory` plugin.
+- [#559](https://github.com/nautobot/nautobot-ansible/issues/559) - Added the ability to rename variables set on the host for the inventory plugin.
+- [#560](https://github.com/nautobot/nautobot-ansible/issues/560) - Added support for the `secrets_group` parameter to the `device` module.
+
+### Dependencies
+
+- [#555](https://github.com/nautobot/nautobot-ansible/issues/555) - Updated to mkdocs-ansible-collection 1.0.0
+
+### Fixed
+
+- [#526](https://github.com/nautobot/nautobot-ansible/issues/526) - Fixed the comparison of dictionaries with lists for better idempotency.
+- [#548](https://github.com/nautobot/nautobot-ansible/issues/548) - Fixed identification of module interfaces when using `networktocode.nautobot.device_interfaces` plugin.
+- [#550](https://github.com/nautobot/nautobot-ansible/issues/550) - Fixed parsing of inventory with `networktocode.nautobot.inventory` plugin when using `interfaces` option and module interfaces are present.
+
+### Housekeeping
+
+- [#547](https://github.com/nautobot/nautobot-ansible/issues/547) - Added Python 3.13 to the CI testing matrix.
+
+## [v5.11.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.11.0)
+
+### Added
+
+- [#359](https://github.com/nautobot/nautobot-ansible/issues/359) - Added the `prefix_location` module for managing prefix to location assignments.
+- [#531](https://github.com/nautobot/nautobot-ansible/issues/531) - Added the `secret` module for managing secrets in Nautobot.
+- [#535](https://github.com/nautobot/nautobot-ansible/issues/535) - Added the `secrets_group` module for managing secrets groups in Nautobot.
+- [#535](https://github.com/nautobot/nautobot-ansible/issues/535) - Added the `secrets_groups_association` module for associating secrets to secrets groups in Nautobot.
+
+### Dependencies
+
+- [#531](https://github.com/nautobot/nautobot-ansible/issues/531) - Updated pynautobot to v2.6.2 for proper idempotency of the `secret` module.
+
+### Documentation
+
+- [#525](https://github.com/nautobot/nautobot-ansible/issues/525) - Fixed a missing \` in the docs and added a little detail about the fact that the `.code-workspace` file is now an `.example`.
+- Added documentation for running the tests manually via GitHub Actions.
+- Updated the copyright documentation footer.
+
+### Housekeeping
+
+- [#527](https://github.com/nautobot/nautobot-ansible/issues/527) - Changed Python versions in test suite.
+- [#527](https://github.com/nautobot/nautobot-ansible/issues/527) - Disabled duplicate keys in testing.
+- [#528](https://github.com/nautobot/nautobot-ansible/issues/528) - Added a Manual CI workflow to test the collection with Galaxy Importer.
+- [#537](https://github.com/nautobot/nautobot-ansible/issues/537) - Added the ability to skip specific test suites when running tests via `invoke unit` and `invoke integration`.
+
+## [v5.10.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.10.0)
+
+### Added
+
+- [#517](https://github.com/nautobot/nautobot-ansible/issues/517) - Added Ansible Lint to the project.
+- [#521](https://github.com/nautobot/nautobot-ansible/issues/521) - Added VLAN Group capability to vlan module.
+
+### Changed
+
+- [#515](https://github.com/nautobot/nautobot-ansible/issues/515) - Updated meta/runtime.yml minimum Ansible version to 2.16.
+
+### Documentation
+
+- [#518](https://github.com/nautobot/nautobot-ansible/issues/518) - Updated documentation on the primary README and the contributing.
+
+### Housekeeping
+
+- [#230](https://github.com/nautobot/nautobot-ansible/issues/230) - Added the towncrier library to dev dependencies to help generate release notes.
+- [#230](https://github.com/nautobot/nautobot-ansible/issues/230) - Added documentation on how to create changelog fragments.
+- [#512](https://github.com/nautobot/nautobot-ansible/issues/512) - Updated the directories included in the build process.
+- Updated the release documentation to reflect the latest processes.
+- Added links to existing entries in `CHANGELOG.md`.
+- Fixed many ansible-lint and ansible-test issues.
+
+## [v5.9.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.9.0)
+
+### Release Summary
+
+This is the first official release of an Ansible EDA Event Source plugin for Nautobot Changelog.
+
+### New Event Source Plugins
+
+- **networktocode.nautobot.nautobot_changelog**: Listen for Change Log events and trigger actions against those.
+
+## [v5.8.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.8.1)
+
+### Added
+
+- [#502](https://github.com/nautobot/nautobot-ansible/issues/502) - Added the ability to look up IP Addresses by address and namespace for `ip_address_to_interface` module
+- [#503](https://github.com/nautobot/nautobot-ansible/issues/503) - Added VS Code development workspace config file and documentation for use
+
+## [v5.8.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.8.0)
+
+### Minor Changes
+
+- [#494](https://github.com/nautobot/nautobot-ansible/issues/494) - Updated `mkdocs-ansible-collection` dev dependency to `0.2.1` to fix documentation rendering issues
+- [#497](https://github.com/nautobot/nautobot-ansible/issues/497) - Added integration tests for the `gql_inventory` plugin
+- [#498](https://github.com/nautobot/nautobot-ansible/issues/498) - Added `network_driver` option to `platform` module
+- [#499](https://github.com/nautobot/nautobot-ansible/issues/499) - Added `page_size` option to `gql_inventory` plugin to allow for pagination of large results
+
+## [v5.7.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.7.0)
+
+### New Modules
+
+- networktocode.nautobot.controller_managed_device_groups - Creates or removes controller managed device groups within Nautobot
+- networktocode.nautobot.software_version - Creates or removes software versions from Nautobot
+
+### Minor Changes
+
+- [#488](https://github.com/nautobot/nautobot-ansible/issues/488) - Fixed `module_bay_template` idempotency when duplicate bay names exist for multiple device or module types
+
+## [v5.6.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.6.0)
+
+### Minor Changes
+
+- [#470](https://github.com/nautobot/nautobot-ansible/issues/470) - Dropped support for Python 3.10 to follow ansible-core 2.18
+- [#472](https://github.com/nautobot/nautobot-ansible/issues/472) - Added documentation on using custom fields in compose variables with the `inventory` plugin
+- [#474](https://github.com/nautobot/nautobot-ansible/issues/474) - Fixed `lookup` plugin to properly handle templated variables in `api_filter`
+- [#475](https://github.com/nautobot/nautobot-ansible/issues/475) - Added documentation for the `device_interface` module that `type` is required when creating a new interface
+- [#477](https://github.com/nautobot/nautobot-ansible/issues/477) - Fixed query example in the `lookup_graphql` plugin documentation for compatibility with Nautobot 2.X
+- [#478](https://github.com/nautobot/nautobot-ansible/issues/478) - Fixed the `cable` module to properly work with all cable types
+- [#480](https://github.com/nautobot/nautobot-ansible/issues/480) - Fixed environment variable fallback for `url` and `token` in all modules
+- [#481](https://github.com/nautobot/nautobot-ansible/issues/481) - Fixed environment variable fallback for `validate_certs` in all modules
+
+## [v5.5.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.5.0)
+
+### New Modules
 
 - networktocode.nautobot.job_button - Creates or removes job buttons from Nautobot
 - networktocode.nautobot.dynamic_group - Creates or removes dynamic groups from Nautobot
@@ -27,16 +225,14 @@ New Modules
 - networktocode.nautobot.metadata_choice - Creates or removes metadata choices from Nautobot
 - networktocode.nautobot.object_metadata - Creates or removes object metadata from Nautobot
 
-Minor Changes
--------------
-- (#464) Added full support for caching to GraphQL Inventory plugin
-- (#465) Changed `parent_location_type` to allow for explicit name attribute lookup
+### Minor Changes
 
-v5.4.0
-======
+- [#464](https://github.com/nautobot/nautobot-ansible/issues/464) - Added full support for caching to GraphQL Inventory plugin
+- [#465](https://github.com/nautobot/nautobot-ansible/issues/465) - Changed `parent_location_type` to allow for explicit name attribute lookup
 
-New Modules
------------
+## [v5.4.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.4.0)
+
+### New Modules
 
 - networktocode.nautobot.cloud_account - Creates or removes cloud accounts from Nautobot
 - networktocode.nautobot.cloud_network - Creates or removes cloud networks from Nautobot
@@ -49,27 +245,24 @@ New Modules
 - networktocode.nautobot.module_bay - Creates or removes module bays from Nautobot
 - networktocode.nautobot.module_bay_template - Creates or removes module bay templates from Nautobot
 
-Minor Changes
--------------
-- (#431) Added tags and custom fields options to `cable` module
-- (#433) Added role option to `device_interface` module
-- (#438) Added cloud_network option to `circuit_termination` module
-- (#446) Added module option to multiple existing modules
-- (#449) Changed lookup plugin to allow for multiple `id` filters
+### Minor Changes
 
-v5.3.1
-======
+- [#431](https://github.com/nautobot/nautobot-ansible/issues/431) - Added tags and custom fields options to `cable` module
+- [#433](https://github.com/nautobot/nautobot-ansible/issues/433) - Added role option to `device_interface` module
+- [#438](https://github.com/nautobot/nautobot-ansible/issues/438) - Added cloud_network option to `circuit_termination` module
+- [#446](https://github.com/nautobot/nautobot-ansible/issues/446) - Added module option to multiple existing modules
+- [#449](https://github.com/nautobot/nautobot-ansible/issues/449) - Changed lookup plugin to allow for multiple `id` filters
 
-Minor Changes
--------------
-- (#422) Fixed `admin_permission` module to properly convert list of groups to UUIDs
-- (#427) Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
+## [v5.3.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.3.1)
 
-v5.3.0
-======
+### Minor Changes
 
-New Modules
------------
+- [#422](https://github.com/nautobot/nautobot-ansible/issues/422) - Fixed `admin_permission` module to properly convert list of groups to UUIDs
+- [#427](https://github.com/nautobot/nautobot-ansible/issues/427) - Fixed setting of `default_ip_version` option. Fixed logic in `add_ip_address` that sets Ansible `host` values
+
+## [v5.3.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.3.0)
+
+### New Modules
 
 - networktocode.nautobot.vlan_location - Creates or removes Location assignments to VLANs from Nautobot
 - networktocode.nautobot.contact - Creates or removes contacts from Nautobot
@@ -79,469 +272,367 @@ New Modules
 - networktocode.nautobot.admin_group - Creates or removes groups from Nautobot
 - networktocode.nautobot.admin_permission - Creates or removes permissions from Nautobot
 
-Minor Changes
--------------
-- (#352) Added IPv6 support as the default IP version for `gql_inventory` plugin
-- (#415) Added `role` option to `vm_interface` module
-- (#416) Fixed `location_type` idempotency for `location` module
+### Minor Changes
 
-v5.2.1
-======
+- [#352](https://github.com/nautobot/nautobot-ansible/issues/352) - Added IPv6 support as the default IP version for `gql_inventory` plugin
+- [#415](https://github.com/nautobot/nautobot-ansible/issues/415) - Added `role` option to `vm_interface` module
+- [#416](https://github.com/nautobot/nautobot-ansible/issues/416) - Fixed `location_type` idempotency for `location` module
 
-Minor Changes
--------------
-- (#345) Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
-- (#348) Fixed GraphQL Inventory plugin bug when device platform is None
+## [v5.2.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.2.1)
 
-v5.2.0
-======
+### Minor Changes
 
-Minor Changes
--------------
-- (#310) Fixed `parent` for location_type to convert to UUID for idempotency
-- (#319) Added `custom_fields` to `tag`, `vlan_group` and `role` modules
-- (#321) Updated documentation and examples for the `lookup` plugin
-- (#323) Added constructed features and inventory cache to the `gql_inventory` plugin
-- (#335) Fixed custom field idempotency for various modules
-- (#336) Added `custom_fields` to the `inventory_item` module
-- (#338) Added `num_retries` to the `lookup` plugin
-- (#340) Added `label` and `description` to the `device_interface_template` module
+- [#345](https://github.com/nautobot/nautobot-ansible/issues/345) - Added `NAUTOBOT_VALIDATE_CERTS` environment variable to disable SSL verification
+- [#348](https://github.com/nautobot/nautobot-ansible/issues/348) - Fixed GraphQL Inventory plugin bug when device platform is None
 
-v5.1.1
-======
+## [v5.2.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.2.0)
 
-Minor Changes
--------------
-- (#298) Removes `status` option from being required unless creating a new object for various modules
-- (#299) Added example for using the `depth` option in the `lookup` module
-- (#304) Fixed the ability to look up `parent_location` by name instead of UUID in the `location` module
+### Minor Changes
 
-v5.1.0
-======
+- [#310](https://github.com/nautobot/nautobot-ansible/issues/310) - Fixed `parent` for location_type to convert to UUID for idempotency
+- [#319](https://github.com/nautobot/nautobot-ansible/issues/319) - Added `custom_fields` to `tag`, `vlan_group` and `role` modules
+- [#321](https://github.com/nautobot/nautobot-ansible/issues/321) - Updated documentation and examples for the `lookup` plugin
+- [#323](https://github.com/nautobot/nautobot-ansible/issues/323) - Added constructed features and inventory cache to the `gql_inventory` plugin
+- [#335](https://github.com/nautobot/nautobot-ansible/issues/335) - Fixed custom field idempotency for various modules
+- [#336](https://github.com/nautobot/nautobot-ansible/issues/336) - Added `custom_fields` to the `inventory_item` module
+- [#338](https://github.com/nautobot/nautobot-ansible/issues/338) - Added `num_retries` to the `lookup` plugin
+- [#340](https://github.com/nautobot/nautobot-ansible/issues/340) - Added `label` and `description` to the `device_interface_template` module
 
-Release Summary
----------------
+## [v5.1.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.1.1)
+
+### Minor Changes
+
+- [#298](https://github.com/nautobot/nautobot-ansible/issues/298) - Removes `status` option from being required unless creating a new object for various modules
+- [#299](https://github.com/nautobot/nautobot-ansible/issues/299) - Added example for using the `depth` option in the `lookup` module
+- [#304](https://github.com/nautobot/nautobot-ansible/issues/304) - Fixed the ability to look up `parent_location` by name instead of UUID in the `location` module
+
+## [v5.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.1.0)
+
+### Release Summary
 
 This release adds various new modules and includes some bug fixes and minor changes.
 
-New Modules
------------
+### New Modules
 
 - networktocode.nautobot.device_redundancy_group - Creates or removes device redundancy groups from Nautobot
 - networktocode.nautobot.custom_field - Creates or removes custom fields from Nautobot
 - networktocode.nautobot.custom_field_choice - Creates or removes custom field choices from Nautobot
 - networktocode.nautobot.namespace - Creates or removes namespaces from Nautobot
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#273) Added custom_fields option to the vm_interface module.
-- (#275) Added additional options to the location module that were originally on site and region in Nautobot 1.X.
-- (#283) Fixed the following lookup plugins to properly use a dash instead of an underscore:
+- [#273](https://github.com/nautobot/nautobot-ansible/issues/273) - Added custom_fields option to the vm_interface module.
+- [#275](https://github.com/nautobot/nautobot-ansible/issues/275) - Added additional options to the location module that were originally on site and region in Nautobot 1.X.
+- [#283](https://github.com/nautobot/nautobot-ansible/issues/283) - Fixed the following lookup plugins to properly use a dash instead of an underscore:
     - `location-types`
     - `provider-networks`
     - `relationship-associations`
-- (#287) Adds the ability to use the UUID, name or name and parent (as key/value pairs) for the `location` parameter in various modules.
+- [#287](https://github.com/nautobot/nautobot-ansible/issues/287) - Adds the ability to use the UUID, name or name and parent (as key/value pairs) for the `location` parameter in various modules.
 
-v5.0.2
-======
+## [v5.0.2](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.0.2)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#248) Remove choices from various modules, in favor of pynaubot choices() method.
-- (#269) Fix SSL verification.
+- [#248](https://github.com/nautobot/nautobot-ansible/issues/248) - Remove choices from various modules, in favor of pynaubot choices() method.
+- [#269](https://github.com/nautobot/nautobot-ansible/issues/269) - Fix SSL verification.
 
-v5.0.1
-======
+## [v5.0.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.0.1)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#257) Fix plugin module.
+- [#257](https://github.com/nautobot/nautobot-ansible/issues/257) - Fix plugin module.
 
-v5.0.0
-======
+## [v5.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.0.0)
 
-Release Summary
----------------
+### Release Summary
 
 This release updates collection code for compatibility code with Nautobot 2.0, where API has breaking changes.
 
-Breaking Changes / Porting Guide
---------------------------------
+### Breaking Changes / Porting Guide
 
-- (#234) Updates for Nautobot 2.0 Compatibility
+- [#234](https://github.com/nautobot/nautobot-ansible/issues/234) - Updates for Nautobot 2.0 Compatibility
 
-New Modules
------------
+### New Modules
 
 - networktocode.nautobot.ip_address_to_interface - Creates or removes associations between IP and interface.
 - networktocode.nautobot.role - Creates or removes a role. Collapsed from several role modules in DCIM and IPAM.
 
-v4.5.0
-======
+## [v4.5.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.5.0)
 
-Release Summary
----------------
+### Release Summary
 
 Fixes error handling in inventory to not erase inventories, minor bug fixes, and introduces Plugin module
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#211) Removes codecov from dev dependencies
-- (#217) Fixes and enables testing for Nautobot 1.5
-- (#220) Adds status option to device_interface module
+- [#211](https://github.com/nautobot/nautobot-ansible/issues/211) - Removes codecov from dev dependencies
+- [#217](https://github.com/nautobot/nautobot-ansible/issues/217) - Fixes and enables testing for Nautobot 1.5
+- [#220](https://github.com/nautobot/nautobot-ansible/issues/220) - Adds status option to device_interface module
 
-Bugfixes
---------
+### Bugfixes
 
-- (#209) Catches HTTPError for `query_graphql` and fails to enable ansible retries
-- (#223) Inventory Hosts Empty On Error
-- (#228) Fixes graphql inventory grouping by tags
+- [#209](https://github.com/nautobot/nautobot-ansible/issues/209) - Catches HTTPError for `query_graphql` and fails to enable ansible retries
+- [#223](https://github.com/nautobot/nautobot-ansible/issues/223) - Inventory Hosts Empty On Error
+- [#228](https://github.com/nautobot/nautobot-ansible/issues/228) - Fixes graphql inventory grouping by tags
 
-v4.4.0
-======
+## [v4.4.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.4.0)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#203) Adds plugin module
-- (#209) Catches HTTPError for GraphQL query and enables Ansible retries
-- (#211) Removes codecov from dev dependencies
+- [#203](https://github.com/nautobot/nautobot-ansible/issues/203) - Adds plugin module
+- [#209](https://github.com/nautobot/nautobot-ansible/issues/209) - Catches HTTPError for GraphQL query and enables Ansible retries
+- [#211](https://github.com/nautobot/nautobot-ansible/issues/211) - Removes codecov from dev dependencies
 
-v4.3.1
-======
+## [v4.3.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.3.1)
 
-Bugfixes
---------
+### Bugfixes
 
-- (#196) Virtual Chassis return multiple result at times
+- [#196](https://github.com/nautobot/nautobot-ansible/issues/196) - Virtual Chassis return multiple result at times
 
-v4.3.0
-======
+## [v4.3.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.3.0)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#185) Updated Doc Fragments
-- (#187) Updated Tag documentation
-- (#191) Added locations and location_type modules
+- [#185](https://github.com/nautobot/nautobot-ansible/issues/185) - Updated Doc Fragments
+- [#187](https://github.com/nautobot/nautobot-ansible/issues/187) - Updated Tag documentation
+- [#191](https://github.com/nautobot/nautobot-ansible/issues/191) - Added locations and location_type modules
 
-v4.2.0
-======
+## [v4.2.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.2.0)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#171) Add provider_network to circuit_termination module
-- (#172) Add description to manufacturer
+- [#171](https://github.com/nautobot/nautobot-ansible/issues/171) - Add provider_network to circuit_termination module
+- [#172](https://github.com/nautobot/nautobot-ansible/issues/172) - Add description to manufacturer
 
-v4.1.1
-======
+## [v4.1.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.1.1)
 
-Release Summary
----------------
+### Release Summary
 
 Fix incorrect filter parameters
 
-Bugfixes
---------
+### Bugfixes
 
-- (#163) Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
+- [#163](https://github.com/nautobot/nautobot-ansible/issues/163) - Fix bad filter params due to `STRICT_FILTERING` being enabled in Nautobot 1.4.
 
-v4.1.0
-======
+## [v4.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.1.0)
 
-Release Summary
----------------
+### Release Summary
 
 Fix minor bugs and add API versioning to collection.
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#139) - Add API versioning to compatible plugins.
+- [#139](https://github.com/nautobot/nautobot-ansible/issues/139) - - Add API versioning to compatible plugins.
 
-Bugfixes
---------
+### Bugfixes
 
-- (#159) Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers from legacy forked code.
+- [#159](https://github.com/nautobot/nautobot-ansible/issues/159) - Lookup - Fix `api_filter` to not attempt to convert UUIDs to integers from legacy forked code.
 
-v4.0.1
-======
+## [v4.0.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.0.1)
 
-Release Summary
----------------
+### Release Summary
 
 Fixes GraphQL inventory plugin bugs and RTD builds.
 
-Bugfixes
---------
+### Bugfixes
 
-- (#150) GraphQL inventory plugin - boolean filters are invalid
-- (#151) GraphQL inventory plugin - using group_by can crash if there are empty values
-- (#154) Fixes antsibull import for RTD builds
+- [#150](https://github.com/nautobot/nautobot-ansible/issues/150) - GraphQL inventory plugin - boolean filters are invalid
+- [#151](https://github.com/nautobot/nautobot-ansible/issues/151) - GraphQL inventory plugin - using group_by can crash if there are empty values
+- [#154](https://github.com/nautobot/nautobot-ansible/issues/154) - Fixes antsibull import for RTD builds
 
-v4.0.0
-======
+## [v4.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v4.0.0)
 
-Release Summary
----------------
+### Release Summary
 
 This release refactors the GraphQL inventory plugin to allow fetching virtual machines and a more flexible approach to allow users to use most of GraphQL's native capabilities.
 
-Breaking Changes / Porting Guide
---------------------------------
+### Breaking Changes / Porting Guide
 
-- (#130) Refactors GraphQL Inventory plugin to allow custom GraphQL queries with nested levels. Allows virtual machines to be fetched as well. The following options; additonal_variables (all top level keys are now set as host_vars) and filters (these are set within the query now).
+- [#130](https://github.com/nautobot/nautobot-ansible/issues/130) - Refactors GraphQL Inventory plugin to allow custom GraphQL queries with nested levels. Allows virtual machines to be fetched as well. The following options; additional_variables (all top level keys are now set as host_vars) and filters (these are set within the query now).
 
-New Modules
------------
+### New Modules
 
 - networktocode.nautobot.relationship_association - Creates or removes a relationship association from Nautobot
 
-v3.4.1
-======
+## [v3.4.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.4.1)
 
-Release Summary
----------------
+### Release Summary
 
 This release adds a deprecation notice for the GraphQL Inventory Plugin. There will be changes to the structure requiring changes to the inventory file.
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#132) Adds deprecation notice on GraphQL Inventory Plugin
-- (#133) Update documentation for query_graphql module and add try/except for HTTP call.
-- (#135) Account for bug in networktocode.nautobot.inventory for API bug in Nautobot 1.3.1 due to OpenAPI paths changing.
+- [#132](https://github.com/nautobot/nautobot-ansible/issues/132) - Adds deprecation notice on GraphQL Inventory Plugin
+- [#133](https://github.com/nautobot/nautobot-ansible/issues/133) - Update documentation for query_graphql module and add try/except for HTTP call.
+- [#135](https://github.com/nautobot/nautobot-ansible/issues/135) - Account for bug in networktocode.nautobot.inventory for API bug in Nautobot 1.3.1 due to OpenAPI paths changing.
 - Sanity tests and updates requested by Ansible for collection inclusion.
 
-v3.4.0
-======
+## [v3.4.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.4.0)
 
-Release Summary
----------------
+### Release Summary
 
 This release only changes the GraphQL inventory plugin. It fixes the ansible_host by removing the CIDR. The last change is the ability to specify nested relationships as well as fields that don't have a relationship to other Nautobot objects such as serial, asset_tag, etc.
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#122) Add ability to add nested GraphQL relationships and non-relationship fields such as serial, asset_tag, etc.
+- [#122](https://github.com/nautobot/nautobot-ansible/issues/122) - Add ability to add nested GraphQL relationships and non-relationship fields such as serial, asset_tag, etc.
 
-Bugfixes
---------
+### Bugfixes
 
-- (#124) Removes CIDR from the ansible_host variable.
+- [#124](https://github.com/nautobot/nautobot-ansible/issues/124) - Removes CIDR from the ansible_host variable.
 
-v3.3.1
-======
+## [v3.3.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.3.1)
 
-Bugfixes
---------
+### Bugfixes
 
-- (#116) Fix graphql action plugin to support check mode
-- (#119) Documentation fixes
-- (#120) Documentation permission fixes
+- [#116](https://github.com/nautobot/nautobot-ansible/issues/116) - Fix graphql action plugin to support check mode
+- [#119](https://github.com/nautobot/nautobot-ansible/issues/119) - Documentation fixes
+- [#120](https://github.com/nautobot/nautobot-ansible/issues/120) - Documentation permission fixes
 
-v3.3.0
-======
+## [v3.3.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.3.0)
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#110) Allow users to define any path for defining GroupBy Group names
-- (#115) Documentation fixes
+- [#110](https://github.com/nautobot/nautobot-ansible/issues/110) - Allow users to define any path for defining GroupBy Group names
+- [#115](https://github.com/nautobot/nautobot-ansible/issues/115) - Documentation fixes
 
-v3.2.1
-======
+## [v3.2.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.2.1)
 
-Release Summary
----------------
+### Release Summary
 
 Unbreak plugins/inventory/inventory.yml
 
-Bugfixes
---------
+### Bugfixes
 
 - Remove bad code in plugins/inventory/inventory.yml when locally built to publish that prevented it from grabbing all hosts
 
-v3.2.0
-======
+## [v3.2.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.2.0)
 
-Release Summary
----------------
+### Release Summary
 
 A few updates to the inventory plugins to support new options or require existing parameters.
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#105) Documentation updates
-- (#107) Add `tenant_group` to `group_by` to `inventory` plugin
-- (#108) Add choices to `group_by` in `gql_inventory` plugin
-- (#109) token is explicitly required within `gql_inventory` plugin. (This was always true, but never enforced.)
+- [#105](https://github.com/nautobot/nautobot-ansible/issues/105) - Documentation updates
+- [#107](https://github.com/nautobot/nautobot-ansible/issues/107) - Add `tenant_group` to `group_by` to `inventory` plugin
+- [#108](https://github.com/nautobot/nautobot-ansible/issues/108) - Add choices to `group_by` in `gql_inventory` plugin
+- [#109](https://github.com/nautobot/nautobot-ansible/issues/109) - token is explicitly required within `gql_inventory` plugin. (This was always true, but never enforced.)
 
-v3.1.1
-======
+## [v3.1.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.1.1)
 
-Release Summary
----------------
+### Release Summary
 
 Quick bugfix release for not attempting to resolve IDs for fields that a user has passed in an ID/UUID for
 
-Bugfixes
---------
+### Bugfixes
 
-- (#98) No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID for a resolvable field
+- [#98](https://github.com/nautobot/nautobot-ansible/issues/98) - No longer attempts to resolve field ID/UUIDs if user passes an ID/UUID for a resolvable field
 
-v3.1.0
-======
+## [v3.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.1.0)
 
-Release Summary
----------------
+### Release Summary
 
 Adds inventory plugin leveraging Nautobot's GraphQL API
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#53) Adds inventory plugin using GraphQL API
+- [#53](https://github.com/nautobot/nautobot-ansible/issues/53) - Adds inventory plugin using GraphQL API
 
-New Modules
------------
+### New Modules
 
-Networktocode
-~~~~~~~~~~~~~
+- networktocode.nautobot.gql_inventory - Inventory plugin leveraging Nautobot's GraphQL API
 
-nautobot
-^^^^^^^^
+## [v3.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v3.0.0)
 
-- networktocode.nautobot.networktocode.nautobot.gql_inventory - Inventory plugin leveraging Nautobot's GraphQL API
-
-v3.0.0
-======
-
-Release Summary
----------------
+### Release Summary
 
 Updates format for modules to support Ansible 4 / ansible-core 2.11 arg spec verification changes
 
-Major Changes
--------------
+### Major Changes
 
-- (#66) Remove data sub-dictionary from modules
+- [#66](https://github.com/nautobot/nautobot-ansible/issues/66) - Remove data sub-dictionary from modules
 
-Minor Changes
--------------
+### Minor Changes
 
-- (#57) Adds nautobot-server module
-- (#75) Device Interface module supports custom_fields
+- [#57](https://github.com/nautobot/nautobot-ansible/issues/57) - Adds nautobot-server module
+- [#75](https://github.com/nautobot/nautobot-ansible/issues/75) - Device Interface module supports custom_fields
 
-v2.0.1
-======
+## [v2.0.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v2.0.1)
 
-Release Summary
----------------
+### Release Summary
 
 Bug fix updates for label support and SSL version consistency
 
-Bugfixes
---------
+### Bugfixes
 
-- (#44) Add Interface Label Support
-- (#45) SSL Verify Keyword Consistency Update
+- [#44](https://github.com/nautobot/nautobot-ansible/issues/44) - Add Interface Label Support
+- [#45](https://github.com/nautobot/nautobot-ansible/issues/45) - SSL Verify Keyword Consistency Update
 
-v2.0.0
-======
+## [v2.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v2.0.0)
 
-Release Summary
----------------
+### Release Summary
 
 Bug fixes and removal of NAUTOBOT_API and NAUTOBOT_API_TOKEN
 
-Major Changes
--------------
+### Major Changes
 
-- (#33) Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
+- [#33](https://github.com/nautobot/nautobot-ansible/issues/33) - Deprecates NAUTOBOT_API and NAUTOBOT_API_TOKEN environment variables
 
-Bugfixes
---------
+### Bugfixes
 
-- (#26) Add missing description to tenant_group
-- (#29) Add missing field to vlan_group
-- (#32) Fixed query on Virtual Chassis
-- (#35) Add Site, Device Tracebacks due to changes in Nautobot
+- [#26](https://github.com/nautobot/nautobot-ansible/issues/26) - Add missing description to tenant_group
+- [#29](https://github.com/nautobot/nautobot-ansible/issues/29) - Add missing field to vlan_group
+- [#32](https://github.com/nautobot/nautobot-ansible/issues/32) - Fixed query on Virtual Chassis
+- [#35](https://github.com/nautobot/nautobot-ansible/issues/35) - Add Site, Device Tracebacks due to changes in Nautobot
 
-v1.1.0
-======
+## [v1.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.1.0)
 
-New Modules
------------
+### New Lookup Plugins
 
-Networktocode
-~~~~~~~~~~~~~
+- networktocode.nautobot.lookup_graphql - Lookup plugin to query Nautobot GraphQL API endpoint
 
-nautobot
-^^^^^^^^
+### New Action Plugins
 
-- networktocode.nautobot.networktocode.nautobot.lookup_graphql - Lookup plugin to query Nautobot GraphQL API endpoint
-- networktocode.nautobot.networktocode.nautobot.query_graphql - Action plugin to query Nautobot GraphQL API endpoint
+- networktocode.nautobot.query_graphql - Action plugin to query Nautobot GraphQL API endpoint
 
-v1.0.4
-======
+## [v1.0.4](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.0.4)
 
-Bugfixes
---------
+### Bugfixes
 
-- Added check for UUIDs when checking for isinstance(int) [#22](https://github.com/nautobot/nautobot-ansible/pull/22)
-- ip_address - Removed interface option [#23](https://github.com/nautobot/nautobot-ansible/pull/23)
+- [#22](https://github.com/nautobot/nautobot-ansible/pull/22) - Added check for UUIDs when checking for isinstance(int)
+- [#23](https://github.com/nautobot/nautobot-ansible/pull/23) - ip_address - Removed interface option
 
-v1.0.3
-======
+## [v1.0.3](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.0.3)
 
-Bugfixes
---------
+### Bugfixes
 
-- Validate if value is already a UUID, return UUID and do not attempt to resolve [#17](https://github.com/nautobot/nautobot-ansible/pull/17)
+- [#17](https://github.com/nautobot/nautobot-ansible/pull/17) - Validate if value is already a UUID, return UUID and do not attempt to resolve
 
-v1.0.2
-======
+## [v1.0.2](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.0.2)
 
-Bugfixes
---------
+### Bugfixes
 
 - Remove code related to fetching secrets due to secrets not existing in Nautobot.
 
-v1.0.1
-======
+## [v1.0.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.0.1)
 
-Release Summary
----------------
+### Release Summary
 
 Removes dependency on ansible.netcommon and uses builtin ipaddress module
 
-v1.0.0
-======
+## [v1.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v1.0.0)
 
-Release Summary
----------------
+### Release Summary
 
 This is the first official release of an Ansible Collection for Nautobot.
 This project is forked from the ``netbox.netbox`` Ansible Collection.
 
-New Plugins
------------
-
-Lookup
-~~~~~~
+### New Lookup Plugins
 
 - networktocode.nautobot.lookup - Queries and returns elements from Nautobot
 
-New Modules
------------
+### New Modules
 
 - networktocode.nautobot.aggregate - Creates or removes aggregates from Nautobot
 - networktocode.nautobot.cable - Create, update or delete cables within Nautobot

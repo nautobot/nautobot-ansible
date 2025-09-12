@@ -2,19 +2,17 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import pytest
 import json
 import os
-
 from functools import partial
-from unittest.mock import patch, MagicMock, Mock, call
+from unittest.mock import Mock, patch
+
+import pytest
 from ansible.inventory.data import InventoryData
-from ansible.errors import AnsibleError
 from ansible.utils.display import Display
-from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
 
 try:
-    from ansible_collections.networktocode.nautobot.plugins.inventory.gql_inventory import InventoryModule
+    from ansible_collections.networktocode.nautobot.plugins.inventory import gql_inventory
 
 except ImportError:
     import sys
@@ -24,7 +22,7 @@ except ImportError:
 
     sys.path.append("plugins/inventory/")
     sys.path.append("tests")
-    from gql_inventory import InventoryModule
+    import gql_inventory
 
 
 def load_graphql_device_data(path, test_path):
@@ -38,10 +36,19 @@ load_relative_test_data = partial(load_graphql_device_data, os.path.dirname(os.p
 
 @pytest.fixture
 def inventory_fixture():
-    inventory = InventoryModule()
+    inventory = gql_inventory.InventoryModule()
+    inventory.api_endpoint = "http://localhost:8000/api"
+    inventory.headers = {"Authorization": "Token 1234567890"}
+    inventory.timeout = 10
+    inventory.validate_certs = False
+    inventory.follow_redirects = False
+    inventory.user_cache_setting = False
+    inventory.gql_query = {"devices": {}, "virtual_machines": {}}
     inventory.inventory = InventoryData()
     inventory.inventory.add_host("mydevice")
     inventory.group_names_raw = False
+    inventory.wrap_variables = True
+    inventory.saved_query = None
 
     return inventory
 
@@ -49,6 +56,12 @@ def inventory_fixture():
 @pytest.fixture
 def device_data():
     json_data = load_relative_test_data("graphql_groups")
+    return json_data
+
+
+@pytest.fixture
+def paginated_device_data():
+    json_data = load_relative_test_data("graphql_paginate")
     return json_data
 
 
@@ -119,14 +132,18 @@ def test_no_chain_value(mock_display, inventory_fixture, device_data):
 def test_no_name_or_display_value(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call("No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
+    mock_display.assert_any_call(
+        "No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
+    )
 
 
 @patch.object(Display, "display")
 def test_group_name_dict(mock_display, inventory_fixture, device_data):
     inventory_fixture.group_by = ["platform"]
     inventory_fixture.create_groups(device_data)
-    mock_display.assert_any_call("No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice.")
+    mock_display.assert_any_call(
+        "No display or name value for {'napalm_driver': 'asa'} in platform on device mydevice."
+    )
 
 
 def test_group_by_empty_string(inventory_fixture, device_data):
@@ -248,3 +265,15 @@ def test_platform_none(inventory_fixture, device_data):
     """Regression testing for issue #347."""
     device_data["platform"] = None
     inventory_fixture.add_ansible_platform(device_data)
+
+
+@patch.object(gql_inventory, "open_url")
+def test_gql_inventory_paginated(mock_open_url, inventory_fixture, paginated_device_data):
+    mock_open_url.side_effect = [
+        Mock(read=Mock(return_value=json.dumps(paginated_device_data[0]))),
+        Mock(read=Mock(return_value=json.dumps(paginated_device_data[1]))),
+    ]
+    inventory_fixture.page_size = 3
+    results = inventory_fixture.get_results()
+    assert len(results["data"]["devices"]) == 5
+    assert len(results["data"]["virtual_machines"]) == 5

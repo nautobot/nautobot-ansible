@@ -236,8 +236,7 @@
             "contact_name": "John Smith"
         },
         "expected": {
-            "id": "1",
-            "name": "Test Location"
+            "id": "1"
         }
     },
     {

@@ -6,8 +6,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
 
 NB_DYNAMIC_GROUPS = "dynamic_groups"
@@ -23,11 +23,15 @@ NB_JOB_BUTTONS = "job_buttons"
 NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
+NB_SECRET = "secrets"  # noqa: S105
+NB_SECRETS_GROUP = "secrets_groups"
+NB_SECRETS_GROUPS_ASSOCIATION = "secrets_groups_associations"
 
 
 class NautobotExtrasModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Extras module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
@@ -54,12 +58,14 @@ class NautobotExtrasModule(NautobotModule):
             name = f"{data['source_type']} -> {data['destination_type']}"
         elif endpoint_name == "static_group_association":
             name = f"{data['dynamic_group']} -> {data['associated_object_id']}"
-        elif endpoint_name == "custom_field":
+        elif endpoint_name == "custom_field" and data.get("label"):
             name = data["label"]
-        elif endpoint_name in ["custom_field_choice", "metadata_choice"]:
+        elif endpoint_name in ["custom_field_choice", "metadata_choice"] and data.get("value"):
             name = data["value"]
-        elif endpoint_name in ["object_metadata"]:
+        elif endpoint_name in ["object_metadata"] and data.get("value") or data.get("contact") or data.get("team"):
             name = data.get("value", data.get("contact", data.get("team")))
+        elif endpoint_name == "secrets_groups_association" and data.get("secrets_group") and data.get("secret"):
+            name = f"{data['secrets_group']} -> {data['secret']}"
         else:
             name = data.get("id")
 

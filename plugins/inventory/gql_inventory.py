@@ -80,17 +80,33 @@ options:
       - List of dot-sparated paths to index graphql query results (e.g. `platform.display`)
       - The final value returned by each path is used to derive group names and then group the devices into these groups.
       - Valid group names must be string, so indexing the dotted path should return a string (i.e. `platform.display` instead of `platform`)
-      - > 
+      - >
           If value returned by the defined path is a dictionary, an attempt will first be made to access the `name` field, and then the `display` field.
           (i.e. `platform` would attempt to lookup `platform.name`, and if that data was not returned, it would then try `platform.display`)
     type: list
     elements: str
     default: []
   group_names_raw:
-      description: Will not add the group_by choice name to the group names
-      default: False
-      type: boolean
-      version_added: "4.6.0"
+    description: Will not add the group_by choice name to the group names
+    default: False
+    type: boolean
+    version_added: "4.6.0"
+  page_size:
+    description: Number of items to retrieve per page. Default is 0, which means all items will be retrieved.
+    type: int
+    default: 0
+    version_added: "5.8.0"
+  allow_unsafe:
+    description:
+      - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
+    default: False
+    type: boolean
+  saved_query:
+    description:
+      - The name of a saved query from Nautobot to use to retrieve the inventory.
+      - If this is set, the I(query) and I(page_size) options will be ignored.
+    type: str
+    version_added: "5.15.0"
 """
 
 EXAMPLES = """
@@ -107,6 +123,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 # This will send the default GraphQL query of:
 # query {
 #   devices {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -116,6 +133,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #     }
 #   }
 #   virtual_machines {
+#     id
 #     name
 #     primary_ip4 {
 #       host
@@ -126,6 +144,7 @@ token: 1234567890123456478901234567  # Can be omitted if the NAUTOBOT_TOKEN envi
 #   }
 # }
 
+---
 # This module will automatically add the ansible_host key and set it equal to primary_ip4.host
 # as well as the ansible_network_os key and set it to platform.napalm_driver via netutils mapping
 # if the primary_ip4.host and platform.napalm_driver are present on the device in Nautobot.
@@ -147,6 +166,7 @@ query:
     tags: name
     tenant: name
 
+---
 # Add the default IP version to be used for the ansible_host
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
@@ -165,6 +185,7 @@ query:
     tags: name
     tenant: name
 
+---
 # To group by use group_by key
 # Specify the full path to the data you would like to use to group by.
 # Ensure all paths are also included in the query.
@@ -189,6 +210,7 @@ group_by:
   - tenant.name
   - status.display
 
+---
 # Filter output using any supported parameters.
 # To get supported parameters check the api/docs page for devices.
 # Add `filters` to any level of the dictionary and a filter will be added to the GraphQL query at that level.
@@ -205,6 +227,7 @@ query:
       name:
       ip_addresses: address
 
+---
 # You can filter to just devices/virtual_machines by filtering the opposite type to a name that doesn't exist.
 # For example, to only get devices:
 plugin: networktocode.nautobot.gql_inventory
@@ -213,6 +236,12 @@ query:
   virtual_machines:
     filters:
       name: EXCLUDE ALL
+
+---
+# Use a saved query from Nautobot to retrieve the inventory.
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: http://localhost:8000
+saved_query: "My Saved Query"
 """
 
 RETURN = """
@@ -221,19 +250,27 @@ RETURN = """
       - list of composed dictionaries with key and value
     type: list
 """
-from collections.abc import Mapping
 import json
 import os
+import uuid
+from collections.abc import Mapping
+from copy import deepcopy
 from sys import version as python_version
-from ansible.plugins.inventory import BaseInventoryPlugin, Constructable, Cacheable
-from ansible.module_utils.ansible_release import __version__ as ansible_version
+
 from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils.urls import open_url
-
-from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.ansible_release import __version__ as ansible_version
 from ansible.module_utils.common.text.converters import to_native
-
-from ansible_collections.networktocode.nautobot.plugins.filter.graphql import convert_to_graphql_string
+from ansible.module_utils.six.moves.urllib import error as urllib_error
+from ansible.module_utils.six.moves.urllib.parse import quote
+from ansible.module_utils.urls import open_url
+from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
+from ansible.utils.unsafe_proxy import wrap_var
+from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
+    convert_to_graphql_string,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    check_needs_wrapping,
+)
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -253,6 +290,8 @@ DEFAULT_IP_VERSION_CHOICES = ["IPv4", "ipv4", "IPv6", "ipv6"]
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
+    """Inventory plugin for Nautobot using GraphQL."""
+
     NAME = "networktocode.nautobot.gql_inventory"
 
     def verify_file(self, path):
@@ -272,6 +311,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
+        if self.wrap_variables and check_needs_wrapping(var):
+            var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
 
     def add_ip_address(self, device, default_ip_version="ipv4"):
@@ -296,11 +337,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.add_variable(device["name"], device["name"], "ansible_host")
 
     def add_ansible_platform(self, device):
-        """Add network platform to host"""
+        """Add network platform to host."""
         if device.get("platform") and "napalm_driver" in device["platform"]:
             self.add_variable(
                 device["name"],
-                ANSIBLE_LIB_MAPPER_REVERSE.get(NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])),  # Convert napalm_driver to ansible_network_os value
+                ANSIBLE_LIB_MAPPER_REVERSE.get(
+                    NAPALM_LIB_MAPPER.get(device["platform"]["napalm_driver"])
+                ),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
 
@@ -322,7 +365,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if parent_attr == "tags":
                 if not chain or len(chain) > 1:
-                    self.display.display(f"Tags must be grouped by name or display. {group_by_path} is not a valid path.")
+                    self.display.display(
+                        f"Tags must be grouped by name or display. {group_by_path} is not a valid path."
+                    )
                     continue
                 self.create_tag_groups(device, chain[0])
                 continue
@@ -339,7 +384,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     try:
                         group_name = device_attr[group_name]
                     except KeyError:
-                        self.display.display(f"Could not find value for {group_name} in {group_by_path} on device {device_name}.")
+                        self.display.display(
+                            f"Could not find value for {group_name} in {group_by_path} on device {device_name}."
+                        )
                         break
 
             if isinstance(group_name, Mapping):
@@ -348,7 +395,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 elif "display" in group_name:
                     group_name = group_name["display"]
                 else:
-                    self.display.display(f"No display or name value for {group_name} in {group_by_path} on device {device_name}.")
+                    self.display.display(
+                        f"No display or name value for {group_name} in {group_by_path} on device {device_name}."
+                    )
 
             if not group_name:
                 # If the value is empty, it can't be grouped
@@ -379,8 +428,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = None
         cache_key = self.get_cache_key(self.api_endpoint)
 
-        user_cache_setting = self.get_option("cache")
-        attempt_to_read_cache = user_cache_setting and self.use_cache
+        attempt_to_read_cache = self.user_cache_setting and self.use_cache
 
         need_to_fetch = True
         if attempt_to_read_cache:
@@ -396,27 +444,68 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self.display.vvvv(f"Cached response: {json_data}")
             return json_data
 
-        base_query = {
-            "query": {
-                "devices": {
-                    "name": None,
-                    "primary_ip4": "host",
-                    "primary_ip6": "host",
-                    "platform": "napalm_driver",
-                },
-                "virtual_machines": {
-                    "name": None,
-                    "primary_ip4": "host",
-                    "primary_ip6": "host",
-                    "platform": "name",
-                },
+        if self.saved_query:
+            base_query = self.saved_query
+            json_data = self._query_api(base_query, is_saved_query=True)
+        else:
+            base_query = {
+                "query": {
+                    "devices": {
+                        "id": None,
+                        "name": None,
+                        "primary_ip4": "host",
+                        "primary_ip6": "host",
+                        "platform": "napalm_driver",
+                    },
+                    "virtual_machines": {
+                        "id": None,
+                        "name": None,
+                        "primary_ip4": "host",
+                        "primary_ip6": "host",
+                        "platform": "name",
+                    },
+                }
             }
-        }
-        if self.gql_query.get("devices"):
-            base_query["query"]["devices"].update(self.gql_query["devices"])
-        if self.gql_query.get("virtual_machines"):
-            base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
-        query = convert_to_graphql_string(base_query)
+            if self.gql_query.get("devices"):
+                base_query["query"]["devices"].update(self.gql_query["devices"])
+            if self.gql_query.get("virtual_machines"):
+                base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
+
+            json_data = self._query_api_paginated(base_query) if self.page_size else self._query_api(base_query)
+
+        # Error handling in case of a malformed query
+        if "errors" in json_data:
+            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
+
+        if self.user_cache_setting:
+            # If we got here and the user has caching enabled, we need to cache the results
+            self._cache[cache_key] = json_data
+
+        return json_data
+
+    def _retrieve_saved_query(self, saved_query):
+        """Retrieve a saved query from Nautobot."""
+        if not saved_query:
+            return None
+
+        try:
+            response = open_url(
+                self.api_endpoint + f"/api/extras/graphql-queries/{quote(saved_query)}/",
+                method="get",
+                headers=self.headers,
+                timeout=self.timeout,
+                validate_certs=self.validate_certs,
+                follow_redirects=self.follow_redirects,
+            )
+        except urllib_error.HTTPError as err:
+            raise AnsibleParserError(to_native(err.fp.read()))
+        json_data = json.loads(response.read())
+        self.display.vvvv(f"Using saved query: {json_data['query']}")
+        return json_data["query"]
+
+    def _query_api(self, base_query, is_saved_query=False):
+        """Query the API and return the results."""
+        query = convert_to_graphql_string(base_query) if not is_saved_query else base_query
         data = {"query": query}
         self.display.vvv(f"GraphQL query:\n{query}")
 
@@ -435,15 +524,40 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = json.loads(response.read())
         self.display.vvvv(f"JSON response: {json_data}")
 
-        # Error handling in case of a malformed query
-        if "errors" in json_data:
-            raise AnsibleParserError(to_native(json_data["errors"][0]["message"]))
-
-        if user_cache_setting:
-            # If we got here and the user has caching enabled, we need to cache the results
-            self._cache[cache_key] = json_data
-
         return json_data
+
+    def _query_api_paginated(self, base_query):
+        """Query the API and return the results."""
+        devices = []
+        virtual_machines = []
+        limit = self.page_size
+        offset = 0
+
+        while True:
+            # We need to copy the base query each time as filters get popped off the query before being sent to the API
+            query = deepcopy(base_query)
+            if query["query"].get("devices"):
+                query["query"]["devices"].setdefault("filters", {})
+                query["query"]["devices"]["filters"]["limit"] = limit
+                query["query"]["devices"]["filters"]["offset"] = offset
+            if query["query"].get("virtual_machines"):
+                query["query"]["virtual_machines"].setdefault("filters", {})
+                query["query"]["virtual_machines"]["filters"]["limit"] = limit
+                query["query"]["virtual_machines"]["filters"]["offset"] = offset
+
+            json_data = self._query_api(query)
+            if "errors" in json_data:
+                return json_data
+            devices.extend(json_data["data"]["devices"])
+            virtual_machines.extend(json_data["data"]["virtual_machines"])
+            offset += limit
+            if (
+                len(json_data["data"].get("devices", [])) < limit
+                and len(json_data["data"].get("virtual_machines", [])) < limit
+            ):
+                break
+
+        return {"data": {"devices": devices, "virtual_machines": virtual_machines}}
 
     def main(self):
         """Main function."""
@@ -453,7 +567,15 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         json_data = self.get_results()
 
         for device in json_data["data"].get("devices", []) + json_data["data"].get("virtual_machines", []):
-            hostname = device["name"]
+            # A host in an Ansible inventory requires a hostname.
+            # name is an unique but not required attribute for a device in Nautobot
+            # If id was included in the query, it will be used as the hostname
+            # If neither name nor id are present, a UUID will be generated
+            hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
+            # Save the hostname back to the device record so that it can be referenced later
+            device["name"] = hostname
+            if self.wrap_variables and check_needs_wrapping(hostname):
+                hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
@@ -471,6 +593,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             self._add_host_to_keyed_groups(self.get_option("keyed_groups"), device, hostname, strict=strict)
 
     def parse(self, inventory, loader, path, cache=True):
+        """Parse the inventory."""
         super(InventoryModule, self).parse(inventory, loader, path)
         self._read_config_data(path=path)
         self.use_cache = cache
@@ -495,5 +618,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_by = self.get_option("group_by")
         self.follow_redirects = self.get_option("follow_redirects")
         self.group_names_raw = self.get_option("group_names_raw")
+        self.user_cache_setting = self.get_option("cache")
+        self.page_size = self.get_option("page_size")
+        self.wrap_variables = not self.get_option("allow_unsafe")
+        self.saved_query = self._retrieve_saved_query(self.get_option("saved_query"))
 
         self.main()

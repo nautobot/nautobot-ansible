@@ -10,11 +10,10 @@ services:
     build:
       args:
         NAUTOBOT_VER: "${NAUTOBOT_VER}"
-        PYTHON_VER: "${PYTHON_VER}"
       context: "../"
       target: "nautobot"
       dockerfile: "development/Dockerfile"
-    command: "nautobot-server runserver 0.0.0.0:8000 --insecure"
+    command: "nautobot-server runserver 0.0.0.0:8000 --insecure --nothreading"
     ports:
       - "8000:8000"
     depends_on:
@@ -39,7 +38,7 @@ services:
     #   test: ["CMD", "bash", "-c", "nautobot-server celery inspect ping --destination celery@$$HOSTNAME"]  ## $$ because of docker-compose
     ###########################
     depends_on:
-      - "nautobot"  
+      - "nautobot"
     <<: *nautobot-base
   postgres:
     image: "postgres:13"

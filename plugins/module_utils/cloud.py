@@ -7,8 +7,8 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
 
 NB_CLOUD_SERVICES = "cloud_services"
@@ -21,7 +21,8 @@ NB_CLOUD_RESOURCE_TYPES = "cloud_resource_types"
 
 class NautobotCloudModule(NautobotModule):
     def run(self):
-        """
+        """Run the Nautobot Cloud module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
@@ -47,7 +48,11 @@ class NautobotCloudModule(NautobotModule):
         # Used for msg output
         if data.get("name"):
             name = data["name"]
-        elif endpoint_name == "cloud_service_network_assignment":
+        elif (
+            endpoint_name == "cloud_service_network_assignment"
+            and data.get("cloud_service")
+            and data.get("cloud_network")
+        ):
             cloud_service = self.module.params["cloud_service"]
             cloud_network = self.module.params["cloud_network"]
 
@@ -55,11 +60,13 @@ class NautobotCloudModule(NautobotModule):
                 cloud_service,
                 cloud_network,
             )
-        elif endpoint_name == "cloud_network_prefix_assignment":
+        elif endpoint_name == "cloud_network_prefix_assignment" and data.get("cloud_network") and data.get("prefix"):
             cloud_network = self.module.params["cloud_network"]
             cloud_prefix = self.module.params["cloud_prefix"]
 
             name = "%s <> %s" % (cloud_network, cloud_prefix)
+        else:
+            name = data.get("id")
 
         object_query_params = self._build_query_params(endpoint_name, data, user_query_params)
         self.nb_object = self._nb_endpoint_get(nb_endpoint, object_query_params, name)

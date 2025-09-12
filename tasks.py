@@ -1,7 +1,10 @@
 """Tasks for use with Invoke."""
 
-from invoke import Collection, task as invoke_task
 import os
+
+from invoke import Collection, Exit
+from invoke import task as invoke_task
+from packaging import version
 
 
 def is_truthy(arg):
@@ -38,6 +41,7 @@ namespace.configure(
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
+            "min_inventory_test_version": "2.4",
         }
     }
 )
@@ -64,6 +68,7 @@ def task(function=None, *args, **kwargs):
 
 def docker_compose(context, command, **kwargs):
     """Helper function for running a specific docker compose command with all appropriate parameters and environment.
+
     Args:
         context (obj): Used to run specific commands
         command (str): Command string to append to the "docker compose ..." command, such as "build", "up", etc.
@@ -156,7 +161,7 @@ def stop(context):
 def destroy(context):
     """Destroy all containers and volumes."""
     print("Destroying Nautobot...")
-    docker_compose(context, "down --volumes")
+    docker_compose(context, "down --volumes --remove-orphans")
 
 
 # ------------------------------------------------------------------------------
@@ -204,8 +209,8 @@ def migrate(context):
 
 @task(help={})
 def post_upgrade(context):
-    """
-    Performs Nautobot common post-upgrade operations using a single entrypoint.
+    """Performs Nautobot common post-upgrade operations using a single entrypoint.
+
     This will run the following management commands with default settings, in order:
     - migrate
     - trace_paths
@@ -224,7 +229,7 @@ def post_upgrade(context):
 # ------------------------------------------------------------------------------
 @task
 def lint(context):
-    """Run linting tools"""
+    """Run linting tools."""
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from lint lint",
         env={"PYTHON_VER": context.nautobot_ansible.python_ver},
@@ -234,16 +239,28 @@ def lint(context):
 @task(
     help={
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
+        "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times (e.g. --skip lint --skip sanity)",
     },
+    iterable=["skip"],
     incrementable=["verbose"],
 )
-def unit(context, verbose=0):
-    """Run unit tests"""
+def unit(context, verbose=0, skip=None):
+    """Run unit tests."""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
-    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit", env=env)
+    if skip is not None:
+        if "lint" in skip:
+            env["SKIP_LINT_TESTS"] = "true"
+        if "sanity" in skip:
+            env["SKIP_SANITY_TESTS"] = "true"
+        if "unit" in skip:
+            env["SKIP_UNIT_TESTS"] = "true"
+    context.run(
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit",
+        env=env,
+    )
     # Clean up after the tests
     context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
 
@@ -253,12 +270,13 @@ def unit(context, verbose=0):
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
         "tags": "Run specific test tags (e.g. 'device' or 'location'); can be provided multiple times (e.g. --tags device --tags location)",
         "update_inventories": "Update the inventory integration test JSON files with the latest data",
+        "skip": "Skip specific tests (choices: lint, sanity, unit, inventory, regression); can be provided multiple times (e.g. --skip lint --skip sanity)",
     },
-    iterable=["tags"],
+    iterable=["tags", "skip"],
     incrementable=["verbose"],
 )
-def integration(context, verbose=0, tags=None, update_inventories=False):
-    """Run all tests including integration tests"""
+def integration(context, verbose=0, tags=None, update_inventories=False, skip=None):
+    """Run all tests including integration tests."""
     build(context)
     # Destroy any existing containers and volumes that may be left over from a previous run
     destroy(context)
@@ -275,7 +293,22 @@ def integration(context, verbose=0, tags=None, update_inventories=False):
     if ansible_args:
         env["ANSIBLE_INTEGRATION_ARGS"] = " ".join(ansible_args)
     if update_inventories:
-        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # nosec B108
+        env["OUTPUT_INVENTORY_JSON"] = "/tmp/inventory_files"  # noqa: S108
+    if skip is not None:
+        if "lint" in skip:
+            env["SKIP_LINT_TESTS"] = "true"
+        if "sanity" in skip:
+            env["SKIP_SANITY_TESTS"] = "true"
+        if "unit" in skip:
+            env["SKIP_UNIT_TESTS"] = "true"
+        if "inventory" in skip:
+            env["SKIP_INVENTORY_TESTS"] = "true"
+        if "regression" in skip:
+            env["SKIP_REGRESSION_TESTS"] = "true"
+    if version.parse(context.nautobot_ansible.nautobot_ver) < version.parse(
+        context.nautobot_ansible.min_inventory_test_version
+    ):
+        env["SKIP_INVENTORY_TESTS"] = "true"
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from integration integration",
         env=env,
@@ -297,13 +330,124 @@ def galaxy_build(context, force=False):
     context.run(command)
 
 
+@task(
+    help={
+        "force": "Force the install command to update the destination folder, replacing any existing files.",
+    },
+)
+def galaxy_install(context, force=False):
+    """Install the collection to ./collections."""
+    command = "ansible-galaxy collection install . -p ./collections"
+    if force:
+        command += " --force"
+    context.run(command)
+
+
 # ------------------------------------------------------------------------------
 # DOCS
 # ------------------------------------------------------------------------------
 @task
 def docs(context):
     """Build and serve docs locally for development."""
-    command = "ansible-galaxy collection install . -p ./collections --force"
-    context.run(command)
+    galaxy_install(context, force=True)
     command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
     context.run(command)
+
+
+@task(
+    help={
+        "version": "Version of nautobot-ansible to generate the release notes for.",
+    }
+)
+def generate_release_notes(context, version=""):
+    """Generate Release Notes using Towncrier."""
+    command = "poetry run towncrier build"
+    if version:
+        command += f" --version {version}"
+    else:
+        command += " --version `poetry version -s`"
+    # Due to issues with git repo ownership in the containers, this must always run locally.
+    context.run(command)
+
+
+@task
+def check_versions(_):
+    """Check that galaxy.yml and pyproject.toml versions match."""
+    # In CI, we use invoke to install the dependencies so we need to import toml and yaml here
+    import toml  # pylint: disable=import-outside-toplevel
+    import yaml  # pylint: disable=import-outside-toplevel
+
+    # Read galaxy.yml version
+    with open("galaxy.yml", encoding="utf-8") as f:
+        galaxy_data = yaml.safe_load(f)
+        galaxy_version = galaxy_data["version"]
+
+    # Read pyproject.toml version
+    with open("pyproject.toml", encoding="utf-8") as f:
+        pyproject_data = toml.load(f)
+        pyproject_version = pyproject_data["tool"]["poetry"]["version"]
+
+    if galaxy_version != pyproject_version:
+        raise Exit(
+            f"Version mismatch: galaxy.yml ({galaxy_version}) != pyproject.toml ({pyproject_version})",
+            code=1,
+        )
+    print(f"Galaxy.yml and pyproject.toml versions match: {galaxy_version}")
+
+    # Read changelogs/changelog.yaml
+    with open("changelogs/changelog.yaml", encoding="utf-8") as f:
+        changelog_data = yaml.safe_load(f)
+        # Check if the pyproject.toml version is in the changelog
+        changelog_version = changelog_data["releases"].get(pyproject_version, None)
+
+    if changelog_version is None:
+        raise Exit(
+            f"Version {pyproject_version} missing from changelogs/changelog.yaml",
+            code=1,
+        )
+    print(f"Changelogs/changelog.yaml version found: {pyproject_version}")
+
+
+@task(aliases=("a",))
+def autoformat(context):
+    """Run code autoformatting."""
+    ruff(context, action=["format"], fix=True)
+
+
+@task(
+    help={
+        "action": "Available values are `['lint', 'format']`. Can be used multiple times. (default: `['lint', 'format']`)",
+        "target": "File or directory to inspect, repeatable (default: all files in the project will be inspected)",
+        "fix": "Automatically fix selected actions. May not be able to fix all issues found. (default: False)",
+        "output_format": "See https://docs.astral.sh/ruff/settings/#output-format for details. (default: `concise`)",
+    },
+    iterable=["action", "target"],
+)
+def ruff(context, action=None, target=None, fix=False, output_format="concise"):
+    """Run ruff to perform code formatting and/or linting."""
+    if not action:
+        action = ["lint", "format"]
+    if not target:
+        target = ["."]
+
+    exit_code = 0
+
+    if "format" in action:
+        command = "ruff format "
+        if not fix:
+            command += "--check "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if "lint" in action:
+        command = "ruff check "
+        if fix:
+            command += "--fix "
+        command += f"--output-format {output_format} "
+        command += " ".join(target)
+        if not context.run(command, warn=True):
+            exit_code = 1
+
+    if exit_code != 0:
+        raise Exit(code=exit_code)

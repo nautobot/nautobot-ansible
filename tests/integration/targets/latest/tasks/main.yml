@@ -573,6 +573,33 @@
   tags:
     - job_button
 
+- name: "PYNAUTOBOT_SECRET TESTS"
+  include_tasks:
+    file: "secret.yml"
+    apply:
+      tags:
+        - secret
+  tags:
+    - secret
+
+- name: "PYNAUTOBOT_SECRETS_GROUP TESTS"
+  include_tasks:
+    file: "secrets_group.yml"
+    apply:
+      tags:
+        - secrets_group
+  tags:
+    - secrets_group
+
+- name: "PYNAUTOBOT_SECRETS_GROUPS_ASSOCIATION TESTS"
+  include_tasks:
+    file: "secrets_groups_association.yml"
+    apply:
+      tags:
+        - secrets_groups_association
+  tags:
+    - secrets_groups_association
+
 ##########################
 ##
 ### NAUTOBOT 2.2+ TESTS
@@ -580,7 +607,7 @@
 ##########################
 
 - name: "NAUTOBOT 2.2+ TESTS"
-  when: 
+  when:
     - "nautobot_version is version('2.2', '>=')"
   block:
     - name: "PYNAUTOBOT_CONTACT TESTS"
@@ -610,6 +637,15 @@
       tags:
         - controller
 
+    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP TESTS"
+      include_tasks:
+        file: "controller_managed_device_group.yml"
+        apply:
+          tags:
+            - controller_managed_device_group
+      tags:
+        - controller_managed_device_group
+
     - name: "PYNAUTOBOT_VLAN_LOCATION TESTS"
       include_tasks:
         file: "vlan_location.yml"
@@ -619,6 +655,42 @@
       tags:
         - vlan_location
 
+    - name: "PYNAUTOBOT_SOFTWARE_VERSION TESTS"
+      include_tasks:
+        file: "software_version.yml"
+        apply:
+          tags:
+            - software_version
+      tags:
+        - software_version
+
+    - name: "PYNAUTOBOT_PREFIX_LOCATION TESTS"
+      include_tasks:
+        file: "prefix_location.yml"
+        apply:
+          tags:
+            - prefix_location
+      tags:
+        - prefix_location
+
+    - name: "PYNAUTOBOT_DEVICE_FAMILY TESTS"
+      include_tasks:
+        file: "device_family.yml"
+        apply:
+          tags:
+            - device_family
+      tags:
+        - device_family
+
+    # The REST API endpoint for this module wasn't added until v2.2
+    - name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "vrf_device_assignment.yml"
+        apply:
+          tags:
+            - vrf_device_assignment
+      tags:
+        - vrf_device_assignment
 
 ##########################
 ##
@@ -627,7 +699,7 @@
 ##########################
 
 - name: "NAUTOBOT 2.3+ TESTS"
-  when: 
+  when:
     - "nautobot_version is version('2.3', '>=')"
   block:
     - name: "PYNAUTOBOT_CLOUD_ACCOUNT TESTS"
@@ -755,3 +827,57 @@
             - static_group_association
       tags:
         - static_group_association
+
+##########################
+##
+### NAUTOBOT 2.4+ TESTS
+##
+##########################
+
+- name: "NAUTOBOT 2.4+ TESTS"
+  when:
+    - "nautobot_version is version('2.4', '>=')"
+  block:
+    - name: "PYNAUTOBOT_WIRELESS_SUPPORTED_DATA_RATE TESTS"
+      include_tasks:
+        file: "supported_data_rate.yml"
+        apply:
+          tags:
+            - supported_data_rate
+      tags:
+        - supported_data_rate
+
+    - name: "PYNAUTOBOT_WIRELESS_RADIO_PROFILE TESTS"
+      include_tasks:
+        file: "radio_profile.yml"
+        apply:
+          tags:
+            - radio_profile
+      tags:
+        - radio_profile
+
+    - name: "PYNAUTOBOT_WIRELESS_NETWORK TESTS"
+      include_tasks:
+        file: "wireless_network.yml"
+        apply:
+          tags:
+            - wireless_network
+      tags:
+        - wireless_network
+
+##########################
+##
+### UNSAFE VARIABLE HANDLING TESTS
+##
+##########################
+
+- name: "UNSAFE VARIABLE HANDLING TESTS"
+  block:
+    - name: "UNSAFE VARIABLE HANDLING TESTS"
+      include_tasks:
+        file: "unsafe_vars.yml"
+        apply:
+          tags:
+            - unsafe_vars
+      tags:
+        - unsafe_vars

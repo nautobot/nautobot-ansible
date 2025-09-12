@@ -7,18 +7,18 @@ __metaclass__ = type
 
 # Import necessary packages
 from ipaddress import ip_interface
+
 from ansible.module_utils._text import to_text
-
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NautobotModule,
     ENDPOINT_NAME_MAPPING,
+    NautobotModule,
 )
-
 
 NB_IP_ADDRESSES = "ip_addresses"
 NB_IP_ADDRESS_TO_INTERFACE = "ip_address_to_interface"
 NB_NAMESPACES = "namespaces"
 NB_PREFIXES = "prefixes"
+NB_PREFIX_LOCATIONS = "prefix_location_assignments"
 NB_IPAM_ROLES = "roles"
 NB_RIRS = "rirs"
 NB_ROUTE_TARGETS = "route_targets"
@@ -26,6 +26,7 @@ NB_VLANS = "vlans"
 NB_VLAN_GROUPS = "vlan_groups"
 NB_VLAN_LOCATIONS = "vlan_location_assignments"
 NB_VRFS = "vrfs"
+NB_VRF_DEVICE_ASSIGNMENTS = "vrf_device_assignments"
 NB_SERVICES = "services"
 
 
@@ -112,7 +113,8 @@ class NautobotIpamModule(NautobotModule):
             self.result["msg"] = "No available prefixes within %s" % (data["parent"])
 
     def run(self):
-        """
+        """Run the Nautobot IPAM module.
+
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
@@ -136,19 +138,24 @@ class NautobotIpamModule(NautobotModule):
         user_query_params = self.module.params.get("query_params")
 
         data = self.data
-        if self.endpoint == "ip_addresses":
-            if data.get("address"):
-                try:
-                    data["address"] = to_text(ip_interface(data["address"]).with_prefixlen)
-                except ValueError:
-                    pass
+        if self.endpoint == "ip_addresses" and data.get("address"):
+            try:
+                data["address"] = to_text(ip_interface(data["address"]).with_prefixlen)
+            except ValueError:
+                pass
             name = data.get("address")
-        elif self.endpoint in ["prefixes"]:
+        elif self.endpoint in ["prefixes"] and data.get("prefix"):
             name = data.get("prefix")
-        elif self.endpoint == "vlan_location_assignments":
+        elif self.endpoint in [
+            "vlan_location_assignments",
+            "prefix_location_assignments",
+            "vrf_device_assignments",
+        ] and data.get("display"):
             name = data.get("display")
-        else:
+        elif data.get("name"):
             name = data.get("name")
+        else:
+            name = data.get("id")
 
         if self.endpoint in ["vlans", "prefixes"] and self.module.params.get("location"):
             # Need to force the api_version to 2.0 when using `location` parameter

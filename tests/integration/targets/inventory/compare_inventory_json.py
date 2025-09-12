@@ -7,11 +7,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import sys
-import json
 import argparse
+import json
+import sys
+
 from jsondiff import diff
-from operator import itemgetter
 
 # Nautobot includes "created" and "last_updated" times on objects. These end up in the interfaces objects that are included verbatim from the Nautobot API.
 # "url" may be different if local tests use a different host/port
@@ -52,11 +52,11 @@ def sort_hostvar_arrays(obj):
     for hostname, host in hostvars.items():
         interfaces = host.get("interfaces")
         if interfaces:
-            host["interfaces"] = sorted(interfaces, key=itemgetter("name"))
+            host["interfaces"] = sorted(interfaces, key=lambda x: json.dumps(x, sort_keys=True))
 
         services = host.get("services")
         if services:
-            host["services"] = sorted(services, key=itemgetter("name"))
+            host["services"] = sorted(services, key=lambda x: json.dumps(x, sort_keys=True))
 
 
 def sort_groups(obj):
@@ -64,7 +64,7 @@ def sort_groups(obj):
         if group.get("children"):
             group["children"] = sorted(group["children"])
         elif group.get("hosts"):
-            group["hosts"] = sorted(group["hosts"])
+            group["hosts"] = sorted(group["hosts"], key=extract_sort_value)
 
 
 def read_json(filename):
@@ -75,6 +75,12 @@ def read_json(filename):
 def write_json(filename, data):
     with open(filename, "w") as f:
         json.dump(data, f, indent=4)
+
+
+def extract_sort_value(item):
+    if isinstance(item, dict) and list(item.keys()) == ["__ansible_unsafe"]:
+        return item["__ansible_unsafe"]
+    return item
 
 
 def main():

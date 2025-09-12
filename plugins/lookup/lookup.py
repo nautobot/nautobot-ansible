@@ -4,9 +4,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-nautobot.py
-
-A lookup function designed to return data from the Nautobot application
+A lookup function designed to return data from the Nautobot application.
 """
 
 from __future__ import absolute_import, division, print_function
@@ -86,7 +84,6 @@ tasks:
                     token='<redacted>') }}"
 
 # This example uses an API Filter
-tasks:
   # query a list of devices
   - name: Obtain list of devices from Nautobot
     debug:
@@ -99,23 +96,24 @@ tasks:
                     api_filter='role=management tags=Dell',
                     token='<redacted>') }}"
 
-# This example uses an API Filter with Depth set to get additional details from the lookup
-tasks:
-  # query a list of devices, getting API Depth of 1 to get additional details
-  # Note the space and the use of depth. Note the location_name is set to the name of the location
-    - name: "Obtain Location Information from Nautobot and print some facts."
-      ansible.builtin.debug:
-        msg: >
-          "Location {{ item.value.name }} is  {{ item.value['status']['name'] }} and has {{ item.value.prefix_count }} Prefixes and {{ item.value.vlan_count }} VLANs."
-      loop: "{{ query('networktocode.nautobot.lookup', 'locations',
+  # This example uses an API filter with depth set to get additional details from the lookup
+  # Query a list of locations with API depth=1 to retrieve related details (like status, prefix_count, vlan_count)
+  # Note: `location_name` should be set to the name of the desired location
+  - name: Obtain location information from Nautobot and print some facts
+    ansible.builtin.debug:
+      msg: >-
+        Location {{ item.value.name }} is {{ item.value['status']['name'] }} and has
+        {{ item.value.prefix_count }} Prefixes and {{ item.value.vlan_count }} VLANs.
+    loop: >-
+      {{ query(
+        'networktocode.nautobot.lookup',
+        'locations',
         url=NAUTOBOT_URL,
         token=NAUTOBOT_TOKEN,
-        api_filter='name=' + location_name + ' depth=1',
-        ) }}"
+        api_filter='name=' + location_name + ' depth=1'
+      ) }}
 
-
-# Fetch bgp sessions for R1-device
-tasks:
+  # Fetch bgp sessions for R1-device
   - name: "Obtain bgp sessions for R1-Device"
     debug:
       msg: "{{ query('networktocode.nautobot.lookup', 'bgp_sessions',
@@ -133,15 +131,15 @@ RETURN = """
     type: list
 """
 
-import os
 import functools
+import os
 from pprint import pformat
 
 from ansible.errors import AnsibleError
-from ansible.plugins.lookup import LookupBase
-from ansible.parsing.splitter import parse_kv, split_args
-from ansible.utils.display import Display
 from ansible.module_utils.six import raise_from
+from ansible.parsing.splitter import parse_kv, split_args
+from ansible.plugins.lookup import LookupBase
+from ansible.utils.display import Display
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     is_truthy,
 )
@@ -155,14 +153,15 @@ else:
 
 
 def get_endpoint(nautobot, term):
-    """
-    get_endpoint(nautobot, term)
-        nautobot: a predefined pynautobot.api() pointing to a valid instance
-                of Nautobot
-        term: the term passed to the lookup function upon which the api
-              call will be identified
-    """
+    """Get the endpoint for the given term.
 
+    Args:
+        nautobot (pynautobot.api): a predefined pynautobot.api() pointing to a valid instance of Nautobot
+        term (str): the term passed to the lookup function upon which the api call will be identified
+
+    Returns:
+        dict: The endpoint for the given term.
+    """
     endpoint_map = {
         "admin-users": {"endpoint": nautobot.users.users},
         "admin-groups": {"endpoint": nautobot.users.groups},
@@ -173,6 +172,8 @@ def get_endpoint(nautobot, term):
         "circuits": {"endpoint": nautobot.circuits.circuits},
         "circuit-providers": {"endpoint": nautobot.circuits.providers},
         "cables": {"endpoint": nautobot.dcim.cables},
+        "controllers": {"endpoint": nautobot.dcim.controllers},
+        "controller-managed-device-groups": {"endpoint": nautobot.dcim.controller_managed_device_groups},
         "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
         "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
         "cloud-network-prefix-assignments": {"endpoint": nautobot.cloud.cloud_network_prefix_assignments},
@@ -192,6 +193,7 @@ def get_endpoint(nautobot, term):
         "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
+        "device-families": {"endpoint": nautobot.dcim.device_families},
         "device-types": {"endpoint": nautobot.dcim.device_types},
         "device-redundancy-groups": {"endpoint": nautobot.dcim.device_redundancy_groups},
         "devices": {"endpoint": nautobot.dcim.devices},
@@ -229,10 +231,12 @@ def get_endpoint(nautobot, term):
         "power-port-templates": {"endpoint": nautobot.dcim.power_port_templates},
         "power-ports": {"endpoint": nautobot.dcim.power_ports},
         "prefixes": {"endpoint": nautobot.ipam.prefixes},
+        "prefix-location-assignments": {"endpoint": nautobot.ipam.prefix_location_assignments},
         "provider-networks": {"endpoint": nautobot.circuits.provider_networks},
         "rack-groups": {"endpoint": nautobot.dcim.rack_groups},
         "rack-reservations": {"endpoint": nautobot.dcim.rack_reservations},
         "racks": {"endpoint": nautobot.dcim.racks},
+        "radio-profiles": {"endpoint": nautobot.wireless.radio_profiles},
         "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
         "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
         "relationships": {"endpoint": nautobot.extras.relationships},
@@ -242,9 +246,13 @@ def get_endpoint(nautobot, term):
         "roles": {"endpoint": nautobot.extras.roles},
         "secrets": {"endpoint": nautobot.extras.secrets},
         "secrets-groups": {"endpoint": nautobot.extras.secrets_groups},
+        "secrets-groups-associations": {"endpoint": nautobot.extras.secrets_groups_associations},
         "services": {"endpoint": nautobot.ipam.services},
+        "software-image-files": {"endpoint": nautobot.dcim.software_image_files},
+        "software-versions": {"endpoint": nautobot.dcim.software_versions},
         "static-group-associations": {"endpoint": nautobot.extras.static_group_associations},
         "statuses": {"endpoint": nautobot.extras.statuses},
+        "supported-data-rates": {"endpoint": nautobot.wireless.supported_data_rates},
         "tags": {"endpoint": nautobot.extras.tags},
         "teams": {"endpoint": nautobot.extras.teams},
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
@@ -257,6 +265,8 @@ def get_endpoint(nautobot, term):
         "vlans": {"endpoint": nautobot.ipam.vlans},
         "vlan-location-assignments": {"endpoint": nautobot.ipam.vlan_location_assignments},
         "vrfs": {"endpoint": nautobot.ipam.vrfs},
+        "vrf-device-assignments": {"endpoint": nautobot.ipam.vrf_device_assignments},
+        "wireless-networks": {"endpoint": nautobot.wireless.wireless_networks},
     }
 
     return endpoint_map[term]["endpoint"]
@@ -287,13 +297,15 @@ def build_filters(filters):
 
 
 def get_plugin_endpoint(nautobot, plugin, term):
-    """
-    get_plugin_endpoint(nautobot, plugin, term)
-        nautobot: a predefined pynautobot.api() pointing to a valid instance
-                of Nautobot
-        plugin: a string referencing the plugin name
-        term: the term passed to the lookup function upon which the api
-              call will be identified
+    """Get the plugin endpoint for the given plugin and term.
+
+    Args:
+        nautobot (pynautobot.api): a predefined pynautobot.api() pointing to a valid instance of Nautobot
+        plugin (str): a string referencing the plugin name
+        term (str): the term passed to the lookup function upon which the api call will be identified
+
+    Returns:
+        object: The plugin endpoint for the given plugin and term.
     """
     attr = "plugins.%s.%s" % (plugin, term)
 
@@ -303,7 +315,7 @@ def get_plugin_endpoint(nautobot, plugin, term):
     return functools.reduce(_getattr, [nautobot] + attr.split("."))
 
 
-def make_call(endpoint, filters=None):
+def make_call(endpoint, filters=None):  # noqa: D417
     """
     Wrapper for calls to Nautobot and handle any possible errors.
 
@@ -323,7 +335,9 @@ def make_call(endpoint, filters=None):
             results = endpoint.all()
     except pynautobot.RequestError as e:
         if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError("{0} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint.".format(e.error))
+            raise AnsibleError(
+                f"{e.error} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint."
+            )
         else:
             raise AnsibleError(e.error)
 
@@ -332,10 +346,11 @@ def make_call(endpoint, filters=None):
 
 class LookupModule(LookupBase):
     """
-    LookupModule(LookupBase) is defined by Ansible
+    LookupModule(LookupBase) is defined by Ansible.
     """
 
     def run(self, terms, variables=None, **kwargs):
+        """Run the lookup."""
         if PYNAUTOBOT_IMPORT_ERROR:
             raise_from(
                 AnsibleError("pynautobot must be installed to use this plugin"),
@@ -363,7 +378,13 @@ class LookupModule(LookupBase):
         if not isinstance(terms, list):
             terms = [terms]
 
-        nautobot = pynautobot.api(api_endpoint, token=api_token if api_token else None, api_version=api_version, verify=ssl_verify, retries=num_retries)
+        nautobot = pynautobot.api(
+            api_endpoint,
+            token=api_token if api_token else None,
+            api_version=api_version,
+            verify=ssl_verify,
+            retries=num_retries,
+        )
         results = []
         for term in terms:
             if plugin:
@@ -374,7 +395,9 @@ class LookupModule(LookupBase):
                 except KeyError:
                     raise AnsibleError("Unrecognised term %s. Check documentation" % term)
 
-            Display().vvvv("Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter))
+            Display().vvvv(
+                "Nautobot lookup for %s to %s using token %s filter %s" % (term, api_endpoint, api_token, api_filter)
+            )
 
             if api_filter:
                 filter = build_filters(api_filter)

@@ -9,7 +9,7 @@ namespace: networktocode
 name: nautobot
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 5.6.0
+version: 5.15.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -26,7 +26,7 @@ description: This is a collection of Nautobot Ansible modules
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
-#license:
+# license:
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'
@@ -40,6 +40,7 @@ tags:
   - ipam
   - networking
   - circuits
+  - eda
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range
@@ -60,8 +61,19 @@ homepage: https://nautobot-ansible.readthedocs.io/en/latest/
 issues: https://github.com/nautobot/nautobot-ansible/issues
 
 build_ignore:
+  - ".ansible"
+  - ".github"
   - ".pytest_cache"
+  - ".venv"
   - ".vscode"
   - "*.tar.gz"
+  - "collections"
+  - "debugging_args"
+  - "development"
+  - "hacking"
+  - "invoke.yml"
+  - "mkdocs.yml"
   - "poetry.lock"
   - "pyproject.toml"
+  - "tasks.py"
+  - "venv"

@@ -1,7 +1,6 @@
 ARG NAUTOBOT_VER
-ARG PYTHON_VER
 
-FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VER}-py${PYTHON_VER} as nautobot
+FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VER} as nautobot
 
 # Copy in the requirements file
 COPY --chown=nautobot:nautobot ./development/requirements.txt /opt/nautobot/requirements.txt

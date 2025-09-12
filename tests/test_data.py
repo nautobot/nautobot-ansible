@@ -1,3 +1,5 @@
+"""Test data loading utilities."""
+
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2019, Bruno Inec (@sweenu) <bruno@inec.fr>
 # Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
@@ -5,14 +7,15 @@
 
 from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
+__metaclass__ = type  # pylint: disable=invalid-name
 
 import json
 
 
 # Load test data from a json file, for a pytest parametrize
 def load_test_data(path, test_path):
-    with open(f"{path}/test_data/{test_path}/data.json", "r") as f:
+    """Load test data from a json file, for a pytest parametrize."""
+    with open(f"{path}/test_data/{test_path}/data.json", "r", encoding="utf-8") as f:
         data = json.loads(f.read())
     tests = []
     for test in data:
