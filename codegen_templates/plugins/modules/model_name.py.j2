@@ -20,8 +20,6 @@ notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
   - Network To Code (@networktocode)
-requirements:
-  - pynautobot
 {# TODO: add version_added for the model
 version_added: "5.4.0"
 #}
@@ -41,7 +39,13 @@ options:
       - "field description"
 #}
     required: {{ "true" if field.required else "false" }}
-    type: {{ field.type | openapi_type_to_python_type }}
+    type: {{ field.type | openapi_type_to_ansible_type }}
+{% if field.choices is not none %}
+    choices:
+{% for choice in field.choices %}
+      - "{{ choice }}"
+{% endfor %}
+{% endif %}
 {# TODO: Add version_added for fields
     version_added: "1.2.3"
 #}
@@ -104,16 +108,17 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    {% if model.fields %}
     argument_spec.update(
         dict(
             {# TODO - Add fields to the argspec #}
             {% for field in model.fields.values() | rejectattr("name", "in", ["id", "relationships", "custom_fields", "tags"]) %}
-            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_python_type }}"),
+            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_ansible_type }}"),
             {% endfor %}
-            {# name=dict(required=True, type="str"),
-               description=dict(required=False, type="str"), #}
+            {# TODO: elements key #}
         )
     )
+    {% endif %}
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 

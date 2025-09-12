@@ -49,24 +49,60 @@ def singularize(word):
     return word
 
 
-def openapi_type_to_python_type(openapi_type):
-    replacements = {
-        "string": "str",
+def openapi_type_to_ansible_type(openapi_type):
+    mapping = {
+        "": "str",  # default value is str
+        "array": "list",
+        "boolean": "bool",
+        "integer": "int",
+        "number": "int",
         "object": "dict",
+        "string": "str",
     }
-    if openapi_type not in replacements:
-        raise ValueError(f"No python type found for openapi type {openapi_type}")
+    if openapi_type not in mapping:
+        raise ValueError(f"No ansible type found for openapi type '{openapi_type}'")
 
-    return replacements[openapi_type]
+    return mapping[openapi_type]
 
 
 def field_example_value(field):
+    if field["name"] == "status" and field["type"] == "string":
+        return '"Active"'
     if field["type"] == "string":
+        if field["choices"] is not None:
+            return field["choices"][0]
         return f'"Test {field["name"]}"'
 
 
+def _get_field_type(field_name, field_properties):
+    field_type = ""
+    if "type" in field_properties:
+        field_type = field_properties["type"]
+    elif "oneOf" in field_properties:
+        for candidate in field_properties["oneOf"]:
+            if "type" not in candidate:
+                continue
+            field_type = candidate.get("type")
+
+    # Special handling for status
+    if field_name == "status" and field_type == "object":
+        return "string"
+
+    return field_type
+
+
+def _get_field_choices(field_properties):
+    choices = field_properties.get("enum", None) or None
+    if "oneOf" in field_properties:
+        for candidate in field_properties["oneOf"]:
+            if "enum" in candidate and any(choice for choice in candidate["enum"]):
+                choices = candidate["enum"]
+    return choices
+
+
 def main():
-    logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO, stream=sys.stdout)
+    logging_level = logging.DEBUG if "--debug" in sys.argv else logging.INFO
+    logging.basicConfig(format="%(levelname)s:%(message)s", level=logging_level, stream=sys.stdout)
     logger.info("Starting code generation for Nautobot modules")
 
     # Load cached OpenAPI schema from json file if one exists to speed up development
@@ -107,11 +143,9 @@ def main():
         app_label = app_label.replace("-", "_")
         model_name = singularize(model_name_plural).replace("-", "_")
         apps.setdefault(app_label, {})
-        apps[app_label].setdefault(model_name, {"path": path, "methods": {}, "model_name_plural": model_name_plural})
-
-        # TODO: Only testing against dcim.manufacturer for now
-        if model_name != "manufacturer":
-            continue
+        apps[app_label].setdefault(
+            model_name, {"path": path, "methods": {}, "model_name_plural": model_name_plural, "fields": {}}
+        )
 
         for method, operation in path_item.items():
             if method.lower() not in ["get", "post"]:  # TODO: support ["put", "delete", "patch", "options", "head"]
@@ -159,7 +193,8 @@ def main():
                     for field_name, field in method_dict["properties"].items():
                         fields[field_name] = {
                             "name": field_name,
-                            "type": field.get("type", ""),
+                            "type": _get_field_type(field_name, field),
+                            "choices": _get_field_choices(field),
                             "required": field_name in method_dict["required"],
                         }
                     apps[app_label][model_name]["fields"] = fields
@@ -175,24 +210,28 @@ def main():
         trim_blocks=True,
         lstrip_blocks=True,
     )
-    jinja_env.filters["openapi_type_to_python_type"] = openapi_type_to_python_type
+    jinja_env.filters["openapi_type_to_ansible_type"] = openapi_type_to_ansible_type
     jinja_env.filters["field_example_value"] = field_example_value
 
     output_dir = Path("plugins", "modules")
 
     for app_label, models in apps.items():
         for model_name, model in models.items():
-            if model_name != "manufacturer":  # TODO: Only testing against dcim.manufacturer for now
-                continue
+            # if model_name != "cable":  # TODO: Only testing against dcim.cable for now
+            #     continue
             template = jinja_env.get_template("plugins/modules/model_name.py.j2")
-            output = template.render(
-                app_label=app_label, model_name=model_name, model=model, date=datetime.date.today()
-            )
+            try:
+                output = template.render(
+                    app_label=app_label, model_name=model_name, model=model, date=datetime.date.today()
+                )
+            except jinja2.exceptions.TemplateError:
+                logger.exception(f"Failed to render template for {model_name}. Skipping")
+                continue
             output_path = output_dir / f"{model_name}.py"
             output_path.write_text(output)
             logger.debug(f"Generated {output_path}")
 
-    logger.debug(json.dumps(apps["dcim"]["manufacturer"], indent=2))
+    logger.debug(json.dumps(apps["dcim"]["cable"]["methods"]["post"], indent=2))
 
     logger.info("Code generation complete")
 
