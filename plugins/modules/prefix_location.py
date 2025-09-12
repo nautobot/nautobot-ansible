@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,33 +9,34 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: rir
-short_description: Create, update or delete RIRs within Nautobot
+module: prefix_location
+short_description: Create, update or delete Location assignments to Prefixes within Nautobot
 description:
-  - Creates, updates or removes RIRs from Nautobot
+  - Create, update or delete Location assignments to Prefixes within Nautobot
 notes:
-  - Tags should be defined as a YAML list
+  - This module requires Nautobot v2.2+
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Joe Wesch (@joewesch)
+version_added: "5.11.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.id
 options:
-  name:
+  location_prefix:
+    aliases:
+      - prefix
     description:
-      - The name of the RIR
-      - Required if I(state=present) and the RIR does not exist yet
+      - The Prefix to associate with the location
+      - Required if I(state=present) and the prefix to location assignment does not exist yet
     required: false
-    type: str
-    version_added: "3.0.0"
-  is_private:
+    type: raw
+  location:
     description:
-      - IP space managed by this RIR is considered private
+      - The location the Prefix will be associated to
+      - Required if I(state=present) and the prefix to location assignment does not exist yet
     required: false
-    type: bool
-    version_added: "3.0.0"
+    type: raw
 """
 
 EXAMPLES = r"""
@@ -45,30 +46,28 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create RIR within Nautobot with only required information
-      networktocode.nautobot.rir:
+    - name: Assign Location to Prefix
+      networktocode.nautobot.prefix_location:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test RIR One
+        prefix:
+          prefix: "192.0.2.0/24"
+          namespace: Global
+        location:
+          name: My Child Location
+          parent: My Parent Location
         state: present
 
-    - name: Update Test RIR One
-      networktocode.nautobot.rir:
+    - name: Unassign Location from Prefix
+      networktocode.nautobot.prefix_location:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test RIR One
-        is_private: true
-        state: present
-
-    - name: Delete RIR within nautobot
-      networktocode.nautobot.rir:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test RIR One
+        prefix: "192.0.2.0/24"
+        location: My Location
         state: absent
 
-    - name: Delete RIR by id
-      networktocode.nautobot.rir:
+    - name: Delete prefix to location assignment by id
+      networktocode.nautobot.prefix_location:
         url: http://nautobot.local
         token: thisIsMyToken
         id: 00000000-0000-0000-0000-000000000000
@@ -76,7 +75,7 @@ EXAMPLES = r"""
 """
 
 RETURN = r"""
-rir:
+prefix_location_assignments:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
@@ -90,7 +89,7 @@ from copy import deepcopy
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
-    NB_RIRS,
+    NB_PREFIX_LOCATIONS,
     NautobotIpamModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
@@ -107,15 +106,15 @@ def main():
     argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
-            is_private=dict(required=False, type="bool"),
+            location_prefix=dict(required=False, type="raw", aliases=["prefix"]),
+            location=dict(required=False, type="raw"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    rir = NautobotIpamModule(module, NB_RIRS)
-    rir.run()
+    prefix_location = NautobotIpamModule(module, NB_PREFIX_LOCATIONS)
+    prefix_location.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

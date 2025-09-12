@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,78 +10,117 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: controller
-short_description: Creates or removes controllers from Nautobot
+short_description: Create, update or delete controllers within Nautobot
 description:
-  - Creates or removes controllers from Nautobot
+  - Creates, updates or removes controllers from Nautobot.
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Josh VanDeraa (@jvanderaa)
+version_added: "5.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
-    required: false
-    type: str
-  capabilities:
-    required: false
-    type: list
   name:
-    required: true
+    description:
+      - The name of the controller
+      - Required if I(state=present) and the controller does not exist yet
+    required: false
     type: str
   description:
+    description:
+      - Description of the controller
     required: false
     type: str
-  status:
-    required: true
-    type: str
-  location:
-    required: true
-    type: dict
-  platform:
-    required: false
-    type: dict
-  role:
-    required: false
-    type: dict
-  tenant:
-    required: false
-    type: dict
-  external_integration:
-    required: false
-    type: dict
   controller_device:
+    description:
+      - Device that runs the controller software
     required: false
-    type: dict
+    type: str
+  external_integration:
+    description:
+      - External connection for the controller, such as Meraki Cloud URL
+    required: false
+    type: str
+  role:
+    description:
+      - Required if I(state=present) and the controller does not exist yet
+    required: false
+    type: raw
+  tenant:
+    description:
+      - The tenant that the controller will be assigned to
+    required: false
+    type: raw
+  platform:
+    description:
+      - The platform of the controller
+    required: false
+    type: raw
+  location:
+    description:
+      - Required if I(state=present) and the controller does not exist yet
+    required: false
+    type: raw
+  status:
+    description:
+      - The status of the controller
+      - Required if I(state=present) and the controller does not exist yet
+    required: false
+    type: raw
   controller_device_redundancy_group:
+    description:
+      - Related device redundancy group the controller will be assigned to
     required: false
-    type: dict
+    type: str
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create controller within Nautobot with only required information
       networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Controller
+        name: "test_controller_2"
+        location: My Location
         status: "Active"
-        location: None
         state: present
+
+    - name: "CREATE THE SECOND CONTROLLER"
+      networktocode.nautobot.controller:
+        name: "test_controller_3"
+        url: http://nautobot.local
+        token: thisIsMyToken
+        status: "Active"
+        description: "Description of the controller"
+        location: "Cisco"
+        external_integration: "Cisco Catalyst SD-WAN"
+        role: "Administrative"
+        platform: "Cisco IOS"
+        tenant: "Nautobot Baseball Stadiums"
+        controller_device_redundancy_group: "controller_test"
 
     - name: Delete controller within nautobot
       networktocode.nautobot.controller:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Controller
+        name: test_controller_3
+        state: absent
+
+    - name: Delete controller by id
+      networktocode.nautobot.controller:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -96,37 +135,41 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_CONTROLLERS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_CONTROLLERS,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            capabilities=dict(required=False, type="list"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            controller_device=dict(required=False, type="str"),
+            external_integration=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            status=dict(required=True, type="str"),
-            location=dict(required=True, type="dict"),
-            platform=dict(required=False, type="dict"),
-            role=dict(required=False, type="dict"),
-            tenant=dict(required=False, type="dict"),
-            external_integration=dict(required=False, type="dict"),
-            controller_device=dict(required=False, type="dict"),
-            controller_device_redundancy_group=dict(required=False, type="dict"),
+            location=dict(required=False, type="raw"),
+            role=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
+            platform=dict(required=False, type="raw"),
+            status=dict(required=False, type="raw"),
+            controller_device_redundancy_group=dict(required=False, type="str"),
         )
     )
 

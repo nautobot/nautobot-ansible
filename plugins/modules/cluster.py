@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2019, Gaelle Mangin (@gmangin)
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,47 +10,65 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cluster
-short_description: Creates or removes clusters from Nautobot
+short_description: Create, update or delete clusters within Nautobot
 description:
-  - Creates or removes clusters from Nautobot
+  - Creates, updates or removes clusters from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Gaelle MANGIN (@gmangin)
+version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
-    required: false
-    type: str
   name:
-    required: true
-    type: str
-  comments:
+    description:
+      - The name of the cluster
+      - Required if I(state=present) and the cluster does not exist yet
     required: false
     type: str
+    version_added: "3.0.0"
   cluster_type:
-    required: true
-    type: dict
+    description:
+      - type of the cluster. Required if I(state=present) and the cluster does not exist yet
+    required: false
+    type: raw
+    version_added: "3.0.0"
   cluster_group:
+    description:
+      - group of the cluster
     required: false
-    type: dict
-  tenant:
-    required: false
-    type: dict
+    type: raw
+    version_added: "3.0.0"
   location:
+    description:
+      - Cluster location.
     required: false
-    type: dict
+    type: raw
+    version_added: "3.0.0"
+  comments:
+    description:
+      - Comments that may include additional information in regards to the cluster
+    required: false
+    type: str
+    version_added: "3.0.0"
+  tenant:
+    description:
+      - Tenant the cluster will be assigned to.
+    required: false
+    type: raw
+    version_added: "3.0.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create cluster within Nautobot with only required information
@@ -58,7 +76,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Cluster
-        cluster_type: None
+        cluster_type: libvirt
         state: present
 
     - name: Delete cluster within nautobot
@@ -66,6 +84,35 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Cluster
+        state: absent
+
+    - name: Create cluster with tags
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Another Test Cluster
+        cluster_type: libvirt
+        tags:
+          - Schnozzberry
+        state: present
+
+    - name: Update the group and location of an existing cluster
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Cluster
+        cluster_type: qemu
+        cluster_group: GROUP
+        location:
+          name: My Location
+          parent: Parent Location
+        state: present
+
+    - name: Delete cluster by id
+      networktocode.nautobot.cluster:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -80,32 +127,37 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotVirtualizationModule,
-    NB_CLUSTERS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
+    NB_CLUSTERS,
+    NautobotVirtualizationModule,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            cluster_type=dict(required=False, type="raw"),
+            cluster_group=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
             comments=dict(required=False, type="str"),
-            cluster_type=dict(required=True, type="dict"),
-            cluster_group=dict(required=False, type="dict"),
-            tenant=dict(required=False, type="dict"),
-            location=dict(required=False, type="dict"),
         )
     )
 

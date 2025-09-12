@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,61 +10,80 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: cloud_resource_type
-short_description: Creates or removes cloud resource types from Nautobot
+short_description: Creates or removes cloud resource type from Nautobot
 description:
-  - Creates or removes cloud resource types from Nautobot
+  - Creates or removes cloud resource type from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Travis Smith (@tsm1th)
+requirements:
+  - pynautobot
+version_added: "5.4.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
-    required: false
-    type: str
-  content_types:
-    required: true
-    type: list
   name:
-    required: true
+    description:
+      - The name of the cloud resource type
+      - Required if I(state=present) and the cloud resource type does not exist yet
+    required: false
     type: str
   description:
+    description:
+      - The description of the cloud resource type
     required: false
     type: str
+  cloud_provider:
+    aliases:
+      - provider
+    description:
+      - Required if I(state=present) and the cloud resource type does not exist yet
+    required: false
+    type: raw
+  content_types:
+    description:
+      - Required if I(state=present) and the cloud resource type does not exist yet
+      - Cloud Resource Type content type(s). These match app.endpoint and the endpoint is singular.
+      - cloud.cloudnetwork, cloud.cloudservice
+    type: list
+    elements: str
   config_schema:
+    description:
+      - Arbitrary JSON data to define the config schema.
     required: false
-    type: str
-  provider:
-    required: true
     type: dict
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
-  connection: local
-  hosts: localhost
-  gather_facts: False
+---
+- name: Create a cloud resource type
+  networktocode.nautobot.cloud_resource_type:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Cisco Quantum Network
+    provider: Cisco
+    content_types:
+      - "cloud.cloudnetwork"
+    state: present
 
-  tasks:
-    - name: Create cloud_resource_type within Nautobot with only required information
-      networktocode.nautobot.cloud_resource_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Cloud_Resource_Type
-        content_types: None
-        provider: None
-        state: present
+- name: Delete a cloud resource type
+  networktocode.nautobot.cloud_resource_type:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Cisco Quantum Network
+    state: absent
 
-    - name: Delete cloud_resource_type within nautobot
-      networktocode.nautobot.cloud_resource_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Cloud_Resource_Type
-        state: absent
+- name: Delete a cloud resource type by id
+  networktocode.nautobot.cloud_resource_type:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -78,36 +97,40 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotCloudModule,
-    NB_CLOUD_RESOURCE_TYPES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.cloud import (
+    NB_CLOUD_RESOURCE_TYPES,
+    NautobotCloudModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            content_types=dict(required=True, type="list"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            config_schema=dict(required=False, type="str"),
-            provider=dict(required=True, type="dict"),
+            cloud_provider=dict(required=False, type="raw", aliases=["provider"]),
+            content_types=dict(required=False, type="list", elements="str"),
+            config_schema=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-
     cloud_resource_type = NautobotCloudModule(module, NB_CLOUD_RESOURCE_TYPES)
     cloud_resource_type.run()
 

@@ -21,11 +21,13 @@ author:
 version_added: "5.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   name:
     description:
       - The name of the permission
-    required: true
+      - Required if I(state=present) and the permission does not exist yet
+    required: false
     type: str
   description:
     description:
@@ -35,7 +37,8 @@ options:
   enabled:
     description:
       - If the permission is enabled or not.
-    required: true
+      - Required if I(state=present) and the permission does not exist yet
+    required: false
     type: bool
   object_types:
     description:
@@ -46,8 +49,9 @@ options:
   actions:
     description:
       - The actions allowed for the permission definition.
+      - Required if I(state=present) and the permission does not exist yet
     choices: [ view, add, change, delete, run ]
-    required: true
+    required: false
     type: list
     elements: str
   constraints:
@@ -73,7 +77,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create object permission within Nautobot with only required information
@@ -111,6 +115,13 @@ EXAMPLES = r"""
         groups:
           - read_only_group
         state: absent
+
+    - name: Delete permission by id
+      networktocode.nautobot.admin_permission:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -124,27 +135,31 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.users import (
-    NautobotUsersModule,
-    NB_OBJECT_PERMISSION,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.users import (
+    NB_OBJECT_PERMISSION,
+    NautobotUsersModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            enabled=dict(required=True, type="bool"),
+            enabled=dict(required=False, type="bool"),
             object_types=dict(required=False, type="list", elements="str"),
-            actions=dict(required=True, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]),
+            actions=dict(
+                required=False, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]
+            ),
             constraints=dict(required=False, type="json"),
             users=dict(required=False, type="list", elements="str"),
             groups=dict(required=False, type="list", elements="str"),

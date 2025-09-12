@@ -53,7 +53,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot Plugin Module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create LCM CVE
       networktocode.nautobot.plugin:
@@ -102,7 +102,7 @@ EXAMPLES = r"""
         attrs:
           description: "Authentication Administration Accounting"
         state: present
-        
+
     - name: Create FW address-object
       networktocode.nautobot.plugin:
         url: http://nautobot.local
@@ -138,17 +138,18 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.plugins import (
     NautobotPluginModule,
 )
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(

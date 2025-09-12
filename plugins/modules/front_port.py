@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -10,117 +11,123 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: front_port
-short_description: Creates or removes front ports from Nautobot
+short_description: Create, update or delete front ports within Nautobot
 description:
-  - Creates or removes front ports from Nautobot
+  - Creates, updates or removes front ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Tobias Groß (@toerb)
+version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
-  - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
+  device:
+    description:
+      - The device the front port is attached to
+      - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
     required: false
-    type: str
+    type: raw
+    version_added: "3.0.0"
   name:
-    required: true
-    type: str
-  label:
+    description:
+      - The name of the front port
+      - Required if I(state=present) and the front port does not exist yet
     required: false
     type: str
-  description:
-    required: false
-    type: str
+    version_added: "3.0.0"
   type:
-    required: true
+    description:
+      - The type of the front port
+      - Required if I(state=present) and the front port does not exist yet
+    required: false
     type: str
-    choices:
-      - "8p8c"
-      - "8p6c"
-      - "8p4c"
-      - "8p2c"
-      - "6p6c"
-      - "6p4c"
-      - "6p2c"
-      - "4p4c"
-      - "4p2c"
-      - "gg45"
-      - "tera-4p"
-      - "tera-2p"
-      - "tera-1p"
-      - "110-punch"
-      - "bnc"
-      - "f"
-      - "n"
-      - "mrj21"
-      - "fc"
-      - "lc"
-      - "lc-pc"
-      - "lc-upc"
-      - "lc-apc"
-      - "lsh"
-      - "lsh-pc"
-      - "lsh-upc"
-      - "lsh-apc"
-      - "lx5"
-      - "lx5-pc"
-      - "lx5-upc"
-      - "lx5-apc"
-      - "mpo"
-      - "mtrj"
-      - "sc"
-      - "sc-pc"
-      - "sc-upc"
-      - "sc-apc"
-      - "st"
-      - "cs"
-      - "sn"
-      - "sma-905"
-      - "sma-906"
-      - "urm-p2"
-      - "urm-p4"
-      - "urm-p8"
-      - "splice"
-      - "other"
+    version_added: "3.0.0"
+  rear_port:
+    description:
+      - The rear_port the front port is attached to
+      - Required if I(state=present) and the front port does not exist yet
+    required: false
+    type: raw
+    version_added: "3.0.0"
   rear_port_position:
+    description:
+      - The position of the rear port this front port is connected to
     required: false
     type: int
-  device:
+    version_added: "3.0.0"
+  description:
+    description:
+      - Description of the front port
     required: false
-    type: dict
+    type: str
+    version_added: "3.0.0"
   module:
+    description:
+      - The attached module
+      - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
     required: false
-    type: dict
-  rear_port:
-    required: true
-    type: dict
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
-    - name: Create front_port within Nautobot with only required information
+    - name: Create front port within Nautobot with only required information
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front_Port
-        type: 8p8c
-        rear_port: None
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
         state: present
 
-    - name: Delete front_port within nautobot
+    - name: Create front port inside module
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front_Port
+        name: Test Front Port
+        module: HooverMaxProModel60
+        type: bnc
+        rear_port: Test Rear Port
+        state: present
+
+    - name: Update front port with other fields
+      networktocode.nautobot.front_port:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
+        rear_port_position: 5
+        description: front port description
+        state: present
+
+    - name: Delete front port within nautobot
+      networktocode.nautobot.front_port:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Front Port
+        device: Test Device
+        type: bnc
+        rear_port: Test Rear Port
+        state: absent
+
+    - name: Delete front port by id
+      networktocode.nautobot.front_port:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -135,86 +142,36 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_FRONT_PORTS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_FRONT_PORTS,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
-            label=dict(required=False, type="str"),
-            description=dict(required=False, type="str"),
-            type=dict(
-                required=True,
-                type="str",
-                choices=[
-                    "8p8c",
-                    "8p6c",
-                    "8p4c",
-                    "8p2c",
-                    "6p6c",
-                    "6p4c",
-                    "6p2c",
-                    "4p4c",
-                    "4p2c",
-                    "gg45",
-                    "tera-4p",
-                    "tera-2p",
-                    "tera-1p",
-                    "110-punch",
-                    "bnc",
-                    "f",
-                    "n",
-                    "mrj21",
-                    "fc",
-                    "lc",
-                    "lc-pc",
-                    "lc-upc",
-                    "lc-apc",
-                    "lsh",
-                    "lsh-pc",
-                    "lsh-upc",
-                    "lsh-apc",
-                    "lx5",
-                    "lx5-pc",
-                    "lx5-upc",
-                    "lx5-apc",
-                    "mpo",
-                    "mtrj",
-                    "sc",
-                    "sc-pc",
-                    "sc-upc",
-                    "sc-apc",
-                    "st",
-                    "cs",
-                    "sn",
-                    "sma-905",
-                    "sma-906",
-                    "urm-p2",
-                    "urm-p4",
-                    "urm-p8",
-                    "splice",
-                    "other",
-                ],
-            ),
+            device=dict(required=False, type="raw"),
+            module=dict(required=False, type="raw"),
+            name=dict(required=False, type="str"),
+            type=dict(required=False, type="str"),
+            rear_port=dict(required=False, type="raw"),
             rear_port_position=dict(required=False, type="int"),
-            device=dict(required=False, type="dict"),
-            module=dict(required=False, type="dict"),
-            rear_port=dict(required=True, type="dict"),
+            description=dict(required=False, type="str"),
         )
     )
 

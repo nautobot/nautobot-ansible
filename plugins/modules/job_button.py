@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -16,73 +16,100 @@ description:
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Travis Smith (@tsm1th)
+requirements:
+  - pynautobot
+version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
-  id:
+  name:
+    description:
+      - The name of the job button
+      - Required if I(state=present) and the job button does not exist yet
     required: false
     type: str
   content_types:
-    required: true
+    description:
+      - The content types to associate the job button with
+      - Required if I(state=present) and the job button does not exist yet
+    required: false
     type: list
-  name:
-    required: true
-    type: str
+    elements: str
+  job:
+    description:
+      - The job receiver to associate job with
+      - Required if I(state=present) and the job button does not exist yet
+    required: false
+    type: raw
   enabled:
+    description:
+      - Whether or not the button is enabled
     required: false
     type: bool
   text:
-    required: true
+    description:
+      - The text to display on the button
+      - Required if I(state=present) and the job button does not exist yet
+    required: false
     type: str
   weight:
+    description:
+      - Position this field should be displayed in
     required: false
     type: int
   group_name:
+    description:
+      - Buttons in the same group will appear in a dropdown menu
     required: false
     type: str
   button_class:
+    description:
+      - Button class of this button
+      - Required if I(state=present) and the job button does not exist yet
     required: false
-    type: str
     choices:
-      - "default"
-      - "primary"
-      - "success"
-      - "info"
-      - "warning"
-      - "danger"
-      - "link"
+      - default
+      - primary
+      - success
+      - info
+      - warning
+      - danger
+      - link
+    type: str
   confirmation:
+    description:
+      - Whether or not a confirmation pop-up box will appear
     required: false
     type: bool
-  job:
-    required: true
-    type: dict
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
-  connection: local
-  hosts: localhost
-  gather_facts: False
+- name: Create job button within Nautobot with only required information
+  networktocode.nautobot.job_button:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: MyJobButton
+    content_types:
+      - dcim.device
+    job: MyJob
+    text: SubmitMe
+    state: present
 
-  tasks:
-    - name: Create job_button within Nautobot with only required information
-      networktocode.nautobot.job_button:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Job_Button
-        content_types: None
-        text: "Test text"
-        job: None
-        state: present
+- name: Delete job button within Nautobot
+  networktocode.nautobot.job_button:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: MyJobButton
+    state: absent
 
-    - name: Delete job_button within nautobot
-      networktocode.nautobot.job_button:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Job_Button
-        state: absent
+- name: Delete job button by id
+  networktocode.nautobot.job_button:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -96,48 +123,42 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotExtrasModule,
-    NB_JOB_BUTTONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_JOB_BUTTONS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
-    """
-    Main entry point for module execution
-    """
+    """Execute job button module."""
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            content_types=dict(required=True, type="list"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            content_types=dict(required=False, type="list", elements="str"),
+            job=dict(required=False, type="raw"),
             enabled=dict(required=False, type="bool"),
-            text=dict(required=True, type="str"),
+            text=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
             group_name=dict(required=False, type="str"),
             button_class=dict(
                 required=False,
+                choices=["default", "primary", "success", "info", "warning", "danger", "link"],
                 type="str",
-                choices=[
-                    "default",
-                    "primary",
-                    "success",
-                    "info",
-                    "warning",
-                    "danger",
-                    "link",
-                ],
             ),
             confirmation=dict(required=False, type="bool"),
-            job=dict(required=True, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-
     job_button = NautobotExtrasModule(module, NB_JOB_BUTTONS)
     job_button.run()
 

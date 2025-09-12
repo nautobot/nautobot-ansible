@@ -10,50 +10,57 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: device_family
-short_description: Creates or removes device families from Nautobot
+short_description: Create, update or delete device families within Nautobot
 description:
-  - Creates or removes device families from Nautobot
+  - Creates, updates or removes device families from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Joe Wesch (@joewesch)
+requirements:
+  - pynautobot
+version_added: "5.16.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
+  name:
+    description:
+      - The name of the device family
     required: false
     type: str
-  name:
-    required: true
-    type: str
   description:
+    description:
+      - The description of the device family
     required: false
     type: str
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
-  connection: local
-  hosts: localhost
-  gather_facts: False
+- name: Create a device family
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: "My Device Family"
+    description: "This is a device family"
+    state: present
 
-  tasks:
-    - name: Create device_family within Nautobot with only required information
-      networktocode.nautobot.device_family:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Device_Family
-        state: present
+- name: Delete a device family
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: "My Device Family"
+    state: absent
 
-    - name: Delete device_family within nautobot
-      networktocode.nautobot.device_family:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Device_Family
-        state: absent
+- name: Delete a device family by id
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
@@ -62,38 +69,41 @@ device_family:
   returned: success (when I(state=present))
   type: dict
 msg:
-  description: Message indicating failure or info about what has been achieved
-  returned: always
+  description: Message indicating successful operation
+  returned: success
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_DEVICE_FAMILIES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_DEVICE_FAMILIES,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
         )
     )
-
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-
     device_family = NautobotDcimModule(module, NB_DEVICE_FAMILIES)
     device_family.run()
 

@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -10,52 +11,76 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: virtual_chassis
-short_description: Creates or removes virtual chassis from Nautobot
+short_description: Create, update or delete virtual chassis within Nautobot
 description:
-  - Creates or removes virtual chassis from Nautobot
+  - Creates, updates or removes virtual chassis from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Tobias Groß (@toerb)
+version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
-  - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
-    required: false
-    type: str
   name:
-    required: true
-    type: str
-  domain:
+    description:
+      - Name of the virtual chassis
+      - Required if I(state=present) and the virtual chassis does not exist yet
     required: false
     type: str
+    version_added: "3.0.0"
   master:
+    description:
+      - The master device the virtual chassis is attached to
     required: false
-    type: dict
+    type: raw
+    version_added: "3.0.0"
+  domain:
+    description:
+      - domain of the virtual chassis
+    required: false
+    type: str
+    version_added: "3.0.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
-    - name: Create virtual_chassis within Nautobot with only required information
+    - name: Create virtual chassis within Nautobot with only required information
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Chassis
+        name: "Virtual Chassis 1"
         state: present
 
-    - name: Delete virtual_chassis within nautobot
+    - name: Update virtual chassis with other fields
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Chassis
+        name: "Virtual Chassis 1"
+        master: Test Device
+        domain: Domain Text
+        state: present
+
+    - name: Delete virtual chassis within nautobot
+      networktocode.nautobot.virtual_chassis:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: "Virtual Chassis 1"
+        state: absent
+
+    - name: Delete virtual chassis by id
+      networktocode.nautobot.virtual_chassis:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -70,29 +95,32 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_VIRTUAL_CHASSIS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_VIRTUAL_CHASSIS,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    TAGS_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
+            master=dict(required=False, type="raw"),
             domain=dict(required=False, type="str"),
-            master=dict(required=False, type="dict"),
         )
     )
 

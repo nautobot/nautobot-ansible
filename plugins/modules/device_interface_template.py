@@ -22,17 +22,20 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   device_type:
     description:
       - Name of the device the interface template will be associated with (case-sensitive)
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the interface template does not exist yet
     required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - Name of the interface template to be created
-    required: true
+      - Required if I(state=present) and the interface template does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   type:
@@ -41,7 +44,8 @@ options:
         Form factor of the interface:
         ex. 1000Base-T (1GE), Virtual, 10GBASE-T (10GE)
         This has to be specified exactly as what is found within UI
-    required: true
+      - Required if I(state=present) and the interface template does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   mgmt_only:
@@ -65,6 +69,7 @@ options:
   module_type:
     description:
       - The module type the interface template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the interface template does not exist yet
     required: false
     type: raw
     version_added: "5.4.0"
@@ -74,7 +79,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot interface template module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create interface template within Nautobot with only required information
       networktocode.nautobot.device_interface_template:
@@ -92,6 +97,13 @@ EXAMPLES = r"""
         name: 10GBASE-T (10GE)
         type: 10gbase-t
         state: absent
+
+    - name: Delete interface template by id
+      networktocode.nautobot.device_interface_template:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -105,28 +117,27 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_INTERFACE_TEMPLATES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_INTERFACE_TEMPLATES,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
             device_type=dict(required=False, type="raw"),
-            name=dict(required=True, type="str"),
-            type=dict(
-                required=True,
-                type="str",
-            ),
+            name=dict(required=False, type="str"),
+            type=dict(required=False, type="str"),
             mgmt_only=dict(required=False, type="bool"),
             label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
@@ -134,18 +145,7 @@ def main():
         )
     )
 
-    required_one_of = [
-        ("device_type", "module_type"),
-    ]
-    mutually_exclusive = [
-        ("device_type", "module_type"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     device_interface_template = NautobotDcimModule(module, NB_INTERFACE_TEMPLATES)
     device_interface_template.run()

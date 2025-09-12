@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
-# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+# © 2020 Nokia
+# Licensed under the GNU General Public License v3.0 only
+# SPDX-License-Identifier: GPL-3.0-only
 
 from __future__ import absolute_import, division, print_function
 
@@ -10,163 +11,103 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: power_outlet_template
-short_description: Creates or removes power outlet templates from Nautobot
+short_description: Create, update or delete power outlet templates within Nautobot
 description:
-  - Creates or removes power outlet templates from Nautobot
+  - Creates, updates or removes power outlet templates from Nautobot
 notes:
+  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Tobias Groß (@toerb)
+version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.id
 options:
-  id:
-    required: false
-    type: str
-  name:
-    required: true
-    type: str
-  label:
-    required: false
-    type: str
-  description:
-    required: false
-    type: str
-  type:
-    required: false
-    type: str
-    choices:
-      - "iec-60320-c5"
-      - "iec-60320-c7"
-      - "iec-60320-c13"
-      - "iec-60320-c15"
-      - "iec-60320-c19"
-      - "iec-60320-c21"
-      - "iec-60309-p-n-e-4h"
-      - "iec-60309-p-n-e-6h"
-      - "iec-60309-p-n-e-9h"
-      - "iec-60309-2p-e-4h"
-      - "iec-60309-2p-e-6h"
-      - "iec-60309-2p-e-9h"
-      - "iec-60309-3p-e-4h"
-      - "iec-60309-3p-e-6h"
-      - "iec-60309-3p-e-9h"
-      - "iec-60309-3p-n-e-4h"
-      - "iec-60309-3p-n-e-6h"
-      - "iec-60309-3p-n-e-9h"
-      - "iec-60906-1"
-      - "nbr-14136-10a"
-      - "nbr-14136-20a"
-      - "nema-1-15r"
-      - "nema-5-15r"
-      - "nema-5-20r"
-      - "nema-5-30r"
-      - "nema-5-50r"
-      - "nema-6-15r"
-      - "nema-6-20r"
-      - "nema-6-30r"
-      - "nema-6-50r"
-      - "nema-10-30r"
-      - "nema-10-50r"
-      - "nema-14-20r"
-      - "nema-14-30r"
-      - "nema-14-50r"
-      - "nema-14-60r"
-      - "nema-15-15r"
-      - "nema-15-20r"
-      - "nema-15-30r"
-      - "nema-15-50r"
-      - "nema-15-60r"
-      - "nema-l1-15r"
-      - "nema-l5-15r"
-      - "nema-l5-20r"
-      - "nema-l5-30r"
-      - "nema-l5-50r"
-      - "nema-l6-15r"
-      - "nema-l6-20r"
-      - "nema-l6-30r"
-      - "nema-l6-50r"
-      - "nema-l10-30r"
-      - "nema-l14-20r"
-      - "nema-l14-30r"
-      - "nema-l14-50r"
-      - "nema-l14-60r"
-      - "nema-l15-20r"
-      - "nema-l15-30r"
-      - "nema-l15-50r"
-      - "nema-l15-60r"
-      - "nema-l21-20r"
-      - "nema-l21-30r"
-      - "nema-l22-30r"
-      - "CS6360C"
-      - "CS6364C"
-      - "CS8164C"
-      - "CS8264C"
-      - "CS8364C"
-      - "CS8464C"
-      - "ita-e"
-      - "ita-f"
-      - "ita-g"
-      - "ita-h"
-      - "ita-i"
-      - "ita-j"
-      - "ita-k"
-      - "ita-l"
-      - "ita-m"
-      - "ita-n"
-      - "ita-o"
-      - "ita-multistandard"
-      - "usb-a"
-      - "usb-micro-b"
-      - "usb-c"
-      - "dc-terminal"
-      - "hdot-cx"
-      - "saf-d-grid"
-      - "neutrik-powercon-20a"
-      - "neutrik-powercon-32a"
-      - "neutrik-powercon-true1"
-      - "neutrik-powercon-true1-top"
-      - "ubiquiti-smartpower"
-      - "hardwired"
-      - "other"
-  feed_leg:
-    required: false
-    type: str
-    choices:
-      - "A"
-      - "B"
-      - "C"
   device_type:
+    description:
+      - The device type the power outlet is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the power outlet template does not exist yet
     required: false
-    type: dict
-  module_type:
+    type: raw
+    version_added: "3.0.0"
+  name:
+    description:
+      - The name of the power outlet
+      - Required if I(state=present) and the power outlet template does not exist yet
     required: false
-    type: dict
+    type: str
+    version_added: "3.0.0"
+  type:
+    description:
+      - The type of the power outlet
+    required: false
+    type: str
+    version_added: "3.0.0"
   power_port_template:
+    description:
+      - The attached power port
     required: false
-    type: dict
+    type: raw
+    version_added: "3.0.0"
+  feed_leg:
+    description:
+      - The phase, in case of three-phase feed
+    choices:
+      - A
+      - B
+      - C
+    required: false
+    type: str
+    version_added: "3.0.0"
+  module_type:
+    description:
+      - The module type the power outlet template is attached to
+      - Requires one of I(device_type) or I(module_type) when I(state=present) and the power outlet template does not exist yet
+    required: false
+    type: raw
+    version_added: "5.4.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
-    - name: Create power_outlet_template within Nautobot with only required information
+    - name: Create power port within Nautobot with only required information
       networktocode.nautobot.power_outlet_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Outlet_Template
+        name: Test Power Outlet
+        device_type: Test Device Type
         state: present
 
-    - name: Delete power_outlet_template within nautobot
+    - name: Update power port with other fields
       networktocode.nautobot.power_outlet_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Outlet_Template
+        name: Test Power Outlet
+        device_type: Test Device Type
+        type: iec-60320-c6
+        power_port_template: Test Power Port
+        feed_leg: A
+        state: present
+
+    - name: Delete power port within nautobot
+      networktocode.nautobot.power_outlet_template:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Power Outlet
+        device_type: Test Device Type
+        state: absent
+
+    - name: Delete power outlet template by id
+      networktocode.nautobot.power_outlet_template:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -181,138 +122,33 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_POWER_OUTLET_TEMPLATES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_POWER_OUTLET_TEMPLATES,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
-            label=dict(required=False, type="str"),
-            description=dict(required=False, type="str"),
-            type=dict(
-                required=False,
-                type="str",
-                choices=[
-                    "iec-60320-c5",
-                    "iec-60320-c7",
-                    "iec-60320-c13",
-                    "iec-60320-c15",
-                    "iec-60320-c19",
-                    "iec-60320-c21",
-                    "iec-60309-p-n-e-4h",
-                    "iec-60309-p-n-e-6h",
-                    "iec-60309-p-n-e-9h",
-                    "iec-60309-2p-e-4h",
-                    "iec-60309-2p-e-6h",
-                    "iec-60309-2p-e-9h",
-                    "iec-60309-3p-e-4h",
-                    "iec-60309-3p-e-6h",
-                    "iec-60309-3p-e-9h",
-                    "iec-60309-3p-n-e-4h",
-                    "iec-60309-3p-n-e-6h",
-                    "iec-60309-3p-n-e-9h",
-                    "iec-60906-1",
-                    "nbr-14136-10a",
-                    "nbr-14136-20a",
-                    "nema-1-15r",
-                    "nema-5-15r",
-                    "nema-5-20r",
-                    "nema-5-30r",
-                    "nema-5-50r",
-                    "nema-6-15r",
-                    "nema-6-20r",
-                    "nema-6-30r",
-                    "nema-6-50r",
-                    "nema-10-30r",
-                    "nema-10-50r",
-                    "nema-14-20r",
-                    "nema-14-30r",
-                    "nema-14-50r",
-                    "nema-14-60r",
-                    "nema-15-15r",
-                    "nema-15-20r",
-                    "nema-15-30r",
-                    "nema-15-50r",
-                    "nema-15-60r",
-                    "nema-l1-15r",
-                    "nema-l5-15r",
-                    "nema-l5-20r",
-                    "nema-l5-30r",
-                    "nema-l5-50r",
-                    "nema-l6-15r",
-                    "nema-l6-20r",
-                    "nema-l6-30r",
-                    "nema-l6-50r",
-                    "nema-l10-30r",
-                    "nema-l14-20r",
-                    "nema-l14-30r",
-                    "nema-l14-50r",
-                    "nema-l14-60r",
-                    "nema-l15-20r",
-                    "nema-l15-30r",
-                    "nema-l15-50r",
-                    "nema-l15-60r",
-                    "nema-l21-20r",
-                    "nema-l21-30r",
-                    "nema-l22-30r",
-                    "CS6360C",
-                    "CS6364C",
-                    "CS8164C",
-                    "CS8264C",
-                    "CS8364C",
-                    "CS8464C",
-                    "ita-e",
-                    "ita-f",
-                    "ita-g",
-                    "ita-h",
-                    "ita-i",
-                    "ita-j",
-                    "ita-k",
-                    "ita-l",
-                    "ita-m",
-                    "ita-n",
-                    "ita-o",
-                    "ita-multistandard",
-                    "usb-a",
-                    "usb-micro-b",
-                    "usb-c",
-                    "dc-terminal",
-                    "hdot-cx",
-                    "saf-d-grid",
-                    "neutrik-powercon-20a",
-                    "neutrik-powercon-32a",
-                    "neutrik-powercon-true1",
-                    "neutrik-powercon-true1-top",
-                    "ubiquiti-smartpower",
-                    "hardwired",
-                    "other",
-                ],
-            ),
-            feed_leg=dict(
-                required=False,
-                type="str",
-                choices=[
-                    "A",
-                    "B",
-                    "C",
-                ],
-            ),
-            device_type=dict(required=False, type="dict"),
-            module_type=dict(required=False, type="dict"),
-            power_port_template=dict(required=False, type="dict"),
+            device_type=dict(required=False, type="raw"),
+            name=dict(required=False, type="str"),
+            type=dict(required=False, type="str"),
+            power_port_template=dict(required=False, type="raw"),
+            feed_leg=dict(required=False, choices=["A", "B", "C"], type="str"),
+            module_type=dict(required=False, type="raw"),
         )
     )
 

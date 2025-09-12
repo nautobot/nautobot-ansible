@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2022, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,58 +10,73 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: static_group_association
-short_description: Creates or removes static group associations from Nautobot
+short_description: Creates or removes a static group association from Nautobot
 description:
-  - Creates or removes static group associations from Nautobot
-notes:
-  - This should be ran with connection C(local) and hosts C(localhost)
+  - Creates or removes a static group association from Nautobot
 author:
-  - Network To Code (@networktocode)
+  - Network to Code (@networktocode)
+  - Travis Smith (@tsm1th)
+version_added: "5.5.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
+  dynamic_group:
+    description:
+      - The dynamic group to add the association to
+      - Required if I(state=present) and the static group association does not exist yet
+    required: false
+    type: raw
+  associated_object_type:
+    description:
+      - The app_label.model for the object in the relationship
+      - Required if I(state=present) and the static group association does not exist yet
     required: false
     type: str
-  associated_object_type:
-    required: true
-    type: str
   associated_object_id:
-    required: true
+    description:
+      - The UUID of the object in the relationship
+      - Required if I(state=present) and the static group association does not exist yet
+    required: false
     type: str
-  dynamic_group:
-    required: true
-    type: dict
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
+- name: "Test static group association creation/deletion"
   connection: local
   hosts: localhost
-  gather_facts: False
-
+  gather_facts: false
   tasks:
-    - name: Create static_group_association within Nautobot with only required information
+    - name: Create static group association
       networktocode.nautobot.static_group_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        associated_object_type: "Test associated_object_type"
-        associated_object_id: "Test associated_object_id"
-        dynamic_group: None
-        state: present
+        dynamic_group: 01234567-abcd-0123-abcd-012345678901
+        associated_object_type: dcim.device
+        associated_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
 
-    - name: Delete static_group_association within nautobot
+    - name: Delete static group association
       networktocode.nautobot.static_group_association:
         url: http://nautobot.local
         token: thisIsMyToken
+        dynamic_group: 01234567-abcd-0123-abcd-012345678901
+        associated_object_type: dcim.device
+        associated_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+        state: absent
+
+    - name: Delete static group association by id
+      networktocode.nautobot.static_group_association:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
 RETURN = r"""
 static_group_association:
-  description: Serialized object as created or already existent within Nautobot
-  returned: success (when I(state=present))
+  description: Serialized object as created/existent/updated/deleted within Nautobot
+  returned: always
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
@@ -69,27 +84,32 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotExtrasModule,
-    NB_STATIC_GROUP_ASSOCIATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_STATIC_GROUP_ASSOCIATIONS,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            associated_object_type=dict(required=True, type="str"),
-            associated_object_id=dict(required=True, type="str"),
-            dynamic_group=dict(required=True, type="dict"),
+            dynamic_group=dict(required=False, type="raw"),
+            associated_object_type=dict(required=False, type="str"),
+            associated_object_id=dict(required=False, type="str"),
         )
     )
 

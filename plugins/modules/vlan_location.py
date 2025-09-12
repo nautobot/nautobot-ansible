@@ -21,16 +21,19 @@ author:
 version_added: "5.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   vlan:
     description:
       - The VLAN to associate with the location
-    required: true
+      - Required if I(state=present) and the vlan to location assignment does not exist yet
+    required: false
     type: raw
   location:
     description:
       - The location the VLAN will be associated to
-    required: true
+      - Required if I(state=present) and the vlan to location assignment does not exist yet
+    required: false
     type: raw
 """
 
@@ -38,7 +41,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Assign Location to VLAN
@@ -58,6 +61,13 @@ EXAMPLES = r"""
         vlan: Test VLAN
         location: My Location
         state: absent
+
+    - name: Delete vlan to location assignment by id
+      networktocode.nautobot.vlan_location:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -71,24 +81,29 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
-    NautobotIpamModule,
-    NB_VLAN_LOCATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+    NB_VLAN_LOCATIONS,
+    NautobotIpamModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            vlan=dict(required=True, type="raw"),
-            location=dict(required=True, type="raw"),
+            vlan=dict(required=False, type="raw"),
+            location=dict(required=False, type="raw"),
         )
     )
 

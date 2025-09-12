@@ -21,19 +21,22 @@ author:
 version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   virtual_machine:
     description:
       - Name of the virtual machine the interface will be associated with (case-sensitive)
-    required: true
+      - Required if I(state=present) and the interface does not exist yet
+    required: false
     type: raw
     version_added: "3.0.0"
   name:
     description:
       - Name of the interface to be created
-    required: true
+      - Required if I(state=present) and the interface does not exist yet
+    required: false
     type: str
     version_added: "3.0.0"
   enabled:
@@ -91,13 +94,19 @@ options:
     required: false
     type: raw
     version_added: "5.3.0"
+  vrf:
+    description:
+      - The VRF assigned to the interface
+    required: false
+    type: raw
+    version_added: "5.12.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot interface module"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   tasks:
     - name: Create interface within Nautobot with only required information
       networktocode.nautobot.vm_interface:
@@ -145,7 +154,14 @@ EXAMPLES = r"""
         name: GigabitEthernet26
         enabled: false
         custom_fields:
-          monitored: True
+          monitored: true
+
+    - name: Delete interface by id
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
+        state: absent
 """
 
 RETURN = r"""
@@ -159,30 +175,33 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
-    NautobotVirtualizationModule,
     NB_VM_INTERFACES,
+    NautobotVirtualizationModule,
 )
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            virtual_machine=dict(required=True, type="raw"),
-            name=dict(required=True, type="str"),
+            virtual_machine=dict(required=False, type="raw"),
+            name=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
             mtu=dict(required=False, type="int"),
             mac_address=dict(required=False, type="str"),
@@ -192,6 +211,7 @@ def main():
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
+            vrf=dict(required=False, type="raw"),
         )
     )
 

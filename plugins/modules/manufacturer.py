@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,33 +10,39 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: manufacturer
-short_description: Creates or removes manufacturers from Nautobot
+short_description: Create or delete manufacturers within Nautobot
 description:
   - Creates or removes manufacturers from Nautobot
 notes:
+  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Mikhail Yohman (@FragmentedPacket)
+version_added: "1.0.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.id
 options:
-  id:
-    required: false
-    type: str
   name:
-    required: true
-    type: str
-  description:
+    description:
+      - The name of the manufacturer
+      - Required if I(state=present) and the manufacturer does not exist yet
     required: false
     type: str
+    version_added: "3.0.0"
+  description:
+    description:
+      - Applies to the description field for Nautobot Manufacturer
+    required: false
+    type: str
+    version_added: "4.2.0"
 """
 
 EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create manufacturer within Nautobot with only required information
@@ -45,12 +51,20 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Manufacturer
         state: present
+        description: The test manufacturer
 
     - name: Delete manufacturer within nautobot
       networktocode.nautobot.manufacturer:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Manufacturer
+        state: absent
+
+    - name: Delete manufacturer by id
+      networktocode.nautobot.manufacturer:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -65,25 +79,28 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_MANUFACTURERS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_MANUFACTURERS,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
         )
     )

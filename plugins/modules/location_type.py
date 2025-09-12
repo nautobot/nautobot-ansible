@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -14,59 +14,95 @@ short_description: Creates or removes location types from Nautobot
 description:
   - Creates or removes location types from Nautobot
 notes:
+  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Joe Wesch (@joewesch)
+requirements:
+  - pynautobot
+version_added: "4.3.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
-  id:
-    required: false
-    type: str
-  content_types:
-    required: false
-    type: list
   name:
-    required: true
+    description:
+      - Name of the location type to be created
+      - Required if I(state=present) and the location type does not exist yet
+    required: false
     type: str
   description:
+    description:
+      - Location Type description
     required: false
     type: str
+  parent_location_type:
+    aliases:
+      - parent
+    description:
+      - The parent location type this location type should be tied to
+    required: false
+    type: raw
   nestable:
-    required: false
+    description:
+      - Allow Locations of this type to be parents/children of other Locations of this same type
+      - Requires C(nautobot >= 1.5)
     type: bool
-  parent:
+  content_types:
+    description:
+      - Location Type content type(s). These match app.endpoint and the endpoint is singular.
+      - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
     required: false
-    type: dict
+    type: list
+    elements: str
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
+- name: "Test Nautobot location type module"
   connection: local
   hosts: localhost
-  gather_facts: False
-
+  gather_facts: false
   tasks:
-    - name: Create location_type within Nautobot with only required information
+    - name: Create location type
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Location_Type
+        name: My Location Type
         state: present
 
-    - name: Delete location_type within nautobot
+    - name: Delete location type
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Location_Type
+        name: My Location Type
+        state: absent
+
+    - name: Create location type with all parameters
+      networktocode.nautobot.location_type:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Nested Location Type
+        description: My Nested Location Type Description
+        parent:
+          name: My Location Type
+        nestable: false
+        content_types:
+          - "dcim.device"
+        state: present
+
+    - name: Delete location type by id
+      networktocode.nautobot.location_type:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
 RETURN = r"""
 location_type:
   description: Serialized object as created or already existent within Nautobot
-  returned: success (when I(state=present))
+  returned: on creation
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
@@ -74,29 +110,34 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_LOCATION_TYPES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_LOCATION_TYPES,
+    NautobotDcimModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            content_types=dict(required=False, type="list"),
-            name=dict(required=True, type="str"),
+            name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            parent_location_type=dict(required=False, type="raw", aliases=["parent"]),
             nestable=dict(required=False, type="bool"),
-            parent=dict(required=False, type="dict"),
+            content_types=dict(required=False, type="list", elements="str"),
         )
     )
 

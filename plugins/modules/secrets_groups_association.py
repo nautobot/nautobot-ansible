@@ -10,79 +10,96 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: secrets_groups_association
-short_description: Creates or removes secrets groups associations from Nautobot
+short_description: Associates secrets to secrets groups
 description:
-  - Creates or removes secrets groups associations from Nautobot
+  - Associates secrets to secrets groups
 notes:
+  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Network To Code (@networktocode)
+  - Joe Wesch (@joewesch)
+requirements:
+  - pynautobot
+version_added: "5.11.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
-  id:
+  access_type:
+    description:
+      - The access type of the secret
+      - Required if I(state=present) and the secrets groups association does not exist yet
     required: false
     type: str
-  access_type:
-    required: true
-    type: str
     choices:
-      - "Generic"
-      - "Console"
-      - "gNMI"
-      - "HTTP(S)"
-      - "NETCONF"
-      - "REST"
-      - "RESTCONF"
-      - "SNMP"
-      - "SSH"
+      - Generic
+      - Console
+      - gNMI
+      - HTTP(S)
+      - NETCONF
+      - REST
+      - RESTCONF
+      - SNMP
+      - SSH
   secret_type:
-    required: true
+    description:
+      - The type of the secret
+      - Required if I(state=present) and the secrets groups association does not exist yet
+    required: false
     type: str
     choices:
-      - "key"
-      - "password"
-      - "secret"
-      - "token"
-      - "username"
-      - "url"
-      - "notes"
+      - key
+      - password
+      - secret
+      - token
+      - username
   secrets_group:
-    required: true
-    type: dict
+    description:
+      - The name of the secrets group to associate the secret to
+      - Required if I(state=present) and the secrets groups association does not exist yet
+    required: false
+    type: str
   secret:
-    required: true
-    type: dict
+    description:
+      - The name of the secret to associate to the secrets group
+      - Required if I(state=present) and the secrets groups association does not exist yet
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
-  connection: local
-  hosts: localhost
-  gather_facts: False
+---
+- name: Associate a secret to a secrets group
+  networktocode.nautobot.secrets_groups_association:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    access_type: Generic
+    secret_type: key
+    secrets_group: My Secrets Group
+    secret: My Secret
 
-  tasks:
-    - name: Create secrets_groups_association within Nautobot with only required information
-      networktocode.nautobot.secrets_groups_association:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        access_type: Generic
-        secret_type: key
-        secrets_group: None
-        secret: None
-        state: present
+- name: Remove a secret from a secrets group
+  networktocode.nautobot.secrets_groups_association:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    access_type: Generic
+    secret_type: key
+    secrets_group: My Secrets Group
+    secret: My Secret
+    state: absent
 
-    - name: Delete secrets_groups_association within nautobot
-      networktocode.nautobot.secrets_groups_association:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        state: absent
+- name: Delete a secrets groups association by id
+  networktocode.nautobot.secrets_groups_association:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
 secrets_groups_association:
-  description: Serialized object as created or already existent within Nautobot
-  returned: success (when I(state=present))
+  description: The secrets groups association
+  returned: always
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
@@ -90,60 +107,42 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotExtrasModule,
-    NB_SECRETS_GROUPS_ASSOCIATIONS,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
+    NB_SECRETS_GROUPS_ASSOCIATION,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():
     """
-    Main entry point for module execution
+    Main entry point for module execution.
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
             access_type=dict(
-                required=True,
+                required=False,
                 type="str",
-                choices=[
-                    "Generic",
-                    "Console",
-                    "gNMI",
-                    "HTTP(S)",
-                    "NETCONF",
-                    "REST",
-                    "RESTCONF",
-                    "SNMP",
-                    "SSH",
-                ],
+                choices=["Generic", "Console", "gNMI", "HTTP(S)", "NETCONF", "REST", "RESTCONF", "SNMP", "SSH"],
             ),
-            secret_type=dict(
-                required=True,
-                type="str",
-                choices=[
-                    "key",
-                    "password",
-                    "secret",
-                    "token",
-                    "username",
-                    "url",
-                    "notes",
-                ],
-            ),
-            secrets_group=dict(required=True, type="dict"),
-            secret=dict(required=True, type="dict"),
+            secret_type=dict(required=False, type="str", choices=["key", "password", "secret", "token", "username"]),
+            secrets_group=dict(required=False, type="str", no_log=False),
+            secret=dict(required=False, type="str", no_log=False),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-
-    secrets_groups_association = NautobotExtrasModule(module, NB_SECRETS_GROUPS_ASSOCIATIONS)
+    secrets_groups_association = NautobotExtrasModule(module, NB_SECRETS_GROUPS_ASSOCIATION)
     secrets_groups_association.run()
 
 
-if __name__ == "__main__":  # pragma: no cover
+if __name__ == "__main__":
     main()
