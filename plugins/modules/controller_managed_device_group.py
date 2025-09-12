@@ -56,11 +56,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create controller_managed_device_group within Nautobot with only required information
+    - name: Create controller managed device group within Nautobot with only required information
       networktocode.nautobot.controller_managed_device_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Controller_Managed_Device_Group
+        name: Test Controller Managed Device Group
         controller: None
         state: present
 

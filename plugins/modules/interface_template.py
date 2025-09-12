@@ -192,11 +192,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create interface_template within Nautobot with only required information
+    - name: Create interface template within Nautobot with only required information
       networktocode.nautobot.interface_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Interface_Template
+        name: Test Interface Template
         type: virtual
         state: present
 

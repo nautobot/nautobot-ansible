@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create object_change within Nautobot with only required information
+    - name: Create object change within Nautobot with only required information
       networktocode.nautobot.object_change:
         url: http://nautobot.local
         token: thisIsMyToken

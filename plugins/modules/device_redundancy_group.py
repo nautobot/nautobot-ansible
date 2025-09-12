@@ -56,11 +56,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device_redundancy_group within Nautobot with only required information
+    - name: Create device redundancy group within Nautobot with only required information
       networktocode.nautobot.device_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Redundancy_Group
+        name: Test Device Redundancy Group
         status: "Active"
         state: present
 

@@ -39,11 +39,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create cluster_group within Nautobot with only required information
+    - name: Create cluster group within Nautobot with only required information
       networktocode.nautobot.cluster_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cluster_Group
+        name: Test Cluster Group
         state: present
 
     - name: Delete cluster_group within nautobot

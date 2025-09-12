@@ -62,7 +62,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create secrets_groups_association within Nautobot with only required information
+    - name: Create secrets groups association within Nautobot with only required information
       networktocode.nautobot.secrets_groups_association:
         url: http://nautobot.local
         token: thisIsMyToken

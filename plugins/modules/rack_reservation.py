@@ -50,7 +50,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create rack_reservation within Nautobot with only required information
+    - name: Create rack reservation within Nautobot with only required information
       networktocode.nautobot.rack_reservation:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device_types_to_software_image_file within Nautobot with only required information
+    - name: Create device types to software image file within Nautobot with only required information
       networktocode.nautobot.device_types_to_software_image_file:
         url: http://nautobot.local
         token: thisIsMyToken

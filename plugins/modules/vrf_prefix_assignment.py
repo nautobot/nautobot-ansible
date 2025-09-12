@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create vrf_prefix_assignment within Nautobot with only required information
+    - name: Create vrf prefix assignment within Nautobot with only required information
       networktocode.nautobot.vrf_prefix_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

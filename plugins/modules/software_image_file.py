@@ -72,7 +72,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create software_image_file within Nautobot with only required information
+    - name: Create software image file within Nautobot with only required information
       networktocode.nautobot.software_image_file:
         url: http://nautobot.local
         token: thisIsMyToken

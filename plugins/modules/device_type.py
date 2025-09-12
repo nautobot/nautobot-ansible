@@ -68,7 +68,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device_type within Nautobot with only required information
+    - name: Create device type within Nautobot with only required information
       networktocode.nautobot.device_type:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -39,11 +39,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create secrets_group within Nautobot with only required information
+    - name: Create secrets group within Nautobot with only required information
       networktocode.nautobot.secrets_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Secrets_Group
+        name: Test Secrets Group
         state: present
 
     - name: Delete secrets_group within nautobot

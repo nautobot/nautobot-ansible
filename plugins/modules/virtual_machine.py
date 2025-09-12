@@ -89,11 +89,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create virtual_machine within Nautobot with only required information
+    - name: Create virtual machine within Nautobot with only required information
       networktocode.nautobot.virtual_machine:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Machine
+        name: Test Virtual Machine
         cluster: None
         status: "Active"
         state: present

@@ -44,11 +44,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create virtual_chassis within Nautobot with only required information
+    - name: Create virtual chassis within Nautobot with only required information
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Chassis
+        name: Test Virtual Chassis
         state: present
 
     - name: Delete virtual_chassis within nautobot

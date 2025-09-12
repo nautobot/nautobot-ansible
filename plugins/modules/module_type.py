@@ -47,7 +47,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create module_type within Nautobot with only required information
+    - name: Create module type within Nautobot with only required information
       networktocode.nautobot.module_type:
         url: http://nautobot.local
         token: thisIsMyToken

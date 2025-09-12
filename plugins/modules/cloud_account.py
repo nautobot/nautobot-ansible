@@ -50,11 +50,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create cloud_account within Nautobot with only required information
+    - name: Create cloud account within Nautobot with only required information
       networktocode.nautobot.cloud_account:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cloud_Account
+        name: Test Cloud Account
         account_number: "Test account_number"
         provider: None
         state: present

@@ -78,11 +78,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create wireless_network within Nautobot with only required information
+    - name: Create wireless network within Nautobot with only required information
       networktocode.nautobot.wireless_network:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Wireless_Network
+        name: Test Wireless Network
         ssid: "Test ssid"
         mode: Central
         authentication: Open

@@ -69,11 +69,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create console_server_port within Nautobot with only required information
+    - name: Create console server port within Nautobot with only required information
       networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console_Server_Port
+        name: Test Console Server Port
         state: present
 
     - name: Delete console_server_port within nautobot

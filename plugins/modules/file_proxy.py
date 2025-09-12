@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create file_proxy within Nautobot with only required information
+    - name: Create file proxy within Nautobot with only required information
       networktocode.nautobot.file_proxy:
         url: http://nautobot.local
         token: thisIsMyToken

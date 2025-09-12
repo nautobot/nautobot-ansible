@@ -51,7 +51,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create contact_association within Nautobot with only required information
+    - name: Create contact association within Nautobot with only required information
       networktocode.nautobot.contact_association:
         url: http://nautobot.local
         token: thisIsMyToken

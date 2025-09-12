@@ -52,7 +52,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create supported_data_rate within Nautobot with only required information
+    - name: Create supported data rate within Nautobot with only required information
       networktocode.nautobot.supported_data_rate:
         url: http://nautobot.local
         token: thisIsMyToken

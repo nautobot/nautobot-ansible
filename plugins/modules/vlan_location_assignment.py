@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create vlan_location_assignment within Nautobot with only required information
+    - name: Create vlan location assignment within Nautobot with only required information
       networktocode.nautobot.vlan_location_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

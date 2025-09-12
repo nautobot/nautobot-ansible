@@ -65,7 +65,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create circuit_termination within Nautobot with only required information
+    - name: Create circuit termination within Nautobot with only required information
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken

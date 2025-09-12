@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create connected_device within Nautobot with only required information
+    - name: Create connected device within Nautobot with only required information
       networktocode.nautobot.connected_device:
         url: http://nautobot.local
         token: thisIsMyToken

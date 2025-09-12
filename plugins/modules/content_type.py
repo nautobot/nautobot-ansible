@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create content_type within Nautobot with only required information
+    - name: Create content type within Nautobot with only required information
       networktocode.nautobot.content_type:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create cloud_network_prefix_assignment within Nautobot with only required information
+    - name: Create cloud network prefix assignment within Nautobot with only required information
       networktocode.nautobot.cloud_network_prefix_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

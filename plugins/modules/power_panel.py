@@ -44,11 +44,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create power_panel within Nautobot with only required information
+    - name: Create power panel within Nautobot with only required information
       networktocode.nautobot.power_panel:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Panel
+        name: Test Power Panel
         location: None
         state: present
 

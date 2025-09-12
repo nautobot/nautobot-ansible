@@ -48,7 +48,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create dynamic_group_membership within Nautobot with only required information
+    - name: Create dynamic group membership within Nautobot with only required information
       networktocode.nautobot.dynamic_group_membership:
         url: http://nautobot.local
         token: thisIsMyToken

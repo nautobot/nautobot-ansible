@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create job_queue_assignment within Nautobot with only required information
+    - name: Create job queue assignment within Nautobot with only required information
       networktocode.nautobot.job_queue_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

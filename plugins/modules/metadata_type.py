@@ -47,11 +47,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create metadata_type within Nautobot with only required information
+    - name: Create metadata type within Nautobot with only required information
       networktocode.nautobot.metadata_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Metadata_Type
+        name: Test Metadata Type
         content_types: None
         data_type: None
         state: present

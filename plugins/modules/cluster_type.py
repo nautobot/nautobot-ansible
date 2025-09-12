@@ -39,11 +39,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create cluster_type within Nautobot with only required information
+    - name: Create cluster type within Nautobot with only required information
       networktocode.nautobot.cluster_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cluster_Type
+        name: Test Cluster Type
         state: present
 
     - name: Delete cluster_type within nautobot

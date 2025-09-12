@@ -50,11 +50,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create job_queue within Nautobot with only required information
+    - name: Create job queue within Nautobot with only required information
       networktocode.nautobot.job_queue:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Job_Queue
+        name: Test Job Queue
         queue_type: celery
         state: present
 

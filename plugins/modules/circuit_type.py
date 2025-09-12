@@ -39,11 +39,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create circuit_type within Nautobot with only required information
+    - name: Create circuit type within Nautobot with only required information
       networktocode.nautobot.circuit_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Circuit_Type
+        name: Test Circuit Type
         state: present
 
     - name: Delete circuit_type within nautobot

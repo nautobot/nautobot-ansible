@@ -62,11 +62,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create virtual_device_context within Nautobot with only required information
+    - name: Create virtual device context within Nautobot with only required information
       networktocode.nautobot.virtual_device_context:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Device_Context
+        name: Test Virtual Device Context
         identifier: None
         device: None
         status: "Active"

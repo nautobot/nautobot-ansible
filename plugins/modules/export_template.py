@@ -56,11 +56,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create export_template within Nautobot with only required information
+    - name: Create export template within Nautobot with only required information
       networktocode.nautobot.export_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Export_Template
+        name: Test Export Template
         content_type: "Test content_type"
         template_code: "Test template_code"
         state: present

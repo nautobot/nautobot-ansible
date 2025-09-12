@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create interface_vdc_assignment within Nautobot with only required information
+    - name: Create interface vdc assignment within Nautobot with only required information
       networktocode.nautobot.interface_vdc_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

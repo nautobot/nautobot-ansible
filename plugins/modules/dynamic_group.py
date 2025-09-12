@@ -57,11 +57,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create dynamic_group within Nautobot with only required information
+    - name: Create dynamic group within Nautobot with only required information
       networktocode.nautobot.dynamic_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Dynamic_Group
+        name: Test Dynamic Group
         content_type: "Test content_type"
         state: present
 

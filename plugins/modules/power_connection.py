@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create power_connection within Nautobot with only required information
+    - name: Create power connection within Nautobot with only required information
       networktocode.nautobot.power_connection:
         url: http://nautobot.local
         token: thisIsMyToken

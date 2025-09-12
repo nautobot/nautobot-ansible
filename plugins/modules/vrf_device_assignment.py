@@ -50,7 +50,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create vrf_device_assignment within Nautobot with only required information
+    - name: Create vrf device assignment within Nautobot with only required information
       networktocode.nautobot.vrf_device_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

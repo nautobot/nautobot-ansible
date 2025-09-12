@@ -54,11 +54,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create job_hook within Nautobot with only required information
+    - name: Create job hook within Nautobot with only required information
       networktocode.nautobot.job_hook:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Job_Hook
+        name: Test Job Hook
         content_types: None
         job: None
         state: present

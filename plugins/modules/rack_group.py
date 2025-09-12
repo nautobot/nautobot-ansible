@@ -45,11 +45,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create rack_group within Nautobot with only required information
+    - name: Create rack group within Nautobot with only required information
       networktocode.nautobot.rack_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rack_Group
+        name: Test Rack Group
         location: None
         state: present
 

@@ -41,11 +41,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device_family within Nautobot with only required information
+    - name: Create device family within Nautobot with only required information
       networktocode.nautobot.device_family:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Family
+        name: Test Device Family
         state: present
 
     - name: Delete device_family within nautobot

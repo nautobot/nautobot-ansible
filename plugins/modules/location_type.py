@@ -48,11 +48,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create location_type within Nautobot with only required information
+    - name: Create location type within Nautobot with only required information
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Location_Type
+        name: Test Location Type
         state: present
 
     - name: Delete location_type within nautobot

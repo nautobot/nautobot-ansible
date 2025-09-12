@@ -41,7 +41,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create custom_field_choice within Nautobot with only required information
+    - name: Create custom field choice within Nautobot with only required information
       networktocode.nautobot.custom_field_choice:
         url: http://nautobot.local
         token: thisIsMyToken

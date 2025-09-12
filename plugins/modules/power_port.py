@@ -160,11 +160,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create power_port within Nautobot with only required information
+    - name: Create power port within Nautobot with only required information
       networktocode.nautobot.power_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Port
+        name: Test Power Port
         state: present
 
     - name: Delete power_port within nautobot

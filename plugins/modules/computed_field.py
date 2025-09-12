@@ -59,7 +59,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create computed_field within Nautobot with only required information
+    - name: Create computed field within Nautobot with only required information
       networktocode.nautobot.computed_field:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -45,11 +45,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create device_bay_template within Nautobot with only required information
+    - name: Create device bay template within Nautobot with only required information
       networktocode.nautobot.device_bay_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Bay_Template
+        name: Test Device Bay Template
         device_type: None
         state: present
 

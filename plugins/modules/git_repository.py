@@ -56,11 +56,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create git_repository within Nautobot with only required information
+    - name: Create git repository within Nautobot with only required information
       networktocode.nautobot.git_repository:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Git_Repository
+        name: Test Git Repository
         remote_url: "Test remote_url"
         state: present
 

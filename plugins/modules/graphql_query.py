@@ -44,11 +44,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create graphql_query within Nautobot with only required information
+    - name: Create graphql query within Nautobot with only required information
       networktocode.nautobot.graphql_query:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Graphql_Query
+        name: Test Graphql Query
         query: "Test query"
         state: present
 

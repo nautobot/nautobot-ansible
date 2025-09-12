@@ -41,7 +41,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create interface_redundancy_group_association within Nautobot with only required information
+    - name: Create interface redundancy group association within Nautobot with only required information
       networktocode.nautobot.interface_redundancy_group_association:
         url: http://nautobot.local
         token: thisIsMyToken

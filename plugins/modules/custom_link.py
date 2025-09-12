@@ -56,11 +56,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create custom_link within Nautobot with only required information
+    - name: Create custom link within Nautobot with only required information
       networktocode.nautobot.custom_link:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Custom_Link
+        name: Test Custom Link
         content_type: "Test content_type"
         text: "Test text"
         target_url: "Test target_url"

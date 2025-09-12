@@ -61,11 +61,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create interface_redundancy_group within Nautobot with only required information
+    - name: Create interface redundancy group within Nautobot with only required information
       networktocode.nautobot.interface_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Interface_Redundancy_Group
+        name: Test Interface Redundancy Group
         status: "Active"
         state: present
 

@@ -41,7 +41,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create metadata_choice within Nautobot with only required information
+    - name: Create metadata choice within Nautobot with only required information
       networktocode.nautobot.metadata_choice:
         url: http://nautobot.local
         token: thisIsMyToken

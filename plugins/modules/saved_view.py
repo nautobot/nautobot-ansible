@@ -50,11 +50,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create saved_view within Nautobot with only required information
+    - name: Create saved view within Nautobot with only required information
       networktocode.nautobot.saved_view:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Saved_View
+        name: Test Saved View
         view: "Test view"
         owner: None
         state: present

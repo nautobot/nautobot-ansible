@@ -80,11 +80,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create power_feed within Nautobot with only required information
+    - name: Create power feed within Nautobot with only required information
       networktocode.nautobot.power_feed:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Feed
+        name: Test Power Feed
         power_panel: None
         status: "Active"
         state: present

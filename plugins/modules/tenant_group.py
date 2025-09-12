@@ -42,11 +42,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create tenant_group within Nautobot with only required information
+    - name: Create tenant group within Nautobot with only required information
       networktocode.nautobot.tenant_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Tenant_Group
+        name: Test Tenant Group
         state: present
 
     - name: Delete tenant_group within nautobot

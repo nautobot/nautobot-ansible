@@ -44,11 +44,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create route_target within Nautobot with only required information
+    - name: Create route target within Nautobot with only required information
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Route_Target
+        name: Test Route Target
         state: present
 
     - name: Delete route_target within nautobot

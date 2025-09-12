@@ -29,7 +29,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create scheduled_job within Nautobot with only required information
+    - name: Create scheduled job within Nautobot with only required information
       networktocode.nautobot.scheduled_job:
         url: http://nautobot.local
         token: thisIsMyToken

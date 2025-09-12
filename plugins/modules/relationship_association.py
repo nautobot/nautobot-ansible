@@ -47,7 +47,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create relationship_association within Nautobot with only required information
+    - name: Create relationship association within Nautobot with only required information
       networktocode.nautobot.relationship_association:
         url: http://nautobot.local
         token: thisIsMyToken

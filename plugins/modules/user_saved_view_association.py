@@ -41,7 +41,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create user_saved_view_association within Nautobot with only required information
+    - name: Create user saved view association within Nautobot with only required information
       networktocode.nautobot.user_saved_view_association:
         url: http://nautobot.local
         token: thisIsMyToken

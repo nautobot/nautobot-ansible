@@ -48,11 +48,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create config_context_schema within Nautobot with only required information
+    - name: Create config context schema within Nautobot with only required information
       networktocode.nautobot.config_context_schema:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Config_Context_Schema
+        name: Test Config Context Schema
         data_schema: None
         state: present
 

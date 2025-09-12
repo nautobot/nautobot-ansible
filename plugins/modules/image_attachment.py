@@ -50,7 +50,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create image_attachment within Nautobot with only required information
+    - name: Create image attachment within Nautobot with only required information
       networktocode.nautobot.image_attachment:
         url: http://nautobot.local
         token: thisIsMyToken

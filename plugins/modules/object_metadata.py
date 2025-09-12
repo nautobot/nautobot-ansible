@@ -53,7 +53,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create object_metadata within Nautobot with only required information
+    - name: Create object metadata within Nautobot with only required information
       networktocode.nautobot.object_metadata:
         url: http://nautobot.local
         token: thisIsMyToken

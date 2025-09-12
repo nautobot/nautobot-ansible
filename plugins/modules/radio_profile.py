@@ -193,11 +193,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create radio_profile within Nautobot with only required information
+    - name: Create radio profile within Nautobot with only required information
       networktocode.nautobot.radio_profile:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Radio_Profile
+        name: Test Radio Profile
         regulatory_domain: AD
         state: present
 

@@ -68,11 +68,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create external_integration within Nautobot with only required information
+    - name: Create external integration within Nautobot with only required information
       networktocode.nautobot.external_integration:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test External_Integration
+        name: Test External Integration
         remote_url: "Test remote_url"
         state: present
 

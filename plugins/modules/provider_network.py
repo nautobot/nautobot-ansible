@@ -47,11 +47,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create provider_network within Nautobot with only required information
+    - name: Create provider network within Nautobot with only required information
       networktocode.nautobot.provider_network:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Provider_Network
+        name: Test Provider Network
         provider: None
         state: present
 

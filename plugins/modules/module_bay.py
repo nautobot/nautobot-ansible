@@ -53,11 +53,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create module_bay within Nautobot with only required information
+    - name: Create module bay within Nautobot with only required information
       networktocode.nautobot.module_bay:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Module_Bay
+        name: Test Module Bay
         state: present
 
     - name: Delete module_bay within nautobot

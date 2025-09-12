@@ -105,11 +105,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create front_port_template within Nautobot with only required information
+    - name: Create front port template within Nautobot with only required information
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front_Port_Template
+        name: Test Front Port Template
         type: 8p8c
         rear_port_template: None
         state: present

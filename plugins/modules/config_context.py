@@ -85,11 +85,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create config_context within Nautobot with only required information
+    - name: Create config context within Nautobot with only required information
       networktocode.nautobot.config_context:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Config_Context
+        name: Test Config Context
         data: None
         state: present
 

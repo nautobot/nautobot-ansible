@@ -62,7 +62,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create software_version within Nautobot with only required information
+    - name: Create software version within Nautobot with only required information
       networktocode.nautobot.software_version:
         url: http://nautobot.local
         token: thisIsMyToken

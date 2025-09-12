@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create prefix_location_assignment within Nautobot with only required information
+    - name: Create prefix location assignment within Nautobot with only required information
       networktocode.nautobot.prefix_location_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

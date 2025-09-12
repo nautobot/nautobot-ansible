@@ -67,11 +67,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create job_button within Nautobot with only required information
+    - name: Create job button within Nautobot with only required information
       networktocode.nautobot.job_button:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Job_Button
+        name: Test Job Button
         content_types: None
         text: "Test text"
         job: None

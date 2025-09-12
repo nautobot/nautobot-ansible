@@ -38,7 +38,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create controller_managed_device_group_radio_profile_assignment within Nautobot with only required information
+    - name: Create controller managed device group radio profile assignment within Nautobot with only required information
       networktocode.nautobot.controller_managed_device_group_radio_profile_assignment:
         url: http://nautobot.local
         token: thisIsMyToken

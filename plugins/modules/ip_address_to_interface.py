@@ -62,7 +62,7 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create ip_address_to_interface within Nautobot with only required information
+    - name: Create ip address to interface within Nautobot with only required information
       networktocode.nautobot.ip_address_to_interface:
         url: http://nautobot.local
         token: thisIsMyToken

@@ -71,11 +71,11 @@ EXAMPLES = r"""
   gather_facts: false
 
   tasks:
-    - name: Create inventory_item within Nautobot with only required information
+    - name: Create inventory item within Nautobot with only required information
       networktocode.nautobot.inventory_item:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Inventory_Item
+        name: Test Inventory Item
         device: None
         state: present
 
