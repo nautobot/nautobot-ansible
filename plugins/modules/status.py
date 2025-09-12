@@ -72,14 +72,17 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotExtrasModule,
-    NB_STATUSES,
-)
-from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_STATUSES,
+    NautobotExtrasModule,
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CUSTOM_FIELDS_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+)
 
 
 def main():

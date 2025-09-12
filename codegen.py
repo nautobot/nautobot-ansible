@@ -235,7 +235,8 @@ def main():
     logger.debug(json.dumps(apps["dcim"]["cable"]["methods"]["post"], indent=2))
 
     logger.info("Formatting files with ruff")
-    subprocess.run(["ruff", "format", (Path(__file__).parent / "plugins").absolute()])
+    subprocess.run(["ruff", "check", "--select", "I", "--fix", (Path(__file__).parent / "plugins").absolute()])  # noqa: S603,S607
+    subprocess.run(["ruff", "format", (Path(__file__).parent / "plugins").absolute()])  # noqa: S603,S607
 
     logger.info("Code generation complete")
 
