@@ -94,6 +94,13 @@ msg:
   type: str
 """
 
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.{{ app_label }} import (
+    Nautobot{{ app_label.title() }}Module,
+    NB_{{ model.model_name_plural.upper().replace("-", "_") }},
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 {% if "custom_fields" in model.fields %}
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
@@ -101,12 +108,6 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 {% if "tags" in model.fields %}
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 {% endif %}
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    Nautobot{{ app_label.title() }}Module,
-    NB_{{ model.model_name_plural.upper().replace("-", "_") }},
-)
-from ansible.module_utils.basic import AnsibleModule
-from copy import deepcopy
 
 
 def main():

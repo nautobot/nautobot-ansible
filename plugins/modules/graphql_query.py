@@ -74,7 +74,7 @@ msg:
 from copy import deepcopy
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.extras import (
     NB_GRAPHQL_QUERIES,
     NautobotExtrasModule,
 )
