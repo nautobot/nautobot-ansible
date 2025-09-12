@@ -1,7 +1,9 @@
+import datetime
 import logging
 from pathlib import Path
 import json
 import re
+import sys
 
 import jinja2
 from prance import ResolvingParser  # TODO: Add prance to poetry. Currently fails with incompatibility with pynautobot
@@ -26,13 +28,13 @@ OUT_OF_SCOPE_PATHS = [
 def singularize(word):
     word = word.lower()
 
-    irregulars = {
+    non_standard = {
         "virtual-chassis": "virtual-chassis",
         "object-metadata": "object-metadata",
     }
 
-    if word in irregulars:
-        return irregulars[word]
+    if word in non_standard:
+        return non_standard[word]
 
     # Rules for regular plural forms
     if word.endswith("ies"):
@@ -47,8 +49,25 @@ def singularize(word):
     return word
 
 
+def openapi_type_to_python_type(openapi_type):
+    replacements = {
+        "string": "str",
+        "object": "dict",
+    }
+    if openapi_type not in replacements:
+        raise ValueError(f"No python type found for openapi type {openapi_type}")
+
+    return replacements[openapi_type]
+
+
+def field_example_value(field):
+    if field["type"] == "string":
+        return f'"Test {field["name"]}"'
+
+
 def main():
-    logger.debug("# Starting code generation for Nautobot modules")
+    logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.INFO, stream=sys.stdout)
+    logger.info("Starting code generation for Nautobot modules")
 
     # Load cached OpenAPI schema from json file if one exists to speed up development
     if Path("openapi-schema.parsed.json").exists():
@@ -56,15 +75,16 @@ def main():
             spec = json.load(f)
     else:
         # This part takes a long time
-        parser = ResolvingParser("openapi-schema.yaml")
+        logger.info("Parsing OpenAPI schema. This may take a while...")
+        parser = ResolvingParser("/home/gary/github/nautobot/nautobot/openapi_develop_test.yaml")
         spec = parser.specification
         with open("openapi-schema.parsed.json", "w") as f:
             # Save the parsed OpenAPI schema to a file for future use
             # This will speed up development by avoiding re-parsing the schema each time
             json.dump(spec, f, indent=2)
 
-    logger.debug("# OpenAPI Specification loaded")
-    logger.debug("# Generating module code...")
+    logger.debug("OpenAPI Specification loaded")
+    logger.debug("Generating module code...")
 
     apps = {}
 
@@ -155,19 +175,26 @@ def main():
         trim_blocks=True,
         lstrip_blocks=True,
     )
+    jinja_env.filters["openapi_type_to_python_type"] = openapi_type_to_python_type
+    jinja_env.filters["field_example_value"] = field_example_value
+
     output_dir = Path("plugins", "modules")
 
     for app_label, models in apps.items():
         for model_name, model in models.items():
             if model_name != "manufacturer":  # TODO: Only testing against dcim.manufacturer for now
                 continue
-            template = jinja_env.get_template("plugins/modules/module.py.j2")
-            output = template.render(app_label=app_label, model_name=model_name, model=model)
+            template = jinja_env.get_template("plugins/modules/model_name.py.j2")
+            output = template.render(
+                app_label=app_label, model_name=model_name, model=model, date=datetime.date.today()
+            )
             output_path = output_dir / f"{model_name}.py"
             output_path.write_text(output)
             logger.debug(f"Generated {output_path}")
 
     logger.debug(json.dumps(apps["dcim"]["manufacturer"], indent=2))
+
+    logger.info("Code generation complete")
 
 
 if __name__ == "__main__":

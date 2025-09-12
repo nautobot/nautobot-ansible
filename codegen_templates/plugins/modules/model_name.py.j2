@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) {{ date.year }}, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -14,7 +14,7 @@ short_description: Creates or removes {{ model.model_name_plural.replace("-", " 
 description:
   - Creates or removes {{ model.model_name_plural.replace("-", " ") }} from Nautobot
 notes:
-{% if "tags" in model.methods.post.properties %}
+{% if "tags" in model.fields %}
   - Tags should be defined as a YAML list
 {% endif %}
   - This should be ran with connection C(local) and hosts C(localhost)
@@ -22,23 +22,29 @@ author:
   - Network To Code (@networktocode)
 requirements:
   - pynautobot
+{# TODO: add version_added for the model
 version_added: "5.4.0"
-{# TODO - Add version #}
+#}
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-{% if "tags" in model.methods.post.properties %}
+{% if "tags" in model.fields %}
   - networktocode.nautobot.fragments.tags
 {% endif %}
-{% if "custom_fields" in model.methods.post.properties %}
+{% if "custom_fields" in model.fields %}
   - networktocode.nautobot.fragments.custom_fields
 {% endif %}
 options:
-{% for field in model.fields.values() | rejectattr("name", "in", ["custom_fields", "tags"]) %}
+{% for field in model.fields.values() | rejectattr("name", "in", ["custom_fields", "tags", "relationships"]) %}
   {{ field.name }}:
+{# TODO: Add description for fields
     description:
-      - "TODO: Add description for fields"
+      - "field description"
+#}
     required: {{ "true" if field.required else "false" }}
-    type: {{ field.type }}
+    type: {{ field.type | openapi_type_to_python_type }}
+{# TODO: Add version_added for fields
+    version_added: "1.2.3"
+#}
 {% endfor %}
 """
 
@@ -53,16 +59,23 @@ EXAMPLES = r"""
       networktocode.nautobot.{{ model_name }}:
         url: http://nautobot.local
         token: thisIsMyToken
-        {# TODO - Add required fields #}
+        {% if "name" in model.fields and model.fields.name.required %}
         name: Test {{ model_name.title() }}
+        {% endif %}
+        {% for field in model.fields.values() | selectattr("required") | rejectattr("name", "eq", "name") %}
+        {{ field.name }}: {{ field | field_example_value }}
+        {% endfor %}
         state: present
-        description: The test {{ model_name }}
 
     - name: Delete {{ model_name }} within nautobot
       networktocode.nautobot.{{ model_name }}:
         url: http://nautobot.local
         token: thisIsMyToken
+        {% if "name" in model.fields and model.fields.name.required %}
         name: Test {{ model_name.title() }}
+        {% else %}
+        {# TODO: support models that have different unique fields #}
+        {% endif %}
         state: absent
 """
 
@@ -79,8 +92,8 @@ msg:
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
-    NB_MANUFACTURERS,
+    Nautobot{{ app_label.title() }}Module,
+    NB_{{ model.model_name_plural.upper() }},
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -94,15 +107,18 @@ def main():
     argument_spec.update(
         dict(
             {# TODO - Add fields to the argspec #}
-            name=dict(required=True, type="str"),
-            description=dict(required=False, type="str"),
+            {% for field in model.fields.values() | rejectattr("name", "in", ["id", "relationships", "custom_fields", "tags"]) %}
+            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_python_type }}"),
+            {% endfor %}
+            {# name=dict(required=True, type="str"),
+               description=dict(required=False, type="str"), #}
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     {# TODO - Add logic to the module #}
-    {{ model_name }} = NautobotDcimModule(module, NB_MANUFACTURERS)
+    {{ model_name }} = Nautobot{{ app_label.title() }}Module(module, NB_{{ model.model_name_plural.upper() }})
     {{ model_name }}.run()
 
 
