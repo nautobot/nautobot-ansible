@@ -45,7 +45,7 @@ EXAMPLES = r"""
 - name: "Test Nautobot modules"
   connection: local
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
 
   tasks:
     - name: Create config_context_schema within Nautobot with only required information
