@@ -102,7 +102,7 @@ EXAMPLES = r"""
       networktocode.nautobot.virtual_machine:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Machine
+        name: Test Virtual Machine
         state: absent
 """
 

@@ -50,7 +50,7 @@ EXAMPLES = r"""
       networktocode.nautobot.cluster_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cluster_Type
+        name: Test Cluster Type
         state: absent
 """
 

@@ -83,7 +83,7 @@ EXAMPLES = r"""
       networktocode.nautobot.inventory_item:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Inventory_Item
+        name: Test Inventory Item
         state: absent
 """
 

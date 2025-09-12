@@ -60,7 +60,7 @@ EXAMPLES = r"""
       networktocode.nautobot.metadata_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Metadata_Type
+        name: Test Metadata Type
         state: absent
 """
 

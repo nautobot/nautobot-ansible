@@ -50,7 +50,7 @@ EXAMPLES = r"""
       networktocode.nautobot.secrets_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Secrets_Group
+        name: Test Secrets Group
         state: absent
 """
 

@@ -76,7 +76,7 @@ EXAMPLES = r"""
       networktocode.nautobot.virtual_device_context:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Device_Context
+        name: Test Virtual Device Context
         state: absent
 """
 

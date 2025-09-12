@@ -71,7 +71,7 @@ EXAMPLES = r"""
       networktocode.nautobot.custom_link:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Custom_Link
+        name: Test Custom Link
         state: absent
 """
 

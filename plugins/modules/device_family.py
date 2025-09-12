@@ -52,7 +52,7 @@ EXAMPLES = r"""
       networktocode.nautobot.device_family:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Family
+        name: Test Device Family
         state: absent
 """
 

@@ -97,7 +97,7 @@ EXAMPLES = r"""
       networktocode.nautobot.config_context:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Config_Context
+        name: Test Config Context
         state: absent
 """
 

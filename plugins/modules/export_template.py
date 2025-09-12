@@ -69,7 +69,7 @@ EXAMPLES = r"""
       networktocode.nautobot.export_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Export_Template
+        name: Test Export Template
         state: absent
 """
 

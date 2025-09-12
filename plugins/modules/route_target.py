@@ -55,7 +55,7 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Route_Target
+        name: Test Route Target
         state: absent
 """
 

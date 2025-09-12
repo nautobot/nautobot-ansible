@@ -80,7 +80,7 @@ EXAMPLES = r"""
       networktocode.nautobot.external_integration:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test External_Integration
+        name: Test External Integration
         state: absent
 """
 

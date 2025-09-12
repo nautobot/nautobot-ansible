@@ -59,7 +59,7 @@ EXAMPLES = r"""
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Location_Type
+        name: Test Location Type
         state: absent
 """
 

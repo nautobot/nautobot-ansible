@@ -92,7 +92,7 @@ EXAMPLES = r"""
       networktocode.nautobot.wireless_network:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Wireless_Network
+        name: Test Wireless Network
         state: absent
 """
 

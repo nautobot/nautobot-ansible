@@ -118,7 +118,7 @@ EXAMPLES = r"""
       networktocode.nautobot.front_port_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Front_Port_Template
+        name: Test Front Port Template
         state: absent
 """
 

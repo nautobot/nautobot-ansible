@@ -58,7 +58,7 @@ EXAMPLES = r"""
       networktocode.nautobot.vlan_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Vlan_Group
+        name: Test Vlan Group
         state: absent
 """
 

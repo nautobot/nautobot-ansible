@@ -76,7 +76,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         {% if "name" in model.fields and model.fields.name.required %}
-        name: Test {{ model_name.title() }}
+        name: Test {{ model_name.replace("_", " ").title() }}
         {% else %}
         {# TODO: support models that have different unique fields #}
         {% endif %}

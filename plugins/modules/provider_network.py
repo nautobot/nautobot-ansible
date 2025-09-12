@@ -59,7 +59,7 @@ EXAMPLES = r"""
       networktocode.nautobot.provider_network:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Provider_Network
+        name: Test Provider Network
         state: absent
 """
 

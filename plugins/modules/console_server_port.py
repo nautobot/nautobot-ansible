@@ -80,7 +80,7 @@ EXAMPLES = r"""
       networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console_Server_Port
+        name: Test Console Server Port
         state: absent
 """
 

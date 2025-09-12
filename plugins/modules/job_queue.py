@@ -62,7 +62,7 @@ EXAMPLES = r"""
       networktocode.nautobot.job_queue:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Job_Queue
+        name: Test Job Queue
         state: absent
 """
 

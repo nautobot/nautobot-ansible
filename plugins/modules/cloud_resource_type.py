@@ -63,7 +63,7 @@ EXAMPLES = r"""
       networktocode.nautobot.cloud_resource_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cloud_Resource_Type
+        name: Test Cloud Resource Type
         state: absent
 """
 

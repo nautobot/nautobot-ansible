@@ -60,7 +60,7 @@ EXAMPLES = r"""
       networktocode.nautobot.config_context_schema:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Config_Context_Schema
+        name: Test Config Context Schema
         state: absent
 """
 

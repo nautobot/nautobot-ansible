@@ -168,7 +168,7 @@ EXAMPLES = r"""
       networktocode.nautobot.power_outlet:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Outlet
+        name: Test Power Outlet
         state: absent
 """
 

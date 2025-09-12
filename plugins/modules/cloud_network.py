@@ -66,7 +66,7 @@ EXAMPLES = r"""
       networktocode.nautobot.cloud_network:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Cloud_Network
+        name: Test Cloud Network
         state: absent
 """
 

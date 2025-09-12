@@ -73,7 +73,7 @@ EXAMPLES = r"""
       networktocode.nautobot.interface_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Interface_Redundancy_Group
+        name: Test Interface Redundancy Group
         state: absent
 """
 

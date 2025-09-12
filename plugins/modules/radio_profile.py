@@ -205,7 +205,7 @@ EXAMPLES = r"""
       networktocode.nautobot.radio_profile:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Radio_Profile
+        name: Test Radio Profile
         state: absent
 """
 

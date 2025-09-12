@@ -204,7 +204,7 @@ EXAMPLES = r"""
       networktocode.nautobot.interface_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Interface_Template
+        name: Test Interface Template
         state: absent
 """
 

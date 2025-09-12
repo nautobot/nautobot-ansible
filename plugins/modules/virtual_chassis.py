@@ -55,7 +55,7 @@ EXAMPLES = r"""
       networktocode.nautobot.virtual_chassis:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Virtual_Chassis
+        name: Test Virtual Chassis
         state: absent
 """
 

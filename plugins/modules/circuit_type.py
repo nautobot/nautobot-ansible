@@ -50,7 +50,7 @@ EXAMPLES = r"""
       networktocode.nautobot.circuit_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Circuit_Type
+        name: Test Circuit Type
         state: absent
 """
 

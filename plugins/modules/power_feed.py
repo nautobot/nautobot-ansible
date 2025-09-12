@@ -93,7 +93,7 @@ EXAMPLES = r"""
       networktocode.nautobot.power_feed:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Feed
+        name: Test Power Feed
         state: absent
 """
 

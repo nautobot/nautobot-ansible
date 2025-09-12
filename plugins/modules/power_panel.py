@@ -56,7 +56,7 @@ EXAMPLES = r"""
       networktocode.nautobot.power_panel:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Panel
+        name: Test Power Panel
         state: absent
 """
 

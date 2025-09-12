@@ -69,7 +69,7 @@ EXAMPLES = r"""
       networktocode.nautobot.dynamic_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Dynamic_Group
+        name: Test Dynamic Group
         state: absent
 """
 

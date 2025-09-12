@@ -171,7 +171,7 @@ EXAMPLES = r"""
       networktocode.nautobot.power_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power_Port
+        name: Test Power Port
         state: absent
 """
 

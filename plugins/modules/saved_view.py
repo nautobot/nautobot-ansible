@@ -63,7 +63,7 @@ EXAMPLES = r"""
       networktocode.nautobot.saved_view:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Saved_View
+        name: Test Saved View
         state: absent
 """
 

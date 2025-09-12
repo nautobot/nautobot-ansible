@@ -57,7 +57,7 @@ EXAMPLES = r"""
       networktocode.nautobot.device_bay_template:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Bay_Template
+        name: Test Device Bay Template
         state: absent
 """
 

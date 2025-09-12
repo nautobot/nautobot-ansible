@@ -68,7 +68,7 @@ EXAMPLES = r"""
       networktocode.nautobot.git_repository:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Git_Repository
+        name: Test Git Repository
         state: absent
 """
 

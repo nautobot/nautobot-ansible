@@ -56,7 +56,7 @@ EXAMPLES = r"""
       networktocode.nautobot.graphql_query:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Graphql_Query
+        name: Test Graphql Query
         state: absent
 """
 

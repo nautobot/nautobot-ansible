@@ -116,7 +116,7 @@ EXAMPLES = r"""
       networktocode.nautobot.rear_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rear_Port
+        name: Test Rear Port
         state: absent
 """
 

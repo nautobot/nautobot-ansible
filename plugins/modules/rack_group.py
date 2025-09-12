@@ -57,7 +57,7 @@ EXAMPLES = r"""
       networktocode.nautobot.rack_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rack_Group
+        name: Test Rack Group
         state: absent
 """
 

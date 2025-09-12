@@ -53,7 +53,7 @@ EXAMPLES = r"""
       networktocode.nautobot.tenant_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Tenant_Group
+        name: Test Tenant Group
         state: absent
 """
 

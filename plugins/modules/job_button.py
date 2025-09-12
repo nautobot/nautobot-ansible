@@ -81,7 +81,7 @@ EXAMPLES = r"""
       networktocode.nautobot.job_button:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Job_Button
+        name: Test Job Button
         state: absent
 """
 

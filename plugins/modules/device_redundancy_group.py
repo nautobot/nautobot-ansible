@@ -68,7 +68,7 @@ EXAMPLES = r"""
       networktocode.nautobot.device_redundancy_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Device_Redundancy_Group
+        name: Test Device Redundancy Group
         state: absent
 """
 
