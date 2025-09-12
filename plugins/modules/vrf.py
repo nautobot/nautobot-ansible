@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,65 +10,46 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: vrf
-short_description: Create, update or delete vrfs within Nautobot
+short_description: Creates or removes vrfs from Nautobot
 description:
-  - Creates, updates or removes vrfs from Nautobot
+  - Creates or removes vrfs from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
   name:
-    description:
-      - The name of the vrf
     required: true
     type: str
-    version_added: "3.0.0"
-  namespace:
-    description:
-      - namespace that IP address is associated with. VRFs are unique per namespaces.
-    required: false
-    default: Global
-    type: str
-    version_added: "5.0.0"
   rd:
-    description:
-      - The RD of the VRF. Must be quoted to pass as a string.
     required: true
     type: str
-    version_added: "3.0.0"
-  tenant:
-    description:
-      - The tenant that the vrf will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  import_targets:
-    description:
-      - Import targets tied to VRF
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
-  export_targets:
-    description:
-      - Export targets tied to VRF
-    required: false
-    type: list
-    elements: str
-    version_added: "3.0.0"
   description:
-    description:
-      - The description of the vrf
     required: false
     type: str
-    version_added: "3.0.0"
+  status:
+    required: false
+    type: str
+  namespace:
+    required: false
+    type: dict
+  tenant:
+    required: false
+    type: dict
+  import_targets:
+    required: false
+    type: list
+  export_targets:
+    required: false
+    type: list
 """
 
 EXAMPLES = r"""
@@ -82,31 +63,16 @@ EXAMPLES = r"""
       networktocode.nautobot.vrf:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test VRF
+        name: Test Vrf
+        rd: "Test rd"
         state: present
 
     - name: Delete vrf within nautobot
       networktocode.nautobot.vrf:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test VRF
+        name: Test Vrf
         state: absent
-
-    - name: Create vrf with all information
-      networktocode.nautobot.vrf:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test VRF
-        rd: "65000:1"
-        tenant: Test Tenant
-        import_targets:
-          - "65000:65001"
-        export_targets:
-          - "65000:65001"
-        description: VRF description
-        tags:
-          - Schnozzberry
-        state: present
 """
 
 RETURN = r"""
@@ -120,12 +86,10 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotIpamModule,
     NB_VRFS,
 )
@@ -138,17 +102,18 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            namespace=dict(required=False, type="str", default="Global"),
             rd=dict(required=True, type="str"),
-            tenant=dict(required=False, type="raw"),
-            import_targets=dict(required=False, type="list", elements="str"),
-            export_targets=dict(required=False, type="list", elements="str"),
             description=dict(required=False, type="str"),
+            status=dict(required=False, type="str"),
+            namespace=dict(required=False, type="dict"),
+            tenant=dict(required=False, type="dict"),
+            import_targets=dict(required=False, type="list"),
+            export_targets=dict(required=False, type="list"),
         )
     )
 

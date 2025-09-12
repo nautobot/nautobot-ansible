@@ -9,10 +9,12 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 netutils = "^1.2"
-pynautobot = "^2.4.2"
+# pynautobot = "^2.4.2"
 ansible-core = "^2.16"
+prance = "^25.4.8.0"
+ruff = "^0.13.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
 cryptography = "*"
 jinja2 = "*"
@@ -80,6 +82,10 @@ exclude = '''
 disable = """,
     line-too-long
     """
+
+[tool.ruff]
+line-length = 160
+target-version = "py39"
 
 [tool.ruff.lint]
 ignore = [

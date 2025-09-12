@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,81 +10,52 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: circuit_termination
-short_description: Create, update or delete circuit terminations within Nautobot
+short_description: Creates or removes circuit terminations from Nautobot
 description:
-  - Creates, updates or removes circuit terminations from Nautobot
+  - Creates or removes circuit terminations from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  circuit:
-    description:
-      - The circuit to assign to circuit termination
-    required: true
-    version_added: "3.0.0"
-    type: raw
+  id:
+    required: false
+    type: str
   term_side:
-    version_added: "3.0.0"
-    description:
-      - The side of the circuit termination
-    choices:
-      - A
-      - Z
     required: true
     type: str
-  location:
-    version_added: "3.0.0"
-    description:
-      - The location the circuit termination will be assigned to
-    required: false
-    type: raw
   port_speed:
-    version_added: "3.0.0"
-    description:
-      - The speed of the port (Kbps)
     required: false
     type: int
   upstream_speed:
-    version_added: "3.0.0"
-    description:
-      - The upstream speed of the circuit termination
     required: false
     type: int
   xconnect_id:
-    version_added: "3.0.0"
-    description:
-      - The cross connect ID of the circuit termination
     required: false
     type: str
   pp_info:
-    version_added: "3.0.0"
-    description:
-      - Patch panel information
     required: false
     type: str
   description:
-    version_added: "3.0.0"
-    description:
-      - Description of the circuit termination
     required: false
     type: str
+  circuit:
+    required: true
+    type: dict
+  location:
+    required: false
+    type: dict
   provider_network:
-    version_added: "4.2.0"
-    description:
-      - Connection to a provider_network type
-    type: raw
     required: false
+    type: dict
   cloud_network:
-    version_added: "5.4.0"
-    description:
-      - Connection to a cloud_network type
-    type: raw
     required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -94,47 +65,18 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create circuit termination within Nautobot with only required information
+    - name: Create circuit_termination within Nautobot with only required information
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken
-        circuit: Test Circuit
-        term_side: A
-        location:
-          name: My Location
-          parent: Parent Location
-        port_speed: 10000
+        term_side: None
+        circuit: None
         state: present
 
-    - name: Create circuit termination to Provider Network
+    - name: Delete circuit_termination within nautobot
       networktocode.nautobot.circuit_termination:
         url: http://nautobot.local
         token: thisIsMyToken
-        circuit: Test Circuit
-        term_side: Z
-        provider_network: 
-          name: "Provider A"
-        port_speed: 10000
-        state: present
-
-    - name: Update circuit termination with other fields
-      networktocode.nautobot.circuit_termination:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        circuit: Test Circuit
-        term_side: A
-        upstream_speed: 1000
-        xconnect_id: 10X100
-        pp_info: PP10-24
-        description: "Test description"
-        state: present
-
-    - name: Delete circuit termination within nautobot
-      networktocode.nautobot.circuit_termination:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        circuit: Test Circuit
-        term_side: A
         state: absent
 """
 
@@ -150,7 +92,9 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotCircuitsModule,
     NB_CIRCUIT_TERMINATIONS,
 )
@@ -163,18 +107,20 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            circuit=dict(required=True, type="raw"),
-            term_side=dict(required=True, choices=["A", "Z"]),
-            location=dict(required=False, type="raw"),
+            term_side=dict(required=True, type="str"),
             port_speed=dict(required=False, type="int"),
             upstream_speed=dict(required=False, type="int"),
             xconnect_id=dict(required=False, type="str"),
             pp_info=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            provider_network=dict(required=False, type="raw"),
-            cloud_network=dict(required=False, type="raw"),
+            circuit=dict(required=True, type="dict"),
+            location=dict(required=False, type="dict"),
+            provider_network=dict(required=False, type="dict"),
+            cloud_network=dict(required=False, type="dict"),
         )
     )
 

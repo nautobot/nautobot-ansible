@@ -95,9 +95,15 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+{% if "custom_fields" in model.fields %}
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+{% endif %}
+{% if "tags" in model.fields %}
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+{% endif %}
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     Nautobot{{ app_label.title() }}Module,
-    NB_{{ model.model_name_plural.upper() }},
+    NB_{{ model.model_name_plural.upper().replace("-", "_") }},
 )
 from ansible.module_utils.basic import AnsibleModule
 from copy import deepcopy
@@ -108,12 +114,18 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+{% if "custom_fields" in model.fields %}
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+{% endif %}
+{% if "tags" in model.fields %}
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+{% endif %}
     {% if model.fields %}
     argument_spec.update(
         dict(
             {# TODO - Add fields to the argspec #}
             {% for field in model.fields.values() | rejectattr("name", "in", ["id", "relationships", "custom_fields", "tags"]) %}
-            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_ansible_type }}"),
+            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_ansible_type }}"{% if field.choices is not none %}, choices=[{% for choice in field.choices %}"{{ choice }}", {% endfor %}]{% endif %}),
             {% endfor %}
             {# TODO: elements key #}
         )
@@ -123,7 +135,7 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     {# TODO - Add logic to the module #}
-    {{ model_name }} = Nautobot{{ app_label.title() }}Module(module, NB_{{ model.model_name_plural.upper() }})
+    {{ model_name }} = Nautobot{{ app_label.title() }}Module(module, NB_{{ model.model_name_plural.upper().replace("-", "_") }})
     {{ model_name }}.run()
 
 

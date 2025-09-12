@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,55 +10,91 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: rear_port
-short_description: Create, update or delete rear ports within Nautobot
+short_description: Creates or removes rear ports from Nautobot
 description:
-  - Creates, updates or removes rear ports from Nautobot
+  - Creates or removes rear ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device:
-    description:
-      - The device the rear port is attached to
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the rear port
     required: true
     type: str
-    version_added: "3.0.0"
+  label:
+    required: false
+    type: str
+  description:
+    required: false
+    type: str
   type:
-    description:
-      - The type of the rear port
     required: true
     type: str
-    version_added: "3.0.0"
+    choices:
+      - "8p8c"
+      - "8p6c"
+      - "8p4c"
+      - "8p2c"
+      - "6p6c"
+      - "6p4c"
+      - "6p2c"
+      - "4p4c"
+      - "4p2c"
+      - "gg45"
+      - "tera-4p"
+      - "tera-2p"
+      - "tera-1p"
+      - "110-punch"
+      - "bnc"
+      - "f"
+      - "n"
+      - "mrj21"
+      - "fc"
+      - "lc"
+      - "lc-pc"
+      - "lc-upc"
+      - "lc-apc"
+      - "lsh"
+      - "lsh-pc"
+      - "lsh-upc"
+      - "lsh-apc"
+      - "lx5"
+      - "lx5-pc"
+      - "lx5-upc"
+      - "lx5-apc"
+      - "mpo"
+      - "mtrj"
+      - "sc"
+      - "sc-pc"
+      - "sc-upc"
+      - "sc-apc"
+      - "st"
+      - "cs"
+      - "sn"
+      - "sma-905"
+      - "sma-906"
+      - "urm-p2"
+      - "urm-p4"
+      - "urm-p8"
+      - "splice"
+      - "other"
   positions:
-    description:
-      - The number of front ports which may be mapped to each rear port
     required: false
     type: int
-    version_added: "3.0.0"
-  description:
-    description:
-      - Description of the rear port
+  device:
     required: false
-    type: str
-    version_added: "3.0.0"
+    type: dict
   module:
-    description:
-      - The attached module
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -69,42 +104,19 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create rear port within Nautobot with only required information
+    - name: Create rear_port within Nautobot with only required information
       networktocode.nautobot.rear_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rear Port
-        device: Test Device
-        type: bnc
+        name: Test Rear_Port
+        type: 8p8c
         state: present
 
-    - name: Create rear port inside module
+    - name: Delete rear_port within nautobot
       networktocode.nautobot.rear_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rear Port
-        module: HooverMaxProModel60
-        type: bnc
-        state: present
-
-    - name: Update rear port with other fields
-      networktocode.nautobot.rear_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Rear Port
-        device: Test Device
-        type: bnc
-        positions: 5
-        description: rear port description
-        state: present
-
-    - name: Delete rear port within nautobot
-      networktocode.nautobot.rear_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Rear Port
-        device: Test Device
-        type: bnc
+        name: Test Rear_Port
         state: absent
 """
 
@@ -119,10 +131,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_REAR_PORTS,
@@ -136,30 +147,73 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=False, type="raw"),
-            module=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(required=True, type="str"),
-            positions=dict(required=False, type="int"),
+            label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            type=dict(
+                required=True,
+                type="str",
+                choices=[
+                    "8p8c",
+                    "8p6c",
+                    "8p4c",
+                    "8p2c",
+                    "6p6c",
+                    "6p4c",
+                    "6p2c",
+                    "4p4c",
+                    "4p2c",
+                    "gg45",
+                    "tera-4p",
+                    "tera-2p",
+                    "tera-1p",
+                    "110-punch",
+                    "bnc",
+                    "f",
+                    "n",
+                    "mrj21",
+                    "fc",
+                    "lc",
+                    "lc-pc",
+                    "lc-upc",
+                    "lc-apc",
+                    "lsh",
+                    "lsh-pc",
+                    "lsh-upc",
+                    "lsh-apc",
+                    "lx5",
+                    "lx5-pc",
+                    "lx5-upc",
+                    "lx5-apc",
+                    "mpo",
+                    "mtrj",
+                    "sc",
+                    "sc-pc",
+                    "sc-upc",
+                    "sc-apc",
+                    "st",
+                    "cs",
+                    "sn",
+                    "sma-905",
+                    "sma-906",
+                    "urm-p2",
+                    "urm-p4",
+                    "urm-p8",
+                    "splice",
+                    "other",
+                ],
+            ),
+            positions=dict(required=False, type="int"),
+            device=dict(required=False, type="dict"),
+            module=dict(required=False, type="dict"),
         )
     )
 
-    required_one_of = [
-        ("device", "module"),
-    ]
-    mutually_exclusive = [
-        ("device", "module"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     rear_port = NautobotDcimModule(module, NB_REAR_PORTS)
     rear_port.run()

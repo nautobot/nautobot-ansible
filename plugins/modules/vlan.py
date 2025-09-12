@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,71 +10,46 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: vlan
-short_description: Create, update or delete vlans within Nautobot
+short_description: Creates or removes vlans from Nautobot
 description:
-  - Creates, updates or removes vlans from Nautobot
+  - Creates or removes vlans from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
   location:
-    description:
-      - The single location the VLAN will be associated to
-      - If you want to associate multiple locations, use the C(vlan_location) module
-      - Using this parameter will override the C(api_version) option to C(2.0)
     required: false
-    type: raw
-    version_added: "3.0.0"
-  vlan_group:
-    description:
-      - The VLAN group the VLAN will be associated to
-    required: false
-    type: raw
-    version_added: "3.0.0"
+    type: dict
   vid:
-    description:
-      - The VLAN ID
-    required: false
+    required: true
     type: int
-    version_added: "3.0.0"
   name:
-    description:
-      - The name of the vlan
     required: true
     type: str
-    version_added: "3.0.0"
-  tenant:
-    description:
-      - The tenant that the vlan will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  status:
-    description:
-      - The status of the vlan
-      - Required if I(state=present) and does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  role:
-    description:
-      - The role of the VLAN.
-    required: false
-    type: raw
-    version_added: "3.0.0"
   description:
-    description:
-      - The description of the vlan
     required: false
     type: str
-    version_added: "3.0.0"
+  vlan_group:
+    required: false
+    type: dict
+  status:
+    required: true
+    type: str
+  role:
+    required: false
+    type: dict
+  tenant:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -88,37 +63,17 @@ EXAMPLES = r"""
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test VLAN
-        vid: 400
-        status: active
+        name: Test Vlan
+        vid: None
+        status: "Active"
         state: present
 
     - name: Delete vlan within nautobot
       networktocode.nautobot.vlan:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test VLAN
-        vid: 400
-        status: active
+        name: Test Vlan
         state: absent
-
-    - name: Create vlan with all information
-      networktocode.nautobot.vlan:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test VLAN
-        vid: 400
-        location:
-          name: My Location
-          parent: Parent Location
-        group: Test VLAN Group
-        tenant: Test Tenant
-        status: Deprecated
-        role: Test VLAN Role
-        description: Just a test
-        tags:
-          - Schnozzberry
-        state: present
 """
 
 RETURN = r"""
@@ -132,12 +87,10 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotIpamModule,
     NB_VLANS,
 )
@@ -150,18 +103,18 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            location=dict(required=False, type="raw"),
-            vlan_group=dict(required=False, type="raw"),
-            vid=dict(required=False, type="int"),
+            location=dict(required=False, type="dict"),
+            vid=dict(required=True, type="int"),
             name=dict(required=True, type="str"),
-            tenant=dict(required=False, type="raw"),
-            status=dict(required=False, type="raw"),
-            role=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            vlan_group=dict(required=False, type="dict"),
+            status=dict(required=True, type="str"),
+            role=dict(required=False, type="dict"),
+            tenant=dict(required=False, type="dict"),
         )
     )
 

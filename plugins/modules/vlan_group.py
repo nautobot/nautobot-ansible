@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,37 +10,34 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: vlan_group
-short_description: Create, update or delete vlans groups within Nautobot
+short_description: Creates or removes vlan groups from Nautobot
 description:
-  - Creates, updates or removes vlans groups from Nautobot
+  - Creates or removes vlan groups from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
   name:
-    description:
-      - The name of the vlan group
     required: true
     type: str
-    version_added: "3.0.0"
-  location:
-    description:
-      - The location the vlan will be assigned to
-    required: false
-    type: raw
-    version_added: "5.0.0"
   description:
-    description:
-      - The description of the vlan group
     required: false
     type: str
-    version_added: "3.0.0"
+  range:
+    required: false
+    type: str
+  location:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -50,21 +47,18 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create vlan group within Nautobot with only required information
+    - name: Create vlan_group within Nautobot with only required information
       networktocode.nautobot.vlan_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test vlan group
-        location:
-          name: My Location
-          parent: Parent Location
+        name: Test Vlan_Group
         state: present
 
-    - name: Delete vlan group within nautobot
+    - name: Delete vlan_group within nautobot
       networktocode.nautobot.vlan_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test vlan group
+        name: Test Vlan_Group
         state: absent
 """
 
@@ -79,11 +73,10 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotIpamModule,
     NB_VLAN_GROUPS,
 )
@@ -97,11 +90,13 @@ def main():
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            range=dict(required=False, type="str"),
+            location=dict(required=False, type="dict"),
         )
     )
 

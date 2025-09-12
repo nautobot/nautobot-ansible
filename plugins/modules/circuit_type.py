@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,30 +10,26 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: circuit_type
-short_description: Create, update or delete circuit types within Nautobot
+short_description: Creates or removes circuit types from Nautobot
 description:
-  - Creates, updates or removes circuit types from Nautobot
+  - Creates or removes circuit types from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - The name of the circuit type
-    required: true
-    type: str
-    version_added: "3.0.0"
-  description:
-    description:
-      - The decription of the the circuit type.
+  id:
     required: false
     type: str
-    version_added: "3.0.0"
+  name:
+    required: true
+    type: str
+  description:
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""
@@ -43,18 +39,18 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create type within Nautobot with only required information
+    - name: Create circuit_type within Nautobot with only required information
       networktocode.nautobot.circuit_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Circuit Type
+        name: Test Circuit_Type
         state: present
 
-    - name: Delete circuit type within nautobot
+    - name: Delete circuit_type within nautobot
       networktocode.nautobot.circuit_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Circuit Type
+        name: Test Circuit_Type
         state: absent
 """
 
@@ -70,7 +66,8 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
-from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits import (
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotCircuitsModule,
     NB_CIRCUIT_TYPES,
 )
@@ -83,6 +80,7 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),

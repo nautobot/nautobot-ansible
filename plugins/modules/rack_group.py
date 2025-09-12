@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,44 +10,32 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: rack_group
-short_description: Create, update or delete racks groups within Nautobot
+short_description: Creates or removes rack groups from Nautobot
 description:
-  - Creates, updates or removes racks groups from Nautobot
+  - Creates or removes rack groups from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  description:
-    description:
-      - The description of the rack group
+  id:
     required: false
     type: str
-    version_added: "3.0.0"
   name:
-    description:
-      - The name of the rack group
     required: true
     type: str
-    version_added: "3.0.0"
+  description:
+    required: false
+    type: str
+  parent:
+    required: false
+    type: dict
   location:
-    description:
-      - Required if I(state=present) and the rack does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  parent_rack_group:
-    aliases:
-      - parent
-    description:
-      - The parent rack-group the rack group will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
+    required: true
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -57,22 +45,19 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create rack group within Nautobot with only required information
+    - name: Create rack_group within Nautobot with only required information
       networktocode.nautobot.rack_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test rack group
-        location: My Location
+        name: Test Rack_Group
+        location: None
         state: present
 
-    - name: Delete rack group within nautobot
+    - name: Delete rack_group within nautobot
       networktocode.nautobot.rack_group:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Rack group
-        location:
-          name: My Location
-          parent: Parent Location
+        name: Test Rack_Group
         state: absent
 """
 
@@ -88,6 +73,7 @@ msg:
 """
 
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_RACK_GROUPS,
@@ -101,12 +87,13 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            location=dict(required=False, type="raw"),
-            parent_rack_group=dict(required=False, type="raw", aliases=["parent"]),
+            parent=dict(required=False, type="dict"),
+            location=dict(required=True, type="dict"),
         )
     )
 

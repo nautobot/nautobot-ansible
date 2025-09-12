@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,61 +10,147 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: power_port
-short_description: Create, update or delete power ports within Nautobot
+short_description: Creates or removes power ports from Nautobot
 description:
-  - Creates, updates or removes power ports from Nautobot
+  - Creates or removes power ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device:
-    description:
-      - The device the power port is attached to
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the power port
     required: true
     type: str
-    version_added: "3.0.0"
-  type:
-    description:
-      - The type of the power port
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
-  allocated_draw:
-    description:
-      - The allocated draw of the power port in watt
-    required: false
-    type: int
-    version_added: "3.0.0"
-  maximum_draw:
-    description:
-      - The maximum permissible draw of the power port in watt
-    required: false
-    type: int
-    version_added: "3.0.0"
   description:
-    description:
-      - Description of the power port
     required: false
     type: str
-    version_added: "3.0.0"
-  module:
-    description:
-      - The attached module
+  type:
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: str
+    choices:
+      - "iec-60320-c6"
+      - "iec-60320-c8"
+      - "iec-60320-c14"
+      - "iec-60320-c16"
+      - "iec-60320-c20"
+      - "iec-60320-c22"
+      - "iec-60309-p-n-e-4h"
+      - "iec-60309-p-n-e-6h"
+      - "iec-60309-p-n-e-9h"
+      - "iec-60309-2p-e-4h"
+      - "iec-60309-2p-e-6h"
+      - "iec-60309-2p-e-9h"
+      - "iec-60309-3p-e-4h"
+      - "iec-60309-3p-e-6h"
+      - "iec-60309-3p-e-9h"
+      - "iec-60309-3p-n-e-4h"
+      - "iec-60309-3p-n-e-6h"
+      - "iec-60309-3p-n-e-9h"
+      - "iec-60906-1"
+      - "nbr-14136-10a"
+      - "nbr-14136-20a"
+      - "nema-1-15p"
+      - "nema-5-15p"
+      - "nema-5-20p"
+      - "nema-5-30p"
+      - "nema-5-50p"
+      - "nema-6-15p"
+      - "nema-6-20p"
+      - "nema-6-30p"
+      - "nema-6-50p"
+      - "nema-10-30p"
+      - "nema-10-50p"
+      - "nema-14-20p"
+      - "nema-14-30p"
+      - "nema-14-50p"
+      - "nema-14-60p"
+      - "nema-15-15p"
+      - "nema-15-20p"
+      - "nema-15-30p"
+      - "nema-15-50p"
+      - "nema-15-60p"
+      - "nema-l1-15p"
+      - "nema-l5-15p"
+      - "nema-l5-20p"
+      - "nema-l5-30p"
+      - "nema-l5-50p"
+      - "nema-l6-15p"
+      - "nema-l6-20p"
+      - "nema-l6-30p"
+      - "nema-l6-50p"
+      - "nema-l10-30p"
+      - "nema-l14-20p"
+      - "nema-l14-30p"
+      - "nema-l14-50p"
+      - "nema-l14-60p"
+      - "nema-l15-20p"
+      - "nema-l15-30p"
+      - "nema-l15-50p"
+      - "nema-l15-60p"
+      - "nema-l21-20p"
+      - "nema-l21-30p"
+      - "nema-l22-30p"
+      - "cs6361c"
+      - "cs6365c"
+      - "cs8165c"
+      - "cs8265c"
+      - "cs8365c"
+      - "cs8465c"
+      - "ita-c"
+      - "ita-e"
+      - "ita-f"
+      - "ita-ef"
+      - "ita-g"
+      - "ita-h"
+      - "ita-i"
+      - "ita-j"
+      - "ita-k"
+      - "ita-l"
+      - "ita-m"
+      - "ita-n"
+      - "ita-o"
+      - "usb-a"
+      - "usb-b"
+      - "usb-c"
+      - "usb-mini-a"
+      - "usb-mini-b"
+      - "usb-micro-a"
+      - "usb-micro-b"
+      - "usb-micro-ab"
+      - "usb-3-b"
+      - "usb-3-micro-b"
+      - "dc-terminal"
+      - "saf-d-grid"
+      - "neutrik-powercon-20"
+      - "neutrik-powercon-32"
+      - "neutrik-powercon-true1"
+      - "neutrik-powercon-true1-top"
+      - "ubiquiti-smartpower"
+      - "hardwired"
+      - "other"
+  maximum_draw:
+    required: false
+    type: int
+  allocated_draw:
+    required: false
+    type: int
+  device:
+    required: false
+    type: dict
+  module:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -75,32 +160,18 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create power port within Nautobot with only required information
+    - name: Create power_port within Nautobot with only required information
       networktocode.nautobot.power_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power Port
-        device: Test Device
+        name: Test Power_Port
         state: present
 
-    - name: Update power port with other fields
+    - name: Delete power_port within nautobot
       networktocode.nautobot.power_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Power Port
-        device: Test Device
-        type: iec-60320-c6
-        allocated_draw: 16
-        maximum_draw: 80
-        description: power port description
-        state: present
-
-    - name: Delete power port within nautobot
-      networktocode.nautobot.power_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Power Port
-        device: Test Device
+        name: Test Power_Port
         state: absent
 """
 
@@ -115,10 +186,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_POWER_PORTS,
@@ -132,30 +202,127 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=False, type="raw"),
-            module=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(required=False, type="str"),
-            allocated_draw=dict(required=False, type="int"),
-            maximum_draw=dict(required=False, type="int"),
+            label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "iec-60320-c6",
+                    "iec-60320-c8",
+                    "iec-60320-c14",
+                    "iec-60320-c16",
+                    "iec-60320-c20",
+                    "iec-60320-c22",
+                    "iec-60309-p-n-e-4h",
+                    "iec-60309-p-n-e-6h",
+                    "iec-60309-p-n-e-9h",
+                    "iec-60309-2p-e-4h",
+                    "iec-60309-2p-e-6h",
+                    "iec-60309-2p-e-9h",
+                    "iec-60309-3p-e-4h",
+                    "iec-60309-3p-e-6h",
+                    "iec-60309-3p-e-9h",
+                    "iec-60309-3p-n-e-4h",
+                    "iec-60309-3p-n-e-6h",
+                    "iec-60309-3p-n-e-9h",
+                    "iec-60906-1",
+                    "nbr-14136-10a",
+                    "nbr-14136-20a",
+                    "nema-1-15p",
+                    "nema-5-15p",
+                    "nema-5-20p",
+                    "nema-5-30p",
+                    "nema-5-50p",
+                    "nema-6-15p",
+                    "nema-6-20p",
+                    "nema-6-30p",
+                    "nema-6-50p",
+                    "nema-10-30p",
+                    "nema-10-50p",
+                    "nema-14-20p",
+                    "nema-14-30p",
+                    "nema-14-50p",
+                    "nema-14-60p",
+                    "nema-15-15p",
+                    "nema-15-20p",
+                    "nema-15-30p",
+                    "nema-15-50p",
+                    "nema-15-60p",
+                    "nema-l1-15p",
+                    "nema-l5-15p",
+                    "nema-l5-20p",
+                    "nema-l5-30p",
+                    "nema-l5-50p",
+                    "nema-l6-15p",
+                    "nema-l6-20p",
+                    "nema-l6-30p",
+                    "nema-l6-50p",
+                    "nema-l10-30p",
+                    "nema-l14-20p",
+                    "nema-l14-30p",
+                    "nema-l14-50p",
+                    "nema-l14-60p",
+                    "nema-l15-20p",
+                    "nema-l15-30p",
+                    "nema-l15-50p",
+                    "nema-l15-60p",
+                    "nema-l21-20p",
+                    "nema-l21-30p",
+                    "nema-l22-30p",
+                    "cs6361c",
+                    "cs6365c",
+                    "cs8165c",
+                    "cs8265c",
+                    "cs8365c",
+                    "cs8465c",
+                    "ita-c",
+                    "ita-e",
+                    "ita-f",
+                    "ita-ef",
+                    "ita-g",
+                    "ita-h",
+                    "ita-i",
+                    "ita-j",
+                    "ita-k",
+                    "ita-l",
+                    "ita-m",
+                    "ita-n",
+                    "ita-o",
+                    "usb-a",
+                    "usb-b",
+                    "usb-c",
+                    "usb-mini-a",
+                    "usb-mini-b",
+                    "usb-micro-a",
+                    "usb-micro-b",
+                    "usb-micro-ab",
+                    "usb-3-b",
+                    "usb-3-micro-b",
+                    "dc-terminal",
+                    "saf-d-grid",
+                    "neutrik-powercon-20",
+                    "neutrik-powercon-32",
+                    "neutrik-powercon-true1",
+                    "neutrik-powercon-true1-top",
+                    "ubiquiti-smartpower",
+                    "hardwired",
+                    "other",
+                ],
+            ),
+            maximum_draw=dict(required=False, type="int"),
+            allocated_draw=dict(required=False, type="int"),
+            device=dict(required=False, type="dict"),
+            module=dict(required=False, type="dict"),
         )
     )
-    required_one_of = [
-        ("device", "module"),
-    ]
-    mutually_exclusive = [
-        ("device", "module"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     power_port = NautobotDcimModule(module, NB_POWER_PORTS)
     power_port.run()

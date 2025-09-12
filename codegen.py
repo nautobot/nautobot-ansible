@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 import json
 import re
+import subprocess
 import sys
 
 import jinja2
@@ -232,6 +233,9 @@ def main():
             logger.debug(f"Generated {output_path}")
 
     logger.debug(json.dumps(apps["dcim"]["cable"]["methods"]["post"], indent=2))
+
+    logger.info("Formatting files with ruff")
+    subprocess.run(["ruff", "format", (Path(__file__).parent / "plugins").absolute()])
 
     logger.info("Code generation complete")
 

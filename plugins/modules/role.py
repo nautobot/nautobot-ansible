@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -10,48 +10,35 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: role
-short_description: Create, update or delete roles within Nautobot
+short_description: Creates or removes roles from Nautobot
 description:
-  - Creates, updates or removes roles from Nautobot
+  - Creates or removes roles from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "5.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
+  content_types:
+    required: true
+    type: list
   name:
-    description:
-      - The name of the role
     required: true
     type: str
-    version_added: "5.0.0"
-  description:
-    description:
-      - The description of the role
-    required: false
-    type: str
-    version_added: "5.0.0"
   color:
-    description:
-      - Hexidecimal code for a color, ex. FFFFFF
     required: false
     type: str
-    version_added: "5.0.0"
-  content_types:
-    description:
-      - Model names which the role can be related to.
-    type: list
-    elements: str
-    version_added: "5.0.0"
+  description:
+    required: false
+    type: str
   weight:
-    description:
-      - Weight assigned to the role.
+    required: false
     type: int
-    version_added: "5.0.0"
 """
 
 EXAMPLES = r"""
@@ -65,17 +52,15 @@ EXAMPLES = r"""
       networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test role
-        color: FFFFFF
-        content_types:
-          - "dcim.device"
+        name: Test Role
+        content_types: None
         state: present
 
     - name: Delete role within nautobot
       networktocode.nautobot.role:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test role
+        name: Test Role
         state: absent
 """
 
@@ -89,12 +74,11 @@ msg:
   returned: always
   type: str
 """
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    CUSTOM_FIELDS_ARG_SPEC,
-)
+
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
-    NautobotDcimModule,
+    NautobotExtrasModule,
     NB_ROLES,
 )
 from ansible.module_utils.basic import AnsibleModule
@@ -109,17 +93,17 @@ def main():
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
+            content_types=dict(required=True, type="list"),
             name=dict(required=True, type="str"),
-            description=dict(required=False, type="str"),
             color=dict(required=False, type="str"),
-            content_types=dict(required=False, type="list", elements="str"),
+            description=dict(required=False, type="str"),
             weight=dict(required=False, type="int"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    role = NautobotDcimModule(module, NB_ROLES)
+    role = NautobotExtrasModule(module, NB_ROLES)
     role.run()
 
 

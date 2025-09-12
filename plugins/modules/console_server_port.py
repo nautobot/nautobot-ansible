@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,49 +10,56 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: console_server_port
-short_description: Create, update or delete console server ports within Nautobot
+short_description: Creates or removes console server ports from Nautobot
 description:
-  - Creates, updates or removes console server ports from Nautobot
+  - Creates or removes console server ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device:
-    description:
-      - The device the console server port is attached to
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the console server port
     required: true
     type: str
-    version_added: "3.0.0"
-  type:
-    description:
-      - The type of the console server port
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
   description:
-    description:
-      - Description of the console server port
     required: false
     type: str
-    version_added: "3.0.0"
-  module:
-    description:
-      - The attached module
+  type:
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: str
+    choices:
+      - "de-9"
+      - "db-25"
+      - "rj-11"
+      - "rj-12"
+      - "rj-45"
+      - "mini-din-8"
+      - "usb-a"
+      - "usb-b"
+      - "usb-c"
+      - "usb-mini-a"
+      - "usb-mini-b"
+      - "usb-micro-a"
+      - "usb-micro-b"
+      - "usb-micro-ab"
+      - "other"
+  device:
+    required: false
+    type: dict
+  module:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -63,38 +69,18 @@ EXAMPLES = r"""
   gather_facts: False
 
   tasks:
-    - name: Create console server port within Nautobot with only required information
+    - name: Create console_server_port within Nautobot with only required information
       networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console Server Port
-        device: Test Device
+        name: Test Console_Server_Port
         state: present
 
-    - name: Create console server port inside module
+    - name: Delete console_server_port within nautobot
       networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: Test Console Server Port
-        module: HooverMaxProModel60
-        state: present
-
-    - name: Update console server port with other fields
-      networktocode.nautobot.console_server_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Console Server Port
-        device: Test Device
-        type: usb-a
-        description: console server port description
-        state: present
-
-    - name: Delete console server port within nautobot
-      networktocode.nautobot.console_server_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Console Server Port
-        device: Test Device
+        name: Test Console_Server_Port
         state: absent
 """
 
@@ -109,10 +95,9 @@ msg:
   type: str
 """
 
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    NAUTOBOT_ARG_SPEC,
-    TAGS_ARG_SPEC,
-)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
 from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
     NautobotDcimModule,
     NB_CONSOLE_SERVER_PORTS,
@@ -126,29 +111,40 @@ def main():
     Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=False, type="raw"),
-            module=dict(required=False, type="raw"),
             name=dict(required=True, type="str"),
-            type=dict(required=False, type="str"),
+            label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "de-9",
+                    "db-25",
+                    "rj-11",
+                    "rj-12",
+                    "rj-45",
+                    "mini-din-8",
+                    "usb-a",
+                    "usb-b",
+                    "usb-c",
+                    "usb-mini-a",
+                    "usb-mini-b",
+                    "usb-micro-a",
+                    "usb-micro-b",
+                    "usb-micro-ab",
+                    "other",
+                ],
+            ),
+            device=dict(required=False, type="dict"),
+            module=dict(required=False, type="dict"),
         )
     )
 
-    required_one_of = [
-        ("device", "module"),
-    ]
-    mutually_exclusive = [
-        ("device", "module"),
-    ]
-    module = AnsibleModule(
-        argument_spec=argument_spec,
-        supports_check_mode=True,
-        required_one_of=required_one_of,
-        mutually_exclusive=mutually_exclusive,
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     console_server_port = NautobotDcimModule(module, NB_CONSOLE_SERVER_PORTS)
     console_server_port.run()
