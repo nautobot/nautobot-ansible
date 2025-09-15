@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,67 +10,94 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: front_port
-short_description: Create, update or delete front ports within Nautobot
+short_description: Creates or removes front ports from Nautobot
 description:
-  - Creates, updates or removes front ports from Nautobot
+  - Creates or removes front ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device:
-    description:
-      - The device the front port is attached to
-      - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the front port
-      - Required if I(state=present) and the front port does not exist yet
+    required: true
+    type: str
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
+  description:
+    required: false
+    type: str
   type:
-    description:
-      - The type of the front port
-      - Required if I(state=present) and the front port does not exist yet
-    required: false
+    required: true
     type: str
-    version_added: "3.0.0"
-  rear_port:
-    description:
-      - The rear_port the front port is attached to
-      - Required if I(state=present) and the front port does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
+    choices:
+      - "110-punch"
+      - "4p2c"
+      - "4p4c"
+      - "6p2c"
+      - "6p4c"
+      - "6p6c"
+      - "8p2c"
+      - "8p4c"
+      - "8p6c"
+      - "8p8c"
+      - "bnc"
+      - "cs"
+      - "f"
+      - "fc"
+      - "gg45"
+      - "lc"
+      - "lc-apc"
+      - "lc-pc"
+      - "lc-upc"
+      - "lsh"
+      - "lsh-apc"
+      - "lsh-pc"
+      - "lsh-upc"
+      - "lx5"
+      - "lx5-apc"
+      - "lx5-pc"
+      - "lx5-upc"
+      - "mpo"
+      - "mrj21"
+      - "mtrj"
+      - "n"
+      - "other"
+      - "sc"
+      - "sc-apc"
+      - "sc-pc"
+      - "sc-upc"
+      - "sma-905"
+      - "sma-906"
+      - "sn"
+      - "splice"
+      - "st"
+      - "tera-1p"
+      - "tera-2p"
+      - "tera-4p"
+      - "urm-p2"
+      - "urm-p4"
+      - "urm-p8"
   rear_port_position:
-    description:
-      - The position of the rear port this front port is connected to
     required: false
     type: int
-    version_added: "3.0.0"
-  description:
-    description:
-      - Description of the front port
+  device:
     required: false
-    type: str
-    version_added: "3.0.0"
+    type: dict
   module:
-    description:
-      - The attached module
-      - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: dict
+  rear_port:
+    required: true
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -86,48 +112,15 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Front Port
-        device: Test Device
-        type: bnc
-        rear_port: Test Rear Port
+        type: 110-punch
+        rear_port: None
         state: present
 
-    - name: Create front port inside module
+    - name: Delete front_port within nautobot
       networktocode.nautobot.front_port:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Front Port
-        module: HooverMaxProModel60
-        type: bnc
-        rear_port: Test Rear Port
-        state: present
-
-    - name: Update front port with other fields
-      networktocode.nautobot.front_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Front Port
-        device: Test Device
-        type: bnc
-        rear_port: Test Rear Port
-        rear_port_position: 5
-        description: front port description
-        state: present
-
-    - name: Delete front port within nautobot
-      networktocode.nautobot.front_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Front Port
-        device: Test Device
-        type: bnc
-        rear_port: Test Rear Port
-        state: absent
-
-    - name: Delete front port by id
-      networktocode.nautobot.front_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -150,7 +143,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
     NautobotDcimModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    ID_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -158,20 +151,73 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=False, type="raw"),
-            module=dict(required=False, type="raw"),
-            name=dict(required=False, type="str"),
-            type=dict(required=False, type="str"),
-            rear_port=dict(required=False, type="raw"),
-            rear_port_position=dict(required=False, type="int"),
+            name=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            type=dict(
+                required=True,
+                type="str",
+                choices=[
+                    "110-punch",
+                    "4p2c",
+                    "4p4c",
+                    "6p2c",
+                    "6p4c",
+                    "6p6c",
+                    "8p2c",
+                    "8p4c",
+                    "8p6c",
+                    "8p8c",
+                    "bnc",
+                    "cs",
+                    "f",
+                    "fc",
+                    "gg45",
+                    "lc",
+                    "lc-apc",
+                    "lc-pc",
+                    "lc-upc",
+                    "lsh",
+                    "lsh-apc",
+                    "lsh-pc",
+                    "lsh-upc",
+                    "lx5",
+                    "lx5-apc",
+                    "lx5-pc",
+                    "lx5-upc",
+                    "mpo",
+                    "mrj21",
+                    "mtrj",
+                    "n",
+                    "other",
+                    "sc",
+                    "sc-apc",
+                    "sc-pc",
+                    "sc-upc",
+                    "sma-905",
+                    "sma-906",
+                    "sn",
+                    "splice",
+                    "st",
+                    "tera-1p",
+                    "tera-2p",
+                    "tera-4p",
+                    "urm-p2",
+                    "urm-p4",
+                    "urm-p8",
+                ],
+            ),
+            rear_port_position=dict(required=False, type="int"),
+            device=dict(required=False, type="dict"),
+            module=dict(required=False, type="dict"),
+            rear_port=dict(required=True, type="dict"),
         )
     )
 

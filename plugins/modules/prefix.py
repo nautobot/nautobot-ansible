@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -17,111 +17,59 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-  - Anthony Ruhier (@Anthony25)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  ip_version:
-    description:
-      - Specifies which address version the prefix prefix belongs to
+  id:
     required: false
-    type: int
-    version_added: "5.0.0"
+    type: str
   prefix:
-    description:
-      - Required if state is C(present) and first_available is False. Will allocate or free this prefix.
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  namespace:
-    description:
-      - |
-        namespace that IP address is associated with. IPs are unique per namespaces.
-    required: false
-    default: Global
+    required: true
     type: str
-    version_added: "5.0.0"
-  parent:
-    description:
-      - Required if state is C(present) and first_available is C(yes). Will get a new available prefix in this parent prefix.
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  prefix_length:
-    description:
-      - |
-        Required ONLY if state is C(present) and first_available is C(yes).
-        Will get a new available prefix of the given prefix_length in this parent prefix.
-    required: false
-    type: int
-    version_added: "3.0.0"
   location:
-    description:
-      - The single location the prefix will be associated to
-      - If you want to associate multiple locations, use the C(prefix_location) module
-      - Using this parameter will override the C(api_version) option to C(2.0)
     required: false
-    type: raw
-    version_added: "3.0.0"
-  tenant:
-    description:
-      - The tenant that the prefix will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  vlan:
-    description:
-      - The VLAN the prefix will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  status:
-    description:
-      - The status of the prefix
-      - Required if I(state=present) and does not exist yet
-    required: false
-    type: raw
-    version_added: "3.0.0"
-  role:
-    description:
-      - The role of the prefix
-    required: false
-    type: raw
-    version_added: "3.0.0"
+    type: dict
   type:
-    description:
-     - Prefix type
+    required: false
+    type: str
     choices:
-      - Container
-      - Network
-      - Pool
+      - "container"
+      - "network"
+      - "pool"
+  date_allocated:
     required: false
     type: str
-    version_added: "5.0.0"
   description:
-    description:
-      - The description of the prefix
     required: false
     type: str
-    version_added: "3.0.0"
-  first_available:
-    description:
-      - If C(yes) and state C(present), if an parent is given, it will get the
-        first available prefix of the given prefix_length inside the given parent (and
-        namespace, if given).
-        Unused with state C(absent).
-    default: false
-    type: bool
-    version_added: "3.0.0"
+  status:
+    required: true
+    type: str
+  role:
+    required: false
+    type: dict
+  parent:
+    required: false
+    type: dict
+  namespace:
+    required: false
+    type: dict
+  tenant:
+    required: false
+    type: dict
+  vlan:
+    required: false
+    type: dict
+  rir:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot prefix module"
+- name: "Test Nautobot modules"
   connection: local
   hosts: localhost
   gather_facts: false
@@ -131,94 +79,27 @@ EXAMPLES = r"""
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        prefix: 10.156.0.0/19
-        status: active
+        prefix: "Test Prefix"
+        status: "Active"
         state: present
 
     - name: Delete prefix within nautobot
       networktocode.nautobot.prefix:
         url: http://nautobot.local
         token: thisIsMyToken
-        prefix: 10.156.0.0/19
-        state: absent
-
-    - name: Create prefix with several specified options
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        ip_version: 4
-        prefix: 10.156.32.0/19
-        location: My Location
-        tenant: Test Tenant
-        vlan:
-          name: Test VLAN
-          location: My Location
-          tenant: Test Tenant
-          vlan_group: Test Vlan Group
-        status: Reserved
-        role: Network of care
-        description: Test description
-        type: Pool
-        tags:
-          - Schnozzberry
-        state: present
-
-    - name: Get a new /24 inside 10.156.0.0/19 within Nautobot - Parent doesn't exist
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        parent: 10.156.0.0/19
-        prefix_length: 24
-        state: present
-        first_available: true
-
-    - name: Create prefix within Nautobot
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        prefix: 10.156.0.0/19
-        state: present
-
-    - name: Get a new /24 inside 10.156.0.0/19 within Nautobot
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        parent: 10.156.0.0/19
-        prefix_length: 24
-        state: present
-        first_available: true
-
-    - name: Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        parent: 10.157.0.0/19
-        prefix_length: 24
-        location:
-          name: My Location
-          parent: Parent Location
-        state: present
-        first_available: true
-
-    - name: Delete prefix by id
-      networktocode.nautobot.prefix:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
 RETURN = r"""
 prefix:
   description: Serialized object as created or already existent within Nautobot
-  returned: on creation
+  returned: success (when I(state=present))
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
   returned: always
   type: str
 """
-
 
 from copy import deepcopy
 
@@ -229,7 +110,6 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -237,41 +117,39 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            ip_version=dict(required=False, type="int"),
-            prefix=dict(required=False, type="raw"),
-            parent=dict(required=False, type="raw"),
-            prefix_length=dict(required=False, type="int"),
-            location=dict(required=False, type="raw"),
-            tenant=dict(required=False, type="raw"),
-            vlan=dict(required=False, type="raw"),
-            status=dict(required=False, type="raw"),
-            role=dict(required=False, type="raw"),
+            prefix=dict(required=True, type="str"),
+            location=dict(required=False, type="dict"),
             type=dict(
                 required=False,
                 type="str",
-                choices=["Container", "Network", "Pool"],
+                choices=[
+                    "container",
+                    "network",
+                    "pool",
+                ],
             ),
+            date_allocated=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
-            namespace=dict(required=False, type="str", default="Global"),
-            first_available=dict(required=False, type="bool", default=False),
+            status=dict(required=True, type="str"),
+            role=dict(required=False, type="dict"),
+            parent=dict(required=False, type="dict"),
+            namespace=dict(required=False, type="dict"),
+            tenant=dict(required=False, type="dict"),
+            vlan=dict(required=False, type="dict"),
+            rir=dict(required=False, type="dict"),
         )
     )
 
-    required_if = [
-        ("first_available", "yes", ["parent"]),
-    ]
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True, required_if=required_if)
-
-    prefix = NautobotIpamModule(module, NB_PREFIXES, remove_keys=["first_available"])
+    prefix = NautobotIpamModule(module, NB_PREFIXES)
     prefix.run()
 
 

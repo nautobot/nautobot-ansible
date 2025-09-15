@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# © 2020 Nokia
-# Licensed under the GNU General Public License v3.0 only
-# SPDX-License-Identifier: GPL-3.0-only
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
@@ -11,53 +10,56 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: console_server_port
-short_description: Create, update or delete console server ports within Nautobot
+short_description: Creates or removes console server ports from Nautobot
 description:
-  - Creates, updates or removes console server ports from Nautobot
+  - Creates or removes console server ports from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Tobias Groß (@toerb)
-version_added: "1.0.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
+  - networktocode.nautobot.fragments.custom_fields
 options:
-  device:
-    description:
-      - The device the console server port is attached to
-      - Requires one of I(device) or I(module) when I(state=present) and the console server port does not exist yet
+  id:
     required: false
-    type: raw
-    version_added: "3.0.0"
+    type: str
   name:
-    description:
-      - The name of the console server port
-      - Required if I(state=present) and the console server port does not exist yet
+    required: true
+    type: str
+  label:
     required: false
     type: str
-    version_added: "3.0.0"
-  type:
-    description:
-      - The type of the console server port
-    required: false
-    type: str
-    version_added: "3.0.0"
   description:
-    description:
-      - Description of the console server port
     required: false
     type: str
-    version_added: "3.0.0"
-  module:
-    description:
-      - The attached module
-      - Requires one of I(device) or I(module) when I(state=present) and the console server port does not exist yet
+  type:
     required: false
-    type: raw
-    version_added: "5.4.0"
+    type: str
+    choices:
+      - "db-25"
+      - "de-9"
+      - "mini-din-8"
+      - "other"
+      - "rj-11"
+      - "rj-12"
+      - "rj-45"
+      - "usb-a"
+      - "usb-b"
+      - "usb-c"
+      - "usb-micro-a"
+      - "usb-micro-ab"
+      - "usb-micro-b"
+      - "usb-mini-a"
+      - "usb-mini-b"
+  device:
+    required: false
+    type: dict
+  module:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -72,40 +74,13 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Console Server Port
-        device: Test Device
         state: present
 
-    - name: Create console server port inside module
+    - name: Delete console_server_port within nautobot
       networktocode.nautobot.console_server_port:
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Console Server Port
-        module: HooverMaxProModel60
-        state: present
-
-    - name: Update console server port with other fields
-      networktocode.nautobot.console_server_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Console Server Port
-        device: Test Device
-        type: usb-a
-        description: console server port description
-        state: present
-
-    - name: Delete console server port within nautobot
-      networktocode.nautobot.console_server_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Console Server Port
-        device: Test Device
-        state: absent
-
-    - name: Delete console server port by id
-      networktocode.nautobot.console_server_port:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
         state: absent
 """
 
@@ -128,7 +103,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
     NautobotDcimModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    ID_ARG_SPEC,
+    CUSTOM_FIELDS_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -136,18 +111,39 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            device=dict(required=False, type="raw"),
-            module=dict(required=False, type="raw"),
-            name=dict(required=False, type="str"),
-            type=dict(required=False, type="str"),
+            name=dict(required=True, type="str"),
+            label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "db-25",
+                    "de-9",
+                    "mini-din-8",
+                    "other",
+                    "rj-11",
+                    "rj-12",
+                    "rj-45",
+                    "usb-a",
+                    "usb-b",
+                    "usb-c",
+                    "usb-micro-a",
+                    "usb-micro-ab",
+                    "usb-micro-b",
+                    "usb-mini-a",
+                    "usb-mini-b",
+                ],
+            ),
+            device=dict(required=False, type="dict"),
+            module=dict(required=False, type="dict"),
         )
     )
 

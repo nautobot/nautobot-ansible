@@ -10,130 +10,90 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: wireless_network
-short_description: Manage wireless networks in Nautobot
+short_description: Creates or removes wireless networks from Nautobot
 description:
-  - Manage wireless networks in Nautobot
+  - Creates or removes wireless networks from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "5.13.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
+  id:
+    required: false
+    type: str
   name:
-    description:
-      - The name of the wireless network
-      - Required if I(state=present) and the wireless network does not exist yet
+    required: true
+    type: str
+  description:
     required: false
     type: str
   ssid:
-    description:
-      - The SSID of the wireless network
-      - Required if I(state=present) and the wireless network does not exist yet
-    required: false
+    required: true
     type: str
   mode:
-    description:
-      - The mode of the wireless network
-      - Required if I(state=present) and the wireless network does not exist yet
-    required: false
+    required: true
     type: str
     choices:
+      - "Bridge"
       - "Central"
       - "Fabric"
-      - "Standalone (Autonomous)"
       - "Local (Flex)"
       - "Mesh"
-      - "Bridge"
-  authentication:
-    description:
-      - The authentication method of the wireless network
-      - Required if I(state=present) and the wireless network does not exist yet
-    required: false
-    type: str
-    choices:
-      - "Open"
-      - "WPA2 Personal"
-      - "WPA2 Enterprise"
-      - "Enhanced Open"
-      - "WPA3 Personal"
-      - "WPA3 SAE"
-      - "WPA3 Enterprise"
-      - "WPA3 Enterprise 192Bit"
-  description:
-    description:
-      - The description of the wireless network
-    required: false
-    type: str
+      - "Standalone (Autonomous)"
   enabled:
-    description:
-      - Whether the wireless network is enabled
     required: false
     type: bool
+  authentication:
+    required: true
+    type: str
+    choices:
+      - "Enhanced Open"
+      - "Open"
+      - "WPA2 Enterprise"
+      - "WPA2 Personal"
+      - "WPA3 Enterprise"
+      - "WPA3 Enterprise 192Bit"
+      - "WPA3 Personal"
+      - "WPA3 SAE"
   hidden:
-    description:
-      - Whether the wireless network is hidden
     required: false
     type: bool
   secrets_group:
-    description:
-      - The secrets group of the wireless network
     required: false
-    type: raw
+    type: dict
   tenant:
-    description:
-      - The tenant of the wireless network
     required: false
-    type: raw
+    type: dict
 """
 
 EXAMPLES = r"""
----
-- name: Create a wireless network
-  networktocode.nautobot.wireless_network:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: "My Wireless Network"
-    ssid: "C'mon in!"
-    mode: "Central"
-    authentication: "Open"
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: false
 
-- name: Create a wireless network with all options
-  networktocode.nautobot.wireless_network:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: "My Wireless Network"
-    ssid: "My SSID"
-    mode: "Central"
-    description: "My Wireless Network Description"
-    authentication: "WPA2 Personal"
-    enabled: true
-    hidden: false
-    secrets_group: "My Secrets Group"
-    tenant: "My Tenant"
-    state: present
+  tasks:
+    - name: Create wireless network within Nautobot with only required information
+      networktocode.nautobot.wireless_network:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Wireless Network
+        ssid: "Test Ssid"
+        mode: Bridge
+        authentication: Enhanced Open
+        state: present
 
-- name: Delete a wireless network
-  networktocode.nautobot.wireless_network:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: "My Wireless Network"
-    state: absent
-
-- name: Delete a wireless network by id
-  networktocode.nautobot.wireless_network:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete wireless_network within nautobot
+      networktocode.nautobot.wireless_network:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Wireless Network
+        state: absent
 """
 
 RETURN = r"""
@@ -142,8 +102,8 @@ wireless_network:
   returned: success (when I(state=present))
   type: dict
 msg:
-  description: Message indicating successful operation
-  returned: success
+  description: Message indicating failure or info about what has been achieved
+  returned: always
   type: str
 """
 
@@ -152,7 +112,6 @@ from copy import deepcopy
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -164,43 +123,51 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.wireless im
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
-            ssid=dict(required=False, type="str"),
+            name=dict(required=True, type="str"),
+            description=dict(required=False, type="str"),
+            ssid=dict(required=True, type="str"),
             mode=dict(
-                required=False,
-                type="str",
-                choices=["Central", "Fabric", "Standalone (Autonomous)", "Local (Flex)", "Mesh", "Bridge"],
-            ),
-            authentication=dict(
-                required=False,
+                required=True,
                 type="str",
                 choices=[
-                    "Open",
-                    "WPA2 Personal",
-                    "WPA2 Enterprise",
-                    "Enhanced Open",
-                    "WPA3 Personal",
-                    "WPA3 SAE",
-                    "WPA3 Enterprise",
-                    "WPA3 Enterprise 192Bit",
+                    "Bridge",
+                    "Central",
+                    "Fabric",
+                    "Local (Flex)",
+                    "Mesh",
+                    "Standalone (Autonomous)",
                 ],
             ),
-            description=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
+            authentication=dict(
+                required=True,
+                type="str",
+                choices=[
+                    "Enhanced Open",
+                    "Open",
+                    "WPA2 Enterprise",
+                    "WPA2 Personal",
+                    "WPA3 Enterprise",
+                    "WPA3 Enterprise 192Bit",
+                    "WPA3 Personal",
+                    "WPA3 SAE",
+                ],
+            ),
             hidden=dict(required=False, type="bool"),
-            secrets_group=dict(required=False, type="raw", no_log=False),
-            tenant=dict(required=False, type="raw"),
+            secrets_group=dict(required=False, type="dict"),
+            tenant=dict(required=False, type="dict"),
         )
     )
+
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
     wireless_network = NautobotWirelessModule(module, NB_WIRELESS_NETWORKS)
     wireless_network.run()
 

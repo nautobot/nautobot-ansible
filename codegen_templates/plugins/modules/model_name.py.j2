@@ -1,0 +1,144 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright: (c) {{ date.year }}, Network to Code (@networktocode) <info@networktocode.com>
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+DOCUMENTATION = r"""
+---
+module: {{ model_name }}
+short_description: Creates or removes {{ model.model_name_plural.replace("-", " ") }} from Nautobot
+description:
+  - Creates or removes {{ model.model_name_plural.replace("-", " ") }} from Nautobot
+notes:
+{% if "tags" in model.fields %}
+  - Tags should be defined as a YAML list
+{% endif %}
+  - This should be ran with connection C(local) and hosts C(localhost)
+author:
+  - Network To Code (@networktocode)
+{# TODO: add version_added for the model
+version_added: "5.4.0"
+#}
+extends_documentation_fragment:
+  - networktocode.nautobot.fragments.base
+{% if "tags" in model.fields %}
+  - networktocode.nautobot.fragments.tags
+{% endif %}
+{% if "custom_fields" in model.fields %}
+  - networktocode.nautobot.fragments.custom_fields
+{% endif %}
+options:
+{% for field in model.fields.values() | rejectattr("name", "in", ["custom_fields", "tags", "relationships"]) %}
+  {{ field.name }}:
+{# TODO: Add description for fields
+    description:
+      - "field description"
+#}
+    required: {{ "true" if field.required else "false" }}
+    type: {{ field.type | openapi_type_to_ansible_type }}
+{% if field.choices is not none %}
+    choices:
+{% for choice in field.choices %}
+      - "{{ choice }}"
+{% endfor %}
+{% endif %}
+{# TODO: Add version_added for fields
+    version_added: "1.2.3"
+#}
+{% endfor %}
+"""
+
+EXAMPLES = r"""
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Create {{ model_name.replace("_", " ") }} within Nautobot with only required information
+      networktocode.nautobot.{{ model_name }}:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        {% if "name" in model.fields and model.fields.name.required %}
+        name: Test {{ model_name.replace("_", " ").title() }}
+        {% endif %}
+        {% for field in model.fields.values() | selectattr("required") | rejectattr("name", "eq", "name") %}
+        {{ field.name }}: {{ field | field_example_value }}
+        {% endfor %}
+        state: present
+
+    - name: Delete {{ model_name }} within nautobot
+      networktocode.nautobot.{{ model_name }}:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        {% if "name" in model.fields and model.fields.name.required %}
+        name: Test {{ model_name.replace("_", " ").title() }}
+        {% else %}
+        {# TODO: support models that have different unique fields #}
+        {% endif %}
+        state: absent
+"""
+
+RETURN = r"""
+{{ model_name }}:
+  description: Serialized object as created or already existent within Nautobot
+  returned: success (when I(state=present))
+  type: dict
+msg:
+  description: Message indicating failure or info about what has been achieved
+  returned: always
+  type: str
+"""
+
+from copy import deepcopy
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.{{ app_label }} import (
+    Nautobot{{ app_label.title() }}Module,
+    NB_{{ model.model_name_plural.upper().replace("-", "_") }},
+)
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
+{% if "custom_fields" in model.fields %}
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import CUSTOM_FIELDS_ARG_SPEC
+{% endif %}
+{% if "tags" in model.fields %}
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import TAGS_ARG_SPEC
+{% endif %}
+
+
+def main():
+    """
+    Main entry point for module execution
+    """
+    argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+{% if "custom_fields" in model.fields %}
+    argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+{% endif %}
+{% if "tags" in model.fields %}
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
+{% endif %}
+    {% if model.fields %}
+    argument_spec.update(
+        dict(
+            {# TODO - Add fields to the argspec #}
+            {% for field in model.fields.values() | rejectattr("name", "in", ["id", "relationships", "custom_fields", "tags"]) %}
+            {{ field.name }}=dict(required={{ field.required }}, type="{{ field.type | openapi_type_to_ansible_type }}"{% if field.choices is not none %}, choices=[{% for choice in field.choices %}"{{ choice }}", {% endfor %}]{% endif %}),
+            {% endfor %}
+            {# TODO: elements key #}
+        )
+    )
+    {% endif %}
+
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
+    {# TODO - Add logic to the module #}
+    {{ model_name }} = Nautobot{{ app_label.title() }}Module(module, NB_{{ model.model_name_plural.upper().replace("-", "_") }})
+    {{ model_name }}.run()
+
+
+if __name__ == "__main__":  # pragma: no cover
+    main()

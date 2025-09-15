@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -16,164 +16,77 @@ description:
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "5.1.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
 options:
-  label:
-    description:
-      - Name of the field as displayed to users
-      - Required if I(state=present) and the custom field does not exist yet
+  id:
     required: false
     type: str
-    version_added: "5.1.0"
-  grouping:
-    description:
-      - Human-readable grouping that this custom field belongs to
-    required: false
-    type: str
-    version_added: "5.1.0"
-  key:
-    description:
-      - Internal name of this field
-      - Required if I(state=present) and the custom field does not exist yet
-    required: false
-    type: str
-    version_added: "5.1.0"
-  type:
-    description:
-      - Data type of this field
-      - Required if I(state=present) and the custom field does not exist yet
-      - I(type=select) and I(type=multi-select) require choices to be defined separately with the I(custom_field_choice) module
-    required: false
-    choices:
-      - text
-      - integer
-      - boolean
-      - date
-      - url
-      - select
-      - multi-select
-      - json
-      - markdown
-    type: str
-    version_added: "5.1.0"
-  weight:
-    description:
-      - Position this field should be displayed in
-    required: false
-    type: int
-    version_added: "5.1.0"
-  description:
-    description:
-      - Description of this field
-      - Also used as the help text when editing models using this custom field
-      - Markdown is supported
-    required: false
-    type: str
-    version_added: "5.1.0"
-  required:
-    description:
-      - Whether or not a value is required for this field when editing models
-    required: false
-    type: bool
-    version_added: "5.1.0"
-  default:
-    description:
-      - Default value for this field when editing models
-      - Must be in JSON format
-    required: false
-    type: raw
-    version_added: "5.1.0"
-  filter_logic:
-    description:
-      - Filter logic to apply when filtering models based on this field
-      - Only compatible with I(type=text), I(type=url) and I(type=json)
-    required: false
-    type: str
-    choices:
-      - disabled
-      - loose
-      - exact
-    version_added: "5.1.0"
-  advanced_ui:
-    description:
-      - Whether or not to display this field in the advanced tab
-    required: false
-    type: bool
-    version_added: "5.1.0"
   content_types:
-    description:
-      - Content types that this field should be available for
-      - Required if I(state=present) and the custom field does not exist yet
-    required: false
+    required: true
     type: list
-    elements: str
-    version_added: "5.1.0"
-  validation_minimum:
-    description:
-      - Minimum value allowed for this field
-      - Only compatible with I(type=integer)
-    required: false
-    type: int
-    version_added: "5.1.0"
-  validation_maximum:
-    description:
-      - Maximum value allowed for this field
-      - Only compatible with I(type=integer)
-    required: false
-    type: int
-    version_added: "5.1.0"
-  validation_regex:
-    description:
-      - Regular expression that this field must match
-      - Only compatible with I(type=text)
+  label:
+    required: true
+    type: str
+  grouping:
     required: false
     type: str
-    version_added: "5.1.0"
+  type:
+    required: false
+    type: str
+  key:
+    required: false
+    type: str
+  description:
+    required: false
+    type: str
+  required:
+    required: false
+    type: bool
+  filter_logic:
+    required: false
+    type: str
+  default:
+    required: false
+    type: str
+  weight:
+    required: false
+    type: int
+  validation_minimum:
+    required: false
+    type: int
+  validation_maximum:
+    required: false
+    type: int
+  validation_regex:
+    required: false
+    type: str
+  advanced_ui:
+    required: false
+    type: bool
 """
 
 EXAMPLES = r"""
-- name: Create custom field within Nautobot with only required information
-  networktocode.nautobot.custom_field:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    label: My Custom Field
-    key: my_custom_field
-    type: text
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: false
 
-- name: Create custom field within Nautobot with all information
-  networktocode.nautobot.custom_field:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    label: My Custom Field
-    grouping: My Grouping
-    key: my_custom_field
-    type: text
-    weight: 100
-    description: My Description
-    required: true
-    default: My Default
-    filter_logic: loose
-    advanced_ui: true
-    content_types:
-      - dcim.device
-    validation_minimum: 0
-    validation_maximum: 100
-    validation_regex: ^[a-z]+$
-    state: present
+  tasks:
+    - name: Create custom field within Nautobot with only required information
+      networktocode.nautobot.custom_field:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        content_types: None
+        label: "Test Label"
+        state: present
 
-- name: Delete a custom field by id
-  networktocode.nautobot.custom_field:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete custom_field within nautobot
+      networktocode.nautobot.custom_field:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        state: absent
 """
 
 RETURN = r"""
@@ -194,37 +107,35 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.extras impo
     NB_CUSTOM_FIELDS,
     NautobotExtrasModule,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import ID_ARG_SPEC, NAUTOBOT_ARG_SPEC
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import NAUTOBOT_ARG_SPEC
 
 
 def main():
-    """Execute custom field module."""
+    """
+    Main entry point for module execution
+    """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
-            label=dict(required=False, type="str"),
+            content_types=dict(required=True, type="list"),
+            label=dict(required=True, type="str"),
             grouping=dict(required=False, type="str"),
-            key=dict(required=False, type="str", no_log=False),
-            type=dict(
-                required=False,
-                choices=["text", "integer", "boolean", "date", "url", "select", "multi-select", "json", "markdown"],
-                type="str",
-            ),
-            weight=dict(required=False, type="int"),
+            type=dict(required=False, type="str"),
+            key=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             required=dict(required=False, type="bool"),
-            default=dict(required=False, type="raw"),
-            filter_logic=dict(required=False, choices=["disabled", "loose", "exact"], type="str"),
-            advanced_ui=dict(required=False, type="bool"),
-            content_types=dict(required=False, type="list", elements="str"),
+            filter_logic=dict(required=False, type="str"),
+            default=dict(required=False, type="str"),
+            weight=dict(required=False, type="int"),
             validation_minimum=dict(required=False, type="int"),
             validation_maximum=dict(required=False, type="int"),
             validation_regex=dict(required=False, type="str"),
+            advanced_ui=dict(required=False, type="bool"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
     custom_field = NautobotExtrasModule(module, NB_CUSTOM_FIELDS)
     custom_field.run()
 

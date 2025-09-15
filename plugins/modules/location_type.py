@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -14,95 +14,59 @@ short_description: Creates or removes location types from Nautobot
 description:
   - Creates or removes location types from Nautobot
 notes:
-  - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Joe Wesch (@joewesch)
-requirements:
-  - pynautobot
-version_added: "4.3.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - Name of the location type to be created
-      - Required if I(state=present) and the location type does not exist yet
+  id:
     required: false
     type: str
-  description:
-    description:
-      - Location Type description
-    required: false
-    type: str
-  parent_location_type:
-    aliases:
-      - parent
-    description:
-      - The parent location type this location type should be tied to
-    required: false
-    type: raw
-  nestable:
-    description:
-      - Allow Locations of this type to be parents/children of other Locations of this same type
-      - Requires C(nautobot >= 1.5)
-    type: bool
   content_types:
-    description:
-      - Location Type content type(s). These match app.endpoint and the endpoint is singular.
-      - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
     required: false
     type: list
-    elements: str
+  name:
+    required: true
+    type: str
+  description:
+    required: false
+    type: str
+  nestable:
+    required: false
+    type: bool
+  parent:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot location type module"
+- name: "Test Nautobot modules"
   connection: local
   hosts: localhost
   gather_facts: false
+
   tasks:
-    - name: Create location type
+    - name: Create location type within Nautobot with only required information
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: My Location Type
+        name: Test Location Type
         state: present
 
-    - name: Delete location type
+    - name: Delete location_type within nautobot
       networktocode.nautobot.location_type:
         url: http://nautobot.local
         token: thisIsMyToken
-        name: My Location Type
-        state: absent
-
-    - name: Create location type with all parameters
-      networktocode.nautobot.location_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: My Nested Location Type
-        description: My Nested Location Type Description
-        parent:
-          name: My Location Type
-        nestable: false
-        content_types:
-          - "dcim.device"
-        state: present
-
-    - name: Delete location type by id
-      networktocode.nautobot.location_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
+        name: Test Location Type
         state: absent
 """
 
 RETURN = r"""
 location_type:
   description: Serialized object as created or already existent within Nautobot
-  returned: on creation
+  returned: success (when I(state=present))
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
@@ -119,25 +83,23 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
 )
 
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
+            content_types=dict(required=False, type="list"),
+            name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            parent_location_type=dict(required=False, type="raw", aliases=["parent"]),
             nestable=dict(required=False, type="bool"),
-            content_types=dict(required=False, type="list", elements="str"),
+            parent=dict(required=False, type="dict"),
         )
     )
 

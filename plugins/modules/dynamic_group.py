@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -17,78 +17,60 @@ notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Travis Smith (@tsm1th)
-requirements:
-  - pynautobot
-version_added: "5.5.0"
+  - Network To Code (@networktocode)
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
-  - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
-  name:
-    description:
-      - The name of the dynamic group
-      - Required if I(state=present) and the dynamic group does not exist yet
-    required: false
-    type: str
-  description:
-    description:
-      - The description of the dynamic group
-    required: false
-    type: str
-  group_type:
-    description:
-      - Required if I(state=present) and the dynamic group does not exist yet
-    choices: [ dynamic-filter, dynamic-set, static ]
+  id:
     required: false
     type: str
   content_type:
-    description:
-      - Required if I(state=present) and the dynamic group does not exist yet
-      - The app_label.model for the objects in the group
+    required: true
+    type: str
+  name:
+    required: true
+    type: str
+  description:
+    required: false
+    type: str
+  group_type:
+    required: false
+    type: str
+    choices:
+      - "dynamic-filter"
+      - "dynamic-set"
+      - "static"
+  filter:
     required: false
     type: str
   tenant:
-    description:
-      - The tenant that the dynamic group will be assigned to
-    required: false
-    type: raw
-  filter:
-    description:
-      - A dictionary of filter parameters defining membership of this group
     required: false
     type: dict
 """
 
 EXAMPLES = r"""
----
-- name: Create a dynamic group
-  networktocode.nautobot.dynamic_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: TestFilterGroup
-    group_type: dynamic-filter
-    content_type: dcim.device
-    filter:
-      location:
-        - "Child-Child Test Location"
-    state: present
+- name: "Test Nautobot modules"
+  connection: local
+  hosts: localhost
+  gather_facts: false
 
-- name: Delete a dynamic group
-  networktocode.nautobot.dynamic_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    name: TestFilterGroup
-    state: absent
+  tasks:
+    - name: Create dynamic group within Nautobot with only required information
+      networktocode.nautobot.dynamic_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Dynamic Group
+        content_type: "Test Content Type"
+        state: present
 
-- name: Delete a dynamic group by id
-  networktocode.nautobot.dynamic_group:
-    url: http://nautobot.local
-    token: thisIsMyToken
-    id: 00000000-0000-0000-0000-000000000000
-    state: absent
+    - name: Delete dynamic_group within nautobot
+      networktocode.nautobot.dynamic_group:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Dynamic Group
+        state: absent
 """
 
 RETURN = r"""
@@ -111,7 +93,6 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.extras impo
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
-    ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
@@ -119,24 +100,32 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 
 def main():
     """
-    Main entry point for module execution.
+    Main entry point for module execution
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
-    argument_spec.update(deepcopy(ID_ARG_SPEC))
-    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
-            name=dict(required=False, type="str"),
+            content_type=dict(required=True, type="str"),
+            name=dict(required=True, type="str"),
             description=dict(required=False, type="str"),
-            group_type=dict(required=False, type="str", choices=["dynamic-filter", "dynamic-set", "static"]),
-            content_type=dict(required=False, type="str"),
-            tenant=dict(required=False, type="raw"),
-            filter=dict(required=False, type="dict"),
+            group_type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "dynamic-filter",
+                    "dynamic-set",
+                    "static",
+                ],
+            ),
+            filter=dict(required=False, type="str"),
+            tenant=dict(required=False, type="dict"),
         )
     )
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
     dynamic_group = NautobotExtrasModule(module, NB_DYNAMIC_GROUPS)
     dynamic_group.run()
 
