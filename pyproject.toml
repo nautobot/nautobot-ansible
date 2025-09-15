@@ -9,10 +9,12 @@ package-mode = false
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 netutils = "^1.2"
-pynautobot = "^2.6.5"
+# pynautobot = "^2.6.5"  # TODO: Temporarily removed to support codegen branch dependency prance
 ansible-core = ">=2.17,<2.19"
 aiohttp = "^3.11.13"
 asyncio = "^3.4.3"
+openapi-spec-validator = "^0.7.2"
+prance = "^25.4.8.0"
 
 [tool.poetry.group.dev.dependencies]
 ansible-lint = "*"

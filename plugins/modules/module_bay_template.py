@@ -36,10 +36,16 @@ options:
   description:
     required: false
     type: str
+  requires_first_party_modules:
+    required: false
+    type: bool
   device_type:
     required: false
     type: dict
   module_type:
+    required: false
+    type: dict
+  module_family:
     required: false
     type: dict
 """
@@ -102,8 +108,10 @@ def main():
             position=dict(required=False, type="str"),
             label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            requires_first_party_modules=dict(required=False, type="bool"),
             device_type=dict(required=False, type="dict"),
             module_type=dict(required=False, type="dict"),
+            module_family=dict(required=False, type="dict"),
         )
     )
 

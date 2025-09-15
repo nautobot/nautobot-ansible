@@ -37,53 +37,53 @@ options:
     required: true
     type: str
     choices:
-      - "8p8c"
-      - "8p6c"
-      - "8p4c"
-      - "8p2c"
-      - "6p6c"
-      - "6p4c"
-      - "6p2c"
-      - "4p4c"
-      - "4p2c"
-      - "gg45"
-      - "tera-4p"
-      - "tera-2p"
-      - "tera-1p"
       - "110-punch"
+      - "4p2c"
+      - "4p4c"
+      - "6p2c"
+      - "6p4c"
+      - "6p6c"
+      - "8p2c"
+      - "8p4c"
+      - "8p6c"
+      - "8p8c"
       - "bnc"
+      - "cs"
       - "f"
-      - "n"
-      - "mrj21"
       - "fc"
+      - "gg45"
       - "lc"
+      - "lc-apc"
       - "lc-pc"
       - "lc-upc"
-      - "lc-apc"
       - "lsh"
+      - "lsh-apc"
       - "lsh-pc"
       - "lsh-upc"
-      - "lsh-apc"
       - "lx5"
+      - "lx5-apc"
       - "lx5-pc"
       - "lx5-upc"
-      - "lx5-apc"
       - "mpo"
+      - "mrj21"
       - "mtrj"
+      - "n"
+      - "other"
       - "sc"
+      - "sc-apc"
       - "sc-pc"
       - "sc-upc"
-      - "sc-apc"
-      - "st"
-      - "cs"
-      - "sn"
       - "sma-905"
       - "sma-906"
+      - "sn"
+      - "splice"
+      - "st"
+      - "tera-1p"
+      - "tera-2p"
+      - "tera-4p"
       - "urm-p2"
       - "urm-p4"
       - "urm-p8"
-      - "splice"
-      - "other"
   rear_port_position:
     required: false
     type: int
@@ -110,7 +110,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Front Port Template
-        type: 8p8c
+        type: 110-punch
         rear_port_template: None
         state: present
 
@@ -161,53 +161,53 @@ def main():
                 required=True,
                 type="str",
                 choices=[
-                    "8p8c",
-                    "8p6c",
-                    "8p4c",
-                    "8p2c",
-                    "6p6c",
-                    "6p4c",
-                    "6p2c",
-                    "4p4c",
-                    "4p2c",
-                    "gg45",
-                    "tera-4p",
-                    "tera-2p",
-                    "tera-1p",
                     "110-punch",
+                    "4p2c",
+                    "4p4c",
+                    "6p2c",
+                    "6p4c",
+                    "6p6c",
+                    "8p2c",
+                    "8p4c",
+                    "8p6c",
+                    "8p8c",
                     "bnc",
+                    "cs",
                     "f",
-                    "n",
-                    "mrj21",
                     "fc",
+                    "gg45",
                     "lc",
+                    "lc-apc",
                     "lc-pc",
                     "lc-upc",
-                    "lc-apc",
                     "lsh",
+                    "lsh-apc",
                     "lsh-pc",
                     "lsh-upc",
-                    "lsh-apc",
                     "lx5",
+                    "lx5-apc",
                     "lx5-pc",
                     "lx5-upc",
-                    "lx5-apc",
                     "mpo",
+                    "mrj21",
                     "mtrj",
+                    "n",
+                    "other",
                     "sc",
+                    "sc-apc",
                     "sc-pc",
                     "sc-upc",
-                    "sc-apc",
-                    "st",
-                    "cs",
-                    "sn",
                     "sma-905",
                     "sma-906",
+                    "sn",
+                    "splice",
+                    "st",
+                    "tera-1p",
+                    "tera-2p",
+                    "tera-4p",
                     "urm-p2",
                     "urm-p4",
                     "urm-p8",
-                    "splice",
-                    "other",
                 ],
             ),
             rear_port_position=dict(required=False, type="int"),

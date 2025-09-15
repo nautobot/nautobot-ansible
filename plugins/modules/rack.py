@@ -43,13 +43,13 @@ options:
     type: str
     choices:
       - "2-post-frame"
-      - "4-post-frame"
       - "4-post-cabinet"
-      - "wall-frame"
-      - "wall-frame-vertical"
+      - "4-post-frame"
+      - "other"
       - "wall-cabinet"
       - "wall-cabinet-vertical"
-      - "other"
+      - "wall-frame"
+      - "wall-frame-vertical"
   width:
     required: false
     type: str
@@ -69,8 +69,8 @@ options:
     required: false
     type: str
     choices:
-      - "mm"
       - "in"
+      - "mm"
   comments:
     required: false
     type: str
@@ -158,13 +158,13 @@ def main():
                 type="str",
                 choices=[
                     "2-post-frame",
-                    "4-post-frame",
                     "4-post-cabinet",
-                    "wall-frame",
-                    "wall-frame-vertical",
+                    "4-post-frame",
+                    "other",
                     "wall-cabinet",
                     "wall-cabinet-vertical",
-                    "other",
+                    "wall-frame",
+                    "wall-frame-vertical",
                 ],
             ),
             width=dict(required=False, type="str"),
@@ -176,8 +176,8 @@ def main():
                 required=False,
                 type="str",
                 choices=[
-                    "mm",
                     "in",
+                    "mm",
                 ],
             ),
             comments=dict(required=False, type="str"),

@@ -45,8 +45,8 @@ options:
     required: false
     type: str
     choices:
-      - "source"
       - "destination"
+      - "source"
   source_label:
     required: false
     type: str
@@ -131,8 +131,8 @@ def main():
                 required=False,
                 type="str",
                 choices=[
-                    "source",
                     "destination",
+                    "source",
                 ],
             ),
             source_label=dict(required=False, type="str"),

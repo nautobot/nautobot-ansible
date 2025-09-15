@@ -27,9 +27,9 @@ options:
     required: true
     type: str
     choices:
-      - "union"
-      - "intersection"
       - "difference"
+      - "intersection"
+      - "union"
   weight:
     required: true
     type: int
@@ -52,7 +52,7 @@ EXAMPLES = r"""
       networktocode.nautobot.dynamic_group_membership:
         url: http://nautobot.local
         token: thisIsMyToken
-        operator: union
+        operator: difference
         weight: None
         group: None
         parent_group: None
@@ -97,9 +97,9 @@ def main():
                 required=True,
                 type="str",
                 choices=[
-                    "union",
-                    "intersection",
                     "difference",
+                    "intersection",
+                    "union",
                 ],
             ),
             weight=dict(required=True, type="int"),

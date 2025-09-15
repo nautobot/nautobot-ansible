@@ -26,6 +26,9 @@ options:
   id:
     required: false
     type: str
+  requires_first_party_modules:
+    required: false
+    type: bool
   name:
     required: true
     type: str
@@ -42,6 +45,9 @@ options:
     required: false
     type: dict
   parent_module:
+    required: false
+    type: dict
+  module_family:
     required: false
     type: dict
 """
@@ -102,12 +108,14 @@ def main():
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(
         dict(
+            requires_first_party_modules=dict(required=False, type="bool"),
             name=dict(required=True, type="str"),
             position=dict(required=False, type="str"),
             label=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             parent_device=dict(required=False, type="dict"),
             parent_module=dict(required=False, type="dict"),
+            module_family=dict(required=False, type="dict"),
         )
     )
 

@@ -36,10 +36,10 @@ options:
     required: false
     type: str
     choices:
+      - "carp"
+      - "glbp"
       - "hsrp"
       - "vrrp"
-      - "glbp"
-      - "carp"
   protocol_group_id:
     required: false
     type: str
@@ -117,10 +117,10 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "carp",
+                    "glbp",
                     "hsrp",
                     "vrrp",
-                    "glbp",
-                    "carp",
                 ],
             ),
             protocol_group_id=dict(required=False, type="str"),

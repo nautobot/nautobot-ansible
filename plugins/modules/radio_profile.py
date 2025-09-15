@@ -56,9 +56,9 @@ options:
       - "AE"
       - "AL"
       - "AM"
-      - "AU"
       - "AR"
       - "AT"
+      - "AU"
       - "AZ"
       - "BA"
       - "BE"
@@ -77,7 +77,6 @@ options:
       - "CN"
       - "CO"
       - "CR"
-      - "RS"
       - "CY"
       - "CZ"
       - "DE"
@@ -88,8 +87,8 @@ options:
       - "EE"
       - "EG"
       - "ES"
-      - "FO"
       - "FI"
+      - "FO"
       - "FR"
       - "GB"
       - "GE"
@@ -99,24 +98,24 @@ options:
       - "GR"
       - "GT"
       - "GY"
-      - "HN"
       - "HK"
+      - "HN"
       - "HR"
       - "HU"
-      - "IS"
-      - "IN"
       - "ID"
       - "IE"
       - "IL"
+      - "IN"
       - "IQ"
-      - "IT"
       - "IR"
+      - "IS"
+      - "IT"
       - "JM"
       - "JO"
       - "JP"
+      - "KE"
       - "KP"
       - "KR"
-      - "KE"
       - "KW"
       - "KZ"
       - "LB"
@@ -145,14 +144,15 @@ options:
       - "OM"
       - "PA"
       - "PE"
-      - "PL"
       - "PH"
       - "PK"
+      - "PL"
       - "PR"
       - "PT"
       - "PY"
       - "QA"
       - "RO"
+      - "RS"
       - "RU"
       - "SA"
       - "SE"
@@ -265,9 +265,9 @@ def main():
                     "AE",
                     "AL",
                     "AM",
-                    "AU",
                     "AR",
                     "AT",
+                    "AU",
                     "AZ",
                     "BA",
                     "BE",
@@ -286,7 +286,6 @@ def main():
                     "CN",
                     "CO",
                     "CR",
-                    "RS",
                     "CY",
                     "CZ",
                     "DE",
@@ -297,8 +296,8 @@ def main():
                     "EE",
                     "EG",
                     "ES",
-                    "FO",
                     "FI",
+                    "FO",
                     "FR",
                     "GB",
                     "GE",
@@ -308,24 +307,24 @@ def main():
                     "GR",
                     "GT",
                     "GY",
-                    "HN",
                     "HK",
+                    "HN",
                     "HR",
                     "HU",
-                    "IS",
-                    "IN",
                     "ID",
                     "IE",
                     "IL",
+                    "IN",
                     "IQ",
-                    "IT",
                     "IR",
+                    "IS",
+                    "IT",
                     "JM",
                     "JO",
                     "JP",
+                    "KE",
                     "KP",
                     "KR",
-                    "KE",
                     "KW",
                     "KZ",
                     "LB",
@@ -354,14 +353,15 @@ def main():
                     "OM",
                     "PA",
                     "PE",
-                    "PL",
                     "PH",
                     "PK",
+                    "PL",
                     "PR",
                     "PT",
                     "PY",
                     "QA",
                     "RO",
+                    "RS",
                     "RU",
                     "SA",
                     "SE",

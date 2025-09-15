@@ -30,7 +30,7 @@ options:
     required: true
     type: str
   identifier:
-    required: true
+    required: false
     type: int
   description:
     required: false
@@ -67,7 +67,6 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Virtual Device Context
-        identifier: None
         device: None
         status: "Active"
         state: present
@@ -115,7 +114,7 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            identifier=dict(required=True, type="int"),
+            identifier=dict(required=False, type="int"),
             description=dict(required=False, type="str"),
             device=dict(required=True, type="dict"),
             status=dict(required=True, type="str"),

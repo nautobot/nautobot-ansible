@@ -42,6 +42,7 @@ options:
     required: false
     type: str
     choices:
+      - "aoc"
       - "cat3"
       - "cat5"
       - "cat5e"
@@ -50,22 +51,21 @@ options:
       - "cat7"
       - "cat7a"
       - "cat8"
+      - "coaxial"
       - "dac-active"
       - "dac-passive"
-      - "mrj21-trunk"
-      - "coaxial"
       - "mmf"
       - "mmf-om1"
       - "mmf-om2"
       - "mmf-om3"
       - "mmf-om4"
       - "mmf-om5"
+      - "mrj21-trunk"
+      - "other"
+      - "power"
       - "smf"
       - "smf-os1"
       - "smf-os2"
-      - "aoc"
-      - "power"
-      - "other"
   label:
     required: false
     type: str
@@ -79,12 +79,12 @@ options:
     required: false
     type: str
     choices:
-      - "km"
-      - "m"
       - "cm"
-      - "mi"
       - "ft"
       - "in"
+      - "km"
+      - "m"
+      - "mi"
   status:
     required: true
     type: str
@@ -157,6 +157,7 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "aoc",
                     "cat3",
                     "cat5",
                     "cat5e",
@@ -165,22 +166,21 @@ def main():
                     "cat7",
                     "cat7a",
                     "cat8",
+                    "coaxial",
                     "dac-active",
                     "dac-passive",
-                    "mrj21-trunk",
-                    "coaxial",
                     "mmf",
                     "mmf-om1",
                     "mmf-om2",
                     "mmf-om3",
                     "mmf-om4",
                     "mmf-om5",
+                    "mrj21-trunk",
+                    "other",
+                    "power",
                     "smf",
                     "smf-os1",
                     "smf-os2",
-                    "aoc",
-                    "power",
-                    "other",
                 ],
             ),
             label=dict(required=False, type="str"),
@@ -190,12 +190,12 @@ def main():
                 required=False,
                 type="str",
                 choices=[
-                    "km",
-                    "m",
                     "cm",
-                    "mi",
                     "ft",
                     "in",
+                    "km",
+                    "m",
+                    "mi",
                 ],
             ),
             status=dict(required=True, type="str"),

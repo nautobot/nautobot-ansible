@@ -45,13 +45,13 @@ options:
     required: false
     type: str
     choices:
+      - "danger"
       - "default"
+      - "info"
+      - "link"
       - "primary"
       - "success"
-      - "info"
       - "warning"
-      - "danger"
-      - "link"
   confirmation:
     required: false
     type: bool
@@ -123,13 +123,13 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "danger",
                     "default",
+                    "info",
+                    "link",
                     "primary",
                     "success",
-                    "info",
                     "warning",
-                    "danger",
-                    "link",
                 ],
             ),
             confirmation=dict(required=False, type="bool"),

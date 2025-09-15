@@ -7,7 +7,8 @@ import sys
 from pathlib import Path
 
 import jinja2
-from prance import ResolvingParser  # TODO: Add prance to poetry. Currently fails with incompatibility with pynautobot
+import requests
+from prance import ResolvingParser
 
 logger = logging.getLogger(__name__)
 
@@ -97,6 +98,8 @@ def _get_field_choices(field_properties):
         for candidate in field_properties["oneOf"]:
             if "enum" in candidate and any(choice for choice in candidate["enum"]):
                 choices = candidate["enum"]
+    if choices is not None:
+        return sorted(choices)
     return choices
 
 
@@ -106,15 +109,27 @@ def main():
     logger.info("Starting code generation for Nautobot modules")
 
     # Load cached OpenAPI schema from json file if one exists to speed up development
-    if Path("openapi-schema.parsed.json").exists():
-        with open("openapi-schema.parsed.json") as f:
+    cached_schema_file = "openapi-schema.parsed.json"
+    if Path(cached_schema_file).exists():
+        logger.info(f"Reusing cached schema from file '{cached_schema_file}'.")
+        with open(cached_schema_file) as f:
             spec = json.load(f)
     else:
-        # This part takes a long time
+        schema_url = "https://demo.nautobot.com/api/swagger/"
+        schema_api_key = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        schema_file = "openapi-schema.json"
+        logger.info(f"Retrieving schema from '{schema_url}'.")
+        schema_response = requests.get(
+            schema_url, timeout=30, headers={"Authorization": f"Token {schema_api_key}", "Accept": "application/json"}
+        )
+        if schema_response.ok:
+            logger.info(f"Saving schema to '{schema_file}'.")
+            with open(schema_file, "w") as f:
+                f.write(schema_response.text)
         logger.info("Parsing OpenAPI schema. This may take a while...")
-        parser = ResolvingParser("/home/gary/github/nautobot/nautobot/openapi_develop_test.yaml")
+        parser = ResolvingParser(schema_file)
         spec = parser.specification
-        with open("openapi-schema.parsed.json", "w") as f:
+        with open(cached_schema_file, "w") as f:
             # Save the parsed OpenAPI schema to a file for future use
             # This will speed up development by avoiding re-parsing the schema each time
             json.dump(spec, f, indent=2)

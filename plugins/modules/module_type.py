@@ -38,6 +38,9 @@ options:
   manufacturer:
     required: true
     type: dict
+  module_family:
+    required: false
+    type: dict
 """
 
 EXAMPLES = r"""
@@ -100,6 +103,7 @@ def main():
             part_number=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
             manufacturer=dict(required=True, type="dict"),
+            module_family=dict(required=False, type="dict"),
         )
     )
 

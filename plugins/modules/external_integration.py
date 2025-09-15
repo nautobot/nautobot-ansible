@@ -45,11 +45,11 @@ options:
     required: false
     type: str
     choices:
+      - "DELETE"
       - "GET"
+      - "PATCH"
       - "POST"
       - "PUT"
-      - "PATCH"
-      - "DELETE"
   headers:
     required: false
     type: str
@@ -127,11 +127,11 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "DELETE",
                     "GET",
+                    "PATCH",
                     "POST",
                     "PUT",
-                    "PATCH",
-                    "DELETE",
                 ],
             ),
             headers=dict(required=False, type="str"),

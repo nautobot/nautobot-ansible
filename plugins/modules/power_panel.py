@@ -29,6 +29,29 @@ options:
   name:
     required: true
     type: str
+  panel_type:
+    required: false
+    type: str
+    choices:
+      - "generator"
+      - "mdp"
+      - "mlc"
+      - "panelboard"
+      - "pdu"
+      - "rpp"
+      - "switchgear"
+      - "transfer-switch"
+      - "ups"
+      - "utility"
+  breaker_position_count:
+    required: false
+    type: int
+  power_path:
+    required: false
+    type: str
+    choices:
+      - "a"
+      - "b"
   location:
     required: true
     type: dict
@@ -95,6 +118,31 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
+            panel_type=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "generator",
+                    "mdp",
+                    "mlc",
+                    "panelboard",
+                    "pdu",
+                    "rpp",
+                    "switchgear",
+                    "transfer-switch",
+                    "ups",
+                    "utility",
+                ],
+            ),
+            breaker_position_count=dict(required=False, type="int"),
+            power_path=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "a",
+                    "b",
+                ],
+            ),
             location=dict(required=True, type="dict"),
             rack_group=dict(required=False, type="dict"),
         )

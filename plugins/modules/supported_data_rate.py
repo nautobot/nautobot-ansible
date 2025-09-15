@@ -31,12 +31,12 @@ options:
     type: str
     choices:
       - "802.11a"
-      - "802.11b"
-      - "802.11g"
-      - "802.11n"
       - "802.11ac"
       - "802.11ax"
+      - "802.11b"
       - "802.11be"
+      - "802.11g"
+      - "802.11n"
   rate:
     required: true
     type: int
@@ -106,12 +106,12 @@ def main():
                 type="str",
                 choices=[
                     "802.11a",
-                    "802.11b",
-                    "802.11g",
-                    "802.11n",
                     "802.11ac",
                     "802.11ax",
+                    "802.11b",
                     "802.11be",
+                    "802.11g",
+                    "802.11n",
                 ],
             ),
             rate=dict(required=True, type="int"),

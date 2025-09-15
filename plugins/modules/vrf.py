@@ -30,7 +30,7 @@ options:
     required: true
     type: str
   rd:
-    required: true
+    required: false
     type: str
   description:
     required: false
@@ -64,7 +64,6 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Vrf
-        rd: "Test Rd"
         state: present
 
     - name: Delete vrf within nautobot
@@ -110,7 +109,7 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=True, type="str"),
-            rd=dict(required=True, type="str"),
+            rd=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             status=dict(required=False, type="str"),
             namespace=dict(required=False, type="dict"),

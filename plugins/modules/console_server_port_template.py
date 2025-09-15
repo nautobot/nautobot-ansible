@@ -37,21 +37,21 @@ options:
     required: false
     type: str
     choices:
-      - "de-9"
       - "db-25"
+      - "de-9"
+      - "mini-din-8"
+      - "other"
       - "rj-11"
       - "rj-12"
       - "rj-45"
-      - "mini-din-8"
       - "usb-a"
       - "usb-b"
       - "usb-c"
+      - "usb-micro-a"
+      - "usb-micro-ab"
+      - "usb-micro-b"
       - "usb-mini-a"
       - "usb-mini-b"
-      - "usb-micro-a"
-      - "usb-micro-b"
-      - "usb-micro-ab"
-      - "other"
   device_type:
     required: false
     type: dict
@@ -121,21 +121,21 @@ def main():
                 required=False,
                 type="str",
                 choices=[
-                    "de-9",
                     "db-25",
+                    "de-9",
+                    "mini-din-8",
+                    "other",
                     "rj-11",
                     "rj-12",
                     "rj-45",
-                    "mini-din-8",
                     "usb-a",
                     "usb-b",
                     "usb-c",
+                    "usb-micro-a",
+                    "usb-micro-ab",
+                    "usb-micro-b",
                     "usb-mini-a",
                     "usb-mini-b",
-                    "usb-micro-a",
-                    "usb-micro-b",
-                    "usb-micro-ab",
-                    "other",
                 ],
             ),
             device_type=dict(required=False, type="dict"),

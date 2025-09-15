@@ -48,11 +48,11 @@ options:
     required: false
     type: str
     choices:
+      - "DELETE"
       - "GET"
+      - "PATCH"
       - "POST"
       - "PUT"
-      - "PATCH"
-      - "DELETE"
   http_content_type:
     required: false
     type: str
@@ -136,11 +136,11 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "DELETE",
                     "GET",
+                    "PATCH",
                     "POST",
                     "PUT",
-                    "PATCH",
-                    "DELETE",
                 ],
             ),
             http_content_type=dict(required=False, type="str"),

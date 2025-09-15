@@ -48,8 +48,8 @@ options:
     required: false
     type: str
     choices:
-      - "parent"
       - "child"
+      - "parent"
   comments:
     required: false
     type: str
@@ -127,8 +127,8 @@ def main():
                 required=False,
                 type="str",
                 choices=[
-                    "parent",
                     "child",
+                    "parent",
                 ],
             ),
             comments=dict(required=False, type="str"),

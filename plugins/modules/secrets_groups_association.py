@@ -27,26 +27,30 @@ options:
     required: true
     type: str
     choices:
-      - "Generic"
       - "Console"
-      - "gNMI"
+      - "Generic"
       - "HTTP(S)"
       - "NETCONF"
       - "REST"
       - "RESTCONF"
       - "SNMP"
       - "SSH"
+      - "gNMI"
   secret_type:
     required: true
     type: str
     choices:
+      - "authentication-key"
+      - "authentication-protocol"
       - "key"
+      - "notes"
       - "password"
+      - "private-algorithm"
+      - "private-key"
       - "secret"
       - "token"
-      - "username"
       - "url"
-      - "notes"
+      - "username"
   secrets_group:
     required: true
     type: dict
@@ -66,8 +70,8 @@ EXAMPLES = r"""
       networktocode.nautobot.secrets_groups_association:
         url: http://nautobot.local
         token: thisIsMyToken
-        access_type: Generic
-        secret_type: key
+        access_type: Console
+        secret_type: authentication-key
         secrets_group: None
         secret: None
         state: present
@@ -111,28 +115,32 @@ def main():
                 required=True,
                 type="str",
                 choices=[
-                    "Generic",
                     "Console",
-                    "gNMI",
+                    "Generic",
                     "HTTP(S)",
                     "NETCONF",
                     "REST",
                     "RESTCONF",
                     "SNMP",
                     "SSH",
+                    "gNMI",
                 ],
             ),
             secret_type=dict(
                 required=True,
                 type="str",
                 choices=[
+                    "authentication-key",
+                    "authentication-protocol",
                     "key",
+                    "notes",
                     "password",
+                    "private-algorithm",
+                    "private-key",
                     "secret",
                     "token",
-                    "username",
                     "url",
-                    "notes",
+                    "username",
                 ],
             ),
             secrets_group=dict(required=True, type="dict"),

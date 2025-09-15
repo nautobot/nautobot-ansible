@@ -39,12 +39,12 @@ options:
     required: true
     type: str
     choices:
+      - "Bridge"
       - "Central"
       - "Fabric"
-      - "Standalone (Autonomous)"
       - "Local (Flex)"
       - "Mesh"
-      - "Bridge"
+      - "Standalone (Autonomous)"
   enabled:
     required: false
     type: bool
@@ -52,14 +52,14 @@ options:
     required: true
     type: str
     choices:
-      - "Open"
-      - "WPA2 Personal"
-      - "WPA2 Enterprise"
       - "Enhanced Open"
-      - "WPA3 Personal"
-      - "WPA3 SAE"
+      - "Open"
+      - "WPA2 Enterprise"
+      - "WPA2 Personal"
       - "WPA3 Enterprise"
       - "WPA3 Enterprise 192Bit"
+      - "WPA3 Personal"
+      - "WPA3 SAE"
   hidden:
     required: false
     type: bool
@@ -84,8 +84,8 @@ EXAMPLES = r"""
         token: thisIsMyToken
         name: Test Wireless Network
         ssid: "Test Ssid"
-        mode: Central
-        authentication: Open
+        mode: Bridge
+        authentication: Enhanced Open
         state: present
 
     - name: Delete wireless_network within nautobot
@@ -137,12 +137,12 @@ def main():
                 required=True,
                 type="str",
                 choices=[
+                    "Bridge",
                     "Central",
                     "Fabric",
-                    "Standalone (Autonomous)",
                     "Local (Flex)",
                     "Mesh",
-                    "Bridge",
+                    "Standalone (Autonomous)",
                 ],
             ),
             enabled=dict(required=False, type="bool"),
@@ -150,14 +150,14 @@ def main():
                 required=True,
                 type="str",
                 choices=[
-                    "Open",
-                    "WPA2 Personal",
-                    "WPA2 Enterprise",
                     "Enhanced Open",
-                    "WPA3 Personal",
-                    "WPA3 SAE",
+                    "Open",
+                    "WPA2 Enterprise",
+                    "WPA2 Personal",
                     "WPA3 Enterprise",
                     "WPA3 Enterprise 192Bit",
+                    "WPA3 Personal",
+                    "WPA3 SAE",
                 ],
             ),
             hidden=dict(required=False, type="bool"),

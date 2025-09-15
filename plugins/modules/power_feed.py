@@ -35,6 +35,12 @@ options:
     choices:
       - "primary"
       - "redundant"
+  power_path:
+    required: false
+    type: str
+    choices:
+      - "a"
+      - "b"
   supply:
     required: false
     type: str
@@ -56,6 +62,16 @@ options:
   max_utilization:
     required: false
     type: int
+  breaker_position:
+    required: false
+    type: int
+  breaker_pole_count:
+    required: false
+    type: int
+    choices:
+      - "1"
+      - "2"
+      - "3"
   comments:
     required: false
     type: str
@@ -64,6 +80,9 @@ options:
     type: dict
   power_panel:
     required: true
+    type: dict
+  destination_panel:
+    required: false
     type: dict
   rack:
     required: false
@@ -140,6 +159,14 @@ def main():
                     "redundant",
                 ],
             ),
+            power_path=dict(
+                required=False,
+                type="str",
+                choices=[
+                    "a",
+                    "b",
+                ],
+            ),
             supply=dict(
                 required=False,
                 type="str",
@@ -159,9 +186,20 @@ def main():
             voltage=dict(required=False, type="int"),
             amperage=dict(required=False, type="int"),
             max_utilization=dict(required=False, type="int"),
+            breaker_position=dict(required=False, type="int"),
+            breaker_pole_count=dict(
+                required=False,
+                type="int",
+                choices=[
+                    "1",
+                    "2",
+                    "3",
+                ],
+            ),
             comments=dict(required=False, type="str"),
             cable=dict(required=False, type="dict"),
             power_panel=dict(required=True, type="dict"),
+            destination_panel=dict(required=False, type="dict"),
             rack=dict(required=False, type="dict"),
             status=dict(required=True, type="str"),
         )

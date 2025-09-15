@@ -36,15 +36,15 @@ options:
     required: false
     type: str
     choices:
+      - "blake2"
+      - "blake3"
       - "md5"
       - "sha1"
       - "sha224"
-      - "sha384"
       - "sha256"
-      - "sha512"
       - "sha3"
-      - "blake2"
-      - "blake3"
+      - "sha384"
+      - "sha512"
   image_file_size:
     required: false
     type: int
@@ -128,15 +128,15 @@ def main():
                 required=False,
                 type="str",
                 choices=[
+                    "blake2",
+                    "blake3",
                     "md5",
                     "sha1",
                     "sha224",
-                    "sha384",
                     "sha256",
-                    "sha512",
                     "sha3",
-                    "blake2",
-                    "blake3",
+                    "sha384",
+                    "sha512",
                 ],
             ),
             image_file_size=dict(required=False, type="int"),

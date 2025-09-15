@@ -37,104 +37,81 @@ options:
     required: true
     type: str
     choices:
-      - "virtual"
-      - "bridge"
-      - "lag"
-      - "100base-fx"
-      - "100base-lfx"
-      - "100base-tx"
-      - "100base-t1"
+      - "1000base-kx"
       - "1000base-t"
-      - "2.5gbase-t"
-      - "5gbase-t"
-      - "10gbase-t"
-      - "10gbase-cx4"
       - "1000base-x-gbic"
       - "1000base-x-sfp"
-      - "10gbase-x-sfpp"
-      - "10gbase-x-xfp"
-      - "10gbase-x-xenpak"
-      - "10gbase-x-x2"
-      - "25gbase-x-sfp28"
-      - "50gbase-x-sfp56"
-      - "40gbase-x-qsfpp"
-      - "50gbase-x-sfp28"
-      - "100gbase-x-cfp"
-      - "100gbase-x-cfp2"
-      - "200gbase-x-cfp2"
-      - "400gbase-x-cfp2"
-      - "100gbase-x-cfp4"
-      - "100gbase-x-cpak"
-      - "100gbase-x-qsfp28"
-      - "100gbase-x-cxp"
-      - "100gbase-x-qsfpdd"
-      - "100gbase-x-dsfp"
-      - "100gbase-x-sfpdd"
-      - "200gbase-x-qsfp56"
-      - "200gbase-x-qsfpdd"
-      - "400gbase-x-qsfp112"
-      - "400gbase-x-qsfpdd"
-      - "400gbase-x-osfp"
-      - "400gbase-x-osfp-rhs"
-      - "400gbase-x-cdfp"
-      - "400gbase-x-cfp8"
-      - "800gbase-x-qsfpdd"
-      - "800gbase-x-osfp"
-      - "800gbase-x-osfp-xd"
-      - "1600gbase-x-osfp"
-      - "1600gbase-x-osfp-xd"
-      - "1000base-kx"
-      - "10gbase-kr"
-      - "10gbase-kx4"
-      - "25gbase-kr"
-      - "40gbase-kr4"
-      - "50gbase-kr"
+      - "100base-fx"
+      - "100base-lfx"
+      - "100base-t1"
+      - "100base-tx"
       - "100gbase-kp4"
       - "100gbase-kr2"
       - "100gbase-kr4"
-      - "ieee802.11a"
-      - "ieee802.11g"
-      - "ieee802.11n"
-      - "ieee802.11ac"
-      - "ieee802.11ad"
-      - "ieee802.11ax"
-      - "ieee802.11ay"
-      - "ieee802.15.1"
-      - "other-wireless"
-      - "gsm"
-      - "cdma"
-      - "lte"
-      - "sonet-oc3"
-      - "sonet-oc12"
-      - "sonet-oc48"
-      - "sonet-oc192"
-      - "sonet-oc768"
-      - "sonet-oc1920"
-      - "sonet-oc3840"
-      - "1gfc-sfp"
-      - "2gfc-sfp"
-      - "4gfc-sfp"
-      - "8gfc-sfpp"
+      - "100gbase-x-cfp"
+      - "100gbase-x-cfp2"
+      - "100gbase-x-cfp4"
+      - "100gbase-x-cpak"
+      - "100gbase-x-cxp"
+      - "100gbase-x-dsfp"
+      - "100gbase-x-qsfp28"
+      - "100gbase-x-qsfpdd"
+      - "100gbase-x-sfpdd"
+      - "10g-epon"
+      - "10gbase-cx4"
+      - "10gbase-kr"
+      - "10gbase-kx4"
+      - "10gbase-t"
+      - "10gbase-x-sfpp"
+      - "10gbase-x-x2"
+      - "10gbase-x-xenpak"
+      - "10gbase-x-xfp"
+      - "128gfc-sfp28"
+      - "1600gbase-x-osfp"
+      - "1600gbase-x-osfp-xd"
       - "16gfc-sfpp"
+      - "1gfc-sfp"
+      - "2.5gbase-t"
+      - "200gbase-x-cfp2"
+      - "200gbase-x-qsfp56"
+      - "200gbase-x-qsfpdd"
+      - "25gbase-kr"
+      - "25gbase-x-sfp28"
+      - "2gfc-sfp"
       - "32gfc-sfp28"
       - "32gfc-sfpp"
+      - "400gbase-x-cdfp"
+      - "400gbase-x-cfp2"
+      - "400gbase-x-cfp8"
+      - "400gbase-x-osfp"
+      - "400gbase-x-osfp-rhs"
+      - "400gbase-x-qsfp112"
+      - "400gbase-x-qsfpdd"
+      - "40gbase-kr4"
+      - "40gbase-x-qsfpp"
+      - "4gfc-sfp"
+      - "50gbase-kr"
+      - "50gbase-x-sfp28"
+      - "50gbase-x-sfp56"
+      - "5gbase-t"
       - "64gfc-qsfpp"
       - "64gfc-sfpdd"
       - "64gfc-sfpp"
-      - "128gfc-sfp28"
-      - "infiniband-sdr"
-      - "infiniband-ddr"
-      - "infiniband-qdr"
-      - "infiniband-fdr10"
-      - "infiniband-fdr"
-      - "infiniband-edr"
-      - "infiniband-hdr"
-      - "infiniband-ndr"
-      - "infiniband-xdr"
-      - "t1"
-      - "e1"
-      - "t3"
-      - "e3"
+      - "800gbase-x-osfp"
+      - "800gbase-x-osfp-xd"
+      - "800gbase-x-qsfpdd"
+      - "8gfc-sfpp"
+      - "bridge"
+      - "cdma"
+      - "cisco-flexstack"
+      - "cisco-flexstack-plus"
+      - "cisco-stackwise"
+      - "cisco-stackwise-160"
+      - "cisco-stackwise-1t"
+      - "cisco-stackwise-320"
+      - "cisco-stackwise-480"
+      - "cisco-stackwise-80"
+      - "cisco-stackwise-plus"
       - "da15"
       - "da26"
       - "da31"
@@ -144,36 +121,59 @@ options:
       - "dc37"
       - "dc62"
       - "dc79"
+      - "dd100"
       - "dd50"
       - "dd78"
-      - "dd100"
-      - "de9"
       - "de15"
       - "de19"
+      - "de9"
       - "df104"
-      - "xdsl"
       - "docsis"
-      - "gpon"
-      - "xg-pon"
-      - "xgs-pon"
-      - "ng-pon2"
+      - "e1"
+      - "e3"
       - "epon"
-      - "10g-epon"
-      - "cisco-stackwise"
-      - "cisco-stackwise-plus"
-      - "cisco-flexstack"
-      - "cisco-flexstack-plus"
-      - "cisco-stackwise-80"
-      - "cisco-stackwise-160"
-      - "cisco-stackwise-320"
-      - "cisco-stackwise-480"
-      - "cisco-stackwise-1t"
-      - "juniper-vcp"
       - "extreme-summitstack"
       - "extreme-summitstack-128"
       - "extreme-summitstack-256"
       - "extreme-summitstack-512"
+      - "gpon"
+      - "gsm"
+      - "ieee802.11a"
+      - "ieee802.11ac"
+      - "ieee802.11ad"
+      - "ieee802.11ax"
+      - "ieee802.11ay"
+      - "ieee802.11g"
+      - "ieee802.11n"
+      - "ieee802.15.1"
+      - "infiniband-ddr"
+      - "infiniband-edr"
+      - "infiniband-fdr"
+      - "infiniband-fdr10"
+      - "infiniband-hdr"
+      - "infiniband-ndr"
+      - "infiniband-qdr"
+      - "infiniband-sdr"
+      - "infiniband-xdr"
+      - "juniper-vcp"
+      - "lag"
+      - "lte"
+      - "ng-pon2"
       - "other"
+      - "other-wireless"
+      - "sonet-oc12"
+      - "sonet-oc192"
+      - "sonet-oc1920"
+      - "sonet-oc3"
+      - "sonet-oc3840"
+      - "sonet-oc48"
+      - "sonet-oc768"
+      - "t1"
+      - "t3"
+      - "virtual"
+      - "xdsl"
+      - "xg-pon"
+      - "xgs-pon"
   mgmt_only:
     required: false
     type: bool
@@ -197,7 +197,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test Interface Template
-        type: virtual
+        type: 1000base-kx
         state: present
 
     - name: Delete interface_template within nautobot
@@ -247,104 +247,81 @@ def main():
                 required=True,
                 type="str",
                 choices=[
-                    "virtual",
-                    "bridge",
-                    "lag",
-                    "100base-fx",
-                    "100base-lfx",
-                    "100base-tx",
-                    "100base-t1",
+                    "1000base-kx",
                     "1000base-t",
-                    "2.5gbase-t",
-                    "5gbase-t",
-                    "10gbase-t",
-                    "10gbase-cx4",
                     "1000base-x-gbic",
                     "1000base-x-sfp",
-                    "10gbase-x-sfpp",
-                    "10gbase-x-xfp",
-                    "10gbase-x-xenpak",
-                    "10gbase-x-x2",
-                    "25gbase-x-sfp28",
-                    "50gbase-x-sfp56",
-                    "40gbase-x-qsfpp",
-                    "50gbase-x-sfp28",
-                    "100gbase-x-cfp",
-                    "100gbase-x-cfp2",
-                    "200gbase-x-cfp2",
-                    "400gbase-x-cfp2",
-                    "100gbase-x-cfp4",
-                    "100gbase-x-cpak",
-                    "100gbase-x-qsfp28",
-                    "100gbase-x-cxp",
-                    "100gbase-x-qsfpdd",
-                    "100gbase-x-dsfp",
-                    "100gbase-x-sfpdd",
-                    "200gbase-x-qsfp56",
-                    "200gbase-x-qsfpdd",
-                    "400gbase-x-qsfp112",
-                    "400gbase-x-qsfpdd",
-                    "400gbase-x-osfp",
-                    "400gbase-x-osfp-rhs",
-                    "400gbase-x-cdfp",
-                    "400gbase-x-cfp8",
-                    "800gbase-x-qsfpdd",
-                    "800gbase-x-osfp",
-                    "800gbase-x-osfp-xd",
-                    "1600gbase-x-osfp",
-                    "1600gbase-x-osfp-xd",
-                    "1000base-kx",
-                    "10gbase-kr",
-                    "10gbase-kx4",
-                    "25gbase-kr",
-                    "40gbase-kr4",
-                    "50gbase-kr",
+                    "100base-fx",
+                    "100base-lfx",
+                    "100base-t1",
+                    "100base-tx",
                     "100gbase-kp4",
                     "100gbase-kr2",
                     "100gbase-kr4",
-                    "ieee802.11a",
-                    "ieee802.11g",
-                    "ieee802.11n",
-                    "ieee802.11ac",
-                    "ieee802.11ad",
-                    "ieee802.11ax",
-                    "ieee802.11ay",
-                    "ieee802.15.1",
-                    "other-wireless",
-                    "gsm",
-                    "cdma",
-                    "lte",
-                    "sonet-oc3",
-                    "sonet-oc12",
-                    "sonet-oc48",
-                    "sonet-oc192",
-                    "sonet-oc768",
-                    "sonet-oc1920",
-                    "sonet-oc3840",
-                    "1gfc-sfp",
-                    "2gfc-sfp",
-                    "4gfc-sfp",
-                    "8gfc-sfpp",
+                    "100gbase-x-cfp",
+                    "100gbase-x-cfp2",
+                    "100gbase-x-cfp4",
+                    "100gbase-x-cpak",
+                    "100gbase-x-cxp",
+                    "100gbase-x-dsfp",
+                    "100gbase-x-qsfp28",
+                    "100gbase-x-qsfpdd",
+                    "100gbase-x-sfpdd",
+                    "10g-epon",
+                    "10gbase-cx4",
+                    "10gbase-kr",
+                    "10gbase-kx4",
+                    "10gbase-t",
+                    "10gbase-x-sfpp",
+                    "10gbase-x-x2",
+                    "10gbase-x-xenpak",
+                    "10gbase-x-xfp",
+                    "128gfc-sfp28",
+                    "1600gbase-x-osfp",
+                    "1600gbase-x-osfp-xd",
                     "16gfc-sfpp",
+                    "1gfc-sfp",
+                    "2.5gbase-t",
+                    "200gbase-x-cfp2",
+                    "200gbase-x-qsfp56",
+                    "200gbase-x-qsfpdd",
+                    "25gbase-kr",
+                    "25gbase-x-sfp28",
+                    "2gfc-sfp",
                     "32gfc-sfp28",
                     "32gfc-sfpp",
+                    "400gbase-x-cdfp",
+                    "400gbase-x-cfp2",
+                    "400gbase-x-cfp8",
+                    "400gbase-x-osfp",
+                    "400gbase-x-osfp-rhs",
+                    "400gbase-x-qsfp112",
+                    "400gbase-x-qsfpdd",
+                    "40gbase-kr4",
+                    "40gbase-x-qsfpp",
+                    "4gfc-sfp",
+                    "50gbase-kr",
+                    "50gbase-x-sfp28",
+                    "50gbase-x-sfp56",
+                    "5gbase-t",
                     "64gfc-qsfpp",
                     "64gfc-sfpdd",
                     "64gfc-sfpp",
-                    "128gfc-sfp28",
-                    "infiniband-sdr",
-                    "infiniband-ddr",
-                    "infiniband-qdr",
-                    "infiniband-fdr10",
-                    "infiniband-fdr",
-                    "infiniband-edr",
-                    "infiniband-hdr",
-                    "infiniband-ndr",
-                    "infiniband-xdr",
-                    "t1",
-                    "e1",
-                    "t3",
-                    "e3",
+                    "800gbase-x-osfp",
+                    "800gbase-x-osfp-xd",
+                    "800gbase-x-qsfpdd",
+                    "8gfc-sfpp",
+                    "bridge",
+                    "cdma",
+                    "cisco-flexstack",
+                    "cisco-flexstack-plus",
+                    "cisco-stackwise",
+                    "cisco-stackwise-160",
+                    "cisco-stackwise-1t",
+                    "cisco-stackwise-320",
+                    "cisco-stackwise-480",
+                    "cisco-stackwise-80",
+                    "cisco-stackwise-plus",
                     "da15",
                     "da26",
                     "da31",
@@ -354,36 +331,59 @@ def main():
                     "dc37",
                     "dc62",
                     "dc79",
+                    "dd100",
                     "dd50",
                     "dd78",
-                    "dd100",
-                    "de9",
                     "de15",
                     "de19",
+                    "de9",
                     "df104",
-                    "xdsl",
                     "docsis",
-                    "gpon",
-                    "xg-pon",
-                    "xgs-pon",
-                    "ng-pon2",
+                    "e1",
+                    "e3",
                     "epon",
-                    "10g-epon",
-                    "cisco-stackwise",
-                    "cisco-stackwise-plus",
-                    "cisco-flexstack",
-                    "cisco-flexstack-plus",
-                    "cisco-stackwise-80",
-                    "cisco-stackwise-160",
-                    "cisco-stackwise-320",
-                    "cisco-stackwise-480",
-                    "cisco-stackwise-1t",
-                    "juniper-vcp",
                     "extreme-summitstack",
                     "extreme-summitstack-128",
                     "extreme-summitstack-256",
                     "extreme-summitstack-512",
+                    "gpon",
+                    "gsm",
+                    "ieee802.11a",
+                    "ieee802.11ac",
+                    "ieee802.11ad",
+                    "ieee802.11ax",
+                    "ieee802.11ay",
+                    "ieee802.11g",
+                    "ieee802.11n",
+                    "ieee802.15.1",
+                    "infiniband-ddr",
+                    "infiniband-edr",
+                    "infiniband-fdr",
+                    "infiniband-fdr10",
+                    "infiniband-hdr",
+                    "infiniband-ndr",
+                    "infiniband-qdr",
+                    "infiniband-sdr",
+                    "infiniband-xdr",
+                    "juniper-vcp",
+                    "lag",
+                    "lte",
+                    "ng-pon2",
                     "other",
+                    "other-wireless",
+                    "sonet-oc12",
+                    "sonet-oc192",
+                    "sonet-oc1920",
+                    "sonet-oc3",
+                    "sonet-oc3840",
+                    "sonet-oc48",
+                    "sonet-oc768",
+                    "t1",
+                    "t3",
+                    "virtual",
+                    "xdsl",
+                    "xg-pon",
+                    "xgs-pon",
                 ],
             ),
             mgmt_only=dict(required=False, type="bool"),
