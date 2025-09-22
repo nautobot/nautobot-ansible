@@ -1,0 +1,2 @@
+Added `custom_fields` option to multiple modules that support it yet were missing it.
+Added `tags` option to multiple modules that support it yet were missing it.
