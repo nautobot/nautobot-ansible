@@ -1,0 +1,115 @@
+---
+##
+##
+### PYNAUTOBOT_VIRTUAL_DEVICE_CONTEXT
+##
+##
+- set_fact:
+    nexus_parent: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus One"'') }}'
+
+- name: "VIRTUAL_DEVICE_CONTEXT 1: Necessary info creation"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    device: "Test Nexus One"
+    status: "Active"
+    state: present
+  register: test_one
+
+- name: "VIRTUAL_DEVICE_CONTEXT 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['virtual_device_context']['name'] == "Test Virtual Device Context"
+      - test_one['virtual_device_context']['device'] == nexus_parent['key']
+      - test_one['virtual_device_context']['status'] == active['key']
+
+- name: "VIRTUAL_DEVICE_CONTEXT 2: Create duplicate"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    device: "Test Nexus One"
+    status: "Active"
+    state: present
+  register: test_two
+
+- name: "VIRTUAL_DEVICE_CONTEXT 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_one['virtual_device_context']['name'] == "Test Virtual Device Context"
+      - test_two['msg'] == "virtual_device_context Test Virtual Device Context already exists"
+
+- name: "VIRTUAL_DEVICE_CONTEXT 3: Update"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    device: "Test Nexus One"
+    status: "Active"
+    description: "This is a test virtual device context"
+    identifier: 1234
+    state: present
+  register: test_three
+
+- name: "VIRTUAL_DEVICE_CONTEXT 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['description'] == ""
+      - test_three['diff']['after']['description'] == "This is a test virtual device context"
+      - test_three['diff']['before']['identifier'] == None
+      - test_three['diff']['after']['identifier'] == 1234
+      - test_three['msg'] == "virtual_device_context Test Virtual Device Context updated"
+
+- name: "VIRTUAL_DEVICE_CONTEXT 4: Update duplicate"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    device: "Test Nexus One"
+    status: "Active"
+    description: "This is a test virtual device context"
+    identifier: 1234
+    state: present
+  register: test_four
+
+- name: "VIRTUAL_DEVICE_CONTEXT 4: ASSERT - Update duplicate"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "virtual_device_context Test Virtual Device Context already exists"
+
+- name: "VIRTUAL_DEVICE_CONTEXT 5: Delete"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    state: absent
+  register: test_five
+
+- name: "VIRTUAL_DEVICE_CONTEXT 5: ASSERT - Delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "virtual_device_context Test Virtual Device Context deleted"
+
+- name: "VIRTUAL_DEVICE_CONTEXT 6: Delete non existing"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    state: absent
+  register: test_six
+
+- name: "VIRTUAL_DEVICE_CONTEXT 6: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "virtual_device_context Test Virtual Device Context already absent"
