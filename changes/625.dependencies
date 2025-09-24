@@ -1,1 +1,0 @@
-Updated `pynautobot` to `2.6.6` to fix an issue with parsing JSON fields (such as `constraints` on the Permission model).
