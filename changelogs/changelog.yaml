@@ -687,7 +687,7 @@ releases:
         - (#595) - Added the `device_family` option to the `device_type` module for associating a device type with a device family.
         - (#627) - Added `custom_fields` option to multiple modules that support it yet were missing it.
         - (#627) - Added `tags` option to multiple modules that support it yet were missing it.
-        - (#625) - Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json` for proper handling of dictionary and list constraints.
+        - (#625) - Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json`.
         - (#625) - Updated `pynautobot` to `2.6.6` to fix an issue with parsing JSON fields (such as `constraints` on the Permission model).
     modules:
       - name: device_family
