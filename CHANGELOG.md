@@ -4,6 +4,24 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.16.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.0)
+
+### Added
+
+- [#595](https://github.com/nautobot/nautobot-ansible/issues/595) - Added the `device_family` module for creating, updating, and deleting device families in Nautobot.
+- [#595](https://github.com/nautobot/nautobot-ansible/issues/595) - Added the `device_family` option to the `device_type` module for associating a device type with a device family.
+- [#610](https://github.com/nautobot/nautobot-ansible/issues/610) - Added the `virtual_device_context` module for creating, updating, and deleting virtual device contexts in Nautobot.
+- [#627](https://github.com/nautobot/nautobot-ansible/issues/627) - Added `custom_fields` option to multiple modules that support it yet were missing it.
+- [#627](https://github.com/nautobot/nautobot-ansible/issues/627) - Added `tags` option to multiple modules that support it yet were missing it.
+
+### Dependencies
+
+- [#625](https://github.com/nautobot/nautobot-ansible/issues/625) - Updated `pynautobot` to `2.6.6` to fix an issue with parsing JSON fields (such as `constraints` on the Permission model).
+
+### Fixed
+
+- [#625](https://github.com/nautobot/nautobot-ansible/issues/625) - Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json` for proper handling of dictionary and list constraints.
+
 ## [v5.15.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.15.0)
 
 ### Added

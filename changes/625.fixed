@@ -1,1 +1,0 @@
-Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json` for proper handling of dictionary and list constraints.
