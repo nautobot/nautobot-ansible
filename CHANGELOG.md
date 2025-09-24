@@ -22,6 +22,10 @@ This document describes all new features and changes in the release. The format 
 
 - [#625](https://github.com/nautobot/nautobot-ansible/issues/625) - Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json` for proper handling of dictionary and list constraints.
 
+### Changed
+
+- Updated CODEOWNERS to reflect current maintainers.
+
 ## [v5.15.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.15.0)
 
 ### Added
