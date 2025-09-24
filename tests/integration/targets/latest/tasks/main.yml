@@ -673,6 +673,15 @@
       tags:
         - prefix_location
 
+    - name: "PYNAUTOBOT_DEVICE_FAMILY TESTS"
+      include_tasks:
+        file: "device_family.yml"
+        apply:
+          tags:
+            - device_family
+      tags:
+        - device_family
+
     # The REST API endpoint for this module wasn't added until v2.2
     - name: "PYNAUTOBOT_VRF_DEVICE_ASSIGNMENT TESTS"
       include_tasks:
@@ -855,6 +864,15 @@
             - wireless_network
       tags:
         - wireless_network
+
+    - name: "PYNAUTOBOT_VIRTUAL_DEVICE_CONTEXT TESTS"
+      include_tasks:
+        file: "virtual_device_context.yml"
+        apply:
+          tags:
+            - virtual_device_context
+      tags:
+        - virtual_device_context
 
 ##########################
 ##

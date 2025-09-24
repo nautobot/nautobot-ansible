@@ -20,6 +20,7 @@ NB_CONTROLLERS = "controllers"
 NB_CONTROLLER_MANAGED_DEVICE_GROUPS = "controller_managed_device_groups"
 NB_DEVICE_BAYS = "device_bays"
 NB_DEVICE_BAY_TEMPLATES = "device_bay_templates"
+NB_DEVICE_FAMILIES = "device_families"
 NB_DEVICE_REDUNDANCY_GROUPS = "device_redundancy_groups"
 NB_DEVICES = "devices"
 NB_ROLES = "roles"
@@ -50,6 +51,7 @@ NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
 NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
+NB_VIRTUAL_DEVICE_CONTEXTS = "virtual_device_contexts"
 
 
 class NautobotDcimModule(NautobotModule):

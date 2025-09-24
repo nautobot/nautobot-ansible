@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -9,87 +9,83 @@ __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
-module: cluster_type
-short_description: Create, update or delete cluster types within Nautobot
+module: device_family
+short_description: Create, update or delete device families within Nautobot
 description:
-  - Creates, updates or removes cluster types from Nautobot
+  - Creates, updates or removes device families from Nautobot
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
-  - Mikhail Yohman (@FragmentedPacket)
-version_added: "1.0.0"
+  - Joe Wesch (@joewesch)
+requirements:
+  - pynautobot
+version_added: "5.16.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.id
+  - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
 options:
   name:
     description:
-      - The name of the cluster type
-      - Required if I(state=present) and the cluster type does not exist yet
+      - The name of the device family
     required: false
     type: str
-    version_added: "3.0.0"
   description:
     description:
-      - The description of the cluster type
+      - The description of the device family
     required: false
     type: str
-    version_added: "3.0.0"
 """
 
 EXAMPLES = r"""
-- name: "Test Nautobot modules"
-  connection: local
-  hosts: localhost
-  gather_facts: false
+- name: Create a device family
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: "My Device Family"
+    description: "This is a device family"
+    state: present
 
-  tasks:
-    - name: Create cluster type within Nautobot with only required information
-      networktocode.nautobot.cluster_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Cluster Type
-        state: present
+- name: Delete a device family
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: "My Device Family"
+    state: absent
 
-    - name: Delete cluster within nautobot
-      networktocode.nautobot.cluster_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        name: Test Cluster Type
-        state: absent
-
-    - name: Delete cluster type by id
-      networktocode.nautobot.cluster_type:
-        url: http://nautobot.local
-        token: thisIsMyToken
-        id: 00000000-0000-0000-0000-000000000000
-        state: absent
+- name: Delete a device family by id
+  networktocode.nautobot.device_family:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    id: 00000000-0000-0000-0000-000000000000
+    state: absent
 """
 
 RETURN = r"""
-cluster_type:
+device_family:
   description: Serialized object as created or already existent within Nautobot
   returned: success (when I(state=present))
   type: dict
 msg:
-  description: Message indicating failure or info about what has been achieved
-  returned: always
+  description: Message indicating successful operation
+  returned: success
   type: str
 """
 
 from copy import deepcopy
 
 from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import (
+    NB_DEVICE_FAMILIES,
+    NautobotDcimModule,
+)
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.virtualization import (
-    NB_CLUSTER_TYPE,
-    NautobotVirtualizationModule,
+    TAGS_ARG_SPEC,
 )
 
 
@@ -99,6 +95,7 @@ def main():
     """
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(ID_ARG_SPEC))
+    argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(
         dict(
@@ -106,11 +103,9 @@ def main():
             description=dict(required=False, type="str"),
         )
     )
-
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-
-    cluster_type = NautobotVirtualizationModule(module, NB_CLUSTER_TYPE)
-    cluster_type.run()
+    device_family = NautobotDcimModule(module, NB_DEVICE_FAMILIES)
+    device_family.run()
 
 
 if __name__ == "__main__":  # pragma: no cover

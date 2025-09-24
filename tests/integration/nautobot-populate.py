@@ -998,6 +998,10 @@ if nautobot_version >= version.parse("2.2"):
     contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
     created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
 
+    # Create Device Families
+    device_families = [{"name": "My Device Family"}]
+    created_device_families = make_nautobot_calls(nb.dcim.device_families, device_families)
+
     # Create Controller
     controller = [
         {

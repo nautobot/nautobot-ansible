@@ -681,3 +681,18 @@ releases:
         - (#614) - Fixed an issue where the gql_inventory plugin would fail if a device had no name.
         - (#615) - Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.
         - (#618) - Fixed a bug when deleting certain objects with just an id.
+  5.16.0:
+    changes:
+      minor_changes:
+        - (#595) - Added the `device_family` option to the `device_type` module for associating a device type with a device family.
+        - (#627) - Added `custom_fields` option to multiple modules that support it yet were missing it.
+        - (#627) - Added `tags` option to multiple modules that support it yet were missing it.
+        - (#625) - Fixed the argument type for the `constraints` parameter in the `admin_permission` module to `raw` instead of `json`.
+        - (#625) - Updated `pynautobot` to `2.6.6` to fix an issue with parsing JSON fields (such as `constraints` on the Permission model).
+    modules:
+      - name: device_family
+        description: Creates or removes device families from Nautobot
+        namespace: ''
+      - name: virtual_device_context
+        description: Creates or removes virtual device contexts from Nautobot
+        namespace: ''
