@@ -13,6 +13,8 @@ DOCUMENTATION = """
     - Nikhil Singh Baliyan (@nikkytub)
     - Sander Steffann (@steffann)
     - Douglas Heriot (@DouglasHeriot)
+    - Alberto Solaro (@AlbertoSolaro)
+    - Giulio Coa (@giulio-coa)
   short_description: Nautobot inventory source
   description:
     - Get inventory hosts from Nautobot
@@ -219,6 +221,12 @@ DOCUMENTATION = """
         - If True, allows for potentially unsafe variables to be returned as-is in the inventory.
       default: False
       type: boolean
+    include_relationships:
+      description:
+        - If True, it adds the relationships of a resourse in host vars.
+      default: False
+      type: boolean
+      version_added: "1.0.0"
 """
 
 EXAMPLES = """
@@ -377,6 +385,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         # Handle pagination
         while api_url:
+            if (
+                self.include_relationships
+                or self.fetch_all
+            ) and 'include=relationships' not in api_url:
+                if '?' not in api_url:
+                    api_url += '?'
+                else:
+                    api_url += '&'
+
+                api_url += 'include=relationships'
+
             api_output = self._fetch_information(api_url)
             resources.extend(api_output["results"])
             api_url = api_output["next"]
@@ -1445,6 +1464,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
         self.wrap_variables = not self.get_option("allow_unsafe")
+        self.include_relationships = self.get_option('include_relationships')
 
         # Compile regular expressions, if any
         self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
