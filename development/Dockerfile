@@ -8,7 +8,7 @@ FROM ghcr.io/nautobot/nautobot-dev:next-py3.12 as nautobot
 COPY --chown=nautobot:nautobot ./development/requirements.txt /opt/nautobot/requirements.txt
 
 # Install the requirements
-RUN pip install -r /opt/nautobot/requirements.txt
+RUN pip install -r /opt/nautobot/requirements.txt --no-deps
 
 # Copy in the jobs
 COPY --chown=nautobot:nautobot ./development/jobs /opt/nautobot/jobs
