@@ -1,0 +1,2 @@
+Changed the value of `exclude_m2m` explicitly to `False` for all API endpoints in the inventory plugin.
+Changed the value of `exclude_m2m` explicitly to `False` for all modules.

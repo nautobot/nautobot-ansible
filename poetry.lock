@@ -1593,7 +1593,7 @@ extra = ["pygments (>=2.19.1)"]
 
 [[package]]
 name = "pynautobot"
-version = "2.6.5"
+version = "2.7.1"
 description = "Nautobot API client library"
 optional = false
 python-versions = "^3.10"
@@ -1601,7 +1601,7 @@ files = []
 develop = false
 
 [package.dependencies]
-packaging = "^23.2"
+packaging = ">=23.2"
 requests = "^2.30.0"
 urllib3 = "^2.2.3"
 
@@ -1609,7 +1609,7 @@ urllib3 = "^2.2.3"
 type = "git"
 url = "https://github.com/nautobot/pynautobot.git"
 reference = "next-3.0"
-resolved_reference = "cc81f45ca7af364686bf0fa292b541b1b67d4083"
+resolved_reference = "c03f87f11fe4386591c6a82cb6ea277274e62703"
 
 [[package]]
 name = "pytest"

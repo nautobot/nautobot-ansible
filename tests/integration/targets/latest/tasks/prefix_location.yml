@@ -5,7 +5,7 @@
 ##
 ##
 - set_fact:
-    test_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"192.0.2.0/24\"') }}"
+    test_prefix: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"192.0.2.0/24\" exclude_m2m=False') }}"
     test_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Prefix Test Location\"') }}"
 
 - name: "Assert pre-testing conditions are correct"

@@ -385,7 +385,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def get_resource_list_chunked(self, api_url, query_key, query_values):
         # Make an API call for multiple specific IDs, like /api/ipam/ip-addresses?limit=0&device_id=1&device_id=2&device_id=3
-        # Drastically cuts down HTTP requests comnpared to 1 request per host, in the case where we don't want to fetch_all
+        # Drastically cuts down HTTP requests compared to 1 request per host, in the case where we don't want to fetch_all
 
         # Make sure query_values is subscriptable
         if not isinstance(query_values, list):
@@ -745,12 +745,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return ip_address.get("dns_name")
 
     def refresh_platforms_lookup(self):
-        url = self.api_endpoint + "/api/dcim/platforms/?limit=0"
+        url = self.api_endpoint + "/api/dcim/platforms/?limit=0&exclude_m2m=False"
         platforms = self.get_resource_list(api_url=url)
         self.platforms_lookup = dict((platform["id"], platform["network_driver"]) for platform in platforms)
 
     def refresh_locations_lookup(self):
-        url = self.api_endpoint + "/api/dcim/locations/?limit=0"
+        url = self.api_endpoint + "/api/dcim/locations/?limit=0&exclude_m2m=False"
         locations = self.get_resource_list(api_url=url)
         self.locations_lookup = dict((location["id"], location["name"]) for location in locations)
 
@@ -765,7 +765,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.locations_parent_lookup = dict(filter(lambda x: x is not None, map(get_location_parent, locations)))
 
     def refresh_tenants_lookup(self):
-        url = self.api_endpoint + "/api/tenancy/tenants/?limit=0&depth=1"
+        url = self.api_endpoint + "/api/tenancy/tenants/?limit=0&depth=1&exclude_m2m=False"
         tenants = self.get_resource_list(api_url=url)
         self.tenants_lookup = dict((tenant["id"], tenant["name"]) for tenant in tenants)
 
@@ -778,7 +778,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.tenant_group_lookup = dict(map(get_group_for_tenant, tenants))
 
     def refresh_racks_lookup(self):
-        url = self.api_endpoint + "/api/dcim/racks/?limit=0&depth=1"
+        url = self.api_endpoint + "/api/dcim/racks/?limit=0&depth=1&exclude_m2m=False"
         racks = self.get_resource_list(api_url=url)
         self.racks_lookup = dict((rack["id"], rack["name"]) for rack in racks)
 
@@ -812,7 +812,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.rack_group_parent_lookup = dict(map(get_rack_group_parent, rack_groups))
 
     def refresh_device_roles_lookup(self):
-        url = self.api_endpoint + "/api/extras/roles/?limit=0"
+        url = self.api_endpoint + "/api/extras/roles/?limit=0&exclude_m2m=False"
         roles = self.get_resource_list(api_url=url)
         self.device_roles_lookup = dict(
             (role["id"], role["name"])
@@ -821,17 +821,17 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         )
 
     def refresh_device_types_lookup(self):
-        url = self.api_endpoint + "/api/dcim/device-types/?limit=0"
+        url = self.api_endpoint + "/api/dcim/device-types/?limit=0&exclude_m2m=False"
         device_types = self.get_resource_list(api_url=url)
         self.device_types_lookup = dict((device_type["id"], device_type["model"]) for device_type in device_types)
 
     def refresh_manufacturers_lookup(self):
-        url = self.api_endpoint + "/api/dcim/manufacturers/?limit=0"
+        url = self.api_endpoint + "/api/dcim/manufacturers/?limit=0&exclude_m2m=False"
         manufacturers = self.get_resource_list(api_url=url)
         self.manufacturers_lookup = dict((manufacturer["id"], manufacturer["name"]) for manufacturer in manufacturers)
 
     def refresh_clusters_lookup(self):
-        url = self.api_endpoint + "/api/virtualization/clusters/?limit=0&depth=1"
+        url = self.api_endpoint + "/api/virtualization/clusters/?limit=0&depth=1&exclude_m2m=False"
         clusters = self.get_resource_list(api_url=url)
 
         def get_cluster_type(cluster):
@@ -852,7 +852,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.clusters_group_lookup = dict(map(get_cluster_group, clusters))
 
     def refresh_services(self):
-        url = self.api_endpoint + "/api/ipam/services/?limit=0&depth=1"
+        url = self.api_endpoint + "/api/ipam/services/?limit=0&depth=1&exclude_m2m=False"
         services = []
 
         if self.fetch_all:
@@ -887,8 +887,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def refresh_interfaces(self):
         # Device information on Parent Module Bays are only available at depth=2
         depth = "2" if self.module_interfaces else "1"
-        url_device_interfaces = self.api_endpoint + f"/api/dcim/interfaces/?limit=0&depth={depth}"
-        url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0&depth=1"
+        url_device_interfaces = self.api_endpoint + f"/api/dcim/interfaces/?limit=0&depth={depth}&exclude_m2m=False"
+        url_vm_interfaces = self.api_endpoint + "/api/virtualization/interfaces/?limit=0&depth=1&exclude_m2m=False"
 
         device_interfaces = []
         vm_interfaces = []
@@ -954,7 +954,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     # Note: depends on the result of refresh_interfaces for self.devices_with_ips
     def refresh_ipaddresses(self):
         # setting depth=2 to fetch information about namespaces under parent prefixes.
-        url = self.api_endpoint + "/api/ipam/ip-addresses/?limit=0&depth=2&has_interface_assignments=true"
+        url = (
+            self.api_endpoint
+            + "/api/ipam/ip-addresses/?limit=0&depth=2&exclude_m2m=False&has_interface_assignments=true"
+        )
         ipaddresses = []
 
         if self.fetch_all:
@@ -1118,8 +1121,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         )
 
     def refresh_url(self):
-        device_query_parameters = [("limit", 0), ("depth", 1)]
-        vm_query_parameters = [("limit", 0), ("depth", 1)]
+        device_query_parameters = [("limit", 0), ("depth", 1), ("exclude_m2m", False)]
+        vm_query_parameters = [("limit", 0), ("depth", 1), ("exclude_m2m", False)]
         device_url = self.api_endpoint + "/api/dcim/devices/?"
         vm_url = self.api_endpoint + "/api/virtualization/virtual-machines/?"
 

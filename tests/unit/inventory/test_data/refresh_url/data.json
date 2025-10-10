@@ -7,8 +7,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&include=config_context"
     ]
   },
   {
@@ -19,8 +19,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&include=config_context"
     ]
   },
   {
@@ -31,8 +31,8 @@
       "config_context": false
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False"
     ]
   },
   {
@@ -50,8 +50,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&name=name+value&location=location+value&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&name=name+value&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&name=name+value&location=location+value&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&name=name+value&include=config_context"
     ]
   },
   {
@@ -74,8 +74,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&name=name+value&location=device&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&name=name+value&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&name=name+value&location=device&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&name=name+value&include=config_context"
     ]
   },
   {
@@ -107,8 +107,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&name=name+value&has_primary_ip=true&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&name=name+value&disk=42&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&name=name+value&has_primary_ip=true&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&name=name+value&disk=42&include=config_context"
     ]
   },
   {
@@ -123,8 +123,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&disk=3&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&disk=3&include=config_context"
     ]
   },
   {
@@ -139,8 +139,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&has_primary_ip=true&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&has_primary_ip=true&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&has_primary_ip=true&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&has_primary_ip=true&include=config_context"
     ]
   },
   {
@@ -159,8 +159,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&name=name+value&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&disk=3&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&name=name+value&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&disk=3&include=config_context"
     ]
   },
   {
@@ -179,8 +179,8 @@
       "config_context": true
     },
     "expected": [
-      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&has_primary_ip=true&include=config_context",
-      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&has_primary_ip=true&name=name+value&include=config_context"
+      "https://nautobot.test.endpoint:1234/api/dcim/devices/?limit=0&depth=1&exclude_m2m=False&has_primary_ip=true&include=config_context",
+      "https://nautobot.test.endpoint:1234/api/virtualization/virtual-machines/?limit=0&depth=1&exclude_m2m=False&has_primary_ip=true&name=name+value&include=config_context"
     ]
   }
 ]
