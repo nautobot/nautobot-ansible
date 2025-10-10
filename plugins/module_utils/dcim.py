@@ -51,6 +51,7 @@ NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
 NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
+NB_DEVICE_CLUSTER_ASSIGNMENTS = "device_cluster_assignments"
 
 
 class NautobotDcimModule(NautobotModule):
@@ -159,8 +160,8 @@ class NautobotDcimModule(NautobotModule):
                     name = f"{self.module.params['parent_module_bay'].get('parent_module')} > {name}"
             elif isinstance(self.module.params["location"], dict):
                 name = f"{self.module.params['location'].get('parent', '—')} > {self.module.params['location'].get('name')} > {name}"
-        elif data.get("id"):
-            name = data["id"]
+        elif endpoint_name == "device_cluster_assignment":
+            name = f"{data['device']}: {data['cluster']}"
         elif endpoint_name == "device":
             name = "Unnamed device"
 

@@ -835,6 +835,19 @@
   tags:
     - wireless_network
 
+- name: "NAUTOBOT 3.0+ TESTS"
+  when:
+    - "nautobot_version is version('3.0.0a0', '>=', version_type='pep440')"
+  block:
+    - name: "PYNAUTOBOT_DEVICE_CLUSTER_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "device_cluster_assignment.yml"
+        apply:
+          tags:
+            - device_cluster_assignment
+      tags:
+        - device_cluster_assignment
+
 ##########################
 ##
 ### UNSAFE VARIABLE HANDLING TESTS

@@ -1,0 +1,1 @@
+Added the `device_cluster_assignment` module for managing device to cluster assignments in Nautobot.
