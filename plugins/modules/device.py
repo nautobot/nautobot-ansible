@@ -120,12 +120,6 @@ options:
     required: false
     type: raw
     version_added: "3.0.0"
-  cluster:
-    description:
-      - Cluster that the device will be assigned to
-    required: false
-    type: raw
-    version_added: "3.0.0"
   virtual_chassis:
     description:
       - Virtual chassis the device will be assigned to
@@ -330,7 +324,6 @@ def main():
             status=dict(required=False, type="raw"),
             primary_ip4=dict(required=False, type="raw"),
             primary_ip6=dict(required=False, type="raw"),
-            cluster=dict(required=False, type="raw"),
             virtual_chassis=dict(required=False, type="raw"),
             vc_position=dict(required=False, type="int"),
             vc_priority=dict(required=False, type="int"),
