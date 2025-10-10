@@ -1,0 +1,2 @@
+Changed `cluster` (single value) field to `clusters` (list of values) for the inventory plugin.
+Changed `cluster_type` and `cluster_group` fields to a list of values for the inventory plugin.

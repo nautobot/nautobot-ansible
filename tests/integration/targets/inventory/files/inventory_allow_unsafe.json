@@ -3,6 +3,9 @@
         "hostvars": {
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },

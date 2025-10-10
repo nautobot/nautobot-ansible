@@ -9,6 +9,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "device_type": "Cisco Test",
                 "interfaces": [],
                 "is_virtual": false,
@@ -32,6 +35,9 @@
                 "tags": []
             },
             "R1-Device": {
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "device_type": "Cisco Test",
                 "interfaces": [],
                 "is_virtual": false,
@@ -61,6 +67,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "device_type": "Cisco Test",
                 "dns_name": "r2.example.com",
                 "interfaces": [
@@ -78,7 +87,6 @@
                         },
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": {
                                 "__ansible_unsafe": ""
                             },
@@ -373,6 +381,9 @@
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "device_type": "Nexus Parent",
                 "dns_name": "nexus.example.com",
                 "interfaces": [
@@ -388,7 +399,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -540,7 +550,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -699,7 +708,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -939,6 +947,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster_group": [],
+                "cluster_type": [],
+                "clusters": [],
                 "device_type": "Cisco Test",
                 "interfaces": [],
                 "is_virtual": false,
@@ -968,6 +979,17 @@
                 "tags": []
             },
             "test100": {
+                "cluster_group": [
+                    "Test Cluster Group"
+                ],
+                "cluster_type": [
+                    "Test Cluster Type",
+                    "Test Cluster Type"
+                ],
+                "clusters": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
                 "device_type": "Cisco Test",
                 "interfaces": [
                     {
@@ -982,7 +1004,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1138,7 +1159,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1294,7 +1314,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1386,7 +1405,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1490,7 +1508,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1614,7 +1631,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -2492,6 +2508,7 @@
     },
     "test_cluster": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2501,11 +2518,13 @@
     "test_cluster_2": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test104-vm"
         ]
     },
     "test_cluster_group": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2515,6 +2534,7 @@
     "test_cluster_type": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",

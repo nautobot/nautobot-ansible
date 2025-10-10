@@ -1208,5 +1208,22 @@ supported_data_rates = [
 ]
 created_supported_data_rates = make_nautobot_calls(nb.wireless.supported_data_rates, supported_data_rates)
 
+###############
+# v3.0+ items #
+###############
+if nautobot_version >= version.parse("3.0.0a0"):
+    # Assign device to clusters
+    device_clusters = [
+        {
+            "device": test100.id,
+            "cluster": test_cluster.id,
+        },
+        {
+            "device": test100.id,
+            "cluster": test_cluster2.id,
+        },
+    ]
+    created_device_clusters = make_nautobot_calls(nb.dcim.device_cluster_assignments, device_clusters)
+
 if ERRORS:
     sys.exit("Errors have occurred when creating objects, and should have been printed out. Check previous output.")

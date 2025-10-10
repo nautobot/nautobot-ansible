@@ -41,7 +41,7 @@ namespace.configure(
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
-            "min_inventory_test_version": "2.4",
+            "min_inventory_test_version": "3.0",
         }
     }
 )
