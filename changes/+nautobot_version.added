@@ -1,1 +1,0 @@
-Added the `nautobot_version` lookup plugin to return the version of the connected Nautobot instance.

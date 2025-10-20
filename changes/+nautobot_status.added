@@ -1,0 +1,1 @@
+Added the `nautobot_status` lookup plugin to return the `/api/status/` information for the connected Nautobot instance.

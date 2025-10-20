@@ -388,8 +388,8 @@ class LookupModule(LookupBase):
         )
         results = []
         for term in terms:
-            if term == "nautobot_version":
-                results.append(nautobot.status()["nautobot-version"])
+            if term == "nautobot_status":
+                results.append(nautobot.status())
                 continue
             if plugin:
                 endpoint = get_plugin_endpoint(nautobot, plugin, term)
