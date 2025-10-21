@@ -2,9 +2,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -38,9 +38,9 @@
                 "tags": []
             },
             "R1-Device": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -82,9 +82,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -137,9 +137,9 @@
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -303,9 +303,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -347,16 +347,16 @@
                 "tags": []
             },
             "test100": {
+                "cluster": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
                 "cluster_group": [
                     "Test Cluster Group"
                 ],
                 "cluster_type": [
                     "Test Cluster Type",
                     "Test Cluster Type"
-                ],
-                "clusters": [
-                    "Test Cluster",
-                    "Test Cluster 2"
                 ],
                 "custom_fields": {
                     "my_device_custom_field": "Test Device Custom Field Value"

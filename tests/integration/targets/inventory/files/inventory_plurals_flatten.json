@@ -9,9 +9,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -42,9 +42,9 @@
                 "tags": []
             },
             "R1-Device": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -83,9 +83,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -139,9 +139,9 @@
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -191,9 +191,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "device_roles": [
                     "Core Switch"
                 ],
@@ -232,16 +232,16 @@
                 "tags": []
             },
             "test100": {
+                "cluster": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
                 "cluster_group": [
                     "Test Cluster Group"
                 ],
                 "cluster_type": [
                     "Test Cluster Type",
                     "Test Cluster Type"
-                ],
-                "clusters": [
-                    "Test Cluster",
-                    "Test Cluster 2"
                 ],
                 "device_roles": [
                     "Core Switch"
@@ -569,6 +569,7 @@
     },
     "test_cluster": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -578,6 +579,7 @@
     "test_cluster_2": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test104-vm"
         ]
     },

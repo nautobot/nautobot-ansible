@@ -698,9 +698,8 @@ releases:
           Devices can now be assigned to more than one cluster.
           You will need to use the `device_cluster_assignment` module to assign a device to a cluster instead.
       breaking_changes:
-        - (#639) - The `cluster` field on devices for the inventory plugin has been changed to `clusters` to support multiple clusters.
-          As such, you can no longer group by `cluster` for devices and instead must group by `clusters`.
-          In addition, the `cluster_type` and `cluster_group` fields now return a list of applicable values instead of a single value.
+        - (#639) - For the inventory plugin, the `cluster`, `cluster_type`, and `cluster_group` fields for devices
+          now return a list instead of a single value.
     modules:
       - description: Creates or removes device to cluster assignments from Nautobot
         name: device_cluster_assignment

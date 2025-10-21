@@ -20,7 +20,6 @@ group_by:
   - manufacturer
   - platform
   - cluster
-  - clusters
   - cluster_group
   - cluster_type
   - is_virtual

@@ -2,9 +2,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "config_context": [
                     {}
                 ],
@@ -42,9 +42,9 @@
                 "tags": []
             },
             "R1-Device": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "config_context": [
                     {}
                 ],
@@ -90,9 +90,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "config_context": [
                     {
                         "normal_string": {
@@ -422,9 +422,9 @@
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "config_context": [
                     {}
                 ],
@@ -1009,9 +1009,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
-                "clusters": [],
                 "config_context": [
                     {}
                 ],
@@ -1057,16 +1057,16 @@
                 "tags": []
             },
             "test100": {
+                "cluster": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
                 "cluster_group": [
                     "Test Cluster Group"
                 ],
                 "cluster_type": [
                     "Test Cluster Type",
                     "Test Cluster Type"
-                ],
-                "clusters": [
-                    "Test Cluster",
-                    "Test Cluster 2"
                 ],
                 "config_context": [
                     {
@@ -2479,8 +2479,6 @@
             "cluster_test_cluster",
             "cluster_test_cluster_2",
             "cluster_type_test_cluster_type",
-            "clusters_test_cluster",
-            "clusters_test_cluster_2",
             "device_roles_core_switch",
             "device_types_cisco_test",
             "device_types_nexus_parent",
@@ -2518,6 +2516,7 @@
     },
     "cluster_test_cluster": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2527,6 +2526,7 @@
     "cluster_test_cluster_2": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test104-vm"
         ]
     },
@@ -2539,16 +2539,6 @@
             "test102-vm",
             "test103-vm",
             "test104-vm"
-        ]
-    },
-    "clusters_test_cluster": {
-        "hosts": [
-            "test100"
-        ]
-    },
-    "clusters_test_cluster_2": {
-        "hosts": [
-            "test100"
         ]
     },
     "device_roles_core_switch": {

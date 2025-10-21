@@ -146,7 +146,6 @@ DOCUMENTATION = """
         - platforms
         - platform
         - cluster
-        - clusters
         - cluster_type
         - cluster_group
         - is_virtual
@@ -434,7 +433,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             "custom_fields": self.extract_custom_fields,
             self._pluralize_group_by("location"): self.extract_locations,
             "cluster": self.extract_cluster,
-            "clusters": self.extract_clusters,
             "cluster_group": self.extract_cluster_group,
             "cluster_type": self.extract_cluster_type,
             "is_virtual": self.extract_is_virtual,
@@ -713,12 +711,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_cluster(self, host):
         try:
-            return host["cluster"]["name"]
-        except Exception:
-            return
-
-    def extract_clusters(self, host):
-        try:
+            if host["is_virtual"]:
+                return host["cluster"]["name"]
             return [cluster["name"] for cluster in host["clusters"]]
         except Exception:
             return
