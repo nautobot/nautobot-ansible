@@ -28,6 +28,7 @@ An example rulebook is provided in the collection.
         instance: "https://demo.nautobot.com"
         token: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         interval: 5
+        validate_certs: true
         # query: "?time__gte={{ '2024-07-15 12:00:00' | to_datetime }}"
         query: ""
 

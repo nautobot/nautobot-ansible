@@ -57,8 +57,9 @@ EXAMPLES = r"""
 
 async def main(queue: asyncio.Queue, args: Dict[str, Any]):
     """Entrypoint from ansible-rulebook."""
-    instance = args.get("instance")  # pylint:disable=W0621
+    instance = args.get("instance", "")  # pylint:disable=W0621
     token = args.get("token")  # pylint:disable=W0621
+    ssl_verify = args.get("validate_certs", True)
     query = args.get("query", "")
     interval = int(args.get("interval", 5))
 
@@ -74,7 +75,8 @@ async def main(queue: asyncio.Queue, args: Dict[str, Any]):
         url = f"{instance}/api/extras/object-changes/?={query}"
     else:
         url = f"{instance}/api/extras/object-changes/?depth=0"
-    async with aiohttp.ClientSession(headers=headers) as session:
+    connector = aiohttp.TCPConnector(ssl=ssl_verify)
+    async with aiohttp.ClientSession(headers=headers, connector=connector) as session:
         while True:
             async with session.get(url) as resp:
                 if resp.status == 200:
