@@ -1,6 +1,6 @@
 # EDA Event Source Plugin
 
-For more information on [Event Driven Ansible](https://ansible.readthedocs.io/projects/ansible-eda/).
+More information on Event-Driven Ansible is available at the [Ansible community documentation](https://ansible.readthedocs.io/projects/ansible-eda/).
 
 Event source plugins describe the source of an event stream. For the Nautobot Change log source plugin, the plugin will query the log based on a configured interval. Five seconds by default.
 
