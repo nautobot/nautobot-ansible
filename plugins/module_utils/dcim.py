@@ -51,6 +51,7 @@ NB_REAR_PORTS = "rear_ports"
 NB_REAR_PORT_TEMPLATES = "rear_port_templates"
 NB_SOFTWARE_VERSIONS = "software_versions"
 NB_VIRTUAL_CHASSIS = "virtual_chassis"
+NB_VIRTUAL_DEVICE_CONTEXTS = "virtual_device_contexts"
 NB_DEVICE_CLUSTER_ASSIGNMENTS = "device_cluster_assignments"
 
 

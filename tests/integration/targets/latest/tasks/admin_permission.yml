@@ -140,3 +140,91 @@
     that:
       - not test_six['changed']
       - test_six['msg'] == "permission Test PERMISSION One already absent"
+
+- name: "PERMISSION 7: Create with dictionary constraints"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Dictionary Constraints"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    constraints:
+      _custom_field_data__team__istartswith: "testteam"
+    state: present
+  register: test_seven
+
+- name: "PERMISSION 7: ASSERT - Create with dictionary constraints"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['permission']['constraints']['_custom_field_data__team__istartswith'] == "testteam"
+
+- name: "PERMISSION 8: Create with dictionary constraints idempotent"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Dictionary Constraints"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    constraints:
+      _custom_field_data__team__istartswith: "testteam"
+    state: present
+  register: test_eight
+
+- name: "PERMISSION 8: ASSERT - Create with dictionary constraints idempotent"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['permission']['constraints']['_custom_field_data__team__istartswith'] == "testteam"
+
+- name: "PERMISSION 9: Create with list constraints"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test List Constraints"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    constraints:
+      - _custom_field_data__team__istartswith: "testteam"
+      - _custom_field_data__team__istartswith: "testteam2"
+    state: present
+  register: test_nine
+
+- name: "PERMISSION 9: ASSERT - Create with list constraints"
+  assert:
+    that:
+      - test_nine is changed
+      - test_nine['permission']['constraints'][0]['_custom_field_data__team__istartswith'] == "testteam"
+      - test_nine['permission']['constraints'][1]['_custom_field_data__team__istartswith'] == "testteam2"
+
+- name: "PERMISSION 10: Create with list constraints idempotent"
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test List Constraints"
+    enabled: true
+    actions:
+      - view
+    object_types:
+      - "dcim.device"
+    constraints:
+      - _custom_field_data__team__istartswith: "testteam"
+      - _custom_field_data__team__istartswith: "testteam2"
+    state: present
+  register: test_ten
+
+- name: "PERMISSION 10: ASSERT - Create with list constraints idempotent"
+  assert:
+    that:
+      - not test_ten['changed']
+      - test_ten['permission']['constraints'][0]['_custom_field_data__team__istartswith'] == "testteam"
+      - test_ten['permission']['constraints'][1]['_custom_field_data__team__istartswith'] == "testteam2"

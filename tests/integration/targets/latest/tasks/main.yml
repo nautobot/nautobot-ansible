@@ -848,6 +848,15 @@
       tags:
         - device_cluster_assignment
 
+    - name: "PYNAUTOBOT_VIRTUAL_DEVICE_CONTEXT TESTS"
+      include_tasks:
+        file: "virtual_device_context.yml"
+        apply:
+          tags:
+            - virtual_device_context
+      tags:
+        - virtual_device_context
+
 ##########################
 ##
 ### UNSAFE VARIABLE HANDLING TESTS

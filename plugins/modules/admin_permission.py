@@ -58,7 +58,7 @@ options:
     description:
       - The constraints for the permission definition.
     required: false
-    type: json
+    type: raw
   users:
     description:
       - The users assigned for the permission definition.
@@ -160,7 +160,7 @@ def main():
             actions=dict(
                 required=False, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]
             ),
-            constraints=dict(required=False, type="json"),
+            constraints=dict(required=False, type="raw"),
             users=dict(required=False, type="list", elements="str"),
             groups=dict(required=False, type="list", elements="str"),
         )
