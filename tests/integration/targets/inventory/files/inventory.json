@@ -228,7 +228,8 @@
                                         },
                                         "object_type": {
                                             "__ansible_unsafe": "ipam.namespace"
-                                        }
+                                        },
+                                        "tenant": null
                                     },
                                     "network": {
                                         "__ansible_unsafe": "172.16.0.0"
@@ -480,7 +481,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -633,7 +635,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -1101,7 +1104,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -1256,7 +1260,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "2001::",
                                     "object_type": "ipam.prefix",
