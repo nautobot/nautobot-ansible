@@ -9,6 +9,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -35,6 +38,9 @@
                 "testing_location_cf": "Test Location Custom Field Value"
             },
             "R1-Device": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -67,6 +73,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "r2.example.com",
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -126,6 +135,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -159,6 +171,9 @@
             },
             "VC1": {
                 "ansible_host": "nexus.example.com",
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
@@ -187,6 +202,17 @@
                 "testing_location_cf": "Test Location Custom Field Value"
             },
             "test100": {
+                "cluster": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
+                "cluster_group": [
+                    "Test Cluster Group"
+                ],
+                "cluster_type": [
+                    "Test Cluster Type",
+                    "Test Cluster Type"
+                ],
                 "custom_fields": {
                     "my_device_custom_field": "Test Device Custom Field Value"
                 },
@@ -496,6 +522,7 @@
     },
     "test_cluster": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -505,11 +532,13 @@
     "test_cluster_2": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test104-vm"
         ]
     },
     "test_cluster_group": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -519,6 +548,7 @@
     "test_cluster_type": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",

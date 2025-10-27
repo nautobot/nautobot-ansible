@@ -1,0 +1,1 @@
+The `cluster`, `cluster_type`, and `cluster_group` fields for devices now return a list instead of a single value for the inventory plugin.

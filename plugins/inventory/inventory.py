@@ -711,19 +711,29 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def extract_cluster(self, host):
         try:
-            return host["cluster"]["name"]
+            if host["is_virtual"]:
+                return host["cluster"]["name"]
+            return [cluster["name"] for cluster in host["clusters"]]
         except Exception:
             return
 
     def extract_cluster_group(self, host):
         try:
-            return self.clusters_group_lookup[host["cluster"]["id"]]
+            if host["is_virtual"]:
+                return self.clusters_group_lookup[host["cluster"]["id"]]
+            return [
+                self.clusters_group_lookup[cluster["id"]]
+                for cluster in host["clusters"]
+                if self.clusters_group_lookup[cluster["id"]]
+            ]
         except Exception:
             return
 
     def extract_cluster_type(self, host):
         try:
-            return self.clusters_type_lookup[host["cluster"]["id"]]
+            if host["is_virtual"]:
+                return self.clusters_type_lookup[host["cluster"]["id"]]
+            return [self.clusters_type_lookup[cluster["id"]] for cluster in host["clusters"]]
         except Exception:
             return
 

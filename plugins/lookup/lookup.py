@@ -193,6 +193,7 @@ def get_endpoint(nautobot, term):
         "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
         "device-bays": {"endpoint": nautobot.dcim.device_bays},
+        "device-cluster-assignments": {"endpoint": nautobot.dcim.device_cluster_assignments},
         "device-families": {"endpoint": nautobot.dcim.device_families},
         "device-types": {"endpoint": nautobot.dcim.device_types},
         "device-redundancy-groups": {"endpoint": nautobot.dcim.device_redundancy_groups},
@@ -387,6 +388,9 @@ class LookupModule(LookupBase):
         )
         results = []
         for term in terms:
+            if term == "nautobot_status":
+                results.append(nautobot.status())
+                continue
             if plugin:
                 endpoint = get_plugin_endpoint(nautobot, plugin, term)
             else:

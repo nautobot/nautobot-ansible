@@ -681,3 +681,26 @@ releases:
         - (#614) - Fixed an issue where the gql_inventory plugin would fail if a device had no name.
         - (#615) - Changed the UUID used for devices with no name in the inventory plugin to the device ID instead of a random one.
         - (#618) - Fixed a bug when deleting certain objects with just an id.
+  6.0.0:
+    changes:
+      release_summary: 'This release is the official start of Nautobot 3.X support.
+
+        While the modules should be mostly backwards compatible with Nautobot 2.X,
+        we will no longer support versions prior to the 2.4.X LTM version of Nautobot.
+        Please ensure you have also updated your pynautobot version to v3.0.0 or higher for full compatibility.
+
+        Please note: In Nautobot 3.X, many-to-many fields are no longer returned by default in API responses.
+        This has been accounted for in the collection with regards to the inventory and module plugins,
+        but this will be a change for many lookup plugins. If you require many-to-many fields to be returned,
+        you will need to include `api_filter="exclude_m2m=False"`.'
+      deprecated_features:
+        - (#639) - Deprecated the `cluster` option from the `device` module.
+          Devices can now be assigned to more than one cluster.
+          You will need to use the `device_cluster_assignment` module to assign a device to a cluster instead.
+      breaking_changes:
+        - (#639) - For the inventory plugin, the `cluster`, `cluster_type`, and `cluster_group` fields for devices
+          now return a list instead of a single value.
+    modules:
+      - description: Creates or removes device to cluster assignments from Nautobot
+        name: device_cluster_assignment
+        namespace: ''

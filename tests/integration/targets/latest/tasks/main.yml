@@ -2,6 +2,7 @@
 - name: "Set facts used in multiple tests."
   set_fact:
     active: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Active') }}"
+    nautobot_status: "{{ lookup('networktocode.nautobot.lookup', 'nautobot_status', api_endpoint=nautobot_url, token=nautobot_token) }}"
   tags:
     - always
 
@@ -833,6 +834,19 @@
         - wireless_network
   tags:
     - wireless_network
+
+- name: "NAUTOBOT 3.0+ TESTS"
+  when:
+    - "nautobot_status['nautobot-version'] is version('3.0.0a0', '>=', version_type='pep440')"
+  block:
+    - name: "PYNAUTOBOT_DEVICE_CLUSTER_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "device_cluster_assignment.yml"
+        apply:
+          tags:
+            - device_cluster_assignment
+      tags:
+        - device_cluster_assignment
 
 ##########################
 ##
