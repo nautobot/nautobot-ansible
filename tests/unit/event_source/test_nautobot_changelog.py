@@ -77,12 +77,33 @@ ssl_test_cases = [
         {
             "instance": "https://localhost",
             "token": "0123456789abcdef0123456789abcdef01234567",
+            "validate_certs": "true",
+            "query": "",
+            "interval": 5
+        },
+        True
+    ),
+    (
+        {
+            "instance": "https://localhost",
+            "token": "0123456789abcdef0123456789abcdef01234567",
             "validate_certs": False,
             "query": "",
             "interval": 5
         },
         False
     ),
+    (
+        {
+            "instance": "https://localhost",
+            "token": "0123456789abcdef0123456789abcdef01234567",
+            "validate_certs": "false",
+            "query": "",
+            "interval": 5
+        },
+        False
+    ),
+
 ]
 @pytest.mark.asyncio
 @pytest.mark.parametrize("args, expected_ssl", ssl_test_cases)

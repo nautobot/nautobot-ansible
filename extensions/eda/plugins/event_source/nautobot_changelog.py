@@ -36,6 +36,11 @@ options:
       - How often to poll for new changelogs. Defaults to 5 seconds.
     type: int
     default: "5"
+  validate_certs:
+    description:
+      - Whether to verify SSL certificates.
+    type: bool
+    default: true
 """
 
 
@@ -57,7 +62,7 @@ EXAMPLES = r"""
 
 async def main(queue: asyncio.Queue, args: Dict[str, Any]):
     """Entrypoint from ansible-rulebook."""
-    instance = args.get("instance", "")  # pylint:disable=W0621
+    instance = args.get("instance")  # pylint:disable=W0621
     token = args.get("token")  # pylint:disable=W0621
     ssl_verify = args.get("validate_certs", True)
     query = args.get("query", "")
