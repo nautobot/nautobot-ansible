@@ -1,0 +1,1 @@
+Fixed inability to set `validate_certs` for the `nautobot_changelog` EDA plugin.
