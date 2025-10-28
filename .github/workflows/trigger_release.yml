@@ -52,6 +52,7 @@ jobs:
         ansible-version:
           - "2.17"
           - "2.18"
+          - "2.19"
         exclude:
           - python-version: "3.13"
             ansible-version: "2.17"
