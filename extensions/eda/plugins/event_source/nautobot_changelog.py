@@ -65,6 +65,10 @@ async def main(queue: asyncio.Queue, args: Dict[str, Any]):
     instance = args.get("instance")  # pylint:disable=W0621
     token = args.get("token")  # pylint:disable=W0621
     ssl_verify = args.get("validate_certs", True)
+    if not isinstance(ssl_verify, bool):
+        raise TypeError(
+            f"validate_certs must be a boolean, got {type(ssl_verify).__name__}"
+        )
     query = args.get("query", "")
     interval = int(args.get("interval", 5))
 
