@@ -260,6 +260,7 @@ def get_endpoint(nautobot, term):
         "tenants": {"endpoint": nautobot.tenancy.tenants},
         "topology-maps": {"endpoint": nautobot.extras.topology_maps},
         "virtual-chassis": {"endpoint": nautobot.dcim.virtual_chassis},
+        "virtual-device-contexts": {"endpoint": nautobot.dcim.virtual_device_contexts},
         "virtual-machines": {"endpoint": nautobot.virtualization.virtual_machines},
         "virtualization-interfaces": {"endpoint": nautobot.virtualization.interfaces},
         "vlan-groups": {"endpoint": nautobot.ipam.vlan_groups},

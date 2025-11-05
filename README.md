@@ -117,13 +117,13 @@ Here is a list of available modules along with a brief description of each:
 - **networktocode.nautobot.rack_group**: Manage rack groups in Nautobot.
 - **networktocode.nautobot.inventory_item**: Manage inventory items in Nautobot.
 
-### Event Driven Ansible (EDA)
+### Event-Driven Ansible (EDA)
 
 This collection comes with a EDA source plugin that can monitor the Nautobot Change Log based on a configurable interval.
 
 - **networktocode.nautobot.nautobot_changelog**: Listen for Change Log events and trigger actions against those.
 
-More information on the Nautobot source plugin and EDA can be found [here](./extensions/eda/plugins/event_source/README.md).
+More information on the Nautobot source plugin and EDA can be found [here](getting_started/how-to-use/eda.md).
 
 
 ### Releasing, Versioning, and Deprecation

@@ -108,6 +108,7 @@ nav:
       - Modules: "getting_started/how-to-use/modules.md"
       - Inventory: "getting_started/how-to-use/inventory.md"
       - Advanced Usage - Modules: "getting_started/how-to-use/advanced.md"
+      - EDA Event Source Plugin: "getting_started/how-to-use/eda.md"
     - Contributing: 
       - "getting_started/index.md"
       - Modules:

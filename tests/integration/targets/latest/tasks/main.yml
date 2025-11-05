@@ -835,6 +835,15 @@
   tags:
     - wireless_network
 
+- name: "PYNAUTOBOT_VIRTUAL_DEVICE_CONTEXT TESTS"
+  include_tasks:
+    file: "virtual_device_context.yml"
+    apply:
+      tags:
+        - virtual_device_context
+  tags:
+    - virtual_device_context
+
 - name: "NAUTOBOT 3.0+ TESTS"
   when:
     - "nautobot_status['nautobot-version'] is version('3.0.0a0', '>=', version_type='pep440')"
