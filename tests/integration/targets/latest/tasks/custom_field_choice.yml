@@ -11,7 +11,7 @@
   networktocode.nautobot.custom_field_choice:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    custom_field: "{{ custom_field['key'] }}"
+    custom_field: "My Selection Custom Field"
     value: "Test Custom Field Choice"
   register: test_create_min
 
@@ -29,7 +29,7 @@
   networktocode.nautobot.custom_field_choice:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    custom_field: "{{ custom_field['key'] }}"
+    custom_field: "My Selection Custom Field"
     value: "Test Custom Field Choice"
   register: test_create_idem
 
@@ -44,7 +44,7 @@
   networktocode.nautobot.custom_field_choice:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    custom_field: "{{ custom_field['key'] }}"
+    custom_field: "My Selection Custom Field"
     value: "Test Custom Field Choice"
     weight: 200
   register: test_update
@@ -60,7 +60,7 @@
   networktocode.nautobot.custom_field_choice:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    custom_field: "{{ custom_field['key'] }}"
+    custom_field: "My Selection Custom Field"
     value: "Test Custom Field Choice"
     state: absent
   register: test_delete
@@ -77,7 +77,7 @@
   networktocode.nautobot.custom_field_choice:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    custom_field: "{{ custom_field['key'] }}"
+    custom_field: "My Selection Custom Field"
     value: "Test Custom Field Choice"
     state: absent
   register: test_delete_idem
