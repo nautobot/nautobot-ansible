@@ -1,1 +1,0 @@
-Fixed idempotency for the `custom_field_choice` module when using the custom field label instead of the UUID.

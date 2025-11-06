@@ -4,6 +4,17 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.16.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.1)
+
+### Documentation
+
+- [#514](https://github.com/nautobot/nautobot-ansible/issues/514) - Fixed broken EDA link in docs.
+
+### Fixed
+
+- [#514](https://github.com/nautobot/nautobot-ansible/issues/514) - Fixed inability to set `validate_certs` for the `nautobot_changelog` EDA plugin.
+- [#647](https://github.com/nautobot/nautobot-ansible/issues/647) - Fixed idempotency for the `custom_field_choice` module when using the custom field label instead of the UUID.
+
 ## [v5.16.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.0)
 
 ### Added
