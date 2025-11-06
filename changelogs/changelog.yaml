@@ -696,3 +696,8 @@ releases:
       - name: virtual_device_context
         description: Creates or removes virtual device contexts from Nautobot
         namespace: ''
+  5.16.1:
+    changes:
+      minor_changes:
+        - (#514) - Fixed inability to set `validate_certs` for the `nautobot_changelog` EDA plugin.
+        - (#647) - Fixed idempotency for the `custom_field_choice` module when using the custom field label instead of the UUID.
