@@ -346,6 +346,25 @@
       - test_thirteen['interface']['device'] == test100['key']
       - test_thirteen['interface']['parent_interface'] == test_twelve['interface']['id']
 
+- name: "13.1 - Test idempotency of child interface with parent_interface"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: test100
+    name: GigabitEthernet9999/1
+    status: Active
+    type: "Virtual"
+    parent_interface:
+      name: GigabitEthernet9999
+  register: test_thirteen_idem
+
+- name: "13.1 - ASSERT"
+  assert:
+    that:
+      - not test_thirteen_idem['changed']
+      - test_thirteen_idem['interface']['name'] == "GigabitEthernet9999/1"
+      - test_thirteen_idem['interface']['parent_interface'] == test_twelve['interface']['id']
+
 - name: "14 - Create bridge interface"
   networktocode.nautobot.device_interface:
     url: "{{ nautobot_url }}"
@@ -368,6 +387,25 @@
       - test_fourteen['interface']['name'] == "Bridge1"
       - test_fourteen['interface']['device'] == test100['key']
       - test_fourteen['interface']['bridge'] == test_twelve['interface']['id']
+
+- name: "14.1 - Test idempotency of bridge interface"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: test100
+    name: Bridge1
+    status: Active
+    type: "1000Base-T (1GE)"
+    bridge:
+      name: GigabitEthernet9999
+  register: test_fourteen_idem
+
+- name: "14.1 - ASSERT"
+  assert:
+    that:
+      - not test_fourteen_idem['changed']
+      - test_fourteen_idem['interface']['name'] == "Bridge1"
+      - test_fourteen_idem['interface']['bridge'] == test_twelve['interface']['id']
 
 - name: "NAUTOBOT 2.3+ TESTS"
   when: 
