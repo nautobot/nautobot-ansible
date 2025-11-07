@@ -408,6 +408,7 @@ ALLOWED_QUERY_PARAMS = {
     "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
+    "bridge": set(["name", "device", "module", "virtual_machine"]),
     "cloud_account": set(["name"]),
     "cloud_network": set(["name"]),
     "cloud_network_prefix_assignment": set(["cloud_network", "prefix"]),
@@ -478,6 +479,7 @@ ALLOWED_QUERY_PARAMS = {
     "object_metadata": set(
         ["metadata_type", "assigned_object_type", "assigned_object_id", "value"]
     ),
+    "parent_interface": set(["name", "device", "module", "virtual_machine"]),
     "parent_location_type": set(["name"]),
     "parent_module_bay": set(["name", "parent_device", "parent_module"]),
     "parent_module": set(["module_type", "parent_module_bay"]),
