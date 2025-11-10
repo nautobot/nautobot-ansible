@@ -1,0 +1,1 @@
+Fixed idempotency for the `device_interface` module when using `parent_interface` or `bridge` parameters.
