@@ -701,3 +701,7 @@ releases:
       minor_changes:
         - (#514) - Fixed inability to set `validate_certs` for the `nautobot_changelog` EDA plugin.
         - (#647) - Fixed idempotency for the `custom_field_choice` module when using the custom field label instead of the UUID.
+  5.16.2:
+    changes:
+      minor_changes:
+        - (#652) - Fixed idempotency for the `device_interface` module when using `parent_interface` or `bridge` parameters.
