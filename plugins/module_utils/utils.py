@@ -159,7 +159,9 @@ QUERY_TYPES = dict(
     module_type="model",
     nat_inside="address",
     nat_outside="address",
+    bridge="name",
     parent_cloud_network="name",
+    parent_interface="name",
     parent_location="name",
     parent_location_type="name",
     parent_rack_group="name",
@@ -206,6 +208,7 @@ CONVERT_TO_ID = {
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
+    "bridge": "interfaces",
     "cloud_account": "cloud_accounts",
     "cloud_prefix": "prefixes",
     "cloud_provider": "manufacturers",
@@ -262,6 +265,7 @@ CONVERT_TO_ID = {
     "parent_module": "modules",
     "parent_rack_group": "rack_groups",
     "parent_cloud_network": "cloud_networks",
+    "parent_interface": "interfaces",
     "parent_location": "locations",
     "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
@@ -404,6 +408,7 @@ ALLOWED_QUERY_PARAMS = {
     "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
+    "bridge": set(["name", "device", "module", "virtual_machine"]),
     "cloud_account": set(["name"]),
     "cloud_network": set(["name"]),
     "cloud_network_prefix_assignment": set(["cloud_network", "prefix"]),
@@ -446,9 +451,15 @@ ALLOWED_QUERY_PARAMS = {
     "interface": set(["name", "device", "module", "virtual_machine"]),
     "interface_template": set(["name", "device_type"]),
     "inventory_item": set(["name", "device"]),
-    "ip_address": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
-    "ip_addresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
-    "ipaddresses": set(["address", "namespace", "device", "interfaces", "vm_interfaces"]),
+    "ip_address": set(
+        ["address", "namespace", "device", "interfaces", "vm_interfaces"]
+    ),
+    "ip_addresses": set(
+        ["address", "namespace", "device", "interfaces", "vm_interfaces"]
+    ),
+    "ipaddresses": set(
+        ["address", "namespace", "device", "interfaces", "vm_interfaces"]
+    ),
     "ip_address_to_interface": set(["ip_address", "interface", "vm_interface"]),
     "job_button": set(["name"]),
     "lag": set(["name"]),
@@ -465,7 +476,10 @@ ALLOWED_QUERY_PARAMS = {
     "module": set(["module_type", "parent_module_bay", "location"]),
     "namespace": set(["name"]),
     "nat_inside": set(["namespace", "address"]),
-    "object_metadata": set(["metadata_type", "assigned_object_type", "assigned_object_id", "value"]),
+    "object_metadata": set(
+        ["metadata_type", "assigned_object_type", "assigned_object_id", "value"]
+    ),
+    "parent_interface": set(["name", "device", "module", "virtual_machine"]),
     "parent_location_type": set(["name"]),
     "parent_module_bay": set(["name", "parent_device", "parent_module"]),
     "parent_module": set(["module_type", "parent_module_bay"]),
@@ -496,12 +510,16 @@ ALLOWED_QUERY_PARAMS = {
     "route_target": set(["name"]),
     "secret": set(["name"]),
     "secrets_group": set(["name"]),
-    "secrets_groups_association": set(["secrets_group", "secret", "access_type", "secret_type"]),
+    "secrets_groups_association": set(
+        ["secrets_group", "secret", "access_type", "secret_type"]
+    ),
     "services": set(["device", "virtual_machine", "name", "port", "protocol"]),
     "software_version": set(["version", "platform"]),
     "software_image_file": set(["image_file_name", "software_version"]),
     "software_image_files": set(["image_file_name", "software_version"]),
-    "static_group_association": set(["dynamic_group", "associated_object_type", "associated_object_id"]),
+    "static_group_association": set(
+        ["dynamic_group", "associated_object_type", "associated_object_id"]
+    ),
     "statuses": set(["name"]),
     "supported_data_rate": set(["standard", "rate"]),
     "supported_data_rates": set(["standard", "rate"]),
@@ -523,7 +541,9 @@ ALLOWED_QUERY_PARAMS = {
     "vlan_location_assignments": set(["vlan", "location"]),
     "vm_interface": set(["name", "virtual_machine"]),
     "vrf": set(["name", "namespace", "rd"]),
-    "vrf_device_assignments": set(["vrf", "device", "virtual_machine", "virtual_device_context"]),
+    "vrf_device_assignments": set(
+        ["vrf", "device", "virtual_machine", "virtual_device_context"]
+    ),
     "wireless_network": set(["name"]),
 }
 
@@ -620,10 +640,17 @@ CONVERT_KEYS = {
 # Options not sent for filtering
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
-    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
+    token=dict(
+        type="str",
+        required=True,
+        no_log=True,
+        fallback=(env_fallback, ["NAUTOBOT_TOKEN"]),
+    ),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
-    validate_certs=dict(type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])),
+    validate_certs=dict(
+        type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])
+    ),
     api_version=dict(type="str", required=False),
 )
 
@@ -680,7 +707,10 @@ def sort_dict_with_lists(data):
     if isinstance(data, dict):
         return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
     if isinstance(data, list):
-        return sorted([sort_dict_with_lists(v) for v in data], key=lambda x: json.dumps(x, sort_keys=True))
+        return sorted(
+            [sort_dict_with_lists(v) for v in data],
+            key=lambda x: json.dumps(x, sort_keys=True),
+        )
     return data
 
 
@@ -703,7 +733,9 @@ class NautobotModule:
         query_params = self.module.params.get("query_params")
 
         if not HAS_PYNAUTOBOT:
-            self.module.fail_json(msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR)
+            self.module.fail_json(
+                msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR
+            )
         # These should not be required after making connection to Nautobot
         url = self.module.params["url"]
         token = self.module.params["token"]
@@ -772,7 +804,9 @@ class NautobotModule:
 
     def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify)
+            nb = pynautobot.api(
+                url, token=token, api_version=api_version, verify=ssl_verify
+            )
             self.version = nb.version
             return nb
         except pynautobot.RequestError as e:
@@ -789,7 +823,9 @@ class NautobotModule:
         except pynautobot.RequestError as e:
             self._handle_errors(msg=e.error)
         except ValueError:
-            self._handle_errors(msg="More than one result returned for %s" % (search_item))
+            self._handle_errors(
+                msg="More than one result returned for %s" % (search_item)
+            )
 
         return response
 
@@ -810,7 +846,9 @@ class NautobotModule:
         try:
             raw_data = to_text(response.read(), errors="surrogate_or_strict")
         except UnicodeError:
-            self._handle_errors(msg="Incorrect encoding of fetched payload from Nautobot API.")
+            self._handle_errors(
+                msg="Incorrect encoding of fetched payload from Nautobot API."
+            )
 
         try:
             openapi = json.loads(raw_data)
@@ -825,7 +863,11 @@ class NautobotModule:
                 invalid_query_params.append(param)
 
         if invalid_query_params:
-            self._handle_errors("The following query_params are invalid: {0}".format(", ".join(invalid_query_params)))
+            self._handle_errors(
+                "The following query_params are invalid: {0}".format(
+                    ", ".join(invalid_query_params)
+                )
+            )
 
     def _handle_errors(self, msg):
         """
@@ -910,7 +952,9 @@ class NautobotModule:
         else:
             return data
 
-    def _build_query_params(self, parent, module_data, user_query_params=None, child=None):
+    def _build_query_params(
+        self, parent, module_data, user_query_params=None, child=None
+    ):
         """Build a query dictionary for Nautobot endpoints.
 
         :returns dict(query_dict): Returns a query dictionary built using mappings to dynamically
@@ -963,9 +1007,13 @@ class NautobotModule:
         elif parent == "lag":
             if not child:
                 query_dict["name"] = module_data["lag"]
-            intf_type = self._fetch_choice_value("Link Aggregation Group (LAG)", "interfaces")
+            intf_type = self._fetch_choice_value(
+                "Link Aggregation Group (LAG)", "interfaces"
+            )
             query_dict.update({"type": intf_type})
-            if isinstance(module_data["device"], int) or self.is_valid_uuid(module_data["device"]):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -974,7 +1022,9 @@ class NautobotModule:
             query_dict.update({"prefix": module_data["parent"]})
 
         elif parent == "ip_addresses":
-            if isinstance(module_data["device"], int) or self.is_valid_uuid(module_data["device"]):
+            if isinstance(module_data["device"], int) or self.is_valid_uuid(
+                module_data["device"]
+            ):
                 query_dict.update({"device_id": module_data["device"]})
             else:
                 query_dict.update({"device": module_data["device"]})
@@ -995,7 +1045,9 @@ class NautobotModule:
 
         if not query_dict:
             provided_kwargs = child.keys() if child else module_data.keys()
-            acceptable_query_params = user_query_params if user_query_params else query_params
+            acceptable_query_params = (
+                user_query_params if user_query_params else query_params
+            )
             self._handle_errors(
                 f"One or more of the kwargs provided are invalid for {parent},"
                 f" provided kwargs: {', '.join(sorted(provided_kwargs))}. Acceptable kwargs: {', '.join(sorted(acceptable_query_params))}"
@@ -1042,10 +1094,15 @@ class NautobotModule:
             required_choices = CONVERT_CHOICES[endpoint]
             for choice in required_choices:
                 if data.get(choice):
-                    if isinstance(data[choice], int) or self.is_valid_uuid(data[choice]):
+                    if isinstance(data[choice], int) or self.is_valid_uuid(
+                        data[choice]
+                    ):
                         continue
                     if isinstance(data[choice], list):
-                        data[choice] = [self._fetch_choice_value(item, endpoint) for item in data[choice]]
+                        data[choice] = [
+                            self._fetch_choice_value(item, endpoint)
+                            for item in data[choice]
+                        ]
                     else:
                         data[choice] = self._fetch_choice_value(data[choice], endpoint)
 
@@ -1096,14 +1153,22 @@ class NautobotModule:
                 elif isinstance(v, list):
                     id_list = list()
                     for list_item in v:
-                        if k == "tags" and isinstance(list_item, str) and not self.is_valid_uuid(list_item):
+                        if (
+                            k == "tags"
+                            and isinstance(list_item, str)
+                            and not self.is_valid_uuid(list_item)
+                        ):
                             temp_dict = {"name": list_item}
                         elif isinstance(list_item, dict):
                             norm_data = self._normalize_data(list_item)
-                            temp_dict = self._build_query_params(k, data, child=norm_data)
+                            temp_dict = self._build_query_params(
+                                k, data, child=norm_data
+                            )
                         # If user passes in an integer, add to ID list to id_list as user
                         # should have passed in a tag ID
-                        elif isinstance(list_item, int) or self.is_valid_uuid(list_item):
+                        elif isinstance(list_item, int) or self.is_valid_uuid(
+                            list_item
+                        ):
                             id_list.append(list_item)
                             continue
                         else:
@@ -1118,7 +1183,9 @@ class NautobotModule:
                             self._handle_errors(msg="%s not found" % (list_item))
                 else:
                     if k in ["lag", "rear_port", "rear_port_template"]:
-                        query_params = self._build_query_params(k, data, user_query_params)
+                        query_params = self._build_query_params(
+                            k, data, user_query_params
+                        )
                     else:
                         # Reminder: this get checks the QUERY_TYPES constant above, if the item is not in the list
                         # of approved query types, then it defaults to a q search
@@ -1205,7 +1272,9 @@ class NautobotModule:
             custom_fields = serialized_nb_obj.get("custom_fields", {})
             shared_keys = custom_fields.keys() & data.get("custom_fields", {}).keys()
             serialized_nb_obj["custom_fields"] = {
-                key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None
+                key: custom_fields[key]
+                for key in shared_keys
+                if custom_fields[key] is not None
             }
         updated_obj = serialized_nb_obj.copy()
         updated_obj.update(data)
@@ -1226,7 +1295,10 @@ class NautobotModule:
                     if key == "form_factor":
                         msg = "form_factor is not valid for Nautobot 2.7 onword. Please use the type key instead."
                     else:
-                        msg = "%s does not exist on existing object. Check to make sure valid field." % (key)
+                        msg = (
+                            "%s does not exist on existing object. Check to make sure valid field."
+                            % (key)
+                        )
 
                     self._handle_errors(msg=msg)
 
@@ -1256,7 +1328,9 @@ class NautobotModule:
         else:
             self.nb_object, diff = self._update_object(data)
             if self.nb_object is False:
-                self._handle_errors(msg="Request failed, couldn't update object: %s" % name)
+                self._handle_errors(
+                    msg="Request failed, couldn't update object: %s" % name
+                )
             if diff:
                 self.result["msg"] = "%s %s updated" % (endpoint_name, name)
                 self.result["changed"] = True
@@ -1300,7 +1374,12 @@ class NautobotApiBase:
         self.api_version = kwargs.get("api_version")
 
         # Setup the API client calls
-        self.api = pynautobot.api(url=self.url, token=self.token, api_version=self.api_version, verify=self.ssl_verify)
+        self.api = pynautobot.api(
+            url=self.url,
+            token=self.token,
+            api_version=self.api_version,
+            verify=self.ssl_verify,
+        )
 
 
 class NautobotGraphQL:
@@ -1313,6 +1392,8 @@ class NautobotGraphQL:
     def query(self):
         """Makes API call and checks response from GraphQL endpoint."""
         # Make API call to query
-        graph_response = self.pynautobot.graphql.query(query=self.query_str, variables=self.variables)
+        graph_response = self.pynautobot.graphql.query(
+            query=self.query_str, variables=self.variables
+        )
 
         return graph_response

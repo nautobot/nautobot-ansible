@@ -156,6 +156,7 @@
                         "display": {
                             "__ansible_unsafe": "GigabitEthernet1"
                         },
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 1,
                         "ip_addresses": [
@@ -298,6 +299,7 @@
                         },
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": {
                                 "__ansible_unsafe": "4caf50"
@@ -433,6 +435,7 @@
                             }
                         },
                         "display": "Ethernet2/1",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 1,
                         "ip_addresses": [
@@ -511,6 +514,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
@@ -587,6 +591,7 @@
                             }
                         },
                         "display": "Ethernet1/1",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 1,
                         "ip_addresses": [
@@ -665,6 +670,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
@@ -1031,6 +1037,7 @@
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet1",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 1,
                         "ip_addresses": [
@@ -1109,6 +1116,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
@@ -1187,6 +1195,7 @@
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet2",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 1,
                         "ip_addresses": [
@@ -1265,6 +1274,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
@@ -1343,6 +1353,7 @@
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet3",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 0,
                         "ip_addresses": [],
@@ -1357,6 +1368,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
@@ -1435,6 +1447,7 @@
                             "virtual_chassis": null
                         },
                         "display": "GigabitEthernet4",
+                        "duplex": null,
                         "enabled": true,
                         "ip_address_count": 0,
                         "ip_addresses": [],
@@ -1449,6 +1462,7 @@
                         "object_type": "dcim.interface",
                         "parent_interface": null,
                         "role": null,
+                        "speed": null,
                         "status": {
                             "color": "4caf50",
                             "custom_fields": {},
