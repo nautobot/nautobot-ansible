@@ -4,6 +4,12 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v5.16.2](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.2)
+
+### Fixed
+
+- [#652](https://github.com/nautobot/nautobot-ansible/issues/652) - Fixed idempotency for the `device_interface` module when using `parent_interface` or `bridge` parameters.
+
 ## [v5.16.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.1)
 
 ### Documentation
