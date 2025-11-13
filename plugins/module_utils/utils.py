@@ -160,7 +160,9 @@ QUERY_TYPES = dict(
     module_type="model",
     nat_inside="address",
     nat_outside="address",
+    bridge="name",
     parent_cloud_network="name",
+    parent_interface="name",
     parent_location="name",
     parent_location_type="name",
     parent_rack_group="name",
@@ -207,6 +209,7 @@ CONVERT_TO_ID = {
     "circuit_type": "circuit_types",
     "circuit_termination": "circuit_terminations",
     "circuits.circuittermination": "circuit_terminations",
+    "bridge": "interfaces",
     "cloud_account": "cloud_accounts",
     "cloud_prefix": "prefixes",
     "cloud_provider": "manufacturers",
@@ -263,6 +266,7 @@ CONVERT_TO_ID = {
     "parent_module": "modules",
     "parent_rack_group": "rack_groups",
     "parent_cloud_network": "cloud_networks",
+    "parent_interface": "interfaces",
     "parent_location": "locations",
     "parent_location_type": "location_types",
     "parent_tenant_group": "tenant_groups",
@@ -406,6 +410,7 @@ ALLOWED_QUERY_PARAMS = {
     "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
+    "bridge": set(["name", "device", "module", "virtual_machine"]),
     "cloud_account": set(["name"]),
     "cloud_network": set(["name"]),
     "cloud_network_prefix_assignment": set(["cloud_network", "prefix"]),
@@ -469,6 +474,7 @@ ALLOWED_QUERY_PARAMS = {
     "namespace": set(["name"]),
     "nat_inside": set(["namespace", "address"]),
     "object_metadata": set(["metadata_type", "assigned_object_type", "assigned_object_id", "value"]),
+    "parent_interface": set(["name", "device", "module", "virtual_machine"]),
     "parent_location_type": set(["name"]),
     "parent_module_bay": set(["name", "parent_device", "parent_module"]),
     "parent_module": set(["module_type", "parent_module_bay"]),
@@ -624,7 +630,12 @@ CONVERT_KEYS = {
 # Options not sent for filtering
 NAUTOBOT_ARG_SPEC = dict(
     url=dict(type="str", required=True, fallback=(env_fallback, ["NAUTOBOT_URL"])),
-    token=dict(type="str", required=True, no_log=True, fallback=(env_fallback, ["NAUTOBOT_TOKEN"])),
+    token=dict(
+        type="str",
+        required=True,
+        no_log=True,
+        fallback=(env_fallback, ["NAUTOBOT_TOKEN"]),
+    ),
     state=dict(required=False, default="present", choices=["present", "absent"]),
     query_params=dict(required=False, type="list", elements="str"),
     validate_certs=dict(type="raw", default=True, fallback=(env_fallback, ["NAUTOBOT_VALIDATE_CERTS"])),
@@ -684,7 +695,10 @@ def sort_dict_with_lists(data):
     if isinstance(data, dict):
         return {k: sort_dict_with_lists(v) for k, v in sorted(data.items())}
     if isinstance(data, list):
-        return sorted([sort_dict_with_lists(v) for v in data], key=lambda x: json.dumps(x, sort_keys=True))
+        return sorted(
+            [sort_dict_with_lists(v) for v in data],
+            key=lambda x: json.dumps(x, sort_keys=True),
+        )
     return data
 
 
@@ -776,7 +790,6 @@ class NautobotModule:
 
     def _connect_api(self, url, token, ssl_verify, api_version):
         try:
-            # nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify)
             nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify, exclude_m2m=False)
             self.version = nb.version
             return nb
