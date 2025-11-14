@@ -1,8 +1,8 @@
 ARG NAUTOBOT_VER
 
-# TODO: Switch back to the official Nautobot image when 3.0 is released
+# TODO: Switch back to the production (non-dev) Nautobot image when 3.0 is released
 # FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VER} as nautobot
-FROM ghcr.io/nautobot/nautobot-dev:next-py3.12 as nautobot
+FROM ghcr.io/nautobot/nautobot-dev:${NAUTOBOT_VER} as nautobot
 
 # Copy in the requirements file
 COPY --chown=nautobot:nautobot ./development/requirements.txt /opt/nautobot/requirements.txt
