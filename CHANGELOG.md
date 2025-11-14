@@ -6,6 +6,14 @@ This document describes all new features and changes in the release. The format 
 
 ## [v6.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.0.0)
 
+### Release Summary
+
+This release is the official start of Nautobot 3.X support.
+
+While the modules should be mostly backwards compatible with Nautobot 2.X, we will no longer support versions prior to the 2.4.X LTM version of Nautobot. Please ensure you have also updated your pynautobot version to v3.0.0 or higher for full compatibility.
+
+Please note: In Nautobot 3.X, many-to-many fields are no longer returned by default in API responses. This has been accounted for in the collection with regards to the inventory and module plugins, but this will be a change for many lookup plugins. If you require many-to-many fields to be returned, you will need to include `api_filter="exclude_m2m=False"`.
+
 ### Added
 
 - [#639](https://github.com/nautobot/nautobot-ansible/issues/639) - Added the `device_cluster_assignment` module for managing device to cluster assignments in Nautobot.
