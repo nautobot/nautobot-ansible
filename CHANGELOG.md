@@ -4,6 +4,27 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.0.0)
+
+### Added
+
+- [#639](https://github.com/nautobot/nautobot-ansible/issues/639) - Added the `device_cluster_assignment` module for managing device to cluster assignments in Nautobot.
+- Added the `nautobot_status` lookup plugin to return the `/api/status/` information for the connected Nautobot instance.
+
+### Changed
+
+- [#637](https://github.com/nautobot/nautobot-ansible/issues/637) - Changed the value of `exclude_m2m` explicitly to `False` for all API endpoints in the inventory plugin.
+- [#637](https://github.com/nautobot/nautobot-ansible/issues/637) - Changed the value of `exclude_m2m` explicitly to `False` for all modules.
+- [#639](https://github.com/nautobot/nautobot-ansible/issues/639) - The `cluster`, `cluster_type`, and `cluster_group` fields for devices now return a list instead of a single value for the inventory plugin.
+
+### Housekeeping
+
+- [#598](https://github.com/nautobot/nautobot-ansible/issues/598) - Removed all version constraints from various test files.
+
+### Removed
+
+- [#639](https://github.com/nautobot/nautobot-ansible/issues/639) - Removed the `cluster` option from the `device` module. This was replaced with the `device_cluster_assignment` module.
+
 ## [v5.16.2](https://github.com/nautobot/nautobot-ansible/releases/tag/v5.16.2)
 
 ### Fixed

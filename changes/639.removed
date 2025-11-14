@@ -1,1 +1,0 @@
-Removed the `cluster` option from the `device` module. This was replaced with the `device_cluster_assignment` module.

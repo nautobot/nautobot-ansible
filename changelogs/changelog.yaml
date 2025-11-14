@@ -724,6 +724,10 @@ releases:
       breaking_changes:
         - (#639) - For the inventory plugin, the `cluster`, `cluster_type`, and `cluster_group` fields for devices
           now return a list instead of a single value.
+      minor_changes:
+        - Added the `nautobot_status` lookup plugin to return the `/api/status/` information for the connected Nautobot instance.
+        - (#637) - Changed the value of `exclude_m2m` explicitly to `False` for all API endpoints in the inventory plugin.
+        - (#637) - Changed the value of `exclude_m2m` explicitly to `False` for all modules.
     modules:
       - description: Creates or removes device to cluster assignments from Nautobot
         name: device_cluster_assignment
