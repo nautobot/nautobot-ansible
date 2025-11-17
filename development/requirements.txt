@@ -1,3 +1,1 @@
-git+https://github.com/nautobot/nautobot-app-bgp-models.git@next-3.0#egg=nautobot-bgp-models
-# TODO: Switch back to an official app version when Nautobot BGP Models 3.0 is released
-# nautobot-bgp-models==3.0.0
+nautobot-bgp-models==3.0.0
