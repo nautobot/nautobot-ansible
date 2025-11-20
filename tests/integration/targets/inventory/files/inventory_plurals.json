@@ -2,6 +2,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "config_context": [
                     {}
                 ],
@@ -39,6 +42,9 @@
                 "tags": []
             },
             "R1-Device": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "config_context": [
                     {}
                 ],
@@ -84,6 +90,9 @@
             },
             "R2 {{ SEE ISSUE 114 }}": {
                 "ansible_host": "172.16.180.13",
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "config_context": [
                     {
                         "normal_string": {
@@ -119,7 +128,6 @@
                         },
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": {
                                 "__ansible_unsafe": ""
                             },
@@ -252,7 +260,8 @@
                                         },
                                         "object_type": {
                                             "__ansible_unsafe": "ipam.namespace"
-                                        }
+                                        },
+                                        "tenant": null
                                     },
                                     "network": {
                                         "__ansible_unsafe": "172.16.0.0"
@@ -416,6 +425,9 @@
             },
             "Test Nexus One": {
                 "ansible_host": "172.16.180.11",
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "config_context": [
                     {}
                 ],
@@ -442,7 +454,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -516,7 +527,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -596,7 +608,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -672,7 +683,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -760,7 +772,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1007,6 +1018,9 @@
                 "tags": []
             },
             "TestDeviceR1": {
+                "cluster": [],
+                "cluster_group": [],
+                "cluster_type": [],
                 "config_context": [
                     {}
                 ],
@@ -1052,6 +1066,17 @@
                 "tags": []
             },
             "test100": {
+                "cluster": [
+                    "Test Cluster",
+                    "Test Cluster 2"
+                ],
+                "cluster_group": [
+                    "Test Cluster Group"
+                ],
+                "cluster_type": [
+                    "Test Cluster Type",
+                    "Test Cluster Type"
+                ],
                 "config_context": [
                     {
                         "ntp_servers": [
@@ -1081,7 +1106,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1159,7 +1183,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "172.16.0.0",
                                     "object_type": "ipam.prefix",
@@ -1239,7 +1264,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1317,7 +1341,8 @@
                                         "display": "Global",
                                         "location": null,
                                         "name": "Global",
-                                        "object_type": "ipam.namespace"
+                                        "object_type": "ipam.namespace",
+                                        "tenant": null
                                     },
                                     "network": "2001::",
                                     "object_type": "ipam.prefix",
@@ -1397,7 +1422,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1491,7 +1515,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1596,7 +1619,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -1720,7 +1742,6 @@
                         "description": "",
                         "device": {
                             "asset_tag": null,
-                            "cluster": null,
                             "comments": "",
                             "controller_managed_device_group": null,
                             "custom_fields": {
@@ -2505,6 +2526,7 @@
     },
     "cluster_group_test_cluster_group": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2513,6 +2535,7 @@
     },
     "cluster_test_cluster": {
         "hosts": [
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -2522,12 +2545,14 @@
     "cluster_test_cluster_2": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test104-vm"
         ]
     },
     "cluster_type_test_cluster_type": {
         "hosts": [
             "Test VM With Spaces",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",

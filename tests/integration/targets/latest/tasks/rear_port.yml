@@ -9,6 +9,8 @@
 ##
 - set_fact:
     test100: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
+    rear_port_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
+    test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStrip"'') }}'
 
 - name: "REAR_PORT 1: Necessary info creation"
   networktocode.nautobot.rear_port:
@@ -136,88 +138,79 @@
       - test_six['msg'] == "rear_port Rear Port created"
   vars:
     device: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus One"'') }}'
+    
+- name: "REAR_PORT  6: Create rear port on module"
+  networktocode.nautobot.rear_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 3
+    module: 
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    type: bnc
+    state: present
+  register: test_six
 
-- name: "NAUTOBOT 2.3+ TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "6 - SET ADDITIONAL FACTS"
-      set_fact:
-        rear_port_module: '{{ lookup(''networktocode.nautobot.lookup'', ''modules'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''q="HooverMaxProModel60"'') }}'
-        test_module_bay: '{{ lookup(''networktocode.nautobot.lookup'', ''module-bays'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="PowerStrip"'') }}'
-        
-    - name: "REAR_PORT  6: Create rear port on module"
-      networktocode.nautobot.rear_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Rear Port 3
-        module: 
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        type: bnc
-        state: present
-      register: test_six
+- name: "REAR_PORT  6: ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "absent"
+      - test_six['diff']['after']['state'] == "present"
+      - test_six['rear_port']['name'] == "Rear Port 3"
+      - test_six['rear_port']['module'] == rear_port_module['key']
+      - test_six['msg'] == "rear_port Rear Port 3 created"
 
-    - name: "REAR_PORT  6: ASSERT"
-      assert:
-        that:
-          - test_six is changed
-          - test_six['diff']['before']['state'] == "absent"
-          - test_six['diff']['after']['state'] == "present"
-          - test_six['rear_port']['name'] == "Rear Port 3"
-          - test_six['rear_port']['module'] == rear_port_module['key']
-          - test_six['msg'] == "rear_port Rear Port 3 created"
+- name: "REAR_PORT  7: Create duplicate"
+  networktocode.nautobot.rear_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 3
+    module: HooverMaxProModel60
+    type: bnc
+    state: present
+  register: test_seven
 
-    - name: "REAR_PORT  7: Create duplicate"
-      networktocode.nautobot.rear_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Rear Port 3
-        module: HooverMaxProModel60
-        type: bnc
-        state: present
-      register: test_seven
+- name: "REAR_PORT  7: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_seven['changed']
+      - test_seven['rear_port']['name'] == "Rear Port 3"
+      - test_seven['rear_port']['module'] == rear_port_module['key']
+      - test_seven['msg'] == "rear_port Rear Port 3 already exists"
 
-    - name: "REAR_PORT  7: ASSERT - Create duplicate"
-      assert:
-        that:
-          - not test_seven['changed']
-          - test_seven['rear_port']['name'] == "Rear Port 3"
-          - test_seven['rear_port']['module'] == rear_port_module['key']
-          - test_seven['msg'] == "rear_port Rear Port 3 already exists"
+- name: "REAR_PORT  8: Delete Rear Port on module"
+  networktocode.nautobot.rear_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 3
+    module: HooverMaxProModel60
+    type: bnc
+    state: absent
+  register: test_eight
 
-    - name: "REAR_PORT  8: Delete Rear Port on module"
-      networktocode.nautobot.rear_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Rear Port 3
-        module: HooverMaxProModel60
-        type: bnc
-        state: absent
-      register: test_eight
+- name: "REAR_PORT  8: ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['state'] == "present"
+      - test_eight['diff']['after']['state'] == "absent"
+      - test_eight['msg'] == "rear_port Rear Port 3 deleted"
 
-    - name: "REAR_PORT  8: ASSERT"
-      assert:
-        that:
-          - test_eight is changed
-          - test_eight['diff']['before']['state'] == "present"
-          - test_eight['diff']['after']['state'] == "absent"
-          - test_eight['msg'] == "rear_port Rear Port 3 deleted"
+- name: "REAR_PORT  9: Delete Rear Port on module duplicate"
+  networktocode.nautobot.rear_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Rear Port 3
+    module: 
+      module_type: HooverMaxProModel60
+      parent_module_bay: "{{ test_module_bay['key'] }}"
+    type: bnc
+    state: absent
+  register: test_nine
 
-    - name: "REAR_PORT  9: Delete Rear Port on module duplicate"
-      networktocode.nautobot.rear_port:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Rear Port 3
-        module: 
-          module_type: HooverMaxProModel60
-          parent_module_bay: "{{ test_module_bay['key'] }}"
-        type: bnc
-        state: absent
-      register: test_nine
-
-    - name: "REAR_PORT  9: ASSERT"
-      assert:
-        that:
-          - not test_nine['changed']
-          - "'already absent' in test_nine['msg']"
+- name: "REAR_PORT  9: ASSERT"
+  assert:
+    that:
+      - not test_nine['changed']
+      - "'already absent' in test_nine['msg']"

@@ -78,7 +78,7 @@ EXAMPLES = r"""
         name: Test Platform
         state: present
 
-    - name: Create platform within Nautobot with all fields
+    - name: Create platform within Nautobot
       networktocode.nautobot.platform:
         url: http://nautobot.local
         token: thisIsMyToken
