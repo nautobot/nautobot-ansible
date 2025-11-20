@@ -111,10 +111,7 @@ def main():
         "--nautobot-version",
         metavar="VERSION",
         type=str,
-        help=(
-            "Apply comparison specific to Nautobot version. "
-            "For example, rack_groups arrays will only contain a single item in v2.7, so are ignored in the comparison."
-        ),
+        help=("Apply comparison specific to Nautobot version."),
     )
 
     args = parser.parse_args()

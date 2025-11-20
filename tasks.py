@@ -41,7 +41,7 @@ namespace.configure(
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
-            "min_inventory_test_version": "2.4",
+            "min_inventory_test_version": "3.0",
         }
     }
 )
@@ -305,10 +305,13 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
             env["SKIP_INVENTORY_TESTS"] = "true"
         if "regression" in skip:
             env["SKIP_REGRESSION_TESTS"] = "true"
-    if version.parse(context.nautobot_ansible.nautobot_ver) < version.parse(
-        context.nautobot_ansible.min_inventory_test_version
-    ):
-        env["SKIP_INVENTORY_TESTS"] = "true"
+    try:
+        if version.parse(context.nautobot_ansible.nautobot_ver) < version.parse(
+            context.nautobot_ansible.min_inventory_test_version
+        ):
+            env["SKIP_INVENTORY_TESTS"] = "true"
+    except version.InvalidVersion:
+        print(f"Invalid version: {context.nautobot_ansible.nautobot_ver}, defaulting to running inventory tests")
     context.run(
         f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from integration integration",
         env=env,

@@ -14,7 +14,9 @@
     device_redundancy_group: "{{ lookup('networktocode.nautobot.lookup', 'device-redundancy-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Device Redundancy Group\"') }}"
     secrets_group_one: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group\"') }}"
     secrets_group_two: "{{ lookup('networktocode.nautobot.lookup', 'secrets-groups', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Secrets Group Two\"') }}"
-
+    device_software_version: "{{ lookup('networktocode.nautobot.lookup', 'software-versions', api_endpoint=nautobot_url, token=nautobot_token, api_filter='version=3.2.1 platform=\"Cisco IOS\"') }}"
+    device_software_image_file_1: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file.bin') }}"
+    device_software_image_file_2: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file_two.bin') }}"
 
 - name: "1 - Device with required information"
   networktocode.nautobot.device:
@@ -172,7 +174,7 @@
       parent: "Parent Test Location"
     rack: "Main Test Rack"
     status: "Active"
-    controller_managed_device_group: "{{ 'controller_group_one' if nautobot_version is version('2.2', '>=') else omit }}" 
+    controller_managed_device_group: "controller_group_one"
     position: 35
     face: "Front"
     tags:
@@ -389,54 +391,45 @@
       - test_twelve['diff']['after']['state'] == 'absent'
       - "'deleted' in test_twelve['msg']"
 
-- name: "NAUTOBOT 2.3+ DEVICE TESTS"
-  when:
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - set_fact:
-        device_software_version: "{{ lookup('networktocode.nautobot.lookup', 'software-versions', api_endpoint=nautobot_url, token=nautobot_token, api_filter='version=3.2.1 platform=\"Cisco IOS\"') }}"
-        device_software_image_file_1: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file.bin') }}"
-        device_software_image_file_2: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file_two.bin') }}"
+- name: "13 - Update device with software version"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "TopSecretDevice"
+    software_version:
+      version: "3.2.1"
+      platform: "Cisco IOS"
+    software_image_files:
+      - "test_software_image_file.bin"
+      - "test_software_image_file_two.bin"
+    state: present
+  register: test_thirteen
 
-    - name: "13 - Update device with software version"
-      networktocode.nautobot.device:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: "TopSecretDevice"
-        software_version:
-          version: "3.2.1"
-          platform: "Cisco IOS"
-        software_image_files:
-          - "test_software_image_file.bin"
-          - "test_software_image_file_two.bin"
-        state: present
-      register: test_thirteen
+- name: "13 - ASSERT"
+  assert:
+    that:
+      - test_thirteen is changed
+      - test_thirteen['msg'] == "device TopSecretDevice updated"
+      - test_thirteen['device']['software_version'] == device_software_version['key']
+      - test_thirteen['device']['software_image_files'][0] == device_software_image_file_1['key']
+      - test_thirteen['device']['software_image_files'][1] == device_software_image_file_2['key']
 
-    - name: "13 - ASSERT"
-      assert:
-        that:
-          - test_thirteen is changed
-          - test_thirteen['msg'] == "device TopSecretDevice updated"
-          - test_thirteen['device']['software_version'] == device_software_version['key']
-          - test_thirteen['device']['software_image_files'][0] == device_software_image_file_1['key']
-          - test_thirteen['device']['software_image_files'][1] == device_software_image_file_2['key']
+- name: "14 - Duplicate device with software version"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "TopSecretDevice"
+    software_version:
+      version: "3.2.1"
+      platform: "Cisco IOS"
+    software_image_files:
+      - "test_software_image_file.bin"
+      - "test_software_image_file_two.bin"
+    state: present
+  register: test_fourteen
 
-    - name: "14 - Duplicate device with software version"
-      networktocode.nautobot.device:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: "TopSecretDevice"
-        software_version:
-          version: "3.2.1"
-          platform: "Cisco IOS"
-        software_image_files:
-          - "test_software_image_file.bin"
-          - "test_software_image_file_two.bin"
-        state: present
-      register: test_fourteen
-
-    - name: "14 - ASSERT"
-      assert:
-        that:
-          - not test_fourteen['changed']
-          - test_fourteen['msg'] == "device TopSecretDevice already exists"
+- name: "14 - ASSERT"
+  assert:
+    that:
+      - not test_fourteen['changed']
+      - test_fourteen['msg'] == "device TopSecretDevice already exists"

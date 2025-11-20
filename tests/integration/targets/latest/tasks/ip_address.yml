@@ -111,9 +111,7 @@
   assert:
     that:
       - test_six is not changed
-      # Error message changed from IntegrityError to ValidationError in Nautobot 2.2.9
-      # https://github.com/nautobot/nautobot/pull/6031
-      - ("'duplicate key value violates unique constraint' in test_six['msg']") or ("'IP address with this Parent and Host already exists.' in test_six['msg']")
+      - "'IP address with this Parent and Host already exists.' in test_six['msg']"
 
 - name: "7 - Create new address with only parent specified - State: new"
   networktocode.nautobot.ip_address:

@@ -175,7 +175,7 @@
       - not test_six['changed']
       - test_six['msg'] == "Parent prefix does not exist - 10.156.0.0/19"
 
-- name: "7 - Create prefix within Nautobot with only required information"
+- name: "7 - Create prefix within Nautobot"
   networktocode.nautobot.prefix:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"

@@ -40,13 +40,13 @@ options:
     version_added: "3.0.0"
   description:
     description:
-      - The description of the device bay. This is supported on v2.6+ of Nautobot
+      - The description of the device bay.
     required: false
     type: str
     version_added: "3.0.0"
   installed_device:
     description:
-      - The ddevice that will be installed into the bay. The device type must be "child".
+      - The device that will be installed into the bay. The device type must be "child".
     required: false
     type: raw
     version_added: "3.0.0"

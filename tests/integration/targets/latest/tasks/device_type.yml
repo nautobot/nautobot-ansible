@@ -53,7 +53,7 @@
     u_height: 1
     is_full_depth: false
     subdevice_role: parent
-    device_family: "{{ 'My Device Family' if nautobot_version is version('2.2', '>=') else omit }}"
+    device_family: "My Device Family"
     state: present
   register: test_three
 
