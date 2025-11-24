@@ -1,0 +1,1 @@
+Preserve default napalm_driver when merging user-defined platform fields into the GraphQL query

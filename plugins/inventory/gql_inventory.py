@@ -303,6 +303,18 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         return False
 
+    @staticmethod
+    def _normalize_devices_platform(devices: dict) -> None:
+        platform = devices.get("platform")
+
+        if isinstance(platform, dict):
+            platform.setdefault("napalm_driver", None)
+        elif isinstance(platform, str):
+            devices["platform"] = {
+                "napalm_driver": None,
+                platform: None,
+            }
+
     def add_variable(self, host: str, var: str, var_type: str):
         """Adds variables to group or host.
 
@@ -467,7 +479,11 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 }
             }
             if self.gql_query.get("devices"):
+                devices = self.gql_query.get("devices")
+                if devices:
+                    self._normalize_devices_platform(devices)
                 base_query["query"]["devices"].update(self.gql_query["devices"])
+
             if self.gql_query.get("virtual_machines"):
                 base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
 
