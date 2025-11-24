@@ -65,6 +65,16 @@ def paginated_device_data():
     return json_data
 
 
+@pytest.fixture
+def mock_query_api(inventory_fixture, mocker, device_data):
+    """Patch inventory_fixture._query_api and return the mock."""
+    return mocker.patch.object(
+        inventory_fixture,
+        "_query_api",
+        return_value=device_data,
+    )
+
+
 def test_group_by_path_multiple(inventory_fixture, device_data):
     inventory_fixture.group_by = ["role.color_category.primary"]
     inventory_fixture.create_groups(device_data)
@@ -277,3 +287,57 @@ def test_gql_inventory_paginated(mock_open_url, inventory_fixture, paginated_dev
     results = inventory_fixture.get_results()
     assert len(results["data"]["devices"]) == 5
     assert len(results["data"]["virtual_machines"]) == 5
+
+
+def test_get_results_merges_gql_query_into_base_query(inventory_fixture, device_data, mock_query_api):
+    inventory_fixture.page_size = None
+
+    inventory_fixture.gql_query = {
+        "devices": {
+            "status": {"name": "Active"},
+            "tenant": {"name": "Foo"},
+            "platform": {"name": None, "napalm_driver": None},
+        },
+        "virtual_machines": {
+            "status": {"name": "Active"},
+        },
+    }
+
+    mock_query_api.return_value = device_data
+    inventory_fixture.get_results()
+    (base_query_arg,), kwargs = mock_query_api.call_args
+
+    devices_query = base_query_arg["query"]["devices"]
+    vms_query = base_query_arg["query"]["virtual_machines"]
+
+    # Assert base_query values
+    assert devices_query["id"] is None
+    assert "name" in devices_query
+    assert devices_query["primary_ip4"] == "host"
+    assert devices_query["primary_ip6"] == "host"
+    assert devices_query["platform"] == {"name": None, "napalm_driver": None}
+    assert vms_query["id"] is None
+    assert "name" in vms_query
+    assert vms_query["primary_ip4"] == "host"
+    assert vms_query["primary_ip6"] == "host"
+    assert vms_query["platform"] == "name"
+
+    # Assert merged-in gql_query values
+    assert devices_query["status"] == {"name": "Active"}
+    assert devices_query["tenant"] == {"name": "Foo"}
+    assert vms_query["status"] == {"name": "Active"}
+
+
+def test_get_results_platform_key_no_napalm_override(inventory_fixture, device_data, mock_query_api):
+    inventory_fixture.page_size = None
+
+    inventory_fixture.gql_query = {
+        "devices": {"platform": "name", "primary_ip4": "host"},
+    }
+
+    mock_query_api.return_value = device_data
+    inventory_fixture.get_results()
+    (base_query_arg,), kwargs = mock_query_api.call_args
+
+    devices_query = base_query_arg["query"]["devices"]
+    assert "napalm_driver" in devices_query["platform"]
