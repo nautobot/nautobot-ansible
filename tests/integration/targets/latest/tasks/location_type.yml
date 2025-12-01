@@ -57,7 +57,7 @@
     description: Test Location Type 2 Description
     parent:
       name: "{{ test_create_min['location_type']['name'] }}"
-    nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
+    nestable: true
     content_types:
       - "dcim.device"
     state: present
@@ -83,7 +83,7 @@
     description: Test Location Type 2 Description
     parent:
       name: "{{ test_create_min['location_type']['name'] }}"
-    nestable: "{{ true if nautobot_version is version('1.5', '>=') else omit }}"
+    nestable: true
     content_types:
       - "dcim.device"
     state: present

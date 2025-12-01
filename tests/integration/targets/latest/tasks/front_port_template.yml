@@ -11,6 +11,8 @@
     cisco_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
     arista_test: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Arista Test\"') }}"
     rear_port_template: '{{ lookup(''networktocode.nautobot.lookup'', ''rear-port-templates'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Rear Port Template"'') }}'
+    test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
+    module_rear_port_template: '{{ lookup(''networktocode.nautobot.lookup'', ''rear-port-templates'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Module Rear Port Template"'') }}'
 
 - name: "FRONT_PORT_TEMPLATE 1: Necessary info creation"
   networktocode.nautobot.front_port_template:
@@ -150,91 +152,82 @@
       - test_six['front_port_template']['rear_port_template'] == rear_port_template['key']
       - test_six['msg'] == "front_port_template Front Port Template already exists"
 
-- name: "NAUTOBOT 2.3+ TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "6 - SET ADDITIONAL FACTS"
-      set_fact:
-        test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
-        module_rear_port_template: '{{ lookup(''networktocode.nautobot.lookup'', ''rear-port-templates'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Module Rear Port Template"'') }}'
-        
-    - name: "FRONT_PORT_TEMPLATE 6: Create front port template on module type"
-      networktocode.nautobot.front_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Front Port Template 3
-        module_type: HooverMaxProModel60
-        type: bnc
-        rear_port_template: Test Module Rear Port Template
-        rear_port_template_position: 1
-        state: present
-      register: test_six
+- name: "FRONT_PORT_TEMPLATE 6: Create front port template on module type"
+  networktocode.nautobot.front_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port Template 3
+    module_type: HooverMaxProModel60
+    type: bnc
+    rear_port_template: Test Module Rear Port Template
+    rear_port_template_position: 1
+    state: present
+  register: test_six
 
-    - name: "FRONT_PORT_TEMPLATE 6: ASSERT"
-      assert:
-        that:
-          - test_six is changed
-          - test_six['diff']['before']['state'] == "absent"
-          - test_six['diff']['after']['state'] == "present"
-          - test_six['front_port_template']['name'] == "Front Port Template 3"
-          - test_six['front_port_template']['module_type'] == test_module_type['key']
-          - test_six['msg'] == "front_port_template Front Port Template 3 created"
+- name: "FRONT_PORT_TEMPLATE 6: ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "absent"
+      - test_six['diff']['after']['state'] == "present"
+      - test_six['front_port_template']['name'] == "Front Port Template 3"
+      - test_six['front_port_template']['module_type'] == test_module_type['key']
+      - test_six['msg'] == "front_port_template Front Port Template 3 created"
 
-    - name: "FRONT_PORT_TEMPLATE 7: Create duplicate"
-      networktocode.nautobot.front_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Front Port Template 3
-        module_type: HooverMaxProModel60
-        type: bnc
-        rear_port_template: Test Module Rear Port Template
-        rear_port_template_position: 1
-        state: present
-      register: test_seven
+- name: "FRONT_PORT_TEMPLATE 7: Create duplicate"
+  networktocode.nautobot.front_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port Template 3
+    module_type: HooverMaxProModel60
+    type: bnc
+    rear_port_template: Test Module Rear Port Template
+    rear_port_template_position: 1
+    state: present
+  register: test_seven
 
-    - name: "FRONT_PORT_TEMPLATE 7: ASSERT - Create duplicate"
-      assert:
-        that:
-          - not test_seven['changed']
-          - test_seven['front_port_template']['name'] == "Front Port Template 3"
-          - test_seven['front_port_template']['module_type'] == test_module_type['key']
-          - test_seven['msg'] == "front_port_template Front Port Template 3 already exists"
+- name: "FRONT_PORT_TEMPLATE 7: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_seven['changed']
+      - test_seven['front_port_template']['name'] == "Front Port Template 3"
+      - test_seven['front_port_template']['module_type'] == test_module_type['key']
+      - test_seven['msg'] == "front_port_template Front Port Template 3 already exists"
 
-    - name: "FRONT_PORT_TEMPLATE 8: Delete front port template on module type"
-      networktocode.nautobot.front_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Front Port Template 3
-        module_type: HooverMaxProModel60
-        type: bnc
-        rear_port_template: Test Module Rear Port Template
-        rear_port_template_position: 1
-        state: absent
-      register: test_eight
+- name: "FRONT_PORT_TEMPLATE 8: Delete front port template on module type"
+  networktocode.nautobot.front_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port Template 3
+    module_type: HooverMaxProModel60
+    type: bnc
+    rear_port_template: Test Module Rear Port Template
+    rear_port_template_position: 1
+    state: absent
+  register: test_eight
 
-    - name: "FRONT_PORT_TEMPLATE 8: ASSERT"
-      assert:
-        that:
-          - test_eight is changed
-          - test_eight['diff']['before']['state'] == "present"
-          - test_eight['diff']['after']['state'] == "absent"
-          - test_eight['msg'] == "front_port_template Front Port Template 3 deleted"
+- name: "FRONT_PORT_TEMPLATE 8: ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['state'] == "present"
+      - test_eight['diff']['after']['state'] == "absent"
+      - test_eight['msg'] == "front_port_template Front Port Template 3 deleted"
 
-    - name: "FRONT_PORT_TEMPLATE 9: Delete front port template on module type duplicate"
-      networktocode.nautobot.front_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Front Port Template 3
-        module_type: HooverMaxProModel60
-        type: bnc
-        rear_port_template: Test Module Rear Port Template
-        rear_port_template_position: 1
-        state: absent
-      register: test_nine
+- name: "FRONT_PORT_TEMPLATE 9: Delete front port template on module type duplicate"
+  networktocode.nautobot.front_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Front Port Template 3
+    module_type: HooverMaxProModel60
+    type: bnc
+    rear_port_template: Test Module Rear Port Template
+    rear_port_template_position: 1
+    state: absent
+  register: test_nine
 
-    - name: "FRONT_PORT_TEMPLATE 9: ASSERT"
-      assert:
-        that:
-          - not test_nine['changed']
-          - "'already absent' in test_nine['msg']"
+- name: "FRONT_PORT_TEMPLATE 9: ASSERT"
+  assert:
+    that:
+      - not test_nine['changed']
+      - "'already absent' in test_nine['msg']"

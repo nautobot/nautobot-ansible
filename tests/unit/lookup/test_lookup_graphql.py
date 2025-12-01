@@ -1,6 +1,5 @@
 """Tests for Nautobot GraphQL Query Lookup Plugin."""
 
-import pynautobot
 import pytest
 from ansible.errors import AnsibleError, AnsibleLookupError
 
@@ -71,16 +70,3 @@ def test_query_api_query_variables_wrong_type(graphql_test_query_with_var, nauto
         )
 
     assert str(exc.value) == "graph_variables parameter must be of key/value pairs. Please see docs for examples."
-
-
-def test_invalid_api_version_error_handling(monkeypatch, nautobot_url):
-    monkeypatch.setattr(pynautobot.api, "version", "1.6")
-    with pytest.raises(ValueError) as exc:
-        nautobot_lookup_graphql(
-            url=nautobot_url,
-            token="abc123",
-            validate_certs=False,
-            query={},
-            variables=None,
-        )
-    assert str(exc.value) == "Nautobot version 1 detected, please downgrade pynautobot to version 1.x"

@@ -102,78 +102,74 @@
       - test_five['diff']['after']['state'] == "absent"
       - test_five['msg'] == "console_port_template Console Port Template 2 deleted"
 
-- name: "NAUTOBOT 2.3+ TESTS"
-  when: 
-    - "nautobot_version is version('2.3', '>=')"
-  block:
-    - name: "6 - SET ADDITIONAL FACTS"
-      set_fact:
-        test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
-        
-    - name: "CONSOLE_PORT_TEMPLATE 6: Create console port template on module type"
-      networktocode.nautobot.console_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Console Port Template 3
-        module_type: HooverMaxProModel60
-        state: present
-      register: test_six
+- name: "6 - SET ADDITIONAL FACTS"
+  set_fact:
+    test_module_type: '{{ lookup(''networktocode.nautobot.lookup'', ''module-types'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''model="HooverMaxProModel60"'') }}'
+    
+- name: "CONSOLE_PORT_TEMPLATE 6: Create console port template on module type"
+  networktocode.nautobot.console_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Port Template 3
+    module_type: HooverMaxProModel60
+    state: present
+  register: test_six
 
-    - name: "CONSOLE_PORT_TEMPLATE 6: ASSERT"
-      assert:
-        that:
-          - test_six is changed
-          - test_six['diff']['before']['state'] == "absent"
-          - test_six['diff']['after']['state'] == "present"
-          - test_six['console_port_template']['name'] == "Console Port Template 3"
-          - test_six['console_port_template']['module_type'] == test_module_type['key']
-          - test_six['msg'] == "console_port_template Console Port Template 3 created"
+- name: "CONSOLE_PORT_TEMPLATE 6: ASSERT"
+  assert:
+    that:
+      - test_six is changed
+      - test_six['diff']['before']['state'] == "absent"
+      - test_six['diff']['after']['state'] == "present"
+      - test_six['console_port_template']['name'] == "Console Port Template 3"
+      - test_six['console_port_template']['module_type'] == test_module_type['key']
+      - test_six['msg'] == "console_port_template Console Port Template 3 created"
 
-    - name: "CONSOLE_PORT_TEMPLATE 7: Create duplicate"
-      networktocode.nautobot.console_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Console Port Template 3
-        module_type: HooverMaxProModel60
-        state: present
-      register: test_seven
+- name: "CONSOLE_PORT_TEMPLATE 7: Create duplicate"
+  networktocode.nautobot.console_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Port Template 3
+    module_type: HooverMaxProModel60
+    state: present
+  register: test_seven
 
-    - name: "CONSOLE_PORT_TEMPLATE 7: ASSERT - Create duplicate"
-      assert:
-        that:
-          - not test_seven['changed']
-          - test_seven['console_port_template']['name'] == "Console Port Template 3"
-          - test_seven['console_port_template']['module_type'] == test_module_type['key']
-          - test_seven['msg'] == "console_port_template Console Port Template 3 already exists"
+- name: "CONSOLE_PORT_TEMPLATE 7: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_seven['changed']
+      - test_seven['console_port_template']['name'] == "Console Port Template 3"
+      - test_seven['console_port_template']['module_type'] == test_module_type['key']
+      - test_seven['msg'] == "console_port_template Console Port Template 3 already exists"
 
-    - name: "CONSOLE_PORT_TEMPLATE 8: Delete Console Port Template on module type"
-      networktocode.nautobot.console_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Console Port Template 3
-        module_type: HooverMaxProModel60
-        state: absent
-      register: test_eight
+- name: "CONSOLE_PORT_TEMPLATE 8: Delete Console Port Template on module type"
+  networktocode.nautobot.console_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Port Template 3
+    module_type: HooverMaxProModel60
+    state: absent
+  register: test_eight
 
-    - name: "CONSOLE_PORT_TEMPLATE 8: ASSERT"
-      assert:
-        that:
-          - test_eight is changed
-          - test_eight['diff']['before']['state'] == "present"
-          - test_eight['diff']['after']['state'] == "absent"
-          - test_eight['msg'] == "console_port_template Console Port Template 3 deleted"
+- name: "CONSOLE_PORT_TEMPLATE 8: ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['state'] == "present"
+      - test_eight['diff']['after']['state'] == "absent"
+      - test_eight['msg'] == "console_port_template Console Port Template 3 deleted"
 
-    - name: "CONSOLE_PORT_TEMPLATE 9: Delete Console Port on module type duplicate"
-      networktocode.nautobot.console_port_template:
-        url: "{{ nautobot_url }}"
-        token: "{{ nautobot_token }}"
-        name: Console Port Template 3
-        module_type: HooverMaxProModel60
-        state: absent
-      register: test_nine
+- name: "CONSOLE_PORT_TEMPLATE 9: Delete Console Port on module type duplicate"
+  networktocode.nautobot.console_port_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Console Port Template 3
+    module_type: HooverMaxProModel60
+    state: absent
+  register: test_nine
 
-    - name: "CONSOLE_PORT_TEMPLATE 9: ASSERT"
-      assert:
-        that:
-          - not test_nine['changed']
-          - "'already absent' in test_nine['msg']"
+- name: "CONSOLE_PORT_TEMPLATE 9: ASSERT"
+  assert:
+    that:
+      - not test_nine['changed']
+      - "'already absent' in test_nine['msg']"
