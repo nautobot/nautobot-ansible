@@ -303,10 +303,6 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
-from ansible.utils.unsafe_proxy import wrap_var
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    check_needs_wrapping,
-)
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
@@ -1221,12 +1217,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
         return group.replace("-", "_").replace(" ", "_").lower()
 
-    def set_inv_var_safely(self, hostname, variable_name, value):
-        """Set inventory variable with conditional wrapping only where needed."""
-        if self.wrap_variables and check_needs_wrapping(value):
-            value = wrap_var(value)
-        self.inventory.set_variable(hostname, variable_name, value)
-
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
         # eg. "is_virtual" - returns true for VMs, should put them in a group named "is_virtual", not "is_virtual_True"
@@ -1304,24 +1294,24 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
-            self.set_inv_var_safely(hostname, "ansible_host", extracted_primary_ip["host"])
+            self.inventory.set_variable(hostname, "ansible_host", extracted_primary_ip["host"])
 
         if self.ansible_host_dns_name:
             extracted_dns_name = self.extract_dns_name(host=host)
             if extracted_dns_name:
-                self.set_inv_var_safely(hostname, "ansible_host", extracted_dns_name)
+                self.inventory.set_variable(hostname, "ansible_host", extracted_dns_name)
 
         extracted_primary_ip4 = self.extract_primary_ip4(host=host)
         if extracted_primary_ip4:
-            self.set_inv_var_safely(hostname, "primary_ip4", extracted_primary_ip4["host"])
+            self.inventory.set_variable(hostname, "primary_ip4", extracted_primary_ip4["host"])
 
         extracted_primary_ip6 = self.extract_primary_ip6(host=host)
         if extracted_primary_ip6:
-            self.set_inv_var_safely(hostname, "primary_ip6", extracted_primary_ip6["host"])
+            self.inventory.set_variable(hostname, "primary_ip6", extracted_primary_ip6["host"])
 
         location = self.extract_location(host=host)
         if location:
-            self.set_inv_var_safely(hostname, "location", location)
+            self.inventory.set_variable(hostname, "location", location)
 
         for attribute, extractor in self.group_extractors.items():
             extracted_value = extractor(host)
@@ -1348,9 +1338,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.set_inv_var_safely(hostname, key, value)
+                    self.inventory.set_variable(hostname, key, value)
             else:
-                self.set_inv_var_safely(hostname, attribute, extracted_value)
+                self.inventory.set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
@@ -1388,10 +1378,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 continue
 
             hostname = self.extract_name(host=host)
-
-            if self.wrap_variables and check_needs_wrapping(hostname):
-                hostname = wrap_var(hostname)
-
             self.inventory.add_host(host=hostname)
             self._fill_host_variables(host=host, hostname=hostname)
 

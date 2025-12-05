@@ -8,7 +8,7 @@ import pytest
 from plugins.module_utils.utils import sort_dict_with_lists
 
 try:
-    from plugins.module_utils.utils import check_needs_wrapping, is_truthy
+    from plugins.module_utils.utils import is_truthy
 except ImportError:
     import sys
 
@@ -200,28 +200,3 @@ def test_regression_issue_568() -> None:
         expected = jason["expected"]
 
     assert sort_dict_with_lists(data) == expected
-
-
-@pytest.mark.parametrize(
-    "value, expected",
-    [
-        ("simplestring", False),
-        ("simple multi word string", False),
-        ("{{stringneedswrapping}}", True),
-        ("{{ stringneedswrapping }}", True),
-        ("this{{ stringneedswrapping }}", True),
-        ("{% this stringneedswrapping %}", True),
-        ("{% this stringneedswrapping", True),
-        ("this {{ stringneedswrapping", True),
-        (["nojinja", "stillnojinja"], False),
-        (["safe", "{{ unsafe }}"], True),
-        ({"key": "nojinja"}, False),
-        ({"key": "{{jinja}}"}, True),
-        ({"outer": {"inner": "{%jinja%}"}}, True),
-        (["nest", {"deep": ["safe", "{% unsafe %}"]}], True),
-        ([], False),
-        ({}, False),
-    ],
-)
-def test_check_needs_wrapping(value: Any, expected: bool) -> None:
-    assert check_needs_wrapping(value) == expected

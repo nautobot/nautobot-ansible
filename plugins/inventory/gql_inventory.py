@@ -264,12 +264,8 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import quote
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
-from ansible.utils.unsafe_proxy import wrap_var
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
     convert_to_graphql_string,
-)
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    check_needs_wrapping,
 )
 
 try:
@@ -311,8 +307,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-        if self.wrap_variables and check_needs_wrapping(var):
-            var = wrap_var(var)
         self.inventory.set_variable(host, var_type, var)
 
     def add_ip_address(self, device, default_ip_version="ipv4"):
@@ -574,8 +568,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
             # Save the hostname back to the device record so that it can be referenced later
             device["name"] = hostname
-            if self.wrap_variables and check_needs_wrapping(hostname):
-                hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
