@@ -1,1 +1,1 @@
-Preserve default napalm_driver when merging user-defined platform fields into the GraphQL query
+Log missing napalm_driver key when query overrides exclude it

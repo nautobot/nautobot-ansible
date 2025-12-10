@@ -328,16 +328,7 @@ def test_get_results_merges_gql_query_into_base_query(inventory_fixture, device_
     assert vms_query["status"] == {"name": "Active"}
 
 
-def test_get_results_platform_key_no_napalm_override(inventory_fixture, device_data, mock_query_api):
-    inventory_fixture.page_size = None
-
-    inventory_fixture.gql_query = {
-        "devices": {"platform": "name", "primary_ip4": "host"},
-    }
-
-    mock_query_api.return_value = device_data
-    inventory_fixture.get_results()
-    (base_query_arg,), kwargs = mock_query_api.call_args
-
-    devices_query = base_query_arg["query"]["devices"]
-    assert "napalm_driver" in devices_query["platform"]
+@patch.object(Display, "error")
+def test_missing_platform_napalm_driver(mock_error, inventory_fixture, device_data):
+    inventory_fixture.add_ansible_platform(device_data)
+    mock_error.assert_any_call("Mapping ansible_network_os requires platform.napalm_driver as part of the query.")
