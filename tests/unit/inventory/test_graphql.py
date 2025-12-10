@@ -330,5 +330,6 @@ def test_get_results_merges_gql_query_into_base_query(inventory_fixture, device_
 
 @patch.object(Display, "error")
 def test_missing_platform_napalm_driver(mock_error, inventory_fixture, device_data):
+    device_data["platform"].pop("napalm_driver")
     inventory_fixture.add_ansible_platform(device_data)
     mock_error.assert_any_call("Mapping ansible_network_os requires platform.napalm_driver as part of the query.")
