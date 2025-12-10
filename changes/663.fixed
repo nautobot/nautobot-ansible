@@ -1,0 +1,1 @@
+Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override

@@ -346,6 +346,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 ),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
+        else:
+            self.display.error("Mapping ansible_network_os requires platform.napalm_driver as part of the query.")
 
     def populate_variables(self, device):
         """Add specified variables to device."""
