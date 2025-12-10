@@ -470,7 +470,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             }
             if self.gql_query.get("devices"):
                 base_query["query"]["devices"].update(self.gql_query["devices"])
-
             if self.gql_query.get("virtual_machines"):
                 base_query["query"]["virtual_machines"].update(self.gql_query["virtual_machines"])
 
