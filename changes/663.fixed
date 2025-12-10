@@ -1,1 +1,1 @@
-Log missing napalm_driver key when query overrides exclude it
+Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override
