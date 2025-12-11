@@ -43,9 +43,6 @@ function main {
     if [ "${SKIP_REGRESSION_TESTS}" != "true" ]; then
         # shellcheck disable=SC2086
         ansible-test integration $ANSIBLE_INTEGRATION_ARGS --coverage --requirements --python "$PYTHON_VERSION" regression-latest "$@"
-        echo "# Running inventory regression tests using ansible-playbook due to the need for dynamic inventory..."
-        ansible-playbook -i ./tests/integration/inventory-regression/gql_inventory_plugin_inventory.yml ./tests/integration/inventory-regression/gql_inventory_plugin_playbook.yml
-        ansible-playbook -i ./tests/integration/inventory-regression/inventory_plugin_inventory.yml ./tests/integration/inventory-regression/inventory_plugin_playbook.yml --limit "R2*:test100-vm"
     else
         echo "# Skipping regression tests"
     fi

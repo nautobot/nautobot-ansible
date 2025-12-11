@@ -152,7 +152,7 @@ parent_location_attrs = [
         "status": {"name": "Active"},
     },
     {
-        "name": "{{ SEE ISSUE 114 }}Parent Test Location 3",
+        "name": "{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3",
         "location_type": parent_location_type.id,
         "tenant": test_tenant.id,
         "status": {"name": "Active"},
@@ -169,7 +169,7 @@ make_nautobot_calls(nb.dcim.locations, parent_location_attrs)
 # Location variables to be used later on
 location_parent = nb.dcim.locations.get(name="Parent Test Location")
 location_parent2 = nb.dcim.locations.get(name="Parent Test Location 2")
-location_parent3 = nb.dcim.locations.get(name="{{ SEE ISSUE 114 }}Parent Test Location 3")
+location_parent3 = nb.dcim.locations.get(name="{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3")
 child_location_attrs = [
     {
         "name": "Child Test Location",
@@ -498,14 +498,14 @@ devices = [
         "status": {"name": "Active"},
     },
     {
-        "name": "R2 {{ SEE ISSUE 114 }}",
+        "name": "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
         "device_type": cisco_test.id,
         "role": core_switch.id,
         "location": location_parent3.id,
         "rack": another_test_rack.id,
         "local_config_context_data": {
             "normal_string": "this is a normal string",
-            "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}",
+            "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDING TEST }}",
         },
         "status": {"name": "Active"},
     },
@@ -523,7 +523,7 @@ created_devices = make_nautobot_calls(nb.dcim.devices, devices)
 # Device variables to be used later on
 test100 = nb.dcim.devices.get(name="test100")
 test_device_r1 = nb.dcim.devices.get(name="TestDeviceR1")
-test_device_r2 = nb.dcim.devices.get(name="R2 {{ SEE ISSUE 114 }}")
+test_device_r2 = nb.dcim.devices.get(name="R2 {{ ANSIBLE UNSAFE HANDING TEST }}")
 
 # Create inventory items
 inventory_items = [
