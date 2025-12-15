@@ -50,7 +50,7 @@ options:
     description:
       - The actions allowed for the permission definition.
       - Required if I(state=present) and the permission does not exist yet
-      - Example actions are: view, add, change, delete, run
+      - Example actions are view, add, change, delete, run
     required: false
     type: list
     elements: str
