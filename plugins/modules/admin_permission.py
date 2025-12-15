@@ -50,7 +50,7 @@ options:
     description:
       - The actions allowed for the permission definition.
       - Required if I(state=present) and the permission does not exist yet
-    choices: [ view, add, change, delete, run ]
+      - Example actions are: view, add, change, delete, run
     required: false
     type: list
     elements: str
@@ -157,9 +157,7 @@ def main():
             description=dict(required=False, type="str"),
             enabled=dict(required=False, type="bool"),
             object_types=dict(required=False, type="list", elements="str"),
-            actions=dict(
-                required=False, type="list", elements="str", choices=["view", "add", "change", "delete", "run"]
-            ),
+            actions=dict(required=False, type="list", elements="str"),
             constraints=dict(required=False, type="raw"),
             users=dict(required=False, type="list", elements="str"),
             groups=dict(required=False, type="list", elements="str"),
