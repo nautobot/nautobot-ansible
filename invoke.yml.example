@@ -8,3 +8,4 @@
 #   compose_dir: "/full/path/to/nautobot-ansible/development"
 #   compose_files:
 #     - "docker-compose.yml"
+#   ansible_ver: "2.18"

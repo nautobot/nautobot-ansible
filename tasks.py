@@ -35,13 +35,15 @@ namespace = Collection("nautobot_ansible")
 namespace.configure(
     {
         "nautobot_ansible": {
+            "ansible_ver": "2.19",
             "nautobot_ver": "2.0.0",
             "project_name": "nautobot_ansible",
             "python_ver": "3.11",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
-            "min_inventory_test_version": "3.0",
+            "min_inventory_test_ansible_version": "2.19",
+            "min_inventory_test_nautobot_version": "3.0",
         }
     }
 )
@@ -307,9 +309,13 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
             env["SKIP_REGRESSION_TESTS"] = "true"
     try:
         if version.parse(context.nautobot_ansible.nautobot_ver) < version.parse(
-            context.nautobot_ansible.min_inventory_test_version
+            context.nautobot_ansible.min_inventory_test_nautobot_version
+        ) or version.parse(context.nautobot_ansible.ansible_ver) < version.parse(
+            context.nautobot_ansible.min_inventory_test_ansible_version
         ):
             env["SKIP_INVENTORY_TESTS"] = "true"
+            print(f"CTDEBUG_VARS: {context.nautobot_ansible.nautobot_ver} Ansible: {context.nautobot_ansible.ansible_ver}")
+            print(f"CTDEBUG_MINS: {context.nautobot_ansible.min_inventory_test_nautobot_version} Ansible: {context.nautobot_ansible.min_inventory_test_ansible_version}")
     except version.InvalidVersion:
         print(f"Invalid version: {context.nautobot_ansible.nautobot_ver}, defaulting to running inventory tests")
     context.run(
