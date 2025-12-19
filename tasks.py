@@ -314,8 +314,6 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
             context.nautobot_ansible.min_inventory_test_ansible_version
         ):
             env["SKIP_INVENTORY_TESTS"] = "true"
-            print(f"CTDEBUG_VARS: {context.nautobot_ansible.nautobot_ver} Ansible: {context.nautobot_ansible.ansible_ver}")
-            print(f"CTDEBUG_MINS: {context.nautobot_ansible.min_inventory_test_nautobot_version} Ansible: {context.nautobot_ansible.min_inventory_test_ansible_version}")
     except version.InvalidVersion:
         print(f"Invalid version: {context.nautobot_ansible.nautobot_ver}, defaulting to running inventory tests")
     context.run(
