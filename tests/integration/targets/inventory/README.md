@@ -14,5 +14,7 @@ invoke integration --update-inventories
 
 ## Minimum Version Tested
 
-Due to the static nature of the inventory tests as well as changes to models and API responses, the default minimum version tested will generally be the last minor version of Nautobot that has been released.
-This can be overridden by setting the `INVOKE_NAUTOBOT_ANSIBLE_MIN_INVENTORY_TEST_VERSION` environment variable or `min_inventory_test_version` setting in your `invoke.yml` file.
+Due to the static nature of the inventory tests as well as changes to models and API responses, the default minimum Nautobot version tested will generally be the last minor version that has been released.
+This can be overridden by setting the `INVOKE_NAUTOBOT_ANSIBLE_MIN_INVENTORY_TEST_NAUTOBOT_VERSION` environment variable or `min_inventory_test_nautobot_version` setting in your `invoke.yml` file.
+Similarly, the default minimum Ansible version tested will generally be the last minor version that has been released, and this can be overridden by setting the
+`INVOKE_NAUTOBOT_ANSIBLE_MIN_INVENTORY_TEST_ANSIBLE_VERSION` environment variable or `min_inventory_test_ansible_version` setting in your `invoke.yml` file.

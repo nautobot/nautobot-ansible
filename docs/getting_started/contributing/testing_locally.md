@@ -59,10 +59,11 @@ You can then run `invoke integration` to run the integration tests against Nauto
 
 ## Using Environment Variables
 
-You can use the following environment variables to test against different Python or Nautobot version.
+You can use the following environment variables to test against different Python, Ansible, or Nautobot versions.
 
 - **INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER**
 - **INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER**
+- **INVOKE_NAUTOBOT_ANSIBLE_ANSIBLE_VER**
 
 ## Using Docker Compose Overrides
 
