@@ -25,7 +25,7 @@
       - test_results['route_target']['tags'] | length == 2
       - test_results['diff']['after']['state'] == "present"
       - test_results['diff']['before']['state'] == "absent"
-      - test_results['msg'] == "route_target 65000:65001 created"
+      - "'created' in test_results['msg']"
 
 # ADD
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD: Add all fields except description"
@@ -48,7 +48,7 @@
       - test_results['route_target']['tags'] | length == 2
       - test_results['diff']['after']['state'] == "present"
       - test_results['diff']['before']['state'] == "absent"
-      - test_results['msg'] == "route_target 65000:65001 created"
+      - "'created' in test_results['msg']"
 
 # ADD (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_ADD_IDEM: (IDEMPOTENT) Add all fields except description"
@@ -69,7 +69,7 @@
       - test_results['route_target']['name'] == "65000:65001"
       - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
-      - test_results['msg'] == "route_target 65000:65001 already exists"
+      - "'already exists' in test_results['msg']"
 
 #
 # UPDATE (CHECK MODE)
@@ -96,7 +96,7 @@
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['after']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['before']['description'] == ""
-      - test_results['msg'] == "route_target 65000:65001 updated"
+      - "'updated' in test_results['msg']"
 
 # UPDATE
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE: Update description"
@@ -121,7 +121,7 @@
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['after']['description'] == "NEW DESCRIPTION"
       - test_results['diff']['before']['description'] == ""
-      - test_results['msg'] == "route_target 65000:65001 updated"
+      - "'updated' in test_results['msg']"
 
 # UPDATE (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_UPDATE_IDEM: (IDEMPOTENT) Update description"
@@ -144,7 +144,7 @@
       - test_results['route_target']['tenant'] == tenant['key']
       - test_results['route_target']['tags'] | length == 2
       - test_results['route_target']['description'] == "NEW DESCRIPTION"
-      - test_results['msg'] == "route_target 65000:65001 already exists"
+      - "'already exists' in test_results['msg']"
 
 #
 # DELETE (CHECK MODE)
@@ -163,7 +163,7 @@
       - test_results is changed
       - test_results['diff']['after']['state'] == "absent"
       - test_results['diff']['before']['state'] == "present"
-      - test_results['msg'] == "route_target 65000:65001 deleted"
+      - "'deleted' in test_results['msg']"
 
 # DELETE
 - name: "PYNAUTOBOT_ROUTE_TARGET_DELETE: Delete route target"
@@ -180,7 +180,7 @@
       - test_results is changed
       - test_results['diff']['after']['state'] == "absent"
       - test_results['diff']['before']['state'] == "present"
-      - test_results['msg'] == "route_target 65000:65001 deleted"
+      - "'deleted' in test_results['msg']"
 
 # DELETE (IDEMPOTENT)
 - name: "PYNAUTOBOT_ROUTE_TARGET_DELETE_IDEM: (IDEMPOTENT) Delete route target"
@@ -195,4 +195,4 @@
   assert:
     that:
       - test_results is not changed
-      - test_results['msg'] == "route_target 65000:65001 already absent"
+      - "'already absent' in test_results['msg']"

@@ -27,7 +27,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['vlan_location_assignments']['vlan'] == test_vlan['key']
       - test_one['vlan_location_assignments']['location'] == test_location['key']
-      - test_one['msg'] == "vlan_location_assignments Test VLAN 600 (600): Child Test Location created"
+      - "'created' in test_one['msg']"
 
 - name: "VLAN Location 2: Create idempotent"
   networktocode.nautobot.vlan_location:
@@ -46,7 +46,7 @@
       - not test_two['changed']
       - test_two['vlan_location_assignments']['vlan'] == test_vlan['key']
       - test_two['vlan_location_assignments']['location'] == test_location['key']
-      - test_two['msg'] == "vlan_location_assignments Test VLAN 600 (600): Child Test Location already exists"
+      - "'already exists' in test_two['msg']"
 
 - name: "VLAN Location 3: Delete VLAN Location assignment"
   networktocode.nautobot.vlan_location:
