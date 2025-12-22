@@ -857,6 +857,42 @@
       tags:
         - device_cluster_assignment
 
+- name: "PYNAUTOBOT_MIN_MAX_RULE TESTS"
+  include_tasks:
+    file: "min_max_rule.yml"
+    apply:
+      tags:
+        - min_max_rule
+  tags:
+    - min_max_rule
+
+- name: "PYNAUTOBOT_REGEX_RULE TESTS"
+  include_tasks:
+    file: "regex_rule.yml"
+    apply:
+      tags:
+        - regex_rule
+  tags:
+    - regex_rule
+
+- name: "PYNAUTOBOT_REQUIRED_RULE TESTS"
+  include_tasks:
+    file: "required_rule.yml"
+    apply:
+      tags:
+        - required_rule
+  tags:
+    - required_rule
+
+- name: "PYNAUTOBOT_UNIQUE_RULE TESTS"
+  include_tasks:
+    file: "unique_rule.yml"
+    apply:
+      tags:
+        - unique_rule
+  tags:
+    - unique_rule
+
 ##########################
 ##
 ### UNSAFE VARIABLE HANDLING TESTS
