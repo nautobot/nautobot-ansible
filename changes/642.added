@@ -1,0 +1,1 @@
+Added a local file cache of the OpenAPI spec of Nautobot for the inventory plugin when using query filters.
