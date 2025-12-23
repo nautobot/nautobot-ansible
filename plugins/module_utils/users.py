@@ -26,8 +26,8 @@ class NautobotUsersModule(NautobotModule):
         - groups
         - permissions
         """
-        # Used to dynamically set key when returning results
-        endpoint_name = ENDPOINT_NAME_MAPPING[self.endpoint]
+        # Update the endpoint name to the Nautobot API endpoint name if it is different
+        endpoint_name = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
 
         self.result = {"changed": False}
 

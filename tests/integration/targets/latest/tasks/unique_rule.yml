@@ -1,0 +1,108 @@
+---
+##
+##
+### PYNAUTOBOT_UNIQUE_RULE
+##
+##
+- name: "UNIQUE_RULE 1: Create unique rule"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    content_type: "dcim.device"
+    field: "serial"
+    state: present
+  register: test_one
+
+- name: "UNIQUE_RULE 1: ASSERT - Assert created"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['unique_rule']['name'] == "My Unique Rule"
+      - test_one['unique_rule']['content_type'] == "dcim.device"
+      - test_one['unique_rule']['field'] == "serial"
+      - test_one['msg'] == "unique_rule My Unique Rule created"
+
+- name: "UNIQUE_RULE 2: Create duplicate"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    content_type: "dcim.device"
+    field: "serial"
+    state: present
+  register: test_two
+
+- name: "UNIQUE_RULE 2: ASSERT - Assert duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['msg'] == "unique_rule My Unique Rule already exists"
+
+- name: "UNIQUE_RULE 3: Update"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    enabled: false
+    max_instances: 3
+    state: present
+  register: test_three
+
+- name: "UNIQUE_RULE 3: ASSERT - Assert updated"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['enabled'] == true
+      - test_three['diff']['before']['max_instances'] == 1
+      - test_three['diff']['after']['enabled'] == false
+      - test_three['diff']['after']['max_instances'] == 3
+      - test_three['msg'] == "unique_rule My Unique Rule updated"
+
+- name: "UNIQUE_RULE 4: Update duplicate"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    enabled: false
+    max_instances: 3
+    state: present
+  register: test_four
+
+- name: "UNIQUE_RULE 4: ASSERT - Assert update duplicate"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "unique_rule My Unique Rule already exists"
+
+- name: "UNIQUE_RULE 5: Delete"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    state: absent
+  register: test_five
+
+- name: "UNIQUE_RULE 5: ASSERT - Assert delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "unique_rule My Unique Rule deleted"
+
+- name: "UNIQUE_RULE 6: Delete non existing"
+  networktocode.nautobot.unique_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Unique Rule"
+    state: absent
+  register: test_six
+
+- name: "UNIQUE_RULE 6: ASSERT - Assert delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "unique_rule My Unique Rule already absent"

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2018, Mikhail Yohman (@fragmentedpacket) <mikhail.yohman@gmail.com>
+# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -10,19 +11,23 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     NautobotModule,
 )
 
-NB_TENANTS = "tenants"
-NB_TENANT_GROUPS = "tenant_groups"
+NB_MIN_MAX_RULES = "min_max_rules"
+NB_REGEX_RULES = "regex_rules"
+NB_REQUIRED_RULES = "required_rules"
+NB_UNIQUE_RULES = "unique_rules"
 
 
-class NautobotTenancyModule(NautobotModule):
+class NautobotDataValidationModule(NautobotModule):
     def run(self):
-        """Run the Nautobot Tenancy module.
+        """Run the Nautobot Data Validation module.
 
         This function should have all necessary code for endpoints within the application
         to create/update/delete the endpoint objects
         Supported endpoints:
-        tenants
-        tenant groups
+        - min_max_rules
+        - regex_rules
+        - required_rules
+        - unique_rules
         """
         # Update the endpoint name to the Nautobot API endpoint name if it is different
         endpoint_name = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)

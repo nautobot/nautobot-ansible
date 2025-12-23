@@ -1,0 +1,108 @@
+---
+##
+##
+### PYNAUTOBOT_REQUIRED_RULE
+##
+##
+- name: "REQUIRED_RULE 1: Create required rule"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    content_type: "dcim.device"
+    field: "name"
+    state: present
+  register: test_one
+
+- name: "REQUIRED_RULE 1: ASSERT - Assert created"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['required_rule']['name'] == "My Required Rule"
+      - test_one['required_rule']['content_type'] == "dcim.device"
+      - test_one['required_rule']['field'] == "name"
+      - test_one['msg'] == "required_rule My Required Rule created"
+
+- name: "REQUIRED_RULE 2: Create duplicate"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    content_type: "dcim.device"
+    field: "name"
+    state: present
+  register: test_two
+
+- name: "REQUIRED_RULE 2: ASSERT - Assert duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['msg'] == "required_rule My Required Rule already exists"
+
+- name: "REQUIRED_RULE 3: Update"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    enabled: false
+    error_message: "Name is required"
+    state: present
+  register: test_three
+
+- name: "REQUIRED_RULE 3: ASSERT - Assert updated"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['enabled'] == true
+      - test_three['diff']['before']['error_message'] == ""
+      - test_three['diff']['after']['enabled'] == false
+      - test_three['diff']['after']['error_message'] == "Name is required"
+      - test_three['msg'] == "required_rule My Required Rule updated"
+
+- name: "REQUIRED_RULE 4: Update duplicate"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    enabled: false
+    error_message: "Name is required"
+    state: present
+  register: test_four
+
+- name: "REQUIRED_RULE 4: ASSERT - Assert update duplicate"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "required_rule My Required Rule already exists"
+
+- name: "REQUIRED_RULE 5: Delete"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    state: absent
+  register: test_five
+
+- name: "REQUIRED_RULE 5: ASSERT - Assert delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "required_rule My Required Rule deleted"
+
+- name: "REQUIRED_RULE 6: Delete non existing"
+  networktocode.nautobot.required_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Required Rule"
+    state: absent
+  register: test_six
+
+- name: "REQUIRED_RULE 6: ASSERT - Assert delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "required_rule My Required Rule already absent"
