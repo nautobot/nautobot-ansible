@@ -83,7 +83,7 @@ ARG SKIP_UNIT_TESTS
 ENV SKIP_UNIT_TESTS=${SKIP_UNIT_TESTS}
 
 # For Module unit tests as we use some testing features avaiable in this collection
-RUN ansible-galaxy collection install community.general
+RUN ansible-galaxy collection install community.general community.internal_test_tools
 
 # Build Collection to run ansible-tests against
 RUN ansible-galaxy collection build --output-path ./dist/ .
