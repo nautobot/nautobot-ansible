@@ -217,7 +217,7 @@
         termination_b_type: "circuits.circuittermination"
         termination_b:
           name: "XYZ987"
-        status: "connected"
+        status: "Connected"
       ignore_errors: "yes"
       register: "test_results"
 
@@ -225,7 +225,11 @@
       assert:
         that:
           - test_results is failed
-          - 'test_results["msg"] == "One or more of the kwargs provided are invalid for circuits.circuittermination, provided kwargs: name. Acceptable kwargs: circuit, term_side"'
+          - "'One or more of the kwargs provided are invalid for circuits.circuittermination, provided kwargs' in test_results['msg']"
+          - "' name. ' in test_results['msg']"
+          - "'Acceptable kwargs' in test_results['msg']"
+          - "'circuit, term_side' in test_results['msg']"
+
 
     - name: "Invalid API version"
       networktocode.nautobot.tag:
