@@ -1,14 +1,21 @@
 {
     "_meta": {
         "hostvars": {
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}": {
-                "ansible_host": "172.16.180.13",
-                "name": "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
+                "ansible_host": {
+                    "__ansible_unsafe": "172.16.180.13"
+                },
+                "name": {
+                    "__ansible_unsafe": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
+                },
                 "primary_ip4": {
-                    "host": "172.16.180.13"
+                    "host": {
+                        "__ansible_unsafe": "172.16.180.13"
+                    }
                 }
             }
-        }
+        },
+        "profile": "inventory_legacy"
     },
     "all": {
         "children": [
@@ -17,7 +24,7 @@
     },
     "ungrouped": {
         "hosts": [
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     }
 }

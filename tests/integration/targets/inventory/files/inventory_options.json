@@ -1,7 +1,7 @@
 {
-    "___ansible_unsafe_handing_test___parent_test_location_3": {
+    "___ansible_unsafe_handling_test___parent_test_location_3": {
         "hosts": [
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "_meta": {
@@ -13,27 +13,53 @@
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
-                "device_type": "Cisco Test",
-                "display": "Cisco Cisco Test (00000000-0000-0000-0000-000000000000)",
+                "device_type": {
+                    "__ansible_unsafe": "Cisco Test"
+                },
+                "display": {
+                    "__ansible_unsafe": "Cisco Cisco Test (00000000-0000-0000-0000-000000000000)"
+                },
                 "is_virtual": false,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "role": "Core Switch",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "testing_device_cf": "",
-                "testing_location_cf": "Test Location Custom Field Value"
+                "testing_device_cf": null,
+                "testing_location_cf": {
+                    "__ansible_unsafe": "Test Location Custom Field Value"
+                }
             },
             "R1-Device": {
                 "cluster": [],
@@ -42,85 +68,173 @@
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
-                "device_type": "Cisco Test",
-                "display": "R1-Device",
+                "device_type": {
+                    "__ansible_unsafe": "Cisco Test"
+                },
+                "display": {
+                    "__ansible_unsafe": "R1-Device"
+                },
                 "is_virtual": false,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "rack": "Main Test Rack",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "rack": {
+                    "__ansible_unsafe": "Main Test Rack"
+                },
                 "rack_groups": [
-                    "Parent Rack Group"
+                    {
+                        "__ansible_unsafe": "Parent Rack Group"
+                    }
                 ],
-                "rack_role": "Test Rack Role",
-                "role": "Core Switch",
+                "rack_role": {
+                    "__ansible_unsafe": "Test Rack Role"
+                },
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "testing_device_cf": "",
-                "testing_location_cf": "Test Location Custom Field Value"
+                "testing_device_cf": null,
+                "testing_location_cf": {
+                    "__ansible_unsafe": "Test Location Custom Field Value"
+                }
             },
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}": {
-                "ansible_host": "r2.example.com",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
+                "ansible_host": {
+                    "__ansible_unsafe": "r2.example.com"
+                },
                 "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
-                "device_type": "Cisco Test",
-                "dns_name": "r2.example.com",
+                "device_type": {
+                    "__ansible_unsafe": "Cisco Test"
+                },
+                "display": {
+                    "__ansible_unsafe": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
+                },
+                "dns_name": {
+                    "__ansible_unsafe": "r2.example.com"
+                },
                 "is_virtual": false,
                 "local_context_data": {
-                    "normal_string": "this is a normal string",
-                    "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDING TEST }}"
+                    "normal_string": {
+                        "__ansible_unsafe": "this is a normal string"
+                    },
+                    "string_containing_jinja2tags": {
+                        "__ansible_unsafe": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
+                    }
                 },
-                "location": "{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3",
+                "location": {
+                    "__ansible_unsafe": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
+                },
                 "locations": [
-                    "{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3"
+                    {
+                        "__ansible_unsafe": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "primary_ip4": "172.16.180.13",
-                "rack": "Another Test Rack",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "primary_ip4": {
+                    "__ansible_unsafe": "172.16.180.13"
+                },
+                "rack": {
+                    "__ansible_unsafe": "Another Test Rack"
+                },
                 "rack_groups": [
-                    "Parent3 Rack Group"
+                    {
+                        "__ansible_unsafe": "Parent3 Rack Group"
+                    }
                 ],
-                "rack_role": "Test Rack Role",
-                "role": "Core Switch",
+                "rack_role": {
+                    "__ansible_unsafe": "Test Rack Role"
+                },
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "testing_device_cf": ""
+                "testing_device_cf": null,
+                "testing_location_cf": null
             },
             "Test VM With Spaces": {
-                "cluster": "Test Cluster 2",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster 2"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "Test VM With Spaces",
+                "display": {
+                    "__ansible_unsafe": "Test VM With Spaces"
+                },
                 "is_virtual": true,
                 "locations": [],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             },
@@ -131,222 +245,445 @@
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
-                "device_type": "Cisco Test",
-                "display": "TestDeviceR1",
+                "device_type": {
+                    "__ansible_unsafe": "Cisco Test"
+                },
+                "display": {
+                    "__ansible_unsafe": "TestDeviceR1"
+                },
                 "is_virtual": false,
-                "location": "Child-Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child-Child Test Location"
+                },
                 "locations": [
-                    "Child-Child Test Location",
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child-Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "rack": "Sub Test Rack",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "rack": {
+                    "__ansible_unsafe": "Sub Test Rack"
+                },
                 "rack_groups": [
-                    "Child Rack Group",
-                    "Parent Rack Group"
+                    {
+                        "__ansible_unsafe": "Child Rack Group"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Rack Group"
+                    }
                 ],
-                "role": "Core Switch",
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "testing_device_cf": "",
-                "testing_location_cf": ""
+                "testing_device_cf": null,
+                "testing_location_cf": null
             },
             "VC1": {
-                "ansible_host": "nexus.example.com",
+                "ansible_host": {
+                    "__ansible_unsafe": "nexus.example.com"
+                },
                 "cluster": [],
                 "cluster_group": [],
                 "cluster_type": [],
                 "custom_fields": {
                     "my_device_custom_field": null
                 },
-                "device_type": "Nexus Parent",
-                "display": "Test Nexus One",
-                "dns_name": "nexus.example.com",
+                "device_type": {
+                    "__ansible_unsafe": "Nexus Parent"
+                },
+                "display": {
+                    "__ansible_unsafe": "Test Nexus One"
+                },
+                "dns_name": {
+                    "__ansible_unsafe": "nexus.example.com"
+                },
                 "is_virtual": false,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "primary_ip4": "172.16.180.11",
-                "role": "Core Switch",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "primary_ip4": {
+                    "__ansible_unsafe": "172.16.180.11"
+                },
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "testing_device_cf": "",
-                "testing_location_cf": "Test Location Custom Field Value"
+                "testing_device_cf": null,
+                "testing_location_cf": {
+                    "__ansible_unsafe": "Test Location Custom Field Value"
+                }
             },
             "test100": {
                 "cluster": [
-                    "Test Cluster",
-                    "Test Cluster 2"
+                    {
+                        "__ansible_unsafe": "Test Cluster"
+                    },
+                    {
+                        "__ansible_unsafe": "Test Cluster 2"
+                    }
                 ],
                 "cluster_group": [
-                    "Test Cluster Group"
+                    {
+                        "__ansible_unsafe": "Test Cluster Group"
+                    }
                 ],
                 "cluster_type": [
-                    "Test Cluster Type",
-                    "Test Cluster Type"
+                    {
+                        "__ansible_unsafe": "Test Cluster Type"
+                    },
+                    {
+                        "__ansible_unsafe": "Test Cluster Type"
+                    }
                 ],
                 "custom_fields": {
-                    "my_device_custom_field": "Test Device Custom Field Value"
+                    "my_device_custom_field": {
+                        "__ansible_unsafe": "Test Device Custom Field Value"
+                    }
                 },
-                "device_type": "Cisco Test",
-                "display": "test100",
+                "device_type": {
+                    "__ansible_unsafe": "Cisco Test"
+                },
+                "display": {
+                    "__ansible_unsafe": "test100"
+                },
                 "is_virtual": false,
                 "local_context_data": {
                     "ntp_servers": [
-                        "pool.ntp.org"
+                        {
+                            "__ansible_unsafe": "pool.ntp.org"
+                        }
                     ]
                 },
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
-                "manufacturer": "Cisco",
-                "role": "Core Switch",
+                "manufacturer": {
+                    "__ansible_unsafe": "Cisco"
+                },
+                "role": {
+                    "__ansible_unsafe": "Core Switch"
+                },
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": [],
-                "tenant": "Test Tenant",
-                "tenant_group": "Test Tenant Group",
-                "testing_device_cf": "Test Device Custom Field Value",
-                "testing_location_cf": "Test Location Custom Field Value"
+                "tenant": {
+                    "__ansible_unsafe": "Test Tenant"
+                },
+                "tenant_group": {
+                    "__ansible_unsafe": "Test Tenant Group"
+                },
+                "testing_device_cf": {
+                    "__ansible_unsafe": "Test Device Custom Field Value"
+                },
+                "testing_location_cf": {
+                    "__ansible_unsafe": "Test Location Custom Field Value"
+                }
             },
             "test100-vm": {
-                "cluster": "Test Cluster",
-                "cluster_group": "Test Cluster Group",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster"
+                },
+                "cluster_group": {
+                    "__ansible_unsafe": "Test Cluster Group"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "test100-vm",
+                "display": {
+                    "__ansible_unsafe": "test100-vm"
+                },
                 "is_virtual": true,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             },
             "test101-vm": {
-                "cluster": "Test Cluster",
-                "cluster_group": "Test Cluster Group",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster"
+                },
+                "cluster_group": {
+                    "__ansible_unsafe": "Test Cluster Group"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "test101-vm",
+                "display": {
+                    "__ansible_unsafe": "test101-vm"
+                },
                 "is_virtual": true,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             },
             "test102-vm": {
-                "cluster": "Test Cluster",
-                "cluster_group": "Test Cluster Group",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster"
+                },
+                "cluster_group": {
+                    "__ansible_unsafe": "Test Cluster Group"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "test102-vm",
+                "display": {
+                    "__ansible_unsafe": "test102-vm"
+                },
                 "is_virtual": true,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             },
             "test103-vm": {
-                "cluster": "Test Cluster",
-                "cluster_group": "Test Cluster Group",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster"
+                },
+                "cluster_group": {
+                    "__ansible_unsafe": "Test Cluster Group"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "test103-vm",
+                "display": {
+                    "__ansible_unsafe": "test103-vm"
+                },
                 "is_virtual": true,
-                "location": "Child Test Location",
+                "location": {
+                    "__ansible_unsafe": "Child Test Location"
+                },
                 "locations": [
-                    "Child Test Location",
-                    "Parent Test Location"
+                    {
+                        "__ansible_unsafe": "Child Test Location"
+                    },
+                    {
+                        "__ansible_unsafe": "Parent Test Location"
+                    }
                 ],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             },
             "test104-vm": {
-                "cluster": "Test Cluster 2",
-                "cluster_type": "Test Cluster Type",
+                "cluster": {
+                    "__ansible_unsafe": "Test Cluster 2"
+                },
+                "cluster_type": {
+                    "__ansible_unsafe": "Test Cluster Type"
+                },
                 "custom_fields": {},
-                "display": "test104-vm",
+                "display": {
+                    "__ansible_unsafe": "test104-vm"
+                },
                 "is_virtual": true,
                 "locations": [],
                 "status": {
-                    "color": "4caf50",
+                    "color": {
+                        "__ansible_unsafe": "4caf50"
+                    },
                     "custom_fields": {},
-                    "description": "Unit is active",
-                    "display": "Active",
-                    "name": "Active",
-                    "object_type": "extras.status"
+                    "description": {
+                        "__ansible_unsafe": "Unit is active"
+                    },
+                    "display": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "name": {
+                        "__ansible_unsafe": "Active"
+                    },
+                    "object_type": {
+                        "__ansible_unsafe": "extras.status"
+                    }
                 },
                 "tags": []
             }
-        }
+        },
+        "profile": "inventory_legacy"
     },
     "active": {
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test VM With Spaces",
             "TestDeviceR1",
             "VC1",
@@ -360,7 +697,7 @@
     },
     "all": {
         "children": [
-            "___ansible_unsafe_handing_test___parent_test_location_3",
+            "___ansible_unsafe_handling_test___parent_test_location_3",
             "active",
             "another_test_rack",
             "child_child_test_location",
@@ -388,7 +725,7 @@
     },
     "another_test_rack": {
         "hosts": [
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "child_child_test_location": {
@@ -418,7 +755,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "TestDeviceR1",
             "VC1",
             "test100"
@@ -428,7 +765,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "TestDeviceR1",
             "test100"
         ]
@@ -437,7 +774,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}",
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "TestDeviceR1",
             "VC1",
             "test100"
@@ -471,7 +808,7 @@
     },
     "parent3_rack_group": {
         "hosts": [
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "parent_rack_group": {
@@ -537,7 +874,7 @@
     "test_rack_role": {
         "hosts": [
             "R1-Device",
-            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "test_tenant": {
