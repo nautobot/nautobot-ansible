@@ -287,6 +287,7 @@ rename_variables:
 
 import json
 import math
+import os
 import re
 import uuid
 from collections import defaultdict
@@ -1087,14 +1088,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             thread_exceptions = None
 
     def fetch_api_docs(self):
-        openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
+        openapi = None
+        if self.use_cache:
+            nautobot_status = self._fetch_information(self.api_endpoint + "/api/status/")
+            nautobot_version = nautobot_status.get("nautobot-version", "")
+            cache_dir = os.path.join(os.path.expanduser("~/.ansible"), "cache", "nautobot_inventory")
+            os.makedirs(cache_dir, exist_ok=True)
+            cache_file = os.path.join(cache_dir, f"nautobot_openapi_{nautobot_version}.json")
+            if os.path.exists(cache_file):
+                self.display.v(f"Using cached API docs for Nautobot version {nautobot_version}")
+                with open(cache_file, "r", encoding="utf-8") as f:
+                    openapi = json.load(f)
+        if not openapi:
+            self.display.v(f"Fetching API docs for Nautobot version {nautobot_version}")
+            openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
+            if self.use_cache:
+                with open(cache_file, "w", encoding="utf-8") as f:
+                    self.display.v(f"Saving API docs for Nautobot version {nautobot_version} to cache")
+                    json.dump(openapi, f)
 
-        device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
-        vm_path = (
-            "/api/virtualization/virtual-machines/"
-            if "/api/virtualization/virtual-machines/" in openapi["paths"]
-            else "/virtualization/virtual-machines/"
-        )
+        device_path = "/dcim/devices/"
+        vm_path = "/virtualization/virtual-machines/"
 
         self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"][device_path]["get"]["parameters"]]
         self.allowed_vm_query_parameters = [p["name"] for p in openapi["paths"][vm_path]["get"]["parameters"]]
@@ -1136,8 +1150,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         device_url = self.api_endpoint + "/api/dcim/devices/?"
         vm_url = self.api_endpoint + "/api/virtualization/virtual-machines/?"
 
-        # Add query_filtes to both devices and vms query, if they're valid
-        if isinstance(self.query_filters, Iterable):
+        # Add query_filters to both devices and vms query, if they're valid
+        if self.query_filters and isinstance(self.query_filters, Iterable):
             device_query_parameters.extend(
                 self.filter_query_parameters(self.query_filters, self.allowed_device_query_parameters)
             )
@@ -1146,12 +1160,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.filter_query_parameters(self.query_filters, self.allowed_vm_query_parameters)
             )
 
-        if isinstance(self.device_query_filters, Iterable):
+        if self.device_query_filters and isinstance(self.device_query_filters, Iterable):
             device_query_parameters.extend(
                 self.filter_query_parameters(self.device_query_filters, self.allowed_device_query_parameters)
             )
 
-        if isinstance(self.vm_query_filters, Iterable):
+        if self.vm_query_filters and isinstance(self.vm_query_filters, Iterable):
             vm_query_parameters.extend(
                 self.filter_query_parameters(self.vm_query_filters, self.allowed_vm_query_parameters)
             )
@@ -1367,7 +1381,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def main(self):
         # Get info about the API - version, allowed query parameters
-        self.fetch_api_docs()
+        if any([self.query_filters, self.device_query_filters, self.vm_query_filters]):
+            self.fetch_api_docs()
 
         if self.api_version:
             self.headers.update({"Accept": f"application/json; version={self.api_version}"})
