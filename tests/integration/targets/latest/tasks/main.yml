@@ -88,7 +88,7 @@
   tags:
     - location_type
 
-- name: "PYNAUTOBOT_TENTANT TESTS"
+- name: "PYNAUTOBOT_TENANT TESTS"
   include_tasks:
     file: "tenant.yml"
     apply:
@@ -97,7 +97,7 @@
   tags:
     - tenant
 
-- name: "PYNAUTOBOT_TENTANT_GROUP TESTS"
+- name: "PYNAUTOBOT_TENANT_GROUP TESTS"
   include_tasks:
     file: "tenant_group.yml"
     apply:
