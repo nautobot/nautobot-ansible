@@ -1239,7 +1239,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         """Set inventory variable with conditional wrapping only where needed."""
         if self.wrap_variables and check_needs_wrapping(value):
             value = wrap_var(value)
-        self.inventory.set_variable(hostname, variable_name, value)
+        self._set_variable(hostname, variable_name, value)
 
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
