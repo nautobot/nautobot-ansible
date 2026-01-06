@@ -60,3 +60,7 @@ keyed_groups:
 
 groups:
   jinja_test_group: inventory_hostname.startswith('Test')
+
+rename_variables:
+  - pattern: "tags"
+    repl: "nb_tags"

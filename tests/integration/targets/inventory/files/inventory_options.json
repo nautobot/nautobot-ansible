@@ -24,6 +24,7 @@
                     "Parent Test Location"
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
@@ -33,7 +34,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "testing_device_cf": "",
                 "testing_location_cf": "Test Location Custom Field Value"
             },
@@ -53,6 +53,7 @@
                     "Parent Test Location"
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "rack": "Main Test Rack",
                 "rack_groups": [
                     "Parent Rack Group"
@@ -67,7 +68,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "testing_device_cf": "",
                 "testing_location_cf": "Test Location Custom Field Value"
             },
@@ -99,6 +99,7 @@
                     }
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "primary_ip4": "172.16.180.13",
                 "rack": "Another Test Rack",
                 "rack_groups": [
@@ -114,7 +115,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "testing_device_cf": ""
             },
             "Test VM With Spaces": {
@@ -124,6 +124,7 @@
                 "display": "Test VM With Spaces",
                 "is_virtual": true,
                 "locations": [],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -131,8 +132,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             },
             "TestDeviceR1": {
                 "cluster": [],
@@ -151,6 +151,7 @@
                     "Parent Test Location"
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "rack": "Sub Test Rack",
                 "rack_groups": [
                     "Child Rack Group",
@@ -165,7 +166,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "testing_device_cf": "",
                 "testing_location_cf": ""
             },
@@ -187,6 +187,7 @@
                     "Parent Test Location"
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "primary_ip4": "172.16.180.11",
                 "role": "Core Switch",
                 "status": {
@@ -197,7 +198,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "testing_device_cf": "",
                 "testing_location_cf": "Test Location Custom Field Value"
             },
@@ -230,6 +230,7 @@
                     "Parent Test Location"
                 ],
                 "manufacturer": "Cisco",
+                "nb_tags": [],
                 "role": "Core Switch",
                 "status": {
                     "color": "4caf50",
@@ -239,7 +240,6 @@
                     "name": "Active",
                     "object_type": "extras.status"
                 },
-                "tags": [],
                 "tenant": "Test Tenant",
                 "tenant_group": "Test Tenant Group",
                 "testing_device_cf": "Test Device Custom Field Value",
@@ -257,6 +257,7 @@
                     "Child Test Location",
                     "Parent Test Location"
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -264,8 +265,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             },
             "test101-vm": {
                 "cluster": "Test Cluster",
@@ -279,6 +279,7 @@
                     "Child Test Location",
                     "Parent Test Location"
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -286,8 +287,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             },
             "test102-vm": {
                 "cluster": "Test Cluster",
@@ -301,6 +301,7 @@
                     "Child Test Location",
                     "Parent Test Location"
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -308,8 +309,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             },
             "test103-vm": {
                 "cluster": "Test Cluster",
@@ -323,6 +323,7 @@
                     "Child Test Location",
                     "Parent Test Location"
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -330,8 +331,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             },
             "test104-vm": {
                 "cluster": "Test Cluster 2",
@@ -340,6 +340,7 @@
                 "display": "test104-vm",
                 "is_virtual": true,
                 "locations": [],
+                "nb_tags": [],
                 "status": {
                     "color": "4caf50",
                     "custom_fields": {},
@@ -347,8 +348,7 @@
                     "display": "Active",
                     "name": "Active",
                     "object_type": "extras.status"
-                },
-                "tags": []
+                }
             }
         }
     },
