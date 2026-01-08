@@ -1294,24 +1294,24 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
-            self.inventory.set_variable(hostname, "ansible_host", extracted_primary_ip["host"])
+            self._set_variable(hostname, "ansible_host", extracted_primary_ip["host"])
 
         if self.ansible_host_dns_name:
             extracted_dns_name = self.extract_dns_name(host=host)
             if extracted_dns_name:
-                self.inventory.set_variable(hostname, "ansible_host", extracted_dns_name)
+                self._set_variable(hostname, "ansible_host", extracted_dns_name)
 
         extracted_primary_ip4 = self.extract_primary_ip4(host=host)
         if extracted_primary_ip4:
-            self.inventory.set_variable(hostname, "primary_ip4", extracted_primary_ip4["host"])
+            self._set_variable(hostname, "primary_ip4", extracted_primary_ip4["host"])
 
         extracted_primary_ip6 = self.extract_primary_ip6(host=host)
         if extracted_primary_ip6:
-            self.inventory.set_variable(hostname, "primary_ip6", extracted_primary_ip6["host"])
+            self._set_variable(hostname, "primary_ip6", extracted_primary_ip6["host"])
 
         location = self.extract_location(host=host)
         if location:
-            self.inventory.set_variable(hostname, "location", location)
+            self._set_variable(hostname, "location", location)
 
         for attribute, extractor in self.group_extractors.items():
             extracted_value = extractor(host)
@@ -1338,9 +1338,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.inventory.set_variable(hostname, key, value)
+                    self._set_variable(hostname, key, value)
             else:
-                self.inventory.set_variable(hostname, attribute, extracted_value)
+                self._set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)

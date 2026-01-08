@@ -34,6 +34,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "role": {
                     "__ansible_unsafe": "Core Switch"
                 },
@@ -55,7 +56,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "testing_device_cf": null,
                 "testing_location_cf": {
                     "__ansible_unsafe": "Test Location Custom Field Value"
@@ -89,6 +89,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "rack": {
                     "__ansible_unsafe": "Main Test Rack"
                 },
@@ -121,7 +122,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "testing_device_cf": null,
                 "testing_location_cf": {
                     "__ansible_unsafe": "Test Location Custom Field Value"
@@ -166,6 +166,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "primary_ip4": {
                     "__ansible_unsafe": "172.16.180.13"
                 },
@@ -201,7 +202,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "testing_device_cf": null,
                 "testing_location_cf": null
             },
@@ -218,6 +218,7 @@
                 },
                 "is_virtual": true,
                 "locations": [],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -235,8 +236,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             },
             "TestDeviceR1": {
                 "cluster": [],
@@ -269,6 +269,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "rack": {
                     "__ansible_unsafe": "Sub Test Rack"
                 },
@@ -301,7 +302,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "testing_device_cf": null,
                 "testing_location_cf": null
             },
@@ -339,6 +339,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "primary_ip4": {
                     "__ansible_unsafe": "172.16.180.11"
                 },
@@ -363,7 +364,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "testing_device_cf": null,
                 "testing_location_cf": {
                     "__ansible_unsafe": "Test Location Custom Field Value"
@@ -424,6 +424,7 @@
                 "manufacturer": {
                     "__ansible_unsafe": "Cisco"
                 },
+                "nb_tags": [],
                 "role": {
                     "__ansible_unsafe": "Core Switch"
                 },
@@ -445,7 +446,6 @@
                         "__ansible_unsafe": "extras.status"
                     }
                 },
-                "tags": [],
                 "tenant": {
                     "__ansible_unsafe": "Test Tenant"
                 },
@@ -485,6 +485,7 @@
                         "__ansible_unsafe": "Parent Test Location"
                     }
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -502,8 +503,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             },
             "test101-vm": {
                 "cluster": {
@@ -531,6 +531,7 @@
                         "__ansible_unsafe": "Parent Test Location"
                     }
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -548,8 +549,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             },
             "test102-vm": {
                 "cluster": {
@@ -577,6 +577,7 @@
                         "__ansible_unsafe": "Parent Test Location"
                     }
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -594,8 +595,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             },
             "test103-vm": {
                 "cluster": {
@@ -623,6 +623,7 @@
                         "__ansible_unsafe": "Parent Test Location"
                     }
                 ],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -640,8 +641,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             },
             "test104-vm": {
                 "cluster": {
@@ -656,6 +656,7 @@
                 },
                 "is_virtual": true,
                 "locations": [],
+                "nb_tags": [],
                 "status": {
                     "color": {
                         "__ansible_unsafe": "4caf50"
@@ -673,8 +674,7 @@
                     "object_type": {
                         "__ansible_unsafe": "extras.status"
                     }
-                },
-                "tags": []
+                }
             }
         },
         "profile": "inventory_legacy"
