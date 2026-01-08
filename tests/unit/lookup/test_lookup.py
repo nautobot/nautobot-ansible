@@ -111,6 +111,7 @@ def test_run_with_dynamic_filter(mock_pynautobot, lookup):
         "token": "fake-token",
         "api_endpoint": "https://nautobot.local",
         "api_filter": "{'name': '{{ device_name }}'}",
+        "allow_unsafe": True,
     }
     result = lookup.run(terms, **kwargs)
 

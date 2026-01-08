@@ -66,6 +66,11 @@ DOCUMENTATION = """
             description:
                 - Whether to return raw API data with the lookup/query or whether to return a key/value dict
             required: False
+        allow_unsafe:
+            description:
+                - If True, allows for potentially unsafe variables to be returned as-is.
+            default: False
+            type: boolean
     requirements:
         - pynautobot
 """
@@ -151,6 +156,10 @@ except ImportError as imp_exc:
 else:
     PYNAUTOBOT_IMPORT_ERROR = None
 
+try:
+    from ansible.template import trust_as_template
+except ImportError:
+    pass
 
 def get_endpoint(nautobot, term):
     """Get the endpoint for the given term.
@@ -346,6 +355,16 @@ def make_call(endpoint, filters=None):  # noqa: D417
     return results
 
 
+def mark_trusted(input):
+    """
+    For a string value, mark it as trusted (if we're on a version that doesn't trust by default).
+    """
+    if trust_as_template and isinstance(input, str):
+        trusted_input = trust_as_template(input)
+        return trusted_input
+    return input
+
+
 class LookupModule(LookupBase):
     """
     LookupModule(LookupBase) is defined by Ansible.
@@ -370,9 +389,14 @@ class LookupModule(LookupBase):
         else:
             ssl_verify = True
         num_retries = kwargs.get("num_retries", "0")
+
+        allow_unsafe = kwargs.get("allow_unsafe", False)
         api_filter = kwargs.get("api_filter")
         if api_filter:
+            if allow_unsafe:
+                api_filter=mark_trusted(api_filter)
             api_filter = self._templar.do_template(api_filter)
+
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
         api_version = kwargs.get("api_version")
