@@ -156,8 +156,9 @@ except ImportError as imp_exc:
 else:
     PYNAUTOBOT_IMPORT_ERROR = None
 
+_trust_as_template_import = None
 try:
-    from ansible.template import trust_as_template
+    from ansible.template import trust_as_template as _trust_as_template_import
 except ImportError:
     pass
 
@@ -363,8 +364,8 @@ def mark_trusted(input):
     """
     For a string value, mark it as trusted (if we're on a version that doesn't trust by default).
     """
-    if trust_as_template and isinstance(input, str):
-        trusted_input = trust_as_template(input)
+    if _trust_as_template_import and isinstance(input, str):
+        trusted_input = _trust_as_template_import(input)
         return trusted_input
     return input
 
