@@ -204,14 +204,32 @@ PyYAML = ">=5.1"
 resolvelib = ">=0.5.3,<2.0.0"
 
 [[package]]
+name = "ansible-core"
+version = "2.20.1"
+description = "Radically simple IT automation"
+optional = false
+python-versions = ">=3.12"
+files = [
+    {file = "ansible_core-2.20.1-py3-none-any.whl", hash = "sha256:2a66825b4a53f130b62515e7e2a3d811d544b19b6e8a22d9ef88c55896384cb3"},
+    {file = "ansible_core-2.20.1.tar.gz", hash = "sha256:a891e5f90cd46626778f0f3d545ec1115840c9b50e8adf25944c5e1748452106"},
+]
+
+[package.dependencies]
+cryptography = "*"
+jinja2 = ">=3.1.0"
+packaging = "*"
+PyYAML = ">=5.1"
+resolvelib = ">=0.8.0,<2.0.0"
+
+[[package]]
 name = "ansible-lint"
-version = "25.12.2"
+version = "26.1.0"
 description = "Checks playbooks for practices and behavior that could potentially be improved"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "ansible_lint-25.12.2-py3-none-any.whl", hash = "sha256:cafcd991c9ddfd9a13e5b56e5a4f1d9997973e0c0d6a0f6eb2b148d39f42e2c3"},
-    {file = "ansible_lint-25.12.2.tar.gz", hash = "sha256:d4dbf2905c868d6f7b330941efc586f19a5e2b3b6826fd6a2edf0d5080329e46"},
+    {file = "ansible_lint-26.1.0-py3-none-any.whl", hash = "sha256:1fbba73e59247c70d460fbc71097fc86d475f2acef2a3314b7a4d817310538d5"},
+    {file = "ansible_lint-26.1.0.tar.gz", hash = "sha256:ca5c968d1bbcc0c9447ededd3a754ccc936df91b2647755ca92c44d2ba91b805"},
 ]
 
 [package.dependencies]
@@ -224,7 +242,7 @@ distro = ">=1.9.0"
 filelock = ">=3.8.2"
 jsonschema = ">=4.10.0"
 packaging = ">=22.0"
-pathspec = ">=0.10.3"
+pathspec = ">=0.10.3,<1.0.0"
 pyyaml = ">=6.0.1"
 referencing = ">=0.36.2"
 ruamel-yaml = ">=0.18.11"
@@ -885,13 +903,13 @@ dev = ["flake8", "markdown", "twine", "wheel"]
 
 [[package]]
 name = "hypothesis"
-version = "6.149.0"
+version = "6.150.0"
 description = "The property-based testing library for Python"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "hypothesis-6.149.0-py3-none-any.whl", hash = "sha256:96420e306421741be4eea4f32bfc7a13360d73400b2e886a5d5e3668a2337a05"},
-    {file = "hypothesis-6.149.0.tar.gz", hash = "sha256:27afa07824fbb7785369dfae8e2574ec2ae0b1bdce50f3a327dfc069b79b0a44"},
+    {file = "hypothesis-6.150.0-py3-none-any.whl", hash = "sha256:caf1f752418c49ac805f11d909c5831aaceb96762aa3895e0c702468dedbe3fe"},
+    {file = "hypothesis-6.150.0.tar.gz", hash = "sha256:ac263bdaf338f4899a9a56e8224304e29b3ad91799e0274783c49abd91ea35ac"},
 ]
 
 [package.dependencies]
@@ -1036,20 +1054,20 @@ dev = ["build", "hypothesis", "pytest", "setuptools-scm"]
 
 [[package]]
 name = "jsonschema"
-version = "4.25.1"
+version = "4.26.0"
 description = "An implementation of JSON Schema validation for Python"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "jsonschema-4.25.1-py3-none-any.whl", hash = "sha256:3fba0169e345c7175110351d456342c364814cfcf3b964ba4587f22915230a63"},
-    {file = "jsonschema-4.25.1.tar.gz", hash = "sha256:e4a9655ce0da0c0b67a085847e00a3a51449e1157f4f75e9fb5aa545e122eb85"},
+    {file = "jsonschema-4.26.0-py3-none-any.whl", hash = "sha256:d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce"},
+    {file = "jsonschema-4.26.0.tar.gz", hash = "sha256:0c26707e2efad8aa1bfc5b7ce170f3fccc2e4918ff85989ba9ffa9facb2be326"},
 ]
 
 [package.dependencies]
 attrs = ">=22.2.0"
 jsonschema-specifications = ">=2023.03.6"
 referencing = ">=0.28.4"
-rpds-py = ">=0.7.1"
+rpds-py = ">=0.25.0"
 
 [package.extras]
 format = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-validator", "rfc3987", "uri-template", "webcolors (>=1.11)"]
@@ -2559,13 +2577,13 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.6.2"
+version = "2.6.3"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "urllib3-2.6.2-py3-none-any.whl", hash = "sha256:ec21cddfe7724fc7cb4ba4bea7aa8e2ef36f607a4bab81aa6ce42a13dc3f03dd"},
-    {file = "urllib3-2.6.2.tar.gz", hash = "sha256:016f9c98bb7e98085cb2b4b17b87d2c702975664e4f060c6532e64d1c1a5e797"},
+    {file = "urllib3-2.6.3-py3-none-any.whl", hash = "sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"},
+    {file = "urllib3-2.6.3.tar.gz", hash = "sha256:1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"},
 ]
 
 [package.extras]
@@ -2814,4 +2832,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "bc77f2f59a239828e8a9d7255d4e065dc976f03dd9524c8b9d744e2b09a45c39"
+content-hash = "a16f49561f84fc90608dca363139088cdcdf857b368e3a7be2abed769eca0a80"
