@@ -1,0 +1,1 @@
+Removed the choices for the `actions` parameter in the `admin_permission` module to allow for custom actions to be provided.

@@ -1,0 +1,1 @@
+Added the `required_rule` module for creating, updating, and deleting data validation required rules in Nautobot.
