@@ -10,10 +10,7 @@ package-mode = false
 python = ">=3.11,<4.0"
 netutils = "^1.2"
 pynautobot = ">=3.0.0,<4.0.0"
-ansible-core = [
-  { version = ">=2.18,<2.20", python = ">=3.11,<3.12" },
-  { version = ">=2.20,<2.21", python = ">=3.12,<4.0" }
-]
+ansible-core = ">=2.18,<2.20"
 aiohttp = "^3.11.13"
 asyncio = "^3.4.3"
 

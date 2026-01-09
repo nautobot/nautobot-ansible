@@ -97,10 +97,9 @@ jobs:
         ansible-version:
           - "2.18"
           - "2.19"
-          - "2.20"
-        exclude:
-          - python-version: "3.11"
-            ansible-version: "2.20"
+        # exclude:
+        #   - python-version: "x.x"
+        #     ansible-version: "x.x"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"
