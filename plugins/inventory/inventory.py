@@ -305,9 +305,41 @@ from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
 
+_trust_as_template_import = None
+try:
+    from ansible.template import trust_as_template as _trust_as_template_import
+except ImportError:
+    pass
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
+
+    def _mark_trusted(self, input_var):
+        """
+        Mark only string values as trusted (if we're on a version that doesn't trust by default).
+        """
+        if _trust_as_template_import and isinstance(input_var, str):
+            trusted_input = _trust_as_template_import(input_var)
+            return trusted_input
+        return input_var
+
+    def _trust_nested(self, value):
+        """
+        Recursively mark strings inside nested structures as trusted.
+        Works for str, list, tuple, set, dict.
+        """
+        if isinstance(value, str):
+            return self._mark_trusted(value)
+        elif isinstance(value, list):
+            return [self._trust_nested(v) for v in value]
+        elif isinstance(value, tuple):
+            return tuple(self._trust_nested(v) for v in value)
+        elif isinstance(value, set):
+            return {self._trust_nested(v) for v in value}
+        elif isinstance(value, dict):
+            return {k: self._trust_nested(v) for k, v in value.items()}
+        else:
+            return value
 
     def _fetch_information(self, url):
         results = None
@@ -1303,6 +1335,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 key = item["pattern"].sub(item["repl"], key)
                 break
 
+        if self.allow_unsafe:
+            value = self._trust_nested(value)
+
         self.inventory.set_variable(hostname, key, value)
 
     def _fill_host_variables(self, host, hostname):
@@ -1451,7 +1486,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.virtual_chassis_name = self.get_option("virtual_chassis_name")
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
-        self.wrap_variables = not self.get_option("allow_unsafe")
+        self.allow_unsafe = self.get_option("allow_unsafe")
 
         # Compile regular expressions, if any
         self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))
