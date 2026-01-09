@@ -47,7 +47,7 @@ def inventory_fixture():
     inventory.inventory = InventoryData()
     inventory.inventory.add_host("mydevice")
     inventory.group_names_raw = False
-    inventory.wrap_variables = True
+    inventory.allow_unsafe = False
     inventory.saved_query = None
 
     return inventory

@@ -2,16 +2,10 @@
     "_meta": {
         "hostvars": {
             "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
-                "ansible_host": {
-                    "__ansible_unsafe": "172.16.180.13"
-                },
-                "name": {
-                    "__ansible_unsafe": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
-                },
+                "ansible_host": "172.16.180.13",
+                "name": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
                 "primary_ip4": {
-                    "host": {
-                        "__ansible_unsafe": "172.16.180.13"
-                    }
+                    "host": "172.16.180.13"
                 }
             }
         },
