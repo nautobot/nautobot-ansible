@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hostvars": {
-            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
+            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}": {
                 "ansible_host": "172.16.180.13",
                 "cluster": [],
                 "cluster_group": [],
@@ -19,12 +19,12 @@
                 "local_context_data": [
                     {
                         "normal_string": "this is a normal string",
-                        "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
+                        "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDING TEST }}"
                     }
                 ],
-                "location": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3",
+                "location": "{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3",
                 "locations": [
-                    "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
+                    "{{ ANSIBLE UNSAFE HANDING TEST }}Parent Test Location 3"
                 ],
                 "manufacturers": [
                     "Cisco"
@@ -48,8 +48,7 @@
                 },
                 "tags": []
             }
-        },
-        "profile": "inventory_legacy"
+        }
     },
     "all": {
         "children": [
@@ -58,7 +57,7 @@
     },
     "ungrouped": {
         "hosts": [
-            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
+            "R2 {{ ANSIBLE UNSAFE HANDING TEST }}"
         ]
     }
 }

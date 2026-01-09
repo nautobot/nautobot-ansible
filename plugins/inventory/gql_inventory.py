@@ -264,13 +264,15 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import quote
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
-from ansible.utils.unsafe_proxy import wrap_var
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
     convert_to_graphql_string,
 )
-from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    check_needs_wrapping,
-)
+
+_trust_as_template_import = None
+try:
+    from ansible.template import trust_as_template as _trust_as_template_import
+except ImportError:
+    pass
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -294,6 +296,33 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     NAME = "networktocode.nautobot.gql_inventory"
 
+    def _mark_trusted(self, input_var):
+        """
+        Mark only string values as trusted (if we're on a version that doesn't trust by default).
+        """
+        if _trust_as_template_import and isinstance(input_var, str):
+            trusted_input = _trust_as_template_import(input_var)
+            return trusted_input
+        return input_var
+
+    def _trust_nested(self, value):
+        """
+        Recursively mark strings inside nested structures as trusted.
+        Works for str, list, tuple, set, dict.
+        """
+        if isinstance(value, str):
+            return self._mark_trusted(value)
+        elif isinstance(value, list):
+            return [self._trust_nested(v) for v in value]
+        elif isinstance(value, tuple):
+            return tuple(self._trust_nested(v) for v in value)
+        elif isinstance(value, set):
+            return {self._trust_nested(v) for v in value}
+        elif isinstance(value, dict):
+            return {k: self._trust_nested(v) for k, v in value.items()}
+        else:
+            return value
+
     def verify_file(self, path):
         """Return true/false if this is possibly a valid file for this plugin to consume."""
         if super(InventoryModule, self).verify_file(path):
@@ -311,8 +340,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-        if self.wrap_variables and check_needs_wrapping(var):
-            var = wrap_var(var)
+        if self.allow_unsafe:
+            var = self._trust_nested(var)
+
         self.inventory.set_variable(host, var_type, var)
 
     def add_ip_address(self, device, default_ip_version="ipv4"):
@@ -576,8 +606,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
             # Save the hostname back to the device record so that it can be referenced later
             device["name"] = hostname
-            if self.wrap_variables and check_needs_wrapping(hostname):
-                hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
@@ -622,7 +650,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_names_raw = self.get_option("group_names_raw")
         self.user_cache_setting = self.get_option("cache")
         self.page_size = self.get_option("page_size")
-        self.wrap_variables = not self.get_option("allow_unsafe")
+        self.allow_unsafe = self.get_option("allow_unsafe")
         self.saved_query = self._retrieve_saved_query(self.get_option("saved_query"))
 
         self.main()

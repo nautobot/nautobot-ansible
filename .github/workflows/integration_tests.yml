@@ -27,6 +27,7 @@ jobs:
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ inputs.python-version }}"
       INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER: "${{ inputs.nautobot-version }}"
+      INVOKE_NAUTOBOT_ANSIBLE_ANSIBLE_VER: "${{ inputs.ansible-version }}"
     steps:
       - name: "Check out repository code"
         uses: "actions/checkout@v4"

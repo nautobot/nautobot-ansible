@@ -1,9 +1,8 @@
-import json
 import unittest
 from unittest.mock import patch
 
 from ansible.module_utils import basic
-from ansible.module_utils.common.text.converters import to_bytes
+from ansible_collections.community.internal_test_tools.tests.unit.plugins.modules.utils import set_module_args
 from parameterized import parameterized
 
 try:
@@ -20,12 +19,6 @@ except ImportError:
     MOCKER_PATCH_PATH = "plugins.modules.nautobot_server"
 
     import nautobot_server
-
-
-def set_module_args(args):
-    """prepare arguments so that they will be picked up during module creation"""
-    args = json.dumps({"ANSIBLE_MODULE_ARGS": args})
-    basic._ANSIBLE_ARGS = to_bytes(args)
 
 
 class AnsibleExitJson(Exception):
@@ -73,8 +66,8 @@ class TestNautobotServer(unittest.TestCase):
 
     def test_module_fail_when_required_args_missing(self):
         with self.assertRaises(AnsibleFailJson):
-            set_module_args({})
-            nautobot_server.main()
+            with set_module_args({}):
+                nautobot_server.main()
 
     @parameterized.expand(
         [
@@ -220,21 +213,20 @@ class TestNautobotServer(unittest.TestCase):
         ]
     )
     def test_ensure_command_called(self, module_args, expected_exception, stdout, changed, args, kwargs):
-        set_module_args(module_args)
+        with set_module_args(module_args):
+            with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
+                stderr = ""
+                rc = 0
+                mock_run_command.return_value = rc, stdout, stderr  # successful execution
 
-        with patch.object(basic.AnsibleModule, "run_command") as mock_run_command:
-            stderr = ""
-            rc = 0
-            mock_run_command.return_value = rc, stdout, stderr  # successful execution
+                with self.assertRaises(expected_exception) as result:
+                    nautobot_server.main()
 
-            with self.assertRaises(expected_exception) as result:
-                nautobot_server.main()
+                if expected_exception == AnsibleFailJson:
+                    return
 
-            if expected_exception == AnsibleFailJson:
-                return
+                self.assertEqual(result.exception.args[0]["changed"], changed)  # ensure result is changed
 
-            self.assertEqual(result.exception.args[0]["changed"], changed)  # ensure result is changed
+            self.assertEqual(mock_run_command.call_count, 1)
 
-        self.assertEqual(mock_run_command.call_count, 1)
-
-        mock_run_command.assert_called_with(*args, **kwargs)
+            mock_run_command.assert_called_with(*args, **kwargs)

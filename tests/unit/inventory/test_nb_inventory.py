@@ -51,7 +51,7 @@ def inventory_fixture(allowed_device_query_parameters_fixture, allowed_vm_query_
     inventory.allowed_vm_query_parameters = allowed_vm_query_parameters_fixture
     # Inventory mock, to validate what has been set via inventory.inventory.set_variable
     inventory.inventory = MockInventory()
-    inventory.wrap_variables = True
+    inventory.allow_unsafe = False
 
     return inventory
 
