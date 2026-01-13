@@ -8,7 +8,7 @@ query:
   devices:
     config_context:
     _custom_field_data:
-    device_type: 
+    device_type:
       manufacturer: name
       model:
     interfaces: name

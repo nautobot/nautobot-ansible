@@ -311,6 +311,7 @@ try:
 except ImportError:
     pass
 
+
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
 

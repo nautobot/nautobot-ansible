@@ -5,7 +5,7 @@ validate_certs: False
 allow_unsafe: true
 
 # Cache is not for performance of tests, but to test the caching option works
-# Also set on test-inventory-plurals.yml so that we actually hit the cache on one of these runs
+# Also set on test-inventory-plurals.yml to hit the cache on one of these runs
 cache: True
 cache_timeout: 3600
 cache_plugin: jsonfile
@@ -65,4 +65,3 @@ groups:
 rename_variables:
   - pattern: "tags"
     repl: "nb_tags"
-

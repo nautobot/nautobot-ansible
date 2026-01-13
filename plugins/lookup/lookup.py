@@ -162,6 +162,7 @@ try:
 except ImportError:
     pass
 
+
 def get_endpoint(nautobot, term):
     """Get the endpoint for the given term.
 
@@ -399,7 +400,7 @@ class LookupModule(LookupBase):
         api_filter = kwargs.get("api_filter")
         if api_filter:
             if allow_unsafe:
-                api_filter=mark_trusted(api_filter)
+                api_filter = mark_trusted(api_filter)
             api_filter = self._templar.do_template(api_filter)
 
         raw_return = kwargs.get("raw_data")
