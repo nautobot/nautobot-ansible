@@ -2,6 +2,7 @@ plugin: networktocode.nautobot.inventory
 api_endpoint: "http://nautobot:8000"
 token: "0123456789abcdef0123456789abcdef01234567"
 validate_certs: False
+allow_unsafe: true
 
 # Cache is not for performance of tests, but to test the caching option works
 # Also set on test-inventory-plurals.yml so that we actually hit the cache on one of these runs
@@ -64,3 +65,4 @@ groups:
 rename_variables:
   - pattern: "tags"
     repl: "nb_tags"
+

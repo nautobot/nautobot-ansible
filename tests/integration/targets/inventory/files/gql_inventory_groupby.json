@@ -146,627 +146,377 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
-                "ansible_host": {
-                    "__ansible_unsafe": "00000000-0000-0000-0000-000000000000"
-                },
+                "ansible_host": "00000000-0000-0000-0000-000000000000",
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Cisco Test"
-                    }
+                    "model": "Cisco Test"
                 },
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child Test Location"
-                    }
+                    "name": "Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "00000000-0000-0000-0000-000000000000"
-                },
+                "name": "00000000-0000-0000-0000-000000000000",
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "R1-Device": {
-                "ansible_host": {
-                    "__ansible_unsafe": "R1-Device"
-                },
+                "ansible_host": "R1-Device",
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Cisco Test"
-                    }
+                    "model": "Cisco Test"
                 },
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child Test Location"
-                    }
+                    "name": "Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "R1-Device"
-                },
+                "name": "R1-Device",
                 "rack": {
-                    "name": {
-                        "__ansible_unsafe": "Main Test Rack"
-                    },
+                    "name": "Main Test Rack",
                     "rack_group": {
-                        "name": {
-                            "__ansible_unsafe": "Parent Rack Group"
-                        }
+                        "name": "Parent Rack Group"
                     },
                     "role": {
-                        "name": {
-                            "__ansible_unsafe": "Test Rack Role"
-                        }
+                        "name": "Test Rack Role"
                     }
                 },
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
-                "ansible_host": {
-                    "__ansible_unsafe": "172.16.180.13"
-                },
+                "ansible_host": "172.16.180.13",
                 "config_context": {
-                    "normal_string": {
-                        "__ansible_unsafe": "this is a normal string"
-                    },
-                    "string_containing_jinja2tags": {
-                        "__ansible_unsafe": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
-                    }
+                    "normal_string": "this is a normal string",
+                    "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
                 },
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Cisco Test"
-                    }
+                    "model": "Cisco Test"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "GigabitEthernet1"
-                        }
+                        "name": "GigabitEthernet1"
                     }
                 ],
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
-                    }
+                    "name": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
                 },
-                "name": {
-                    "__ansible_unsafe": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
-                },
+                "name": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
                 "primary_ip4": {
-                    "host": {
-                        "__ansible_unsafe": "172.16.180.13"
-                    }
+                    "host": "172.16.180.13"
                 },
                 "rack": {
-                    "name": {
-                        "__ansible_unsafe": "Another Test Rack"
-                    },
+                    "name": "Another Test Rack",
                     "rack_group": {
-                        "name": {
-                            "__ansible_unsafe": "Parent3 Rack Group"
-                        }
+                        "name": "Parent3 Rack Group"
                     },
                     "role": {
-                        "name": {
-                            "__ansible_unsafe": "Test Rack Role"
-                        }
+                        "name": "Test Rack Role"
                     }
                 },
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "Test Nexus Child One": {
-                "ansible_host": {
-                    "__ansible_unsafe": "Test Nexus Child One"
-                },
+                "ansible_host": "Test Nexus Child One",
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Nexus Child"
-                    }
+                    "model": "Nexus Child"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "Ethernet2/1"
-                        }
+                        "name": "Ethernet2/1"
                     }
                 ],
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child Test Location"
-                    }
+                    "name": "Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "Test Nexus Child One"
-                },
+                "name": "Test Nexus Child One",
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "Test Nexus One": {
-                "ansible_host": {
-                    "__ansible_unsafe": "172.16.180.11"
-                },
+                "ansible_host": "172.16.180.11",
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Nexus Parent"
-                    }
+                    "model": "Nexus Parent"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "Ethernet1/1"
-                        }
+                        "name": "Ethernet1/1"
                     }
                 ],
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child Test Location"
-                    }
+                    "name": "Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "Test Nexus One"
-                },
+                "name": "Test Nexus One",
                 "primary_ip4": {
-                    "host": {
-                        "__ansible_unsafe": "172.16.180.11"
-                    }
+                    "host": "172.16.180.11"
                 },
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "services": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "telnet"
-                        }
+                        "name": "telnet"
                     }
                 ],
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "Test VM With Spaces": {
-                "ansible_host": {
-                    "__ansible_unsafe": "Test VM With Spaces"
-                },
+                "ansible_host": "Test VM With Spaces",
                 "cluster": {
                     "cluster_group": null,
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": null,
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster 2"
-                    }
+                    "name": "Test Cluster 2"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth0"
-                        }
+                        "name": "Eth0"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth1"
-                        }
+                        "name": "Eth1"
                     }
                 ],
-                "name": {
-                    "__ansible_unsafe": "Test VM With Spaces"
-                },
+                "name": "Test VM With Spaces",
                 "services": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "ssh"
-                        }
+                        "name": "ssh"
                     }
                 ],
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "TestDeviceR1": {
-                "ansible_host": {
-                    "__ansible_unsafe": "TestDeviceR1"
-                },
+                "ansible_host": "TestDeviceR1",
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Cisco Test"
-                    }
+                    "model": "Cisco Test"
                 },
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child-Child Test Location"
-                    }
+                    "name": "Child-Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "TestDeviceR1"
-                },
+                "name": "TestDeviceR1",
                 "rack": {
-                    "name": {
-                        "__ansible_unsafe": "Sub Test Rack"
-                    },
+                    "name": "Sub Test Rack",
                     "rack_group": {
-                        "name": {
-                            "__ansible_unsafe": "Child Rack Group"
-                        }
+                        "name": "Child Rack Group"
                     },
                     "role": null
                 },
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "test100": {
                 "_custom_field_data": {
-                    "my_device_custom_field": {
-                        "__ansible_unsafe": "Test Device Custom Field Value"
-                    }
+                    "my_device_custom_field": "Test Device Custom Field Value"
                 },
-                "ansible_host": {
-                    "__ansible_unsafe": "test100"
-                },
+                "ansible_host": "test100",
                 "config_context": {
                     "ntp_servers": [
-                        {
-                            "__ansible_unsafe": "pool.ntp.org"
-                        }
+                        "pool.ntp.org"
                     ]
                 },
                 "device_type": {
                     "manufacturer": {
-                        "name": {
-                            "__ansible_unsafe": "Cisco"
-                        }
+                        "name": "Cisco"
                     },
-                    "model": {
-                        "__ansible_unsafe": "Cisco Test"
-                    }
+                    "model": "Cisco Test"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "GigabitEthernet1"
-                        }
+                        "name": "GigabitEthernet1"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "GigabitEthernet2"
-                        }
+                        "name": "GigabitEthernet2"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "GigabitEthernet3"
-                        }
+                        "name": "GigabitEthernet3"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "GigabitEthernet4"
-                        }
+                        "name": "GigabitEthernet4"
                     }
                 ],
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "Child Test Location"
-                    }
+                    "name": "Child Test Location"
                 },
-                "name": {
-                    "__ansible_unsafe": "test100"
-                },
+                "name": "test100",
                 "role": {
-                    "name": {
-                        "__ansible_unsafe": "Core Switch"
-                    }
+                    "name": "Core Switch"
                 },
                 "services": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "http"
-                        }
+                        "name": "http"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "ssh"
-                        }
+                        "name": "ssh"
                     }
                 ],
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 },
                 "tenant": {
-                    "name": {
-                        "__ansible_unsafe": "Test Tenant"
-                    }
+                    "name": "Test Tenant"
                 }
             },
             "test100-vm": {
-                "ansible_host": {
-                    "__ansible_unsafe": "test100-vm"
-                },
+                "ansible_host": "test100-vm",
                 "cluster": {
                     "cluster_group": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Group"
-                        }
+                        "name": "Test Cluster Group"
                     },
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": {
-                        "name": {
-                            "__ansible_unsafe": "Child Test Location"
-                        }
+                        "name": "Child Test Location"
                     },
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster"
-                    }
+                    "name": "Test Cluster"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth0"
-                        }
+                        "name": "Eth0"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth1"
-                        }
+                        "name": "Eth1"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth2"
-                        }
+                        "name": "Eth2"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth3"
-                        }
+                        "name": "Eth3"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth4"
-                        }
+                        "name": "Eth4"
                     }
                 ],
-                "name": {
-                    "__ansible_unsafe": "test100-vm"
-                },
+                "name": "test100-vm",
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "test101-vm": {
-                "ansible_host": {
-                    "__ansible_unsafe": "test101-vm"
-                },
+                "ansible_host": "test101-vm",
                 "cluster": {
                     "cluster_group": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Group"
-                        }
+                        "name": "Test Cluster Group"
                     },
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": {
-                        "name": {
-                            "__ansible_unsafe": "Child Test Location"
-                        }
+                        "name": "Child Test Location"
                     },
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster"
-                    }
+                    "name": "Test Cluster"
                 },
                 "interfaces": [
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth0"
-                        }
+                        "name": "Eth0"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth1"
-                        }
+                        "name": "Eth1"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth2"
-                        }
+                        "name": "Eth2"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth3"
-                        }
+                        "name": "Eth3"
                     },
                     {
-                        "name": {
-                            "__ansible_unsafe": "Eth4"
-                        }
+                        "name": "Eth4"
                     }
                 ],
-                "name": {
-                    "__ansible_unsafe": "test101-vm"
-                },
+                "name": "test101-vm",
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "test102-vm": {
-                "ansible_host": {
-                    "__ansible_unsafe": "test102-vm"
-                },
+                "ansible_host": "test102-vm",
                 "cluster": {
                     "cluster_group": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Group"
-                        }
+                        "name": "Test Cluster Group"
                     },
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": {
-                        "name": {
-                            "__ansible_unsafe": "Child Test Location"
-                        }
+                        "name": "Child Test Location"
                     },
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster"
-                    }
+                    "name": "Test Cluster"
                 },
-                "name": {
-                    "__ansible_unsafe": "test102-vm"
-                },
+                "name": "test102-vm",
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "test103-vm": {
-                "ansible_host": {
-                    "__ansible_unsafe": "test103-vm"
-                },
+                "ansible_host": "test103-vm",
                 "cluster": {
                     "cluster_group": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Group"
-                        }
+                        "name": "Test Cluster Group"
                     },
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": {
-                        "name": {
-                            "__ansible_unsafe": "Child Test Location"
-                        }
+                        "name": "Child Test Location"
                     },
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster"
-                    }
+                    "name": "Test Cluster"
                 },
-                "name": {
-                    "__ansible_unsafe": "test103-vm"
-                },
+                "name": "test103-vm",
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             },
             "test104-vm": {
-                "ansible_host": {
-                    "__ansible_unsafe": "test104-vm"
-                },
+                "ansible_host": "test104-vm",
                 "cluster": {
                     "cluster_group": null,
                     "cluster_type": {
-                        "name": {
-                            "__ansible_unsafe": "Test Cluster Type"
-                        }
+                        "name": "Test Cluster Type"
                     },
                     "location": null,
-                    "name": {
-                        "__ansible_unsafe": "Test Cluster 2"
-                    }
+                    "name": "Test Cluster 2"
                 },
-                "name": {
-                    "__ansible_unsafe": "test104-vm"
-                },
+                "name": "test104-vm",
                 "status": {
-                    "name": {
-                        "__ansible_unsafe": "Active"
-                    }
+                    "name": "Active"
                 }
             }
         },
