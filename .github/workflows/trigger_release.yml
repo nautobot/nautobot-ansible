@@ -47,6 +47,7 @@ jobs:
           - "3.0"
         ansible-version:
           - "2.18"
+          - "2.19"
         # exclude:
         #   - python-version: "x.x"
         #     ansible-version: "x.x"

@@ -1,1 +1,1 @@
-Fixed `--allow-unsafe` functionality for inventory modules.
+Fixed `allow_unsafe` functionality for inventory and gql_inventory modules.

@@ -1,1 +1,1 @@
-Fixed `--rename_variables` regression for inventory modules.
+Fixed `rename_variables` regression bug for the inventory module.
