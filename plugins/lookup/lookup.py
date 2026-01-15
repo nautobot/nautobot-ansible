@@ -147,6 +147,7 @@ from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     is_truthy,
+    mark_trusted,
 )
 
 try:
@@ -361,16 +362,6 @@ def make_call(endpoint, filters=None):  # noqa: D417
     return results
 
 
-def mark_trusted(input):
-    """
-    For a string value, mark it as trusted (if we're on a version that doesn't trust by default).
-    """
-    if _trust_as_template_import and isinstance(input, str):
-        trusted_input = _trust_as_template_import(input)
-        return trusted_input
-    return input
-
-
 class LookupModule(LookupBase):
     """
     LookupModule(LookupBase) is defined by Ansible.
@@ -400,7 +391,7 @@ class LookupModule(LookupBase):
         api_filter = kwargs.get("api_filter")
         if api_filter:
             if allow_unsafe:
-                api_filter = mark_trusted(api_filter)
+                api_filter = mark_trusted(api_filter, _trust_as_template_import)
             api_filter = self._templar.do_template(api_filter)
 
         raw_return = kwargs.get("raw_data")

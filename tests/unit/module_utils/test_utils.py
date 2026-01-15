@@ -8,13 +8,13 @@ import pytest
 from plugins.module_utils.utils import sort_dict_with_lists
 
 try:
-    from plugins.module_utils.utils import is_truthy
+    from plugins.module_utils.utils import is_truthy, mark_trusted
 except ImportError:
     import sys
 
     sys.path.append("plugins/module_utils")
     sys.path.append("tests")
-    from utils import is_truthy
+    from utils import is_truthy, mark_trusted
 
 
 @pytest.mark.parametrize(
@@ -200,3 +200,58 @@ def test_regression_issue_568() -> None:
         expected = jason["expected"]
 
     assert sort_dict_with_lists(data) == expected
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        "test",
+        [1, 2, 3],
+        {"key_a": "value_a"},
+        {"key_a": "value_a", "key_b": 42},
+        ["value_a", "value_b"],
+        {"outer": {"key_a": "value_a"}},
+        [[["value_a"]]],
+    ],
+)
+def test_mark_trusted_with_none_trust_func(data):
+    """Test that when trust_func is None, mark_trusted returns values unchanged"""
+    assert mark_trusted(data, None) == data
+
+
+class TrustedMock:
+    """
+    Wrapper class to simulate Ansible's `trust_as_template` behavior for testing.
+
+    Instances of this class represent strings that have been "marked as trusted"
+    for templating purposes.
+    """
+    def __init__(self, value):
+        self.value = value
+    def __eq__(self, other):
+        return isinstance(other, TrustedMock) and self.value == other.value
+    def __repr__(self):
+        return f"TrustedMock({self.value!r})"
+
+
+def _mock_trust_as_template(value):
+    """Simulate Ansible's trust tagging for strings."""
+    return TrustedMock(value)
+
+
+@pytest.mark.parametrize(
+    "data,expected",
+    [
+        ("test", TrustedMock("test")),
+        ([1, 2, 3], [1, 2, 3]),
+        ({"key_a": "value_a"}, {"key_a": TrustedMock("value_a")}),
+        ({"key_a": "value_a", "key_b": 42}, {"key_a": TrustedMock("value_a"), "key_b": 42}),
+        (["value_a", "value_b"], [TrustedMock("value_a"), TrustedMock("value_b")]),
+        ({"outer": {"key_a": "value_a"}}, {"outer": {"key_a": TrustedMock("value_a")}}),
+        ([[["value_a"]]], [[[TrustedMock("value_a")]]]),
+    ],
+)
+def test_mark_trusted_with_trust_func(data, expected):
+    """Test mark_trusted marks strings and leaves everything else untouched."""
+    result = mark_trusted(data, _mock_trust_as_template)
+    assert result == expected

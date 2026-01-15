@@ -664,6 +664,25 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
 )
 
 
+def mark_trusted(value, trust_func):
+    """
+    Recursively mark strings inside nested structures as trusted.
+    Works for str, list, tuple, set, dict.
+    """
+    if trust_func:
+        if isinstance(value, str):
+            return trust_func(value)
+        if isinstance(value, list):
+            return [mark_trusted(v, trust_func) for v in value]
+        if isinstance(value, tuple):
+            return tuple(mark_trusted(v, trust_func) for v in value)
+        if isinstance(value, set):
+            return {mark_trusted(v, trust_func) for v in value}
+        if isinstance(value, dict):
+            return {k: mark_trusted(v, trust_func) for k, v in value.items()}
+    return value
+
+
 def is_truthy(arg):
     """
     Convert "truthy" strings into Booleans.
