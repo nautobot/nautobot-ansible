@@ -63,7 +63,6 @@ You can use the following environment variables to test against different Python
 
 - **INVOKE_NAUTOBOT_ANSIBLE_NAUTOBOT_VER**
 - **INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER**
-- **INVOKE_NAUTOBOT_ANSIBLE_ANSIBLE_VER**
 
 ## Using Docker Compose Overrides
 
