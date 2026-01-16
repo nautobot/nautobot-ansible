@@ -318,6 +318,18 @@ except ImportError:
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
 
+    def _set_composite_vars(self, compose, variables, host, strict=False):
+        """Override to use custom `_set_variable` which applies `allow_unsafe`."""
+        if compose and isinstance(compose, dict):
+            for varname in compose:
+                try:
+                    composite = self._compose(compose[varname], variables)
+                except Exception as e:
+                    if strict:
+                        raise AnsibleError("Could not set %s for host %s: %s" % (varname, host, to_native(e)))
+                    continue
+                self._set_variable(host, varname, composite)
+
     def _fetch_information(self, url):
         results = None
         cache_key = self.get_cache_key(url)

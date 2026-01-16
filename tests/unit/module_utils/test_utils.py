@@ -226,10 +226,13 @@ class TrustedMock:
     Instances of this class represent strings that have been "marked as trusted"
     for templating purposes.
     """
+
     def __init__(self, value):
         self.value = value
+
     def __eq__(self, other):
         return isinstance(other, TrustedMock) and self.value == other.value
+
     def __repr__(self):
         return f"TrustedMock({self.value!r})"
 

@@ -68,7 +68,7 @@ DOCUMENTATION = """
             required: False
         allow_unsafe:
             description:
-                - If True, allows for potentially unsafe variables to be returned as-is.
+                - If set to True, permits Jinja2 templating to be evaluated within the api_filter parameter
             default: False
             type: boolean
     requirements:

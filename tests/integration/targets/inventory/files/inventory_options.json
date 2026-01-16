@@ -14,9 +14,7 @@
                     "my_device_custom_field": null
                 },
                 "device_type": "Cisco Test",
-                "display": {
-                    "__ansible_unsafe": "Cisco Cisco Test (00000000-0000-0000-0000-000000000000)"
-                },
+                "display": "Cisco Cisco Test (00000000-0000-0000-0000-000000000000)",
                 "is_virtual": false,
                 "location": "Child Test Location",
                 "locations": [
@@ -35,9 +33,7 @@
                     "object_type": "extras.status"
                 },
                 "testing_device_cf": null,
-                "testing_location_cf": {
-                    "__ansible_unsafe": "Test Location Custom Field Value"
-                }
+                "testing_location_cf": "Test Location Custom Field Value"
             },
             "R1-Device": {
                 "cluster": [],
@@ -47,9 +43,7 @@
                     "my_device_custom_field": null
                 },
                 "device_type": "Cisco Test",
-                "display": {
-                    "__ansible_unsafe": "R1-Device"
-                },
+                "display": "R1-Device",
                 "is_virtual": false,
                 "location": "Child Test Location",
                 "locations": [
@@ -73,9 +67,7 @@
                     "object_type": "extras.status"
                 },
                 "testing_device_cf": null,
-                "testing_location_cf": {
-                    "__ansible_unsafe": "Test Location Custom Field Value"
-                }
+                "testing_location_cf": "Test Location Custom Field Value"
             },
             "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
                 "ansible_host": "r2.example.com",
@@ -86,9 +78,7 @@
                     "my_device_custom_field": null
                 },
                 "device_type": "Cisco Test",
-                "display": {
-                    "__ansible_unsafe": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
-                },
+                "display": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
                 "dns_name": "r2.example.com",
                 "is_virtual": false,
                 "local_context_data": {
@@ -123,9 +113,7 @@
                 "cluster": "Test Cluster 2",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "Test VM With Spaces"
-                },
+                "display": "Test VM With Spaces",
                 "is_virtual": true,
                 "locations": [],
                 "nb_tags": [],
@@ -146,9 +134,7 @@
                     "my_device_custom_field": null
                 },
                 "device_type": "Cisco Test",
-                "display": {
-                    "__ansible_unsafe": "TestDeviceR1"
-                },
+                "display": "TestDeviceR1",
                 "is_virtual": false,
                 "location": "Child-Child Test Location",
                 "locations": [
@@ -184,9 +170,7 @@
                     "my_device_custom_field": null
                 },
                 "device_type": "Nexus Parent",
-                "display": {
-                    "__ansible_unsafe": "Test Nexus One"
-                },
+                "display": "Test Nexus One",
                 "dns_name": "nexus.example.com",
                 "is_virtual": false,
                 "location": "Child Test Location",
@@ -207,9 +191,7 @@
                     "object_type": "extras.status"
                 },
                 "testing_device_cf": null,
-                "testing_location_cf": {
-                    "__ansible_unsafe": "Test Location Custom Field Value"
-                }
+                "testing_location_cf": "Test Location Custom Field Value"
             },
             "test100": {
                 "cluster": [
@@ -227,9 +209,7 @@
                     "my_device_custom_field": "Test Device Custom Field Value"
                 },
                 "device_type": "Cisco Test",
-                "display": {
-                    "__ansible_unsafe": "test100"
-                },
+                "display": "test100",
                 "is_virtual": false,
                 "local_context_data": {
                     "ntp_servers": [
@@ -254,21 +234,15 @@
                 },
                 "tenant": "Test Tenant",
                 "tenant_group": "Test Tenant Group",
-                "testing_device_cf": {
-                    "__ansible_unsafe": "Test Device Custom Field Value"
-                },
-                "testing_location_cf": {
-                    "__ansible_unsafe": "Test Location Custom Field Value"
-                }
+                "testing_device_cf": "Test Device Custom Field Value",
+                "testing_location_cf": "Test Location Custom Field Value"
             },
             "test100-vm": {
                 "cluster": "Test Cluster",
                 "cluster_group": "Test Cluster Group",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "test100-vm"
-                },
+                "display": "test100-vm",
                 "is_virtual": true,
                 "location": "Child Test Location",
                 "locations": [
@@ -290,9 +264,7 @@
                 "cluster_group": "Test Cluster Group",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "test101-vm"
-                },
+                "display": "test101-vm",
                 "is_virtual": true,
                 "location": "Child Test Location",
                 "locations": [
@@ -314,9 +286,7 @@
                 "cluster_group": "Test Cluster Group",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "test102-vm"
-                },
+                "display": "test102-vm",
                 "is_virtual": true,
                 "location": "Child Test Location",
                 "locations": [
@@ -338,9 +308,7 @@
                 "cluster_group": "Test Cluster Group",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "test103-vm"
-                },
+                "display": "test103-vm",
                 "is_virtual": true,
                 "location": "Child Test Location",
                 "locations": [
@@ -361,9 +329,7 @@
                 "cluster": "Test Cluster 2",
                 "cluster_type": "Test Cluster Type",
                 "custom_fields": {},
-                "display": {
-                    "__ansible_unsafe": "test104-vm"
-                },
+                "display": "test104-vm",
                 "is_virtual": true,
                 "locations": [],
                 "nb_tags": [],
