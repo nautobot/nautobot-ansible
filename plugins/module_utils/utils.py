@@ -664,15 +664,23 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
 )
 
 
-def check_needs_wrapping(value):
-    """Recursively checks lists and dictionaries, and checks strings directly, to see if they need to be wrapped due to containing Jinja2 delimiters."""
-    if isinstance(value, str):
-        return "{{" in value or "{%" in value
-    elif isinstance(value, dict):
-        return any(check_needs_wrapping(v) for v in value.values())
-    elif isinstance(value, list):
-        return any(check_needs_wrapping(item) for item in value)
-    return False
+def mark_trusted(value, trust_func):
+    """
+    Recursively mark strings inside nested structures as trusted.
+    Works for str, list, tuple, set, dict.
+    """
+    if trust_func:
+        if isinstance(value, str):
+            return trust_func(value)
+        if isinstance(value, list):
+            return [mark_trusted(v, trust_func) for v in value]
+        if isinstance(value, tuple):
+            return tuple(mark_trusted(v, trust_func) for v in value)
+        if isinstance(value, set):
+            return {mark_trusted(v, trust_func) for v in value}
+        if isinstance(value, dict):
+            return {k: mark_trusted(v, trust_func) for k, v in value.items()}
+    return value
 
 
 def is_truthy(arg):

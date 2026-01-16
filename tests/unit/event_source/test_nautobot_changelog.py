@@ -59,9 +59,9 @@ ssl_test_cases = [
             "instance": "https://localhost",
             "token": "0123456789abcdef0123456789abcdef01234567",
             "query": "",
-            "interval": 5
+            "interval": 5,
         },
-        True
+        True,
     ),
     (
         {
@@ -69,9 +69,9 @@ ssl_test_cases = [
             "token": "0123456789abcdef0123456789abcdef01234567",
             "validate_certs": True,
             "query": "",
-            "interval": 5
+            "interval": 5,
         },
-        True
+        True,
     ),
     (
         {
@@ -79,11 +79,13 @@ ssl_test_cases = [
             "token": "0123456789abcdef0123456789abcdef01234567",
             "validate_certs": False,
             "query": "",
-            "interval": 5
+            "interval": 5,
         },
-        False
+        False,
     ),
 ]
+
+
 @pytest.mark.asyncio
 @pytest.mark.parametrize("args, expected_ssl", ssl_test_cases)
 async def test_main_with_various_args(args, expected_ssl):
@@ -93,10 +95,9 @@ async def test_main_with_various_args(args, expected_ssl):
     """
     queue = asyncio.Queue()
 
-    with patch('aiohttp.TCPConnector') as mock_tcp_connector, \
-         patch('aiohttp.ClientSession') as mock_session, \
-         patch('asyncio.sleep', side_effect=asyncio.CancelledError):
-
+    with patch("aiohttp.TCPConnector") as mock_tcp_connector, patch("aiohttp.ClientSession") as mock_session, patch(
+        "asyncio.sleep", side_effect=asyncio.CancelledError
+    ):
         mock_tcp_connector.return_value = MagicMock()
         mock_session_instance = MagicMock()
         mock_session.return_value.__aenter__.return_value = mock_session_instance

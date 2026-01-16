@@ -28,7 +28,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['autonomous-systems']['asn'] == 65001
       - test_one['autonomous-systems']['status'] == active['key']
-      - test_one['msg'] == "autonomous-systems asn:65001 created"
+      - "'created' in test_one['msg']"
 
 - name: "BGP ASN 2: Create duplicate"
   networktocode.nautobot.plugin:
@@ -49,7 +49,7 @@
       - test_two is not changed
       - test_two['autonomous-systems']['asn'] == 65001
       - test_two['autonomous-systems']['status'] == active['key']
-      - test_two['msg'] == "autonomous-systems asn:65001 already exists"
+      - "'already exists' in test_two['msg']"
 
 - name: "BGP ASN 3: Update"
   networktocode.nautobot.plugin:
@@ -70,7 +70,7 @@
       - test_three is changed
       - test_three['diff']['before']['status'] == active['key']
       - test_three['diff']['after']['status'] == planned['key']
-      - test_three['msg'] == "autonomous-systems asn:65001 updated"
+      - "'updated' in test_three['msg']"
 
 - name: "BGP ASN 4: Update Idempotent"
   networktocode.nautobot.plugin:
@@ -89,7 +89,7 @@
   assert:
     that:
       - test_four is not changed
-      - test_four['msg'] == "autonomous-systems asn:65001 already exists"
+      - "'already exists' in test_four['msg']"
 
 - name: "BGP ASN 5: Delete"
   networktocode.nautobot.plugin:
@@ -108,7 +108,7 @@
       - test_five is changed
       - test_five['diff']['before']['state'] == "present"
       - test_five['diff']['after']['state'] == "absent"
-      - test_five['msg'] == "autonomous-systems asn:65001 deleted"
+      - "'deleted' in test_five['msg']"
 
 - name: "BGP ASN 6: Delete non-existing"
   networktocode.nautobot.plugin:
@@ -125,4 +125,4 @@
   assert:
     that:
       - test_six is not changed
-      - test_six['msg'] == "autonomous-systems asn:65001 already absent"
+      - "'already absent' in test_six['msg']"

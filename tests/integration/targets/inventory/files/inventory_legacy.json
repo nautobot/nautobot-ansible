@@ -80,7 +80,7 @@
                 },
                 "tags": []
             },
-            "R2 {{ SEE ISSUE 114 }}": {
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
                 "ansible_host": "172.16.180.13",
                 "cluster": [],
                 "cluster_group": [],
@@ -97,21 +97,13 @@
                 "is_virtual": false,
                 "local_context_data": [
                     {
-                        "normal_string": {
-                            "__ansible_unsafe": "this is a normal string"
-                        },
-                        "string_containing_jinja2tags": {
-                            "__ansible_unsafe": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}"
-                        }
+                        "normal_string": "this is a normal string",
+                        "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
                     }
                 ],
-                "location": {
-                    "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
-                },
+                "location": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3",
                 "locations": [
-                    {
-                        "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
-                    }
+                    "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
                 ],
                 "manufacturers": [
                     "Cisco"
@@ -708,7 +700,8 @@
                 },
                 "tags": []
             }
-        }
+        },
+        "profile": "inventory_legacy"
     },
     "all": {
         "children": [
@@ -719,9 +712,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test Nexus One",
             "Test VM With Spaces",
             "TestDeviceR1",

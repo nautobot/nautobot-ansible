@@ -1,1 +1,2 @@
 Updated CI matrix to test Nautobot 3.0 instead of the develop branch.
+Added ansible-core 2.19 to test matrices and removed ansible-core 2.17 (EOL).

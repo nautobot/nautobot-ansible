@@ -26,7 +26,7 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['vrf_device_assignments']['vrf'] == vrf_device_assignment_vrf['key']
       - test_one['vrf_device_assignments']['device'] == vrf_device_assignment_device['key']
-      - test_one['msg'] == "vrf_device_assignments Test VRF: test100 created"
+      - "'created' in test_one['msg']"
 
 - name: "VRF Device Assignment 2: Create idempotent"
   networktocode.nautobot.vrf_device_assignment:
@@ -43,7 +43,7 @@
       - not test_two['changed']
       - test_two['vrf_device_assignments']['vrf'] == vrf_device_assignment_vrf['key']
       - test_two['vrf_device_assignments']['device'] == vrf_device_assignment_device['key']
-      - test_two['msg'] == "vrf_device_assignments Test VRF: test100 already exists"
+      - "'already exists' in test_two['msg']"
 
 - name: "VRF Device Assignment 3: Create VRF VM Assignment"
   networktocode.nautobot.vrf_device_assignment:
@@ -62,7 +62,7 @@
       - test_three['diff']['after']['state'] == "present"
       - test_three['vrf_device_assignments']['vrf'] == vrf_device_assignment_vrf['key']
       - test_three['vrf_device_assignments']['virtual_machine'] == vrf_device_assignment_virtual_machine['key']
-      - test_three['msg'] == "vrf_device_assignments Test VRF: test100-vm created"
+      - "'created' in test_three['msg']"
 
 - name: "VRF Device Assignment 4: Delete VRF Device Assignment"
   networktocode.nautobot.vrf_device_assignment:

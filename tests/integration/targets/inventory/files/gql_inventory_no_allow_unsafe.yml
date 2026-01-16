@@ -1,8 +1,4 @@
-plugin: networktocode.nautobot.inventory
+plugin: networktocode.nautobot.gql_inventory
 api_endpoint: "http://nautobot:8000"
 token: "0123456789abcdef0123456789abcdef01234567"
 validate_certs: false
-
-query_filters:
-  - name__isw: R2
-allow_unsafe: true

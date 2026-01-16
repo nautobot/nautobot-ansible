@@ -3,3 +3,4 @@ api_endpoint: "http://nautobot:8000"
 token: "0123456789abcdef0123456789abcdef01234567"
 validate_certs: False
 saved_query: "No Name Devices"
+allow_unsafe: true
