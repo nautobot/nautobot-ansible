@@ -28,7 +28,7 @@ This document describes all new features and changes in the release. The format 
 ### Fixed
 
 - [#606](https://github.com/nautobot/nautobot-ansible/issues/606), [#666](https://github.com/nautobot/nautobot-ansible/issues/666) - Fixed `allow_unsafe` functionality for inventory and gql_inventory modules.
-- [#663](https://github.com/nautobot/nautobot-ansible/issues/663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override
+- [#663](https://github.com/nautobot/nautobot-ansible/issues/663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override.
 - [#674](https://github.com/nautobot/nautobot-ansible/issues/674) - Fixed `rename_variables` regression bug for the inventory module.
 
 ### Housekeeping

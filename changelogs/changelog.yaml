@@ -736,7 +736,7 @@ releases:
       minor_changes:
         - (#642) - Added a local file cache of the OpenAPI spec of Nautobot for the inventory plugin when using query filters.
         - (#642) - Changed the inventory plugin to not fetch the OpenAPI spec if the user does not provide any query filters.
-        - (#663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override
+        - (#663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override.
         - (#669) - Removed the choices for the `actions` parameter in the `admin_permission` module to allow for custom actions to be provided.
         - (#667) - Added `allow_unsafe` option for the lookup module.
         - (#606) - Fixed `allow_unsafe` functionality for inventory and gql_inventory modules.
@@ -745,14 +745,14 @@ releases:
         - (#678) - Added the ability to look up Content Types with the `lookup` module.
     modules:
       - name: unique_rule
-        description: Creates or removes unique rules from Nautobot
+        description: Creates or removes "unique" data validation rules from Nautobot
         namespace: ''
       - name: required_rule
-        description: Creates or removes required rules from Nautobot
+        description: Creates or removes "required" data validation rules from Nautobot
         namespace: ''
       - name: regex_rule
-        description: Creates or removes regex rules from Nautobot
+        description: Creates or removes "regex" data validation rules from Nautobot
         namespace: ''
       - name: min_max_rule
-        description: Creates or removes min/max rules from Nautobot
+        description: Creates or removes "min/max" data validation rules from Nautobot
         namespace: ''
