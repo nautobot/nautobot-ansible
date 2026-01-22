@@ -731,3 +731,28 @@ releases:
     modules:
       - description: Creates or removes device to cluster assignments from Nautobot
         name: device_cluster_assignment
+  6.1.0:
+    changes:
+      minor_changes:
+        - (#642) - Added a local file cache of the OpenAPI spec of Nautobot for the inventory plugin when using query filters.
+        - (#642) - Changed the inventory plugin to not fetch the OpenAPI spec if the user does not provide any query filters.
+        - (#663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override
+        - (#669) - Removed the choices for the `actions` parameter in the `admin_permission` module to allow for custom actions to be provided.
+        - (#667) - Added `allow_unsafe` option for the lookup module.
+        - (#606) - Fixed `allow_unsafe` functionality for inventory and gql_inventory modules.
+        - (#674) - Fixed `rename_variables` regression bug for the inventory module.
+        - Raised the minimum supported Ansible Core version to 2.18.
+        - (#678) - Added the ability to look up Content Types with the `lookup` module.
+    modules:
+      - name: unique_rule
+        description: Creates or removes unique rules from Nautobot
+        namespace: ''
+      - name: required_rule
+        description: Creates or removes required rules from Nautobot
+        namespace: ''
+      - name: regex_rule
+        description: Creates or removes regex rules from Nautobot
+        namespace: ''
+      - name: min_max_rule
+        description: Creates or removes min/max rules from Nautobot
+        namespace: ''

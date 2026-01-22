@@ -1,1 +1,0 @@
-Changed the inventory plugin to not fetch the OpenAPI spec if the user does not provide any query filters.

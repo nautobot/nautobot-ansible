@@ -4,6 +4,38 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.1.0)
+
+### Added
+
+- [#570](https://github.com/nautobot/nautobot-ansible/issues/570) - Added the `unique_rule` module for creating, updating, and deleting data validation unique rules in Nautobot.
+- [#571](https://github.com/nautobot/nautobot-ansible/issues/571) - Added the `required_rule` module for creating, updating, and deleting data validation required rules in Nautobot.
+- [#572](https://github.com/nautobot/nautobot-ansible/issues/572) - Added the `regex_rule` module for creating, updating, and deleting data validation regex rules in Nautobot.
+- [#573](https://github.com/nautobot/nautobot-ansible/issues/573) - Added the `min_max_rule` module for creating, updating, and deleting data validation min/max rules in Nautobot.
+- [#642](https://github.com/nautobot/nautobot-ansible/issues/642) - Added a local file cache of the OpenAPI spec of Nautobot for the inventory plugin when using query filters.
+- [#667](https://github.com/nautobot/nautobot-ansible/issues/667) - Added `allow_unsafe` option for the lookup module.
+- [#678](https://github.com/nautobot/nautobot-ansible/issues/678) - Added the ability to look up Content Types with the `lookup` module.
+
+### Changed
+
+- [#642](https://github.com/nautobot/nautobot-ansible/issues/642) - Changed the inventory plugin to not fetch the OpenAPI spec if the user does not provide any query filters.
+- [#669](https://github.com/nautobot/nautobot-ansible/issues/669) - Removed the choices for the `actions` parameter in the `admin_permission` module to allow for custom actions to be provided.
+
+### Dependencies
+
+- Raised the minimum supported Ansible Core version to 2.18.
+
+### Fixed
+
+- [#606](https://github.com/nautobot/nautobot-ansible/issues/606), [#666](https://github.com/nautobot/nautobot-ansible/issues/666) - Fixed `allow_unsafe` functionality for inventory and gql_inventory modules.
+- [#663](https://github.com/nautobot/nautobot-ansible/issues/663) - Added a log message to the `gql_inventory` plugin when platform.napalm_driver is missing due to a query override
+- [#674](https://github.com/nautobot/nautobot-ansible/issues/674) - Fixed `rename_variables` regression bug for the inventory module.
+
+### Housekeeping
+
+- Updated CI matrix to test Nautobot 3.0 instead of the develop branch.
+- Added ansible-core 2.19 to test matrices and removed ansible-core 2.17 (EOL).
+
 ## [v6.0.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.0.0)
 
 ### Release Summary
