@@ -3,9 +3,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test Nexus Child One",
             "Test Nexus One",
             "Test VM With Spaces",
@@ -20,9 +18,7 @@
     },
     "Another_Test_Rack": {
         "hosts": [
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            }
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "Child_Child_Test_Location": {
@@ -48,9 +44,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test Nexus Child One",
             "Test Nexus One",
             "TestDeviceR1",
@@ -61,9 +55,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "TestDeviceR1",
             "test100"
         ]
@@ -72,9 +64,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test Nexus Child One",
             "Test Nexus One",
             "TestDeviceR1",
@@ -98,9 +88,7 @@
     },
     "Parent3_Rack_Group": {
         "hosts": [
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            }
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "Parent_Rack_Group": {
@@ -150,11 +138,9 @@
             "test100"
         ]
     },
-    "___SEE_ISSUE_114___Parent_Test_Location_3": {
+    "___ANSIBLE_UNSAFE_HANDLING_TEST___Parent_Test_Location_3": {
         "hosts": [
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            }
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}"
         ]
     },
     "_meta": {
@@ -206,15 +192,11 @@
                     "name": "Active"
                 }
             },
-            "R2 {{ SEE ISSUE 114 }}": {
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
                 "ansible_host": "172.16.180.13",
                 "config_context": {
-                    "normal_string": {
-                        "__ansible_unsafe": "this is a normal string"
-                    },
-                    "string_containing_jinja2tags": {
-                        "__ansible_unsafe": "this is a string containing Jinja2 tags {{ SEE ISSUE 114 }}"
-                    }
+                    "normal_string": "this is a normal string",
+                    "string_containing_jinja2tags": "this is a string containing Jinja2 tags {{ ANSIBLE UNSAFE HANDLING TEST }}"
                 },
                 "device_type": {
                     "manufacturer": {
@@ -228,13 +210,9 @@
                     }
                 ],
                 "location": {
-                    "name": {
-                        "__ansible_unsafe": "{{ SEE ISSUE 114 }}Parent Test Location 3"
-                    }
+                    "name": "{{ ANSIBLE UNSAFE HANDLING TEST }}Parent Test Location 3"
                 },
-                "name": {
-                    "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-                },
+                "name": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
                 "primary_ip4": {
                     "host": "172.16.180.13"
                 },
@@ -541,7 +519,8 @@
                     "name": "Active"
                 }
             }
-        }
+        },
+        "profile": "inventory_legacy"
     },
     "all": {
         "children": [
@@ -564,7 +543,7 @@
             "Test_Cluster_Group",
             "Test_Cluster_Type",
             "Test_Tenant",
-            "___SEE_ISSUE_114___Parent_Test_Location_3",
+            "___ANSIBLE_UNSAFE_HANDLING_TEST___Parent_Test_Location_3",
             "rack_role",
             "ungrouped"
         ]
@@ -572,9 +551,7 @@
     "rack_role": {
         "hosts": [
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "TestDeviceR1"
         ]
     }

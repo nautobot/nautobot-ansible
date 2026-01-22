@@ -287,6 +287,7 @@ rename_variables:
 
 import json
 import math
+import os
 import re
 import uuid
 from collections import defaultdict
@@ -303,14 +304,31 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
-from ansible.utils.unsafe_proxy import wrap_var
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    check_needs_wrapping,
+    mark_trusted,
 )
+
+_trust_as_template_import = None
+try:
+    from ansible.template import trust_as_template as _trust_as_template_import
+except ImportError:
+    pass
 
 
 class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = "networktocode.nautobot.inventory"
+
+    def _set_composite_vars(self, compose, variables, host, strict=False):
+        """Override to use custom `_set_variable` which applies `allow_unsafe`."""
+        if compose and isinstance(compose, dict):
+            for varname in compose:
+                try:
+                    composite = self._compose(compose[varname], variables)
+                except Exception as e:
+                    if strict:
+                        raise AnsibleError("Could not set %s for host %s: %s" % (varname, host, to_native(e)))
+                    continue
+                self._set_variable(host, varname, composite)
 
     def _fetch_information(self, url):
         results = None
@@ -1087,14 +1105,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             thread_exceptions = None
 
     def fetch_api_docs(self):
-        openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
+        openapi = None
+        if self.use_cache:
+            nautobot_status = self._fetch_information(self.api_endpoint + "/api/status/")
+            nautobot_version = nautobot_status.get("nautobot-version", "")
+            cache_dir = os.path.join(os.path.expanduser("~/.ansible"), "cache", "nautobot_inventory")
+            os.makedirs(cache_dir, exist_ok=True)
+            cache_file = os.path.join(cache_dir, f"nautobot_openapi_{nautobot_version}.json")
+            if os.path.exists(cache_file):
+                self.display.v(f"Using cached API docs for Nautobot version {nautobot_version}")
+                with open(cache_file, "r", encoding="utf-8") as f:
+                    openapi = json.load(f)
+        if not openapi:
+            self.display.v(f"Fetching API docs for Nautobot version {nautobot_version}")
+            openapi = self._fetch_information(self.api_endpoint + "/api/docs/?format=openapi")
+            if self.use_cache:
+                with open(cache_file, "w", encoding="utf-8") as f:
+                    self.display.v(f"Saving API docs for Nautobot version {nautobot_version} to cache")
+                    json.dump(openapi, f)
 
-        device_path = "/api/dcim/devices/" if "/api/dcim/devices/" in openapi["paths"] else "/dcim/devices/"
-        vm_path = (
-            "/api/virtualization/virtual-machines/"
-            if "/api/virtualization/virtual-machines/" in openapi["paths"]
-            else "/virtualization/virtual-machines/"
-        )
+        device_path = "/dcim/devices/"
+        vm_path = "/virtualization/virtual-machines/"
 
         self.allowed_device_query_parameters = [p["name"] for p in openapi["paths"][device_path]["get"]["parameters"]]
         self.allowed_vm_query_parameters = [p["name"] for p in openapi["paths"][vm_path]["get"]["parameters"]]
@@ -1136,8 +1167,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         device_url = self.api_endpoint + "/api/dcim/devices/?"
         vm_url = self.api_endpoint + "/api/virtualization/virtual-machines/?"
 
-        # Add query_filtes to both devices and vms query, if they're valid
-        if isinstance(self.query_filters, Iterable):
+        # Add query_filters to both devices and vms query, if they're valid
+        if self.query_filters and isinstance(self.query_filters, Iterable):
             device_query_parameters.extend(
                 self.filter_query_parameters(self.query_filters, self.allowed_device_query_parameters)
             )
@@ -1146,12 +1177,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 self.filter_query_parameters(self.query_filters, self.allowed_vm_query_parameters)
             )
 
-        if isinstance(self.device_query_filters, Iterable):
+        if self.device_query_filters and isinstance(self.device_query_filters, Iterable):
             device_query_parameters.extend(
                 self.filter_query_parameters(self.device_query_filters, self.allowed_device_query_parameters)
             )
 
-        if isinstance(self.vm_query_filters, Iterable):
+        if self.vm_query_filters and isinstance(self.vm_query_filters, Iterable):
             vm_query_parameters.extend(
                 self.filter_query_parameters(self.vm_query_filters, self.allowed_vm_query_parameters)
             )
@@ -1220,12 +1251,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _remove_invalid_group_chars(group):
         # Removes spaces and hyphens which Ansible doesn't like and converts to lowercase.
         return group.replace("-", "_").replace(" ", "_").lower()
-
-    def set_inv_var_safely(self, hostname, variable_name, value):
-        """Set inventory variable with conditional wrapping only where needed."""
-        if self.wrap_variables and check_needs_wrapping(value):
-            value = wrap_var(value)
-        self.inventory.set_variable(hostname, variable_name, value)
 
     def generate_group_name(self, grouping, group):
         # Check for special case - if group is a boolean, just return grouping name instead
@@ -1299,29 +1324,32 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 key = item["pattern"].sub(item["repl"], key)
                 break
 
+        if self.allow_unsafe:
+            value = mark_trusted(value, _trust_as_template_import)
+
         self.inventory.set_variable(hostname, key, value)
 
     def _fill_host_variables(self, host, hostname):
         extracted_primary_ip = self.extract_primary_ip(host=host)
         if extracted_primary_ip:
-            self.set_inv_var_safely(hostname, "ansible_host", extracted_primary_ip["host"])
+            self._set_variable(hostname, "ansible_host", extracted_primary_ip["host"])
 
         if self.ansible_host_dns_name:
             extracted_dns_name = self.extract_dns_name(host=host)
             if extracted_dns_name:
-                self.set_inv_var_safely(hostname, "ansible_host", extracted_dns_name)
+                self._set_variable(hostname, "ansible_host", extracted_dns_name)
 
         extracted_primary_ip4 = self.extract_primary_ip4(host=host)
         if extracted_primary_ip4:
-            self.set_inv_var_safely(hostname, "primary_ip4", extracted_primary_ip4["host"])
+            self._set_variable(hostname, "primary_ip4", extracted_primary_ip4["host"])
 
         extracted_primary_ip6 = self.extract_primary_ip6(host=host)
         if extracted_primary_ip6:
-            self.set_inv_var_safely(hostname, "primary_ip6", extracted_primary_ip6["host"])
+            self._set_variable(hostname, "primary_ip6", extracted_primary_ip6["host"])
 
         location = self.extract_location(host=host)
         if location:
-            self.set_inv_var_safely(hostname, "location", location)
+            self._set_variable(hostname, "location", location)
 
         for attribute, extractor in self.group_extractors.items():
             extracted_value = extractor(host)
@@ -1348,9 +1376,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
             ):
                 for key, value in extracted_value.items():
-                    self.set_inv_var_safely(hostname, key, value)
+                    self._set_variable(hostname, key, value)
             else:
-                self.set_inv_var_safely(hostname, attribute, extracted_value)
+                self._set_variable(hostname, attribute, extracted_value)
 
     def _get_host_virtual_chassis_master(self, host):
         virtual_chassis = host.get("virtual_chassis", None)
@@ -1367,7 +1395,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
     def main(self):
         # Get info about the API - version, allowed query parameters
-        self.fetch_api_docs()
+        if any([self.query_filters, self.device_query_filters, self.vm_query_filters]):
+            self.fetch_api_docs()
 
         if self.api_version:
             self.headers.update({"Accept": f"application/json; version={self.api_version}"})
@@ -1388,10 +1417,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 continue
 
             hostname = self.extract_name(host=host)
-
-            if self.wrap_variables and check_needs_wrapping(hostname):
-                hostname = wrap_var(hostname)
-
             self.inventory.add_host(host=hostname)
             self._fill_host_variables(host=host, hostname=hostname)
 
@@ -1450,7 +1475,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.virtual_chassis_name = self.get_option("virtual_chassis_name")
         self.dns_name = self.get_option("dns_name")
         self.ansible_host_dns_name = self.get_option("ansible_host_dns_name")
-        self.wrap_variables = not self.get_option("allow_unsafe")
+        self.allow_unsafe = self.get_option("allow_unsafe")
 
         # Compile regular expressions, if any
         self.rename_variables = self.parse_rename_variables(self.get_option("rename_variables"))

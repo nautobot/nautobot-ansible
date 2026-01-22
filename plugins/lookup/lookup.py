@@ -66,6 +66,11 @@ DOCUMENTATION = """
             description:
                 - Whether to return raw API data with the lookup/query or whether to return a key/value dict
             required: False
+        allow_unsafe:
+            description:
+                - If set to True, permits Jinja2 templating to be evaluated within the api_filter parameter
+            default: False
+            type: boolean
     requirements:
         - pynautobot
 """
@@ -142,6 +147,7 @@ from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     is_truthy,
+    mark_trusted,
 )
 
 try:
@@ -150,6 +156,12 @@ except ImportError as imp_exc:
     PYNAUTOBOT_IMPORT_ERROR = imp_exc
 else:
     PYNAUTOBOT_IMPORT_ERROR = None
+
+_trust_as_template_import = None
+try:
+    from ansible.template import trust_as_template as _trust_as_template_import
+except ImportError:
+    pass
 
 
 def get_endpoint(nautobot, term):
@@ -189,6 +201,7 @@ def get_endpoint(nautobot, term):
         "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
         "contacts": {"endpoint": nautobot.extras.contacts},
+        "content-types": {"endpoint": nautobot.extras.content_types},
         "custom-fields": {"endpoint": nautobot.extras.custom_fields},
         "custom-field-choices": {"endpoint": nautobot.extras.custom_field_choices},
         "device-bay-templates": {"endpoint": nautobot.dcim.device_bay_templates},
@@ -217,6 +230,7 @@ def get_endpoint(nautobot, term):
         "manufacturers": {"endpoint": nautobot.dcim.manufacturers},
         "metadata-choices": {"endpoint": nautobot.extras.metadata_choices},
         "metadata-types": {"endpoint": nautobot.extras.metadata_types},
+        "min-max-rules": {"endpoint": nautobot.data_validation.min_max_rules},
         "module-bay-templates": {"endpoint": nautobot.dcim.module_bay_templates},
         "module-bays": {"endpoint": nautobot.dcim.module_bays},
         "module-types": {"endpoint": nautobot.dcim.module_types},
@@ -240,9 +254,11 @@ def get_endpoint(nautobot, term):
         "radio-profiles": {"endpoint": nautobot.wireless.radio_profiles},
         "rear-port-templates": {"endpoint": nautobot.dcim.rear_port_templates},
         "rear-ports": {"endpoint": nautobot.dcim.rear_ports},
+        "regex-rules": {"endpoint": nautobot.data_validation.regex_rules},
         "relationships": {"endpoint": nautobot.extras.relationships},
         "relationship-associations": {"endpoint": nautobot.extras.relationship_associations},
         "reports": {"endpoint": nautobot.extras.reports},
+        "required-rules": {"endpoint": nautobot.data_validation.required_rules},
         "rirs": {"endpoint": nautobot.ipam.rirs},
         "roles": {"endpoint": nautobot.extras.roles},
         "secrets": {"endpoint": nautobot.extras.secrets},
@@ -259,6 +275,7 @@ def get_endpoint(nautobot, term):
         "tenant-groups": {"endpoint": nautobot.tenancy.tenant_groups},
         "tenants": {"endpoint": nautobot.tenancy.tenants},
         "topology-maps": {"endpoint": nautobot.extras.topology_maps},
+        "unique-rules": {"endpoint": nautobot.data_validation.unique_rules},
         "virtual-chassis": {"endpoint": nautobot.dcim.virtual_chassis},
         "virtual-device-contexts": {"endpoint": nautobot.dcim.virtual_device_contexts},
         "virtual-machines": {"endpoint": nautobot.virtualization.virtual_machines},
@@ -370,9 +387,14 @@ class LookupModule(LookupBase):
         else:
             ssl_verify = True
         num_retries = kwargs.get("num_retries", "0")
+
+        allow_unsafe = kwargs.get("allow_unsafe", False)
         api_filter = kwargs.get("api_filter")
         if api_filter:
+            if allow_unsafe:
+                api_filter = mark_trusted(api_filter, _trust_as_template_import)
             api_filter = self._templar.do_template(api_filter)
+
         raw_return = kwargs.get("raw_data")
         plugin = kwargs.get("plugin")
         api_version = kwargs.get("api_version")

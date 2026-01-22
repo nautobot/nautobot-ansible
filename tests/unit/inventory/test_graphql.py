@@ -47,7 +47,7 @@ def inventory_fixture():
     inventory.inventory = InventoryData()
     inventory.inventory.add_host("mydevice")
     inventory.group_names_raw = False
-    inventory.wrap_variables = True
+    inventory.allow_unsafe = False
     inventory.saved_query = None
 
     return inventory
@@ -63,6 +63,16 @@ def device_data():
 def paginated_device_data():
     json_data = load_relative_test_data("graphql_paginate")
     return json_data
+
+
+@pytest.fixture
+def mock_query_api(inventory_fixture, mocker, device_data):
+    """Patch inventory_fixture._query_api and return the mock."""
+    return mocker.patch.object(
+        inventory_fixture,
+        "_query_api",
+        return_value=device_data,
+    )
 
 
 def test_group_by_path_multiple(inventory_fixture, device_data):
@@ -277,3 +287,49 @@ def test_gql_inventory_paginated(mock_open_url, inventory_fixture, paginated_dev
     results = inventory_fixture.get_results()
     assert len(results["data"]["devices"]) == 5
     assert len(results["data"]["virtual_machines"]) == 5
+
+
+def test_get_results_merges_gql_query_into_base_query(inventory_fixture, device_data, mock_query_api):
+    inventory_fixture.page_size = None
+
+    inventory_fixture.gql_query = {
+        "devices": {
+            "status": {"name": "Active"},
+            "tenant": {"name": "Foo"},
+            "platform": {"name": None, "napalm_driver": None},
+        },
+        "virtual_machines": {
+            "status": {"name": "Active"},
+        },
+    }
+
+    mock_query_api.return_value = device_data
+    inventory_fixture.get_results()
+    (base_query_arg,), kwargs = mock_query_api.call_args
+
+    devices_query = base_query_arg["query"]["devices"]
+    vms_query = base_query_arg["query"]["virtual_machines"]
+
+    # Assert base_query values
+    assert devices_query["id"] is None
+    assert "name" in devices_query
+    assert devices_query["primary_ip4"] == "host"
+    assert devices_query["primary_ip6"] == "host"
+    assert devices_query["platform"] == {"name": None, "napalm_driver": None}
+    assert vms_query["id"] is None
+    assert "name" in vms_query
+    assert vms_query["primary_ip4"] == "host"
+    assert vms_query["primary_ip6"] == "host"
+    assert vms_query["platform"] == "name"
+
+    # Assert merged-in gql_query values
+    assert devices_query["status"] == {"name": "Active"}
+    assert devices_query["tenant"] == {"name": "Foo"}
+    assert vms_query["status"] == {"name": "Active"}
+
+
+@patch.object(Display, "error")
+def test_missing_platform_napalm_driver(mock_error, inventory_fixture, device_data):
+    device_data["platform"].pop("napalm_driver")
+    inventory_fixture.add_ansible_platform(device_data)
+    mock_error.assert_any_call("Mapping ansible_network_os requires platform.napalm_driver as part of the query.")

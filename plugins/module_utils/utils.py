@@ -39,6 +39,12 @@ API_APPS_ENDPOINTS = dict(
         "cloud_services",
         "cloud_service_network_assignments",
     ],
+    data_validation=[
+        "min_max_rules",
+        "regex_rules",
+        "required_rules",
+        "unique_rules",
+    ],
     dcim=[
         "cables",
         "console_ports",
@@ -155,6 +161,7 @@ QUERY_TYPES = dict(
     location_type="name",
     manufacturer="name",
     master="name",
+    min_max_rule="name",
     module_bay_template="name",
     module_bay="name",
     module_type="model",
@@ -180,6 +187,8 @@ QUERY_TYPES = dict(
     radio_profile="name",
     rear_port="name",
     rear_port_template="name",
+    regex_rule="name",
+    required_rule="name",
     rir="name",
     route_targets="name",
     secret="name",  # noqa: S106
@@ -192,6 +201,7 @@ QUERY_TYPES = dict(
     tenant="name",
     tenant_group="name",
     time_zone="timezone",
+    unique_rule="name",
     user="username",
     virtual_chassis="name",
     virtual_device_context="name",
@@ -308,6 +318,7 @@ CONVERT_TO_ID = {
     "vrf": "vrfs",
 }
 
+# Used to map the endpoint name to the Nautobot API endpoint name if it is different
 ENDPOINT_NAME_MAPPING = {
     "cables": "cable",
     "circuit_terminations": "circuit_termination",
@@ -346,19 +357,18 @@ ENDPOINT_NAME_MAPPING = {
     "interface_templates": "interface_template",
     "inventory_items": "inventory_item",
     "ip_addresses": "ip_address",
-    "ip_address_to_interface": "ip_address_to_interface",
     "job_buttons": "job_button",
     "locations": "location",
     "location_types": "location_type",
     "manufacturers": "manufacturer",
     "metadata_choices": "metadata_choice",
     "metadata_types": "metadata_type",
+    "min_max_rules": "min_max_rule",
     "module_bay_templates": "module_bay_template",
     "module_bays": "module_bay",
     "module_types": "module_type",
     "modules": "module",
     "namespaces": "namespace",
-    "object_metadata": "object_metadata",
     "permissions": "permission",
     "platforms": "platform",
     "power_feeds": "power_feed",
@@ -368,39 +378,34 @@ ENDPOINT_NAME_MAPPING = {
     "power_ports": "power_port",
     "power_port_templates": "power_port_template",
     "prefixes": "prefix",
-    "prefix_location_assignments": "prefix_location_assignments",
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
     "radio_profiles": "radio_profile",
     "rear_ports": "rear_port",
     "rear_port_templates": "rear_port_template",
-    "relationship_associations": "relationship_associations",
+    "regex_rules": "regex_rule",
+    "required_rules": "required_rule",
     "rirs": "rir",
     "roles": "role",
     "route_targets": "route_target",
     "secrets": "secret",
     "secrets_groups": "secrets_group",
     "secrets_groups_associations": "secrets_groups_association",
-    "services": "services",
     "static_group_associations": "static_group_association",
     "software_versions": "software_version",
     "software_image_files": "software_image_file",
-    "statuses": "statuses",
     "supported_data_rates": "supported_data_rate",
-    "tags": "tags",
     "teams": "team",
     "tenants": "tenant",
     "tenant_groups": "tenant_group",
+    "unique_rules": "unique_rule",
     "users": "user",
-    "virtual_chassis": "virtual_chassis",
     "virtual_device_contexts": "virtual_device_context",
     "virtual_machines": "virtual_machine",
     "vlans": "vlan",
     "vlan_groups": "vlan_group",
-    "vlan_location_assignments": "vlan_location_assignments",
     "vrfs": "vrf",
-    "vrf_device_assignments": "vrf_device_assignments",
     "wireless_networks": "wireless_network",
 }
 
@@ -465,6 +470,7 @@ ALLOWED_QUERY_PARAMS = {
     "location_type": set(["name"]),
     "manufacturer": set(["name"]),
     "master": set(["name"]),
+    "min_max_rule": set(["name"]),
     "metadata_choice": set(["value", "metadata_type"]),
     "metadata_type": set(["name"]),
     "module_bay_template": set(["name", "device_type", "module_type"]),
@@ -499,7 +505,9 @@ ALLOWED_QUERY_PARAMS = {
     "radio_profile": set(["name"]),
     "rear_port": set(["name", "device"]),
     "rear_port_template": set(["name", "device_type"]),
+    "regex_rule": set(["name"]),
     "relationship_associations": set(["source_id", "destination_id"]),
+    "required_rule": set(["name"]),
     "rir": set(["name"]),
     "role": set(["name"]),
     "route_target": set(["name"]),
@@ -522,6 +530,7 @@ ALLOWED_QUERY_PARAMS = {
     "tenant_group": set(["name"]),
     "termination_a": set(["name", "device", "virtual_machine"]),
     "termination_b": set(["name", "device", "virtual_machine"]),
+    "unique_rule": set(["name"]),
     "user": set(["username"]),
     "untagged_vlan": set(["group", "name", "location", "vid", "vlan_group", "tenant"]),
     "virtual_chassis": set(["name", "device"]),
@@ -655,15 +664,23 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
 )
 
 
-def check_needs_wrapping(value):
-    """Recursively checks lists and dictionaries, and checks strings directly, to see if they need to be wrapped due to containing Jinja2 delimiters."""
-    if isinstance(value, str):
-        return "{{" in value or "{%" in value
-    elif isinstance(value, dict):
-        return any(check_needs_wrapping(v) for v in value.values())
-    elif isinstance(value, list):
-        return any(check_needs_wrapping(item) for item in value)
-    return False
+def mark_trusted(value, trust_func):
+    """
+    Recursively mark strings inside nested structures as trusted.
+    Works for str, list, tuple, set, dict.
+    """
+    if trust_func:
+        if isinstance(value, str):
+            return trust_func(value)
+        if isinstance(value, list):
+            return [mark_trusted(v, trust_func) for v in value]
+        if isinstance(value, tuple):
+            return tuple(mark_trusted(v, trust_func) for v in value)
+        if isinstance(value, set):
+            return {mark_trusted(v, trust_func) for v in value}
+        if isinstance(value, dict):
+            return {k: mark_trusted(v, trust_func) for k, v in value.items()}
+    return value
 
 
 def is_truthy(arg):

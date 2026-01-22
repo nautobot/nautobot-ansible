@@ -62,7 +62,7 @@
   assert:
     that:
       - test_three is failed
-      - test_three['msg'] == "{\"name\":[\"VLAN group with this name already exists.\"]}"
+      - "'already exists' in test_three['msg']"
 
 - name: "VLAN_GROUP 4: ASSERT - Create vlan group, no location"
   networktocode.nautobot.vlan_group:

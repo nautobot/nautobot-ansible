@@ -264,13 +264,18 @@ from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import quote
 from ansible.module_utils.urls import open_url
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
-from ansible.utils.unsafe_proxy import wrap_var
 from ansible_collections.networktocode.nautobot.plugins.filter.graphql import (
     convert_to_graphql_string,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
-    check_needs_wrapping,
+    mark_trusted,
 )
+
+_trust_as_template_import = None
+try:
+    from ansible.template import trust_as_template as _trust_as_template_import
+except ImportError:
+    pass
 
 try:
     from netutils.lib_mapper import ANSIBLE_LIB_MAPPER_REVERSE, NAPALM_LIB_MAPPER
@@ -311,8 +316,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             var (str): Variable value
             var_type (str): Variable type
         """
-        if self.wrap_variables and check_needs_wrapping(var):
-            var = wrap_var(var)
+        if self.allow_unsafe:
+            var = mark_trusted(var, _trust_as_template_import)
+
         self.inventory.set_variable(host, var_type, var)
 
     def add_ip_address(self, device, default_ip_version="ipv4"):
@@ -346,6 +352,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 ),  # Convert napalm_driver to ansible_network_os value
                 "ansible_network_os",
             )
+        else:
+            self.display.error("Mapping ansible_network_os requires platform.napalm_driver as part of the query.")
 
     def populate_variables(self, device):
         """Add specified variables to device."""
@@ -574,8 +582,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             hostname = device.get("name") or device.get("id") or str(uuid.uuid4())
             # Save the hostname back to the device record so that it can be referenced later
             device["name"] = hostname
-            if self.wrap_variables and check_needs_wrapping(hostname):
-                hostname = wrap_var(hostname)
             self.inventory.add_host(host=hostname)
             self.add_ip_address(device, self.default_ip_version)
             self.add_ansible_platform(device)
@@ -620,7 +626,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.group_names_raw = self.get_option("group_names_raw")
         self.user_cache_setting = self.get_option("cache")
         self.page_size = self.get_option("page_size")
-        self.wrap_variables = not self.get_option("allow_unsafe")
+        self.allow_unsafe = self.get_option("allow_unsafe")
         self.saved_query = self._retrieve_saved_query(self.get_option("saved_query"))
 
         self.main()

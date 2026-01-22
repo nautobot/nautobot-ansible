@@ -88,7 +88,7 @@
   tags:
     - location_type
 
-- name: "PYNAUTOBOT_TENTANT TESTS"
+- name: "PYNAUTOBOT_TENANT TESTS"
   include_tasks:
     file: "tenant.yml"
     apply:
@@ -97,7 +97,7 @@
   tags:
     - tenant
 
-- name: "PYNAUTOBOT_TENTANT_GROUP TESTS"
+- name: "PYNAUTOBOT_TENANT_GROUP TESTS"
   include_tasks:
     file: "tenant_group.yml"
     apply:
@@ -857,19 +857,38 @@
       tags:
         - device_cluster_assignment
 
-##########################
-##
-### UNSAFE VARIABLE HANDLING TESTS
-##
-##########################
-
-- name: "UNSAFE VARIABLE HANDLING TESTS"
-  block:
-    - name: "UNSAFE VARIABLE HANDLING TESTS"
-      include_tasks:
-        file: "unsafe_vars.yml"
-        apply:
-          tags:
-            - unsafe_vars
+- name: "PYNAUTOBOT_MIN_MAX_RULE TESTS"
+  include_tasks:
+    file: "min_max_rule.yml"
+    apply:
       tags:
-        - unsafe_vars
+        - min_max_rule
+  tags:
+    - min_max_rule
+
+- name: "PYNAUTOBOT_REGEX_RULE TESTS"
+  include_tasks:
+    file: "regex_rule.yml"
+    apply:
+      tags:
+        - regex_rule
+  tags:
+    - regex_rule
+
+- name: "PYNAUTOBOT_REQUIRED_RULE TESTS"
+  include_tasks:
+    file: "required_rule.yml"
+    apply:
+      tags:
+        - required_rule
+  tags:
+    - required_rule
+
+- name: "PYNAUTOBOT_UNIQUE_RULE TESTS"
+  include_tasks:
+    file: "unique_rule.yml"
+    apply:
+      tags:
+        - unique_rule
+  tags:
+    - unique_rule

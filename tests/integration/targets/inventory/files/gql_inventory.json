@@ -9,11 +9,9 @@
                 "ansible_host": "R1-Device",
                 "name": "R1-Device"
             },
-            "R2 {{ SEE ISSUE 114 }}": {
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
                 "ansible_host": "172.16.180.13",
-                "name": {
-                    "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-                },
+                "name": "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
                 "primary_ip4": {
                     "host": "172.16.180.13"
                 }
@@ -61,7 +59,8 @@
                 "ansible_host": "test104-vm",
                 "name": "test104-vm"
             }
-        }
+        },
+        "profile": "inventory_legacy"
     },
     "all": {
         "children": [
@@ -72,9 +71,7 @@
         "hosts": [
             "00000000-0000-0000-0000-000000000000",
             "R1-Device",
-            {
-                "__ansible_unsafe": "R2 {{ SEE ISSUE 114 }}"
-            },
+            "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}",
             "Test Nexus Child One",
             "Test Nexus One",
             "Test VM With Spaces",

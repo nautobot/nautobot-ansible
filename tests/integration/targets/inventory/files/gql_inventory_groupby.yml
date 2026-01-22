@@ -2,12 +2,13 @@ plugin: networktocode.nautobot.gql_inventory
 api_endpoint: "http://nautobot:8000"
 token: "0123456789abcdef0123456789abcdef01234567"
 validate_certs: False
+allow_unsafe: true
 
 query:
   devices:
     config_context:
     _custom_field_data:
-    device_type: 
+    device_type:
       manufacturer: name
       model:
     interfaces: name

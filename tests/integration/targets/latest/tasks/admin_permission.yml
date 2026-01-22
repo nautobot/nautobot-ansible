@@ -22,6 +22,7 @@
       - "dcim.device"
     actions:
       - view
+      - my_custom_action
     state: present
   register: test_one
 
@@ -34,6 +35,8 @@
       - test_one['diff']['before']['state'] == "absent"
       - test_one['diff']['after']['state'] == "present"
       - test_one['permission']['name'] == "Test PERMISSION One"
+      - test_one['permission']['actions'][0] == "view"
+      - test_one['permission']['actions'][1] == "my_custom_action"
       - test_one['msg'] == "permission Test PERMISSION One created"
 
 - name: "PERMISSION 2: Create duplicate"
@@ -48,6 +51,7 @@
       - "A Test Admin User Group"
     actions:
       - view
+      - my_custom_action
     object_types:
       - "dcim.device"
     state: present

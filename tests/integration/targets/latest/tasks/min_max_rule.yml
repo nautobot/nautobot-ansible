@@ -1,0 +1,120 @@
+---
+##
+##
+### PYNAUTOBOT_MIN_MAX_RULE
+##
+##
+- name: "MIN_MAX_RULE 1: Create min/max rule"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    content_type: "dcim.location"
+    field: "asn"
+    enabled: true
+    error_message: "ASN must be between 1 and 65535"
+    min: 1
+    max: 65535
+    state: present
+  register: test_one
+
+- name: "MIN_MAX_RULE 1: ASSERT - Assert created"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['min_max_rule']['name'] == "My Min/Max Rule"
+      - test_one['min_max_rule']['content_type'] == "dcim.location"
+      - test_one['min_max_rule']['field'] == "asn"
+      - test_one['min_max_rule']['enabled'] == true
+      - test_one['min_max_rule']['error_message'] == "ASN must be between 1 and 65535"
+      - test_one['min_max_rule']['min'] == 1
+      - test_one['min_max_rule']['max'] == 65535
+      - test_one['msg'] == "min_max_rule My Min/Max Rule created"
+
+- name: "MIN_MAX_RULE 2: Create duplicate"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    content_type: "dcim.location"
+    field: "asn"
+    enabled: true
+    error_message: "ASN must be between 1 and 65535"
+    min: 1
+    max: 65535
+    state: present
+  register: test_two
+
+- name: "MIN_MAX_RULE 2: ASSERT - Assert duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['msg'] == "min_max_rule My Min/Max Rule already exists"
+
+- name: "MIN_MAX_RULE 3: Update"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    min: 100
+    max: 1000
+    state: present
+  register: test_three
+
+- name: "MIN_MAX_RULE 3: ASSERT - Assert updated"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['diff']['before']['min'] == 1
+      - test_three['diff']['before']['max'] == 65535
+      - test_three['diff']['after']['min'] == 100
+      - test_three['diff']['after']['max'] == 1000
+      - test_three['msg'] == "min_max_rule My Min/Max Rule updated"
+
+- name: "MIN_MAX_RULE 4: Update duplicate"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    min: 100
+    max: 1000
+    state: present
+  register: test_four
+
+- name: "MIN_MAX_RULE 4: ASSERT - Assert update duplicate"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "min_max_rule My Min/Max Rule already exists"
+
+- name: "MIN_MAX_RULE 5: Delete"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    state: absent
+  register: test_five
+
+- name: "MIN_MAX_RULE 5: ASSERT - Assert delete"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['state'] == "present"
+      - test_five['diff']['after']['state'] == "absent"
+      - test_five['msg'] == "min_max_rule My Min/Max Rule deleted"
+
+- name: "MIN_MAX_RULE 6: Delete non existing"
+  networktocode.nautobot.min_max_rule:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "My Min/Max Rule"
+    state: absent
+  register: test_six
+
+- name: "MIN_MAX_RULE 6: ASSERT - Assert delete non existing"
+  assert:
+    that:
+      - not test_six['changed']
+      - test_six['msg'] == "min_max_rule My Min/Max Rule already absent"
