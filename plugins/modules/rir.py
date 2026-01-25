@@ -37,6 +37,11 @@ options:
     required: false
     type: bool
     version_added: "3.0.0"
+  description:
+    description:
+      - The description of the RIR
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""
@@ -51,6 +56,7 @@ EXAMPLES = r"""
         url: http://nautobot.local
         token: thisIsMyToken
         name: Test RIR One
+        description: MyDescription
         state: present
 
     - name: Update Test RIR One
@@ -112,6 +118,7 @@ def main():
         dict(
             name=dict(required=False, type="str"),
             is_private=dict(required=False, type="bool"),
+            description=dict(required=False, type="str"),
         )
     )
 
