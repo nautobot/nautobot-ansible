@@ -51,6 +51,7 @@ options:
       - The tenant that the namespace will be assigned to
     required: false
     type: raw
+    version_added: "6.2.0"
 """
 
 EXAMPLES = r"""
