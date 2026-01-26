@@ -42,6 +42,7 @@ options:
       - The description of the RIR
     required: false
     type: str
+    version_added: "6.2.0"
 """
 
 EXAMPLES = r"""
