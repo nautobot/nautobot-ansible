@@ -14,13 +14,22 @@ RUN apt-get update -yqq && apt-get install -yqq shellcheck && apt-get clean
 
 WORKDIR /usr/src/app
 
-# Update pip to latest
-RUN python -m pip install -U pip
+# Install Poetry manually via its installer script;
+# if we instead used "pip install poetry" it would install its own dependencies globally which may conflict with ours.
+# https://python-poetry.org/docs/master/#installing-with-the-official-installer
+# This also makes it so that Poetry will *not* be included in the "final" image since it's not installed to /usr/local/
+ARG POETRY_HOME=/opt/poetry
+ARG POETRY_INSTALLER_PARALLEL=true
+ARG POETRY_VERSION=2.1.3
+ARG POETRY_VIRTUALENVS_CREATE=false
+ADD https://install.python-poetry.org /tmp/install-poetry.py
+RUN python /tmp/install-poetry.py
 
-# Install poetry for dep management
-RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.8.5
-ENV PATH="$PATH:/root/.local/bin"
-RUN poetry config virtualenvs.create false
+# Add poetry install location to the $PATH
+ENV PATH="${POETRY_HOME}/bin:${PATH}"
+
+RUN poetry config virtualenvs.create ${POETRY_VIRTUALENVS_CREATE} && \
+    poetry config installer.parallel "${POETRY_INSTALLER_PARALLEL}"
 
 # Bring in Poetry related files needed for other stages
 COPY pyproject.toml poetry.lock ./
