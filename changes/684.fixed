@@ -1,0 +1,1 @@
+Added tenant argument_spec to namespace.py module so that tenants can be associated with namespaces
