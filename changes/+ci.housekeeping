@@ -1,5 +1,0 @@
-Updated CI workflows to use Poetry v2.
-Updated CI workflows to run on ubuntu-latest.
-Removed test requirements from the release CI workflow.
-Updated branch exclusions for the changelog CI workflow.
-Updated the version of PostgreSQL used for testing to 17-alpine.

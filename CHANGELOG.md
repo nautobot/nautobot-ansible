@@ -4,6 +4,21 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.1.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.1.1)
+
+### Added
+
+- [#684](https://github.com/nautobot/nautobot-ansible/issues/684) - Added tenant option to the `namespace` module so that tenants can be associated with namespaces.
+- [#685](https://github.com/nautobot/nautobot-ansible/issues/685) - Added description option to the `rir` module so that descriptions can be configured with RIRs.
+
+### Housekeeping
+
+- Updated CI workflows to use Poetry v2.
+- Updated CI workflows to run on ubuntu-latest.
+- Removed test requirements from the release CI workflow.
+- Updated branch exclusions for the changelog CI workflow.
+- Updated the version of PostgreSQL used for testing to 17-alpine.
+
 ## [v6.1.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.1.0)
 
 ### Added
