@@ -1,1 +1,1 @@
-Added description argument_spec to rir.py module so that descriptions can be configured with RIRs
+Added description option to the `rir` module so that descriptions can be configured with RIRs.
