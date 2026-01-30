@@ -63,7 +63,7 @@ def sort_groups(obj):
     for group_name, group in obj.items():
         if group.get("children"):
             group["children"] = sorted(group["children"])
-        elif group.get("hosts"):
+        if group.get("hosts"):
             group["hosts"] = sorted(group["hosts"], key=extract_sort_value)
 
 
