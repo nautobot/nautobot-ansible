@@ -46,6 +46,12 @@ options:
     required: false
     type: raw
     version_added: "5.1.0"
+  tenant:
+    description:
+      - The tenant that the namespace will be assigned to
+    required: false
+    type: raw
+    version_added: "6.2.0"
 """
 
 EXAMPLES = r"""
@@ -57,6 +63,7 @@ EXAMPLES = r"""
     name: My Namespace
     location: My Location
     description: My Description
+    tenant: TENANT1
     tags:
       - tag1
       - tag2
@@ -118,6 +125,7 @@ def main():
             name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
+            tenant=dict(required=False, type="raw"),
         )
     )
 

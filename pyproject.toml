@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_ansible_modules"
-version = "6.1.0"
+version = "6.1.1"
 description = "Ansible collection to interact with Nautobot's API"
 authors = ["Network to Code <opensource@networktocode.com>"]
 license = "Apache 2.0"
@@ -46,7 +46,7 @@ toml = "^0.10.2"
 ruff = "*"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]

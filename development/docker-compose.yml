@@ -41,7 +41,7 @@ services:
       - "nautobot"
     <<: *nautobot-base
   postgres:
-    image: "postgres:13"
+    image: "postgres:17-alpine"
     env_file:
       - "./dev.env"
   redis:
