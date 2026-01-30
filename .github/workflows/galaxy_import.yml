@@ -10,7 +10,7 @@ jobs:
 
   test:
     name: Test Collection with Galaxy importer
-    runs-on: "ubuntu-24.04"
+    runs-on: "ubuntu-latest"
     needs:
       - build
     steps:
