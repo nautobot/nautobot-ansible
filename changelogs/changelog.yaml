@@ -756,3 +756,8 @@ releases:
       - name: min_max_rule
         description: Creates or removes "min/max" data validation rules from Nautobot
         namespace: ''
+  6.1.1:
+    changes:
+      minor_changes:
+        - (#684) - Added tenant option to the `namespace` module so that tenants can be associated with namespaces.
+        - (#685) - Added description option to the `rir` module so that descriptions can be configured with RIRs.

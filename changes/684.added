@@ -1,1 +1,0 @@
-Added tenant option to the `namespace` module so that tenants can be associated with namespaces.
