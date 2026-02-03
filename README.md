@@ -73,6 +73,10 @@ Testing is completed via the GitHub actions located in the `.github/workflows` d
 
 Check out the docs at https://docs.nautobot.com/projects/ansible/en/stable/getting_started/
 
+## Code of Conduct
+
+This project adheres to the [Network to Code Code of Conduct](CODE_OF_CONDUCT). By participating, you are expected to uphold this code.
+
 ## Support
 
 For issues please use [GitHub Issues](https://github.com/nautobot/nautobot-ansible) to open any issue that you may have. Additional community is available at the [Network to Code Slack](https://networktocode.slack.com) and [sign up](https://slack.networktocode.com).
