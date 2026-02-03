@@ -574,6 +574,15 @@
   tags:
     - job_button
 
+- name: "PYNAUTOBOT_SCHEDULED_JOB TESTS"
+  include_tasks:
+    file: "scheduled_job.yml"
+    apply:
+      tags:
+        - scheduled_job
+  tags:
+    - scheduled_job
+
 - name: "PYNAUTOBOT_SECRET TESTS"
   include_tasks:
     file: "secret.yml"
