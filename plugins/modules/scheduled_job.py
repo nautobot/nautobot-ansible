@@ -27,6 +27,7 @@ requirements:
 version_added: "5.6.0"
 extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
+  - networktocode.nautobot.fragments.id
 options:
   job:
     description:
@@ -39,12 +40,6 @@ options:
       - The name for this scheduled job instance
       - Required when I(state=present)
       - Used to identify the scheduled job for deletion when I(state=absent)
-    required: false
-    type: str
-  id:
-    description:
-      - The UUID of the scheduled job
-      - Can be used to delete a specific scheduled job when I(state=absent)
     required: false
     type: str
   interval:
@@ -172,121 +167,101 @@ msg:
   type: str
 """
 
-import traceback
 from copy import deepcopy
 
-from ansible.module_utils.basic import AnsibleModule, missing_required_lib
-
-PYNAUTOBOT_IMP_ERR = None
-try:
-    import pynautobot
-
-    HAS_PYNAUTOBOT = True
-except ImportError:
-    PYNAUTOBOT_IMP_ERR = traceback.format_exc()
-    HAS_PYNAUTOBOT = False
-
-NAUTOBOT_ARG_SPEC = dict(
-    url=dict(type="str", required=True),
-    token=dict(type="str", required=True, no_log=True),
-    state=dict(required=False, default="present", choices=["present", "absent"]),
-    query_params=dict(required=False, type="list", elements="str"),
-    validate_certs=dict(type="raw", default=True),
-    api_version=dict(type="str", required=False),
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    ID_ARG_SPEC,
+    NAUTOBOT_ARG_SPEC,
+    NautobotModule,
 )
 
-
-def is_valid_uuid(value):
-    """Check if a string is a valid UUID."""
-    import re
-
-    uuid_pattern = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", re.IGNORECASE)
-    return bool(uuid_pattern.match(str(value)))
+# Keys to remove from module params before processing
+REMOVE_KEYS = ["job", "interval", "start_time", "crontab", "data", "task_queue"]
 
 
-class NautobotScheduledJobModule:
-    """Handle scheduled job operations in Nautobot."""
+class NautobotScheduledJobModule(NautobotModule):
+    """Nautobot module for scheduled jobs with non-standard CRUD operations.
+
+    Scheduled jobs have unique API behavior:
+    - Create: POST to /api/extras/jobs/{id}/run/ with schedule parameter
+    - Read/Delete: /api/extras/scheduled-jobs/
+    - Update: Not supported (must delete and recreate)
+    """
 
     def __init__(self, module):
         """Initialize the scheduled job module."""
-        self.module = module
-        self.state = module.params["state"]
-        self.check_mode = module.check_mode
-        self.result = {"changed": False}
-
-        if not HAS_PYNAUTOBOT:
-            module.fail_json(msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR)
-
-        # Connect to Nautobot
-        url = module.params["url"]
-        token = module.params["token"]
-        ssl_verify = module.params["validate_certs"]
-        api_version = module.params["api_version"]
-
-        try:
-            self.nb = pynautobot.api(url, token=token, api_version=api_version, verify=ssl_verify)
-        except Exception as e:
-            module.fail_json(msg=f"Failed to connect to Nautobot: {str(e)}")
+        # Initialize parent with scheduled_jobs endpoint
+        # Pass remove_keys to exclude non-standard params from data building
+        super().__init__(module, "scheduled_jobs", remove_keys=REMOVE_KEYS)
 
     def run(self):
-        """Execute the module logic."""
+        """Execute the scheduled job module logic."""
+        self.result = {"changed": False}
+
         if self.state == "present":
-            self._create_scheduled_job()
+            self._ensure_scheduled_job_present()
         else:
-            self._delete_scheduled_job()
+            self._ensure_scheduled_job_absent()
 
         self.module.exit_json(**self.result)
 
     def _find_job(self, job_identifier):
         """Find a job by name or UUID.
 
-        Returns the job object or fails if not found.
+        Args:
+            job_identifier: Job name, module_name, or UUID
+
+        Returns:
+            Job object from pynautobot
+
+        Raises:
+            Module failure if job not found
         """
-        try:
-            jobs_endpoint = self.nb.extras.jobs
+        jobs_endpoint = self.nb.extras.jobs
 
-            # Try to find by UUID first if it looks like a UUID
-            if is_valid_uuid(job_identifier):
-                job = jobs_endpoint.get(id=job_identifier)
-                if job:
-                    return job
-
-            # Try to find by name
-            job = jobs_endpoint.get(name=job_identifier)
+        # Try UUID first if it looks like one
+        if self.is_valid_uuid(job_identifier):
+            job = self._nb_endpoint_get(jobs_endpoint, {"id": job_identifier}, job_identifier)
             if job:
                 return job
 
-            # Try module_name (full path like "plugins/my_plugin.jobs/MyJob")
-            job = jobs_endpoint.get(module_name=job_identifier)
-            if job:
-                return job
+        # Try by name
+        job = self._nb_endpoint_get(jobs_endpoint, {"name": job_identifier}, job_identifier)
+        if job:
+            return job
 
-            self.module.fail_json(msg=f"Job '{job_identifier}' not found in Nautobot")
+        # Try by module_name (full path like "plugins/my_plugin.jobs/MyJob")
+        job = self._nb_endpoint_get(jobs_endpoint, {"module_name": job_identifier}, job_identifier)
+        if job:
+            return job
 
-        except pynautobot.RequestError as e:
-            self.module.fail_json(msg=f"Error finding job: {e.error}")
+        self._handle_errors(msg=f"Job '{job_identifier}' not found in Nautobot")
 
     def _find_scheduled_job(self, name=None, job_id=None):
         """Find an existing scheduled job by name or ID.
 
-        Returns the scheduled job object or None if not found.
-        """
-        try:
-            scheduled_jobs = self.nb.extras.scheduled_jobs
+        Args:
+            name: Scheduled job name
+            job_id: Scheduled job UUID
 
+        Returns:
+            Scheduled job object or None if not found
+        """
+        scheduled_jobs = self.nb.extras.scheduled_jobs
+
+        try:
             if job_id:
                 return scheduled_jobs.get(id=job_id)
-
             if name:
                 return scheduled_jobs.get(name=name)
+        except Exception:
+            pass
 
-            return None
+        return None
 
-        except pynautobot.RequestError:
-            return None
-
-    def _create_scheduled_job(self):
-        """Create a new scheduled job."""
+    def _ensure_scheduled_job_present(self):
+        """Create a scheduled job if it doesn't exist."""
         job_identifier = self.module.params.get("job")
         name = self.module.params.get("name")
         interval = self.module.params.get("interval")
@@ -297,22 +272,21 @@ class NautobotScheduledJobModule:
 
         # Validate required parameters
         if not job_identifier:
-            self.module.fail_json(msg="'job' is required when state=present")
+            self._handle_errors(msg="'job' is required when state=present")
         if not name:
-            self.module.fail_json(msg="'name' is required when state=present")
+            self._handle_errors(msg="'name' is required when state=present")
         if not interval:
-            self.module.fail_json(msg="'interval' is required when state=present")
+            self._handle_errors(msg="'interval' is required when state=present")
 
         # Validate interval-specific requirements
         if interval == "future" and not start_time:
-            self.module.fail_json(msg="'start_time' is required when interval=future")
+            self._handle_errors(msg="'start_time' is required when interval=future")
         if interval == "custom" and not crontab:
-            self.module.fail_json(msg="'crontab' is required when interval=custom")
+            self._handle_errors(msg="'crontab' is required when interval=custom")
 
-        # Check if a scheduled job with this name already exists
+        # Check if scheduled job already exists
         existing = self._find_scheduled_job(name=name)
         if existing:
-            # Scheduled jobs can't be updated, so we just report it exists
             self.result["scheduled_job"] = dict(existing)
             self.result["msg"] = f"Scheduled job '{name}' already exists"
             return
@@ -320,35 +294,34 @@ class NautobotScheduledJobModule:
         if self.check_mode:
             self.result["changed"] = True
             self.result["msg"] = f"Scheduled job '{name}' would be created"
+            self.result["diff"] = self._build_diff(
+                before={"state": "absent"},
+                after={"state": "present"}
+            )
             return
 
         # Find the job to schedule
         job = self._find_job(job_identifier)
 
-        # Build the schedule payload
+        # Build schedule payload
         schedule_data = {"name": name, "interval": interval}
-
         if start_time:
             schedule_data["start_time"] = start_time
         if crontab:
             schedule_data["crontab"] = crontab
 
-        # Build the full request payload for the job run endpoint
-        # The pynautobot job.run() method passes kwargs to POST body
+        # Build run request payload
         run_kwargs = {"schedule": schedule_data}
-
         if data:
             run_kwargs["data"] = data
         if task_queue:
             run_kwargs["task_queue"] = task_queue
 
-        # Call the job's run endpoint with schedule parameter
+        # Create via job run endpoint
         try:
-            # Use pynautobot's jobs.run() with job_id and schedule params
             result = self.nb.extras.jobs.run(job_id=str(job.id), **run_kwargs)
 
-            # Try to get the scheduled job that was created
-            # The response from run() with schedule returns the scheduled job info
+            # Extract scheduled job data from response
             scheduled_job_data = {}
             if hasattr(result, "scheduled_job") and result.scheduled_job:
                 scheduled_job_data = dict(result.scheduled_job)
@@ -360,48 +333,60 @@ class NautobotScheduledJobModule:
             self.result["changed"] = True
             self.result["scheduled_job"] = scheduled_job_data
             self.result["msg"] = f"Scheduled job '{name}' created"
+            self.result["diff"] = self._build_diff(
+                before={"state": "absent"},
+                after={"state": "present"}
+            )
 
-        except pynautobot.RequestError as e:
-            self.module.fail_json(msg=f"Error creating scheduled job: {e.error}")
+        except Exception as e:
+            self._handle_errors(msg=f"Error creating scheduled job: {e}")
 
-    def _delete_scheduled_job(self):
-        """Delete an existing scheduled job."""
+    def _ensure_scheduled_job_absent(self):
+        """Delete a scheduled job if it exists."""
         name = self.module.params.get("name")
         job_id = self.module.params.get("id")
 
         if not name and not job_id:
-            self.module.fail_json(msg="Either 'name' or 'id' is required when state=absent")
+            self._handle_errors(msg="Either 'name' or 'id' is required when state=absent")
 
         # Find the scheduled job
         scheduled_job = self._find_scheduled_job(name=name, job_id=job_id)
+        identifier = job_id or name
 
         if not scheduled_job:
-            identifier = job_id or name
-            self.result["msg"] = f"Scheduled job '{identifier}' not found, nothing to delete"
+            self.result["msg"] = f"Scheduled job '{identifier}' already absent"
             return
 
         if self.check_mode:
             self.result["changed"] = True
             self.result["msg"] = f"Scheduled job '{scheduled_job.name}' would be deleted"
+            self.result["diff"] = self._build_diff(
+                before={"state": "present"},
+                after={"state": "absent"}
+            )
             return
 
         try:
             scheduled_job.delete()
             self.result["changed"] = True
             self.result["msg"] = f"Scheduled job '{scheduled_job.name}' deleted"
+            self.result["diff"] = self._build_diff(
+                before={"state": "present"},
+                after={"state": "absent"}
+            )
 
-        except pynautobot.RequestError as e:
-            self.module.fail_json(msg=f"Error deleting scheduled job: {e.error}")
+        except Exception as e:
+            self._handle_errors(msg=f"Error deleting scheduled job: {e}")
 
 
 def main():
     """Execute scheduled job module."""
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
+    argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(
         dict(
             job=dict(required=False, type="str"),
             name=dict(required=False, type="str"),
-            id=dict(required=False, type="str"),
             interval=dict(
                 required=False,
                 type="str",
