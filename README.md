@@ -69,13 +69,23 @@ This collection provides Ansible plugins (modules, inventory, lookup/filters) to
 
 Testing is completed via the GitHub actions located in the `.github/workflows` directory.
 
+## Communication
+
+* Join the Ansible forum:
+  * [Get Help](https://forum.ansible.com/c/help/6): get help or help others. Please add the [`nautobot`](https://forum.ansible.com/tag/nautobot) tag if you start new discussions.
+  * [Posts tagged with 'nautobot'](https://forum.ansible.com/tag/nautobot): subscribe to participate in collection-related conversations.
+  * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+  * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
+
+* Additional community resources:
+  * [Network to Code Slack](https://networktocode.slack.com) ([sign up](https://slack.networktocode.com))
+  * [GitHub Issues](https://github.com/nautobot/nautobot-ansible/issues): report bugs or request features
+
+For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
+
 ## Contributing
 
 Check out the docs at https://docs.nautobot.com/projects/ansible/en/stable/getting_started/
-
-## Support
-
-For issues please use [GitHub Issues](https://github.com/nautobot/nautobot-ansible) to open any issue that you may have. Additional community is available at the [Network to Code Slack](https://networktocode.slack.com) and [sign up](https://slack.networktocode.com).
 
 ## Release Notes and Roadmap
 
