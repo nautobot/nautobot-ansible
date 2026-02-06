@@ -81,6 +81,11 @@ Testing is completed via the GitHub actions located in the `.github/workflows` d
   * [Network to Code Slack](https://networktocode.slack.com) ([sign up](https://slack.networktocode.com))
   * [GitHub Issues](https://github.com/nautobot/nautobot-ansible/issues): report bugs or request features
 
+## Code of Conduct
+
+This project adheres to the [Network to Code Code of Conduct](CODE_OF_CONDUCT). By participating, you are expected to uphold this code.
+
+## Support
 For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
 ## Contributing
