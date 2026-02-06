@@ -69,17 +69,28 @@ This collection provides Ansible plugins (modules, inventory, lookup/filters) to
 
 Testing is completed via the GitHub actions located in the `.github/workflows` directory.
 
-## Contributing
+## Communication
 
-Check out the docs at https://docs.nautobot.com/projects/ansible/en/stable/getting_started/
+* Join the Ansible forum:
+  * [Get Help](https://forum.ansible.com/c/help/6): get help or help others. Please add the [`nautobot`](https://forum.ansible.com/tag/nautobot) tag if you start new discussions.
+  * [Posts tagged with 'nautobot'](https://forum.ansible.com/tag/nautobot): subscribe to participate in collection-related conversations.
+  * [Social Spaces](https://forum.ansible.com/c/chat/4): gather and interact with fellow enthusiasts.
+  * [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide announcements including social events.
+
+* Additional community resources:
+  * [Network to Code Slack](https://networktocode.slack.com) ([sign up](https://slack.networktocode.com))
+  * [GitHub Issues](https://github.com/nautobot/nautobot-ansible/issues): report bugs or request features
 
 ## Code of Conduct
 
 This project adheres to the [Network to Code Code of Conduct](CODE_OF_CONDUCT). By participating, you are expected to uphold this code.
 
 ## Support
+For more information about communication, see the [Ansible communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
-For issues please use [GitHub Issues](https://github.com/nautobot/nautobot-ansible) to open any issue that you may have. Additional community is available at the [Network to Code Slack](https://networktocode.slack.com) and [sign up](https://slack.networktocode.com).
+## Contributing
+
+Check out the docs at https://docs.nautobot.com/projects/ansible/en/stable/getting_started/
 
 ## Release Notes and Roadmap
 
