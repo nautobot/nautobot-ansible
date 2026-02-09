@@ -21,9 +21,9 @@ Full documentation for this App can be found over on the [Nautobot Docs](https:/
 ## Requirements
 
 - Nautobot 1.0.0+ or the two latest Nautobot releases
-- Python 3.6+
+- Python 3.11+ (aligned with ansible-core 2.18+ support)
 - Python modules: **pynautobot 2.x+**
-- Ansible 2.9+
+- Ansible 2.18+
 - Nautobot write-enabled token when using `modules` or read-only token for `lookup/inventory`
 
 ## Installation
