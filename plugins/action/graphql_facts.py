@@ -136,7 +136,6 @@ class ActionModule(ActionBase):
             # should not be set anymore but here for backwards compatibility
             del result["invocation"]["module_args"]
 
-        # do work!
         # Get the arguments from the module definition
         args = self._task.args
         try:
