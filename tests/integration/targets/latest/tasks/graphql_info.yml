@@ -1,0 +1,76 @@
+---
+##
+##
+### GRAPHQL_INFO
+##
+##
+- name: "GRAPHQL_INFO 1: Query locations via GraphQL"
+  networktocode.nautobot.graphql_info:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query {
+        locations {
+          name
+        }
+      }
+  register: test_one
+
+- name: "GRAPHQL_INFO 1: ASSERT"
+  assert:
+    that:
+      - test_one is not changed
+      - test_one['data']['locations'] is defined
+      - test_one['data']['locations'] | length > 0
+      - test_one['url'] == nautobot_url
+      - test_one['query'] is defined
+      - test_one['graph_variables'] is defined
+
+- name: "GRAPHQL_INFO 2: Verify ansible_facts is NOT set"
+  assert:
+    that:
+      - test_one['ansible_facts'] is not defined
+
+- name: "GRAPHQL_INFO 3: Query with variables"
+  networktocode.nautobot.graphql_info:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query ($location_name: [String!]) {
+        locations(name: $location_name) {
+          name
+        }
+      }
+    graph_variables:
+      location_name: "Parent Test Location"
+  register: test_three
+
+- name: "GRAPHQL_INFO 3: ASSERT"
+  assert:
+    that:
+      - test_three is not changed
+      - test_three['data']['locations'] | length == 1
+      - test_three['data']['locations'][0]['name'] == "Parent Test Location"
+      - test_three['graph_variables']['location_name'] == "Parent Test Location"
+
+- name: "GRAPHQL_INFO 4: Query devices via GraphQL"
+  networktocode.nautobot.graphql_info:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query {
+        devices {
+          name
+          device_type {
+            model
+          }
+        }
+      }
+  register: test_four
+
+- name: "GRAPHQL_INFO 4: ASSERT"
+  assert:
+    that:
+      - test_four is not changed
+      - test_four['data']['devices'] is defined
+      - test_four['data']['devices'] | length > 0
