@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-"""Ansible plugin definition for query_graphql action plugin."""
+"""Ansible plugin definition for graphql_info action plugin."""
 
 from __future__ import absolute_import, division, print_function
 
@@ -10,16 +10,12 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-module: query_graphql
+module: graphql_info
 author: Josh VanDeraa (@jvanderaa)
-version_added: "1.1.0"
+version_added: "6.2.0"
 short_description: Queries and returns elements from Nautobot GraphQL endpoint
 description:
     - Queries Nautobot via its GraphQL API through pynautobot
-deprecated:
-    removed_in: "7.0.0"
-    why: "This module has been split into separate graphql_info and graphql_facts modules to follow Ansible naming conventions."
-    alternative: "Use M(networktocode.nautobot.graphql_info) for returning data or M(networktocode.nautobot.graphql_facts) for setting ansible_facts."
 requirements:
     - pynautobot
 options:
@@ -55,14 +51,6 @@ options:
         required: False
         default: True
         type: bool
-    update_hostvars:
-        description:
-            - Whether or not to populate data in the in the root (e.g. hostvars[inventory_hostname]) or within the
-              'data' key (e.g. hostvars[inventory_hostname]['data']). Beware, that the root keys provided by the query
-              will overwrite any root keys already present, leverage the GraphQL alias feature to avoid issues.
-        required: False
-        default: False
-        type: bool
 """
 
 EXAMPLES = """
@@ -82,11 +70,11 @@ EXAMPLES = """
 
 # Make query to GraphQL Endpoint
 - name: Obtain list of locations from Nautobot
-  networktocode.nautobot.query_graphql:
+  networktocode.nautobot.graphql_info:
     url: http://nautobot.local
     token: thisIsMyToken
     query: "{{ query_string }}"
-
+  register: result
 
 # Example with variables
 - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
@@ -104,14 +92,14 @@ EXAMPLES = """
         }
       }
 
-# Get Response with variables and set to root keys
+# Get Response with variables
 - name: Obtain list of devices at location in variables from Nautobot
-  networktocode.nautobot.query_graphql:
+  networktocode.nautobot.graphql_info:
     url: http://nautobot.local
     token: thisIsMyToken
     query: "{{ query_string }}"
     graph_variables: "{{ graph_variables }}"
-    update_hostvars: true
+  register: result
 """
 
 RETURN = """
@@ -140,7 +128,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 
 def main():
-    """Main definition of Action Plugin for query_graphql."""
+    """Main definition of Action Plugin for graphql_info."""
     # the AnsibleModule object will be our abstraction working with Ansible
     # this includes instantiation, a couple of common attr would be the
     # args/params passed to the execution, as well as if the module
@@ -153,7 +141,6 @@ def main():
             url=dict(required=False, type="str", default=None),
             api_version=dict(required=False, type="str", default=None),
             validate_certs=dict(required=False, type="bool", default=True),
-            update_hostvars=dict(required=False, type="bool", default=False),
         ),
         # Set to true as this is a read only API, this may need to change or have significant changes when Mutations are
         # added to the GraphQL endpoint of Nautobot
