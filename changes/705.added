@@ -1,1 +1,1 @@
-Added graphql_info and graphql_facts modules to replace query_graphql, following Ansible naming conventions for info and facts modules.
+Added graphql_info and graphql_facts modules to replace query_graphql, following Ansible naming conventions for info and facts modules. Added integration tests for both new modules.
