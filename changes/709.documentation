@@ -1,0 +1,1 @@
+Added missing RETURN block to the service module and added unit tests to validate all modules have required Ansible documentation blocks (DOCUMENTATION, EXAMPLES, RETURN, version_added).
