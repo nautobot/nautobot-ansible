@@ -30,7 +30,7 @@ except ImportError:
 
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
-    circuits=["circuits", "circuit_types", "circuit_terminations", "providers"],
+    circuits=["circuits", "circuit_types", "circuit_terminations", "providers", "provider_networks"],
     cloud=[
         "cloud_accounts",
         "cloud_networks",
@@ -282,6 +282,7 @@ CONVERT_TO_ID = {
     "parent_tenant_group": "tenant_groups",
     "parent_inventory_item": "inventory_items",
     "power_panel": "power_panels",
+    "provider": "providers",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
     "primary_ip": "ip_addresses",
@@ -378,6 +379,7 @@ ENDPOINT_NAME_MAPPING = {
     "power_ports": "power_port",
     "power_port_templates": "power_port_template",
     "prefixes": "prefix",
+    "provider_networks": "provider_network",
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
@@ -500,6 +502,7 @@ ALLOWED_QUERY_PARAMS = {
     "primary_ip4": set(["address", "namespace"]),
     "primary_ip6": set(["address", "namespace"]),
     "provider": set(["name"]),
+    "provider_network": set(["name", "provider"]),
     "rack": set(["name", "location"]),
     "rack_group": set(["name"]),
     "radio_profile": set(["name"]),

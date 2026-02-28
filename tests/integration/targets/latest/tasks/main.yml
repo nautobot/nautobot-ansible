@@ -277,6 +277,15 @@
   tags:
     - provider
 
+- name: "PYNAUTOBOT_PROVIDER_NETWORK TESTS"
+  include_tasks:
+    file: "provider_network.yml"
+    apply:
+      tags:
+        - provider_network
+  tags:
+    - provider_network
+
 - name: "PYNAUTOBOT_CIRCUIT_TYPE TESTS"
   include_tasks:
     file: "circuit_type.yml"
