@@ -33,11 +33,13 @@ options:
       - Required if I(state=present) and the provider network does not exist yet
     required: false
     type: str
-  provider:
+  circuit_provider:
     description:
       - The provider that this network belongs to
     required: false
     type: raw
+    aliases:
+      - provider
   description:
     description:
       - A description of the provider network
@@ -128,7 +130,7 @@ def main():
     argument_spec.update(
         dict(
             name=dict(required=False, type="str"),
-            provider=dict(required=False, type="raw"),
+            circuit_provider=dict(required=False, type="raw", aliases=["provider"]),
             description=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
         ),
