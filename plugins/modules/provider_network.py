@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>
+# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
@@ -36,6 +36,7 @@ options:
   circuit_provider:
     description:
       - The provider that this network belongs to
+      - Required if I(state=present) and the provider network does not exist yet
     required: false
     type: raw
     aliases:
