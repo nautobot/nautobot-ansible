@@ -1,0 +1,1 @@
+Added unit tests to validate all modules have required Ansible documentation blocks (DOCUMENTATION, EXAMPLES, RETURN, version_added).
