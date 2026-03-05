@@ -11,6 +11,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 )
 
 NB_PROVIDERS = "providers"
+NB_PROVIDER_NETWORKS = "provider_networks"
 NB_CIRCUIT_TYPES = "circuit_types"
 NB_CIRCUIT_TERMINATIONS = "circuit_terminations"
 NB_CIRCUITS = "circuits"
@@ -27,6 +28,7 @@ class NautobotCircuitsModule(NautobotModule):
         - circuit_terminations
         - circuits
         - providers
+        - provider_networks
         """
         # Update the endpoint name to the Nautobot API endpoint name if it is different
         endpoint_name = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
