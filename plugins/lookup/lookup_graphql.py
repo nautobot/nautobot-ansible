@@ -24,7 +24,7 @@ DOCUMENTATION = """
             version_added: "4.1.0"
         query:
             description:
-                - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
+                - The GraphQL formatted query string. When calling Ansible C(query()), pass this as the first positional argument; see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
             required: True
         token:
             description:
@@ -72,7 +72,7 @@ EXAMPLES = """
 # Make query to GraphQL Endpoint
 - name: Obtain list of locations from Nautobot
   set_fact:
-    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
+    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
 # Example with variables
 - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
