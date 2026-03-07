@@ -104,6 +104,17 @@ EXAMPLES = r"""
     state: absent
 """
 
+RETURN = r"""
+services:
+  description: Serialized object as created or already existent within Nautobot
+  returned: success (when I(state=present))
+  type: dict
+msg:
+  description: Message indicating failure or info about what has been achieved
+  returned: always
+  type: str
+"""
+
 from copy import deepcopy
 
 from ansible.module_utils.basic import AnsibleModule
