@@ -102,6 +102,11 @@ EXAMPLES = """
 """
 
 RETURN = """
+  ansible_facts:
+    description:
+      - Data result from the GraphQL endpoint set as Ansible facts
+    type: dict
+    returned: success
   data:
     description:
       - Data result from the GraphQL endpoint
