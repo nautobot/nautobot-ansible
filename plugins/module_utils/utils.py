@@ -128,7 +128,13 @@ API_APPS_ENDPOINTS = dict(
     tenancy=["tenants", "tenant_groups"],
     users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
-    wireless=["wireless_networks", "radio_profiles", "supported_data_rates"],
+    wireless=[
+        "controller_managed_device_group_radio_profile_assignments",
+        "controller_managed_device_group_wireless_network_assignments",
+        "radio_profiles",
+        "supported_data_rates",
+        "wireless_networks",
+    ],
 )
 
 # Used to normalize data for the respective query types used to find endpoints
@@ -407,6 +413,8 @@ ENDPOINT_NAME_MAPPING = {
     "vlan_groups": "vlan_group",
     "vrfs": "vrf",
     "wireless_networks": "wireless_network",
+    "controller_managed_device_group_radio_profile_assignments": "controller_managed_device_group_radio_profile_assignment",
+    "controller_managed_device_group_wireless_network_assignments": "controller_managed_device_group_wireless_network_assignment",
 }
 
 # What makes the search unique
@@ -543,6 +551,12 @@ ALLOWED_QUERY_PARAMS = {
     "vrf": set(["name", "namespace", "rd"]),
     "vrf_device_assignments": set(["vrf", "device", "virtual_machine", "virtual_device_context"]),
     "wireless_network": set(["name"]),
+    "controller_managed_device_group_radio_profile_assignment": set(
+        ["controller_managed_device_group", "radio_profile"]
+    ),
+    "controller_managed_device_group_wireless_network_assignment": set(
+        ["controller_managed_device_group", "wireless_network"]
+    ),
 }
 
 QUERY_PARAMS_IDS = set(
@@ -577,6 +591,8 @@ IGNORE_ADDING_IDS = {
     "services",
     "vrf_device_assignments",
     "virtual_device_context",
+    "controller_managed_device_group_radio_profile_assignment",
+    "controller_managed_device_group_wireless_network_assignment",
     # Cable termination types
     "circuits.circuittermination",
     "dcim.consoleport",

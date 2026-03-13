@@ -857,6 +857,24 @@
       tags:
         - device_cluster_assignment
 
+    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP_RADIO_PROFILE_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "controller_managed_device_group_radio_profile_assignment.yml"
+        apply:
+          tags:
+            - controller_managed_device_group_radio_profile_assignment
+      tags:
+        - controller_managed_device_group_radio_profile_assignment
+
+    - name: "PYNAUTOBOT_CONTROLLER_MANAGED_DEVICE_GROUP_WIRELESS_NETWORK_ASSIGNMENT TESTS"
+      include_tasks:
+        file: "controller_managed_device_group_wireless_network_assignment.yml"
+        apply:
+          tags:
+            - controller_managed_device_group_wireless_network_assignment
+      tags:
+        - controller_managed_device_group_wireless_network_assignment
+
 - name: "PYNAUTOBOT_MIN_MAX_RULE TESTS"
   include_tasks:
     file: "min_max_rule.yml"

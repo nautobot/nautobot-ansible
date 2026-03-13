@@ -14,6 +14,12 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 NB_WIRELESS_NETWORKS = "wireless_networks"
 NB_WIRELESS_RADIO_PROFILES = "radio_profiles"
 NB_WIRELESS_SUPPORTED_DATA_RATES = "supported_data_rates"
+NB_CONTROLLER_MANAGED_DEVICE_GROUP_RADIO_PROFILE_ASSIGNMENTS = (
+    "controller_managed_device_group_radio_profile_assignments"
+)
+NB_CONTROLLER_MANAGED_DEVICE_GROUP_WIRELESS_NETWORK_ASSIGNMENTS = (
+    "controller_managed_device_group_wireless_network_assignments"
+)
 
 
 class NautobotWirelessModule(NautobotModule):
@@ -26,6 +32,8 @@ class NautobotWirelessModule(NautobotModule):
         - wireless_networks
         - radio_profiles
         - supported_data_rates
+        - controller_managed_device_group_radio_profile_assignments
+        - controller_managed_device_group_wireless_network_assignments
         """
         # Update the endpoint name to the Nautobot API endpoint name if it is different
         endpoint_name = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
@@ -44,6 +52,18 @@ class NautobotWirelessModule(NautobotModule):
             name = data["name"]
         elif self.endpoint == "supported_data_rates" and data.get("standard") and data.get("rate"):
             name = f"{data['standard']} - {data['rate']}"
+        elif (
+            self.endpoint == "controller_managed_device_group_radio_profile_assignments"
+            and data.get("controller_managed_device_group")
+            and data.get("radio_profile")
+        ):
+            name = f"{data['controller_managed_device_group']}: {data['radio_profile']}"
+        elif (
+            self.endpoint == "controller_managed_device_group_wireless_network_assignments"
+            and data.get("controller_managed_device_group")
+            and data.get("wireless_network")
+        ):
+            name = f"{data['controller_managed_device_group']}: {data['wireless_network']}"
         else:
             name = data.get("id")
 

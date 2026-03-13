@@ -42,6 +42,9 @@ These should be all the changes we need within this file for the time being.
 
 Open `plugins/module_utils/utils.py` and update the following.
 
+!!! note
+    All lists within `API_APPS_ENDPOINTS` must be kept in alphabetical order. When adding a new endpoint, insert it in the correct alphabetical position within its app list.
+
 ```python
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
