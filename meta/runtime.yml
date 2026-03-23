@@ -1,2 +1,8 @@
 ---
 requires_ansible: ">=2.18.0"
+plugin_routing:
+  modules:
+    query_graphql:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: "Use networktocode.nautobot.graphql_info or networktocode.nautobot.graphql_facts instead."

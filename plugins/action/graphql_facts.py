@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
-"""Nautobot Action Plugin to Query GraphQL."""
+"""Nautobot Action Plugin to Query GraphQL and set facts."""
 
 from __future__ import absolute_import, division, print_function
 
@@ -35,8 +35,8 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
 __metaclass__ = type
 
 
-def nautobot_action_graphql(args):
-    """Ansible Action module execution for Nautobot query_graphql."""
+def nautobot_action_graphql_facts(args):
+    """Ansible Action module execution for Nautobot graphql_facts."""
     url = args.get("url") or os.getenv("NAUTOBOT_URL")
     Display().v("URL: %s" % url)
 
@@ -57,13 +57,6 @@ def nautobot_action_graphql(args):
     # Verify SSL Verify is of boolean
     if not isinstance(ssl_verify, bool):
         raise AnsibleError("validate_certs must be a boolean")
-
-    update_hostvars = args.get("update_hostvars", False)
-    Display().vv("Update hostvars is set to: %s" % update_hostvars)  # noqa: S608
-
-    # Verify SSL Verify is of boolean
-    if not isinstance(update_hostvars, bool):
-        raise AnsibleError("update_hostvars must be a boolean")
 
     nautobot_api = NautobotApiBase(token=token, url=url, ssl_verify=ssl_verify, api_version=api_version)
     query = args.get("query")
@@ -98,12 +91,7 @@ def nautobot_action_graphql(args):
 
     # Good result, return it
     if isinstance(nautobot_response, pynautobot.core.graphql.GraphQLRecord):
-        # If update_hostvars is set, add to ansible_facts which will set to the root of
-        # the data structure, e.g. hostvars[inventory_hostname]
-        if args.get("update_hostvars"):
-            results["ansible_facts"] = nautobot_response.json.get("data")
-        # Assign to data regardless a good result to the response to the data key
-        # e.g. hostvars[inventory_hostname]['data']
+        results["ansible_facts"] = nautobot_response.json.get("data")
         results["data"] = nautobot_response.json.get("data")
 
     return results
@@ -138,11 +126,6 @@ class ActionModule(ActionBase):
         self._supports_async = False
 
         result = super(ActionModule, self).run(tmp, task_vars)
-        Display().deprecated(
-            "The query_graphql module is deprecated. Use graphql_info or graphql_facts instead.",
-            version="7.0.0",
-            collection_name="networktocode.nautobot",
-        )
         del tmp
 
         if result.get("skipped"):
@@ -153,11 +136,10 @@ class ActionModule(ActionBase):
             # should not be set anymore but here for backwards compatibility
             del result["invocation"]["module_args"]
 
-        # do work!
         # Get the arguments from the module definition
         args = self._task.args
         try:
-            results = nautobot_action_graphql(args=args)
+            results = nautobot_action_graphql_facts(args=args)
         except requests.exceptions.HTTPError as http_error:
             return {
                 "failed": True,
