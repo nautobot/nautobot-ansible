@@ -1552,26 +1552,9 @@ description = "Common helper functions useful in network automation."
 optional = false
 python-versions = "<4.0,>=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.12\""
 files = [
     {file = "netutils-1.15.1-py3-none-any.whl", hash = "sha256:c42886d456f9b21bee395628b100dc2cd4b68fcc223f33c669672c3468d6b4dc"},
     {file = "netutils-1.15.1.tar.gz", hash = "sha256:67a932a77067cbe18b65e7a9f3a3e85c4bff3e4c2c3abbe0286967ba87064793"},
-]
-
-[package.extras]
-optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.0.0,<5.0.0)"]
-
-[[package]]
-name = "netutils"
-version = "1.17.0"
-description = "Common helper functions useful in network automation."
-optional = false
-python-versions = "<3.14,>=3.10"
-groups = ["main"]
-markers = "python_version == \"3.11\""
-files = [
-    {file = "netutils-1.17.0-py3-none-any.whl", hash = "sha256:c704a64114cc1e2b45e9760efb6b38f41a0a5cba855fdbf4bb26299d1eeec9ff"},
-    {file = "netutils-1.17.0.tar.gz", hash = "sha256:171cac3b5cc1af1b01085c519485ff0d2bd12ba9e0913178fd08dd0d692d11ff"},
 ]
 
 [package.extras]
@@ -1830,14 +1813,14 @@ markers = {main = "platform_python_implementation != \"PyPy\" and implementation
 
 [[package]]
 name = "pygments"
-version = "2.19.2"
+version = "2.20.0"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
-    {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
+    {file = "pygments-2.20.0-py3-none-any.whl", hash = "sha256:81a9e26dd42fd28a23a2d169d86d7ac03b46e2f8b59ed4698fb4785f946d0176"},
+    {file = "pygments-2.20.0.tar.gz", hash = "sha256:6757cd03768053ff99f3039c1a36d6c0aa0b263438fcab17520b30a303a82b5f"},
 ]
 
 [package.extras]
