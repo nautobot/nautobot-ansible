@@ -326,6 +326,39 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
 
 @task(
     help={
+        "branch": "The ansible-core git branch to test against (default: devel)",
+        "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity",
+        "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times",
+    },
+    iterable=["skip"],
+    incrementable=["verbose"],
+)
+def devel(context, branch="devel", verbose=0, skip=None):
+    """Run sanity and unit tests against an ansible-core development branch."""
+    env = {
+        "PYTHON_VER": context.nautobot_ansible.python_ver,
+        "ANSIBLE_CORE_BRANCH": branch,
+    }
+    if verbose:
+        env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
+        env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
+    if skip is not None:
+        if "lint" in skip:
+            env["SKIP_LINT_TESTS"] = "true"
+        if "sanity" in skip:
+            env["SKIP_SANITY_TESTS"] = "true"
+        if "unit" in skip:
+            env["SKIP_UNIT_TESTS"] = "true"
+    print(f"Running tests against ansible-core branch: {branch}")
+    context.run(
+        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit",
+        env=env,
+    )
+    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
+
+
+@task(
+    help={
         "force": "Force the build command to create a new collection, overwriting any existing files.",
     },
 )
@@ -458,3 +491,31 @@ def ruff(context, action=None, target=None, fix=False, output_format="concise"):
 
     if exit_code != 0:
         raise Exit(code=exit_code)
+
+
+# ------------------------------------------------------------------------------
+# CODE GENERATION
+# ------------------------------------------------------------------------------
+@task(
+    help={
+        "module": "Generate a specific module (e.g. 'vpn_profile'). If not specified, generates all missing modules.",
+        "dry_run": "Show changes without writing any files.",
+    }
+)
+def generate(context, module=None, dry_run=False):
+    """Generate Ansible modules from Nautobot API schema."""
+    cmd = "python -m hacking.generate"
+    if module:
+        cmd += f" module {module}"
+    else:
+        cmd += " all"
+    if dry_run:
+        cmd += " --dry-run"
+    cmd += " --cache"
+    context.run(cmd)
+
+
+@task
+def generate_analyze(context):
+    """Show gap analysis: API endpoints vs existing modules."""
+    context.run("python -m hacking.generate analyze --cache")

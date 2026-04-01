@@ -1,0 +1,1 @@
+Added CI testing against ansible-core devel branch and `invoke devel` task for local testing.
