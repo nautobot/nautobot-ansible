@@ -40,7 +40,7 @@ RUN poetry install --only main
 # Optionally install ansible-core from a specific branch (e.g. "devel" or "milestone")
 ARG ANSIBLE_CORE_BRANCH
 RUN if [ -n "${ANSIBLE_CORE_BRANCH}" ]; then \
-    pip install --force-reinstall --no-deps \
+    pip install --force-reinstall --no-deps --no-build-isolation \
     "https://github.com/ansible/ansible/archive/${ANSIBLE_CORE_BRANCH}.tar.gz"; \
     fi
 

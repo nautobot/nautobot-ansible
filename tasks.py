@@ -327,16 +327,17 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
 @task(
     help={
         "branch": "The ansible-core git branch to test against (default: devel)",
+        "python_ver": "Python version to use (default: 3.12)",
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity",
         "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times",
     },
     iterable=["skip"],
     incrementable=["verbose"],
 )
-def devel(context, branch="devel", verbose=0, skip=None):
+def devel(context, branch="devel", python_ver="3.12", verbose=0, skip=None):
     """Run sanity and unit tests against an ansible-core development branch."""
     env = {
-        "PYTHON_VER": context.nautobot_ansible.python_ver,
+        "PYTHON_VER": python_ver,
         "ANSIBLE_CORE_BRANCH": branch,
     }
     if verbose:
