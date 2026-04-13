@@ -13,6 +13,10 @@ module: prefix_location
 short_description: Create, update or delete Location assignments to Prefixes within Nautobot
 description:
   - Create, update or delete Location assignments to Prefixes within Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Prefix to location assignments are managed on the I(location) record.
+  alternative: Use M(networktocode.nautobot.location) with I(prefixes).
 notes:
   - This module requires Nautobot v2.2+
   - This should be ran with connection C(local) and hosts C(localhost)

@@ -37,6 +37,48 @@ options:
       - A description of the secrets group
     required: false
     type: str
+  secrets:
+    description:
+      - List of secrets to associate with this secrets group.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of secrets to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          secret:
+            description:
+              - The secret to associate.
+            required: true
+            type: raw
+          access_type:
+            description:
+              - The access type of the secret.
+              - Required if the association does not already exist.
+            required: false
+            type: str
+            choices: [ Generic, Console, gNMI, "HTTP(S)", NETCONF, REST, RESTCONF, SNMP, SSH ]
+          secret_type:
+            description:
+              - The type of the secret.
+              - Required if the association does not already exist.
+            required: false
+            type: str
+            choices: [ key, password, secret, token, username ]
 """
 
 EXAMPLES = r"""
@@ -47,6 +89,18 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: my_secrets_group
     description: My secrets group
+
+- name: Create a secrets group with inline secret associations
+  networktocode.nautobot.secrets_group:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: my_secrets_group
+    secrets:
+      state: merge
+      objects:
+        - secret: My Secret
+          access_type: Generic
+          secret_type: key
 
 - name: Delete a secrets group
   networktocode.nautobot.secrets_group:
@@ -99,6 +153,42 @@ def main():
         dict(
             name=dict(required=False, type="str"),
             description=dict(required=False, type="str"),
+            secrets=dict(
+                required=False,
+                type="dict",
+                no_log=False,
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            secret=dict(required=True, type="raw", no_log=False),
+                            access_type=dict(
+                                required=False,
+                                type="str",
+                                choices=[
+                                    "Generic",
+                                    "Console",
+                                    "gNMI",
+                                    "HTTP(S)",
+                                    "NETCONF",
+                                    "REST",
+                                    "RESTCONF",
+                                    "SNMP",
+                                    "SSH",
+                                ],
+                            ),
+                            secret_type=dict(
+                                required=False,
+                                type="str",
+                                choices=["key", "password", "secret", "token", "username"],
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

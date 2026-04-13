@@ -13,6 +13,10 @@ module: cloud_network_prefix_assignment
 short_description: Creates or removes cloud network to prefix association from Nautobot
 description:
   - Creates or removes cloud network to prefix association from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Cloud network prefix assignments are managed on the I(cloud_network) module.
+  alternative: Use M(networktocode.nautobot.cloud_network) with I(prefixes).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:

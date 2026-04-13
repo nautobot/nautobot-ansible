@@ -61,6 +61,40 @@ options:
     required: false
     type: list
     elements: str
+  metadata_choices:
+    description:
+      - List of choices to associate with this metadata type (for select or multi-select data types).
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds choices without removing existing ones.
+          - C(replace) enforces exactly the listed choices, removing any extras.
+          - C(delete) removes the listed choices.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of choices to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          value:
+            description:
+              - The value of the choice.
+            required: true
+            type: str
+          weight:
+            description:
+              - Sort weight for this choice.
+              - Required if the choice does not already exist.
+            required: false
+            type: int
 """
 
 EXAMPLES = r"""
@@ -81,6 +115,23 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: TopSecretInfo
     state: absent
+
+- name: Create a metadata type with inline metadata choice associations
+  networktocode.nautobot.metadata_type:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: TopSecretInfo
+    data_type: text
+    content_types:
+      - dcim.device
+    metadata_choices:
+      state: merge
+      objects:
+        - value: "Choice 1"
+          weight: 100
+        - value: "Choice 2"
+          weight: 200
+    state: present
 
 - name: Delete a metadata type by id
   networktocode.nautobot.metadata_type:
@@ -147,6 +198,22 @@ def main():
                 type="str",
             ),
             content_types=dict(required=False, type="list", elements="str"),
+            metadata_choices=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            value=dict(required=True, type="str"),
+                            weight=dict(required=False, type="int"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

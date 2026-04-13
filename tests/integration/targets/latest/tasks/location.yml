@@ -7,6 +7,10 @@
 - set_fact:
     parent_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Parent Location Type\"') }}"
     child_location_type: "{{ lookup('networktocode.nautobot.lookup', 'location-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Child Location Type\"') }}"
+    test_prefix_one: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"10.0.0.0/8\"') }}"
+    test_prefix_two: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"10.10.0.0/16\"') }}"
+    test_vlan_one: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Wireless vid=100') }}"
+    test_vlan_two: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Data vid=200') }}"
 
 - name: "1 - Create location within Nautobot with only required information"
   networktocode.nautobot.location:
@@ -15,6 +19,12 @@
     name: Test Location
     status: Active
     location_type: "{{ parent_location_type['key'] }}"
+    prefixes:
+      objects:
+        - prefix: "10.0.0.0/8"
+    vlans:
+      objects:
+        - vlan: Wireless
   register: test_create_min
 
 - name: "1 - ASSERT"
@@ -27,6 +37,10 @@
       - test_create_min['location']['status'] == active['key']
       - test_create_min['location']['location_type'] == parent_location_type["key"]
       - test_create_min['msg'] == "location Test Location created"
+      - test_create_min['diff']['after']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_create_min['diff']['after']['prefixes']
+      - test_create_min['diff']['after']['vlans'] | length == 1
+      - test_vlan_one['key'] in test_create_min['diff']['after']['vlans']
 
 - name: "2 - Duplicate"
   networktocode.nautobot.location:
@@ -35,6 +49,12 @@
     name: Test Location
     status: Active
     location_type: "{{ parent_location_type['key'] }}"
+    prefixes:
+      objects:
+        - prefix: "10.0.0.0/8"
+    vlans:
+      objects:
+        - vlan: Wireless
   register: test_create_idem
 
 - name: "2 - ASSERT"
@@ -44,13 +64,19 @@
       - test_create_idem['msg'] == "location Test Location already exists"
       - test_create_idem['location']['name'] == "Test Location"
 
-- name: "3 - Update location"
+- name: "3 - Update location and merge second prefix and VLAN"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Location
     location_type: "{{ parent_location_type['value']['name'] }}"
     description: Test Location Description
+    prefixes:
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      objects:
+        - vlan: Data
   register: test_update
 
 - name: "3 - ASSERT"
@@ -60,8 +86,140 @@
       - test_update['diff']['before']['description'] == ""
       - test_update['diff']['after']['description'] == "Test Location Description"
       - test_update['location']['status'] == active['key']
+      - test_update['diff']['before']['prefixes'] | length == 1
+      - test_update['diff']['after']['prefixes'] | length == 2
+      - test_prefix_one['key'] in test_update['diff']['after']['prefixes']
+      - test_prefix_two['key'] in test_update['diff']['after']['prefixes']
+      - test_update['diff']['before']['vlans'] | length == 1
+      - test_update['diff']['after']['vlans'] | length == 2
+      - test_vlan_one['key'] in test_update['diff']['after']['vlans']
+      - test_vlan_two['key'] in test_update['diff']['after']['vlans']
 
-- name: "4 - Create location with all parameters"
+- name: "4 - Duplicate merge"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Location
+    location_type: "{{ parent_location_type['value']['name'] }}"
+    prefixes:
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      objects:
+        - vlan: Data
+  register: test_merge_idem
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_merge_idem['changed']
+      - test_merge_idem['msg'] == "location Test Location already exists"
+
+- name: "5 - Delete second prefix and VLAN"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Location
+    location_type: "{{ parent_location_type['value']['name'] }}"
+    prefixes:
+      state: delete
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      state: delete
+      objects:
+        - vlan: Data
+    state: present
+  register: test_m2m_delete
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_m2m_delete is changed
+      - test_m2m_delete['diff']['before']['prefixes'] | length == 2
+      - test_m2m_delete['diff']['after']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_m2m_delete['diff']['after']['prefixes']
+      - test_prefix_two['key'] not in test_m2m_delete['diff']['after']['prefixes']
+      - test_m2m_delete['diff']['before']['vlans'] | length == 2
+      - test_m2m_delete['diff']['after']['vlans'] | length == 1
+      - test_vlan_one['key'] in test_m2m_delete['diff']['after']['vlans']
+      - test_vlan_two['key'] not in test_m2m_delete['diff']['after']['vlans']
+
+- name: "6 - Duplicate delete"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Location
+    location_type: "{{ parent_location_type['value']['name'] }}"
+    prefixes:
+      state: delete
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      state: delete
+      objects:
+        - vlan: Data
+    state: present
+  register: test_m2m_delete_idem
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - not test_m2m_delete_idem['changed']
+
+- name: "7 - Replace prefixes and VLANs"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Location
+    location_type: "{{ parent_location_type['value']['name'] }}"
+    prefixes:
+      state: replace
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      state: replace
+      objects:
+        - vlan: Data
+    state: present
+  register: test_m2m_replace
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_m2m_replace is changed
+      - test_m2m_replace['diff']['before']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_m2m_replace['diff']['before']['prefixes']
+      - test_m2m_replace['diff']['after']['prefixes'] | length == 1
+      - test_prefix_two['key'] in test_m2m_replace['diff']['after']['prefixes']
+      - test_m2m_replace['diff']['before']['vlans'] | length == 1
+      - test_vlan_one['key'] in test_m2m_replace['diff']['before']['vlans']
+      - test_m2m_replace['diff']['after']['vlans'] | length == 1
+      - test_vlan_two['key'] in test_m2m_replace['diff']['after']['vlans']
+
+- name: "8 - Duplicate replace"
+  networktocode.nautobot.location:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Location
+    location_type: "{{ parent_location_type['value']['name'] }}"
+    prefixes:
+      state: replace
+      objects:
+        - prefix: "10.10.0.0/16"
+    vlans:
+      state: replace
+      objects:
+        - vlan: Data
+    state: present
+  register: test_m2m_replace_idem
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - not test_m2m_replace_idem['changed']
+
+- name: "9 - Create location with all parameters"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -85,7 +243,7 @@
     state: present
   register: test_create_max
 
-- name: "4 - ASSERT"
+- name: "9 - ASSERT"
   assert:
     that:
       - test_create_max is changed
@@ -98,7 +256,7 @@
       - test_create_max['location']['location_type'] == child_location_type["key"]
       - test_create_max['location']['parent'] == test_create_min['location']['id']
 
-- name: "5 - Duplicate create with all parameters"
+- name: "10 - Duplicate create with all parameters"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -122,7 +280,7 @@
     state: present
   register: test_create_max_idem
 
-- name: "5 - ASSERT"
+- name: "10 - ASSERT"
   assert:
     that:
       - not test_create_max_idem['changed']
@@ -132,7 +290,7 @@
 - set_fact:
     location_to_delete: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Location 2\" parent=\"Test Location\" location_type=\"My Child Location Type\"') }}"
 
-- name: "6 - Delete location"
+- name: "11 - Delete location"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -140,7 +298,7 @@
     state: absent
   register: test_delete
 
-- name: "6 - ASSERT"
+- name: "11 - ASSERT"
   assert:
     that:
       - test_delete is changed
@@ -149,7 +307,7 @@
       - test_delete['location']['name'] == "Test Location 2"
       - "'deleted' in test_delete['msg']"
 
-- name: "7 - Delete duplicate"
+- name: "12 - Delete duplicate"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -157,7 +315,7 @@
     state: absent
   register: test_delete_idem
 
-- name: "7 - ASSERT"
+- name: "12 - ASSERT"
   assert:
     that:
       - not test_delete_idem['changed']
@@ -166,24 +324,24 @@
 - set_fact:
     fist_location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Location\" location_type=\"My Parent Location Type\"') }}"
 
-- name: "8 - Delete location"
+- name: "13 - Delete location"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     id: "{{ fist_location['key'] }}"
     state: absent
-  register: test_eight
+  register: test_thirteen
 
-- name: "8 - ASSERT"
+- name: "13 - ASSERT"
   assert:
     that:
-      - test_eight is changed
-      - test_eight['diff']['before']['state'] == "present"
-      - test_eight['diff']['after']['state'] == "absent"
-      - test_eight['location']['name'] == "Test Location"
-      - "'deleted' in test_eight['msg']"
+      - test_thirteen is changed
+      - test_thirteen['diff']['before']['state'] == "present"
+      - test_thirteen['diff']['after']['state'] == "absent"
+      - test_thirteen['location']['name'] == "Test Location"
+      - "'deleted' in test_thirteen['msg']"
 
-- name: "9 - Use Parent Location Name"
+- name: "14 - Use Parent Location Name"
   networktocode.nautobot.location:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -195,7 +353,7 @@
     location_type: "{{ child_location_type['key'] }}"
   register: test_parent_name
 
-- name: "9 - ASSERT"
+- name: "14 - ASSERT"
   assert:
     that:
       - test_parent_name is changed

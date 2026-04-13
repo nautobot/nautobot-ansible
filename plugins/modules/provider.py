@@ -68,6 +68,44 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  provider_networks:
+    description:
+      - List of provider networks belonging to this provider.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds provider networks without removing existing ones.
+          - C(replace) enforces exactly the listed provider networks, removing any extras.
+          - C(delete) removes the listed provider networks.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of provider networks to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          name:
+            description:
+              - Name of the provider network.
+            required: true
+            type: str
+          description:
+            description:
+              - Description of the provider network.
+            required: false
+            type: str
+          comments:
+            description:
+              - Comments for the provider network.
+            required: false
+            type: str
 """
 
 EXAMPLES = r"""
@@ -95,6 +133,17 @@ EXAMPLES = r"""
         noc_contact: noc@provider.net
         admin_contact: admin@provider.net
         comments: "BAD PROVIDER"
+        state: present
+
+    - name: Create provider with inline provider network associations
+      networktocode.nautobot.provider:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Provider
+        provider_networks:
+          state: merge
+          objects:
+            - name: "Provider Net A"
         state: present
 
     - name: Delete provider within nautobot
@@ -155,6 +204,23 @@ def main():
             noc_contact=dict(required=False, type="str"),
             admin_contact=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
+            provider_networks=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            name=dict(required=True, type="str"),
+                            description=dict(required=False, type="str"),
+                            comments=dict(required=False, type="str"),
+                        ),
+                    ),
+                ),
+            ),
         ),
     )
 

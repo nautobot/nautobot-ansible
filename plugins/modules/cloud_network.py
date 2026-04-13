@@ -60,6 +60,34 @@ options:
       - Arbitrary JSON data to define the extra config.
     required: false
     type: dict
+  prefixes:
+    description:
+      - List of prefixes to associate with this cloud network.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of prefixes to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          prefix:
+            description:
+              - The prefix to associate with the cloud network.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -72,6 +100,19 @@ EXAMPLES = r"""
     cloud_resource_type: Cisco Quantum Type
     cloud_account: Cisco Quantum Account
     description: A quantum network for Cisco
+    state: present
+
+- name: Create a cloud network with inline prefix associations
+  networktocode.nautobot.cloud_network:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Cisco Quantum Network
+    cloud_resource_type: Cisco Quantum Type
+    cloud_account: Cisco Quantum Account
+    prefixes:
+      state: merge
+      objects:
+        - prefix: 10.1.198.0/23
     state: present
 
 - name: Delete a cloud network
@@ -131,6 +172,21 @@ def main():
             cloud_account=dict(required=False, type="raw"),
             parent_cloud_network=dict(required=False, type="raw", aliases=["parent"]),
             extra_config=dict(required=False, type="dict"),
+            prefixes=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            prefix=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

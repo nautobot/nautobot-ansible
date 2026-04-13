@@ -105,6 +105,34 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  vrfs:
+    description:
+      - List of VRFs to associate with this virtual machine.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of VRFs to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          vrf:
+            description:
+              - The VRF to associate with the virtual machine.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -149,6 +177,17 @@ EXAMPLES = r"""
         vcpus: 8
         memory: 8
         disk: 8
+        state: present
+
+    - name: Create virtual machine with inline VRF associations
+      networktocode.nautobot.virtual_machine:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Virtual Machine
+        vrfs:
+          state: merge
+          objects:
+            - vrf: Test VRF
         state: present
 
     - name: Delete virtual machine by id
@@ -208,6 +247,21 @@ def main():
             status=dict(required=False, type="raw"),
             local_config_context_data=dict(required=False, type="dict"),
             comments=dict(required=False, type="str"),
+            vrfs=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            vrf=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

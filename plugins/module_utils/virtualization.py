@@ -19,6 +19,15 @@ NB_VM_INTERFACES = "interfaces"
 
 
 class NautobotVirtualizationModule(NautobotModule):
+    def __init__(self, module, endpoint, client=None, remove_keys=None):
+        """Initialize the Nautobot Virtualization module."""
+        super().__init__(module, endpoint, client=client, remove_keys=remove_keys)
+        # Because both devices and virtual machines use the "interfaces" endpoint, we need to
+        # override the parent_key for the "interfaces" endpoint to "vm_interface" when we are dealing with virtual machines.
+        if self.endpoint == "interfaces":
+            for field_config in self.m2m_fields_config.values():
+                field_config["parent_key"] = "vm_interface"
+
     def run(self):
         """Run the Nautobot Virtualization module.
 

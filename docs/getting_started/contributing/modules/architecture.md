@@ -291,3 +291,49 @@ The next few lines manipulate the data and prepare it for sending to Nautobot.
 - Converts any fields that are namespaced to prevent conflicts when searching for them (e.g. device_role, ipam_role, rack_group, etc.)
 
 If all those pass, it sets the manipulated data to `self.data` that is used in the module util apps.
+
+## Inline M2M Fields
+
++++ 6.2.0
+
+Some parent modules support inline many-to-many (M2M) association fields. These are declared in the `M2M_FIELDS` global dict in `utils.py`, which maps each endpoint to its supported M2M fields and their association API endpoints:
+
+```python
+M2M_FIELDS = {
+    "devices": {
+        "vrfs": "vrf_device_assignments",
+        "clusters": "device_cluster_assignments",
+    },
+    "locations": {
+        "prefixes": "prefix_location_assignments",
+        "vlans": "vlan_location_assignments",
+    },
+    # ... etc.
+}
+```
+
+### How M2M Fields Are Processed
+
+During `__init__`, M2M fields are handled separately from regular fields to prevent collisions with `_find_ids`:
+
+1. **Extraction**: M2M field data is popped from the data dict *before* `_find_ids` runs on the parent data. This prevents M2M field names (like `prefixes`) from being mistakenly resolved as direct FK relationships.
+2. **Child resolution**: Each M2M object's child key (e.g., `vrf`, `prefix`, `ip_address`) is individually run through `_find_ids` to resolve names to UUIDs. This supports both simple strings (`vrf: "My VRF"`) and dicts for disambiguation (`ip_address: {address: "10.0.0.1/24", namespace: "Global"}`).
+3. **Payload stripping**: M2M field names are added to `remove_keys` so they are stripped from the REST API payload sent for the parent object.
+
+After the parent object is created or updated, `_ensure_object_exists` calls `_process_m2m_fields` which iterates through each M2M field and:
+
+- Fetches current associations from the API
+- Compares desired vs current using normalized comparison keys
+- Applies the requested state (`merge`, `replace`, or `delete`) via bulk create/delete operations
+
+### Adding M2M Support to a New Module
+
+If a new association endpoint is added to Nautobot and you want to support inline management:
+
+1. Add the mapping to `M2M_FIELDS` in `utils.py`
+2. Add the M2M argument to the parent module's `argument_spec` following the standard structure (state/objects/child_key suboptions)
+3. Add matching `DOCUMENTATION` with suboptions
+4. Ensure the child key is in `CONVERT_TO_ID` and has appropriate `QUERY_TYPES`, `ENDPOINT_NAME_MAPPING`, and `ALLOWED_QUERY_PARAMS` entries
+5. Add integration tests covering merge, replace, delete, and idempotency
+
+No changes to the module's `main()` function or constructor are needed -- the framework auto-detects M2M fields from `M2M_FIELDS` based on `self.endpoint`.

@@ -13,6 +13,10 @@ module: device_cluster_assignment
 short_description: Creates or removes device cluster assignments from Nautobot
 description:
   - Creates or removes device cluster assignments from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Device cluster assignments are managed on the I(device) record.
+  alternative: Use M(networktocode.nautobot.device) with I(clusters).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:
