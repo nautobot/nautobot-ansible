@@ -24,7 +24,10 @@ DOCUMENTATION = """
             version_added: "4.1.0"
         query:
             description:
-                - The GraphQL formatted query string. When calling Ansible C(query()), pass this as the first positional argument; see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
+                - The GraphQL formatted query string.
+                  When calling Ansible C(query()), pass this as the first
+                  positional argument; see
+                  [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
             required: True
         token:
             description:
