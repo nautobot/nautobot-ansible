@@ -6,4 +6,3 @@ docker-compose.yml
 venv/
 .vscode/
 .github/
-node_modules/
