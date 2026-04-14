@@ -33,4 +33,4 @@ jobs:
       - name: "Install invoke"
         run: "pip install -U pip && pip install invoke packaging"
       - name: "Run tests against ansible-core ${{ env.ANSIBLE_CORE_BRANCH }}"
-        run: "invoke devel --branch ${{ env.ANSIBLE_CORE_BRANCH }} --skip lint"
+        run: "invoke unit --ansible-core-branch ${{ env.ANSIBLE_CORE_BRANCH }} --skip lint"

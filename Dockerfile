@@ -37,14 +37,6 @@ COPY pyproject.toml poetry.lock ./
 # Install only package Dependencies
 RUN poetry install --only main
 
-# Optionally install ansible-core from a specific branch (e.g. "devel" or "milestone")
-ARG ANSIBLE_CORE_BRANCH
-RUN if [ -n "${ANSIBLE_CORE_BRANCH}" ]; then \
-    pip install --upgrade pip setuptools && \
-    pip install --force-reinstall --no-deps \
-    "https://github.com/ansible/ansible/archive/${ANSIBLE_CORE_BRANCH}.tar.gz"; \
-    fi
-
 #########
 # Linting
 #
@@ -56,6 +48,15 @@ ENV SKIP_LINT_TESTS=${SKIP_LINT_TESTS}
 
 # Install dev dependencies
 RUN poetry install
+
+# Optionally install ansible-core from a specific branch (e.g. "devel" or "milestone")
+# This must come AFTER poetry install so the lock file version doesn't overwrite it.
+ARG ANSIBLE_CORE_BRANCH
+RUN if [ -n "${ANSIBLE_CORE_BRANCH}" ]; then \
+    pip install --upgrade pip setuptools && \
+    pip install --force-reinstall --no-deps \
+    "https://github.com/ansible/ansible/archive/${ANSIBLE_CORE_BRANCH}.tar.gz"; \
+    fi
 
 # Copy in the application source and everything not explicitly banned by .dockerignore
 COPY . .

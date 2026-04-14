@@ -242,13 +242,16 @@ def lint(context):
     help={
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
         "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times (e.g. --skip lint --skip sanity)",
+        "ansible_core_branch": "Test against a specific ansible-core git branch (e.g. 'devel', 'milestone')",
     },
     iterable=["skip"],
     incrementable=["verbose"],
 )
-def unit(context, verbose=0, skip=None):
+def unit(context, verbose=0, skip=None, ansible_core_branch=None):
     """Run unit tests."""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
+    if ansible_core_branch is not None:
+        env["ANSIBLE_CORE_BRANCH"] = ansible_core_branch
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
@@ -322,40 +325,6 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
     )
     # Clean up after the tests
     destroy(context)
-
-
-@task(
-    help={
-        "branch": "The ansible-core git branch to test against (default: devel)",
-        "python_ver": "Python version to use (default: 3.12)",
-        "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity",
-        "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times",
-    },
-    iterable=["skip"],
-    incrementable=["verbose"],
-)
-def devel(context, branch="devel", python_ver="3.12", verbose=0, skip=None):
-    """Run sanity and unit tests against an ansible-core development branch."""
-    env = {
-        "PYTHON_VER": python_ver,
-        "ANSIBLE_CORE_BRANCH": branch,
-    }
-    if verbose:
-        env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
-        env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
-    if skip is not None:
-        if "lint" in skip:
-            env["SKIP_LINT_TESTS"] = "true"
-        if "sanity" in skip:
-            env["SKIP_SANITY_TESTS"] = "true"
-        if "unit" in skip:
-            env["SKIP_UNIT_TESTS"] = "true"
-    print(f"Running tests against ansible-core branch: {branch}")
-    context.run(
-        f"docker compose --project-name {context.nautobot_ansible.project_name} up --build --force-recreate --exit-code-from unit unit",
-        env=env,
-    )
-    context.run(f"docker compose --project-name {context.nautobot_ansible.project_name} down")
 
 
 @task(
