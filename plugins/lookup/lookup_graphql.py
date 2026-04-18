@@ -222,8 +222,11 @@ class LookupModule(LookupBase):
             )
 
         # Terms comes in as a list, this needs to be moved to string for pynautobot
+        # Support both positional argument (terms) and keyword argument (query=)
+        query = terms[0] if terms else kwargs.get("query")
+
         lookup_info = nautobot_lookup_graphql(
-            query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs
+            query=query, variables=variables, graph_variables=graph_variables, **kwargs
         )
 
         # Results should be the data response of the query to be returned as a lookup
