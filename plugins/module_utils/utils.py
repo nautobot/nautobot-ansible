@@ -1488,8 +1488,13 @@ class NautobotModule:
         nb_m2m_app = getattr(self.nb, m2m_app)
         nb_m2m_endpoint = getattr(nb_m2m_app, m2m_endpoint_name)
 
-        # Fetch current associations filtered by parent
-        current_records = list(nb_m2m_endpoint.filter(**{effective_parent_key: parent_id}))
+        # Fetch current associations filtered by parent.
+        # When parent_id is None (check_mode create), the parent doesn't exist yet
+        # so there can't be any existing associations.
+        if parent_id is None:
+            current_records = []
+        else:
+            current_records = list(nb_m2m_endpoint.filter(**{effective_parent_key: parent_id}))
 
         # Build desired association payloads. Child objects are already resolved to UUIDs
         # by _find_ids in __init__, so just add the parent key and pass through all fields.
@@ -1595,15 +1600,16 @@ class NautobotModule:
             else:
                 self.result["msg"] = "%s %s already exists" % (endpoint_name, name)
 
-        # Process any declared M2M fields after the parent object is created/updated
-        if self.m2m_fields_config and self.m2m_data and not self.check_mode:
+        # Process any declared M2M fields after the parent object is created/updated.
+        # In check_mode, parent_id may be None (parent doesn't exist yet); _handle_m2m_field
+        # handles that by treating current associations as empty.
+        if self.m2m_fields_config and self.m2m_data:
             parent_key = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
             if isinstance(self.nb_object, dict):
                 parent_id = self.nb_object.get("id")
             else:
                 parent_id = getattr(self.nb_object, "id", None)
-            if parent_id:
-                self._process_m2m_fields(parent_key, str(parent_id))
+            self._process_m2m_fields(parent_key, str(parent_id) if parent_id else None)
 
     def _ensure_object_absent(self, endpoint_name, name):
         """Ensure an object is absent.
