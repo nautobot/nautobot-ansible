@@ -13,6 +13,10 @@ module: cloud_service_network_assignment
 short_description: Creates or removes cloud service to cloud network association from Nautobot
 description:
   - Creates or removes cloud service to cloud network association from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Cloud service network assignments are managed on the I(cloud_service) module.
+  alternative: Use M(networktocode.nautobot.cloud_service) with I(cloud_networks).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:

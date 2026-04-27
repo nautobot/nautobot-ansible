@@ -203,7 +203,10 @@ power_panels = [{"name": "Test Power Panel", "location": location_parent.id}]
 created_power_panels = make_nautobot_calls(nb.dcim.power_panels, power_panels)
 
 # Create VRFs
-vrfs = [{"name": "Test VRF", "rd": "1:1", "namespace": {"name": "Global"}}]
+vrfs = [
+    {"name": "Test VRF", "rd": "1:1", "namespace": {"name": "Global"}},
+    {"name": "Test VRF Two", "rd": "2:2", "namespace": {"name": "Global"}},
+]
 created_vrfs = make_nautobot_calls(nb.ipam.vrfs, vrfs)
 
 # Create namespace
@@ -245,6 +248,11 @@ prefixes = [
     },
     {
         "prefix": "2001::1:0/64",
+        "status": {"name": "Active"},
+        "namespace": {"name": "Global"},
+    },
+    {
+        "prefix": "198.51.100.0/24",
         "status": {"name": "Active"},
         "namespace": {"name": "Global"},
     },
@@ -665,6 +673,16 @@ ip_addresses = [
         "namespace": {"name": "Global"},
         "status": {"name": "Active"},
     },
+    {
+        "address": "10.200.0.1/32",
+        "namespace": {"name": "Global"},
+        "status": {"name": "Active"},
+    },
+    {
+        "address": "10.200.0.2/32",
+        "namespace": {"name": "Global"},
+        "status": {"name": "Active"},
+    },
 ]
 
 created_ip_addresses = make_nautobot_calls(nb.ipam.ip_addresses, ip_addresses)
@@ -729,6 +747,7 @@ clusters = [
         "location": location_child.id,
     },
     {"name": "Test Cluster 2", "cluster_type": test_cluster_type.id},
+    {"name": "Test Cluster Three", "cluster_type": test_cluster_type.id},
 ]
 created_clusters = make_nautobot_calls(nb.virtualization.clusters, clusters)
 test_cluster = nb.virtualization.clusters.get(name="Test Cluster")
@@ -1073,7 +1092,12 @@ cloud_networks = [
         "name": "CiscoCloudNetwork",
         "cloud_resource_type": "CiscoCloudNetworkType",
         "cloud_account": "CiscoCloudAccount",
-    }
+    },
+    {
+        "name": "CiscoCloudNetworkTwo",
+        "cloud_resource_type": "CiscoCloudNetworkType",
+        "cloud_account": "CiscoCloudAccount",
+    },
 ]
 created_cloud_networks = make_nautobot_calls(nb.cloud.cloud_networks, cloud_networks)
 

@@ -5,7 +5,11 @@ from typing import Any
 
 import pytest
 
-from plugins.module_utils.utils import sort_dict_with_lists
+from plugins.module_utils.utils import (
+    _m2m_assoc_compare_key,
+    _normalize_m2m_compare_value,
+    sort_dict_with_lists,
+)
 
 try:
     from plugins.module_utils.utils import is_truthy, mark_trusted
@@ -129,6 +133,34 @@ def test_sort_dict_with_lists(data: Any, expected: Any) -> None:
     """Test sort_dict_with_lists with various data structures."""
     result = sort_dict_with_lists(data)
     assert result == expected
+
+
+def test_normalize_m2m_compare_value_nested_fk_matches_uuid() -> None:
+    """Nested API FK objects should compare equal to plain UUID strings."""
+    uid = "550e8400-e29b-41d4-a716-446655440000"
+    assert _normalize_m2m_compare_value(uid) == uid
+    assert _normalize_m2m_compare_value({"id": uid, "name": "foo", "url": "http://x"}) == uid
+
+
+def test_m2m_assoc_compare_key_desired_matches_serialized_vrf_assignment() -> None:
+    """VRF device assignment delete/merge must not treat existing rows as missing."""
+    parent_key = "device"
+    vrf_id = "20ead86f-2c38-4d98-8b7a-efc2378b3ab4"
+    dev_id = "20ead86f-2c38-4d98-8b7a-efc2378b3ab3"
+    key_fields = {"vrf"}
+
+    desired = {"device": dev_id, "vrf": vrf_id}
+    api_like = {
+        "id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+        "device": dev_id,
+        "vrf": {"id": vrf_id, "name": "foo", "url": "http://example"},
+        "display": "foo @ device",
+        "url": "http://example/assignment/",
+    }
+
+    kd = _m2m_assoc_compare_key(desired, parent_key, key_fields)
+    ka = _m2m_assoc_compare_key(api_like, parent_key, key_fields)
+    assert kd == ka
 
 
 def test_sort_dict_with_lists_non_dict_inputs() -> None:

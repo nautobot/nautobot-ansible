@@ -13,6 +13,10 @@ module: metadata_choice
 short_description: Create, update or delete metadata choices within Nautobot
 description:
   - Creates, updates or removes metadata choices from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Metadata choices are managed via the I(metadata_type) module.
+  alternative: Use M(networktocode.nautobot.metadata_type) with I(metadata_choices).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:

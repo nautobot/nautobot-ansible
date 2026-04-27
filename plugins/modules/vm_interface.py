@@ -100,6 +100,69 @@ options:
     required: false
     type: raw
     version_added: "5.12.0"
+  ip_addresses:
+    description:
+      - List of IP addresses to associate with this VM interface.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of IP addresses to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          ip_address:
+            description:
+              - The IP address to associate with the VM interface.
+            required: true
+            type: raw
+          is_source:
+            description:
+              - Mark the IP address as a source IP address.
+            required: false
+            type: bool
+          is_destination:
+            description:
+              - Mark the IP address as a destination IP address.
+            required: false
+            type: bool
+          is_default:
+            description:
+              - Mark the IP address as a default IP address.
+            required: false
+            type: bool
+          is_preferred:
+            description:
+              - Mark the IP address as a preferred IP address.
+            required: false
+            type: bool
+          is_primary:
+            description:
+              - Mark the IP address as a primary IP address.
+            required: false
+            type: bool
+          is_secondary:
+            description:
+              - Mark the IP address as a secondary IP address.
+            required: false
+            type: bool
+          is_standby:
+            description:
+              - Mark the IP address as a standby IP address.
+            required: false
+            type: bool
 """
 
 EXAMPLES = r"""
@@ -155,6 +218,23 @@ EXAMPLES = r"""
         enabled: false
         custom_fields:
           monitored: true
+
+    - name: Create interface with inline IP address associations
+      networktocode.nautobot.vm_interface:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        virtual_machine: test100
+        name: GigabitEthernet27
+        ip_addresses:
+          state: merge
+          objects:
+            - ip_address: 192.168.1.1/24
+              is_source: true
+            - ip_address: 192.168.1.2/24
+              is_destination: true
+            - ip_address: 192.168.1.3/24
+              is_default: true
+        state: present
 
     - name: Delete interface by id
       networktocode.nautobot.vm_interface:
@@ -212,6 +292,28 @@ def main():
             tagged_vlans=dict(required=False, type="raw"),
             role=dict(required=False, type="raw"),
             vrf=dict(required=False, type="raw"),
+            ip_addresses=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            ip_address=dict(required=True, type="raw"),
+                            is_source=dict(required=False, type="bool"),
+                            is_destination=dict(required=False, type="bool"),
+                            is_default=dict(required=False, type="bool"),
+                            is_preferred=dict(required=False, type="bool"),
+                            is_primary=dict(required=False, type="bool"),
+                            is_secondary=dict(required=False, type="bool"),
+                            is_standby=dict(required=False, type="bool"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

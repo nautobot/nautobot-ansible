@@ -134,6 +134,62 @@ options:
     required: false
     type: str
     version_added: "5.1.0"
+  prefixes:
+    description:
+      - List of prefixes to associate with this location.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of prefixes to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          prefix:
+            description:
+              - The prefix to associate with the location.
+            required: true
+            type: raw
+  vlans:
+    description:
+      - List of VLANs to associate with this location.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of VLANs to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          vlan:
+            description:
+              - The VLAN to associate with the location.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -181,6 +237,28 @@ EXAMPLES = r"""
         contact_email: jenny@example.com
         comments: "**This** is a `markdown` comment"
         parent: My Location
+        state: present
+
+    - name: Create location with inline VLAN associations
+      networktocode.nautobot.location:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Location
+        vlans:
+          state: merge
+          objects:
+            - vlan: 10
+        state: present
+
+    - name: Create location with inline prefix associations
+      networktocode.nautobot.location:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: My Location
+        prefixes:
+          state: merge
+          objects:
+            - prefix: 10.0.0.0/8
         state: present
 """
 
@@ -236,6 +314,36 @@ def main():
             contact_phone=dict(required=False, type="str"),
             contact_email=dict(required=False, type="str"),
             comments=dict(required=False, type="str"),
+            prefixes=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            prefix=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
+            vlans=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            vlan=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

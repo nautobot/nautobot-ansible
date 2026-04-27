@@ -357,7 +357,7 @@ def galaxy_install(context, force=False):
 def docs(context):
     """Build and serve docs locally for development."""
     galaxy_install(context, force=True)
-    command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
+    command = "poetry run mkdocs serve -v -a 0.0.0.0:8000 --livereload"
     context.run(command)
 
 

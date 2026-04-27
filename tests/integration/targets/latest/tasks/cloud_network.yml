@@ -8,6 +8,8 @@
     cloud_resource_type: "{{ lookup('networktocode.nautobot.lookup', 'cloud-resource-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetworkType') }}"
     cloud_account: "{{ lookup('networktocode.nautobot.lookup', 'cloud-accounts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudAccount') }}"
     cloud_network: "{{ lookup('networktocode.nautobot.lookup', 'cloud-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CiscoCloudNetwork') }}"
+    test_prefix_one: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"198.51.100.0/24\"') }}"
+    test_prefix_two: "{{ lookup('networktocode.nautobot.lookup', 'prefixes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='prefix=\"192.0.2.0/24\"') }}"
 
 - name: "1 - Create cloud network within Nautobot with only required information"
   networktocode.nautobot.cloud_network:
@@ -16,24 +18,32 @@
     name: Cisco Quantum Network
     cloud_resource_type: CiscoCloudNetworkType
     cloud_account: CiscoCloudAccount
+    prefixes:
+      objects:
+        - prefix: "198.51.100.0/24"
   register: test_create_min
 
 - name: "1 - ASSERT"
   assert:
-    that: 
+    that:
       - test_create_min is changed
       - test_create_min['diff']['before']['state'] == "absent"
       - test_create_min['diff']['after']['state'] == "present"
       - test_create_min['cloud_network']['name'] == "Cisco Quantum Network"
       - test_create_min['msg'] == "cloud_network Cisco Quantum Network created"
+      - test_create_min['diff']['after']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_create_min['diff']['after']['prefixes']
 
 - name: "2 - Duplicate"
   networktocode.nautobot.cloud_network:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Cisco Quantum Network
-
+    prefixes:
+      objects:
+        - prefix: "198.51.100.0/24"
   register: test_create_idem
+
 - name: "2 - ASSERT"
   assert:
     that:
@@ -41,12 +51,15 @@
       - test_create_idem['msg'] == "cloud_network Cisco Quantum Network already exists"
       - test_create_idem['cloud_network']['name'] == "Cisco Quantum Network"
 
-- name: "3 - Update cloud_network"
+- name: "3 - Update cloud_network and merge second prefix"
   networktocode.nautobot.cloud_network:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Cisco Quantum Network
     description: Super fast quantum network!
+    prefixes:
+      objects:
+        - prefix: "192.0.2.0/24"
   register: test_update
 
 - name: "3 - ASSERT"
@@ -55,6 +68,10 @@
       - test_update is changed
       - test_update['diff']['before']['description'] == ""
       - test_update['diff']['after']['description'] == "Super fast quantum network!"
+      - test_update['diff']['before']['prefixes'] | length == 1
+      - test_update['diff']['after']['prefixes'] | length == 2
+      - test_prefix_one['key'] in test_update['diff']['after']['prefixes']
+      - test_prefix_two['key'] in test_update['diff']['after']['prefixes']
 
 - name: "4 - Update idempotent"
   networktocode.nautobot.cloud_network:
@@ -62,6 +79,9 @@
     token: "{{ nautobot_token }}"
     name: Cisco Quantum Network
     description: Super fast quantum network!
+    prefixes:
+      objects:
+        - prefix: "192.0.2.0/24"
   register: test_update_idem
 
 - name: "4 - ASSERT"
@@ -127,7 +147,83 @@
       - test_create_max_idem['cloud_network']['name'] == "Cisco Quantum Faster Network"
       - test_create_max_idem['cloud_network']['extra_config']['my_config']['foo'] == "bar"
 
-- name: "7 - Delete cloud_network"
+- name: "7 - Delete second prefix"
+  networktocode.nautobot.cloud_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Cisco Quantum Network
+    prefixes:
+      state: delete
+      objects:
+        - prefix: "192.0.2.0/24"
+    state: present
+  register: test_m2m_delete
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - test_m2m_delete is changed
+      - test_m2m_delete['diff']['before']['prefixes'] | length == 2
+      - test_m2m_delete['diff']['after']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_m2m_delete['diff']['after']['prefixes']
+      - test_prefix_two['key'] not in test_m2m_delete['diff']['after']['prefixes']
+
+- name: "8 - Duplicate delete prefix"
+  networktocode.nautobot.cloud_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Cisco Quantum Network
+    prefixes:
+      state: delete
+      objects:
+        - prefix: "192.0.2.0/24"
+    state: present
+  register: test_m2m_delete_idem
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - not test_m2m_delete_idem['changed']
+
+- name: "9 - Replace prefixes"
+  networktocode.nautobot.cloud_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Cisco Quantum Network
+    prefixes:
+      state: replace
+      objects:
+        - prefix: "192.0.2.0/24"
+    state: present
+  register: test_m2m_replace
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - test_m2m_replace is changed
+      - test_m2m_replace['diff']['before']['prefixes'] | length == 1
+      - test_prefix_one['key'] in test_m2m_replace['diff']['before']['prefixes']
+      - test_m2m_replace['diff']['after']['prefixes'] | length == 1
+      - test_prefix_two['key'] in test_m2m_replace['diff']['after']['prefixes']
+
+- name: "10 - Duplicate replace prefixes"
+  networktocode.nautobot.cloud_network:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Cisco Quantum Network
+    prefixes:
+      state: replace
+      objects:
+        - prefix: "192.0.2.0/24"
+    state: present
+  register: test_m2m_replace_idem
+
+- name: "10 - ASSERT"
+  assert:
+    that:
+      - not test_m2m_replace_idem['changed']
+
+- name: "11 - Delete cloud_network"
   networktocode.nautobot.cloud_network:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -135,7 +231,7 @@
     state: absent
   register: test_delete
 
-- name: "7 - ASSERT"
+- name: "11 - ASSERT"
   assert:
     that:
       - test_delete is changed
@@ -144,7 +240,7 @@
       - test_delete['cloud_network']['name'] == "Cisco Quantum Faster Network"
       - "'deleted' in test_delete['msg']"
 
-- name: "8 - Delete idempotent"
+- name: "12 - Delete idempotent"
   networktocode.nautobot.cloud_network:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -152,7 +248,7 @@
     state: absent
   register: test_delete_idem
 
-- name: "8 - ASSERT"
+- name: "12 - ASSERT"
   assert:
     that:
       - not test_delete_idem['changed']

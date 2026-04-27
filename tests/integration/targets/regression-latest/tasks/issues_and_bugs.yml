@@ -1,0 +1,295 @@
+---
+- name: "1 - Device with required information"
+  networktocode.nautobot.device:
+    url: "http://some-random-invalid-URL"
+    token: "{{ nautobot_token }}"
+    name: "R1"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    status: "Staged"
+    state: present
+  register: test_one
+  ignore_errors: yes
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_one is failed
+      - test_one['msg'] == "Failed to establish connection to Nautobot API"
+
+- name: "2 - Check to see if prefix with parent defined will pass via check-mode"
+  networktocode.nautobot.prefix:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    api_version:
+    parent: "10.10.0.0/16"
+    prefix_length: 24
+    first_available: yes
+    status: "Active"
+    state: present
+  register: test_two
+  check_mode: yes
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - test_two is changed
+      - test_two['msg'] == "New prefix created within 10.10.0.0/16"
+
+- name: "3 - Add device with tags - Setup device to test #242"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "issue-242"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    status: "Staged"
+    tags:
+      - name: First
+      - name: Second
+
+- name: "4 - Add device with tags out of order - shouldn't change - Tests #242 is fixed"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "issue-242"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    status: "Staged"
+    tags:
+      - name: Second
+      - name: First
+  register: test_four
+  diff: yes
+
+- name: "4 - Assert not changed - Tests #242 is fixed"
+  assert:
+    that:
+      - not test_four["changed"]
+
+- name: "5 - Add device with extra tag - Tests #242 is fixed"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "issue-242"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    status: "Staged"
+    asset_tag: "1234"
+    tags:
+      - name: Second
+      - name: Third
+      - name: First
+  register: test_five
+  diff: yes
+
+- name: "5 - Assert added tag - Tests #242 is fixed"
+  assert:
+    that:
+      - test_five is changed
+      - test_five["diff"]["after"]["tags"] is defined
+      - test_five["device"]["tags"] is defined
+
+- name: "6 - Loop through and add interface templates to different device interface templates - Fixes #282"
+  networktocode.nautobot.device_interface_template:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "SFP+ (10GE)"
+    type: "SFP+ (10GE)"
+    device_type: "{{ item }}"
+  register: test_six
+  loop:
+    - "Cisco Test"
+    - "Arista Test"
+    - "Nexus Child"
+    - "Nexus Parent"
+
+- name: "6 - Assert device type is correct - Fixes #282"
+  assert:
+    that:
+      - test_six.results[0]["diff"]["before"]["state"] == "absent"
+      - test_six.results[0]["diff"]["after"]["state"] == "present"
+      - test_six.results[0]["interface_template"]["device_type"] == cisco['key']
+      - test_six.results[1]["diff"]["before"]["state"] == "absent"
+      - test_six.results[1]["diff"]["after"]["state"] == "present"
+      - test_six.results[1]["interface_template"]["device_type"] == arista['key']
+      - test_six.results[2]["diff"]["before"]["state"] == "absent"
+      - test_six.results[2]["diff"]["after"]["state"] == "present"
+      - test_six.results[2]["interface_template"]["device_type"] == nexus_child['key']
+      - test_six.results[3]["diff"]["before"]["state"] == "absent"
+      - test_six.results[3]["diff"]["after"]["state"] == "present"
+      - test_six.results[3]["interface_template"]["device_type"] == nexus_parent['key']
+  vars:
+    cisco: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Cisco Test\"') }}"
+    arista: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Arista Test\"') }}"
+    nexus_child: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Nexus Child\"') }}"
+    nexus_parent: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=\"Nexus Parent\"') }}"
+
+# Commented out due to not know the IDs, but I'm sure we can re-enable with lookup plugin
+- name: "7 - Don't prevent updates to other params if tags are specified"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "issue-242"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    status: "Staged"
+    asset_tag: "Null"
+    tags:
+      # Changed these for issue #407 to be UUIDs
+      - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Second')['key'] }}"
+      - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Third')['key'] }}"
+      - "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=First')['key'] }}"
+  register: test_seven
+
+- name: "5 - Assert added tag - Tests #242 is fixed"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven["diff"]["after"]["asset_tag"] == "Null"
+      - test_seven["device"]["asset_tag"] == "Null"
+      - test_seven["device"]['tags'] | length == 3
+
+- name: Add ip address to nautobot and don't assign it to a device (Issue 372)
+  networktocode.nautobot.ip_address:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    address: 10.255.255.1/24
+    status: "Active"
+    query_params:
+      - address
+      - vrf
+    state: present
+  register: ip_address
+
+- name: Attach same ip address to a device interface (Issue 372)
+  networktocode.nautobot.ip_address_to_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    ip_address: "{{ ip_address['ip_address']['id'] }}"
+    interface:
+      device: test100
+      name: GigabitEthernet3
+    state: present
+  register: ip_to_intf
+
+- name: Assert ip address was added to device interface
+  assert:
+    that:
+      - ip_to_intf is changed
+      - ip_to_intf['msg'] == 'ip_address_to_interface None created'
+      - ip_to_intf['ip_address_to_interface']['interface'] == interface['key']
+      - ip_to_intf['ip_address_to_interface']['ip_address'] == ip_address['ip_address']['id']
+  vars:
+    interface: "{{ lookup('networktocode.nautobot.lookup', 'interfaces', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100 name=GigabitEthernet3') }}"
+
+- name: "Validate failure due to invalid child params provided by user"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: "dcim.interface"
+    termination_a:
+      device: "test100"
+      name: "GigabitEthernet1"
+    termination_b_type: "circuits.circuittermination"
+    termination_b:
+      name: "XYZ987"
+    status: "Connected"
+  ignore_errors: "yes"
+  register: "test_results"
+
+- name: "Issue #415 - Assert failure message shows the allowed params and what the user provided"
+  assert:
+    that:
+      - test_results is failed
+      - "'One or more of the kwargs provided are invalid for circuits.circuittermination, provided kwargs' in test_results['msg']"
+      - "' name. ' in test_results['msg']"
+      - "'Acceptable kwargs' in test_results['msg']"
+      - "'circuit, term_side' in test_results['msg']"
+
+
+- name: "Invalid API version"
+  networktocode.nautobot.tag:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    api_version: 0.0
+    name: "Test Tag 5"
+  ignore_errors: True
+  register: "test_invalid_api_version"
+
+- name: Assert that api_version fails
+  assert:
+    that:
+      - '"Invalid version" in test_invalid_api_version["msg"]'
+
+- name: Verify that we can convert a list of strings to ID (Issue 421)
+  networktocode.nautobot.admin_permission:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Regression Permission Test One"
+    groups:
+      - "A Test Admin User Group"
+      - "A Test Admin User Group 2"
+      - "A Test Admin User Group 3"
+    actions:
+      - view
+    enabled: true
+    object_types:
+      - "dcim.device"
+
+- name: "Set fact for Module Interface test"
+  set_fact:
+    test_548_module_bay: "{{ lookup('networktocode.nautobot.lookup', 'module-bays', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"NetworkModuleBay 1\"') }}"
+
+- name: "Verify an interface can be identified by just name and associated module (Issue 548)"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    module:
+      parent_module_bay: "{{ test_548_module_bay['key'] }}"
+    name: "Interface 1"
+    mac_address: "00:00:00:00:00:01"
+    state: present
+
+- name: "(Issue 526) Create a Location Type with unsorted content types"
+  networktocode.nautobot.location_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Issue 526 Location Type"
+    content_types:
+      - "ipam.prefix"
+      - "dcim.device"
+    state: present
+  register: test_526_location_type
+
+- name: "(Issue 526) Create a Location Type with unsorted content types again to ensure idempotency"
+  networktocode.nautobot.location_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Issue 526 Location Type"
+    content_types:
+      - "ipam.prefix"
+      - "dcim.device"
+    state: present
+  register: test_526_location_type_2
+
+- name: "(Issue 526) Assert that the location type was first changed and then not changed"
+  assert:
+    that:
+      - test_526_location_type is changed
+      - test_526_location_type_2 is not changed

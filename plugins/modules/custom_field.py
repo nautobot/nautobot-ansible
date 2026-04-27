@@ -135,6 +135,40 @@ options:
     required: false
     type: str
     version_added: "5.1.0"
+  custom_field_choices:
+    description:
+      - List of choices to associate with this custom field (for select or multi-select types).
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds choices without removing existing ones.
+          - C(replace) enforces exactly the listed choices, removing any extras.
+          - C(delete) removes the listed choices.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of choices to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          value:
+            description:
+              - The value of the choice.
+            required: true
+            type: str
+          weight:
+            description:
+              - Sort weight for this choice.
+              - Required if the choice does not already exist.
+            required: false
+            type: int
 """
 
 EXAMPLES = r"""
@@ -166,6 +200,22 @@ EXAMPLES = r"""
     validation_minimum: 0
     validation_maximum: 100
     validation_regex: ^[a-z]+$
+    state: present
+
+- name: Create custom field with inline choice associations
+  networktocode.nautobot.custom_field:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    label: My Custom Field
+    key: my_custom_field
+    type: select
+    custom_field_choices:
+      state: merge
+      objects:
+        - value: "Choice A"
+          weight: 100
+        - value: "Choice B"
+          weight: 200
     state: present
 
 - name: Delete a custom field by id
@@ -221,6 +271,22 @@ def main():
             validation_minimum=dict(required=False, type="int"),
             validation_maximum=dict(required=False, type="int"),
             validation_regex=dict(required=False, type="str"),
+            custom_field_choices=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            value=dict(required=True, type="str"),
+                            weight=dict(required=False, type="int"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

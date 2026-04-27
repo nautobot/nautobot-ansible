@@ -53,6 +53,34 @@ options:
       - Arbitrary JSON data to define the extra config.
     required: false
     type: dict
+  cloud_networks:
+    description:
+      - List of cloud networks to associate with this cloud service.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of cloud networks to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          cloud_network:
+            description:
+              - The cloud network to associate.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -65,6 +93,19 @@ EXAMPLES = r"""
     cloud_resource_type: Cisco Quantum Type
     cloud_account: Cisco Quantum Account
     description: A quantum service for Cisco
+    state: present
+
+- name: Create a cloud service with inline cloud network associations
+  networktocode.nautobot.cloud_service:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Cisco Quantum Service
+    cloud_resource_type: Cisco Quantum Type
+    cloud_account: Cisco Quantum Account
+    cloud_networks:
+      state: merge
+      objects:
+        - cloud_network: Cisco Quantum Network
     state: present
 
 - name: Delete a cloud service
@@ -123,6 +164,21 @@ def main():
             cloud_resource_type=dict(required=False, type="raw"),
             cloud_account=dict(required=False, type="raw"),
             extra_config=dict(required=False, type="dict"),
+            cloud_networks=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            cloud_network=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

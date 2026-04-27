@@ -1,0 +1,193 @@
+---
+##
+##
+### CHECK MODE REGRESSION TESTS FOR INLINE M2M FIELDS
+##
+##
+
+- name: "Set facts for M2M check_mode tests"
+  set_fact:
+    test_vrf_one: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
+    test_vrf_two: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF Two\"') }}"
+    test_cluster_two: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster 2\"') }}"
+    test_cluster_three: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Three\"') }}"
+
+##
+## 1 - Check mode create with M2M fields
+##
+- name: "1 - Check mode - Create device with M2M fields"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "CheckModeDevice"
+    device_type: "Cisco Test"
+    role: "Core Switch"
+    location: "Parent Test Location"
+    status: "Staged"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
+    clusters:
+      objects:
+        - cluster: "Test Cluster 2"
+    state: present
+  register: cm_create
+  check_mode: yes
+
+- name: "1 - ASSERT - Check mode create reports correct diff"
+  assert:
+    that:
+      - cm_create is changed
+      - cm_create['diff']['before']['state'] == "absent"
+      - cm_create['diff']['after']['state'] == "present"
+      - cm_create['diff']['after']['vrfs'] | length == 1
+      - test_vrf_one['key'] in cm_create['diff']['after']['vrfs']
+      - cm_create['diff']['after']['clusters'] | length == 1
+      - test_cluster_two['key'] in cm_create['diff']['after']['clusters']
+
+- name: "1 - VERIFY no-op - CheckModeDevice should not exist"
+  set_fact:
+    cm_create_lookup: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=CheckModeDevice') }}"
+
+- name: "1 - ASSERT no-op - CheckModeDevice was not actually created"
+  assert:
+    that:
+      - cm_create_lookup | length == 0
+
+##
+## 2 - Real setup: associate Test VRF and Test Cluster 2 to test100
+##
+- name: "2 - SETUP - Add real VRF and cluster associations to test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
+    clusters:
+      objects:
+        - cluster: "Test Cluster 2"
+    state: present
+
+##
+## 3 - Check mode merge (add second VRF)
+##
+- name: "3 - Check mode - Merge second VRF into test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    vrfs:
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
+  register: cm_merge
+  check_mode: yes
+
+- name: "3 - ASSERT - Check mode merge reports correct diff"
+  assert:
+    that:
+      - cm_merge is changed
+      - cm_merge['diff']['before']['vrfs'] | length == 1
+      - test_vrf_one['key'] in cm_merge['diff']['before']['vrfs']
+      - cm_merge['diff']['after']['vrfs'] | length == 2
+      - test_vrf_one['key'] in cm_merge['diff']['after']['vrfs']
+      - test_vrf_two['key'] in cm_merge['diff']['after']['vrfs']
+
+- name: "3 - VERIFY no-op - Only Test VRF is still associated to test100"
+  set_fact:
+    cm_merge_assocs: "{{ query('networktocode.nautobot.lookup', 'vrf-device-assignments', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100') }}"
+
+- name: "3 - ASSERT no-op - Merge did not persist"
+  assert:
+    that:
+      - cm_merge_assocs | length == 1
+      - cm_merge_assocs[0]['value']['vrf']['id'] == test_vrf_one['key']
+
+##
+## 4 - Check mode replace
+##
+- name: "4 - Check mode - Replace VRFs on test100 with Test VRF Two"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    vrfs:
+      state: replace
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
+  register: cm_replace
+  check_mode: yes
+
+- name: "4 - ASSERT - Check mode replace reports correct diff"
+  assert:
+    that:
+      - cm_replace is changed
+      - cm_replace['diff']['before']['vrfs'] | length == 1
+      - test_vrf_one['key'] in cm_replace['diff']['before']['vrfs']
+      - cm_replace['diff']['after']['vrfs'] | length == 1
+      - test_vrf_two['key'] in cm_replace['diff']['after']['vrfs']
+
+- name: "4 - VERIFY no-op - Only Test VRF is still associated to test100"
+  set_fact:
+    cm_replace_assocs: "{{ query('networktocode.nautobot.lookup', 'vrf-device-assignments', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100') }}"
+
+- name: "4 - ASSERT no-op - Replace did not persist"
+  assert:
+    that:
+      - cm_replace_assocs | length == 1
+      - cm_replace_assocs[0]['value']['vrf']['id'] == test_vrf_one['key']
+
+##
+## 5 - Check mode delete
+##
+- name: "5 - Check mode - Delete Test VRF from test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF"
+    state: present
+  register: cm_delete
+  check_mode: yes
+
+- name: "5 - ASSERT - Check mode delete reports correct diff"
+  assert:
+    that:
+      - cm_delete is changed
+      - cm_delete['diff']['before']['vrfs'] | length == 1
+      - test_vrf_one['key'] in cm_delete['diff']['before']['vrfs']
+      - "'vrfs' not in cm_delete['diff']['after'] or cm_delete['diff']['after']['vrfs'] | length == 0"
+
+- name: "5 - VERIFY no-op - Test VRF is still associated to test100"
+  set_fact:
+    cm_delete_assocs: "{{ query('networktocode.nautobot.lookup', 'vrf-device-assignments', api_endpoint=nautobot_url, token=nautobot_token, api_filter='device=test100') }}"
+
+- name: "5 - ASSERT no-op - Delete did not persist"
+  assert:
+    that:
+      - cm_delete_assocs | length == 1
+      - cm_delete_assocs[0]['value']['vrf']['id'] == test_vrf_one['key']
+
+##
+## 6 - Cleanup: remove the real associations added in step 2
+##
+- name: "6 - CLEANUP - Remove VRF and cluster associations from test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF"
+    clusters:
+      state: delete
+      objects:
+        - cluster: "Test Cluster 2"
+    state: present

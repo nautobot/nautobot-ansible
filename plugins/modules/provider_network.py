@@ -13,6 +13,10 @@ module: provider_network
 short_description: Create, update or delete provider networks within Nautobot
 description:
   - Creates, updates or removes provider networks from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Provider networks are managed on the I(provider) record.
+  alternative: Use M(networktocode.nautobot.provider) with I(provider_networks).
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)
