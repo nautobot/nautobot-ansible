@@ -461,31 +461,3 @@ def ruff(context, action=None, target=None, fix=False, output_format="concise"):
 
     if exit_code != 0:
         raise Exit(code=exit_code)
-
-
-# ------------------------------------------------------------------------------
-# CODE GENERATION
-# ------------------------------------------------------------------------------
-@task(
-    help={
-        "module": "Generate a specific module (e.g. 'vpn_profile'). If not specified, generates all missing modules.",
-        "dry_run": "Show changes without writing any files.",
-    }
-)
-def generate(context, module=None, dry_run=False):
-    """Generate Ansible modules from Nautobot API schema."""
-    cmd = "python -m hacking.generate"
-    if module:
-        cmd += f" module {module}"
-    else:
-        cmd += " all"
-    if dry_run:
-        cmd += " --dry-run"
-    cmd += " --cache"
-    context.run(cmd)
-
-
-@task
-def generate_analyze(context):
-    """Show gap analysis: API endpoints vs existing modules."""
-    context.run("python -m hacking.generate analyze --cache")
