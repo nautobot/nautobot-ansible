@@ -1,1 +1,0 @@
-Deprecated query_graphql module. Use graphql_info (returns data only) or graphql_facts (sets ansible_facts) instead.

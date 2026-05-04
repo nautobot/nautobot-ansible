@@ -1,1 +1,0 @@
-Added CI testing against ansible-core devel branch and `--ansible-core-branch` flag on `invoke unit` for local testing.
