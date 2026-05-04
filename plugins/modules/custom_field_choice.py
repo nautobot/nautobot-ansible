@@ -13,6 +13,10 @@ module: custom_field_choice
 short_description: Creates or removes custom field choices from Nautobot
 description:
   - Creates or removes custom field choices from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Custom field choices are managed via the I(custom_field) module.
+  alternative: Use M(networktocode.nautobot.custom_field) with I(custom_field_choices).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:

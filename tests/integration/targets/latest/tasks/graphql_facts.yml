@@ -1,0 +1,87 @@
+---
+##
+##
+### GRAPHQL_FACTS
+##
+##
+- name: "GRAPHQL_FACTS 1: Query locations via GraphQL and set facts"
+  networktocode.nautobot.graphql_facts:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query {
+        locations {
+          name
+        }
+      }
+  register: test_one
+
+- name: "GRAPHQL_FACTS 1: ASSERT data is returned"
+  assert:
+    that:
+      - test_one is not changed
+      - test_one['data']['locations'] is defined
+      - test_one['data']['locations'] | length > 0
+      - test_one['url'] == nautobot_url
+      - test_one['query'] is defined
+      - test_one['graph_variables'] is defined
+
+- name: "GRAPHQL_FACTS 2: Verify ansible_facts IS set"
+  assert:
+    that:
+      - test_one['ansible_facts'] is defined
+      - test_one['ansible_facts']['locations'] is defined
+      - test_one['ansible_facts']['locations'] | length > 0
+
+- name: "GRAPHQL_FACTS 3: Verify facts are accessible as hostvars"
+  assert:
+    that:
+      - locations is defined
+      - locations | length > 0
+
+- name: "GRAPHQL_FACTS 4: Query with variables"
+  networktocode.nautobot.graphql_facts:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query ($location_name: [String!]) {
+        locations(name: $location_name) {
+          name
+        }
+      }
+    graph_variables:
+      location_name: "Parent Test Location"
+  register: test_four
+
+- name: "GRAPHQL_FACTS 4: ASSERT"
+  assert:
+    that:
+      - test_four is not changed
+      - test_four['data']['locations'] | length == 1
+      - test_four['data']['locations'][0]['name'] == "Parent Test Location"
+      - test_four['ansible_facts']['locations'] | length == 1
+      - test_four['ansible_facts']['locations'][0]['name'] == "Parent Test Location"
+
+- name: "GRAPHQL_FACTS 5: Query devices and verify facts overwrite"
+  networktocode.nautobot.graphql_facts:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    query: |
+      query {
+        devices {
+          name
+          device_type {
+            model
+          }
+        }
+      }
+  register: test_five
+
+- name: "GRAPHQL_FACTS 5: ASSERT"
+  assert:
+    that:
+      - test_five is not changed
+      - test_five['data']['devices'] is defined
+      - test_five['ansible_facts']['devices'] is defined
+      - devices is defined
+      - devices | length > 0

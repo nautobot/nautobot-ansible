@@ -277,6 +277,15 @@
   tags:
     - provider
 
+- name: "PYNAUTOBOT_PROVIDER_NETWORK TESTS"
+  include_tasks:
+    file: "provider_network.yml"
+    apply:
+      tags:
+        - provider_network
+  tags:
+    - provider_network
+
 - name: "PYNAUTOBOT_CIRCUIT_TYPE TESTS"
   include_tasks:
     file: "circuit_type.yml"
@@ -892,3 +901,21 @@
         - unique_rule
   tags:
     - unique_rule
+
+- name: "GRAPHQL_INFO TESTS"
+  include_tasks:
+    file: "graphql_info.yml"
+    apply:
+      tags:
+        - graphql_info
+  tags:
+    - graphql_info
+
+- name: "GRAPHQL_FACTS TESTS"
+  include_tasks:
+    file: "graphql_facts.yml"
+    apply:
+      tags:
+        - graphql_facts
+  tags:
+    - graphql_facts

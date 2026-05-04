@@ -17,6 +17,10 @@
     device_software_version: "{{ lookup('networktocode.nautobot.lookup', 'software-versions', api_endpoint=nautobot_url, token=nautobot_token, api_filter='version=3.2.1 platform=\"Cisco IOS\"') }}"
     device_software_image_file_1: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file.bin') }}"
     device_software_image_file_2: "{{ lookup('networktocode.nautobot.lookup', 'software-image-files', api_endpoint=nautobot_url, token=nautobot_token, api_filter='image_file_name=test_software_image_file_two.bin') }}"
+    test_vrf_one: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
+    test_vrf_two: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF Two\"') }}"
+    test_cluster_two: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster 2\"') }}"
+    test_cluster_three: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Three\"') }}"
 
 - name: "1 - Device with required information"
   networktocode.nautobot.device:
@@ -28,6 +32,12 @@
     role: "Core Switch"
     location: Parent Test Location
     status: "Staged"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
+    clusters:
+      objects:
+        - cluster: "Test Cluster 2"
     state: present
   register: test_one
 
@@ -44,6 +54,10 @@
       - test_one['device']['status'] == staged['key']
       - test_one['device']['name'] == "R1"
       - test_one['msg'] == "device R1 created"
+      - test_one['diff']['after']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_one['diff']['after']['vrfs']
+      - test_one['diff']['after']['clusters'] | length == 1
+      - test_cluster_two['key'] in test_one['diff']['after']['clusters']
 
 - name: "2 - Duplicate device"
   networktocode.nautobot.device:
@@ -54,6 +68,12 @@
     role: "Core Switch"
     location: Parent Test Location
     status: "Staged"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
+    clusters:
+      objects:
+        - cluster: "Test Cluster 2"
     state: present
   register: test_two
 
@@ -81,6 +101,12 @@
     vc_priority: 15
     device_redundancy_group: "{{ device_redundancy_group['key'] }}"
     device_redundancy_group_priority: 10
+    vrfs:
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      objects:
+        - cluster: "Test Cluster Three"
     state: present
   register: test_three
 
@@ -106,8 +132,36 @@
       - test_three['device']['device_redundancy_group'] == device_redundancy_group['key']
       - test_three['device']['device_redundancy_group_priority'] == 10
       - test_three['msg'] == "device R1 updated"
+      - test_three['diff']['before']['vrfs'] | length == 1
+      - test_three['diff']['after']['vrfs'] | length == 2
+      - test_vrf_one['key'] in test_three['diff']['after']['vrfs']
+      - test_vrf_two['key'] in test_three['diff']['after']['vrfs']
+      - test_three['diff']['before']['clusters'] | length == 1
+      - test_three['diff']['after']['clusters'] | length == 2
+      - test_cluster_two['key'] in test_three['diff']['after']['clusters']
+      - test_cluster_three['key'] in test_three['diff']['after']['clusters']
 
-- name: "3.1 - Update device status"
+- name: "4 - Duplicate merge"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1"
+    vrfs:
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      objects:
+        - cluster: "Test Cluster Three"
+    state: present
+  register: test_four
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "device R1 already exists"
+
+- name: "4.1 - Update device status"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -116,7 +170,7 @@
     state: present
   register: test_three_dot_one
 
-- name: "3.1 - ASSERT"
+- name: "4.1 - ASSERT"
   assert:
     that:
       - test_three_dot_one is changed
@@ -132,7 +186,7 @@
       - test_three_dot_one['device']['vc_priority'] == 15
       - test_three_dot_one['msg'] == "device R1 updated"
 
-- name: "3.2 - Update device name using query_params"
+- name: "4.2 - Update device name using query_params"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -143,7 +197,7 @@
     state: present
   register: test_three_dot_two
 
-- name: "3.2 - ASSERT"
+- name: "4.2 - ASSERT"
   assert:
     that:
       - test_three_dot_two is changed
@@ -155,14 +209,14 @@
       - test_three_dot_two['device']['serial'] == "FXS1001"
       - test_three_dot_two['msg'] == "device R1-changed-name updated"
 
-- name: "3.21 - ASSERT"
+- name: "4.21 - ASSERT"
   assert:
     that:
       - device['value']['local_config_context_data']["bgp_as"] == "65412"
   vars:
     device: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=R1-changed-name') }}"
 
-- name: "4 - Create device with tags and assign to rack"
+- name: "5 - Create device with tags and assign to rack"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -182,68 +236,168 @@
     tenant: "Test Tenant"
     asset_tag: "1234"
     state: present
-  register: test_four
-
-- name: "4 - ASSERT"
-  assert:
-    that:
-      - test_four is changed
-      - test_four['diff']['before']['state'] == "absent"
-      - test_four['diff']['after']['state'] == "present"
-      - test_four['device']['name'] == "TestR1"
-      - test_four['device']['role'] == role['key']
-      - test_four['device']['device_type'] == type['key']
-      - test_four['device']['location'] == child_location['key']
-      - test_four['device']['status'] == active['key']
-      - test_four['device']['rack'] == rack['key']
-      - test_four['device']['tags'][0] == schnozzberry['key']
-      - test_four['device']['tenant'] == tenant['key']
-      - test_four['device']['asset_tag'] == '1234'
-      - test_four['msg'] == "device TestR1 created"
-  vars:
-    rack: "{{ lookup('networktocode.nautobot.lookup', 'racks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Main Test Rack\"') }}"
-    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
-    type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=1841') }}"
-    schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
-
-- name: "5 - Delete previous device"
-  networktocode.nautobot.device:
-    url: "{{ nautobot_url }}"
-    token: "{{ nautobot_token }}"
-    name: "TestR1"
-    state: absent
   register: test_five
 
 - name: "5 - ASSERT"
   assert:
     that:
       - test_five is changed
-      - test_five['diff']['before']['state'] == "present"
-      - test_five['diff']['after']['state'] == "absent"
-      - test_five['msg'] == "device TestR1 deleted"
+      - test_five['diff']['before']['state'] == "absent"
+      - test_five['diff']['after']['state'] == "present"
+      - test_five['device']['name'] == "TestR1"
+      - test_five['device']['role'] == role['key']
+      - test_five['device']['device_type'] == type['key']
+      - test_five['device']['location'] == child_location['key']
+      - test_five['device']['status'] == active['key']
+      - test_five['device']['rack'] == rack['key']
+      - test_five['device']['tags'][0] == schnozzberry['key']
+      - test_five['device']['tenant'] == tenant['key']
+      - test_five['device']['asset_tag'] == '1234'
+      - test_five['msg'] == "device TestR1 created"
+  vars:
+    rack: "{{ lookup('networktocode.nautobot.lookup', 'racks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Main Test Rack\"') }}"
+    tenant: "{{ lookup('networktocode.nautobot.lookup', 'tenants', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Tenant\"') }}"
+    type: "{{ lookup('networktocode.nautobot.lookup', 'device-types', api_endpoint=nautobot_url, token=nautobot_token, api_filter='model=1841') }}"
+    schnozzberry: "{{ lookup('networktocode.nautobot.lookup', 'tags', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Schnozzberry') }}"
 
-- name: "6 - Delete R1"
+- name: "6 - Delete second VRF and second cluster"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "R1-changed-name"
-    state: absent
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      state: delete
+      objects:
+        - cluster: "Test Cluster Three"
+    state: present
   register: test_six
 
 - name: "6 - ASSERT"
   assert:
     that:
       - test_six is changed
-      - test_six['diff']['before']['state'] == "present"
-      - test_six['diff']['after']['state'] == "absent"
-      - test_six['msg'] == "device R1-changed-name deleted"
+      - test_six['diff']['before']['vrfs'] | length == 2
+      - test_six['diff']['after']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_six['diff']['after']['vrfs']
+      - test_vrf_two['key'] not in test_six['diff']['after']['vrfs']
+      - test_six['diff']['before']['clusters'] | length == 2
+      - test_six['diff']['after']['clusters'] | length == 1
+      - test_cluster_two['key'] in test_six['diff']['after']['clusters']
+      - test_cluster_three['key'] not in test_six['diff']['after']['clusters']
+
+- name: "7 - Duplicate delete second VRF and second cluster"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1-changed-name"
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      state: delete
+      objects:
+        - cluster: "Test Cluster Three"
+    state: present
+  register: test_seven
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - not test_seven['changed']
+
+- name: "8 - Replace VRFs and clusters"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1-changed-name"
+    vrfs:
+      state: replace
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      state: replace
+      objects:
+        - cluster: "Test Cluster Three"
+    state: present
+  register: test_eight
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['diff']['before']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_eight['diff']['before']['vrfs']
+      - test_eight['diff']['after']['vrfs'] | length == 1
+      - test_vrf_two['key'] in test_eight['diff']['after']['vrfs']
+      - test_eight['diff']['before']['clusters'] | length == 1
+      - test_cluster_two['key'] in test_eight['diff']['before']['clusters']
+      - test_eight['diff']['after']['clusters'] | length == 1
+      - test_cluster_three['key'] in test_eight['diff']['after']['clusters']
+
+- name: "9 - Duplicate replace VRFs and clusters"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1-changed-name"
+    vrfs:
+      state: replace
+      objects:
+        - vrf: "Test VRF Two"
+    clusters:
+      state: replace
+      objects:
+        - cluster: "Test Cluster Three"
+    state: present
+  register: test_nine
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - not test_nine['changed']
+
+- name: "10 - Delete previous device"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "TestR1"
+    state: absent
+  register: test_ten
+
+- name: "10 - ASSERT"
+  assert:
+    that:
+      - test_ten is changed
+      - test_ten['diff']['before']['state'] == "present"
+      - test_ten['diff']['after']['state'] == "absent"
+      - test_ten['msg'] == "device TestR1 deleted"
+
+- name: "11 - Delete R1"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "R1-changed-name"
+    state: absent
+  register: test_eleven
+
+- name: "11 - ASSERT"
+  assert:
+    that:
+      - test_eleven is changed
+      - test_eleven['diff']['before']['state'] == "present"
+      - test_eleven['diff']['after']['state'] == "absent"
+      - test_eleven['msg'] == "device R1-changed-name deleted"
 
 - name: "GRAB IP Address UUIDs for following tests"
   ansible.builtin.set_fact:
     ip4: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=172.16.180.1/24') }}"
     ip6: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='address=2001::1:1/64') }}"
 
-- name: "7 - Add primary_ip4/6 to test100 with UUID and regular definition"
+- name: "12 - Add primary_ip4/6 to test100 with UUID and regular definition"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -252,24 +406,24 @@
     primary_ip4: "{{ ip4['key'] }}"
     primary_ip6: "2001::1:1/64"
     state: present
-  register: test_seven
+  register: test_twelve
 
-- name: "7 - ASSERT"
+- name: "12 - ASSERT"
   assert:
     that:
-      - test_seven is changed
-      - test_seven['diff']['after']['primary_ip4'] == ip4['key']
-      - test_seven['diff']['after']['primary_ip6'] == ip6['key']
-      - test_seven['device']['name'] == "test100"
-      - test_seven['device']['role'] == role['key']
-      - test_seven['device']['device_type'] == device_type['key']
-      - test_seven['device']['location'] == child_location['key']
-      - test_seven['device']['status'] == active['key']
-      - test_seven['device']['primary_ip4'] == ip4['key']
-      - test_seven['device']['primary_ip6'] == ip6['key']
-      - test_seven['msg'] == "device test100 updated"
+      - test_twelve is changed
+      - test_twelve['diff']['after']['primary_ip4'] == ip4['key']
+      - test_twelve['diff']['after']['primary_ip6'] == ip6['key']
+      - test_twelve['device']['name'] == "test100"
+      - test_twelve['device']['role'] == role['key']
+      - test_twelve['device']['device_type'] == device_type['key']
+      - test_twelve['device']['location'] == child_location['key']
+      - test_twelve['device']['status'] == active['key']
+      - test_twelve['device']['primary_ip4'] == ip4['key']
+      - test_twelve['device']['primary_ip6'] == ip6['key']
+      - test_twelve['msg'] == "device test100 updated"
 
-- name: "8 - Device with empty string name"
+- name: "13 - Device with empty string name"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -280,22 +434,22 @@
     location: "Parent Test Location"
     status: "Staged"
     state: present
-  register: test_eight
+  register: test_thirteen
 
-- name: "8 - ASSERT"
+- name: "13 - ASSERT"
   assert:
     that:
-      - test_eight is changed
-      - test_eight['diff']['before']['state'] == 'absent'
-      - test_eight['diff']['after']['state'] == 'present'
-      - test_eight['device']['role'] == role['key']
-      - test_eight['device']['device_type'] == device_type['key']
-      - test_eight['device']['location'] == parent_location['key']
-      - test_eight['device']['status'] == staged['key']
-      - "'-' in test_eight['device']['name']"
-      - "test_eight['device']['name'] | length == 36"
+      - test_thirteen is changed
+      - test_thirteen['diff']['before']['state'] == 'absent'
+      - test_thirteen['diff']['after']['state'] == 'present'
+      - test_thirteen['device']['role'] == role['key']
+      - test_thirteen['device']['device_type'] == device_type['key']
+      - test_thirteen['device']['location'] == parent_location['key']
+      - test_thirteen['device']['status'] == staged['key']
+      - "'-' in test_thirteen['device']['name']"
+      - "test_thirteen['device']['name'] | length == 36"
 
-- name: "9 - Create Device with secrets group"
+- name: "14 - Create Device with secrets group"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -307,39 +461,39 @@
     secrets_group: "Test Secrets Group"
     status: "Staged"
     state: present
-  register: test_nine
+  register: test_fourteen
 
-- name: "9 - ASSERT"
+- name: "14 - ASSERT"
   assert:
     that:
-      - test_nine is changed
-      - test_nine['diff']['before']['state'] == 'absent'
-      - test_nine['diff']['after']['state'] == 'present'
-      - test_nine['device']['role'] == role['key']
-      - test_nine['device']['device_type'] == device_type['key']
-      - test_nine['device']['secrets_group'] == secrets_group_one['key']
-      - test_nine['device']['location'] == parent_location['key']
-      - test_nine['device']['status'] == staged['key']
-      - test_nine['device']['name'] == "TopSecretDevice"
+      - test_fourteen is changed
+      - test_fourteen['diff']['before']['state'] == 'absent'
+      - test_fourteen['diff']['after']['state'] == 'present'
+      - test_fourteen['device']['role'] == role['key']
+      - test_fourteen['device']['device_type'] == device_type['key']
+      - test_fourteen['device']['secrets_group'] == secrets_group_one['key']
+      - test_fourteen['device']['location'] == parent_location['key']
+      - test_fourteen['device']['status'] == staged['key']
+      - test_fourteen['device']['name'] == "TopSecretDevice"
 
-- name: "9.1 - Update Device with secrets group"
+- name: "14.1 - Update Device with secrets group"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "TopSecretDevice"
     secrets_group: "Test Secrets Group Two"
     state: present
-  register: test_nine_dot_one
+  register: test_fourteen_dot_one
 
-- name: "9.1 - ASSERT"
+- name: "14.1 - ASSERT"
   assert:
     that:
-      - test_nine_dot_one is changed
-      - test_nine_dot_one['diff']['after']['secrets_group'] == secrets_group_two['key']
-      - test_nine_dot_one['device']['name'] == "TopSecretDevice"
-      - test_nine_dot_one['msg'] == "device TopSecretDevice updated"
+      - test_fourteen_dot_one is changed
+      - test_fourteen_dot_one['diff']['after']['secrets_group'] == secrets_group_two['key']
+      - test_fourteen_dot_one['device']['name'] == "TopSecretDevice"
+      - test_fourteen_dot_one['msg'] == "device TopSecretDevice updated"
 
-- name: "10 - Create device without name"
+- name: "15 - Create device without name"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -347,18 +501,18 @@
     role: "Core Switch"
     location: Parent Test Location
     status: "Staged"
-  register: test_ten
+  register: test_fifteen
 
-- name: "10 - ASSERT"
+- name: "15 - ASSERT"
   assert:
     that:
-      - test_ten is changed
-      - test_ten['diff']['before']['state'] == 'absent'
-      - test_ten['diff']['after']['state'] == 'present'
-      - test_ten['device']['name'] == None
-      - test_ten['msg'] == "device Unnamed device created"
+      - test_fifteen is changed
+      - test_fifteen['diff']['before']['state'] == 'absent'
+      - test_fifteen['diff']['after']['state'] == 'present'
+      - test_fifteen['device']['name'] == None
+      - test_fifteen['msg'] == "device Unnamed device created"
 
-- name: "11 - Duplicate create device without name"
+- name: "16 - Duplicate create device without name"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -367,31 +521,31 @@
     location: Parent Test Location
     status: "Staged"
     state: present
-  register: test_eleven
+  register: test_sixteen
 
-- name: "11 - ASSERT"
+- name: "16 - ASSERT"
   assert:
     that:
-      - not test_eleven['changed']
-      - test_eleven['msg'] == "device Unnamed device already exists"
+      - not test_sixteen['changed']
+      - test_sixteen['msg'] == "device Unnamed device already exists"
 
-- name: "12 - Delete device by id"
+- name: "17 - Delete device by id"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
-    id: "{{ test_ten['device']['id'] }}"
+    id: "{{ test_fifteen['device']['id'] }}"
     state: absent
-  register: test_twelve
+  register: test_seventeen
 
-- name: "12 - ASSERT"
+- name: "17 - ASSERT"
   assert:
     that:
-      - test_twelve is changed
-      - test_twelve['diff']['before']['state'] == 'present'
-      - test_twelve['diff']['after']['state'] == 'absent'
-      - "'deleted' in test_twelve['msg']"
+      - test_seventeen is changed
+      - test_seventeen['diff']['before']['state'] == 'present'
+      - test_seventeen['diff']['after']['state'] == 'absent'
+      - "'deleted' in test_seventeen['msg']"
 
-- name: "13 - Update device with software version"
+- name: "18 - Update device with software version"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -403,18 +557,18 @@
       - "test_software_image_file.bin"
       - "test_software_image_file_two.bin"
     state: present
-  register: test_thirteen
+  register: test_eighteen
 
-- name: "13 - ASSERT"
+- name: "18 - ASSERT"
   assert:
     that:
-      - test_thirteen is changed
-      - test_thirteen['msg'] == "device TopSecretDevice updated"
-      - test_thirteen['device']['software_version'] == device_software_version['key']
-      - test_thirteen['device']['software_image_files'][0] == device_software_image_file_1['key']
-      - test_thirteen['device']['software_image_files'][1] == device_software_image_file_2['key']
+      - test_eighteen is changed
+      - test_eighteen['msg'] == "device TopSecretDevice updated"
+      - test_eighteen['device']['software_version'] == device_software_version['key']
+      - test_eighteen['device']['software_image_files'][0] == device_software_image_file_1['key']
+      - test_eighteen['device']['software_image_files'][1] == device_software_image_file_2['key']
 
-- name: "14 - Duplicate device with software version"
+- name: "19 - Duplicate device with software version"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -426,10 +580,10 @@
       - "test_software_image_file.bin"
       - "test_software_image_file_two.bin"
     state: present
-  register: test_fourteen
+  register: test_nineteen
 
-- name: "14 - ASSERT"
+- name: "19 - ASSERT"
   assert:
     that:
-      - not test_fourteen['changed']
-      - test_fourteen['msg'] == "device TopSecretDevice already exists"
+      - not test_nineteen['changed']
+      - test_nineteen['msg'] == "device TopSecretDevice already exists"

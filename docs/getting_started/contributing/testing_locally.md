@@ -57,6 +57,22 @@ You can then run `invoke integration` to run the integration tests against Nauto
 ❯ invoke integration
 ```
 
+You can use `-t` to run only specific tagged tests, or `-s` to skip specific test categories. Use `-h` to see all available options.
+
+```shell
+# Run only graphql_info integration tests
+❯ invoke integration -t graphql_info
+
+# Run only graphql_info and graphql_facts tests
+❯ invoke integration -t graphql_info -t graphql_facts
+
+# Skip lint and sanity, only run integration tests
+❯ invoke integration -s lint -s sanity
+
+# See all available options
+❯ invoke integration -h
+```
+
 ## Using Environment Variables
 
 You can use the following environment variables to test against different Python or Nautobot versions.

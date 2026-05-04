@@ -13,6 +13,10 @@ module: static_group_association
 short_description: Creates or removes a static group association from Nautobot
 description:
   - Creates or removes a static group association from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: Static group associations are managed as part of the I(dynamic_group) module.
+  alternative: Use M(networktocode.nautobot.dynamic_group) with I(static_group_associations).
 author:
   - Network to Code (@networktocode)
   - Travis Smith (@tsm1th)

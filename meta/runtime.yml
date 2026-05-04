@@ -1,2 +1,82 @@
 ---
 requires_ansible: ">=2.18.0"
+plugin_routing:
+  modules:
+    query_graphql:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: "Use networktocode.nautobot.graphql_info or networktocode.nautobot.graphql_facts instead."
+    secrets_groups_association:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.secrets_group module with the
+          'secrets' option instead.
+    static_group_association:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.dynamic_group module with the
+          'static_group_associations' option instead.
+    cloud_network_prefix_assignment:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.cloud_network module with the
+          'prefixes' option instead.
+    cloud_service_network_assignment:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.cloud_service module with the
+          'cloud_networks' option instead.
+    vrf_device_assignment:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.device, networktocode.nautobot.virtual_machine,
+          or networktocode.nautobot.virtual_device_context module with the
+          'vrfs' option instead.
+    device_cluster_assignment:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.device module with the
+          'clusters' option instead.
+    ip_address_to_interface:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.device_interface or
+          networktocode.nautobot.vm_interface module with the
+          'ip_addresses' option instead.
+    prefix_location:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.location module with the
+          'prefixes' option instead.
+    vlan_location:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.location module with the
+          'vlans' option instead.
+    custom_field_choice:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.custom_field module with the
+          'custom_field_choices' option instead.
+    metadata_choice:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.metadata_type module with the
+          'metadata_choices' option instead.
+    provider_network:
+      deprecation:
+        removal_version: "7.0.0"
+        warning_text: >-
+          Use the networktocode.nautobot.provider module with the
+          'provider_networks' option instead.

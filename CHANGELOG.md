@@ -4,6 +4,54 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.2.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.2.0)
+
+### Added
+
+- [#696](https://github.com/nautobot/nautobot-ansible/issues/696) - Added meta/execution-environment.yml for Ansible Builder support.
+- [#705](https://github.com/nautobot/nautobot-ansible/issues/705) - Added graphql_info and graphql_facts modules to replace query_graphql, following Ansible naming conventions for info and facts modules.
+- [#711](https://github.com/nautobot/nautobot-ansible/issues/711) - Added provider_network module for managing provider networks within Nautobot.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign secrets to a secrets group when using the `secrets_group` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign static group associations when using the `dynamic_group` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign prefixes to a cloud network when using the `cloud_network` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign cloud networks to a cloud service when using the `cloud_service` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign vrfs to a device, virtual machine, or virtual device context when using the respective module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign clusters to a device when using the `device` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign ip addresses to a device interface or vm interface when using the respective module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign prefixes or vlans to a location when using the `location` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to assign provider networks to a provider when using the `provider` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to manage custom field choices to a custom field when using the `custom_field` module.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Added the ability to manage metadata choices to a metadata type when using the `metadata_type` module.
+
+### Deprecated
+
+- [#705](https://github.com/nautobot/nautobot-ansible/issues/705) - Deprecated query_graphql module. Use graphql_info (returns data only) or graphql_facts (sets ansible_facts) instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `secrets_groups_association` module. Use the `secrets` option of the `secrets_group` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `static_group_association` module. Use the `static_group_associations` option of the `dynamic_group` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `cloud_network_prefix_assignment` module. Use the `prefixes` option of the `cloud_network` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `cloud_service_network_assignment` module. Use the `cloud_networks` option of the `cloud_service` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `vrf_device_assignment` module. Use the `vrfs` option of the `device`, `virtual_machine`, or `virtual_device_context` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `device_cluster_assignment` module. Use the `clusters` option of the `device` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `ip_address_to_interface` module. Use the `ip_addresses` option of the `device_interface` or `vm_interface` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `prefix_location` module. Use the `prefixes` option of the `location` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `vlan_location` module. Use the `vlans` option of the `location` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `custom_field_choice` module. Use the `custom_field_choices` option of the `custom_field` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `metadata_choice` module. Use the `metadata_choices` option of the `metadata_type` module instead.
+- [#728](https://github.com/nautobot/nautobot-ansible/issues/728) - Deprecated the `provider_network` module. Use the `provider_networks` option of the `provider` module instead.
+
+### Documentation
+
+- [#694](https://github.com/nautobot/nautobot-ansible/issues/694) - Added Code of Conduct link to README for Ansible inclusion compliance.
+- [#695](https://github.com/nautobot/nautobot-ansible/issues/695) - Add CONTRIBUTING.md that links to the official documentation.
+- [#697](https://github.com/nautobot/nautobot-ansible/issues/697) - Updated Python and Ansible version requirements in README to reflect actual supported versions.
+- [#703](https://github.com/nautobot/nautobot-ansible/issues/703) - Added Communication section to README with Ansible Forum links per Ansible inclusion requirements.
+- [#709](https://github.com/nautobot/nautobot-ansible/issues/709) - Added missing RETURN block to the service module.
+
+### Housekeeping
+
+- [#709](https://github.com/nautobot/nautobot-ansible/issues/709) - Added unit tests to validate all modules have required Ansible documentation blocks (DOCUMENTATION, EXAMPLES, RETURN, version_added).
+- [#718](https://github.com/nautobot/nautobot-ansible/issues/718) - Added CI testing against ansible-core devel branch and `--ansible-core-branch` flag on `invoke unit` for local testing.
+
 ## [v6.1.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.1.1)
 
 ### Added

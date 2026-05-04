@@ -13,6 +13,12 @@ module: vrf_device_assignment
 short_description: Creates or removes VRF to device assignments in Nautobot
 description:
   - Creates or removes VRF to device assignments in Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: VRF assignments are managed on device, virtual machine, or virtual device context records.
+  alternative: >-
+    Use M(networktocode.nautobot.device), M(networktocode.nautobot.virtual_machine), or
+    M(networktocode.nautobot.virtual_device_context) with I(vrfs).
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
 author:

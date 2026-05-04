@@ -13,6 +13,10 @@ module: secrets_groups_association
 short_description: Associates secrets to secrets groups
 description:
   - Associates secrets to secrets groups
+deprecated:
+  removed_in: "7.0.0"
+  why: This standalone module is superseded by managing associations through the I(secrets_group) module.
+  alternative: Use M(networktocode.nautobot.secrets_group) with I(secrets).
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)

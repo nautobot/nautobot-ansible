@@ -187,6 +187,62 @@ options:
     required: false
     type: raw
     version_added: "5.13.0"
+  vrfs:
+    description:
+      - List of VRFs to associate with this device.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of VRFs to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          vrf:
+            description:
+              - The VRF to associate with the device.
+            required: true
+            type: raw
+  clusters:
+    description:
+      - List of clusters to associate with this device.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of clusters to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          cluster:
+            description:
+              - The cluster to associate with the device.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -267,6 +323,28 @@ EXAMPLES = r"""
         position: 10
         face: Front
         state: present
+
+    - name: Create device with inline cluster associations
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Device
+        clusters:
+          state: merge
+          objects:
+            - cluster: Test Cluster
+        state: present
+
+    - name: Create device with inline VRF associations
+      networktocode.nautobot.device:
+        url: http://nautobot.local
+        token: thisIsMyToken
+        name: Test Device
+        vrfs:
+          state: merge
+          objects:
+            - vrf: Test VRF
+        state: present
 """
 
 RETURN = r"""
@@ -335,6 +413,36 @@ def main():
             secrets_group=dict(required=False, type="raw", no_log=False),
             software_version=dict(required=False, type="raw"),
             software_image_files=dict(required=False, type="raw"),
+            vrfs=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            vrf=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
+            clusters=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            cluster=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

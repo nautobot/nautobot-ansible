@@ -16,6 +16,10 @@ version_added: "1.1.0"
 short_description: Queries and returns elements from Nautobot GraphQL endpoint
 description:
     - Queries Nautobot via its GraphQL API through pynautobot
+deprecated:
+    removed_in: "7.0.0"
+    why: "This module has been split into separate graphql_info and graphql_facts modules to follow Ansible naming conventions."
+    alternative: "Use M(networktocode.nautobot.graphql_info) for returning data or M(networktocode.nautobot.graphql_facts) for setting ansible_facts."
 requirements:
     - pynautobot
 options:

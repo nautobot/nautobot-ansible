@@ -242,13 +242,16 @@ def lint(context):
     help={
         "verbose": "Run the tests with verbose output; can be provided multiple times for more verbosity (e.g. -v, -vv, -vvv)",
         "skip": "Skip specific tests (choices: lint, sanity, unit); can be provided multiple times (e.g. --skip lint --skip sanity)",
+        "ansible_core_branch": "Test against a specific ansible-core git branch (e.g. 'devel', 'milestone')",
     },
     iterable=["skip"],
     incrementable=["verbose"],
 )
-def unit(context, verbose=0, skip=None):
+def unit(context, verbose=0, skip=None, ansible_core_branch=None):
     """Run unit tests."""
     env = {"PYTHON_VER": context.nautobot_ansible.python_ver}
+    if ansible_core_branch is not None:
+        env["ANSIBLE_CORE_BRANCH"] = ansible_core_branch
     if verbose:
         env["ANSIBLE_SANITY_ARGS"] = f"-{'v' * verbose}"
         env["ANSIBLE_UNIT_ARGS"] = f"-{'v' * verbose}"
@@ -357,7 +360,7 @@ def galaxy_install(context, force=False):
 def docs(context):
     """Build and serve docs locally for development."""
     galaxy_install(context, force=True)
-    command = "poetry run mkdocs serve -v -a 0.0.0.0:8000"
+    command = "poetry run mkdocs serve -v -a 0.0.0.0:8000 --livereload"
     context.run(command)
 
 

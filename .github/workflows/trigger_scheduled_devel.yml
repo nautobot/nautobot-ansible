@@ -1,0 +1,36 @@
+---
+name: "Scheduled CI - ansible-core devel"
+on: # yamllint disable
+  schedule:
+    # Run every Wednesday at 03:20 UTC (offset from Monday stable run)
+    - cron: "20 3 * * 3"
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The ansible-core branch to test against"
+        required: false
+        default: "devel"
+        type: string
+
+env:
+  ANSIBLE_CORE_BRANCH: "${{ inputs.branch || 'devel' }}"
+
+jobs:
+  unit:
+    runs-on: "ubuntu-latest"
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.12"
+    env:
+      INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
+    # Allow failures — devel breakage is expected and should not block anything
+    continue-on-error: true
+    steps:
+      - name: "Check out repository code"
+        uses: "actions/checkout@v4"
+      - name: "Install invoke"
+        run: "pip install -U pip && pip install invoke packaging"
+      - name: "Run tests against ansible-core ${{ env.ANSIBLE_CORE_BRANCH }}"
+        run: "invoke unit --ansible-core-branch ${{ env.ANSIBLE_CORE_BRANCH }} --skip lint"

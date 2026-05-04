@@ -6,6 +6,8 @@
 ##
 - set_fact:
     nexus_parent: '{{ lookup(''networktocode.nautobot.lookup'', ''devices'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Test Nexus One"'') }}'
+    test_vrf_one: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
+    test_vrf_two: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF Two\"') }}"
 
 - name: "VIRTUAL_DEVICE_CONTEXT 1: Necessary info creation"
   networktocode.nautobot.virtual_device_context:
@@ -14,6 +16,9 @@
     name: "Test Virtual Device Context"
     device: "Test Nexus One"
     status: "Active"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
     state: present
   register: test_one
 
@@ -26,6 +31,8 @@
       - test_one['virtual_device_context']['name'] == "Test Virtual Device Context"
       - test_one['virtual_device_context']['device'] == nexus_parent['key']
       - test_one['virtual_device_context']['status'] == active['key']
+      - test_one['diff']['after']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_one['diff']['after']['vrfs']
 
 - name: "VIRTUAL_DEVICE_CONTEXT 2: Create duplicate"
   networktocode.nautobot.virtual_device_context:
@@ -34,6 +41,9 @@
     name: "Test Virtual Device Context"
     device: "Test Nexus One"
     status: "Active"
+    vrfs:
+      objects:
+        - vrf: "Test VRF"
     state: present
   register: test_two
 
@@ -53,6 +63,9 @@
     status: "Active"
     description: "This is a test virtual device context"
     identifier: 1234
+    vrfs:
+      objects:
+        - vrf: "Test VRF Two"
     state: present
   register: test_three
 
@@ -65,6 +78,10 @@
       - test_three['diff']['before']['identifier'] == None
       - test_three['diff']['after']['identifier'] == 1234
       - test_three['msg'] == "virtual_device_context Test Virtual Device Context updated"
+      - test_three['diff']['before']['vrfs'] | length == 1
+      - test_three['diff']['after']['vrfs'] | length == 2
+      - test_vrf_one['key'] in test_three['diff']['after']['vrfs']
+      - test_vrf_two['key'] in test_three['diff']['after']['vrfs']
 
 - name: "VIRTUAL_DEVICE_CONTEXT 4: Update duplicate"
   networktocode.nautobot.virtual_device_context:
@@ -75,6 +92,9 @@
     status: "Active"
     description: "This is a test virtual device context"
     identifier: 1234
+    vrfs:
+      objects:
+        - vrf: "Test VRF Two"
     state: present
   register: test_four
 
@@ -84,32 +104,108 @@
       - not test_four['changed']
       - test_four['msg'] == "virtual_device_context Test Virtual Device Context already exists"
 
-- name: "VIRTUAL_DEVICE_CONTEXT 5: Delete"
+- name: "VIRTUAL_DEVICE_CONTEXT 5: Delete second VRF"
   networktocode.nautobot.virtual_device_context:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Virtual Device Context"
-    state: absent
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
   register: test_five
 
-- name: "VIRTUAL_DEVICE_CONTEXT 5: ASSERT - Delete"
+- name: "VIRTUAL_DEVICE_CONTEXT 5: ASSERT - Delete M2M"
   assert:
     that:
       - test_five is changed
-      - test_five['diff']['before']['state'] == "present"
-      - test_five['diff']['after']['state'] == "absent"
-      - test_five['msg'] == "virtual_device_context Test Virtual Device Context deleted"
+      - test_five['diff']['before']['vrfs'] | length == 2
+      - test_five['diff']['after']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_five['diff']['after']['vrfs']
+      - test_vrf_two['key'] not in test_five['diff']['after']['vrfs']
 
-- name: "VIRTUAL_DEVICE_CONTEXT 6: Delete non existing"
+- name: "VIRTUAL_DEVICE_CONTEXT 6: Duplicate delete"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    vrfs:
+      state: delete
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
+  register: test_six
+
+- name: "VIRTUAL_DEVICE_CONTEXT 6: ASSERT - Duplicate delete"
+  assert:
+    that:
+      - not test_six['changed']
+
+- name: "VIRTUAL_DEVICE_CONTEXT 7: Replace VRFs"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    vrfs:
+      state: replace
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
+  register: test_seven
+
+- name: "VIRTUAL_DEVICE_CONTEXT 7: ASSERT - Replace"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['vrfs'] | length == 1
+      - test_vrf_one['key'] in test_seven['diff']['before']['vrfs']
+      - test_seven['diff']['after']['vrfs'] | length == 1
+      - test_vrf_two['key'] in test_seven['diff']['after']['vrfs']
+
+- name: "VIRTUAL_DEVICE_CONTEXT 8: Duplicate replace"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    vrfs:
+      state: replace
+      objects:
+        - vrf: "Test VRF Two"
+    state: present
+  register: test_eight
+
+- name: "VIRTUAL_DEVICE_CONTEXT 8: ASSERT - Duplicate replace"
+  assert:
+    that:
+      - not test_eight['changed']
+
+- name: "VIRTUAL_DEVICE_CONTEXT 9: Delete"
   networktocode.nautobot.virtual_device_context:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: "Test Virtual Device Context"
     state: absent
-  register: test_six
+  register: test_nine
 
-- name: "VIRTUAL_DEVICE_CONTEXT 6: ASSERT - Delete non existing"
+- name: "VIRTUAL_DEVICE_CONTEXT 9: ASSERT - Delete"
   assert:
     that:
-      - not test_six['changed']
-      - test_six['msg'] == "virtual_device_context Test Virtual Device Context already absent"
+      - test_nine is changed
+      - test_nine['diff']['before']['state'] == "present"
+      - test_nine['diff']['after']['state'] == "absent"
+      - test_nine['msg'] == "virtual_device_context Test Virtual Device Context deleted"
+
+- name: "VIRTUAL_DEVICE_CONTEXT 10: Delete non existing"
+  networktocode.nautobot.virtual_device_context:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Virtual Device Context"
+    state: absent
+  register: test_ten
+
+- name: "VIRTUAL_DEVICE_CONTEXT 10: ASSERT - Delete non existing"
+  assert:
+    that:
+      - not test_ten['changed']
+      - test_ten['msg'] == "virtual_device_context Test Virtual Device Context already absent"

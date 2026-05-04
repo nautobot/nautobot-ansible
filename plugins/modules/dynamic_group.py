@@ -60,6 +60,40 @@ options:
       - A dictionary of filter parameters defining membership of this group
     required: false
     type: dict
+  static_group_associations:
+    description:
+      - Static group associations to manage on this dynamic group.
+      - Only applicable when I(group_type=static).
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of static group associations to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          associated_object_type:
+            description:
+              - The app_label.model of the associated object (e.g. C(dcim.device)).
+            required: true
+            type: str
+          associated_object_id:
+            description:
+              - The UUID of the associated object.
+            required: true
+            type: str
 """
 
 EXAMPLES = r"""
@@ -82,6 +116,20 @@ EXAMPLES = r"""
     token: thisIsMyToken
     name: TestFilterGroup
     state: absent
+
+- name: Create a dynamic group with inline static group association associations
+  networktocode.nautobot.dynamic_group:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: TestFilterGroup
+    group_type: dynamic-filter
+    content_type: dcim.device
+    static_group_associations:
+      state: merge
+      objects:
+        - associated_object_type: "dcim.device"
+          associated_object_id: "{{ my_device['key'] }}"
+    state: present
 
 - name: Delete a dynamic group by id
   networktocode.nautobot.dynamic_group:
@@ -133,6 +181,22 @@ def main():
             content_type=dict(required=False, type="str"),
             tenant=dict(required=False, type="raw"),
             filter=dict(required=False, type="dict"),
+            static_group_associations=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            associated_object_type=dict(required=True, type="str"),
+                            associated_object_id=dict(required=True, type="str"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
 

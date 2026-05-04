@@ -76,6 +76,34 @@ options:
       - The tenant that the virtual device context is associated with
     required: false
     type: raw
+  vrfs:
+    description:
+      - List of VRFs to associate with this virtual device context.
+    required: false
+    type: dict
+    version_added: "6.2.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of VRFs to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          vrf:
+            description:
+              - The VRF to associate with the virtual device context.
+            required: true
+            type: raw
 """
 
 EXAMPLES = r"""
@@ -86,6 +114,19 @@ EXAMPLES = r"""
     name: "My Virtual Device Context"
     device: "My Device"
     status: "Active"
+    state: present
+
+- name: Create a virtual device context with inline VRF associations
+  networktocode.nautobot.virtual_device_context:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: "My Virtual Device Context"
+    device: "My Device"
+    status: "Active"
+    vrfs:
+      state: merge
+      objects:
+        - vrf: "Test VRF"
     state: present
 
 - name: Delete a virtual device context
@@ -148,8 +189,24 @@ def main():
             primary_ip4=dict(required=False, type="raw"),
             primary_ip6=dict(required=False, type="raw"),
             tenant=dict(required=False, type="raw"),
+            vrfs=dict(
+                required=False,
+                type="dict",
+                options=dict(
+                    state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+                    objects=dict(
+                        required=True,
+                        type="list",
+                        elements="dict",
+                        options=dict(
+                            vrf=dict(required=True, type="raw"),
+                        ),
+                    ),
+                ),
+            ),
         )
     )
+
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     virtual_device_context = NautobotDcimModule(module, NB_VIRTUAL_DEVICE_CONTEXTS)
     virtual_device_context.run()

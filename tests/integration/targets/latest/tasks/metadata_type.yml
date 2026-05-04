@@ -161,9 +161,197 @@
     state: absent
   register: test_eight
 
-- name: "8 - ASSERT`"
+- name: "8 - ASSERT"
   assert:
     that:
       - not test_eight['changed']
       - test_eight['metadata_type'] == None
       - test_eight['msg'] == "metadata_type TopSecretInfoToo already absent"
+
+##
+## M2M metadata_choices tests
+##
+- name: "9 - Create metadata type with metadata_choices"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    data_type: multi-select
+    content_types:
+      - dcim.device
+    metadata_choices:
+      objects:
+        - value: "Meta A"
+    state: present
+  register: test_nine
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - test_nine is changed
+      - test_nine['diff']['before']['state'] == "absent"
+      - test_nine['diff']['after']['state'] == "present"
+      - test_nine['metadata_type']['name'] == "SelectMetadata"
+      - test_nine['metadata_type']['data_type'] == "multi-select"
+      - test_nine['diff']['after']['metadata_choices'] | length == 1
+      - test_nine['msg'] == "metadata_type SelectMetadata created"
+
+- name: "10 - Duplicate create with metadata_choices idempotent"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    data_type: multi-select
+    content_types:
+      - dcim.device
+    metadata_choices:
+      objects:
+        - value: "Meta A"
+    state: present
+  register: test_ten
+
+- name: "10 - ASSERT"
+  assert:
+    that:
+      - not test_ten['changed']
+      - test_ten['msg'] == "metadata_type SelectMetadata already exists"
+
+- name: "11 - Merge second metadata choice"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_eleven
+
+- name: "11 - ASSERT"
+  assert:
+    that:
+      - test_eleven is changed
+      - test_eleven['diff']['before']['metadata_choices'] | length == 1
+      - test_eleven['diff']['after']['metadata_choices'] | length == 2
+
+- name: "12 - Duplicate merge idempotent"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_twelve
+
+- name: "12 - ASSERT"
+  assert:
+    that:
+      - not test_twelve['changed']
+      - test_twelve['msg'] == "metadata_type SelectMetadata already exists"
+
+- name: "14 - Delete second metadata choice"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      state: delete
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_fourteen
+
+- name: "14 - ASSERT"
+  assert:
+    that:
+      - test_fourteen is changed
+      - test_fourteen['diff']['before']['metadata_choices'] | length == 2
+      - test_fourteen['diff']['after']['metadata_choices'] | length == 1
+
+- name: "15 - Duplicate delete idempotent"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      state: delete
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_fifteen
+
+- name: "15 - ASSERT"
+  assert:
+    that:
+      - not test_fifteen['changed']
+      - test_fifteen['msg'] == "metadata_type SelectMetadata already exists"
+
+- name: "16 - Replace with second metadata choice"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      state: replace
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_sixteen
+
+- name: "16 - ASSERT"
+  assert:
+    that:
+      - test_sixteen is changed
+      - test_sixteen['diff']['before']['metadata_choices'] | length == 1
+      - test_sixteen['diff']['after']['metadata_choices'] | length == 1
+
+- name: "17 - Duplicate replace idempotent"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    metadata_choices:
+      state: replace
+      objects:
+        - value: "Meta B"
+    state: present
+  register: test_seventeen
+
+- name: "17 - ASSERT"
+  assert:
+    that:
+      - not test_seventeen['changed']
+      - test_seventeen['msg'] == "metadata_type SelectMetadata already exists"
+
+- name: "18 - Delete SelectMetadata metadata type"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    state: absent
+  register: test_eighteen
+
+- name: "18 - ASSERT"
+  assert:
+    that:
+      - test_eighteen is changed
+      - test_eighteen['diff']['before']['state'] == "present"
+      - test_eighteen['diff']['after']['state'] == "absent"
+      - test_eighteen['msg'] == "metadata_type SelectMetadata deleted"
+
+- name: "19 - Delete SelectMetadata idempotent"
+  networktocode.nautobot.metadata_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: SelectMetadata
+    state: absent
+  register: test_nineteen
+
+- name: "19 - ASSERT"
+  assert:
+    that:
+      - not test_nineteen['changed']
+      - test_nineteen['metadata_type'] == None
+      - test_nineteen['msg'] == "metadata_type SelectMetadata already absent"

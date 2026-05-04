@@ -107,8 +107,10 @@ nav:
     - How to Use:
       - Modules: "getting_started/how-to-use/modules.md"
       - Inventory: "getting_started/how-to-use/inventory.md"
+      - Inline M2M Associations: "getting_started/how-to-use/inline_m2m.md"
       - Advanced Usage - Modules: "getting_started/how-to-use/advanced.md"
       - EDA Event Source Plugin: "getting_started/how-to-use/eda.md"
+      - Migrating from query_graphql: "getting_started/how-to-use/graphql_migration.md"
     - Contributing: 
       - "getting_started/index.md"
       - Modules:

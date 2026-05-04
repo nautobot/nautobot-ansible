@@ -138,6 +138,11 @@ class ActionModule(ActionBase):
         self._supports_async = False
 
         result = super(ActionModule, self).run(tmp, task_vars)
+        Display().deprecated(
+            "The query_graphql module is deprecated. Use graphql_info or graphql_facts instead.",
+            version="7.0.0",
+            collection_name="networktocode.nautobot",
+        )
         del tmp
 
         if result.get("skipped"):

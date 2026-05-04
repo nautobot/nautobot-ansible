@@ -30,7 +30,7 @@ except ImportError:
 
 # Used to map endpoints to applications dynamically
 API_APPS_ENDPOINTS = dict(
-    circuits=["circuits", "circuit_types", "circuit_terminations", "providers"],
+    circuits=["circuits", "circuit_types", "circuit_terminations", "providers", "provider_networks"],
     cloud=[
         "cloud_accounts",
         "cloud_networks",
@@ -179,6 +179,8 @@ QUERY_TYPES = dict(
     power_port="name",
     power_port_template="name",
     platform="name",
+    prefix="prefix",
+    prefixes="prefix",
     primary_ip="address",
     primary_ip4="address",
     primary_ip6="address",
@@ -284,6 +286,7 @@ CONVERT_TO_ID = {
     "power_panel": "power_panels",
     "power_port": "power_ports",
     "power_port_template": "power_port_templates",
+    "prefix": "prefixes",
     "primary_ip": "ip_addresses",
     "primary_ip4": "ip_addresses",
     "primary_ip6": "ip_addresses",
@@ -378,6 +381,7 @@ ENDPOINT_NAME_MAPPING = {
     "power_ports": "power_port",
     "power_port_templates": "power_port_template",
     "prefixes": "prefix",
+    "provider_networks": "provider_network",
     "providers": "provider",
     "racks": "rack",
     "rack_groups": "rack_group",
@@ -407,6 +411,51 @@ ENDPOINT_NAME_MAPPING = {
     "vlan_groups": "vlan_group",
     "vrfs": "vrf",
     "wireless_networks": "wireless_network",
+}
+
+# Maps parent API endpoint → {inline_field_name: m2m_api_endpoint_name}
+# Used by parent modules to declare inline M2M / child-object fields.
+# Keys match self.endpoint values (plural API endpoint names).
+# Values are the API endpoint name to manage the association/assignment.
+M2M_FIELDS = {
+    "cloud_networks": {
+        "prefixes": "cloud_network_prefix_assignments",
+    },
+    "cloud_services": {
+        "cloud_networks": "cloud_service_network_assignments",
+    },
+    "custom_fields": {
+        "custom_field_choices": "custom_field_choices",
+    },
+    "devices": {
+        "clusters": "device_cluster_assignments",
+        "vrfs": "vrf_device_assignments",
+    },
+    "dynamic_groups": {
+        "static_group_associations": "static_group_associations",
+    },
+    "interfaces": {
+        "ip_addresses": "ip_address_to_interface",
+    },
+    "locations": {
+        "prefixes": "prefix_location_assignments",
+        "vlans": "vlan_location_assignments",
+    },
+    "metadata_types": {
+        "metadata_choices": "metadata_choices",
+    },
+    "providers": {
+        "provider_networks": "provider_networks",
+    },
+    "secrets_groups": {
+        "secrets": "secrets_groups_associations",
+    },
+    "virtual_device_contexts": {
+        "vrfs": "vrf_device_assignments",
+    },
+    "virtual_machines": {
+        "vrfs": "vrf_device_assignments",
+    },
 }
 
 # What makes the search unique
@@ -500,6 +549,7 @@ ALLOWED_QUERY_PARAMS = {
     "primary_ip4": set(["address", "namespace"]),
     "primary_ip6": set(["address", "namespace"]),
     "provider": set(["name"]),
+    "provider_network": set(["name", "circuit_provider"]),
     "rack": set(["name", "location"]),
     "rack_group": set(["name"]),
     "radio_profile": set(["name"]),
@@ -719,6 +769,39 @@ def sort_dict_with_lists(data):
     return data
 
 
+def _normalize_m2m_compare_value(value):
+    """Normalize FK / API values so serialized records match user-built association dicts."""
+    if value is None:
+        return None
+    if isinstance(value, dict) and value.get("id") is not None:
+        return str(value["id"])
+    return str(value)
+
+
+def _m2m_assoc_compare_key(assoc_dict, effective_parent_key, key_fields):
+    """Build a stable comparison key for inline M2M / assignment records.
+
+    When key_fields is non-empty, only those keys (excluding the parent FK) are used.
+    This matches desired payloads (device + vrf only) to API responses that also include
+    id, url, display, etc., and aligns nested FK objects with plain UUID strings.
+
+    When key_fields is empty (e.g. replace with no desired objects), compare all
+    non-parent fields so each existing record keeps a distinct key.
+    """
+    if key_fields:
+        pairs = []
+        for k in sorted(key_fields):
+            if k == effective_parent_key:
+                continue
+            if k not in assoc_dict:
+                continue
+            pairs.append((k, _normalize_m2m_compare_value(assoc_dict[k])))
+        return tuple(pairs)
+    return tuple(
+        sorted((k, _normalize_m2m_compare_value(v)) for k, v in assoc_dict.items() if k != effective_parent_key)
+    )
+
+
 class NautobotModule:
     """Run the Nautobot module.
 
@@ -736,6 +819,12 @@ class NautobotModule:
         self.check_mode = self.module.check_mode
         self.endpoint = endpoint
         query_params = self.module.params.get("query_params")
+
+        # Auto-derive M2M field configs from M2M_FIELDS global dict keyed by endpoint.
+        # Values in M2M_FIELDS are plain endpoint strings; wrap each as {"endpoint": str}.
+        self.m2m_fields_config = {
+            field: {"endpoint": ep_str} for field, ep_str in M2M_FIELDS.get(self.endpoint, {}).items()
+        }
 
         if not HAS_PYNAUTOBOT:
             self.module.fail_json(msg=missing_required_lib("pynautobot"), exception=PYNAUTOBOT_IMP_ERR)
@@ -759,19 +848,44 @@ class NautobotModule:
         cleaned_data = self._remove_arg_spec_default(module.params)
         norm_data = self._normalize_data(cleaned_data)
         choices_data = self._change_choices_id(self.endpoint, norm_data)
+
+        # Extract raw M2M data BEFORE _find_ids so M2M field names don't collide
+        # with direct relationship fields in other modules (e.g. "prefixes", "vlans")
+        self.m2m_data = {}
+        for f in self.m2m_fields_config:
+            if choices_data.get(f) is not None:
+                self.m2m_data[f] = choices_data.pop(f)
+
+        # Resolve child objects in M2M data through _find_ids individually.
+        # Objects use child_key as the field name (e.g. {vrf: "Test VRF"} or
+        # {ip_address: {address: "10.200.0.1/32", namespace: "Global"}}).
+        # _find_ids handles both string and dict values automatically.
+        for field_name, field_data in self.m2m_data.items():
+            child_key_candidate = ENDPOINT_NAME_MAPPING.get(field_name)
+            child_key = child_key_candidate if (child_key_candidate and child_key_candidate in CONVERT_TO_ID) else None
+            if child_key and field_data.get("objects"):
+                for obj in field_data["objects"]:
+                    if child_key in obj:
+                        temp = {child_key: obj[child_key]}
+                        self._find_ids(temp, query_params)
+                        obj[child_key] = temp[child_key]
+
         data = self._find_ids(choices_data, query_params)
         data = self._convert_identical_keys(data)
-        self.data = self._build_payload(data, remove_keys)
+
+        # Add M2M field names to remove_keys so they are stripped from the REST API payload
+        all_remove_keys = list(remove_keys or []) + list(self.m2m_data.keys())
+        self.data = self._build_payload(data, all_remove_keys)
 
     def _build_payload(self, data, remove_keys):
         """Remove any key/value pairs that aren't relevant for interacting with Nautobot.
 
         Args:
-            data ([type]): [description]
-            remove_keys ([type]): [description]
+            data (dict): The processed data dict with field names and values.
+            remove_keys (list): Additional field names to exclude from the payload.
 
         Returns:
-            [type]: [description]
+            dict: Data dict with only keys relevant for the Nautobot REST API.
         """
         keys_to_remove = set(NAUTOBOT_ARG_SPEC)
         if remove_keys:
@@ -906,6 +1020,12 @@ class NautobotModule:
             if isinstance(v, dict):
                 v = self._remove_arg_spec_default(v)
                 new_dict[k] = v
+            elif isinstance(v, list):
+                new_dict[k] = [
+                    self._remove_arg_spec_default(item) if isinstance(item, dict) else item
+                    for item in v
+                    if item is not None
+                ]
             elif v is not None:
                 new_dict[k] = v
 
@@ -1110,8 +1230,12 @@ class NautobotModule:
                 # Do not attempt to resolve if already ID/UUID is provided
                 if isinstance(v, int) or self.is_valid_uuid(v):
                     continue
+                # Skip if this key is the object's own identifier (e.g. "prefix" on the prefixes endpoint),
+                # not a FK to another object of the same type (e.g. "parent_cloud_network" on cloud_networks)
+                if CONVERT_TO_ID[k] == self.endpoint and k == ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint):
+                    continue
                 # Special circumstances to set endpoint to search within
-                elif k == "termination_a":
+                if k == "termination_a":
                     endpoint = CONVERT_TO_ID[data.get("termination_a_type")]
                 elif k == "termination_b":
                     endpoint = CONVERT_TO_ID[data.get("termination_b_type")]
@@ -1272,6 +1396,183 @@ class NautobotModule:
             diff = self._build_diff(before=data_before, after=data_after)
             return updated_obj, diff
 
+    def _m2m_record_ids_for_diff(self, records, extract_key=None):
+        """Extract UUIDs from a list of records for diff output.
+
+        Args:
+            records: Single Record, list of Records, or (check_mode) dicts.
+            extract_key: If set, extract this field's value from each record
+                         (child object UUID). Otherwise use the record's own ID.
+        """
+        if records is None:
+            return []
+        if not isinstance(records, list):
+            records = [records]
+        ids = []
+        for rec in records:
+            if extract_key:
+                if isinstance(rec, dict):
+                    rid = rec.get(extract_key)
+                else:
+                    serialized = rec.serialize() if hasattr(rec, "serialize") else {}
+                    rid = serialized.get(extract_key)
+            else:
+                rid = getattr(rec, "id", None)
+                if rid is None and isinstance(rec, dict):
+                    rid = rec.get("id")
+            if rid is not None:
+                ids.append(str(rid))
+        return ids
+
+    def _bulk_create_objects(self, nb_endpoint, data_list):
+        """Bulk create Nautobot objects via a single API call.
+
+        Args:
+            nb_endpoint: pynautobot endpoint object.
+            data_list (list): List of dicts representing objects to create.
+
+        Returns:
+            list: Created pynautobot Record objects, or data_list in check_mode.
+        """
+        if self.check_mode:
+            return data_list
+        try:
+            return nb_endpoint.create(data_list)
+        except pynautobot.RequestError as e:
+            self._handle_errors(msg=e.error)
+
+    def _bulk_delete_objects(self, nb_endpoint, objects_list):
+        """Bulk delete Nautobot objects via a single API call.
+
+        Args:
+            nb_endpoint: pynautobot endpoint object.
+            objects_list (list): List of pynautobot Record objects to delete.
+
+        Returns:
+            bool: True if successful, or True in check_mode.
+        """
+        if self.check_mode or not objects_list:
+            return True
+        try:
+            return nb_endpoint.delete(objects_list)
+        except pynautobot.RequestError as e:
+            self._handle_errors(msg=e.error)
+
+    def _handle_m2m_field(self, field_name, m2m_config, parent_key, parent_id):
+        """Handle a single M2M or child-object inline field after parent create/update.
+
+        Args:
+            field_name (str): The argument spec field name (e.g. 'secrets').
+            m2m_config (dict): Config dict with 'endpoint' (str) and optional
+                'parent_key' (str) override for the parent FK field name.
+            parent_key (str): Derived parent FK field name (fallback if not in m2m_config).
+            parent_id (str): UUID of the parent object.
+        """
+        field_data = self.m2m_data.get(field_name)
+        if not field_data:
+            return
+
+        state = field_data.get("state", "merge")
+        desired_items = field_data.get("objects") or []
+
+        m2m_endpoint_name = m2m_config["endpoint"]
+        # Use explicit parent_key from config, or fall back to the derived one
+        effective_parent_key = m2m_config.get("parent_key") or parent_key
+
+        # Derive child_key: singularize field_name via ENDPOINT_NAME_MAPPING, then check CONVERT_TO_ID
+        child_key_candidate = ENDPOINT_NAME_MAPPING.get(field_name)
+        child_key = child_key_candidate if (child_key_candidate and child_key_candidate in CONVERT_TO_ID) else None
+
+        # Get the M2M/child endpoint
+        m2m_app = self._find_app(m2m_endpoint_name)
+        nb_m2m_app = getattr(self.nb, m2m_app)
+        nb_m2m_endpoint = getattr(nb_m2m_app, m2m_endpoint_name)
+
+        # Fetch current associations filtered by parent.
+        # When parent_id is None (check_mode create), the parent doesn't exist yet
+        # so there can't be any existing associations.
+        if parent_id is None:
+            current_records = []
+        else:
+            current_records = list(nb_m2m_endpoint.filter(**{effective_parent_key: parent_id}))
+
+        # Build desired association payloads. Child objects are already resolved to UUIDs
+        # by _find_ids in __init__, so just add the parent key and pass through all fields.
+        desired_assocs = []
+        for item in desired_items:
+            assoc = {effective_parent_key: parent_id}
+            assoc.update(item)
+            desired_assocs.append(assoc)
+
+        # Fields that define uniqueness for this operation (e.g. vrf, not id/url/display).
+        key_fields = set()
+        for assoc in desired_assocs:
+            key_fields.update(assoc.keys())
+        key_fields.discard(effective_parent_key)
+
+        def _assoc_compare_key(assoc_dict):
+            return _m2m_assoc_compare_key(assoc_dict, effective_parent_key, key_fields)
+
+        current_map = {}
+        for record in current_records:
+            serialized = record.serialize()
+            key = _assoc_compare_key(serialized)
+            current_map[key] = record
+
+        desired_map = {}
+        for assoc in desired_assocs:
+            key = _assoc_compare_key(assoc)
+            desired_map[key] = assoc
+
+        if state == "delete":
+            to_create = []
+            to_delete = [rec for key, rec in current_map.items() if key in desired_map]
+        elif state == "replace":
+            to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+            to_delete = [rec for key, rec in current_map.items() if key not in desired_map]
+        else:
+            to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+            to_delete = []
+
+        # Apply changes
+        created_records = None
+        if to_create:
+            created_records = self._bulk_create_objects(nb_m2m_endpoint, to_create)
+            self.result["changed"] = True
+
+        if to_delete:
+            self._bulk_delete_objects(nb_m2m_endpoint, to_delete)
+            self.result["changed"] = True
+
+        # Update diff: full before/after state as sorted lists of child object UUIDs
+        if to_create or to_delete:
+            before_ids = sorted(self._m2m_record_ids_for_diff(current_records, extract_key=child_key))
+            deleted_ids = set(self._m2m_record_ids_for_diff(to_delete, extract_key=child_key))
+            created_ids = self._m2m_record_ids_for_diff(created_records, extract_key=child_key)
+            after_ids = sorted([uid for uid in before_ids if uid not in deleted_ids] + created_ids)
+
+            existing_diff = self.result.get("diff") or {}
+            before = existing_diff.get("before") or {}
+            after = existing_diff.get("after") or {}
+            if before_ids:
+                before[field_name] = before_ids
+            if after_ids:
+                after[field_name] = after_ids
+            existing_diff["before"] = before
+            existing_diff["after"] = after
+            self.result["diff"] = existing_diff
+
+    def _process_m2m_fields(self, parent_key, parent_id):
+        """Process all declared M2M fields after the parent object is created/updated.
+
+        Args:
+            parent_key (str): FK field name for the parent in association endpoints.
+            parent_id (str): UUID of the parent object.
+        """
+        for field_name, m2m_config in self.m2m_fields_config.items():
+            if self.m2m_data.get(field_name):
+                self._handle_m2m_field(field_name, m2m_config, parent_key, parent_id)
+
     def _ensure_object_exists(self, nb_endpoint, endpoint_name, name, data):
         """Ensure an object exists or is updated.
 
@@ -1298,6 +1599,17 @@ class NautobotModule:
                 self.result["diff"] = diff
             else:
                 self.result["msg"] = "%s %s already exists" % (endpoint_name, name)
+
+        # Process any declared M2M fields after the parent object is created/updated.
+        # In check_mode, parent_id may be None (parent doesn't exist yet); _handle_m2m_field
+        # handles that by treating current associations as empty.
+        if self.m2m_fields_config and self.m2m_data:
+            parent_key = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
+            if isinstance(self.nb_object, dict):
+                parent_id = self.nb_object.get("id")
+            else:
+                parent_id = getattr(self.nb_object, "id", None)
+            self._process_m2m_fields(parent_key, str(parent_id) if parent_id else None)
 
     def _ensure_object_absent(self, endpoint_name, name):
         """Ensure an object is absent.

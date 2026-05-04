@@ -13,6 +13,10 @@ module: ip_address_to_interface
 short_description: Creates or removes IP address to interface association from Nautobot
 description:
   - Creates or removes IP address to interface association from Nautobot
+deprecated:
+  removed_in: "7.0.0"
+  why: IP address to interface mapping is managed on interface modules.
+  alternative: Use M(networktocode.nautobot.device_interface) or M(networktocode.nautobot.vm_interface) with I(ip_addresses).
 notes:
   - Tags should be defined as a YAML list
   - This should be ran with connection C(local) and hosts C(localhost)

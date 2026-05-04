@@ -9,6 +9,9 @@
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Provider One
+    provider_networks:
+      objects:
+        - name: "Provider Net A"
     state: present
   register: test_one
 
@@ -20,12 +23,16 @@
       - test_one['diff']['after']['state'] == "present"
       - test_one['provider']['name'] == "Test Provider One"
       - test_one['msg'] == "provider Test Provider One created"
+      - test_one['diff']['after']['provider_networks'] | length == 1
 
 - name: "PYNAUTOBOT_PROVIDER 2: Duplicate"
   networktocode.nautobot.provider:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Provider One
+    provider_networks:
+      objects:
+        - name: "Provider Net A"
     state: present
   register: test_two
 
@@ -36,7 +43,7 @@
       - test_two['provider']['name'] == "Test Provider One"
       - test_two['msg'] == "provider Test Provider One already exists"
 
-- name: "PYNAUTOBOT_PROVIDER 3: Update provider with other fields"
+- name: "PYNAUTOBOT_PROVIDER 3: Update provider with other fields and merge second network"
   networktocode.nautobot.provider:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -47,6 +54,9 @@
     noc_contact: noc@provider.net
     admin_contact: admin@provider.net
     comments: "BAD PROVIDER"
+    provider_networks:
+      objects:
+        - name: "Provider Net B"
     state: present
   register: test_three
 
@@ -61,31 +71,128 @@
       - test_three['diff']['after']['admin_contact'] == "admin@provider.net"
       - test_three['diff']['after']['comments'] == "BAD PROVIDER"
       - test_three['provider']['name'] == "Test Provider One"
-      - test_three['provider']['asn'] == 65001
-      - test_three['provider']['account'] == "200129104"
-      - test_three['provider']['portal_url'] == "http://provider.net"
-      - test_three['provider']['noc_contact'] == "noc@provider.net"
-      - test_three['provider']['admin_contact'] == "admin@provider.net"
-      - test_three['provider']['comments'] == "BAD PROVIDER"
       - test_three['msg'] == "provider Test Provider One updated"
+      - test_three['diff']['after']['provider_networks'] | length == 2
 
-- name: "PYNAUTOBOT_PROVIDER 4: Delete provider within nautobot"
+- name: "PYNAUTOBOT_PROVIDER 4: Duplicate merge"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      objects:
+        - name: "Provider Net B"
+    state: present
+  register: test_four
+
+- name: "PYNAUTOBOT_PROVIDER 4: ASSERT - Duplicate merge"
+  assert:
+    that:
+      - not test_four['changed']
+      - test_four['msg'] == "provider Test Provider One already exists"
+
+# Look up provider network records for UUID assertions
+- set_fact:
+    provider_net_a: "{{ lookup('networktocode.nautobot.lookup', 'provider-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Provider Net A\"') }}"
+    provider_net_b: "{{ lookup('networktocode.nautobot.lookup', 'provider-networks', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Provider Net B\"') }}"
+
+- name: "PYNAUTOBOT_PROVIDER 5: Delete second provider network"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      state: delete
+      objects:
+        - name: "Provider Net B"
+    state: present
+  register: test_five
+
+- name: "PYNAUTOBOT_PROVIDER 5: ASSERT - Delete M2M"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['diff']['before']['provider_networks'] | length == 2
+      - test_five['diff']['after']['provider_networks'] | length == 1
+      - provider_net_a['key'] in test_five['diff']['after']['provider_networks']
+      - provider_net_b['key'] not in test_five['diff']['after']['provider_networks']
+
+- name: "PYNAUTOBOT_PROVIDER 6: Duplicate delete"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      state: delete
+      objects:
+        - name: "Provider Net B"
+    state: present
+  register: test_six
+
+- name: "PYNAUTOBOT_PROVIDER 6: ASSERT - Duplicate delete"
+  assert:
+    that:
+      - not test_six['changed']
+
+- name: "PYNAUTOBOT_PROVIDER 7: Replace provider networks"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      state: replace
+      objects:
+        - name: "Provider Net B"
+    state: present
+  register: test_seven
+
+- name: "PYNAUTOBOT_PROVIDER 7: ASSERT - Replace"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['provider_networks'] | length == 1
+      - provider_net_a['key'] in test_seven['diff']['before']['provider_networks']
+      - test_seven['diff']['after']['provider_networks'] | length == 1
+
+- name: "PYNAUTOBOT_PROVIDER 8: Duplicate replace"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      state: replace
+      objects:
+        - name: "Provider Net B"
+    state: present
+  register: test_eight
+
+- name: "PYNAUTOBOT_PROVIDER 8: ASSERT - Duplicate replace"
+  assert:
+    that:
+      - not test_eight['changed']
+
+# Providers can't be deleted if they have associated provider networks
+- name: "PYNAUTOBOT_PROVIDER 8.5: Remove all associated provider networks to allow deletion"
+  networktocode.nautobot.provider:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Provider One
+    provider_networks:
+      state: replace
+      objects: []
+    state: present
+
+- name: "PYNAUTOBOT_PROVIDER 9: Delete provider within nautobot"
   networktocode.nautobot.provider:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
     name: Test Provider One
     state: absent
-  register: test_four
+  register: test_nine
 
-- name: "PYNAUTOBOT_PROVIDER 4 : ASSERT - Delete"
+- name: "PYNAUTOBOT_PROVIDER 9: ASSERT - Delete"
   assert:
     that:
-      - test_four is changed
-      - test_four['provider']['name'] == "Test Provider One"
-      - test_four['provider']['asn'] == 65001
-      - test_four['provider']['account'] == "200129104"
-      - test_four['provider']['portal_url'] == "http://provider.net"
-      - test_four['provider']['noc_contact'] == "noc@provider.net"
-      - test_four['provider']['admin_contact'] == "admin@provider.net"
-      - test_four['provider']['comments'] == "BAD PROVIDER"
-      - test_four['msg'] == "provider Test Provider One deleted"
+      - test_nine is changed
+      - test_nine['provider']['name'] == "Test Provider One"
+      - test_nine['msg'] == "provider Test Provider One deleted"
