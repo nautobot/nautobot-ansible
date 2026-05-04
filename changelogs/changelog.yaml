@@ -765,10 +765,10 @@ releases:
     changes:
       release_summary: 'This release adds the ability to manage many-to-many fields inline on parent modules.
 
-        Previously, managing these associations required using separate standalone modules 
-        (e.g., `vrf_device_assignment`, `prefix_location`, `secrets_groups_association`). 
+        Previously, managing these associations required using separate standalone modules
+        (e.g., `vrf_device_assignment`, `prefix_location`, `secrets_groups_association`).
         Now you can manage them inline on the parent module using the appropriate M2M field options.
-        
+
         M2M fields have a separate state (merge, replace, or delete) from the parent object to control the association state.'
       minor_changes:
         - (#696) - Added meta/execution-environment.yml for Ansible Builder support.
