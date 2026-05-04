@@ -761,3 +761,59 @@ releases:
       minor_changes:
         - (#684) - Added tenant option to the `namespace` module so that tenants can be associated with namespaces.
         - (#685) - Added description option to the `rir` module so that descriptions can be configured with RIRs.
+  6.2.0:
+    changes:
+      release_summary: 'This release adds the ability to manage many-to-many fields inline on parent modules.
+
+        Previously, managing these associations required using separate standalone modules 
+        (e.g., `vrf_device_assignment`, `prefix_location`, `secrets_groups_association`). 
+        Now you can manage them inline on the parent module using the appropriate M2M field options.
+        
+        M2M fields have a separate state (merge, replace, or delete) from the parent object to control the association state.'
+      minor_changes:
+        - (#696) - Added meta/execution-environment.yml for Ansible Builder support.
+        - (#705) - Added graphql_info and graphql_facts modules to replace query_graphql, following Ansible naming conventions for info and facts modules.
+        - (#711) - Added provider_network module for managing provider networks within Nautobot.
+        - (#728) - Added the ability to assign secrets to a secrets group when using the `secrets_group` module.
+        - (#728) - Added the ability to assign static group associations when using the `dynamic_group` module.
+        - (#728) - Added the ability to assign prefixes to a cloud network when using the `cloud_network` module.
+        - (#728) - Added the ability to assign cloud networks to a cloud service when using the `cloud_service` module.
+        - (#728) - Added the ability to assign vrfs to a device, virtual machine, or virtual device context when using the respective module.
+        - (#728) - Added the ability to assign clusters to a device when using the `device` module.
+        - (#728) - Added the ability to assign ip addresses to a device interface or vm interface when using the respective module.
+        - (#728) - Added the ability to assign prefixes or vlans to a location when using the `location` module.
+        - (#728) - Added the ability to assign provider networks to a provider when using the `provider` module.
+        - (#728) - Added the ability to manage custom field choices to a custom field when using the `custom_field` module.
+        - (#728) - Added the ability to manage metadata choices to a metadata type when using the `metadata_type` module.
+      deprecated_features:
+        - (#705) - Deprecated query_graphql module. Use graphql_info (returns data only) or graphql_facts (sets ansible_facts) instead.
+        - (#728) - Deprecated the `secrets_groups_association` module. Use the `secrets` option of the `secrets_group` module instead.
+        - (#728) - Deprecated the `static_group_association` module. Use the `static_group_associations` option of the `dynamic_group` module instead.
+        - (#728) - Deprecated the `cloud_network_prefix_assignment` module. Use the `prefixes` option of the `cloud_network` module instead.
+        - (#728) - Deprecated the `cloud_service_network_assignment` module. Use the `cloud_networks` option of the `cloud_service` module instead.
+        - (#728) - Deprecated the `vrf_device_assignment` module. Use the `vrfs` option of the `device`, `virtual_machine`, or `virtual_device_context` module instead.
+        - (#728) - Deprecated the `device_cluster_assignment` module. Use the `clusters` option of the `device` module instead.
+        - (#728) - Deprecated the `ip_address_to_interface` module. Use the `ip_addresses` option of the `device_interface` or `vm_interface` module instead.
+        - (#728) - Deprecated the `prefix_location` module. Use the `prefixes` option of the `location` module instead.
+        - (#728) - Deprecated the `vlan_location` module. Use the `vlans` option of the `location` module instead.
+        - (#728) - Deprecated the `custom_field_choice` module. Use the `custom_field_choices` option of the `custom_field` module instead.
+        - (#728) - Deprecated the `metadata_choice` module. Use the `metadata_choices` option of the `metadata_type` module instead.
+        - (#728) - Deprecated the `provider_network` module. Use the `provider_networks` option of the `provider` module instead.
+      trivial:
+        - (#694) - Added Code of Conduct link to README for Ansible inclusion compliance.
+        - (#695) - Add CONTRIBUTING.md that links to the official documentation.
+        - (#697) - Updated Python and Ansible version requirements in README to reflect actual supported versions.
+        - (#703) - Added Communication section to README with Ansible Forum links per Ansible inclusion requirements.
+        - (#709) - Added missing RETURN block to the service module.
+        - (#709) - Added unit tests to validate all modules have required Ansible documentation blocks (DOCUMENTATION, EXAMPLES, RETURN, version_added).
+        - (#718) - Added CI testing against ansible-core devel branch and `--ansible-core-branch` flag on `invoke unit` for local testing.
+    modules:
+      - name: graphql_info
+        description: Returns the results of a GraphQL query from Nautobot
+        namespace: ''
+      - name: graphql_facts
+        description: Sets the results of a GraphQL query from Nautobot as ansible_facts
+        namespace: ''
+      - name: provider_network
+        description: Creates or removes provider networks from Nautobot
+        namespace: ''
