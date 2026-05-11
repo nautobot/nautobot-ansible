@@ -1560,7 +1560,6 @@ description = "Common helper functions useful in network automation."
 optional = false
 python-versions = "<4.0,>=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.12\""
 files = [
     {file = "netutils-1.15.1-py3-none-any.whl", hash = "sha256:c42886d456f9b21bee395628b100dc2cd4b68fcc223f33c669672c3468d6b4dc"},
     {file = "netutils-1.15.1.tar.gz", hash = "sha256:67a932a77067cbe18b65e7a9f3a3e85c4bff3e4c2c3abbe0286967ba87064793"},
@@ -1568,22 +1567,6 @@ files = [
 
 [package.extras]
 optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.0.0,<5.0.0)"]
-
-[[package]]
-name = "netutils"
-version = "1.17.2"
-description = "Common helper functions useful in network automation."
-optional = false
-python-versions = "<3.15,>=3.10"
-groups = ["main"]
-markers = "python_version == \"3.11\""
-files = [
-    {file = "netutils-1.17.2-py3-none-any.whl", hash = "sha256:ccdad5fb46ae7138ce2d1d4270cd41183c0c714cf53cf58036b151cfe40baafa"},
-    {file = "netutils-1.17.2.tar.gz", hash = "sha256:7a0680e17667a54d627b70bd30c4fdb12d7da53562f3ffb9ee4e85c6cb553dc6"},
-]
-
-[package.extras]
-optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.1.0,<5.0.0) ; python_version >= \"3.10\" and python_version < \"3.14\"", "napalm (>=5.0.0,<6.0.0) ; python_version >= \"3.14\"", "rpds-py (>=0.28.0)"]
 
 [[package]]
 name = "packaging"
@@ -2709,14 +2692,14 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.6.3"
+version = "2.7.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main", "dev"]
 files = [
-    {file = "urllib3-2.6.3-py3-none-any.whl", hash = "sha256:bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"},
-    {file = "urllib3-2.6.3.tar.gz", hash = "sha256:1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"},
+    {file = "urllib3-2.7.0-py3-none-any.whl", hash = "sha256:9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897"},
+    {file = "urllib3-2.7.0.tar.gz", hash = "sha256:231e0ec3b63ceb14667c67be60f2f2c40a518cb38b03af60abc813da26505f4c"},
 ]
 
 [package.extras]
