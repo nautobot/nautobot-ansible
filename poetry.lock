@@ -1560,7 +1560,6 @@ description = "Common helper functions useful in network automation."
 optional = false
 python-versions = "<4.0,>=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.12\""
 files = [
     {file = "netutils-1.15.1-py3-none-any.whl", hash = "sha256:c42886d456f9b21bee395628b100dc2cd4b68fcc223f33c669672c3468d6b4dc"},
     {file = "netutils-1.15.1.tar.gz", hash = "sha256:67a932a77067cbe18b65e7a9f3a3e85c4bff3e4c2c3abbe0286967ba87064793"},
@@ -1568,22 +1567,6 @@ files = [
 
 [package.extras]
 optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.0.0,<5.0.0)"]
-
-[[package]]
-name = "netutils"
-version = "1.17.2"
-description = "Common helper functions useful in network automation."
-optional = false
-python-versions = "<3.15,>=3.10"
-groups = ["main"]
-markers = "python_version == \"3.11\""
-files = [
-    {file = "netutils-1.17.2-py3-none-any.whl", hash = "sha256:ccdad5fb46ae7138ce2d1d4270cd41183c0c714cf53cf58036b151cfe40baafa"},
-    {file = "netutils-1.17.2.tar.gz", hash = "sha256:7a0680e17667a54d627b70bd30c4fdb12d7da53562f3ffb9ee4e85c6cb553dc6"},
-]
-
-[package.extras]
-optionals = ["jsonschema (>=4.17.3,<5.0.0)", "legacycrypt (==0.3)", "napalm (>=4.1.0,<5.0.0) ; python_version >= \"3.10\" and python_version < \"3.14\"", "napalm (>=5.0.0,<6.0.0) ; python_version >= \"3.14\"", "rpds-py (>=0.28.0)"]
 
 [[package]]
 name = "packaging"
@@ -1876,14 +1859,14 @@ testutils = ["gitpython (>3)"]
 
 [[package]]
 name = "pymdown-extensions"
-version = "10.21.2"
+version = "10.21.3"
 description = "Extension pack for Python Markdown."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "pymdown_extensions-10.21.2-py3-none-any.whl", hash = "sha256:5c0fd2a2bea14eb39af8ff284f1066d898ab2187d81b889b75d46d4348c01638"},
-    {file = "pymdown_extensions-10.21.2.tar.gz", hash = "sha256:c3f55a5b8a1d0edf6699e35dcbea71d978d34ff3fa79f3d807b8a5b3fa90fbdc"},
+    {file = "pymdown_extensions-10.21.3-py3-none-any.whl", hash = "sha256:d7a5d08014fc571e80ca21dd6f854e31f94c489800350564d55d15b3c41e76b6"},
+    {file = "pymdown_extensions-10.21.3.tar.gz", hash = "sha256:72cfcf55f07aea0d4af2c4f11dd4e52466ddfb1bb819673146398e0bd3a77354"},
 ]
 
 [package.dependencies]
