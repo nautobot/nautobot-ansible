@@ -65,9 +65,9 @@ jobs:
         run: |
           cat << EOF > ansible.cfg
           [galaxy]
-          server_list = release_galaxy
-          [galaxy_server.release_galaxy]
-          url=https://galaxy.ansible.com/
+          server_list = published
+          [galaxy_server.published]
+          url=https://galaxy.ansible.com/api/
           token=${{ secrets.GALAXY_API_TOKEN }}
           EOF
         shell: bash
