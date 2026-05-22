@@ -5,8 +5,8 @@ on: # yamllint disable
     types: [published]
 
 jobs:
-  publish_github:
-    name: "Publish to GitHub"
+  build_collection:
+    name: "Build Collection"
     runs-on: "ubuntu-latest"
     if: "startsWith(github.ref, 'refs/tags/v')"
     steps:
@@ -20,6 +20,22 @@ jobs:
         run: "pip install ansible-core"
       - name: "Build the collection"
         run: "ansible-galaxy collection build --output-path build"
+      - name: "Upload collection artifact"
+        uses: "actions/upload-artifact@v4"
+        with:
+          name: "collection"
+          path: "build/*.tar.gz"
+
+  publish_github:
+    name: "Publish to GitHub"
+    needs: "build_collection"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Download collection artifact"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "collection"
+          path: "build"
       - name: "Upload binaries to release"
         uses: "svenstaro/upload-release-action@v2"
         with:
@@ -28,19 +44,23 @@ jobs:
           tag: "${{ github.ref }}"
           overwrite: true
           file_glob: true
+
   publish_galaxy:
     name: "Publish to Ansible Galaxy"
+    needs: "build_collection"
     runs-on: "ubuntu-latest"
-    if: "startsWith(github.ref, 'refs/tags/v')"
     steps:
-      - name: "Check out repository code"
-        uses: "actions/checkout@v4"
       - name: "Set up Python"
         uses: "actions/setup-python@v5"
         with:
           python-version: "3.11"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
+      - name: "Download collection artifact"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "collection"
+          path: "build"
       - name: "Create the ansible.cfg file"
         run: |
           cat << EOF > ansible.cfg
@@ -51,7 +71,36 @@ jobs:
           token=${{ secrets.GALAXY_API_TOKEN }}
           EOF
         shell: bash
-      - name: "Build the collection"
-        run: "ansible-galaxy collection build --output-path build"
       - name: "Publish the collection"
-        run: "ansible-galaxy collection publish build/*"
+        run: "ansible-galaxy collection publish build/*.tar.gz"
+
+  publish_automation_hub:
+    name: "Publish to Red Hat Automation Hub"
+    needs: "build_collection"
+    runs-on: "ubuntu-latest"
+    continue-on-error: true
+    steps:
+      - name: "Set up Python"
+        uses: "actions/setup-python@v5"
+        with:
+          python-version: "3.11"
+      - name: "Install Python Packages"
+        run: "pip install ansible-core"
+      - name: "Download collection artifact"
+        uses: "actions/download-artifact@v4"
+        with:
+          name: "collection"
+          path: "build"
+      - name: "Create the ansible.cfg file"
+        run: |
+          cat << EOF > ansible.cfg
+          [galaxy]
+          server_list = automation_hub
+          [galaxy_server.automation_hub]
+          url=${{ secrets.AUTOMATION_HUB_URL }}
+          auth_url=${{ secrets.AUTOMATION_HUB_SSO_URL }}
+          token=${{ secrets.AUTOMATION_HUB_API_TOKEN }}
+          EOF
+        shell: bash
+      - name: "Publish the collection"
+        run: "ansible-galaxy collection publish build/*.tar.gz"
