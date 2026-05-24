@@ -49,7 +49,7 @@ options:
       - The range that will be assigned to the vlan group
     required: false
     type: raw
-    version_added: "6.2.1"
+    version_added: "6.3.0"
 """
 
 EXAMPLES = r"""
