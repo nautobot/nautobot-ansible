@@ -150,7 +150,7 @@
     that:
       - not test_eight['changed']
       - test_eight['vlan_group']['range'] == "1-40,200"
-        - test_eight['msg'] == "vlan_group VLAN Group Range already exists"
+      - test_eight['msg'] == "vlan_group VLAN Group Range already exists"
 
 - name: "VLAN_GROUP 9: Update range on existing group"
   networktocode.nautobot.vlan_group:
