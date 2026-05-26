@@ -1,0 +1,1 @@
+Added an `ansible-test` sanity ignore for the `yamllint:unparsable-with-libyaml` rule on the `inventory` and `gql_inventory` plugin EXAMPLES blocks, matching the workaround used by `amazon.aws` for upstream ansible-test bug ansible/ansible#82353. This unblocks publication to automation-hub without altering the multi-document EXAMPLES content.
