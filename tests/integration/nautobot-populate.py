@@ -997,8 +997,15 @@ teams = [{"name": "My Test Team"}]
 created_teams = make_nautobot_calls(nb.extras.teams, teams)
 
 # Create Contacts
-contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
+contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}, {"name": "John Smith"}, {"name": "Jane Doe"}]
 created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
+# Create Contact Association Roles
+contact_association_roles = [
+    {"name": "Admin", "content_types": ["extras.contactassociation"]},
+    {"name": "User", "content_types": ["extras.contactassociation"]},
+]
+created_contact_association_roles = make_nautobot_calls(nb.extras.roles, contact_association_roles)
 
 # Create Controller
 controller = [

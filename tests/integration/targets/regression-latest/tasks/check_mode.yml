@@ -1,21 +1,25 @@
 ---
 ##
 ##
-### CHECK MODE REGRESSION TESTS FOR INLINE M2M FIELDS
+### CHECK MODE REGRESSION TESTS FOR INLINE M2M FIELDS AND CONTACT/TEAM ASSOCIATIONS
 ##
 ##
 
-- name: "Set facts for M2M check_mode tests"
+- name: "Set facts for M2M and contact/team check_mode tests"
   set_fact:
     test_vrf_one: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF\"') }}"
     test_vrf_two: "{{ lookup('networktocode.nautobot.lookup', 'vrfs', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test VRF Two\"') }}"
     test_cluster_two: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster 2\"') }}"
     test_cluster_three: "{{ lookup('networktocode.nautobot.lookup', 'clusters', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Test Cluster Three\"') }}"
+    john_smith: "{{ lookup('networktocode.nautobot.lookup', 'contacts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"John Smith\"') }}"
+    jane_doe: "{{ lookup('networktocode.nautobot.lookup', 'contacts', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Jane Doe\"') }}"
+    my_test_team: "{{ lookup('networktocode.nautobot.lookup', 'teams', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"My Test Team\"') }}"
+    test100_dev: "{{ lookup('networktocode.nautobot.lookup', 'devices', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=test100') }}"
 
 ##
-## 1 - Check mode create with M2M fields
+## 1 - Check mode create with M2M and contact/team fields
 ##
-- name: "1 - Check mode - Create device with M2M fields"
+- name: "1 - Check mode - Create device with M2M and contact/team fields"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -30,6 +34,16 @@
     clusters:
       objects:
         - cluster: "Test Cluster 2"
+    contacts:
+      objects:
+        - contact: "John Smith"
+          role: "Admin"
+          status: "Active"
+    teams:
+      objects:
+        - team: "My Test Team"
+          role: "Admin"
+          status: "Active"
     state: present
   register: cm_create
   check_mode: yes
@@ -44,6 +58,10 @@
       - test_vrf_one['key'] in cm_create['diff']['after']['vrfs']
       - cm_create['diff']['after']['clusters'] | length == 1
       - test_cluster_two['key'] in cm_create['diff']['after']['clusters']
+      - cm_create['diff']['after']['contacts'] | length == 1
+      - john_smith['key'] in cm_create['diff']['after']['contacts']
+      - cm_create['diff']['after']['teams'] | length == 1
+      - my_test_team['key'] in cm_create['diff']['after']['teams']
 
 - name: "1 - VERIFY no-op - CheckModeDevice should not exist"
   set_fact:
@@ -55,9 +73,9 @@
       - cm_create_lookup | length == 0
 
 ##
-## 2 - Real setup: associate Test VRF and Test Cluster 2 to test100
+## 2 - Real setup: associate Test VRF, Test Cluster 2, John Smith, and My Test Team to test100
 ##
-- name: "2 - SETUP - Add real VRF and cluster associations to test100"
+- name: "2 - SETUP - Add real VRF, cluster, contact, and team associations to test100"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -68,6 +86,16 @@
     clusters:
       objects:
         - cluster: "Test Cluster 2"
+    contacts:
+      objects:
+        - contact: "John Smith"
+          role: "Admin"
+          status: "Active"
+    teams:
+      objects:
+        - team: "My Test Team"
+          role: "Admin"
+          status: "Active"
     state: present
 
 ##
@@ -175,9 +203,119 @@
       - cm_delete_assocs[0]['value']['vrf']['id'] == test_vrf_one['key']
 
 ##
-## 6 - Cleanup: remove the real associations added in step 2
+## 6 - Check mode merge (add second contact)
 ##
-- name: "6 - CLEANUP - Remove VRF and cluster associations from test100"
+- name: "6 - Check mode - Merge second contact into test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    contacts:
+      objects:
+        - contact: "Jane Doe"
+          role: "User"
+          status: "Active"
+    state: present
+  register: cm_contact_merge
+  check_mode: yes
+
+- name: "6 - ASSERT - Check mode contact merge reports correct diff"
+  assert:
+    that:
+      - cm_contact_merge is changed
+      - cm_contact_merge['diff']['before']['contacts'] | length == 1
+      - john_smith['key'] in cm_contact_merge['diff']['before']['contacts']
+      - cm_contact_merge['diff']['after']['contacts'] | length == 2
+      - john_smith['key'] in cm_contact_merge['diff']['after']['contacts']
+      - jane_doe['key'] in cm_contact_merge['diff']['after']['contacts']
+
+- name: "6 - VERIFY no-op - Only John Smith is still associated to test100"
+  set_fact:
+    cm_contact_merge_assocs: "{{ query('networktocode.nautobot.lookup', 'contact-associations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='associated_object_id=' + test100_dev['key']) }}"
+
+- name: "6 - ASSERT no-op - Contact merge did not persist"
+  assert:
+    that:
+      - cm_contact_merge_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list | length == 1
+      - (cm_contact_merge_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list)[0]['value']['contact']['id'] == john_smith['key']
+
+##
+## 7 - Check mode replace (replace John Smith with Jane Doe)
+##
+- name: "7 - Check mode - Replace contacts on test100 with Jane Doe"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    contacts:
+      state: replace
+      objects:
+        - contact: "Jane Doe"
+          role: "User"
+          status: "Active"
+    state: present
+  register: cm_contact_replace
+  check_mode: yes
+
+- name: "7 - ASSERT - Check mode contact replace reports correct diff"
+  assert:
+    that:
+      - cm_contact_replace is changed
+      - cm_contact_replace['diff']['before']['contacts'] | length == 1
+      - john_smith['key'] in cm_contact_replace['diff']['before']['contacts']
+      - cm_contact_replace['diff']['after']['contacts'] | length == 1
+      - jane_doe['key'] in cm_contact_replace['diff']['after']['contacts']
+
+- name: "7 - VERIFY no-op - Only John Smith is still associated to test100"
+  set_fact:
+    cm_contact_replace_assocs: "{{ query('networktocode.nautobot.lookup', 'contact-associations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='associated_object_id=' + test100_dev['key']) }}"
+
+- name: "7 - ASSERT no-op - Contact replace did not persist"
+  assert:
+    that:
+      - cm_contact_replace_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list | length == 1
+      - (cm_contact_replace_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list)[0]['value']['contact']['id'] == john_smith['key']
+
+##
+## 8 - Check mode delete (delete John Smith contact)
+##
+- name: "8 - Check mode - Delete John Smith contact from test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    contacts:
+      state: delete
+      objects:
+        - contact: "John Smith"
+          role: "Admin"
+          status: "Active"
+    state: present
+  register: cm_contact_delete
+  check_mode: yes
+
+- name: "8 - ASSERT - Check mode contact delete reports correct diff"
+  assert:
+    that:
+      - cm_contact_delete is changed
+      - cm_contact_delete['diff']['before']['contacts'] | length == 1
+      - john_smith['key'] in cm_contact_delete['diff']['before']['contacts']
+      - "'contacts' not in cm_contact_delete['diff']['after'] or cm_contact_delete['diff']['after']['contacts'] | length == 0"
+
+- name: "8 - VERIFY no-op - John Smith is still associated to test100"
+  set_fact:
+    cm_contact_delete_assocs: "{{ query('networktocode.nautobot.lookup', 'contact-associations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='associated_object_id=' + test100_dev['key']) }}"
+
+- name: "8 - ASSERT no-op - Contact delete did not persist"
+  assert:
+    that:
+      - cm_contact_delete_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list | length == 1
+      - (cm_contact_delete_assocs | selectattr('value.contact', 'defined') | selectattr('value.contact', 'ne', None) | list)[0]['value']['contact']['id'] == john_smith['key']
+
+##
+## 9 - Cleanup: remove the real associations added in step 2
+##
+- name: "9 - CLEANUP - Remove VRF, cluster, contact, and team associations from test100"
   networktocode.nautobot.device:
     url: "{{ nautobot_url }}"
     token: "{{ nautobot_token }}"
@@ -190,4 +328,16 @@
       state: delete
       objects:
         - cluster: "Test Cluster 2"
+    contacts:
+      state: delete
+      objects:
+        - contact: "John Smith"
+          role: "Admin"
+          status: "Active"
+    teams:
+      state: delete
+      objects:
+        - team: "My Test Team"
+          role: "Admin"
+          status: "Active"
     state: present

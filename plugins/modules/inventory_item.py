@@ -24,6 +24,7 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.contacts_and_teams
 options:
   device:
     description:
@@ -129,6 +130,24 @@ EXAMPLES = r"""
         serial: "1234"
         asset_tag: "1234"
         description: "New SFP"
+        contacts:
+          objects:
+            - contact: Jane Doe
+              role: User
+              status: Active
+            - contact:
+                name: John Smith
+              role: User
+              status: Active
+            - contact:
+                name: John Smith, Jr.
+              role: User
+              status: Active
+          teams:
+            objects:
+              - team: Network Team
+                role: Admin
+                status: Active
         state: present
 
     - name: Delete inventory item within nautobot
@@ -166,6 +185,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
     NautobotDcimModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CONTACTS_AND_TEAMS_ARG_SPEC,
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
@@ -181,6 +201,7 @@ def main():
     argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(CONTACTS_AND_TEAMS_ARG_SPEC))
     argument_spec.update(
         dict(
             device=dict(required=False, type="raw"),

@@ -23,6 +23,7 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.base
   - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.contacts_and_teams
 options:
   name:
     description:
@@ -124,6 +125,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.dcim import
     NautobotDcimModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CONTACTS_AND_TEAMS_ARG_SPEC,
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
@@ -137,6 +139,7 @@ def main():
     argument_spec = deepcopy(NAUTOBOT_ARG_SPEC)
     argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(CONTACTS_AND_TEAMS_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=False, type="str"),

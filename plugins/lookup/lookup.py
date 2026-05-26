@@ -200,6 +200,7 @@ def get_endpoint(nautobot, term):
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
         "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
+        "contact-associations": {"endpoint": nautobot.extras.contact_associations},
         "contacts": {"endpoint": nautobot.extras.contacts},
         "content-types": {"endpoint": nautobot.extras.content_types},
         "custom-fields": {"endpoint": nautobot.extras.custom_fields},

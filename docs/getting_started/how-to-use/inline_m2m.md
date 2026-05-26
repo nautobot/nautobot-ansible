@@ -205,3 +205,98 @@ When M2M fields change, the diff output includes the before and after state as s
     }
 }
 ```
+
+## Contact and Team Associations
+
++++ 6.3.0
+
+Contacts and teams are associated with parent objects through Nautobot's `contact-associations` endpoint, which uses a generic foreign key (`associated_object_type` + `associated_object_id`) rather than a single FK column. The Ansible collection exposes them inline on the parent module via the `contacts` and `teams` fields, which follow the same `state: merge|replace|delete` semantics as the M2M fields described above.
+
+### Supported Parent Modules
+
+`contacts` and `teams` are available on most parent modules that represent objects with a Nautobot content type. The exclusions are the `contact` and `team` modules themselves, plus any modules that don't have a Nautobot content type to associate against. If a module pulls in the `contacts_and_teams` doc fragment, the fields are available.
+
+### Field Structure
+
+Each entry in `contacts.objects` requires the child contact, a role, and a status. `teams.objects` is the same but with `team` in place of `contact`. The role and status content types must include `extras.contactassociation`. The contact or team can be specified as a string (will be looked up by name, ignoring case) or a dictionary with the key `name` and the value of the exact name. Other available keys are `email` and `phone`.
+
+```yaml
+contacts:
+  state: merge  # merge (default), replace, or delete
+  objects:
+    - contact: "Jane Doe"
+      role: "Admin"
+      status: "Active"
+    - contact:
+        name: "John Smith"
+      role: "Admin"
+      status: "Active"
+teams:
+  state: merge
+  objects:
+    - team: "Network Operations"
+      role: "On-Call"
+      status: "Active"
+```
+
+### Example: Associating a Contact and Team with a Device
+
+```yaml
+- name: Associate a contact and a team with a device
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "my-router"
+    contacts:
+      objects:
+        - contact: "Jane Doe"
+          role: "Admin"
+          status: "Active"
+    teams:
+      objects:
+        - team: "Network Operations"
+          role: "On-Call"
+          status: "Active"
+    state: present
+```
+
+### State Semantics
+
+The three states behave identically to the M2M fields, but each state is scoped to the field it appears on. A `state: replace` on `contacts` will not touch any team associations on the same parent, and vice versa.
+
+```yaml
+# Device currently has contacts: Jane Doe (Admin), John Smith (User)
+- name: Replace contacts with only John Smith as Admin
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "my-router"
+    contacts:
+      state: replace
+      objects:
+        - contact: "John Smith"
+          role: "Admin"
+          status: "Active"
+    state: present
+# Result: only John Smith (Admin) remains as a contact; existing team associations are unchanged.
+```
+
+Each association is keyed by `(contact_or_team, role, status)`, so the same contact can appear multiple times with different roles or statuses and will be reconciled as distinct associations.
+
+### Diff Output
+
+Contact and team changes appear under `contacts` and `teams` in the diff body, formatted the same way as M2M diffs (sorted lists of the contact / team UUIDs):
+
+```json
+{
+    "diff": {
+        "before": {
+            "contacts": ["<uuid-of-jane-doe>"]
+        },
+        "after": {
+            "contacts": ["<uuid-of-jane-doe>", "<uuid-of-john-smith>"],
+            "teams": ["<uuid-of-network-ops>"]
+        }
+    }
+}
+```

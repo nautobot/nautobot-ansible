@@ -89,6 +89,7 @@ API_APPS_ENDPOINTS = dict(
         "virtual_device_contexts",
     ],
     extras=[
+        "contact_associations",
         "contacts",
         "custom_fields",
         "custom_field_choices",
@@ -233,6 +234,7 @@ CONVERT_TO_ID = {
     "cluster": "clusters",
     "cluster_group": "cluster_groups",
     "cluster_type": "cluster_types",
+    "contact": "contacts",
     "contacts": "contacts",
     "controller": "controllers",
     "custom_field": "custom_fields",
@@ -306,6 +308,7 @@ CONVERT_TO_ID = {
     "supported_data_rates": "supported_data_rates",
     "tags": "tags",
     "tagged_vlans": "vlans",
+    "team": "teams",
     "teams": "teams",
     "tenant": "tenants",
     "tenant_group": "tenant_groups",
@@ -458,13 +461,16 @@ M2M_FIELDS = {
     },
 }
 
+# Endpoints that may have arguments that collide with contact_associations.
+CONTACT_TEAM_EXCLUDED_ENDPOINTS = {"contacts", "teams"}
+
 # What makes the search unique
 ALLOWED_QUERY_PARAMS = {
+    "bridge": set(["name", "device", "module", "virtual_machine"]),
     "circuit": set(["cid"]),
     "circuit_type": set(["name"]),
     "circuit_termination": set(["circuit", "term_side"]),
     "circuits.circuittermination": set(["circuit", "term_side"]),
-    "bridge": set(["name", "device", "module", "virtual_machine"]),
     "cloud_account": set(["name"]),
     "cloud_network": set(["name"]),
     "cloud_network_prefix_assignment": set(["cloud_network", "prefix"]),
@@ -713,6 +719,43 @@ CUSTOM_FIELDS_ARG_SPEC = dict(
     custom_fields=dict(required=False, type="dict"),
 )
 
+CONTACTS_AND_TEAMS_ARG_SPEC = dict(
+    contacts=dict(
+        required=False,
+        type="dict",
+        options=dict(
+            state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+            objects=dict(
+                required=True,
+                type="list",
+                elements="dict",
+                options=dict(
+                    contact=dict(required=True, type="raw"),
+                    role=dict(required=True, type="raw"),
+                    status=dict(required=True, type="raw"),
+                ),
+            ),
+        ),
+    ),
+    teams=dict(
+        required=False,
+        type="dict",
+        options=dict(
+            state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+            objects=dict(
+                required=True,
+                type="list",
+                elements="dict",
+                options=dict(
+                    team=dict(required=True, type="raw"),
+                    role=dict(required=True, type="raw"),
+                    status=dict(required=True, type="raw"),
+                ),
+            ),
+        ),
+    ),
+)
+
 
 def mark_trusted(value, trust_func):
     """
@@ -870,11 +913,26 @@ class NautobotModule:
                         self._find_ids(temp, query_params)
                         obj[child_key] = temp[child_key]
 
+        # Extract contacts/teams association data the same way as M2M data so the
+        # field names do not collide with direct relationship fields and so the inner
+        # FKs (contact/team, role, status) get resolved before the parent payload is built.
+        self.contacts_teams_data = {}
+        if self.endpoint not in CONTACT_TEAM_EXCLUDED_ENDPOINTS:
+            for f in ("contacts", "teams"):
+                if choices_data.get(f) is not None:
+                    self.contacts_teams_data[f] = choices_data.pop(f)
+
+        for field_data in self.contacts_teams_data.values():
+            for obj in field_data.get("objects") or []:
+                resolved = self._find_ids(dict(obj), query_params)
+                obj.update(resolved)
+
         data = self._find_ids(choices_data, query_params)
         data = self._convert_identical_keys(data)
 
-        # Add M2M field names to remove_keys so they are stripped from the REST API payload
-        all_remove_keys = list(remove_keys or []) + list(self.m2m_data.keys())
+        # Add M2M + contacts/teams field names to remove_keys so they are stripped from
+        # the REST API payload for the parent object.
+        all_remove_keys = list(remove_keys or []) + list(self.m2m_data.keys()) + list(self.contacts_teams_data.keys())
         self.data = self._build_payload(data, all_remove_keys)
 
     def _build_payload(self, data, remove_keys):
@@ -1216,8 +1274,8 @@ class NautobotModule:
         """
         for k, v in API_APPS_ENDPOINTS.items():
             if endpoint in v:
-                nb_app = k
-        return nb_app
+                return k
+        self._handle_errors(f"Endpoint {endpoint} not defined in API_APPS_ENDPOINTS")
 
     def _find_ids(self, data, user_query_params):
         """Find the IDs of all user specified data if resolvable.
@@ -1573,6 +1631,121 @@ class NautobotModule:
             if self.m2m_data.get(field_name):
                 self._handle_m2m_field(field_name, m2m_config, parent_key, parent_id)
 
+    def _get_parent_id_str(self):
+        """Return self.nb_object's ID as a string, or None if unavailable (e.g. check_mode create)."""
+        if isinstance(self.nb_object, dict):
+            parent_id = self.nb_object.get("id")
+        else:
+            parent_id = getattr(self.nb_object, "id", None)
+        return str(parent_id) if parent_id else None
+
+    def _handle_contact_team_associations(self, parent_id):
+        """Reconcile contact and team associations against /api/extras/contact-associations/.
+
+        Contact associations use a generic foreign key (associated_object_type +
+        associated_object_id) so they cannot be handled by the standard M2M framework.
+        Both the `contacts` and `teams` arg-spec fields target the same endpoint and
+        are distinguished by which inner FK (`contact` vs `team`) is populated.
+
+        Args:
+            parent_id (str): UUID of the parent object, or None in check_mode create.
+        """
+        if not self.contacts_teams_data:
+            return
+
+        app = self._find_app(self.endpoint)
+        singular = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
+        parent_ct = f"{app}.{singular}"
+
+        assoc_endpoint_name = "contact_associations"
+        assoc_app = self._find_app(assoc_endpoint_name)
+        nb_assoc_app = getattr(self.nb, assoc_app)
+        nb_assoc_endpoint = getattr(nb_assoc_app, assoc_endpoint_name)
+
+        if parent_id is None:
+            all_current_records = []
+        else:
+            all_current_records = list(
+                nb_assoc_endpoint.filter(
+                    associated_object_type=parent_ct,
+                    associated_object_id=parent_id,
+                )
+            )
+
+        effective_parent_key = "associated_object_id"
+
+        for field_name, field_data in self.contacts_teams_data.items():
+            if not field_data:
+                continue
+
+            state = field_data.get("state", "merge")
+            desired_items = field_data.get("objects") or []
+            child_key = "contact" if field_name == "contacts" else "team"
+
+            # Partition existing associations to only those that belong to this field,
+            # so state=replace on contacts does not touch team associations and vice versa.
+            field_current_records = [rec for rec in all_current_records if rec.serialize().get(child_key)]
+
+            desired_assocs = []
+            for item in desired_items:
+                assoc = {
+                    "associated_object_type": parent_ct,
+                    "associated_object_id": parent_id,
+                }
+                assoc.update(item)
+                desired_assocs.append(assoc)
+
+            key_fields = set()
+            for assoc in desired_assocs:
+                key_fields.update(assoc.keys())
+            key_fields.discard(effective_parent_key)
+
+            current_map = {}
+            for record in field_current_records:
+                key = _m2m_assoc_compare_key(record.serialize(), effective_parent_key, key_fields)
+                current_map[key] = record
+
+            desired_map = {}
+            for assoc in desired_assocs:
+                key = _m2m_assoc_compare_key(assoc, effective_parent_key, key_fields)
+                desired_map[key] = assoc
+
+            if state == "delete":
+                to_create = []
+                to_delete = [rec for key, rec in current_map.items() if key in desired_map]
+            elif state == "replace":
+                to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+                to_delete = [rec for key, rec in current_map.items() if key not in desired_map]
+            else:
+                to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+                to_delete = []
+
+            created_records = None
+            if to_create:
+                created_records = self._bulk_create_objects(nb_assoc_endpoint, to_create)
+                self.result["changed"] = True
+
+            if to_delete:
+                self._bulk_delete_objects(nb_assoc_endpoint, to_delete)
+                self.result["changed"] = True
+
+            if to_create or to_delete:
+                before_ids = sorted(self._m2m_record_ids_for_diff(field_current_records, extract_key=child_key))
+                deleted_ids = set(self._m2m_record_ids_for_diff(to_delete, extract_key=child_key))
+                created_ids = self._m2m_record_ids_for_diff(created_records, extract_key=child_key)
+                after_ids = sorted([uid for uid in before_ids if uid not in deleted_ids] + created_ids)
+
+                existing_diff = self.result.get("diff") or {}
+                before = existing_diff.get("before") or {}
+                after = existing_diff.get("after") or {}
+                if before_ids:
+                    before[field_name] = before_ids
+                if after_ids:
+                    after[field_name] = after_ids
+                existing_diff["before"] = before
+                existing_diff["after"] = after
+                self.result["diff"] = existing_diff
+
     def _ensure_object_exists(self, nb_endpoint, endpoint_name, name, data):
         """Ensure an object exists or is updated.
 
@@ -1600,16 +1773,15 @@ class NautobotModule:
             else:
                 self.result["msg"] = "%s %s already exists" % (endpoint_name, name)
 
-        # Process any declared M2M fields after the parent object is created/updated.
-        # In check_mode, parent_id may be None (parent doesn't exist yet); _handle_m2m_field
-        # handles that by treating current associations as empty.
+        # Process any declared M2M fields and contact/team associations after the
+        # parent object is created/updated. In check_mode, parent_id may be None
+        # (parent doesn't exist yet); the handlers treat current associations as empty.
         if self.m2m_fields_config and self.m2m_data:
             parent_key = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
-            if isinstance(self.nb_object, dict):
-                parent_id = self.nb_object.get("id")
-            else:
-                parent_id = getattr(self.nb_object, "id", None)
-            self._process_m2m_fields(parent_key, str(parent_id) if parent_id else None)
+            self._process_m2m_fields(parent_key, self._get_parent_id_str())
+
+        if self.contacts_teams_data:
+            self._handle_contact_team_associations(self._get_parent_id_str())
 
     def _ensure_object_absent(self, endpoint_name, name):
         """Ensure an object is absent.
