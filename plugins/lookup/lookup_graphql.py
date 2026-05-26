@@ -73,7 +73,7 @@ EXAMPLES = """
 # Make query to GraphQL Endpoint
 - name: Obtain list of locations from Nautobot
   set_fact:
-    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
+    query_response: "{{ lookup('networktocode.nautobot.lookup_graphql', query=query_string, url='https://nautobot.example.com', token='<redact>') }}"
 
 # Example with variables
 - name: SET FACTS TO SEND TO GRAPHQL ENDPOINT
@@ -94,7 +94,7 @@ EXAMPLES = """
 # Get Response with variables
 - name: Obtain list of devices from Nautobot
   set_fact:
-    query_response: "{{ query('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
+    query_response: "{{ lookup('networktocode.nautobot.lookup_graphql', query_string, graph_variables=graph_variables,
     url='https://nautobot.example.com', token='<redact>') }}"
 """
 
