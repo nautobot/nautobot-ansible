@@ -25,6 +25,7 @@ DOCUMENTATION = """
         query:
             description:
                 - The GraphQL formatted query string, see [pynautobot GraphQL documentation](https://pynautobot.readthedocs.io/en/latest/advanced/graphql.html).
+                - Can be passed as the first positional argument or as a keyword argument.
             required: True
         token:
             description:
@@ -140,9 +141,6 @@ def nautobot_lookup_graphql(**kwargs):
     query = kwargs.get("query")
     Display().v("Query String: %s" % query)
 
-    # Check that a valid query was passed in
-    if query is None:
-        raise AnsibleLookupError("Query parameter was not passed. Please verify that query is passed.")
     # Setup API Token information, URL, and SSL verification
     url = kwargs.get("url") or os.getenv("NAUTOBOT_URL")
     Display().v("Nautobot URL: %s" % url)
@@ -218,9 +216,14 @@ class LookupModule(LookupBase):
                 PYNAUTOBOT_IMPORT_ERROR,
             )
 
+        query = terms[0] if terms else kwargs.get("query")
+        # Check that a valid query was passed in
+        if not query:
+            raise AnsibleLookupError("Query parameter was not passed. Please verify that query is passed.")
+
         # Terms comes in as a list, this needs to be moved to string for pynautobot
         lookup_info = nautobot_lookup_graphql(
-            query=terms[0], variables=variables, graph_variables=graph_variables, **kwargs
+            query=query, variables=variables, graph_variables=graph_variables, **kwargs
         )
 
         # Results should be the data response of the query to be returned as a lookup
