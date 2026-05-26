@@ -155,6 +155,12 @@ options:
     required: false
     type: raw
     version_added: "5.12.0"
+  port_type:
+    description:
+      - The type of port the interface is
+    required: false
+    type: str
+    version_added: "6.3.0"
   ip_addresses:
     description:
       - List of IP addresses to associate with this interface.
@@ -411,6 +417,7 @@ def main():
             untagged_vlan=dict(required=False, type="raw"),
             tagged_vlans=dict(required=False, type="raw"),
             vrf=dict(required=False, type="raw"),
+            port_type=dict(required=False, type="str"),
             ip_addresses=dict(
                 required=False,
                 type="dict",

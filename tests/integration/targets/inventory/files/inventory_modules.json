@@ -345,6 +345,7 @@
                         "name": "GigabitEthernet1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -611,6 +612,7 @@
                         "name": "Ethernet2/1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -854,6 +856,7 @@
                         "name": "Ethernet1/1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1232,13 +1235,15 @@
                                 "comments": "",
                                 "custom_fields": {},
                                 "display": "Cisco C9300-NM-8X",
+                                "front_image": null,
                                 "manufacturer": {
                                     "object_type": "dcim.manufacturer"
                                 },
                                 "model": "C9300-NM-8X",
                                 "module_family": null,
                                 "object_type": "dcim.moduletype",
-                                "part_number": ""
+                                "part_number": "",
+                                "rear_image": null
                             },
                             "object_type": "dcim.module",
                             "parent_module_bay": {
@@ -1272,6 +1277,7 @@
                         "name": "Interface 1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1321,13 +1327,15 @@
                                 "comments": "",
                                 "custom_fields": {},
                                 "display": "Cisco C9300-NM-8X",
+                                "front_image": null,
                                 "manufacturer": {
                                     "object_type": "dcim.manufacturer"
                                 },
                                 "model": "C9300-NM-8X",
                                 "module_family": null,
                                 "object_type": "dcim.moduletype",
-                                "part_number": ""
+                                "part_number": "",
+                                "rear_image": null
                             },
                             "object_type": "dcim.module",
                             "parent_module_bay": {
@@ -1361,6 +1369,7 @@
                         "name": "Interface 1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1579,6 +1588,7 @@
                         "name": "GigabitEthernet1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1797,6 +1807,7 @@
                         "name": "GigabitEthernet2",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1950,6 +1961,7 @@
                         "name": "GigabitEthernet3",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -2103,6 +2115,7 @@
                         "name": "GigabitEthernet4",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
