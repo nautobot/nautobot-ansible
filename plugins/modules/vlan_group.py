@@ -48,7 +48,7 @@ options:
     description:
       - The range that will be assigned to the vlan group
     required: false
-    type: raw
+    type: str
     version_added: "6.3.0"
 """
 
@@ -124,7 +124,7 @@ def main():
             name=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
-            range=dict(required=False, type="raw"),
+            range=dict(required=False, type="str"),
         )
     )
 
