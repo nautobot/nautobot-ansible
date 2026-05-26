@@ -1,0 +1,1 @@
+Added range option to the `vlan_group` module so that vlan ranges can be associated with vlan groups.

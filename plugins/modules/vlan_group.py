@@ -44,6 +44,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  range:
+    description:
+      - The range that will be assigned to the vlan group
+    required: false
+    type: str
+    version_added: "6.3.0"
 """
 
 EXAMPLES = r"""
@@ -61,6 +67,7 @@ EXAMPLES = r"""
         location:
           name: My Location
           parent: Parent Location
+        range: 1-40,200
         state: present
 
     - name: Delete vlan group within nautobot
@@ -117,6 +124,7 @@ def main():
             name=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            range=dict(required=False, type="str"),
         )
     )
 

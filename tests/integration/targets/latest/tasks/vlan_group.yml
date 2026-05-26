@@ -110,3 +110,78 @@
       - not test_six['changed']
       - test_six['vlan_group'] == None
       - test_six['msg'] == "vlan_group VLAN Group One already absent"
+
+- name: "VLAN_GROUP 7: Create with range"
+  networktocode.nautobot.vlan_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group Range"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    range: "1-40,200"
+    state: present
+  register: test_seven
+
+- name: "VLAN_GROUP 7: ASSERT - Create with range"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['diff']['before']['state'] == "absent"
+      - test_seven['diff']['after']['state'] == "present"
+      - test_seven['vlan_group']['name'] == "VLAN Group Range"
+      - test_seven['vlan_group']['range'] == "1-40,200"
+      - test_seven['msg'] == "vlan_group VLAN Group Range created"
+
+- name: "VLAN_GROUP 8: Create with range idempotent"
+  networktocode.nautobot.vlan_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group Range"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    range: "1-40,200"
+    state: present
+  register: test_eight
+
+- name: "VLAN_GROUP 8: ASSERT - Create with range idempotent"
+  assert:
+    that:
+      - not test_eight['changed']
+      - test_eight['vlan_group']['range'] == "1-40,200"
+      - test_eight['msg'] == "vlan_group VLAN Group Range already exists"
+
+- name: "VLAN_GROUP 9: Update range on existing group"
+  networktocode.nautobot.vlan_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group Range"
+    location:
+      name: "Child Test Location"
+      parent: "Parent Test Location"
+    range: "1-100,500-600"
+    state: present
+  register: test_nine
+
+- name: "VLAN_GROUP 9: ASSERT - Update range on existing group"
+  assert:
+    that:
+      - test_nine is changed
+      - test_nine['diff']['after']['range'] == "1-100,500-600"
+      - test_nine['vlan_group']['range'] == "1-100,500-600"
+      - test_nine['msg'] == "vlan_group VLAN Group Range updated"
+
+- name: "VLAN_GROUP 10: Cleanup range group"
+  networktocode.nautobot.vlan_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "VLAN Group Range"
+    state: absent
+  register: test_ten
+
+- name: "VLAN_GROUP 10: ASSERT - Cleanup range group"
+  assert:
+    that:
+      - test_ten is changed
+      - test_ten['diff']['after']['state'] == "absent"
