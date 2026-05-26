@@ -139,6 +139,10 @@ def nautobot_lookup_graphql(**kwargs):
     """
     # Add in logic on query to unpack
     query = kwargs.get("query")
+    # Check that a valid query was passed in
+    if not query:
+        raise AnsibleLookupError("Query parameter was not passed. Please verify that query is passed.")
+
     Display().v("Query String: %s" % query)
 
     # Setup API Token information, URL, and SSL verification
@@ -217,9 +221,6 @@ class LookupModule(LookupBase):
             )
 
         query = terms[0] if terms else kwargs.get("query")
-        # Check that a valid query was passed in
-        if not query:
-            raise AnsibleLookupError("Query parameter was not passed. Please verify that query is passed.")
 
         # Terms comes in as a list, this needs to be moved to string for pynautobot
         lookup_info = nautobot_lookup_graphql(
