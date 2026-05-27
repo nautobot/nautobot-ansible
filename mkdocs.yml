@@ -121,6 +121,7 @@ nav:
       - Testing with GitHub Actions: "getting_started/contributing/testing_with_gha.md"
       - Debugging: "getting_started/contributing/debugging.md"
       - Changelog Fragments: "getting_started/contributing/changelog_fragments.md"
+      - Python Dependencies: "getting_started/contributing/python_dependencies.md"
       - Release: "getting_started/contributing/release.md"
   - Plugins: "networktocode.nautobot"
   - Release Notes: "release_notes.md"
