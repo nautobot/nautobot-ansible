@@ -11,6 +11,9 @@
     nexus_parent_intf: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="Test Nexus One" name="Ethernet1/1"'') }}'
     nexus_child_intf: '{{ lookup(''networktocode.nautobot.lookup'', ''interfaces'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''device="Test Nexus Child One" name="Ethernet2/1"'') }}'
     planned: "{{ lookup('networktocode.nautobot.lookup', 'statuses', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=Planned') }}"
+    john_smith: '{{ lookup(''networktocode.nautobot.lookup'', ''contacts'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="John Smith"'') }}'
+    jane_doe: '{{ lookup(''networktocode.nautobot.lookup'', ''contacts'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="Jane Doe"'') }}'
+    my_test_team: '{{ lookup(''networktocode.nautobot.lookup'', ''teams'', api_endpoint=nautobot_url, token=nautobot_token, api_filter=''name="My Test Team"'') }}'
 
 - name: "CABLE 1: Necessary info creation"
   networktocode.nautobot.cable:
@@ -25,6 +28,16 @@
       device: Test Nexus Child One
       name: Ethernet2/1
     status: "Connected"
+    contacts:
+      objects:
+        - contact: John Smith
+          role: Admin
+          status: Active
+    teams:
+      objects:
+        - team: My Test Team
+          role: Admin
+          status: Active
     state: present
   register: test_one
 
@@ -39,6 +52,10 @@
       - test_one['cable']['termination_b_type'] == "dcim.interface"
       - test_one['cable']['termination_b_id'] == nexus_child_intf['key']
       - test_one['msg'] == "cable dcim.interface Ethernet1/1 <> dcim.interface Ethernet2/1 created"
+      - test_one['diff']['after']['contacts'] | length == 1
+      - john_smith['key'] in test_one['diff']['after']['contacts']
+      - test_one['diff']['after']['teams'] | length == 1
+      - my_test_team['key'] in test_one['diff']['after']['teams']
 
 - name: "CABLE 2: Create duplicate"
   networktocode.nautobot.cable:
@@ -53,6 +70,16 @@
       device: Test Nexus Child One
       name: Ethernet2/1
     status: "Connected"
+    contacts:
+      objects:
+        - contact: John Smith
+          role: Admin
+          status: Active
+    teams:
+      objects:
+        - team: My Test Team
+          role: Admin
+          status: Active
     state: present
   register: test_two
 
@@ -84,6 +111,12 @@
     color: abcdef
     length: 30
     length_unit: m
+    contacts:
+      state: replace
+      objects:
+        - contact: Jane Doe
+          role: User
+          status: Active
     state: present
   register: test_three
 
@@ -107,6 +140,8 @@
       - test_three['cable']['color'] == "abcdef"
       - test_three['cable']['length'] == 30
       - test_three['cable']['length_unit'] == "m"
+      - test_three['diff']['after']['contacts'] | length == 1
+      - jane_doe['key'] in test_three['diff']['after']['contacts']
       - test_three['msg'] == "cable dcim.interface Ethernet1/1 <> dcim.interface Ethernet2/1 updated"
 
 - name: "CABLE 3.1: Update Cable without status"

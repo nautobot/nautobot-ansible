@@ -25,6 +25,7 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.contacts_and_teams
 options:
   cid:
     description:
@@ -116,6 +117,24 @@ EXAMPLES = r"""
         commit_rate: 10000
         description: Test circuit
         comments: "FAST CIRCUIT"
+        contacts:
+          objects:
+            - contact: Jane Doe
+              role: User
+              status: Active
+            - contact:
+                name: John Smith
+              role: User
+              status: Active
+            - contact:
+                name: John Smith, Jr.
+              role: User
+              status: Active
+          teams:
+            objects:
+              - team: Network Team
+                role: Admin
+                status: Active
         state: present
 
     - name: Delete circuit within nautobot
@@ -152,6 +171,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.circuits im
     NautobotCircuitsModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CONTACTS_AND_TEAMS_ARG_SPEC,
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
@@ -167,6 +187,7 @@ def main():
     argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(CONTACTS_AND_TEAMS_ARG_SPEC))
     argument_spec.update(
         dict(
             cid=dict(required=False, type="str"),
