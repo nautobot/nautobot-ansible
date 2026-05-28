@@ -14,6 +14,15 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT_PATH = REPO_ROOT / "development" / "generate_requirements.py"
 
+# `development/` is in galaxy.yml's build_ignore, so the script isn't present
+# when ansible-test units runs against the installed collection tarball. Skip
+# the whole module in that context; the script is dev tooling, not collection
+# runtime, and is covered by `poetry run pytest` against the source tree.
+pytestmark = pytest.mark.skipif(
+    not SCRIPT_PATH.is_file(),
+    reason="development/generate_requirements.py not available (collection-install context)",
+)
+
 
 def _load_module():
     """Load development/generate_requirements.py as a Python module.
@@ -28,8 +37,12 @@ def _load_module():
     return module
 
 
-generate_requirements = _load_module()
-floor = generate_requirements.floor
+if SCRIPT_PATH.is_file():
+    generate_requirements = _load_module()
+    floor = generate_requirements.floor
+else:
+    generate_requirements = None
+    floor = None
 
 
 class TestFloor:
