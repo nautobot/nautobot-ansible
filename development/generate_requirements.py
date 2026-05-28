@@ -52,6 +52,10 @@ def floor(spec):
 
 
 def main():
+    """Write requirements.txt at the repo root from `[tool.poetry.dependencies]` floors.
+
+    Returns 0 on success, 1 if any name in `EE_DEPS` is missing from pyproject.toml.
+    """
     project_root = Path(__file__).resolve().parents[1]
     pyproject = tomllib.loads((project_root / "pyproject.toml").read_text())
     poetry_deps = pyproject["tool"]["poetry"]["dependencies"]
