@@ -1,1 +1,0 @@
-Suppressed `yamllint:unparsable-with-libyaml` sanity check on inventory plugin EXAMPLES blocks.
