@@ -82,7 +82,7 @@ jobs:
         python-version:
           - "3.12"
         nautobot-version:
-          - "3.0"
+          - "3.1"
         ansible-version:
           - "2.19"
     with:
@@ -103,6 +103,7 @@ jobs:
           - "3.13"
         nautobot-version:
           - "3.0"
+          - "3.1"
         ansible-version:
           - "2.18"
           - "2.19"
