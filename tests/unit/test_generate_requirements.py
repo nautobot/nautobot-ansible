@@ -100,7 +100,6 @@ aiohttp = "^3.11.13"
 """
         )
 
-        monkeypatch.setattr(generate_requirements, "Path", lambda *a, **kw: Path(*a, **kw))
         monkeypatch.setattr(
             generate_requirements, "__file__", str(tmp_path / "development" / "generate_requirements.py")
         )
