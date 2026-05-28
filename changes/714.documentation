@@ -1,0 +1,1 @@
+Changed the `lookup_graphql` examples to use `lookup()` instead of `query()` as the example return value is a dictionary instead of a list.
