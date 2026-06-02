@@ -95,6 +95,7 @@ API_APPS_ENDPOINTS = dict(
         "custom_field_choices",
         "metadata_choices",
         "metadata_types",
+        "notes",
         "object_metadata",
         "dynamic_groups",
         "jobs",
@@ -756,6 +757,24 @@ CONTACTS_AND_TEAMS_ARG_SPEC = dict(
     ),
 )
 
+NOTES_ARG_SPEC = dict(
+    notes=dict(
+        required=False,
+        type="dict",
+        options=dict(
+            state=dict(required=False, default="merge", choices=["merge", "replace", "delete"]),
+            objects=dict(
+                required=True,
+                type="list",
+                elements="dict",
+                options=dict(
+                    note=dict(required=True, type="str"),
+                ),
+            ),
+        ),
+    ),
+)
+
 
 def mark_trusted(value, trust_func):
     """
@@ -927,12 +946,23 @@ class NautobotModule:
                 resolved = self._find_ids(dict(obj), query_params)
                 obj.update(resolved)
 
+        # Extract notes data the same way. Notes carry only free-text
+        # (`note`), so there are no inner FKs to resolve via _find_ids.
+        self.notes_data = {}
+        if choices_data.get("notes") is not None:
+            self.notes_data["notes"] = choices_data.pop("notes")
+
         data = self._find_ids(choices_data, query_params)
         data = self._convert_identical_keys(data)
 
-        # Add M2M + contacts/teams field names to remove_keys so they are stripped from
-        # the REST API payload for the parent object.
-        all_remove_keys = list(remove_keys or []) + list(self.m2m_data.keys()) + list(self.contacts_teams_data.keys())
+        # Add M2M + contacts/teams + notes field names to remove_keys so they are stripped
+        # from the REST API payload for the parent object.
+        all_remove_keys = (
+            list(remove_keys or [])
+            + list(self.m2m_data.keys())
+            + list(self.contacts_teams_data.keys())
+            + list(self.notes_data.keys())
+        )
         self.data = self._build_payload(data, all_remove_keys)
 
     def _build_payload(self, data, remove_keys):
@@ -1746,6 +1776,108 @@ class NautobotModule:
                 existing_diff["after"] = after
                 self.result["diff"] = existing_diff
 
+    def _handle_notes(self, parent_id):
+        """Reconcile notes against /api/extras/notes/.
+
+        Notes use a generic foreign key (assigned_object_type + assigned_object_id) so they
+        cannot be handled by the standard M2M framework. The endpoint supports bulk GET
+        (filtered by the generic FK), bulk POST (a list of dicts), and bulk DELETE.
+
+        A note carries only free-text, so the `note` text alone defines uniqueness for
+        reconciliation. Keying on the text (rather than the assigned-object content type)
+        avoids any content-type representation mismatch when comparing API responses to the
+        desired payloads.
+
+        Args:
+            parent_id (str): UUID of the parent object, or None in check_mode create.
+        """
+        field_data = self.notes_data.get("notes")
+        if not field_data:
+            return
+
+        app = self._find_app(self.endpoint)
+        singular = ENDPOINT_NAME_MAPPING.get(self.endpoint, self.endpoint)
+        parent_ct = f"{app}.{singular}"
+
+        notes_endpoint_name = "notes"
+        notes_app = self._find_app(notes_endpoint_name)
+        nb_notes_app = getattr(self.nb, notes_app)
+        nb_notes_endpoint = getattr(nb_notes_app, notes_endpoint_name)
+
+        if parent_id is None:
+            current_records = []
+        else:
+            current_records = list(
+                nb_notes_endpoint.filter(
+                    assigned_object_type=parent_ct,
+                    assigned_object_id=parent_id,
+                )
+            )
+
+        state = field_data.get("state", "merge")
+        desired_items = field_data.get("objects") or []
+
+        effective_parent_key = "assigned_object_id"
+        # A note is uniquely identified by its text for reconciliation purposes.
+        key_fields = {"note"}
+
+        desired_assocs = []
+        for item in desired_items:
+            assoc = {
+                "assigned_object_type": parent_ct,
+                "assigned_object_id": parent_id,
+            }
+            assoc.update(item)
+            desired_assocs.append(assoc)
+
+        current_map = {}
+        for record in current_records:
+            key = _m2m_assoc_compare_key(record.serialize(), effective_parent_key, key_fields)
+            current_map[key] = record
+
+        desired_map = {}
+        for assoc in desired_assocs:
+            key = _m2m_assoc_compare_key(assoc, effective_parent_key, key_fields)
+            desired_map[key] = assoc
+
+        if state == "delete":
+            to_create = []
+            to_delete = [rec for key, rec in current_map.items() if key in desired_map]
+        elif state == "replace":
+            to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+            to_delete = [rec for key, rec in current_map.items() if key not in desired_map]
+        else:
+            to_create = [assoc for key, assoc in desired_map.items() if key not in current_map]
+            to_delete = []
+
+        created_records = None
+        if to_create:
+            created_records = self._bulk_create_objects(nb_notes_endpoint, to_create)
+            self.result["changed"] = True
+
+        if to_delete:
+            self._bulk_delete_objects(nb_notes_endpoint, to_delete)
+            self.result["changed"] = True
+
+        # Diff shows the note text (more meaningful than the opaque note UUID, and it
+        # also populates in check_mode create where the note records have no id yet).
+        if to_create or to_delete:
+            before_notes = sorted(self._m2m_record_ids_for_diff(current_records, extract_key="note"))
+            deleted_notes = set(self._m2m_record_ids_for_diff(to_delete, extract_key="note"))
+            created_notes = self._m2m_record_ids_for_diff(created_records, extract_key="note")
+            after_notes = sorted([n for n in before_notes if n not in deleted_notes] + created_notes)
+
+            existing_diff = self.result.get("diff") or {}
+            before = existing_diff.get("before") or {}
+            after = existing_diff.get("after") or {}
+            if before_notes:
+                before["notes"] = before_notes
+            if after_notes:
+                after["notes"] = after_notes
+            existing_diff["before"] = before
+            existing_diff["after"] = after
+            self.result["diff"] = existing_diff
+
     def _ensure_object_exists(self, nb_endpoint, endpoint_name, name, data):
         """Ensure an object exists or is updated.
 
@@ -1782,6 +1914,9 @@ class NautobotModule:
 
         if self.contacts_teams_data:
             self._handle_contact_team_associations(self._get_parent_id_str())
+
+        if self.notes_data:
+            self._handle_notes(self._get_parent_id_str())
 
     def _ensure_object_absent(self, endpoint_name, name):
         """Ensure an object is absent.

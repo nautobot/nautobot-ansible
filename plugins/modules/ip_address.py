@@ -26,6 +26,7 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
   - networktocode.nautobot.fragments.contacts_and_teams
+  - networktocode.nautobot.fragments.notes
 options:
   address:
     description:
@@ -161,6 +162,9 @@ EXAMPLES = r"""
         description: Test description
         tags:
           - Schnozzberry
+        notes:
+          objects:
+            - note: Example note text
         contacts:
           objects:
             - contact: Jane Doe
@@ -218,6 +222,7 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.utils impor
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
+    NOTES_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
 
@@ -231,6 +236,7 @@ def main():
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
     argument_spec.update(deepcopy(CONTACTS_AND_TEAMS_ARG_SPEC))
+    argument_spec.update(deepcopy(NOTES_ARG_SPEC))
     # state choices present, absent, new
     argument_spec["state"] = dict(required=False, default="present", choices=["present", "absent", "new"])
     argument_spec.update(
