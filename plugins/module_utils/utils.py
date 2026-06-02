@@ -129,7 +129,13 @@ API_APPS_ENDPOINTS = dict(
     tenancy=["tenants", "tenant_groups"],
     users=["users", "groups", "permissions"],
     virtualization=["cluster_groups", "cluster_types", "clusters", "virtual_machines"],
-    wireless=["wireless_networks", "radio_profiles", "supported_data_rates"],
+    wireless=[
+        "wireless_networks",
+        "radio_profiles",
+        "supported_data_rates",
+        "controller_managed_device_group_radio_profile_assignments",
+        "controller_managed_device_group_wireless_network_assignments",
+    ],
 )
 
 # Used to normalize data for the respective query types used to find endpoints
@@ -294,6 +300,7 @@ CONVERT_TO_ID = {
     "primary_ip6": "ip_addresses",
     "rack": "racks",
     "rack_group": "rack_groups",
+    "radio_profile": "radio_profiles",
     "rear_port": "rear_ports",
     "rear_port_template": "rear_port_templates",
     "rir": "rirs",
@@ -322,6 +329,7 @@ CONVERT_TO_ID = {
     "vlan_group": "vlan_groups",
     "vm_interface": "interfaces",
     "vrf": "vrfs",
+    "wireless_network": "wireless_networks",
 }
 
 # Used to map the endpoint name to the Nautobot API endpoint name if it is different
@@ -346,6 +354,8 @@ ENDPOINT_NAME_MAPPING = {
     "contacts": "contact",
     "controllers": "controller",
     "controller_managed_device_groups": "controller_managed_device_group",
+    "controller_managed_device_group_radio_profile_assignments": "controller_managed_device_group_radio_profile_assignment",
+    "controller_managed_device_group_wireless_network_assignments": "controller_managed_device_group_wireless_network_assignment",
     "custom_fields": "custom_field",
     "custom_field_choices": "custom_field_choice",
     "device_bays": "device_bay",
@@ -427,6 +437,10 @@ M2M_FIELDS = {
     "cloud_services": {
         "cloud_networks": "cloud_service_network_assignments",
     },
+    "controller_managed_device_groups": {
+        "radio_profiles": "controller_managed_device_group_radio_profile_assignments",
+        "wireless_networks": "controller_managed_device_group_wireless_network_assignments",
+    },
     "custom_fields": {
         "custom_field_choices": "custom_field_choices",
     },
@@ -488,6 +502,12 @@ ALLOWED_QUERY_PARAMS = {
     "contacts": set(["name", "phone", "email"]),
     "controller": set(["name"]),
     "controller_managed_device_group": set(["name"]),
+    "controller_managed_device_group_radio_profile_assignment": set(
+        ["controller_managed_device_group", "radio_profile"]
+    ),
+    "controller_managed_device_group_wireless_network_assignment": set(
+        ["controller_managed_device_group", "wireless_network"]
+    ),
     "custom_field": set(["label"]),
     "custom_field_choice": set(["value", "custom_field"]),
     "dcim.consoleport": set(["name", "device", "module"]),
@@ -828,6 +848,10 @@ def _m2m_assoc_compare_key(assoc_dict, effective_parent_key, key_fields):
     This matches desired payloads (device + vrf only) to API responses that also include
     id, url, display, etc., and aligns nested FK objects with plain UUID strings.
 
+    Missing keys and explicit None values are treated as equivalent so a desired payload
+    that omits an optional field still matches an existing API record that
+    serializes the same field as None.
+
     When key_fields is empty (e.g. replace with no desired objects), compare all
     non-parent fields so each existing record keeps a distinct key.
     """
@@ -836,9 +860,10 @@ def _m2m_assoc_compare_key(assoc_dict, effective_parent_key, key_fields):
         for k in sorted(key_fields):
             if k == effective_parent_key:
                 continue
-            if k not in assoc_dict:
+            normalized = _normalize_m2m_compare_value(assoc_dict.get(k))
+            if normalized is None:
                 continue
-            pairs.append((k, _normalize_m2m_compare_value(assoc_dict[k])))
+            pairs.append((k, normalized))
         return tuple(pairs)
     return tuple(
         sorted((k, _normalize_m2m_compare_value(v)) for k, v in assoc_dict.items() if k != effective_parent_key)
@@ -899,19 +924,16 @@ class NautobotModule:
             if choices_data.get(f) is not None:
                 self.m2m_data[f] = choices_data.pop(f)
 
-        # Resolve child objects in M2M data through _find_ids individually.
-        # Objects use child_key as the field name (e.g. {vrf: "Test VRF"} or
-        # {ip_address: {address: "10.200.0.1/32", namespace: "Global"}}).
-        # _find_ids handles both string and dict values automatically.
-        for field_name, field_data in self.m2m_data.items():
-            child_key_candidate = ENDPOINT_NAME_MAPPING.get(field_name)
-            child_key = child_key_candidate if (child_key_candidate and child_key_candidate in CONVERT_TO_ID) else None
-            if child_key and field_data.get("objects"):
-                for obj in field_data["objects"]:
-                    if child_key in obj:
-                        temp = {child_key: obj[child_key]}
-                        self._find_ids(temp, query_params)
-                        obj[child_key] = temp[child_key]
+        # Resolve every FK field inside each M2M object through _find_ids. Objects
+        # use the child key as one of the fields (e.g. {vrf: "Test VRF"} or
+        # {ip_address: {address: "10.200.0.1/32", namespace: "Global"}}) and may
+        # carry additional FK fields beyond the child key (e.g. wireless_networks
+        # objects also accept a `vlan`). _find_ids handles both string and dict
+        # values automatically and is a no-op for keys it does not recognize.
+        for field_data in self.m2m_data.values():
+            for obj in field_data.get("objects") or []:
+                resolved = self._find_ids(dict(obj), query_params)
+                obj.update(resolved)
 
         # Extract contacts/teams association data the same way as M2M data so the
         # field names do not collide with direct relationship fields and so the inner

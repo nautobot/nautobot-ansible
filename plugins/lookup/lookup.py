@@ -185,6 +185,12 @@ def get_endpoint(nautobot, term):
         "circuit-providers": {"endpoint": nautobot.circuits.providers},
         "cables": {"endpoint": nautobot.dcim.cables},
         "controllers": {"endpoint": nautobot.dcim.controllers},
+        "controller-managed-device-group-radio-profile-assignments": {
+            "endpoint": nautobot.wireless.controller_managed_device_group_radio_profile_assignments
+        },
+        "controller-managed-device-group-wireless-network-assignments": {
+            "endpoint": nautobot.wireless.controller_managed_device_group_wireless_network_assignments
+        },
         "controller-managed-device-groups": {"endpoint": nautobot.dcim.controller_managed_device_groups},
         "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
         "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
@@ -354,12 +360,7 @@ def make_call(endpoint, filters=None):  # noqa: D417
         else:
             results = endpoint.all()
     except pynautobot.RequestError as e:
-        if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError(
-                f"{e.error} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint."
-            )
-        else:
-            raise AnsibleError(e.error)
+        raise AnsibleError(e.error) from e
 
     return results
 
