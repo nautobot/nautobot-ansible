@@ -1239,6 +1239,37 @@ supported_data_rates = [
 ]
 created_supported_data_rates = make_nautobot_calls(nb.wireless.supported_data_rates, supported_data_rates)
 
+# Create radio profiles used by controller_managed_device_group M2M tests
+radio_profiles = [
+    {"name": "CMG Test Radio Profile A", "regulatory_domain": "US"},
+    {"name": "CMG Test Radio Profile B", "regulatory_domain": "US"},
+    {"name": "CMG Test Radio Profile C", "regulatory_domain": "US"},
+]
+created_radio_profiles = make_nautobot_calls(nb.wireless.radio_profiles, radio_profiles)
+
+# Create wireless networks used by controller_managed_device_group M2M tests
+wireless_networks = [
+    {
+        "name": "CMG Test Wireless Network A",
+        "ssid": "CMG Test Wireless Network A",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+    {
+        "name": "CMG Test Wireless Network B",
+        "ssid": "CMG Test Wireless Network B",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+    {
+        "name": "CMG Test Wireless Network C",
+        "ssid": "CMG Test Wireless Network C",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+]
+created_wireless_networks = make_nautobot_calls(nb.wireless.wireless_networks, wireless_networks)
+
 ###############
 # v3.0+ items #
 ###############
