@@ -341,3 +341,103 @@
           role: "Admin"
           status: "Active"
     state: present
+
+##
+## 10 - Notes check_mode: real setup, then check_mode merge/replace/delete must not persist
+##
+- name: "10 - SETUP - Add a real note to test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    notes:
+      objects:
+        - note: "CheckMode note"
+    state: present
+
+- name: "10 - Check mode - Merge second note into test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    notes:
+      objects:
+        - note: "CheckMode second note"
+    state: present
+  register: cm_notes_merge
+  check_mode: yes
+
+- name: "10 - ASSERT - Check mode note merge reports correct diff"
+  assert:
+    that:
+      - cm_notes_merge is changed
+      - cm_notes_merge['diff']['before']['notes'] | length == 1
+      - "'CheckMode note' in cm_notes_merge['diff']['before']['notes']"
+      - cm_notes_merge['diff']['after']['notes'] | length == 2
+      - "'CheckMode note' in cm_notes_merge['diff']['after']['notes']"
+      - "'CheckMode second note' in cm_notes_merge['diff']['after']['notes']"
+
+- name: "10 - Check mode - Replace notes on test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    notes:
+      state: replace
+      objects:
+        - note: "CheckMode replacement note"
+    state: present
+  register: cm_notes_replace
+  check_mode: yes
+
+- name: "10 - ASSERT - Check mode note replace reports correct diff"
+  assert:
+    that:
+      - cm_notes_replace is changed
+      - cm_notes_replace['diff']['before']['notes'] | length == 1
+      - "'CheckMode note' in cm_notes_replace['diff']['before']['notes']"
+      - cm_notes_replace['diff']['after']['notes'] | length == 1
+      - "'CheckMode replacement note' in cm_notes_replace['diff']['after']['notes']"
+
+- name: "10 - Check mode - Delete note from test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    notes:
+      state: delete
+      objects:
+        - note: "CheckMode note"
+    state: present
+  register: cm_notes_delete
+  check_mode: yes
+
+- name: "10 - ASSERT - Check mode note delete reports correct diff"
+  assert:
+    that:
+      - cm_notes_delete is changed
+      - cm_notes_delete['diff']['before']['notes'] | length == 1
+      - "'CheckMode note' in cm_notes_delete['diff']['before']['notes']"
+      - "'notes' not in cm_notes_delete['diff']['after'] or cm_notes_delete['diff']['after']['notes'] | length == 0"
+
+- name: "10 - VERIFY no-op - The real note on test100 is unchanged"
+  set_fact:
+    cm_notes_lookup: "{{ query('networktocode.nautobot.lookup', 'notes', api_endpoint=nautobot_url, token=nautobot_token, api_filter='assigned_object_id=' + test100_dev['key']) }}"
+
+- name: "10 - ASSERT no-op - Note merge/replace/delete did not persist"
+  assert:
+    that:
+      - cm_notes_lookup | selectattr('value.note', 'eq', 'CheckMode note') | list | length == 1
+      - cm_notes_lookup | selectattr('value.note', 'eq', 'CheckMode second note') | list | length == 0
+      - cm_notes_lookup | selectattr('value.note', 'eq', 'CheckMode replacement note') | list | length == 0
+
+- name: "10 - CLEANUP - Remove the real note from test100"
+  networktocode.nautobot.device:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "test100"
+    notes:
+      state: delete
+      objects:
+        - note: "CheckMode note"
+    state: present

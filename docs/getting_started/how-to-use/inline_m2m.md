@@ -300,3 +300,70 @@ Contact and team changes appear under `contacts` and `teams` in the diff body, f
     }
 }
 ```
+
+## Notes
+
+Notes are attached to parent objects through Nautobot's `notes` endpoint, which uses a generic foreign key (`assigned_object_type` + `assigned_object_id`) rather than a single FK column. The Ansible collection exposes them inline on the parent module via the `notes` field, which follows the same `state: merge|replace|delete` semantics as the M2M fields described above.
+
+### Field Structure
+
+Each entry in `notes.objects` requires only the `note` text. A note is uniquely identified by its text for reconciliation purposes, so re-running with the same text is idempotent.
+
+```yaml
+notes:
+  objects:
+    - note: This device was provisioned by Ansible.
+    - note: Pending hardware refresh in Q3.
+```
+
+### Example: Adding a Note to a Device
+
+```yaml
+- name: Add a note to a device
+  networktocode.nautobot.device:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Test Device
+    notes:
+      objects:
+        - note: This device was provisioned by Ansible.
+    state: present
+```
+
+### State Semantics
+
+The three states behave identically to the M2M fields. `merge` (default) adds any notes whose text is not already present, `replace` enforces exactly the listed notes (removing any others on the object), and `delete` removes the listed notes by text.
+
+```yaml
+# Device currently has the note "Old note"
+- name: Replace all notes with a single new note
+  networktocode.nautobot.device:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    name: Test Device
+    notes:
+      state: replace
+      objects:
+        - note: New note
+    state: present
+# Result: only "New note" remains on the device.
+```
+
+### Diff Output
+
+Note changes appear under `notes` in the diff body as sorted lists of the note text (rather than the opaque note UUID, so the diff is human-readable):
+
+```json
+{
+    "diff": {
+        "before": {
+            "notes": ["Old note"]
+        },
+        "after": {
+            "notes": ["New note"]
+        }
+    }
+}
+```
+!!! note
+    Keep in mind, the order of the notes in the diff may not be the order that the notes will appear in Nautobot. We must sort the notes by text here in order to properly handle idempotency.

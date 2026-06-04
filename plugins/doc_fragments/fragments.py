@@ -172,3 +172,35 @@ options:
             required: true
             type: raw
 """
+
+    NOTES = r"""
+options:
+  notes:
+    description:
+      - Manage notes on the object
+    required: false
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds notes without removing existing ones.
+          - C(replace) enforces exactly the listed notes, removing any extras.
+          - C(delete) removes the listed notes.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of notes to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          note:
+            description:
+              - The text of the note.
+            required: true
+            type: str
+"""

@@ -38,6 +38,9 @@
         - team: My Test Team
           role: Admin
           status: Active
+    notes:
+      objects:
+        - note: First note
     state: present
   register: test_one
 
@@ -56,6 +59,88 @@
       - john_smith['key'] in test_one['diff']['after']['contacts']
       - test_one['diff']['after']['teams'] | length == 1
       - my_test_team['key'] in test_one['diff']['after']['teams']
+      - test_one['diff']['after']['notes'] | length == 1
+      - "'First note' in test_one['diff']['after']['notes']"
+
+- name: "CABLE NOTES 1: Add duplicate note (idempotent merge)"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet1/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet2/1
+    status: "Connected"
+    notes:
+      objects:
+        - note: First note
+    state: present
+  register: test_notes_merge
+
+- name: "CABLE NOTES 1: ASSERT - Add duplicate note (idempotent merge)"
+  assert:
+    that:
+      - test_notes_merge is not changed
+
+- name: "CABLE NOTES 2: Replace notes"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet1/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet2/1
+    status: "Connected"
+    notes:
+      state: replace
+      objects:
+        - note: Second note
+    state: present
+  register: test_notes_replace
+
+- name: "CABLE NOTES 2: ASSERT - Replace notes"
+  assert:
+    that:
+      - test_notes_replace is changed
+      - test_notes_replace['diff']['before']['notes'] | length == 1
+      - "'First note' in test_notes_replace['diff']['before']['notes']"
+      - test_notes_replace['diff']['after']['notes'] | length == 1
+      - "'Second note' in test_notes_replace['diff']['after']['notes']"
+
+- name: "CABLE NOTES 3: Delete note"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet1/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet2/1
+    status: "Connected"
+    notes:
+      state: delete
+      objects:
+        - note: Second note
+    state: present
+  register: test_notes_delete
+
+- name: "CABLE NOTES 3: ASSERT - Delete note"
+  assert:
+    that:
+      - test_notes_delete is changed
+      - test_notes_delete['diff']['before']['notes'] | length == 1
+      - "'Second note' in test_notes_delete['diff']['before']['notes']"
 
 - name: "CABLE 2: Create duplicate"
   networktocode.nautobot.cable:
