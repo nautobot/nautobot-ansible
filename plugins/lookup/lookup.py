@@ -141,7 +141,6 @@ import os
 from pprint import pformat
 
 from ansible.errors import AnsibleError
-from ansible.module_utils.six import raise_from
 from ansible.parsing.splitter import parse_kv, split_args
 from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
@@ -374,10 +373,7 @@ class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         """Run the lookup."""
         if PYNAUTOBOT_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"),
-                PYNAUTOBOT_IMPORT_ERROR,
-            )
+            raise AnsibleError("pynautobot must be installed to use this plugin") from PYNAUTOBOT_IMPORT_ERROR
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")

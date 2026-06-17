@@ -7,14 +7,14 @@ license = "Apache 2.0"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4.0"
+python = ">=3.12,<4.0"
 netutils = "^1.2"
 pynautobot = ">=3.0.0,<4.0.0"
-ansible-core = ">=2.18,<2.20"
+ansible-core = ">=2.18,<2.21"
 aiohttp = "^3.11.13"
 asyncio = "^3.4.3"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 ansible-lint = "*"
 cryptography = "*"
 jinja2 = "*"

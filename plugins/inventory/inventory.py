@@ -298,8 +298,8 @@ from threading import Thread
 from typing import Iterable
 
 from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.ansible_release import __version__ as ansible_version
+from ansible.module_utils.common.text.converters import to_native, to_text
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
