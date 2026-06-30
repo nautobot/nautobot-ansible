@@ -38,7 +38,7 @@ namespace.configure(
             "ansible_ver": "2.19",
             "nautobot_ver": "3.1",
             "project_name": "nautobot_ansible",
-            "python_ver": "3.11",
+            "python_ver": "3.12",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],

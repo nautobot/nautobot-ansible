@@ -15,7 +15,7 @@ jobs:
       - name: "Set up Python"
         uses: "actions/setup-python@v6"
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
       - name: "Build the collection"
@@ -53,7 +53,7 @@ jobs:
       - name: "Set up Python"
         uses: "actions/setup-python@v6"
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
       - name: "Download collection artifact"
@@ -83,7 +83,7 @@ jobs:
       - name: "Set up Python"
         uses: "actions/setup-python@v6"
         with:
-          python-version: "3.11"
+          python-version: "3.12"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
       - name: "Download collection artifact"

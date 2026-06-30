@@ -108,7 +108,6 @@ RETURN = """
 import os
 
 from ansible.errors import AnsibleError, AnsibleLookupError
-from ansible.module_utils.six import raise_from
 from ansible.plugins.lookup import LookupBase
 
 try:
@@ -215,10 +214,7 @@ class LookupModule(LookupBase):
             dict: Data returned from GraphQL endpoint
         """
         if PYNAUTOBOT_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"),
-                PYNAUTOBOT_IMPORT_ERROR,
-            )
+            raise AnsibleError("pynautobot must be installed to use this plugin") from PYNAUTOBOT_IMPORT_ERROR
 
         query = terms[0] if terms else kwargs.get("query")
 

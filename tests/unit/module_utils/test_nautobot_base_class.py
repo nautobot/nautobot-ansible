@@ -312,7 +312,7 @@ def test_version_check_greater_equal_to_false(mock_module, obj_mock, version):
 
 
 @given(st.uuids(version=4))
-@settings(suppress_health_check=[HealthCheck(9)])
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 def test_get_query_param_id_return_uuid(mock_module, value):
     string_value = str(value)
     data = mock_module._get_query_param_id("test", {"test": string_value})
@@ -320,7 +320,7 @@ def test_get_query_param_id_return_uuid(mock_module, value):
 
 
 @given(st.integers())
-@settings(suppress_health_check=[HealthCheck(9)])
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 def test_get_query_param_id_return_int(mock_module, value):
     data = mock_module._get_query_param_id("test", {"test": value})
     assert data == value

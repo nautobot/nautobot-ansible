@@ -58,9 +58,9 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     env:
       INVOKE_NAUTOBOT_ANSIBLE_PYTHON_VER: "${{ matrix.python-version }}"
     steps:
@@ -80,11 +80,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.12"
+          - "3.14"
         nautobot-version:
           - "3.1"
         ansible-version:
-          - "2.19"
+          - "2.20"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"
@@ -98,18 +98,21 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
         nautobot-version:
           - "3.0"
           - "3.1"
         ansible-version:
           - "2.18"
           - "2.19"
-        # exclude:
-        #   - python-version: "x.x"
-        #     ansible-version: "x.x"
+          - "2.20"
+        exclude:
+          - python-version: "3.14"
+            ansible-version: "2.18"
+          - python-version: "3.14"
+            ansible-version: "2.19"
     with:
       python-version: "${{ matrix.python-version }}"
       nautobot-version: "${{ matrix.nautobot-version }}"
