@@ -1,32 +1,46 @@
 #!/usr/bin/env python3
-"""Generate the collection's root requirements.txt from pyproject.toml.
+"""Generate the collection's requirements.txt files from pyproject.toml.
 
-Red Hat Automation Hub's `ansible-builder` reads a root-level
-requirements.txt to install the collection's Python runtime deps when
-building an Execution Environment. We don't commit this file because
-pyproject.toml is the single source of truth for runtime versions --
-this script derives requirements.txt from it on demand (build/release).
+`ansible-builder` resolves a collection's Python runtime dependencies from a
+requirements.txt shipped inside the collection tarball. Two locations are needed:
 
-The output uses floor-only specifiers (>=X.Y.Z); no `==` pins, no
-upper caps, per Red Hat partner-engineering guidance (caps cause
-conflicts when multiple collections share an EE).
+  * ``meta/requirements.txt`` -- the standard location ``ansible-builder``
+    discovers for any collection pulled into an Execution Environment.
+  * ``requirements.txt`` at the collection root -- additionally required by Red
+    Hat Automation Hub's certification tooling.
+
+Both files are derived from pyproject.toml so it remains the single source of
+truth for runtime versions. Neither is committed: both are gitignored and
+regenerated at build/release time.
+
+Every dependency under ``[tool.poetry.dependencies]`` is emitted except the
+entries in ``EXCLUDED_DEPS``, so a newly added runtime dependency flows into the
+requirements files automatically without touching this script.
+
+The output uses floor-only specifiers (``>=X.Y.Z``): no ``==`` pins and no upper
+caps, per Red Hat partner-engineering guidance (caps cause resolution conflicts
+when multiple collections share an Execution Environment).
 """
 
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import tomllib
 
-# Runtime deps directly imported by plugin/extension code (verified via grep).
-# Update this list if a new direct import is added; CI should keep it honest.
-EE_DEPS = [
-    "pynautobot",  # plugins/action/*, plugins/lookup/*
-    "requests",  # plugins/action/{query_graphql,graphql_info,graphql_facts}.py
-    "netutils",  # plugins/inventory/gql_inventory.py
-    "aiohttp",  # extensions/eda/plugins/event_source/nautobot_changelog.py
-]
+# Dependencies declared in pyproject.toml that must NOT be shipped in the EE
+# requirements files. Everything else is emitted automatically, so pyproject.toml
+# stays the single source of truth for what the collection needs at runtime.
+EXCLUDED_DEPS = frozenset(
+    {
+        "python",  # interpreter constraint, not an installable package
+        "ansible-core",  # provided by the EE base image; a collection must not pin it
+        "asyncio",  # stdlib since Python 3.4; the PyPI backport breaks modern runtimes
+    }
+)
+
+# Files to generate, relative to the repo root. Both ship in the tarball.
+OUTPUT_FILES = ("requirements.txt", "meta/requirements.txt")
 
 
 def floor(spec):
@@ -51,27 +65,39 @@ def floor(spec):
     raise ValueError(f"cannot derive floor from spec: {spec!r}")
 
 
-def main():
-    """Write requirements.txt at the repo root from `[tool.poetry.dependencies]` floors.
+def requirement_lines(poetry_deps):
+    """Return sorted ``name>=floor`` lines for every shippable runtime dependency.
 
-    Returns 0 on success, 1 if any name in `EE_DEPS` is missing from pyproject.toml.
+    Args:
+        poetry_deps (dict): The parsed `[tool.poetry.dependencies]` table.
+
+    Returns:
+        list[str]: One ``name>=X.Y.Z`` line per dependency not in
+        ``EXCLUDED_DEPS``, sorted by name for stable, diff-friendly output.
+    """
+    lines = [f"{name}>={floor(spec)}" for name, spec in poetry_deps.items() if name not in EXCLUDED_DEPS]
+    return sorted(lines)
+
+
+def main():
+    """Write the root and meta requirements files from `[tool.poetry.dependencies]`.
+
+    Returns 0 on success.
     """
     project_root = Path(__file__).resolve().parents[1]
     pyproject = tomllib.loads((project_root / "pyproject.toml").read_text())
     poetry_deps = pyproject["tool"]["poetry"]["dependencies"]
 
-    lines = []
-    for name in EE_DEPS:
-        if name not in poetry_deps:
-            print(f"ERROR: '{name}' is required in EE_DEPS but missing from pyproject.toml", file=sys.stderr)
-            return 1
-        lines.append(f"{name}>={floor(poetry_deps[name])}")
+    lines = requirement_lines(poetry_deps)
+    content = "\n".join(lines) + "\n"
 
-    out_path = project_root / "requirements.txt"
-    out_path.write_text("\n".join(lines) + "\n")
-    print(f"Generated {out_path} with {len(lines)} deps:")
-    for line in lines:
-        print(f"  {line}")
+    for rel_path in OUTPUT_FILES:
+        out_path = project_root / rel_path
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(content)
+        print(f"Generated {out_path} with {len(lines)} deps:")
+        for line in lines:
+            print(f"  {line}")
     return 0
 
 

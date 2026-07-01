@@ -1,1 +1,1 @@
-Added root `requirements.txt` (generated from `pyproject.toml` at build time) so `ansible-builder` can resolve `pynautobot`, `requests`, `netutils`, and `aiohttp` when building Execution Environments.
+Generated `requirements.txt` (collection root) and `meta/requirements.txt` from `pyproject.toml` at build time so `ansible-builder` can resolve the collection's Python dependencies when building Execution Environments.

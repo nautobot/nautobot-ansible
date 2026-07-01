@@ -2,6 +2,7 @@ networktocode-nautobot*.tar.gz
 
 # Generated from pyproject.toml by `invoke generate-requirements` at build time
 requirements.txt
+meta/requirements.txt
 __pycache__/
 *.pyc
 tests/output/*
