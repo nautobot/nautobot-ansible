@@ -250,6 +250,7 @@
                         "name": "GigabitEthernet1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -457,6 +458,7 @@
                         "name": "Ethernet2/1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -613,6 +615,7 @@
                         "name": "Ethernet1/1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1113,6 +1116,7 @@
                         "name": "GigabitEthernet1",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1271,6 +1275,7 @@
                         "name": "GigabitEthernet2",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1364,6 +1369,7 @@
                         "name": "GigabitEthernet3",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {
@@ -1457,6 +1463,7 @@
                         "name": "GigabitEthernet4",
                         "object_type": "dcim.interface",
                         "parent_interface": null,
+                        "port_type": null,
                         "role": null,
                         "speed": null,
                         "status": {

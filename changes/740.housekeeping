@@ -1,0 +1,1 @@
+Added a sanity test ignore for the `inventory` and `gql_inventory` plugins to unblock publication to automation-hub.

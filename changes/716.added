@@ -1,0 +1,1 @@
+Added inline `radio_profiles` and `wireless_networks` association support to the `controller_managed_device_group` module.

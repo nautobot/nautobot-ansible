@@ -141,7 +141,6 @@ import os
 from pprint import pformat
 
 from ansible.errors import AnsibleError
-from ansible.module_utils.six import raise_from
 from ansible.parsing.splitter import parse_kv, split_args
 from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
@@ -185,6 +184,12 @@ def get_endpoint(nautobot, term):
         "circuit-providers": {"endpoint": nautobot.circuits.providers},
         "cables": {"endpoint": nautobot.dcim.cables},
         "controllers": {"endpoint": nautobot.dcim.controllers},
+        "controller-managed-device-group-radio-profile-assignments": {
+            "endpoint": nautobot.wireless.controller_managed_device_group_radio_profile_assignments
+        },
+        "controller-managed-device-group-wireless-network-assignments": {
+            "endpoint": nautobot.wireless.controller_managed_device_group_wireless_network_assignments
+        },
         "controller-managed-device-groups": {"endpoint": nautobot.dcim.controller_managed_device_groups},
         "cloud-accounts": {"endpoint": nautobot.cloud.cloud_accounts},
         "cloud-networks": {"endpoint": nautobot.cloud.cloud_networks},
@@ -200,6 +205,7 @@ def get_endpoint(nautobot, term):
         "console-ports": {"endpoint": nautobot.dcim.console_ports},
         "console-server-port-templates": {"endpoint": nautobot.dcim.console_server_port_templates},
         "console-server-ports": {"endpoint": nautobot.dcim.console_server_ports},
+        "contact-associations": {"endpoint": nautobot.extras.contact_associations},
         "contacts": {"endpoint": nautobot.extras.contacts},
         "content-types": {"endpoint": nautobot.extras.content_types},
         "custom-fields": {"endpoint": nautobot.extras.custom_fields},
@@ -236,6 +242,7 @@ def get_endpoint(nautobot, term):
         "module-types": {"endpoint": nautobot.dcim.module_types},
         "modules": {"endpoint": nautobot.dcim.modules},
         "namespaces": {"endpoint": nautobot.ipam.namespaces},
+        "notes": {"endpoint": nautobot.extras.notes},
         "object-changes": {"endpoint": nautobot.extras.object_changes},
         "object-metadata": {"endpoint": nautobot.extras.object_metadata},
         "platforms": {"endpoint": nautobot.dcim.platforms},
@@ -353,12 +360,7 @@ def make_call(endpoint, filters=None):  # noqa: D417
         else:
             results = endpoint.all()
     except pynautobot.RequestError as e:
-        if e.req.status_code == 404 and "plugins" in e:
-            raise AnsibleError(
-                f"{e.error} - Not a valid plugin endpoint, please make sure to provide valid plugin endpoint."
-            )
-        else:
-            raise AnsibleError(e.error)
+        raise AnsibleError(e.error) from e
 
     return results
 
@@ -371,10 +373,7 @@ class LookupModule(LookupBase):
     def run(self, terms, variables=None, **kwargs):
         """Run the lookup."""
         if PYNAUTOBOT_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"),
-                PYNAUTOBOT_IMPORT_ERROR,
-            )
+            raise AnsibleError("pynautobot must be installed to use this plugin") from PYNAUTOBOT_IMPORT_ERROR
 
         api_token = kwargs.get("token") or os.getenv("NAUTOBOT_TOKEN")
         api_endpoint = kwargs.get("api_endpoint") or os.getenv("NAUTOBOT_URL")

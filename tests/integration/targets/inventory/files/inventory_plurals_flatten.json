@@ -447,11 +447,11 @@
             "child_child_test_location"
         ],
         "hosts": [
-            "R1-Device",
-            "test100",
-            "TestDeviceR1",
-            "Test Nexus One",
             "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
@@ -523,11 +523,11 @@
             "child_test_location"
         ],
         "hosts": [
-            "R1-Device",
-            "test100",
-            "TestDeviceR1",
-            "Test Nexus One",
             "00000000-0000-0000-0000-000000000000",
+            "R1-Device",
+            "Test Nexus One",
+            "TestDeviceR1",
+            "test100",
             "test100-vm",
             "test101-vm",
             "test102-vm",
