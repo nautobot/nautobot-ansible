@@ -17,15 +17,26 @@ poetry check --lock
 # 2. A towncrier changelog fragment exists for the issue/PR
 poetry run towncrier check --compare-with origin/develop
 
-# 3. Project ruff and pylint (mirrors the project-level lint config)
-poetry run ruff format --check .
-poetry run ruff check .
-poetry run pylint **/*.py
+# 3. Project lint -- this is what the CI `tests / lint` job runs
+invoke lint
 ```
 
 If any of those fail, fix and re-run before pushing.
 
-For deeper coverage that matches CI exactly, run the Docker-based jobs described below: `invoke lint`, `invoke unit`, and (when modifying runtime behavior) `invoke integration`.
+!!! tip "Faster iteration while you work"
+
+    `invoke lint` builds a Docker image, so the first run is not instant. While iterating you can run the individual linters it wraps directly:
+
+    ```shell
+    poetry run invoke check-versions
+    poetry run ruff format --check .
+    poetry run ruff check .
+    poetry run pylint **/*.py
+    ```
+
+    Treat that as a fast pre-check, not a substitute. `invoke lint` is the authoritative mirror of CI — see the [CI Mirror Reference](#ci-mirror-reference) below.
+
+For deeper coverage, also run the Docker-based `invoke unit` and, when modifying runtime behavior, `invoke integration`.
 
 ### When you bumped a dependency in `pyproject.toml`
 
@@ -135,8 +146,8 @@ Each invoke task corresponds to one or more CI jobs:
 
 | Invoke task | CI job | What it runs |
 |---|---|---|
-| `invoke lint` | `tests / lint` | `ruff format .` + `ruff check .` + `pylint **/*.py` inside the lint container |
-| `invoke unit` | `tests / unit (3.11/3.12/3.13)` | Project lint + `ansible-test sanity --requirements` + `ansible-lint` + unit tests |
+| `invoke lint` | `tests / lint` | `invoke check-versions` + `ruff format .` + `ruff check .` + `pylint **/*.py` inside the lint container |
+| `invoke unit` | `tests / unit (3.12/3.13/3.14)` | Project lint + `ansible-test sanity --requirements` + `ansible-lint` + unit tests |
 | `invoke integration` | `tests / integration_partial` and `tests / integration_full` | Full integration suite against a real Nautobot instance |
 | `invoke galaxy-build` | (release workflow `build_collection` step) | Generates `requirements.txt`, builds the collection tarball, cleans up |
 
