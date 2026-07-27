@@ -1,1 +1,1 @@
-Wired the galaxy-importer simulation into PR CI to catch automation-hub publish blockers pre-merge.
+Wired the galaxy-importer simulation into pull request CI so that findings which would block publication to automation-hub now fail the build.

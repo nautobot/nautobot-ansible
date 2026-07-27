@@ -14,11 +14,59 @@ jobs:
     runs-on: "ubuntu-latest"
     needs:
       - build
+    env:
+      # Python 3.12 is a valid controller version for every ansible-core from
+      # 2.17 through 2.21, so it does not need to track the floor below.
+      PYTHON_VERSION: "3.12"
     steps:
+      # Checkout must come before download-artifact: actions/checkout cleans
+      # the workspace by default and would delete the downloaded tarball.
+      # The checkout exists only so we can read meta/runtime.yml.
+      - name: Check out repository code
+        uses: actions/checkout@v6
+
       - name: Download artifact
         uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact-name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "${{ env.PYTHON_VERSION }}"
+
+      # The importer runs `ansible-test sanity` against whichever ansible-core
+      # is installed. Run it at the oldest version this collection claims to
+      # support, so the check answers a question we actually care about:
+      # "does the collection still import cleanly at our declared floor?"
+      #
+      # The floor is read from meta/runtime.yml rather than duplicated here, so
+      # there is one source of truth and raising the floor needs no edit to
+      # this workflow. Deriving it is also the only safe option: pinning BELOW
+      # the declared floor makes the `ansible-doc` sanity test fail on
+      # "collection does not support Ansible version X.Y".
+      - name: Derive ansible-core floor from meta/runtime.yml
+        run: |
+          floor=$(sed -n 's/^requires_ansible:[[:space:]]*">=\([0-9]\{1,\}\.[0-9]\{1,\}\).*/\1/p' meta/runtime.yml)
+          if [ -z "$floor" ]; then
+            echo "::error::could not parse requires_ansible from meta/runtime.yml"
+            exit 1
+          fi
+          echo "Declared ansible-core floor: ${floor}"
+          echo "ANSIBLE_CORE_SPEC=~=${floor}.0" >> "$GITHUB_ENV"
+
+      # ansible-lint is deliberately NOT pinned. galaxy-importer constrains it
+      # itself, and automation-hub tracks whatever galaxy-importer ships, so
+      # installing the same unpinned set is closer to the real publish gate
+      # than any version we could guess.
+      - name: Install galaxy-importer toolchain
+        run: |
+          pip install --disable-pip-version-check \
+            "ansible-core${ANSIBLE_CORE_SPEC}" \
+            galaxy-importer
+
+      - name: Record resolved tool versions
+        run: pip list | grep -iE '^(ansible-core|ansible-lint|galaxy.importer) '
 
       - name: Create config file
         run: |
@@ -26,7 +74,51 @@ jobs:
           RUN_ANSIBLE_TEST = True" > galaxy-importer.cfg
 
       - name: Test import
-        uses: ansible-community/github-action-test-galaxy-import@main
-        with:
-          artifact-path: ${{ needs.build.outputs.artifact-filename }}
-          importer-config-path: galaxy-importer.cfg
+        env:
+          ARTIFACT_FILENAME: "${{ needs.build.outputs.artifact-filename }}"
+          GALAXY_IMPORTER_CONFIG: galaxy-importer.cfg
+        run: python -m galaxy_importer.main "$ARTIFACT_FILENAME" | tee import.log
+
+      - name: Gate on importer findings
+        run: |
+          # galaxy-importer exits 0 for lint and sanity findings -- it only
+          # fails on a fatal, unreadable artifact. It also invokes
+          # `ansible-test sanity --failure-ok`, so sanity failures do not
+          # propagate either. This step is what turns findings into a red
+          # check; without it the job can only ever report success.
+          #
+          # galaxy-importer passes `--color yes` to ansible-test, so the
+          # ERROR: lines it echoes through are wrapped in ANSI color escapes
+          # and do NOT literally start with "ERROR:". Strip the escapes before
+          # matching. This is also why the upstream community action's
+          # line.startswith('ERROR:') check never even annotated #740.
+          sed -r 's/\x1b\[[0-9;]*m//g' import.log > import-plain.log
+
+          # Two log levels carry real findings, and both must fail the job:
+          #   ERROR:   fatal import errors, plus the `ansible-test sanity`
+          #            output the importer echoes through.
+          #   WARNING: ansible-lint rule violations. Matching only ERROR:
+          #            would sail straight past the #739 class of finding.
+          #
+          # ALLOWLIST holds importer output that does not block publication.
+          # Keep it as tight as possible and comment every entry.
+          #   - "Ignore files skip ansible-test sanity tests": galaxy-importer
+          #     notices that tests/sanity/ignore-*.txt exists. It scans for
+          #     these regardless of the core version in use. Drop this entry
+          #     once tests/sanity/ignore-2.16.txt is removed.
+          ALLOWLIST='Ignore files skip ansible-test sanity tests'
+
+          grep -E '^(ERROR|WARNING):' import-plain.log | grep -vE "$ALLOWLIST" > findings.txt || true
+
+          if [ -s findings.txt ]; then
+            echo "::error::galaxy-importer reported findings that would block publication to automation-hub"
+            while IFS= read -r finding; do
+              echo "::error::${finding}"
+            done < findings.txt
+            echo
+            echo "These are the same checks console.redhat.com runs at publish time."
+            echo "Fix them here rather than after the release is tagged."
+            exit 1
+          fi
+
+          echo "galaxy-importer reported no publication-blocking findings."
