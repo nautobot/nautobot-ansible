@@ -97,3 +97,171 @@
       - not test_six['changed']
       - test_six['controller_managed_device_group'] == None
       - test_six['msg'] == "controller_managed_device_group Test Controller Group One already absent"
+
+##
+## M2M assignment tests: radio_profiles and wireless_networks
+##
+
+- name: "CONTROLLER GROUP M2M: Pre-fetch VLAN UUID for assignment assertions"
+  set_fact:
+    cmg_test_vlan: "{{ lookup('networktocode.nautobot.lookup', 'vlans', api_endpoint=nautobot_url, token=nautobot_token, api_filter='vid=400 vlan_group=\"Test Vlan Group\"') }}"
+
+- name: "CONTROLLER GROUP 7: Create group with radio profile assignments"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    radio_profiles:
+      objects:
+        - radio_profile: CMG Test Radio Profile A
+        - radio_profile: CMG Test Radio Profile B
+    state: present
+  register: test_seven
+
+- name: "CONTROLLER GROUP 7: ASSERT - Create group with radio profile assignments"
+  assert:
+    that:
+      - test_seven['changed']
+      - test_seven['controller_managed_device_group']['name'] == "Test Controller Group M2M"
+      - test_seven['diff']['after']['radio_profiles'] | length == 2
+
+- name: "CONTROLLER GROUP 8: Idempotent merge radio profile assignments"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    radio_profiles:
+      objects:
+        - radio_profile: CMG Test Radio Profile A
+        - radio_profile: CMG Test Radio Profile B
+    state: present
+  register: test_eight
+
+- name: "CONTROLLER GROUP 8: ASSERT - Idempotent merge radio profile assignments"
+  assert:
+    that:
+      - not test_eight['changed']
+
+- name: "CONTROLLER GROUP 9: Merge wireless network assignments with vlan"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    wireless_networks:
+      objects:
+        - wireless_network: CMG Test Wireless Network A
+          vlan:
+            vid: 400
+        - wireless_network: CMG Test Wireless Network B
+    state: present
+  register: test_nine
+
+- name: "CONTROLLER GROUP 9: Fetch wireless network assignment to verify vlan"
+  set_fact:
+    cmg_wireless_network_a_assignment: "{{ lookup('networktocode.nautobot.lookup', 'controller-managed-device-group-wireless-network-assignments', api_endpoint=nautobot_url, token=nautobot_token, api_filter='wireless_network=\"CMG Test Wireless Network A\" controller_managed_device_group=\"Test Controller Group M2M\"') }}"
+
+- name: "CONTROLLER GROUP 9: ASSERT - Merge wireless network assignments"
+  assert:
+    that:
+      - test_nine['changed']
+      - test_nine['diff']['after']['wireless_networks'] | length == 2
+      - cmg_wireless_network_a_assignment['value']['vlan']['id'] == cmg_test_vlan['key']
+
+- name: "CONTROLLER GROUP 10: Idempotent merge wireless network assignments"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    wireless_networks:
+      objects:
+        - wireless_network: CMG Test Wireless Network A
+          vlan:
+            vid: 400
+        - wireless_network: CMG Test Wireless Network B
+    state: present
+  register: test_ten
+
+- name: "CONTROLLER GROUP 10: ASSERT - Idempotent merge wireless network assignments"
+  assert:
+    that:
+      - not test_ten['changed']
+
+- name: "CONTROLLER GROUP 11: Replace radio profile assignments"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    radio_profiles:
+      state: replace
+      objects:
+        - radio_profile: CMG Test Radio Profile C
+    state: present
+  register: test_eleven
+
+- name: "CONTROLLER GROUP 11: ASSERT - Replace radio profile assignments"
+  assert:
+    that:
+      - test_eleven['changed']
+      - test_eleven['diff']['before']['radio_profiles'] | length == 2
+      - test_eleven['diff']['after']['radio_profiles'] | length == 1
+
+- name: "CONTROLLER GROUP 12: Idempotent replace radio profile assignments"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    radio_profiles:
+      state: replace
+      objects:
+        - radio_profile: CMG Test Radio Profile C
+    state: present
+  register: test_twelve
+
+- name: "CONTROLLER GROUP 12: ASSERT - Idempotent replace radio profile assignments"
+  assert:
+    that:
+      - not test_twelve['changed']
+
+- name: "CONTROLLER GROUP 13: Delete one wireless network assignment"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    wireless_networks:
+      state: delete
+      objects:
+        - wireless_network: CMG Test Wireless Network A
+    state: present
+  register: test_thirteen
+
+- name: "CONTROLLER GROUP 13: ASSERT - Delete one wireless network assignment"
+  assert:
+    that:
+      - test_thirteen['changed']
+      - test_thirteen['diff']['before']['wireless_networks'] | length == 2
+      - test_thirteen['diff']['after']['wireless_networks'] | length == 1
+
+- name: "CONTROLLER GROUP 14: Idempotent delete wireless network assignment"
+  networktocode.nautobot.controller_managed_device_group:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Controller Group M2M
+    controller: controller_one
+    wireless_networks:
+      state: delete
+      objects:
+        - wireless_network: CMG Test Wireless Network A
+    state: present
+  register: test_fourteen
+
+- name: "CONTROLLER GROUP 14: ASSERT - Idempotent delete wireless network assignment"
+  assert:
+    that:
+      - not test_fourteen['changed']

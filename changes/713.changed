@@ -1,0 +1,1 @@
+Changed the `lookup_graphql` lookup to accept the query as either the first positional argument or as a keyword argument.
