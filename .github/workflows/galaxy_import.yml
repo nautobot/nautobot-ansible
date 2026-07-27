@@ -1,5 +1,5 @@
 ---
-name: "Galaxy Importer Manual Test"
+name: "Galaxy Importer Test"
 on:
   workflow_dispatch:
   workflow_call:
