@@ -36,14 +36,14 @@ namespace.configure(
     {
         "nautobot_ansible": {
             "ansible_ver": "2.19",
-            "nautobot_ver": "3.1",
+            "nautobot_ver": "3.2",
             "project_name": "nautobot_ansible",
             "python_ver": "3.12",
             "local": False,
             "compose_dir": os.path.join(os.path.dirname(__file__), "development"),
             "compose_files": ["docker-compose.yml"],
             "min_inventory_test_ansible_version": "2.19",
-            "min_inventory_test_nautobot_version": "3.1",
+            "min_inventory_test_nautobot_version": "3.2",
         }
     }
 )

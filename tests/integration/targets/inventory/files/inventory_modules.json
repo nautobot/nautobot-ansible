@@ -99,6 +99,7 @@
                 "dns_name": "r2.example.com",
                 "interfaces": [
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -416,6 +417,7 @@
                 "dns_name": "nexus.example.com",
                 "interfaces": [
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -633,6 +635,7 @@
                         "vrf": null
                     },
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -1206,190 +1209,7 @@
                 ],
                 "interfaces": [
                     {
-                        "bridge": null,
-                        "cable": null,
-                        "cable_peer": null,
-                        "cable_peer_type": null,
-                        "connected_endpoint": null,
-                        "connected_endpoint_reachable": null,
-                        "connected_endpoint_type": null,
-                        "custom_fields": {},
-                        "description": "",
-                        "device": null,
-                        "display": "Interface 1",
-                        "duplex": null,
-                        "enabled": true,
-                        "ip_address_count": 0,
-                        "ip_addresses": [],
-                        "label": "",
-                        "lag": null,
-                        "mac_address": null,
-                        "mgmt_only": false,
-                        "mode": null,
-                        "module": {
-                            "asset_tag": null,
-                            "custom_fields": {},
-                            "display": "C9300-NM-8X installed in test100",
-                            "location": null,
-                            "module_type": {
-                                "comments": "",
-                                "custom_fields": {},
-                                "display": "Cisco C9300-NM-8X",
-                                "front_image": null,
-                                "manufacturer": {
-                                    "object_type": "dcim.manufacturer"
-                                },
-                                "model": "C9300-NM-8X",
-                                "module_family": null,
-                                "object_type": "dcim.moduletype",
-                                "part_number": "",
-                                "rear_image": null
-                            },
-                            "object_type": "dcim.module",
-                            "parent_module_bay": {
-                                "custom_fields": {},
-                                "description": "",
-                                "display": "test100 (NetworkModuleBay 1)",
-                                "label": "",
-                                "module_family": null,
-                                "name": "NetworkModuleBay 1",
-                                "object_type": "dcim.modulebay",
-                                "parent_device": {
-                                    "object_type": "dcim.device"
-                                },
-                                "parent_module": null,
-                                "position": "",
-                                "requires_first_party_modules": false
-                            },
-                            "role": null,
-                            "serial": null,
-                            "status": {
-                                "color": "4caf50",
-                                "custom_fields": {},
-                                "description": "Unit is active",
-                                "display": "Active",
-                                "name": "Active",
-                                "object_type": "extras.status"
-                            },
-                            "tenant": null
-                        },
-                        "mtu": null,
-                        "name": "Interface 1",
-                        "object_type": "dcim.interface",
-                        "parent_interface": null,
-                        "port_type": null,
-                        "role": null,
-                        "speed": null,
-                        "status": {
-                            "color": "4caf50",
-                            "custom_fields": {},
-                            "description": "Unit is active",
-                            "display": "Active",
-                            "name": "Active",
-                            "object_type": "extras.status"
-                        },
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "type": {
-                            "label": "Virtual",
-                            "value": "virtual"
-                        },
-                        "untagged_vlan": null,
-                        "vrf": null
-                    },
-                    {
-                        "bridge": null,
-                        "cable": null,
-                        "cable_peer": null,
-                        "cable_peer_type": null,
-                        "connected_endpoint": null,
-                        "connected_endpoint_reachable": null,
-                        "connected_endpoint_type": null,
-                        "custom_fields": {},
-                        "description": "",
-                        "device": null,
-                        "display": "Interface 1",
-                        "duplex": null,
-                        "enabled": true,
-                        "ip_address_count": 0,
-                        "ip_addresses": [],
-                        "label": "",
-                        "lag": null,
-                        "mac_address": null,
-                        "mgmt_only": false,
-                        "mode": null,
-                        "module": {
-                            "asset_tag": null,
-                            "custom_fields": {},
-                            "display": "C9300-NM-8X installed in test100",
-                            "location": null,
-                            "module_type": {
-                                "comments": "",
-                                "custom_fields": {},
-                                "display": "Cisco C9300-NM-8X",
-                                "front_image": null,
-                                "manufacturer": {
-                                    "object_type": "dcim.manufacturer"
-                                },
-                                "model": "C9300-NM-8X",
-                                "module_family": null,
-                                "object_type": "dcim.moduletype",
-                                "part_number": "",
-                                "rear_image": null
-                            },
-                            "object_type": "dcim.module",
-                            "parent_module_bay": {
-                                "custom_fields": {},
-                                "description": "",
-                                "display": "test100 (NetworkModuleBay 2)",
-                                "label": "",
-                                "module_family": null,
-                                "name": "NetworkModuleBay 2",
-                                "object_type": "dcim.modulebay",
-                                "parent_device": {
-                                    "object_type": "dcim.device"
-                                },
-                                "parent_module": null,
-                                "position": "",
-                                "requires_first_party_modules": false
-                            },
-                            "role": null,
-                            "serial": null,
-                            "status": {
-                                "color": "4caf50",
-                                "custom_fields": {},
-                                "description": "Unit is active",
-                                "display": "Active",
-                                "name": "Active",
-                                "object_type": "extras.status"
-                            },
-                            "tenant": null
-                        },
-                        "mtu": null,
-                        "name": "Interface 1",
-                        "object_type": "dcim.interface",
-                        "parent_interface": null,
-                        "port_type": null,
-                        "role": null,
-                        "speed": null,
-                        "status": {
-                            "color": "4caf50",
-                            "custom_fields": {},
-                            "description": "Unit is active",
-                            "display": "Active",
-                            "name": "Active",
-                            "object_type": "extras.status"
-                        },
-                        "tagged_vlans": [],
-                        "tags": [],
-                        "type": {
-                            "label": "Virtual",
-                            "value": "virtual"
-                        },
-                        "untagged_vlan": null,
-                        "vrf": null
-                    },
-                    {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -1609,6 +1429,7 @@
                         "vrf": null
                     },
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -1828,6 +1649,7 @@
                         "vrf": null
                     },
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -1982,6 +1804,7 @@
                         "vrf": null
                     },
                     {
+                        "breakout_position": null,
                         "bridge": null,
                         "cable": null,
                         "cable_peer": null,
@@ -2131,6 +1954,408 @@
                         "type": {
                             "label": "1000BASE-T (1GE)",
                             "value": "1000base-t"
+                        },
+                        "untagged_vlan": null,
+                        "vrf": null
+                    },
+                    {
+                        "breakout_position": null,
+                        "bridge": null,
+                        "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
+                        "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
+                        "connected_endpoint_type": null,
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "asset_tag": null,
+                            "comments": "",
+                            "controller_managed_device_group": null,
+                            "custom_fields": {
+                                "my_device_custom_field": "Test Device Custom Field Value"
+                            },
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "device_family": null,
+                                "display": "Cisco Cisco Test",
+                                "front_image": null,
+                                "is_full_depth": true,
+                                "manufacturer": {
+                                    "object_type": "dcim.manufacturer"
+                                },
+                                "model": "Cisco Test",
+                                "object_type": "dcim.devicetype",
+                                "part_number": "",
+                                "rear_image": null,
+                                "subdevice_role": null,
+                                "u_height": 1
+                            },
+                            "display": "test100",
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "asn": null,
+                                "comments": "",
+                                "contact_email": "",
+                                "contact_name": "",
+                                "contact_phone": "",
+                                "custom_fields": {
+                                    "my_location_custom_field": "Test Location Custom Field Value"
+                                },
+                                "description": "",
+                                "display": "Parent Test Location \u2192 Child Test Location",
+                                "facility": "",
+                                "latitude": null,
+                                "location_type": {
+                                    "object_type": "dcim.locationtype"
+                                },
+                                "longitude": null,
+                                "name": "Child Test Location",
+                                "object_type": "dcim.location",
+                                "parent": {
+                                    "object_type": "dcim.location"
+                                },
+                                "physical_address": "",
+                                "shipping_address": "",
+                                "status": {
+                                    "object_type": "extras.status"
+                                },
+                                "tenant": null,
+                                "time_zone": null
+                            },
+                            "name": "test100",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "color": "aa1409",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "Core Switch",
+                                "name": "Core Switch",
+                                "object_type": "extras.role",
+                                "weight": null
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "software_version": null,
+                            "status": {
+                                "color": "4caf50",
+                                "custom_fields": {},
+                                "description": "Unit is active",
+                                "display": "Active",
+                                "name": "Active",
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "Test Tenant",
+                                "name": "Test Tenant",
+                                "object_type": "tenancy.tenant",
+                                "tenant_group": {
+                                    "object_type": "tenancy.tenantgroup"
+                                }
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
+                        },
+                        "display": "Interface 1",
+                        "duplex": null,
+                        "enabled": true,
+                        "ip_address_count": 0,
+                        "ip_addresses": [],
+                        "label": "",
+                        "lag": null,
+                        "mac_address": null,
+                        "mgmt_only": false,
+                        "mode": null,
+                        "module": {
+                            "asset_tag": null,
+                            "custom_fields": {},
+                            "display": "C9300-NM-8X installed in test100",
+                            "location": null,
+                            "module_type": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "display": "Cisco C9300-NM-8X",
+                                "front_image": null,
+                                "manufacturer": {
+                                    "object_type": "dcim.manufacturer"
+                                },
+                                "model": "C9300-NM-8X",
+                                "module_family": null,
+                                "object_type": "dcim.moduletype",
+                                "part_number": "",
+                                "rear_image": null
+                            },
+                            "object_type": "dcim.module",
+                            "parent_module_bay": {
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "test100 (NetworkModuleBay 1)",
+                                "label": "",
+                                "module_family": null,
+                                "name": "NetworkModuleBay 1",
+                                "object_type": "dcim.modulebay",
+                                "parent_device": {
+                                    "object_type": "dcim.device"
+                                },
+                                "parent_module": null,
+                                "position": "",
+                                "requires_first_party_modules": false
+                            },
+                            "role": null,
+                            "serial": null,
+                            "status": {
+                                "color": "4caf50",
+                                "custom_fields": {},
+                                "description": "Unit is active",
+                                "display": "Active",
+                                "name": "Active",
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null
+                        },
+                        "mtu": null,
+                        "name": "Interface 1",
+                        "object_type": "dcim.interface",
+                        "parent_interface": null,
+                        "port_type": null,
+                        "role": null,
+                        "speed": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "object_type": "extras.status"
+                        },
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "type": {
+                            "label": "Virtual",
+                            "value": "virtual"
+                        },
+                        "untagged_vlan": null,
+                        "vrf": null
+                    },
+                    {
+                        "breakout_position": null,
+                        "bridge": null,
+                        "cable": null,
+                        "cable_peer": null,
+                        "cable_peer_type": null,
+                        "connected_endpoint": null,
+                        "connected_endpoint_reachable": null,
+                        "connected_endpoint_type": null,
+                        "custom_fields": {},
+                        "description": "",
+                        "device": {
+                            "asset_tag": null,
+                            "comments": "",
+                            "controller_managed_device_group": null,
+                            "custom_fields": {
+                                "my_device_custom_field": "Test Device Custom Field Value"
+                            },
+                            "device_redundancy_group": null,
+                            "device_redundancy_group_priority": null,
+                            "device_type": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "device_family": null,
+                                "display": "Cisco Cisco Test",
+                                "front_image": null,
+                                "is_full_depth": true,
+                                "manufacturer": {
+                                    "object_type": "dcim.manufacturer"
+                                },
+                                "model": "Cisco Test",
+                                "object_type": "dcim.devicetype",
+                                "part_number": "",
+                                "rear_image": null,
+                                "subdevice_role": null,
+                                "u_height": 1
+                            },
+                            "display": "test100",
+                            "face": null,
+                            "local_config_context_data": {
+                                "ntp_servers": [
+                                    "pool.ntp.org"
+                                ]
+                            },
+                            "local_config_context_data_owner_content_type": null,
+                            "local_config_context_data_owner_object_id": null,
+                            "local_config_context_schema": null,
+                            "location": {
+                                "asn": null,
+                                "comments": "",
+                                "contact_email": "",
+                                "contact_name": "",
+                                "contact_phone": "",
+                                "custom_fields": {
+                                    "my_location_custom_field": "Test Location Custom Field Value"
+                                },
+                                "description": "",
+                                "display": "Parent Test Location \u2192 Child Test Location",
+                                "facility": "",
+                                "latitude": null,
+                                "location_type": {
+                                    "object_type": "dcim.locationtype"
+                                },
+                                "longitude": null,
+                                "name": "Child Test Location",
+                                "object_type": "dcim.location",
+                                "parent": {
+                                    "object_type": "dcim.location"
+                                },
+                                "physical_address": "",
+                                "shipping_address": "",
+                                "status": {
+                                    "object_type": "extras.status"
+                                },
+                                "tenant": null,
+                                "time_zone": null
+                            },
+                            "name": "test100",
+                            "object_type": "dcim.device",
+                            "parent_bay": null,
+                            "platform": null,
+                            "position": null,
+                            "primary_ip4": null,
+                            "primary_ip6": null,
+                            "rack": null,
+                            "role": {
+                                "color": "aa1409",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "Core Switch",
+                                "name": "Core Switch",
+                                "object_type": "extras.role",
+                                "weight": null
+                            },
+                            "secrets_group": null,
+                            "serial": "",
+                            "software_version": null,
+                            "status": {
+                                "color": "4caf50",
+                                "custom_fields": {},
+                                "description": "Unit is active",
+                                "display": "Active",
+                                "name": "Active",
+                                "object_type": "extras.status"
+                            },
+                            "tenant": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "Test Tenant",
+                                "name": "Test Tenant",
+                                "object_type": "tenancy.tenant",
+                                "tenant_group": {
+                                    "object_type": "tenancy.tenantgroup"
+                                }
+                            },
+                            "vc_position": null,
+                            "vc_priority": null,
+                            "virtual_chassis": null
+                        },
+                        "display": "Interface 1",
+                        "duplex": null,
+                        "enabled": true,
+                        "ip_address_count": 0,
+                        "ip_addresses": [],
+                        "label": "",
+                        "lag": null,
+                        "mac_address": null,
+                        "mgmt_only": false,
+                        "mode": null,
+                        "module": {
+                            "asset_tag": null,
+                            "custom_fields": {},
+                            "display": "C9300-NM-8X installed in test100",
+                            "location": null,
+                            "module_type": {
+                                "comments": "",
+                                "custom_fields": {},
+                                "display": "Cisco C9300-NM-8X",
+                                "front_image": null,
+                                "manufacturer": {
+                                    "object_type": "dcim.manufacturer"
+                                },
+                                "model": "C9300-NM-8X",
+                                "module_family": null,
+                                "object_type": "dcim.moduletype",
+                                "part_number": "",
+                                "rear_image": null
+                            },
+                            "object_type": "dcim.module",
+                            "parent_module_bay": {
+                                "custom_fields": {},
+                                "description": "",
+                                "display": "test100 (NetworkModuleBay 2)",
+                                "label": "",
+                                "module_family": null,
+                                "name": "NetworkModuleBay 2",
+                                "object_type": "dcim.modulebay",
+                                "parent_device": {
+                                    "object_type": "dcim.device"
+                                },
+                                "parent_module": null,
+                                "position": "",
+                                "requires_first_party_modules": false
+                            },
+                            "role": null,
+                            "serial": null,
+                            "status": {
+                                "color": "4caf50",
+                                "custom_fields": {},
+                                "description": "Unit is active",
+                                "display": "Active",
+                                "name": "Active",
+                                "object_type": "extras.status"
+                            },
+                            "tenant": null
+                        },
+                        "mtu": null,
+                        "name": "Interface 1",
+                        "object_type": "dcim.interface",
+                        "parent_interface": null,
+                        "port_type": null,
+                        "role": null,
+                        "speed": null,
+                        "status": {
+                            "color": "4caf50",
+                            "custom_fields": {},
+                            "description": "Unit is active",
+                            "display": "Active",
+                            "name": "Active",
+                            "object_type": "extras.status"
+                        },
+                        "tagged_vlans": [],
+                        "tags": [],
+                        "type": {
+                            "label": "Virtual",
+                            "value": "virtual"
                         },
                         "untagged_vlan": null,
                         "vrf": null
