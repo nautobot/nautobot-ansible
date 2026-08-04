@@ -119,3 +119,8 @@ jobs:
       ansible-version: "${{ matrix.ansible-version }}"
     needs:
       - "unit"
+
+  galaxy_importer:
+    uses: ./.github/workflows/galaxy_import.yml
+    needs:
+      - "unit"
