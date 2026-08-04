@@ -1,0 +1,155 @@
+---
+##
+##
+### SCHEDULED_JOB
+##
+##
+# Note: These tests require at least one enabled job in Nautobot
+# The tests use the first available job for scheduling
+
+- name: "SCHEDULED_JOB 0: Get list of available jobs"
+  uri:
+    url: "{{ nautobot_url }}/api/extras/jobs/"
+    method: GET
+    headers:
+      Authorization: "Token {{ nautobot_token }}"
+    validate_certs: false
+  register: jobs_list
+
+- name: "SCHEDULED_JOB 0: Find an enabled job without sensitive variables"
+  set_fact:
+    test_job: "{{ (jobs_list.json.results | selectattr('enabled', 'equalto', true) | selectattr('has_sensitive_variables', 'equalto', false) | list | first).id }}"
+    test_job_name: "{{ (jobs_list.json.results | selectattr('enabled', 'equalto', true) | selectattr('has_sensitive_variables', 'equalto', false) | list | first).name }}"
+  when: jobs_list.json.results | length > 0
+
+- name: "SCHEDULED_JOB 0: Skip tests if no suitable job found"
+  debug:
+    msg: "Skipping scheduled_job tests - no enabled job without sensitive variables found"
+  when: test_job is not defined
+
+- name: "Run scheduled_job tests"
+  when: test_job is defined
+  block:
+    - name: "SCHEDULED_JOB 1: Schedule a job to run in the future"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        job: "{{ test_job }}"
+        name: "Test Scheduled Job One"
+        interval: future
+        start_time: "2030-01-01T01:00:00.000Z"
+        state: present
+      register: test_one
+
+    - name: "SCHEDULED_JOB 1: ASSERT - Schedule job creation"
+      assert:
+        that:
+          - test_one is changed
+          - test_one['msg'] == "Scheduled job 'Test Scheduled Job One' created"
+
+    - name: "SCHEDULED_JOB 2: Try to create duplicate scheduled job"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        job: "{{ test_job }}"
+        name: "Test Scheduled Job One"
+        interval: future
+        start_time: "2030-01-01T01:00:00.000Z"
+        state: present
+      register: test_two
+
+    - name: "SCHEDULED_JOB 2: ASSERT - Duplicate not created"
+      assert:
+        that:
+          - not test_two['changed']
+          - test_two['msg'] == "Scheduled job 'Test Scheduled Job One' already exists"
+
+    - name: "SCHEDULED_JOB 3: Schedule a job with custom crontab"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        job: "{{ test_job }}"
+        name: "Test Scheduled Job Crontab"
+        interval: custom
+        crontab: "*/15 * * * *"
+        state: present
+      register: test_three
+
+    - name: "SCHEDULED_JOB 3: ASSERT - Custom crontab job created"
+      assert:
+        that:
+          - test_three is changed
+          - test_three['msg'] == "Scheduled job 'Test Scheduled Job Crontab' created"
+
+    - name: "SCHEDULED_JOB 4: Delete scheduled job by name"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Test Scheduled Job One"
+        state: absent
+      register: test_four
+
+    - name: "SCHEDULED_JOB 4: ASSERT - Job deleted"
+      assert:
+        that:
+          - test_four is changed
+          - "'deleted' in test_four['msg']"
+
+    - name: "SCHEDULED_JOB 5: Delete non-existing scheduled job"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Test Scheduled Job One"
+        state: absent
+      register: test_five
+
+    - name: "SCHEDULED_JOB 5: ASSERT - Non-existing job not changed"
+      assert:
+        that:
+          - not test_five['changed']
+          - "'not found' in test_five['msg']"
+
+    - name: "SCHEDULED_JOB 6: Cleanup - Delete crontab job"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: "Test Scheduled Job Crontab"
+        state: absent
+      register: test_six
+
+    - name: "SCHEDULED_JOB 6: ASSERT - Cleanup successful"
+      assert:
+        that:
+          - test_six is changed
+
+    - name: "SCHEDULED_JOB 7: Test check_mode create"
+      networktocode.nautobot.scheduled_job:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        job: "{{ test_job }}"
+        name: "Test Scheduled Job Check Mode"
+        interval: daily
+        start_time: "2030-01-01T02:00:00.000Z"
+        state: present
+      check_mode: true
+      register: test_seven
+
+    - name: "SCHEDULED_JOB 7: ASSERT - Check mode reports would create"
+      assert:
+        that:
+          - test_seven is changed
+          - "'would be created' in test_seven['msg']"
+
+    - name: "SCHEDULED_JOB 7: Verify job was not actually created"
+      uri:
+        url: "{{ nautobot_url }}/api/extras/scheduled-jobs/?name=Test%20Scheduled%20Job%20Check%20Mode"
+        method: GET
+        headers:
+          Authorization: "Token {{ nautobot_token }}"
+        validate_certs: false
+      register: check_mode_verify
+
+    - name: "SCHEDULED_JOB 7: ASSERT - Job not created in check mode"
+      assert:
+        that:
+          - check_mode_verify.json.count == 0
