@@ -327,17 +327,35 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
     destroy(context)
 
 
+@task
+def generate_requirements(context):
+    """Generate requirements.txt (root) and meta/requirements.txt from pyproject.toml.
+
+    Used by `ansible-builder` to resolve Execution Environment dependencies from
+    the published tarball. The files are intentionally not committed:
+    pyproject.toml is the single source of truth.
+    """
+    context.run("python3 development/generate_requirements.py")
+
+
 @task(
     help={
         "force": "Force the build command to create a new collection, overwriting any existing files.",
     },
 )
 def galaxy_build(context, force=False):
-    """Build the collection."""
-    command = "ansible-galaxy collection build ."
-    if force:
-        command += " --force"
-    context.run(command)
+    """Build the collection (auto-generates and cleans up the requirements files)."""
+    generate_requirements(context)
+    try:
+        command = "ansible-galaxy collection build ."
+        if force:
+            command += " --force"
+        context.run(command)
+    finally:
+        # The requirements files are derived from pyproject.toml on demand; remove
+        # the generated files once the tarball has been built so the working tree
+        # stays clean and pyproject.toml remains the single source.
+        context.run("rm -f requirements.txt meta/requirements.txt")
 
 
 @task(

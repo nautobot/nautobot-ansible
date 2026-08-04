@@ -18,6 +18,8 @@ jobs:
           python-version: "3.12"
       - name: "Install Python Packages"
         run: "pip install ansible-core"
+      - name: "Generate requirements.txt from pyproject.toml"
+        run: "python3 development/generate_requirements.py"
       - name: "Build the collection"
         run: "ansible-galaxy collection build --output-path build"
       - name: "Upload collection artifact"

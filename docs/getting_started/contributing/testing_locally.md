@@ -6,6 +6,51 @@ We provide the ability to run the tests locally to make sure the CI/CD pipeline 
 
 The tests are provided by enabling the environment using Poetry to provide the Invoke commands to run the tests.
 
+## Pre-Push Checklist
+
+Before pushing any change, run these fast checks. Most failures CI catches are reproducible locally in under a minute and don't require Docker.
+
+```shell
+# 1. pyproject.toml and poetry.lock are in sync
+poetry check --lock
+
+# 2. A towncrier changelog fragment exists for the issue/PR
+poetry run towncrier check --compare-with origin/develop
+
+# 3. Project lint -- this is what the CI `tests / lint` job runs
+invoke lint
+```
+
+If any of those fail, fix and re-run before pushing.
+
+!!! tip "Faster iteration while you work"
+
+    `invoke lint` builds a Docker image, so the first run is not instant. While iterating you can run the individual linters it wraps directly:
+
+    ```shell
+    poetry run invoke check-versions
+    poetry run ruff format --check .
+    poetry run ruff check .
+    poetry run pylint **/*.py
+    ```
+
+    Treat that as a fast pre-check, not a substitute. `invoke lint` is the authoritative mirror of CI — see the [CI Mirror Reference](#ci-mirror-reference) below.
+
+For deeper coverage, also run the Docker-based `invoke unit` and, when modifying runtime behavior, `invoke integration`.
+
+### When you bumped a dependency in `pyproject.toml`
+
+```shell
+# Poetry 2.x default behavior respects existing pins
+poetry lock
+
+# Confirm the diff is narrow (only the new/bumped dep and its transitives)
+git diff --stat poetry.lock
+git diff poetry.lock | head -100
+```
+
+Commit `poetry.lock` alongside `pyproject.toml`. CI checks them for sync and aborts otherwise.
+
 ## Invoke Tasks
 
 You can get the list of available Invoke commands available for running the tests after launching `poetry shell`.
@@ -94,6 +139,35 @@ nautobot_ansible:
 This file will override any configuration in the main `docker-compose.yml` file, without making changes to the repository.
 
 Please see the [official documentation on extending Docker Compose](https://docs.docker.com/compose/extends/) for more information.
+
+## CI Mirror Reference
+
+Each invoke task corresponds to one or more CI jobs:
+
+| Invoke task | CI job | What it runs |
+|---|---|---|
+| `invoke lint` | `tests / lint` | `invoke check-versions` + `ruff format .` + `ruff check .` + `pylint **/*.py` inside the lint container |
+| `invoke unit` | `tests / unit (3.12/3.13/3.14)` | Project lint + `ansible-test sanity --requirements` + `ansible-lint` + unit tests |
+| `invoke integration` | `tests / integration_partial` and `tests / integration_full` | Full integration suite against a real Nautobot instance |
+| `invoke galaxy-build` | (release workflow `build_collection` step) | Generates `requirements.txt`, builds the collection tarball, cleans up |
+
+## Gotchas
+
+These are easy to miss and lead to the "CI fails after a clean local run" pattern:
+
+1. **Two pylint surfaces, different scopes.** CI runs pylint twice:
+    - `tests / lint` runs `pylint **/*.py` from the project root. In bash without `shopt -s globstar`, `**` is plain `*`, so the glob matches files exactly one directory deep (`development/foo.py`, `plugins/foo.py`, `tests/foo.py`). Files in `tests/unit/foo.py` are NOT covered here.
+    - `tests / unit` runs `ansible-test sanity --test pylint`, which uses its own pylint configuration and scans every `.py` file in the collection layout including `tests/unit/`.
+
+    A clean `invoke lint` does NOT imply a clean `invoke unit`. Run both before pushing.
+
+2. **Ansible-core version skew.** `pyproject.toml` pins `ansible-core>=2.18,<2.20`. Your local Poetry environment may resolve to 2.19 while CI runs 2.18. Newer ansible-core has stricter pylint rules (for example, 2.19's `disallowed-name` rule). If a pylint issue you see locally points at code that has been on `develop` for months, check `git blame` before chasing it -- it is probably 2.19-only and won't fail CI.
+
+3. **Convention warnings still fail the build.** `pylint`'s "Your code has been rated at X/10" line is informational. Any `C0xxx` (convention) message exits non-zero and fails the Docker build for the lint job. Don't trust the rating; resolve every reported line.
+
+4. **`requirements.txt` is generated, not tracked.** The root `requirements.txt` consumed by Red Hat Automation Hub is produced from `pyproject.toml` by `development/generate_requirements.py` at build time. See the [Python Dependencies](python_dependencies.md) page for details.
+
+5. **The lint Docker stage builds a fresh image every run.** First `invoke lint` is slow (around 5 minutes). Subsequent runs are faster due to Docker layer caching, but expect the first one to take a while.
 
 ## Using a Custom Nautobot Init File
 
