@@ -62,6 +62,7 @@ issues: https://github.com/nautobot/nautobot-ansible/issues
 
 build_ignore:
   - ".ansible"
+  - ".claude"
   - ".github"
   - ".pytest_cache"
   - ".venv"

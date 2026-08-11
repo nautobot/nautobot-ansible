@@ -94,6 +94,19 @@ rm requirements.txt meta/requirements.txt
 
 The release workflow (`.github/workflows/trigger_release.yml`) calls the generator before `ansible-galaxy collection build`, so the published tarball uploaded to GitHub Releases, Ansible Galaxy, and Red Hat Automation Hub always contains up-to-date requirements files.
 
+### Pull request CI
+
+The `galaxy_importer` job (`.github/workflows/galaxy_import.yml`) builds the collection tarball itself, calling the generator first, and then runs `galaxy-importer` against it — the same checks `console.redhat.com` runs at publish time.
+
+This job deliberately does **not** use the shared `ansible-community/github-action-build-collection` reusable workflow. That workflow has no hook for a pre-build step, so it would produce a tarball with no requirements files in it. `galaxy-importer` reads `meta/execution-environment.yml`, follows its `dependencies.python` pointer to `meta/requirements.txt`, and reports a publication-blocking finding when the file is absent:
+
+```text
+WARNING: Error when checking meta/execution-environment.yml for dependency files:
+[Errno 2] No such file or directory: '.../meta/requirements.txt'
+```
+
+If you change how the requirements files are produced, keep both build paths (`galaxy_import.yml` and `trigger_release.yml`) in sync, or the CI gate and the published artifact will disagree.
+
 ## Updating dependencies
 
 To bump a dependency version:
