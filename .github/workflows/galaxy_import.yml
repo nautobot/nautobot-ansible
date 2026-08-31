@@ -5,30 +5,16 @@ on:
   workflow_call:
 
 jobs:
-  build:
-    name: Build collection artifact
-    uses: ansible-community/github-action-build-collection/.github/workflows/build-collection.yml@main
-
   test:
     name: Test Collection with Galaxy importer
     runs-on: "ubuntu-latest"
-    needs:
-      - build
     env:
       # Python 3.12 is a valid controller version for every ansible-core from
       # 2.17 through 2.21, so it does not need to track the floor below.
       PYTHON_VERSION: "3.12"
     steps:
-      # Checkout must come before download-artifact: actions/checkout cleans
-      # the workspace by default and would delete the downloaded tarball.
-      # The checkout exists only so we can read meta/runtime.yml.
       - name: Check out repository code
         uses: actions/checkout@v6
-
-      - name: Download artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: ${{ needs.build.outputs.artifact-name }}
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -68,6 +54,11 @@ jobs:
       - name: Record resolved tool versions
         run: pip list | grep -iE '^(ansible-core|ansible-lint|galaxy.importer) '
 
+      - name: Build collection artifact
+        run: |
+          ansible-galaxy collection build --output-path dist
+          echo "ARTIFACT_FILENAME=$(ls dist/*.tar.gz)" >> "$GITHUB_ENV"
+
       - name: Create config file
         run: |
           echo "[galaxy-importer]
@@ -75,7 +66,6 @@ jobs:
 
       - name: Test import
         env:
-          ARTIFACT_FILENAME: "${{ needs.build.outputs.artifact-filename }}"
           GALAXY_IMPORTER_CONFIG: galaxy-importer.cfg
         run: python -m galaxy_importer.main "$ARTIFACT_FILENAME" | tee import.log
 
