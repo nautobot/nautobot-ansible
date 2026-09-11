@@ -74,6 +74,21 @@ DOCUMENTATION = """
       default: False
       type: boolean
       version_added: "1.0.0"
+    computed_fields:
+      description:
+        - If True, it adds computed_fields in host vars.
+        - Computed fields are Jinja2 templates that Nautobot renders at read time, and are only returned by the API when explicitly requested.
+        - Each computed field is rendered per object per request, so enabling this on a large inventory adds server-side work.
+      default: False
+      type: boolean
+      version_added: "6.3.0"
+    flatten_computed_fields:
+      description:
+        - By default, host computed fields are added as a dictionary host var named computed_fields.
+        - If flatten_computed_fields is set to True, the fields will be added directly to the host instead.
+      default: False
+      type: boolean
+      version_added: "6.3.0"
     token:
       required: False
       description:
@@ -1212,6 +1227,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if vm_url:
                 vm_url = f"{vm_url}&include=config_context"
 
+        # Include computed_fields if required
+        if self.computed_fields:
+            if device_url:
+                device_url = f"{device_url}&include=computed_fields"
+            if vm_url:
+                vm_url = f"{vm_url}&include=computed_fields"
+
         return device_url, vm_url
 
     def fetch_hosts(self):
@@ -1454,6 +1476,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.flatten_config_context = self.get_option("flatten_config_context")
         self.flatten_local_context_data = self.get_option("flatten_local_context_data")
         self.flatten_custom_fields = self.get_option("flatten_custom_fields")
+        self.computed_fields = self.get_option("computed_fields")
+        self.flatten_computed_fields = self.get_option("flatten_computed_fields")
         self.plurals = self.get_option("plurals")
         self.interfaces = self.get_option("interfaces")
         self.module_interfaces = self.get_option("module_interfaces")

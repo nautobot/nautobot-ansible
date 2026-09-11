@@ -122,6 +122,7 @@ def test_refresh_url(inventory_fixture, options, expected):
     inventory_fixture.device_query_filters = options["device_query_filters"]
     inventory_fixture.vm_query_filters = options["vm_query_filters"]
     inventory_fixture.config_context = options["config_context"]
+    inventory_fixture.computed_fields = options.get("computed_fields", False)
 
     result = inventory_fixture.refresh_url()
 
