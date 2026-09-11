@@ -484,6 +484,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if self.services:
             extractors.update({"services": self.extract_services})
 
+        if self.computed_fields:
+            extractors.update({"computed_fields": self.extract_computed_fields})
+
         if self.interfaces:
             extractors.update({"interfaces": self.extract_interfaces})
 
@@ -704,6 +707,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def extract_custom_fields(self, host):
         try:
             return host["custom_fields"]
+        except Exception:
+            return
+
+    def extract_computed_fields(self, host):
+        try:
+            return host["computed_fields"]
         except Exception:
             return
 
@@ -1396,6 +1405,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 (attribute == "config_context" and self.flatten_config_context)
                 or (attribute == "custom_fields" and self.flatten_custom_fields)
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
+                or (attribute == "computed_fields" and self.flatten_computed_fields)
             ):
                 for key, value in extracted_value.items():
                     self._set_variable(hostname, key, value)
