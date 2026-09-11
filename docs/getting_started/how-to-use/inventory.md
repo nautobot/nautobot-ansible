@@ -32,6 +32,9 @@ keyed_groups:
     separator: "_"
 ```
 
+!!! note
+    The above examples are excerpts from the following [blog post](https://networktocode.com/blog/ansible-constructed-inventory/).
+
 ## Using Computed Fields
 
 [Computed fields](https://docs.nautobot.com/projects/core/en/stable/user-guide/platform-functionality/computedfield/) are Jinja2 templates that Nautobot renders when an object is read. The REST API only returns them when they are explicitly requested, so the inventory plugin does not fetch them unless you ask it to.
@@ -42,7 +45,9 @@ plugin: networktocode.nautobot.inventory
 computed_fields: true
 ```
 
-Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. Set `flatten_computed_fields: true` to promote each key to a host var of its own instead, and use `compose` to lift a single field to a name of your choosing.
+Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. A host that no computed field targets still gets `computed_fields: {}` rather than no variable at all, so test for contents rather than for definedness.
+
+Set `flatten_computed_fields: true` to promote each key to a host var of its own instead. Flattened hosts with no applicable fields get no variable at all rather than an empty dict, and flattening has no namespacing: a computed field key that collides with an existing host var name (`status`, `dns_name`, `platform`, and so on) will clobber it or be clobbered by it depending on extractor order, the same hazard as `flatten_custom_fields`. Use `compose` to lift a single field to a name of your choosing.
 
 ```yaml
 ---
@@ -68,11 +73,7 @@ Grouping requires `computed_fields: true`; it does not turn the option on for yo
     Two things to keep in mind. Nautobot renders every computed field for every object on every request, so enabling this against a large inventory adds real server-side work — leave it off unless you need it. And because computed field values are arbitrary rendered text, `group_by` on a field that renders free-form prose produces unusable group names; `keyed_groups` on a single composed field is the precise alternative.
 
 !!! note
-    Ansible keys the inventory cache on the inventory file's path, not on the options inside it. If you are running with `cache: true` and you turn `computed_fields` on, you will keep getting cached hosts without computed fields until the cache entry expires or you flush it.
-
-!!! note
-    The above examples are excerpts from the following [blog post](https://networktocode.com/blog/ansible-constructed-inventory/).
-
+    Enabling `computed_fields` changes the device and virtual-machine API URLs, which changes the cache key, so the first run after turning it on refetches the full device and VM list instead of serving the previously cached entries — those linger until they expire.
 
 ## Using Inventory Plugin Within AWX/Tower
 

@@ -512,6 +512,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if self.services:
             extractors.update({"services": self.extract_services})
 
+        # Registered conditionally (like `services`/`interfaces`) rather than unconditionally like `config_context`,
+        # so that an unregistered `computed_fields` key lets `add_host_to_groups` raise its "not valid" error as a
+        # second line of defense behind `_validate_group_by_options`.
         if self.computed_fields:
             extractors.update({"computed_fields": self.extract_computed_fields})
 
