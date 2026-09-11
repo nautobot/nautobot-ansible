@@ -965,6 +965,17 @@ test100_location = nb.dcim.locations.get(id=test100.location.id)
 test100_location.custom_fields = {"my_location_custom_field": "Test Location Custom Field Value"}
 test100_location.save()
 
+# Create Computed Fields
+computed_fields = [
+    {
+        "label": "My Device Computed Field",
+        "key": "my_device_computed_field",
+        "content_type": "dcim.device",
+        "template": "{{ obj.name }} computed",
+    },
+]
+created_computed_fields = make_nautobot_calls(nb.extras.computed_fields, computed_fields)
+
 # Enable example job for job tests
 example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
 example_job_receiver.enabled = True
