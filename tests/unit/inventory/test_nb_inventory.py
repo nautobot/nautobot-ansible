@@ -11,6 +11,7 @@ from functools import partial
 from unittest.mock import Mock, call
 
 import pytest
+from ansible.errors import AnsibleError
 
 try:
     from ansible_collections.networktocode.nautobot.plugins.inventory.inventory import InventoryModule
@@ -32,12 +33,20 @@ load_relative_test_data = partial(load_test_data, os.path.dirname(os.path.abspat
 class MockInventory:
     def __init__(self):
         self.variables = {}
+        self.groups = {}
 
     def set_variable(self, hostname, key, value):
         if hostname not in self.variables:
             self.variables[hostname] = {}
 
         self.variables[hostname][key] = value
+
+    def add_group(self, group):
+        self.groups.setdefault(group, [])
+        return group
+
+    def add_host(self, group, host):
+        self.groups.setdefault(group, []).append(host)
 
 
 @pytest.fixture
@@ -211,3 +220,54 @@ def test_rename_variables(inventory_fixture):
         "nautobot_cluster": "staging",
         "nautobot_cluster_id": "0xdeadbeef",
     }
+
+
+def _computed_fields_group_fixture(inventory_fixture, group_names_raw):
+    """Set the minimum attribute state group_extractors and add_host_to_groups read."""
+    inventory_fixture.plurals = False
+    inventory_fixture.services = False
+    inventory_fixture.interfaces = False
+    inventory_fixture.dns_name = False
+    inventory_fixture.ansible_host_dns_name = False
+    inventory_fixture.computed_fields = True
+    inventory_fixture.group_by = ["computed_fields"]
+    inventory_fixture.group_names_raw = group_names_raw
+    return inventory_fixture
+
+
+def test_add_host_to_groups_computed_fields(inventory_fixture):
+    inventory = _computed_fields_group_fixture(inventory_fixture, group_names_raw=False)
+    host = {"computed_fields": {"is_edge": "yes", "site_code": "ABC-1", "no_value": ""}}
+
+    inventory.add_host_to_groups(host, "test100")
+
+    assert "computed_field_is_edge_yes" in inventory.inventory.groups
+    assert "computed_field_site_code_abc_1" in inventory.inventory.groups
+    assert inventory.inventory.groups["computed_field_is_edge_yes"] == ["test100"]
+    assert not [group for group in inventory.inventory.groups if group.startswith("computed_field_no_value")]
+
+
+def test_add_host_to_groups_computed_fields_group_names_raw(inventory_fixture):
+    inventory = _computed_fields_group_fixture(inventory_fixture, group_names_raw=True)
+    host = {"computed_fields": {"is_edge": "yes"}}
+
+    inventory.add_host_to_groups(host, "test100")
+
+    assert "is_edge_yes" in inventory.inventory.groups
+
+
+def test_validate_group_by_options_requires_computed_fields(inventory_fixture):
+    inventory_fixture.group_by = ["computed_fields"]
+    inventory_fixture.computed_fields = False
+
+    with pytest.raises(AnsibleError) as error:
+        inventory_fixture._validate_group_by_options()
+
+    assert 'requires the "computed_fields" option to be set to True' in str(error)
+
+
+def test_validate_group_by_options_passes_when_enabled(inventory_fixture):
+    inventory_fixture.group_by = ["computed_fields"]
+    inventory_fixture.computed_fields = True
+
+    inventory_fixture._validate_group_by_options()

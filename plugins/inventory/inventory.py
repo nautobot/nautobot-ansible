@@ -166,6 +166,7 @@ DOCUMENTATION = """
         - is_virtual
         - services
         - status
+        - computed_fields
       default: []
     group_names_raw:
       description: Will not add the group_by choice name to the group names
@@ -1298,11 +1299,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             group = group["name"]
             grouping = "service"
 
+        if grouping == "computed_fields":
+            grouping = "computed_field"
+
         if grouping == "status":
             group = group["display"]
 
         group = self._remove_invalid_group_chars(group)
         return group if self.group_names_raw else "_".join([grouping, group])
+
+    def _validate_group_by_options(self):
+        """Raise a clear error for group_by choices that depend on another option being enabled."""
+        if "computed_fields" in self.group_by and not self.computed_fields:
+            raise AnsibleError(
+                'group_by option "computed_fields" requires the "computed_fields" option to be set to True'
+            )
 
     def add_host_to_groups(self, host, hostname):
         for grouping in self.group_by:
@@ -1316,6 +1327,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if not groups_for_host:
                 continue
+
+            # Special case - computed_fields is a dict of key/value pairs; each pair becomes its own group
+            if grouping == "computed_fields" and isinstance(groups_for_host, dict):
+                groups_for_host = [f"{key}_{value}" for key, value in groups_for_host.items() if value]
 
             # Make groups_for_host a list if it isn't already
             if not isinstance(groups_for_host, list):
@@ -1503,6 +1518,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Filter and group_by options
         self.group_by = self.get_option("group_by")
         self.group_names_raw = self.get_option("group_names_raw")
+        self._validate_group_by_options()
         self.query_filters = self.get_option("query_filters")
         self.device_query_filters = self.get_option("device_query_filters")
         self.vm_query_filters = self.get_option("vm_query_filters")
