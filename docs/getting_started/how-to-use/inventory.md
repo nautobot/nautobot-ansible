@@ -32,6 +32,44 @@ keyed_groups:
     separator: "_"
 ```
 
+## Using Computed Fields
+
+[Computed fields](https://docs.nautobot.com/projects/core/en/stable/user-guide/platform-functionality/computedfield/) are Jinja2 templates that Nautobot renders when an object is read. The REST API only returns them when they are explicitly requested, so the inventory plugin does not fetch them unless you ask it to.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+```
+
+Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. Set `flatten_computed_fields: true` to promote each key to a host var of its own instead, and use `compose` to lift a single field to a name of your choosing.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+compose:
+  device_summary: computed_fields.my_device_summary
+```
+
+You can also build groups from computed fields. Each key/value pair becomes its own group, named `computed_field_<key>_<value>`, or `<key>_<value>` when `group_names_raw` is enabled.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+group_by:
+  - computed_fields
+```
+
+Grouping requires `computed_fields: true`; it does not turn the option on for you.
+
+!!! warning
+    Two things to keep in mind. Nautobot renders every computed field for every object on every request, so enabling this against a large inventory adds real server-side work — leave it off unless you need it. And because computed field values are arbitrary rendered text, `group_by` on a field that renders free-form prose produces unusable group names; `keyed_groups` on a single composed field is the precise alternative.
+
+!!! note
+    Ansible keys the inventory cache on the inventory file's path, not on the options inside it. If you are running with `cache: true` and you turn `computed_fields` on, you will keep getting cached hosts without computed fields until the cache entry expires or you flush it.
+
 !!! note
     The above examples are excerpts from the following [blog post](https://networktocode.com/blog/ansible-constructed-inventory/).
 

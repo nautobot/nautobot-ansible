@@ -13,6 +13,7 @@ DOCUMENTATION = """
     - Nikhil Singh Baliyan (@nikkytub)
     - Sander Steffann (@steffann)
     - Douglas Heriot (@DouglasHeriot)
+    - Yannis Ansermoz (@Yannis100)
   short_description: Nautobot inventory source
   description:
     - Get inventory hosts from Nautobot
@@ -284,6 +285,32 @@ compose:
   # You can also use custom fields on the device or a nested object
   device_owner: custom_fields.device_owner
   ansible_network_os: platforms.custom_fields.ansible_network_os
+
+---
+# Computed fields are Jinja2 templates rendered by Nautobot at read time.
+# They are opt-in: nothing is fetched unless computed_fields is enabled.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+compose:
+  device_summary: computed_fields.my_device_summary
+
+---
+# Set flatten_computed_fields to add each computed field as its own host var
+# instead of a computed_fields dictionary.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+flatten_computed_fields: true
+
+---
+# group_by creates one group per computed field key/value pair, named
+# computed_field_<key>_<value>. It requires the computed_fields option.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+group_by:
+  - computed_fields
 
 ---
 # You can use keyed_groups to group on properties of devices or VMs.
