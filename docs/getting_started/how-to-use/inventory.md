@@ -52,7 +52,7 @@ compose:
   device_summary: computed_fields.my_device_summary
 ```
 
-You can also build groups from computed fields. Each key/value pair becomes its own group, named `computed_field_<key>_<value>`, or `<key>_<value>` when `group_names_raw` is enabled.
+You can also build groups from computed fields. Each key/value pair becomes its own group, named `computed_field_<key>_<value>`, or `<key>_<value>` when `group_names_raw` is enabled. A computed field that renders to an empty value is skipped entirely — it produces no group at all, rather than a group with a trailing underscore.
 
 ```yaml
 ---
@@ -62,7 +62,7 @@ group_by:
   - computed_fields
 ```
 
-Grouping requires `computed_fields: true`; it does not turn the option on for you.
+Grouping requires `computed_fields: true`; it does not turn the option on for you — if you set `group_by: [computed_fields]` without it, the plugin raises an `AnsibleError` naming the missing option (`group_by option "computed_fields" requires the "computed_fields" option to be set to True`) rather than silently producing no groups.
 
 !!! warning
     Two things to keep in mind. Nautobot renders every computed field for every object on every request, so enabling this against a large inventory adds real server-side work — leave it off unless you need it. And because computed field values are arbitrary rendered text, `group_by` on a field that renders free-form prose produces unusable group names; `keyed_groups` on a single composed field is the precise alternative.
