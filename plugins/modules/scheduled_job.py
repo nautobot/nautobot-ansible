@@ -10,15 +10,20 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: scheduled_job
-short_description: Schedule or delete scheduled jobs in Nautobot
+short_description: Run, schedule or delete jobs in Nautobot
 description:
+  - Run a job immediately in Nautobot
   - Schedule jobs to run at a specific time or interval in Nautobot
   - Delete existing scheduled jobs from Nautobot
   - Note that scheduled jobs cannot be updated once created - to change a scheduled job,
     delete it and create a new one
 notes:
   - This should be ran with connection C(local) and hosts C(localhost)
-  - The job must be enabled and cannot have C(has_sensitive_variables=True) to be scheduled
+  - The job must be enabled
+  - I(interval=immediately) executes the job rather than creating a schedule, so it is
+    not idempotent - every run enqueues the job again and always reports C(changed)
+  - A job with C(has_sensitive_variables=True) can be run with I(interval=immediately)
+    but cannot be scheduled with any other interval
   - Scheduled jobs use different API endpoints for creation vs retrieval/deletion
 author:
   - Network to Code (@networktocode)
@@ -39,13 +44,16 @@ options:
   name:
     description:
       - The name for this scheduled job instance
-      - Required when I(state=present)
+      - Required when I(state=present), except for I(interval=immediately) where it is ignored
       - Used to identify the scheduled job for deletion when I(state=absent)
     required: false
     type: str
   interval:
     description:
       - The scheduling interval type
+      - C(immediately) - Run the job now instead of scheduling it. No scheduled job is
+        created, so I(name), I(start_time) and I(crontab) are ignored and the job's
+        result is returned as I(job_result)
       - C(future) - Run once at a specific time in the future
       - C(hourly) - Run every hour
       - C(daily) - Run every day
@@ -54,6 +62,7 @@ options:
     required: false
     type: str
     choices:
+      - immediately
       - future
       - hourly
       - daily
@@ -62,7 +71,7 @@ options:
   start_time:
     description:
       - The time to start running the job (ISO 8601 format)
-      - Required for every interval except I(interval=custom)
+      - Required for every interval except I(interval=custom) and I(interval=immediately)
       - Nautobot rejects a start time earlier than the current time
       - "Example: 2030-01-01T01:00:00.000Z"
     required: false
@@ -90,6 +99,26 @@ options:
 """
 
 EXAMPLES = r"""
+- name: Run a job immediately
+  networktocode.nautobot.scheduled_job:
+    url: http://nautobot.local
+    token: thisIsMyToken
+    job: "MyJobClass"
+    interval: immediately
+    state: present
+  register: job_run
+
+- name: Wait for the job that was run immediately to finish
+  networktocode.nautobot.lookup:
+    _terms: job-results
+    api_endpoint: http://nautobot.local
+    token: thisIsMyToken
+    api_filter: "id={{ job_run['job_result']['id'] }}"
+  register: job_status
+  until: job_status['data'][0]['value']['status']['value'] not in ['PENDING', 'RUNNING']
+  retries: 30
+  delay: 10
+
 - name: Schedule a job to run at a specific future time
   networktocode.nautobot.scheduled_job:
     url: http://nautobot.local
@@ -150,8 +179,15 @@ EXAMPLES = r"""
 
 RETURN = r"""
 scheduled_job:
-  description: Serialized object as created within Nautobot
-  returned: success (when I(state=present))
+  description: Serialized scheduled job as created within Nautobot
+  returned: success, when I(state=present) and I(interval) is not C(immediately)
+  type: dict
+job_result:
+  description:
+    - Serialized job result for the enqueued job run
+    - Returned with a status of C(PENDING); the module does not wait for the job to finish
+    - Poll C(/api/extras/job-results/<id>/) with the returned C(id) to track completion
+  returned: success, when I(state=present) and I(interval=immediately)
   type: dict
 msg:
   description: Message indicating failure or info about what has been achieved
@@ -174,12 +210,16 @@ REMOVE_KEYS = ["interval", "start_time", "crontab", "data", "task_queue"]
 
 
 class NautobotScheduledJobModule(NautobotModule):
-    """Nautobot module for scheduled jobs with non-standard CRUD operations.
+    """Nautobot module for running and scheduling jobs.
 
-    Scheduled jobs have unique API behavior:
-    - Create: POST to /api/extras/jobs/{id}/run/ with schedule parameter
+    Jobs have unique API behavior:
+    - Run now: POST to /api/extras/jobs/{id}/run/ with no schedule parameter
+    - Schedule: POST to /api/extras/jobs/{id}/run/ with a schedule parameter
     - Read/Delete: /api/extras/scheduled-jobs/
     - Update: Not supported (must delete and recreate)
+
+    The same run endpoint returns either a scheduled_job or a job_result
+    depending on whether a schedule was requested.
     """
 
     def __init__(self, module):
@@ -192,10 +232,12 @@ class NautobotScheduledJobModule(NautobotModule):
         """Execute the scheduled job module logic."""
         self.result = {"changed": False}
 
-        if self.state == "present":
-            self._ensure_scheduled_job_present()
-        else:
+        if self.state == "absent":
             self._ensure_scheduled_job_absent()
+        elif self.module.params["interval"] == "immediately":
+            self._run_job_now()
+        else:
+            self._ensure_scheduled_job_present()
 
         self.module.exit_json(**self.result)
 
@@ -218,14 +260,52 @@ class NautobotScheduledJobModule(NautobotModule):
 
         return None
 
+    def _build_run_kwargs(self):
+        """Build the keyword arguments common to every job run request.
+
+        Returns:
+            Dict of optional run arguments accepted by the job run endpoint
+        """
+        run_kwargs = {}
+        data = self.module.params.get("data")
+        task_queue = self.module.params.get("task_queue")
+        if data:
+            run_kwargs["data"] = data
+        if task_queue:
+            run_kwargs["task_queue"] = task_queue
+
+        return run_kwargs
+
+    def _run_job_now(self):
+        """Enqueue a job to run immediately.
+
+        Omitting the schedule payload is what tells Nautobot to enqueue the job
+        directly. Nothing is persisted as a scheduled job, so this is an action
+        rather than a state to converge on and always reports changed.
+        """
+        job_identifier = self.module.params["job"]
+
+        if self.check_mode:
+            self.result["changed"] = True
+            self.result["msg"] = f"Job '{job_identifier}' would be run immediately"
+            return
+
+        try:
+            result = self.nb.extras.jobs.run(job_id=self.data["job"], **self._build_run_kwargs())
+
+            self.result["changed"] = True
+            self.result["job_result"] = result.job_result.serialize()
+            self.result["msg"] = f"Job '{job_identifier}' submitted to run immediately"
+
+        except Exception as e:
+            self._handle_errors(msg=f"Error running job: {e}")
+
     def _ensure_scheduled_job_present(self):
         """Create a scheduled job if it doesn't exist."""
         name = self.module.params.get("name")
         interval = self.module.params.get("interval")
         start_time = self.module.params.get("start_time")
         crontab = self.module.params.get("crontab")
-        data = self.module.params.get("data") or {}
-        task_queue = self.module.params.get("task_queue")
 
         # Check if scheduled job already exists
         existing = self._find_scheduled_job(name=name)
@@ -247,12 +327,8 @@ class NautobotScheduledJobModule(NautobotModule):
         if crontab:
             schedule_data["crontab"] = crontab
 
-        # Build run request payload
-        run_kwargs = {"schedule": schedule_data}
-        if data:
-            run_kwargs["data"] = data
-        if task_queue:
-            run_kwargs["task_queue"] = task_queue
+        run_kwargs = self._build_run_kwargs()
+        run_kwargs["schedule"] = schedule_data
 
         # Create via job run endpoint
         try:
@@ -307,7 +383,7 @@ def main():
             interval=dict(
                 required=False,
                 type="str",
-                choices=["future", "hourly", "daily", "weekly", "custom"],
+                choices=["immediately", "future", "hourly", "daily", "weekly", "custom"],
             ),
             start_time=dict(required=False, type="str"),
             crontab=dict(required=False, type="str"),
@@ -320,13 +396,13 @@ def main():
         argument_spec=argument_spec,
         supports_check_mode=True,
         required_if=[
-            ("state", "present", ["job", "name", "interval"]),
+            ("state", "present", ["job", "interval"]),
             ("state", "absent", ["name", "id"], True),
-            ("interval", "future", ["start_time"]),
-            ("interval", "hourly", ["start_time"]),
-            ("interval", "daily", ["start_time"]),
-            ("interval", "weekly", ["start_time"]),
-            ("interval", "custom", ["crontab"]),
+            ("interval", "future", ["name", "start_time"]),
+            ("interval", "hourly", ["name", "start_time"]),
+            ("interval", "daily", ["name", "start_time"]),
+            ("interval", "weekly", ["name", "start_time"]),
+            ("interval", "custom", ["name", "crontab"]),
         ],
     )
 

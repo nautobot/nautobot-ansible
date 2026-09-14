@@ -191,3 +191,84 @@
   assert:
     that:
       - test_cleanup is changed
+
+- name: "11 - Run a job immediately"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  register: test_run_now
+
+- name: "11 - ASSERT"
+  assert:
+    that:
+      - test_run_now is changed
+      - test_run_now['job_result']['id'] is defined
+      - test_run_now['job_result']['name'] == test_job
+      - test_run_now['msg'] == "Job 'Refresh Dynamic Group Caches' submitted to run immediately"
+      - "'scheduled_job' not in test_run_now"
+
+- name: "12 - Run a job immediately again (an action, so never idempotent)"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  register: test_run_now_again
+
+- name: "12 - ASSERT - Reports changed and enqueues a separate job result"
+  assert:
+    that:
+      - test_run_now_again is changed
+      - test_run_now_again['job_result']['id'] != test_run_now['job_result']['id']
+
+- name: "13 - Run a job immediately with check_mode"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  check_mode: true
+  register: test_run_now_check_mode
+
+- name: "13 - ASSERT - Nothing is enqueued"
+  assert:
+    that:
+      - test_run_now_check_mode is changed
+      - test_run_now_check_mode['msg'] == "Job 'Refresh Dynamic Group Caches' would be run immediately"
+      - "'job_result' not in test_run_now_check_mode"
+
+- name: "14 - Run a job immediately with job data"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    data:
+      single_group: null
+    state: present
+  register: test_run_now_data
+
+- name: "14 - ASSERT"
+  assert:
+    that:
+      - test_run_now_data is changed
+      - test_run_now_data['job_result']['id'] is defined
+
+- name: "15 - Run immediately does not create a scheduled job"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "{{ test_job }}"
+    state: absent
+  register: test_run_now_no_schedule
+
+- name: "15 - ASSERT"
+  assert:
+    that:
+      - not test_run_now_no_schedule['changed']
+      - "'already absent' in test_run_now_no_schedule['msg']"
