@@ -818,3 +818,18 @@ releases:
       - name: provider_network
         description: Creates or removes provider networks from Nautobot
         namespace: ''
+  6.3.0:
+    changes:
+      minor_changes:
+        - (#333) - Added a `computed_fields` inventory option to include Nautobot computed fields as host vars.
+        - (#333) - Added a `flatten_computed_fields` inventory option to add each computed field as its own host var instead of a dictionary.
+        - (#333) - Added a `computed_fields` option to the `inventory` plugin to include Nautobot computed fields as host vars.
+        - (#333) - Added a `flatten_computed_fields` option to the `inventory` plugin to add each computed field as its own host var instead of a dictionary.
+        - (#333) - Added `computed_fields` to the `group_by` choices for the `inventory` plugin to create inventory groups from computed field key/value pairs.
+        - (#370) - Added support for inline contacts and teams associations to all applicable modules.
+        - (#624) - Added support for managing notes inline on all applicable modules.
+        - (#716) - Added inline `radio_profiles` and `wireless_networks` association support to the `controller_managed_device_group` module.
+        - (#729) - Added the `port_type` option to the `device_interface` module.
+        - (#738) - Added range option to the `vlan_group` module so that vlan ranges can be associated with vlan groups.
+        - (#713) - Changed the `lookup_graphql` lookup to accept the query as either the first positional argument or as a keyword argument.
+        - (#679) - Updated the minimum supported Python version to 3.12.

@@ -1,5 +1,0 @@
-Added a `computed_fields` inventory option to include Nautobot computed fields as host vars.
-Added a `flatten_computed_fields` inventory option to add each computed field as its own host var instead of a dictionary.
-Added a `computed_fields` option to the `inventory` plugin to include Nautobot computed fields as host vars.
-Added a `flatten_computed_fields` option to the `inventory` plugin to add each computed field as its own host var instead of a dictionary.
-Added `computed_fields` to the `group_by` choices for the `inventory` plugin to create inventory groups from computed field key/value pairs.
