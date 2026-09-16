@@ -1,0 +1,14 @@
+---
+plugin: networktocode.nautobot.inventory
+api_endpoint: "http://nautobot:8000"
+token: "0123456789abcdef0123456789abcdef01234567"
+validate_certs: False
+allow_unsafe: true
+computed_fields: True
+plurals: False
+services: False
+interfaces: False
+group_by:
+  - computed_fields
+compose:
+  device_computed: computed_fields.my_device_computed_field
