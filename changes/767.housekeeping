@@ -1,1 +1,0 @@
-Replaced the deprecated ansible-community/github-action-build-collection reusable workflow with an inline collection build in the Galaxy importer CI job.

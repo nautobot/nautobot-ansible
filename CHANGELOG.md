@@ -4,6 +4,47 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.3.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.3.0)
+
+### Added
+
+- [#333](https://github.com/nautobot/nautobot-ansible/issues/333) - Added a `computed_fields` inventory option to include Nautobot computed fields as host vars.
+- [#333](https://github.com/nautobot/nautobot-ansible/issues/333) - Added a `flatten_computed_fields` inventory option to add each computed field as its own host var instead of a dictionary.
+- [#333](https://github.com/nautobot/nautobot-ansible/issues/333) - Added a `computed_fields` option to the `inventory` plugin to include Nautobot computed fields as host vars.
+- [#333](https://github.com/nautobot/nautobot-ansible/issues/333) - Added a `flatten_computed_fields` option to the `inventory` plugin to add each computed field as its own host var instead of a dictionary.
+- [#333](https://github.com/nautobot/nautobot-ansible/issues/333) - Added `computed_fields` to the `group_by` choices for the `inventory` plugin to create inventory groups from computed field key/value pairs.
+- [#370](https://github.com/nautobot/nautobot-ansible/issues/370) - Added support for inline contacts and teams associations to all applicable modules.
+- [#624](https://github.com/nautobot/nautobot-ansible/issues/624) - Added support for managing notes inline on all applicable modules.
+- [#716](https://github.com/nautobot/nautobot-ansible/issues/716) - Added inline `radio_profiles` and `wireless_networks` association support to the `controller_managed_device_group` module.
+- [#729](https://github.com/nautobot/nautobot-ansible/issues/729) - Added the `port_type` option to the `device_interface` module.
+- [#738](https://github.com/nautobot/nautobot-ansible/issues/738) - Added range option to the `vlan_group` module so that vlan ranges can be associated with vlan groups.
+
+### Changed
+
+- [#713](https://github.com/nautobot/nautobot-ansible/issues/713) - Changed the `lookup_graphql` lookup to accept the query as either the first positional argument or as a keyword argument.
+
+### Dependencies
+
+- [#679](https://github.com/nautobot/nautobot-ansible/issues/679) - Added testing for Python 3.14 and Ansible Core 2.20.
+- [#679](https://github.com/nautobot/nautobot-ansible/issues/679) - Updated the minimum supported Python version to 3.12.
+
+### Documentation
+
+- [#714](https://github.com/nautobot/nautobot-ansible/issues/714) - Changed the `lookup_graphql` examples to use `lookup()` instead of `query()` as the example return value is a dictionary instead of a list.
+- [#751](https://github.com/nautobot/nautobot-ansible/issues/751) - Added a pre-push checklist, CI mirror reference, and gotchas section to the local testing documentation.
+
+### Housekeeping
+
+- [#729](https://github.com/nautobot/nautobot-ansible/issues/729) - Added Nautobot v3.1 to the CI test matrix.
+- [#734](https://github.com/nautobot/nautobot-ansible/issues/734) - Added publishing of the collection to Red Hat Automation Hub alongside Ansible Galaxy.
+- [#739](https://github.com/nautobot/nautobot-ansible/issues/739) - Lowered `requires_ansible` floor in `meta/runtime.yml` from `>=2.18.0` to `>=2.17.0` so the collection passes the `ansible-lint meta-runtime[unsupported-version]` check run by automation-hub's galaxy-importer.
+- [#740](https://github.com/nautobot/nautobot-ansible/issues/740) - Added a sanity test ignore for the `inventory` and `gql_inventory` plugins to unblock publication to automation-hub.
+- [#742](https://github.com/nautobot/nautobot-ansible/issues/742) - Wired the galaxy-importer simulation into pull request CI so that findings which would block publication to automation-hub now fail the build.
+- [#751](https://github.com/nautobot/nautobot-ansible/issues/751) - Generated `requirements.txt` (collection root) and `meta/requirements.txt` from `pyproject.toml` with `invoke generate-requirements`, enforced by a drift check in `invoke lint`, so `ansible-builder` can resolve the collection's Python dependencies when building Execution Environments.
+- [#762](https://github.com/nautobot/nautobot-ansible/issues/762) - Added Nautobot v3.2 to the CI test matrix.
+- [#767](https://github.com/nautobot/nautobot-ansible/issues/767) - Replaced the deprecated ansible-community/github-action-build-collection reusable workflow with an inline collection build in the Galaxy importer CI job.
+- Updated the GitHub Actions workflows to use the latest versions of the inherited actions.
+
 ## [v6.2.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.2.0)
 
 ### Added
