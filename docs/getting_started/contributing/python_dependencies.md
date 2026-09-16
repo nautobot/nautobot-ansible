@@ -1,37 +1,37 @@
 # Python Dependencies
 
-This page explains how runtime Python dependencies are declared, where the canonical version constraints live, and how the `requirements.txt` files consumed by Execution Environment builds are produced.
+This page explains how runtime Python dependencies are declared, where the canonical version constraints live, and how the `requirements.txt` files consumed by Execution Environment builds are produced and kept in sync.
 
 ## Single source of truth: `pyproject.toml`
 
-All runtime and development dependencies for this collection are declared in `pyproject.toml` under `[tool.poetry.dependencies]`. Poetry resolves and locks them in `poetry.lock`. Contributors should add or update Python dependencies there, not in a hand-maintained `requirements.txt`.
+All runtime and development dependencies for this collection are declared in `pyproject.toml` under `[tool.poetry.dependencies]`. Poetry resolves and locks them in `poetry.lock`. Contributors should add or update Python dependencies there, never by hand-editing a `requirements.txt`.
 
 Example:
 
 ```toml
 [tool.poetry.dependencies]
-python = ">=3.11,<4.0"
+python = ">=3.12,<4.0"
 netutils = "^1.2"
 pynautobot = ">=3.0.0,<4.0.0"
-ansible-core = ">=2.18,<2.20"
+ansible-core = ">=2.18,<2.21"
 aiohttp = "^3.11.13"
 requests = "^2.28.0"
 ```
 
-## Why we generate `requirements.txt` files
+## Why the `requirements.txt` files are generated
 
-`ansible-builder` resolves a collection's Python runtime dependencies from a `requirements.txt` shipped inside the published collection tarball, so it can install them when constructing an Execution Environment (EE). This collection ships the file in **two** locations:
+`ansible-builder` resolves a collection's Python runtime dependencies from a `requirements.txt` shipped with the collection, so it can install them when constructing an Execution Environment (EE). This collection ships the file in **two** locations:
 
 | Path | Consumed by |
 |---|---|
-| `meta/requirements.txt` | The standard location `ansible-builder` discovers for any collection pulled into an EE. |
+| `meta/requirements.txt` | The file `meta/execution-environment.yml` points at. `ansible-builder` reads it for any collection pulled into an EE. |
 | `requirements.txt` (collection root) | Additionally required by Red Hat Automation Hub's certification tooling. |
 
-Both files are generated from `pyproject.toml` and have identical content. **Neither is committed to the repo** (both are gitignored); they are regenerated on every build and removed afterward.
+Both files are generated from `pyproject.toml` and have identical content. **Both are committed.** `ansible-builder` follows the pointer in `meta/execution-environment.yml` and fails hard if the target is missing, so the files must exist in a plain git checkout (for example an EE definition that pulls this collection from a git URL), not only in the published tarball.
 
-This avoids two failure modes:
+Committing derived files is safe because CI enforces that they match `pyproject.toml`. This avoids two failure modes:
 
-1. **Drift.** A hand-maintained `requirements.txt` inevitably drifts from `pyproject.toml`. The generator forces them to stay in sync at build time.
+1. **Drift.** A hand-maintained `requirements.txt` inevitably drifts from `pyproject.toml`. The `tests / lint` job runs the generator in check mode and fails when the committed files differ from what `pyproject.toml` produces.
 2. **Wrong shape.** Red Hat Partner Engineering requires floor-only specifiers (`>=X.Y.Z`): no exact pins (`==`), no upper caps (`<=`). Poetry constraints use caret/tilde/comma-separated specs that would not satisfy that rule directly. The generator translates them.
 
 ## How the generator works
@@ -69,43 +69,23 @@ The generator's `floor()` function converts each Poetry constraint to a `>=X.Y.Z
 
 Upper caps are intentionally stripped. Red Hat Partner Engineering guidance states that caps cause conflicts when multiple collections share an Execution Environment.
 
-## When the generator runs
+## Keeping the files in sync
 
-The generator is wired into the build flow so contributors and CI do not have to remember to run it.
-
-### Local builds
-
-`invoke galaxy-build` automatically generates both requirements files, builds the collection tarball, and removes the files afterward. You do not need to invoke the generator separately:
+Two invoke tasks wrap the generator:
 
 ```bash
-poetry run invoke galaxy-build
-```
-
-If you want to inspect the generated content without building:
-
-```bash
+# Rewrite both files from pyproject.toml
 poetry run invoke generate-requirements
-cat requirements.txt
-cat meta/requirements.txt
-rm requirements.txt meta/requirements.txt
+
+# Verify the committed files match pyproject.toml; exit 1 and name the stale files otherwise
+poetry run invoke generate-requirements --check
 ```
 
-### Release CI
+The check runs in three places, so drift cannot reach a release:
 
-The release workflow (`.github/workflows/trigger_release.yml`) calls the generator before `ansible-galaxy collection build`, so the published tarball uploaded to GitHub Releases, Ansible Galaxy, and Red Hat Automation Hub always contains up-to-date requirements files.
-
-### Pull request CI
-
-The `galaxy_importer` job (`.github/workflows/galaxy_import.yml`) builds the collection tarball itself, calling the generator first, and then runs `galaxy-importer` against it — the same checks `console.redhat.com` runs at publish time.
-
-This job deliberately does **not** use the shared `ansible-community/github-action-build-collection` reusable workflow. That workflow has no hook for a pre-build step, so it would produce a tarball with no requirements files in it. `galaxy-importer` reads `meta/execution-environment.yml`, follows its `dependencies.python` pointer to `meta/requirements.txt`, and reports a publication-blocking finding when the file is absent:
-
-```text
-WARNING: Error when checking meta/execution-environment.yml for dependency files:
-[Errno 2] No such file or directory: '.../meta/requirements.txt'
-```
-
-If you change how the requirements files are produced, keep both build paths (`galaxy_import.yml` and `trigger_release.yml`) in sync, or the CI gate and the published artifact will disagree.
+- **`invoke lint`** runs `invoke generate-requirements --check` inside the lint container, right after `invoke check-versions`. This is what the CI `tests / lint` job executes, so a pull request that changes `pyproject.toml` without regenerating the files fails with `Out of date with pyproject.toml: requirements.txt, meta/requirements.txt`.
+- **`invoke galaxy-build`** runs the check before `ansible-galaxy collection build`, so a local tarball cannot be built from stale files.
+- **The `galaxy_importer` CI job** builds the tarball from the checkout and runs `galaxy-importer` against it, the same checks `console.redhat.com` runs at publish time. Because the files are committed, neither this job nor the release workflow needs a build-time generation step.
 
 ## Updating dependencies
 
@@ -113,14 +93,13 @@ To bump a dependency version:
 
 1. Run `poetry add <package>@^X.Y.Z` (or edit `pyproject.toml` directly) to update the declared range.
 2. Run `poetry lock` to regenerate `poetry.lock`.
-3. Commit `pyproject.toml` and `poetry.lock`.
-
-The generated requirements files will automatically reflect the new floor on the next build.
+3. Run `poetry run invoke generate-requirements` to regenerate both requirements files.
+4. Commit `pyproject.toml`, `poetry.lock`, `requirements.txt`, and `meta/requirements.txt` together.
 
 To add a new direct runtime import (i.e., the collection starts importing a new external package):
 
-1. Add the package to `[tool.poetry.dependencies]` in `pyproject.toml`.
-2. That is it. The generator emits it automatically. Only edit `EXCLUDED_DEPS` in `development/generate_requirements.py` if the new dependency must **not** ship in an EE (as with `python`, `ansible-core`, and `asyncio`), and add a matching case to `tests/unit/test_generate_requirements.py`.
+1. Add the package to `[tool.poetry.dependencies]` in `pyproject.toml` and run `poetry lock`.
+2. Run `poetry run invoke generate-requirements` and commit the result. The generator emits the new package automatically. Only edit `EXCLUDED_DEPS` in `development/generate_requirements.py` if the new dependency must **not** ship in an EE (as with `python`, `ansible-core`, and `asyncio`), and add a matching case to `tests/unit/test_generate_requirements.py`.
 
 ## Reference
 

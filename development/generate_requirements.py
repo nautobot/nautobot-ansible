@@ -2,28 +2,33 @@
 """Generate the collection's requirements.txt files from pyproject.toml.
 
 `ansible-builder` resolves a collection's Python runtime dependencies from a
-requirements.txt shipped inside the collection tarball. Two locations are needed:
+requirements.txt shipped with the collection. Two locations are needed:
 
-  * ``meta/requirements.txt`` -- the standard location ``ansible-builder``
-    discovers for any collection pulled into an Execution Environment.
-  * ``requirements.txt`` at the collection root -- additionally required by Red
+  * `meta/requirements.txt` -- the file `meta/execution-environment.yml` points
+    at, which `ansible-builder` reads for any collection pulled into an
+    Execution Environment.
+  * `requirements.txt` at the collection root -- additionally required by Red
     Hat Automation Hub's certification tooling.
 
-Both files are derived from pyproject.toml so it remains the single source of
-truth for runtime versions. Neither is committed: both are gitignored and
-regenerated at build/release time.
+Both files are derived from pyproject.toml, which remains the single source of
+truth for runtime versions. Both are committed, so a git checkout of the
+collection works with `ansible-builder` just like the published tarball does.
+`--check` verifies the committed files match pyproject.toml and is run by
+`invoke lint`, so drift fails CI instead of shipping.
 
-Every dependency under ``[tool.poetry.dependencies]`` is emitted except the
-entries in ``EXCLUDED_DEPS``, so a newly added runtime dependency flows into the
+Every dependency under `[tool.poetry.dependencies]` is emitted except the
+entries in `EXCLUDED_DEPS`, so a newly added runtime dependency flows into the
 requirements files automatically without touching this script.
 
-The output uses floor-only specifiers (``>=X.Y.Z``): no ``==`` pins and no upper
+The output uses floor-only specifiers (`>=X.Y.Z`): no `==` pins and no upper
 caps, per Red Hat partner-engineering guidance (caps cause resolution conflicts
 when multiple collections share an Execution Environment).
 """
 
 from __future__ import annotations
 
+import argparse
+import sys
 from pathlib import Path
 
 import tomllib
@@ -39,7 +44,7 @@ EXCLUDED_DEPS = frozenset(
     }
 )
 
-# Files to generate, relative to the repo root. Both ship in the tarball.
+# Files to generate, relative to the repo root. Both are committed and ship in the tarball.
 OUTPUT_FILES = ("requirements.txt", "meta/requirements.txt")
 
 
@@ -66,30 +71,55 @@ def floor(spec):
 
 
 def requirement_lines(poetry_deps):
-    """Return sorted ``name>=floor`` lines for every shippable runtime dependency.
+    """Return sorted `name>=floor` lines for every shippable runtime dependency.
 
     Args:
         poetry_deps (dict): The parsed `[tool.poetry.dependencies]` table.
 
     Returns:
-        list[str]: One ``name>=X.Y.Z`` line per dependency not in
-        ``EXCLUDED_DEPS``, sorted by name for stable, diff-friendly output.
+        list[str]: One `name>=X.Y.Z` line per dependency not in
+        `EXCLUDED_DEPS`, sorted by name for stable, diff-friendly output.
     """
     lines = [f"{name}>={floor(spec)}" for name, spec in poetry_deps.items() if name not in EXCLUDED_DEPS]
     return sorted(lines)
 
 
-def main():
-    """Write the root and meta requirements files from `[tool.poetry.dependencies]`.
+def parse_args(argv=None):
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Generate requirements.txt files from pyproject.toml.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Do not write anything; exit 1 if any output file is missing or differs from pyproject.toml.",
+    )
+    return parser.parse_args(argv)
 
-    Returns 0 on success.
+
+def main(argv=None):
+    """Write, or with `--check` verify, the requirements files from `[tool.poetry.dependencies]`.
+
+    Returns 0 on success, 1 when `--check` finds a file missing or out of date.
     """
+    args = parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
     pyproject = tomllib.loads((project_root / "pyproject.toml").read_text())
     poetry_deps = pyproject["tool"]["poetry"]["dependencies"]
 
     lines = requirement_lines(poetry_deps)
     content = "\n".join(lines) + "\n"
+
+    if args.check:
+        stale = [
+            rel_path
+            for rel_path in OUTPUT_FILES
+            if not (project_root / rel_path).is_file() or (project_root / rel_path).read_text() != content
+        ]
+        if stale:
+            print(f"Out of date with pyproject.toml: {', '.join(stale)}", file=sys.stderr)
+            print("Run `invoke generate-requirements` and commit the result.", file=sys.stderr)
+            return 1
+        print(f"{len(OUTPUT_FILES)} requirements files are in sync with pyproject.toml.")
+        return 0
 
     for rel_path in OUTPUT_FILES:
         out_path = project_root / rel_path

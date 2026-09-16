@@ -129,11 +129,7 @@ class TestRequirementLines:
             assert "<" not in line
 
 
-class TestMain:
-    def test_writes_both_requirements_files(self, tmp_path, monkeypatch):
-        pyproject = tmp_path / "pyproject.toml"
-        pyproject.write_text(
-            """
+PYPROJECT_FIXTURE = """
 [tool.poetry]
 name = "x"
 version = "0.0.1"
@@ -147,26 +143,67 @@ requests = "^2.28.0"
 netutils = "^1.2"
 aiohttp = "^3.11.13"
 """
-        )
 
-        monkeypatch.setattr(
-            generate_requirements, "__file__", str(tmp_path / "development" / "generate_requirements.py")
-        )
-        (tmp_path / "development").mkdir()
+EXPECTED_LINES = [
+    "aiohttp>=3.11.13",
+    "netutils>=1.2",
+    "pynautobot>=3.0.0",
+    "requests>=2.28.0",
+]
 
-        rc = generate_requirements.main()
-        assert rc == 0
 
-        expected = [
-            "aiohttp>=3.11.13",
-            "netutils>=1.2",
-            "pynautobot>=3.0.0",
-            "requests>=2.28.0",
-        ]
-        root = (tmp_path / "requirements.txt").read_text().splitlines()
-        meta = (tmp_path / "meta" / "requirements.txt").read_text().splitlines()
-        assert root == expected
-        assert meta == expected
+@pytest.fixture(name="project")
+def project_fixture(tmp_path, monkeypatch):
+    """A throwaway project root with a pyproject.toml the generator will read.
+
+    `main()` locates the project root relative to the script's own path, so
+    the module's `__file__` is pointed inside the temporary tree.
+    """
+    (tmp_path / "pyproject.toml").write_text(PYPROJECT_FIXTURE)
+    (tmp_path / "development").mkdir()
+    monkeypatch.setattr(generate_requirements, "__file__", str(tmp_path / "development" / "generate_requirements.py"))
+    return tmp_path
+
+
+class TestMain:
+    def test_writes_both_requirements_files(self, project):
+        assert generate_requirements.main([]) == 0
+
+        root = (project / "requirements.txt").read_text().splitlines()
+        meta = (project / "meta" / "requirements.txt").read_text().splitlines()
+        assert root == EXPECTED_LINES
+        assert meta == EXPECTED_LINES
+
+
+class TestCheck:
+    """`--check` is the CI drift gate: it must never write, and must fail on any mismatch."""
+
+    def test_in_sync_passes(self, project, capsys):
+        generate_requirements.main([])
+        assert generate_requirements.main(["--check"]) == 0
+        assert "in sync" in capsys.readouterr().out
+
+    def test_missing_file_fails(self, project, capsys):
+        assert generate_requirements.main(["--check"]) == 1
+        err = capsys.readouterr().err
+        assert "requirements.txt" in err
+        assert "meta/requirements.txt" in err
+        assert "invoke generate-requirements" in err
+        # Check mode must not create the files it found missing.
+        assert not (project / "requirements.txt").exists()
+        assert not (project / "meta" / "requirements.txt").exists()
+
+    def test_stale_file_fails_and_is_left_untouched(self, project, capsys):
+        generate_requirements.main([])
+        stale = project / "meta" / "requirements.txt"
+        stale.write_text("pynautobot\n")
+
+        assert generate_requirements.main(["--check"]) == 1
+        err = capsys.readouterr().err
+        assert "meta/requirements.txt" in err
+        # Only the drifted file is reported, and it is not rewritten.
+        assert err.splitlines()[0].endswith("meta/requirements.txt")
+        assert stale.read_text() == "pynautobot\n"
 
 
 class TestRealPyproject:

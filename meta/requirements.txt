@@ -1,0 +1,4 @@
+aiohttp>=3.11.13
+netutils>=1.2
+pynautobot>=3.0.0
+requests>=2.28.0

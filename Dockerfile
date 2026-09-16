@@ -64,6 +64,8 @@ COPY . .
 RUN if [ "${SKIP_LINT_TESTS}" != "true" ]; then \
     echo 'Checking versions' && \
     invoke check-versions && \
+    echo 'Checking generated requirements files' && \
+    invoke generate-requirements --check && \
     echo 'Running Ruff' && \
     ruff format . && \
     ruff check . && \

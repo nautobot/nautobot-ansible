@@ -327,15 +327,23 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
     destroy(context)
 
 
-@task
-def generate_requirements(context):
+@task(
+    help={
+        "check": "Verify the committed files match pyproject.toml instead of rewriting them (what `invoke lint` runs).",
+    },
+)
+def generate_requirements(context, check=False):
     """Generate requirements.txt (root) and meta/requirements.txt from pyproject.toml.
 
-    Used by `ansible-builder` to resolve Execution Environment dependencies from
-    the published tarball. The files are intentionally not committed:
-    pyproject.toml is the single source of truth.
+    Both files are committed so `ansible-builder` can resolve the collection's
+    Python dependencies from a git checkout as well as from the published
+    tarball. pyproject.toml stays the single source of truth: `--check` fails
+    when the committed files have drifted from it, and `invoke lint` runs it.
     """
-    context.run("python3 development/generate_requirements.py")
+    command = "python3 development/generate_requirements.py"
+    if check:
+        command += " --check"
+    context.run(command)
 
 
 @task(
@@ -344,18 +352,12 @@ def generate_requirements(context):
     },
 )
 def galaxy_build(context, force=False):
-    """Build the collection (auto-generates and cleans up the requirements files)."""
-    generate_requirements(context)
-    try:
-        command = "ansible-galaxy collection build ."
-        if force:
-            command += " --force"
-        context.run(command)
-    finally:
-        # The requirements files are derived from pyproject.toml on demand; remove
-        # the generated files once the tarball has been built so the working tree
-        # stays clean and pyproject.toml remains the single source.
-        context.run("rm -f requirements.txt meta/requirements.txt")
+    """Build the collection after verifying the committed requirements files are current."""
+    generate_requirements(context, check=True)
+    command = "ansible-galaxy collection build ."
+    if force:
+        command += " --force"
+    context.run(command)
 
 
 @task(

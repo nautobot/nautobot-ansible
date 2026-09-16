@@ -54,14 +54,6 @@ jobs:
       - name: Record resolved tool versions
         run: pip list | grep -iE '^(ansible-core|ansible-lint|galaxy.importer) '
 
-      # The generator must run before the build so the tarball carries
-      # requirements.txt and meta/requirements.txt. Neither file is tracked;
-      # meta/execution-environment.yml points at meta/requirements.txt, and
-      # galaxy-importer reports a publication-blocking finding when that file
-      # is missing from the artifact. Keep this in step with trigger_release.yml.
-      - name: Generate requirements files from pyproject.toml
-        run: python3 development/generate_requirements.py
-
       - name: Build collection artifact
         run: |
           ansible-galaxy collection build --output-path dist

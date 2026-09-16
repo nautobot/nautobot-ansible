@@ -12,7 +12,7 @@ Follow these steps to update the version and generate the release notes:
 - Run `invoke generate-release-notes` to automatically update `CHANGELOG.md` with the new version and release notes
 
 !!! note
-    The root `requirements.txt` consumed by Red Hat Automation Hub is **not** updated manually -- it is generated from `pyproject.toml` by `development/generate_requirements.py` during `invoke galaxy-build` and during the release workflow. See [Python Dependencies](python_dependencies.md) for the full mechanism.
+    `requirements.txt` and `meta/requirements.txt` are **not** edited by hand -- they are generated from `pyproject.toml`. If `poetry update` changed any runtime dependency, run `invoke generate-requirements` and commit the result; `invoke lint` fails if they drift. See [Python Dependencies](python_dependencies.md) for the full mechanism.
 - (Optional) Add a Release Summary to the new section in `CHANGELOG.md` as desired
 - Manually update `changelogs/changelog.yaml` following the format of the previous entries (per Ansible Collection guidelines)
 - Manually update the version in `galaxy.yml` to match the new version from poetry

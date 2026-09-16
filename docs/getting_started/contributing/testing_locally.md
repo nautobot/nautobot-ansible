@@ -29,6 +29,7 @@ If any of those fail, fix and re-run before pushing.
 
     ```shell
     poetry run invoke check-versions
+    poetry run invoke generate-requirements --check
     poetry run ruff format --check .
     poetry run ruff check .
     poetry run pylint **/*.py
@@ -146,10 +147,10 @@ Each invoke task corresponds to one or more CI jobs:
 
 | Invoke task | CI job | What it runs |
 |---|---|---|
-| `invoke lint` | `tests / lint` | `invoke check-versions` + `ruff format .` + `ruff check .` + `pylint **/*.py` inside the lint container |
+| `invoke lint` | `tests / lint` | `invoke check-versions` + `invoke generate-requirements --check` + `ruff format .` + `ruff check .` + `pylint **/*.py` inside the lint container |
 | `invoke unit` | `tests / unit (3.12/3.13/3.14)` | Project lint + `ansible-test sanity --requirements` + `ansible-lint` + unit tests |
 | `invoke integration` | `tests / integration_partial` and `tests / integration_full` | Full integration suite against a real Nautobot instance |
-| `invoke galaxy-build` | (release workflow `build_collection` step) | Generates `requirements.txt`, builds the collection tarball, cleans up |
+| `invoke galaxy-build` | (release workflow `build_collection` step) | Verifies the committed requirements files match `pyproject.toml`, then builds the collection tarball |
 
 ## Gotchas
 
@@ -165,7 +166,7 @@ These are easy to miss and lead to the "CI fails after a clean local run" patter
 
 3. **Convention warnings still fail the build.** `pylint`'s "Your code has been rated at X/10" line is informational. Any `C0xxx` (convention) message exits non-zero and fails the Docker build for the lint job. Don't trust the rating; resolve every reported line.
 
-4. **`requirements.txt` is generated, not tracked.** The root `requirements.txt` consumed by Red Hat Automation Hub is produced from `pyproject.toml` by `development/generate_requirements.py` at build time. See the [Python Dependencies](python_dependencies.md) page for details.
+4. **`requirements.txt` and `meta/requirements.txt` are generated, not hand-edited.** Both are committed and derived from `pyproject.toml` by `invoke generate-requirements`. `invoke lint` fails if they drift, so after changing a dependency regenerate them and commit the result rather than editing them directly. See the [Python Dependencies](python_dependencies.md) page for details.
 
 5. **The lint Docker stage builds a fresh image every run.** First `invoke lint` is slow (around 5 minutes). Subsequent runs are faster due to Docker layer caching, but expect the first one to take a while.
 
