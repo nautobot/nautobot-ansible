@@ -329,11 +329,31 @@ def integration(context, verbose=0, tags=None, update_inventories=False, skip=No
 
 @task(
     help={
+        "check": "Verify the committed files match pyproject.toml instead of rewriting them (what `invoke lint` runs).",
+    },
+)
+def generate_requirements(context, check=False):
+    """Generate requirements.txt (root) and meta/requirements.txt from pyproject.toml.
+
+    Both files are committed so `ansible-builder` can resolve the collection's
+    Python dependencies from a git checkout as well as from the published
+    tarball. pyproject.toml stays the single source of truth: `--check` fails
+    when the committed files have drifted from it, and `invoke lint` runs it.
+    """
+    command = "python3 development/generate_requirements.py"
+    if check:
+        command += " --check"
+    context.run(command)
+
+
+@task(
+    help={
         "force": "Force the build command to create a new collection, overwriting any existing files.",
     },
 )
 def galaxy_build(context, force=False):
-    """Build the collection."""
+    """Build the collection after verifying the committed requirements files are current."""
+    generate_requirements(context, check=True)
     command = "ansible-galaxy collection build ."
     if force:
         command += " --force"
