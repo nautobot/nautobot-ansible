@@ -45,7 +45,7 @@ plugin: networktocode.nautobot.inventory
 computed_fields: true
 ```
 
-Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. A host that no computed field targets still gets `computed_fields: {}` rather than no variable at all, so test for contents rather than for definedness.
+Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. A host that no computed field targets still gets `computed_fields: {}` rather than no variable at all, so test for contents rather than for existence.
 
 Set `flatten_computed_fields: true` to promote each key to a host var of its own instead. Flattened hosts with no applicable fields get no variable at all rather than an empty dict, and flattening has no namespacing: a computed field key that collides with an existing host var name (`status`, `dns_name`, `platform`, and so on) will clobber it or be clobbered by it depending on extractor order, the same hazard as `flatten_custom_fields`. Use `compose` to lift a single field to a name of your choosing.
 
