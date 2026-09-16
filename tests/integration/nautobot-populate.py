@@ -965,6 +965,17 @@ test100_location = nb.dcim.locations.get(id=test100.location.id)
 test100_location.custom_fields = {"my_location_custom_field": "Test Location Custom Field Value"}
 test100_location.save()
 
+# Create Computed Fields
+computed_fields = [
+    {
+        "label": "My Device Computed Field",
+        "key": "my_device_computed_field",
+        "content_type": "dcim.device",
+        "template": "{{ obj.name }} computed",
+    },
+]
+created_computed_fields = make_nautobot_calls(nb.extras.computed_fields, computed_fields)
+
 # Enable example job for job tests
 example_job_receiver = nb.extras.jobs.get(name="Example Simple Job Button Receiver")
 example_job_receiver.enabled = True
@@ -997,8 +1008,15 @@ teams = [{"name": "My Test Team"}]
 created_teams = make_nautobot_calls(nb.extras.teams, teams)
 
 # Create Contacts
-contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}]
+contacts = [{"name": "My Contact"}, {"name": "My Contact 2"}, {"name": "John Smith"}, {"name": "Jane Doe"}]
 created_contacts = make_nautobot_calls(nb.extras.contacts, contacts)
+
+# Create Contact Association Roles
+contact_association_roles = [
+    {"name": "Admin", "content_types": ["extras.contactassociation"]},
+    {"name": "User", "content_types": ["extras.contactassociation"]},
+]
+created_contact_association_roles = make_nautobot_calls(nb.extras.roles, contact_association_roles)
 
 # Create Controller
 controller = [
@@ -1231,6 +1249,37 @@ supported_data_rates = [
     {"standard": "802.11ac", "rate": 20000},
 ]
 created_supported_data_rates = make_nautobot_calls(nb.wireless.supported_data_rates, supported_data_rates)
+
+# Create radio profiles used by controller_managed_device_group M2M tests
+radio_profiles = [
+    {"name": "CMG Test Radio Profile A", "regulatory_domain": "US"},
+    {"name": "CMG Test Radio Profile B", "regulatory_domain": "US"},
+    {"name": "CMG Test Radio Profile C", "regulatory_domain": "US"},
+]
+created_radio_profiles = make_nautobot_calls(nb.wireless.radio_profiles, radio_profiles)
+
+# Create wireless networks used by controller_managed_device_group M2M tests
+wireless_networks = [
+    {
+        "name": "CMG Test Wireless Network A",
+        "ssid": "CMG Test Wireless Network A",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+    {
+        "name": "CMG Test Wireless Network B",
+        "ssid": "CMG Test Wireless Network B",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+    {
+        "name": "CMG Test Wireless Network C",
+        "ssid": "CMG Test Wireless Network C",
+        "mode": "Central",
+        "authentication": "WPA2 Personal",
+    },
+]
+created_wireless_networks = make_nautobot_calls(nb.wireless.wireless_networks, wireless_networks)
 
 ###############
 # v3.0+ items #

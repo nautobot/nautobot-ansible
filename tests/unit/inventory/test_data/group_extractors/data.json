@@ -5,6 +5,7 @@
         "services": false,
         "dns_name": false,
         "ansible_host_dns_name": false,
+        "computed_fields": false,
         "expected": [
             "disk",
             "memory",
@@ -36,7 +37,8 @@
             "services",
             "interfaces",
             "dns_name",
-            "ansible_host_dns_name"
+            "ansible_host_dns_name",
+            "computed_fields"
         ]
     },
     {
@@ -45,6 +47,7 @@
         "services": true,
         "dns_name": true,
         "ansible_host_dns_name": true,
+        "computed_fields": false,
         "expected": [
             "disk",
             "memory",
@@ -75,7 +78,8 @@
             "role",
             "platform",
             "device_type",
-            "manufacturer"
+            "manufacturer",
+            "computed_fields"
         ]
     },
     {
@@ -84,6 +88,7 @@
         "services": true,
         "dns_name": false,
         "ansible_host_dns_name": true,
+        "computed_fields": false,
         "expected": [
             "disk",
             "memory",
@@ -114,7 +119,24 @@
             "role",
             "platform",
             "device_type",
-            "manufacturer"
+            "manufacturer",
+            "computed_fields"
+        ]
+    },
+    {
+        "plurals": false,
+        "interfaces": false,
+        "services": false,
+        "dns_name": false,
+        "ansible_host_dns_name": false,
+        "computed_fields": true,
+        "expected": [
+            "custom_fields",
+            "computed_fields"
+        ],
+        "not_expected": [
+            "services",
+            "interfaces"
         ]
     }
 ]

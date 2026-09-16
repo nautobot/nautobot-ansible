@@ -1,0 +1,23 @@
+---
+# Red Hat offline tokens expire after 30 days of inactivity. This workflow
+# refreshes the token twice a month so the next release can publish without
+# manual intervention. Manual workflow_dispatch is also available for
+# post-rotation validation.
+name: "AutomationHub Token Keepalive"
+on: # yamllint disable-line rule:truthy
+  schedule:
+    - cron: "0 0 1,15 * *"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    name: "Refresh Automation Hub offline token"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Refresh offline token"
+        run: |
+          curl "${{ secrets.AUTOMATION_HUB_SSO_URL }}" \
+            -d grant_type=refresh_token \
+            -d client_id=cloud-services \
+            -d refresh_token="${{ secrets.AUTOMATION_HUB_API_TOKEN }}" \
+            --fail --silent --show-error --output /dev/null

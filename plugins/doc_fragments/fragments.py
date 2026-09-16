@@ -86,3 +86,121 @@ options:
     type: dict
     version_added: "3.0.0"
 """
+
+    CONTACTS_AND_TEAMS = r"""
+options:
+  contacts:
+    description:
+      - Associate contacts
+    required: false
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of contacts to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          contact:
+            description:
+              - The contact to associate.
+              - If you only provide a string, it will be find the contact with the name that starts with, ignoring case, the provided string.
+              - If you want an exact name match, you must use a dictionary with the key `name` and the value of the exact name.
+              - Other available keys are `email` and `phone`.
+            required: true
+            type: raw
+          role:
+            description:
+              - The role of the contact.
+            required: true
+            type: raw
+          status:
+            description:
+              - The status of the contact association.
+            required: true
+            type: raw
+  teams:
+    description:
+      - Associate teams
+    required: false
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds associations without removing existing ones.
+          - C(replace) enforces exactly the listed associations, removing any extras.
+          - C(delete) removes the listed associations.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of teams to associate.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          team:
+            description:
+              - The team to associate.
+              - If you only provide a string, it will be find the team with the name that starts with, ignoring case, the provided string.
+              - If you want an exact name match, you must use a dictionary with the key `name` and the value of the exact name.
+              - Other available keys are `email` and `phone`.
+            required: true
+            type: raw
+          role:
+            description:
+              - The role of the team.
+            required: true
+            type: raw
+          status:
+            description:
+              - The status of the team association.
+            required: true
+            type: raw
+"""
+
+    NOTES = r"""
+options:
+  notes:
+    description:
+      - Manage notes on the object
+    required: false
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      state:
+        description:
+          - C(merge) adds notes without removing existing ones.
+          - C(replace) enforces exactly the listed notes, removing any extras.
+          - C(delete) removes the listed notes.
+        required: false
+        type: str
+        default: merge
+        choices: [ merge, replace, delete ]
+      objects:
+        description:
+          - List of notes to manage.
+        required: true
+        type: list
+        elements: dict
+        suboptions:
+          note:
+            description:
+              - The text of the note.
+            required: true
+            type: str
+"""

@@ -24,6 +24,8 @@ extends_documentation_fragment:
   - networktocode.nautobot.fragments.id
   - networktocode.nautobot.fragments.tags
   - networktocode.nautobot.fragments.custom_fields
+  - networktocode.nautobot.fragments.contacts_and_teams
+  - networktocode.nautobot.fragments.notes
 options:
   name:
     description:
@@ -44,6 +46,12 @@ options:
     required: false
     type: str
     version_added: "3.0.0"
+  range:
+    description:
+      - The range that will be assigned to the vlan group
+    required: false
+    type: str
+    version_added: "6.3.0"
 """
 
 EXAMPLES = r"""
@@ -61,6 +69,7 @@ EXAMPLES = r"""
         location:
           name: My Location
           parent: Parent Location
+        range: 1-40,200
         state: present
 
     - name: Delete vlan group within nautobot
@@ -97,9 +106,11 @@ from ansible_collections.networktocode.nautobot.plugins.module_utils.ipam import
     NautobotIpamModule,
 )
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
+    CONTACTS_AND_TEAMS_ARG_SPEC,
     CUSTOM_FIELDS_ARG_SPEC,
     ID_ARG_SPEC,
     NAUTOBOT_ARG_SPEC,
+    NOTES_ARG_SPEC,
     TAGS_ARG_SPEC,
 )
 
@@ -112,11 +123,14 @@ def main():
     argument_spec.update(deepcopy(ID_ARG_SPEC))
     argument_spec.update(deepcopy(TAGS_ARG_SPEC))
     argument_spec.update(deepcopy(CUSTOM_FIELDS_ARG_SPEC))
+    argument_spec.update(deepcopy(CONTACTS_AND_TEAMS_ARG_SPEC))
+    argument_spec.update(deepcopy(NOTES_ARG_SPEC))
     argument_spec.update(
         dict(
             name=dict(required=False, type="str"),
             location=dict(required=False, type="raw"),
             description=dict(required=False, type="str"),
+            range=dict(required=False, type="str"),
         )
     )
 

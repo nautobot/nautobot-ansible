@@ -35,6 +35,45 @@ keyed_groups:
 !!! note
     The above examples are excerpts from the following [blog post](https://networktocode.com/blog/ansible-constructed-inventory/).
 
+## Using Computed Fields
+
+[Computed fields](https://docs.nautobot.com/projects/core/en/stable/user-guide/platform-functionality/computedfield/) are Jinja2 templates that Nautobot renders when an object is read. The REST API only returns them when they are explicitly requested, so the inventory plugin does not fetch them unless you ask it to.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+```
+
+Each host then gets a `computed_fields` host var holding every computed field that applies to it, keyed by the computed field's key. A host that no computed field targets still gets `computed_fields: {}` rather than no variable at all, so test for contents rather than for existence.
+
+Set `flatten_computed_fields: true` to promote each key to a host var of its own instead. Flattened hosts with no applicable fields get no variable at all rather than an empty dict, and flattening has no namespacing: a computed field key that collides with an existing host var name (`status`, `dns_name`, `platform`, and so on) will clobber it or be clobbered by it depending on extractor order, the same hazard as `flatten_custom_fields`. Use `compose` to lift a single field to a name of your choosing.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+compose:
+  device_summary: computed_fields.my_device_summary
+```
+
+You can also build groups from computed fields. Each key/value pair becomes its own group, named `computed_field_<key>_<value>`, or `<key>_<value>` when `group_names_raw` is enabled. A computed field that renders to an empty value is skipped entirely — it produces no group at all, rather than a group with a trailing underscore.
+
+```yaml
+---
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+group_by:
+  - computed_fields
+```
+
+Grouping requires `computed_fields: true`; it does not turn the option on for you — if you set `group_by: [computed_fields]` without it, the plugin raises an `AnsibleError` naming the missing option (`group_by option "computed_fields" requires the "computed_fields" option to be set to True`) rather than silently producing no groups.
+
+!!! warning
+    Two things to keep in mind. Nautobot renders every computed field for every object on every request, so enabling this against a large inventory adds real server-side work — leave it off unless you need it. And because computed field values are arbitrary rendered text, `group_by` on a field that renders free-form prose produces unusable group names; `keyed_groups` on a single composed field is the precise alternative.
+
+!!! note
+    Enabling `computed_fields` changes the device and virtual-machine API URLs, which changes the cache key, so the first run after turning it on refetches the full device and VM list instead of serving the previously cached entries — those linger until they expire.
 
 ## Using Inventory Plugin Within AWX/Tower
 

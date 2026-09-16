@@ -1,0 +1,2 @@
+plugins/inventory/gql_inventory.py yamllint:unparsable-with-libyaml # bug in ansible-test - https://github.com/ansible/ansible/issues/82353
+plugins/inventory/inventory.py yamllint:unparsable-with-libyaml # bug in ansible-test - https://github.com/ansible/ansible/issues/82353

@@ -8,7 +8,6 @@ from __future__ import absolute_import, division, print_function
 import os
 
 from ansible.errors import AnsibleError
-from ansible.module_utils.six import raise_from
 from ansible.plugins.action import ActionBase
 
 try:
@@ -112,15 +111,9 @@ class ActionModule(ActionBase):
             task_vars ([type], optional): [description]. Defaults to None.
         """
         if PYNAUTOBOT_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("pynautobot must be installed to use this plugin"),
-                PYNAUTOBOT_IMPORT_ERROR,
-            )
+            raise AnsibleError("pynautobot must be installed to use this plugin") from PYNAUTOBOT_IMPORT_ERROR
         if REQUESTS_IMPORT_ERROR:
-            raise_from(
-                AnsibleError("requests must be installed to use this plugin"),
-                REQUESTS_IMPORT_ERROR,
-            )
+            raise AnsibleError("requests must be installed to use this plugin") from REQUESTS_IMPORT_ERROR
 
         self._supports_check_mode = True
         self._supports_async = False

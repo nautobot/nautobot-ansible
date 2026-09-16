@@ -13,6 +13,7 @@ DOCUMENTATION = """
     - Nikhil Singh Baliyan (@nikkytub)
     - Sander Steffann (@steffann)
     - Douglas Heriot (@DouglasHeriot)
+    - Yannis Ansermoz (@Yannis100)
   short_description: Nautobot inventory source
   description:
     - Get inventory hosts from Nautobot
@@ -74,6 +75,21 @@ DOCUMENTATION = """
       default: False
       type: boolean
       version_added: "1.0.0"
+    computed_fields:
+      description:
+        - If True, it adds computed_fields in host vars.
+        - Computed fields are Jinja2 templates that Nautobot renders at read time, and are only returned by the API when explicitly requested.
+        - Each computed field is rendered per object per request, so enabling this on a large inventory adds server-side work.
+      default: False
+      type: boolean
+      version_added: "6.3.0"
+    flatten_computed_fields:
+      description:
+        - By default, host computed fields are added as a dictionary host var named computed_fields.
+        - If flatten_computed_fields is set to True, the fields will be added directly to the host instead.
+      default: False
+      type: boolean
+      version_added: "6.3.0"
     token:
       required: False
       description:
@@ -151,6 +167,7 @@ DOCUMENTATION = """
         - is_virtual
         - services
         - status
+        - computed_fields
       default: []
     group_names_raw:
       description: Will not add the group_by choice name to the group names
@@ -270,6 +287,32 @@ compose:
   ansible_network_os: platforms.custom_fields.ansible_network_os
 
 ---
+# Computed fields are Jinja2 templates rendered by Nautobot at read time.
+# They are opt-in: nothing is fetched unless computed_fields is enabled.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+compose:
+  device_summary: computed_fields.my_device_summary
+
+---
+# Set flatten_computed_fields to add each computed field as its own host var
+# instead of a computed_fields dictionary.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+flatten_computed_fields: true
+
+---
+# group_by creates one group per computed field key/value pair, named
+# computed_field_<key>_<value>. It requires the computed_fields option.
+
+plugin: networktocode.nautobot.inventory
+computed_fields: true
+group_by:
+  - computed_fields
+
+---
 # You can use keyed_groups to group on properties of devices or VMs.
 # NOTE: It's only possible to key off direct items on the device/VM objects.
 plugin: networktocode.nautobot.inventory
@@ -298,8 +341,8 @@ from threading import Thread
 from typing import Iterable
 
 from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils._text import to_native, to_text
 from ansible.module_utils.ansible_release import __version__ as ansible_version
+from ansible.module_utils.common.text.converters import to_native, to_text
 from ansible.module_utils.six.moves.urllib import error as urllib_error
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.urls import open_url
@@ -468,6 +511,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         if self.services:
             extractors.update({"services": self.extract_services})
+
+        # Registered conditionally (like `services`/`interfaces`) rather than unconditionally like `config_context`,
+        # so that an unregistered `computed_fields` key lets `add_host_to_groups` raise its "not valid" error as a
+        # second line of defense behind `_validate_group_by_options`.
+        if self.computed_fields:
+            extractors.update({"computed_fields": self.extract_computed_fields})
 
         if self.interfaces:
             extractors.update({"interfaces": self.extract_interfaces})
@@ -689,6 +738,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def extract_custom_fields(self, host):
         try:
             return host["custom_fields"]
+        except Exception:
+            return
+
+    def extract_computed_fields(self, host):
+        try:
+            return host["computed_fields"]
         except Exception:
             return
 
@@ -1212,6 +1267,13 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if vm_url:
                 vm_url = f"{vm_url}&include=config_context"
 
+        # Include computed_fields if required
+        if self.computed_fields:
+            if device_url:
+                device_url = f"{device_url}&include=computed_fields"
+            if vm_url:
+                vm_url = f"{vm_url}&include=computed_fields"
+
         return device_url, vm_url
 
     def fetch_hosts(self):
@@ -1267,11 +1329,21 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             group = group["name"]
             grouping = "service"
 
+        if grouping == "computed_fields":
+            grouping = "computed_field"
+
         if grouping == "status":
             group = group["display"]
 
         group = self._remove_invalid_group_chars(group)
         return group if self.group_names_raw else "_".join([grouping, group])
+
+    def _validate_group_by_options(self):
+        """Raise a clear error for group_by choices that depend on another option being enabled."""
+        if "computed_fields" in self.group_by and not self.computed_fields:
+            raise AnsibleError(
+                'group_by option "computed_fields" requires the "computed_fields" option to be set to True'
+            )
 
     def add_host_to_groups(self, host, hostname):
         for grouping in self.group_by:
@@ -1285,6 +1357,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
             if not groups_for_host:
                 continue
+
+            # Special case - computed_fields is a dict of key/value pairs; each pair becomes its own group
+            if grouping == "computed_fields" and isinstance(groups_for_host, dict):
+                groups_for_host = [f"{key}_{value}" for key, value in groups_for_host.items() if value]
 
             # Make groups_for_host a list if it isn't already
             if not isinstance(groups_for_host, list):
@@ -1374,6 +1450,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 (attribute == "config_context" and self.flatten_config_context)
                 or (attribute == "custom_fields" and self.flatten_custom_fields)
                 or (attribute == "local_config_context_data" and self.flatten_local_context_data)
+                or (attribute == "computed_fields" and self.flatten_computed_fields)
             ):
                 for key, value in extracted_value.items():
                     self._set_variable(hostname, key, value)
@@ -1454,6 +1531,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.flatten_config_context = self.get_option("flatten_config_context")
         self.flatten_local_context_data = self.get_option("flatten_local_context_data")
         self.flatten_custom_fields = self.get_option("flatten_custom_fields")
+        self.computed_fields = self.get_option("computed_fields")
+        self.flatten_computed_fields = self.get_option("flatten_computed_fields")
         self.plurals = self.get_option("plurals")
         self.interfaces = self.get_option("interfaces")
         self.module_interfaces = self.get_option("module_interfaces")
@@ -1469,6 +1548,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         # Filter and group_by options
         self.group_by = self.get_option("group_by")
         self.group_names_raw = self.get_option("group_names_raw")
+        self._validate_group_by_options()
         self.query_filters = self.get_option("query_filters")
         self.device_query_filters = self.get_option("device_query_filters")
         self.vm_query_filters = self.get_option("vm_query_filters")

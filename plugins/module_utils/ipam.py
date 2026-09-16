@@ -8,7 +8,7 @@ __metaclass__ = type
 # Import necessary packages
 from ipaddress import ip_interface
 
-from ansible.module_utils._text import to_text
+from ansible.module_utils.common.text.converters import to_text
 from ansible_collections.networktocode.nautobot.plugins.module_utils.utils import (
     ENDPOINT_NAME_MAPPING,
     NautobotModule,
