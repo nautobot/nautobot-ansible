@@ -23,6 +23,7 @@ NB_JOB_BUTTONS = "job_buttons"
 NB_OBJECT_METADATA = "object_metadata"
 NB_METADATA_CHOICES = "metadata_choices"
 NB_METADATA_TYPES = "metadata_types"
+NB_SCHEDULED_JOBS = "scheduled_jobs"
 NB_SECRET = "secrets"  # noqa: S105
 NB_SECRETS_GROUP = "secrets_groups"
 NB_SECRETS_GROUPS_ASSOCIATION = "secrets_groups_associations"

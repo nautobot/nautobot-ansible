@@ -146,6 +146,9 @@
     "_meta": {
         "hostvars": {
             "00000000-0000-0000-0000-000000000000": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "00000000-0000-0000-0000-000000000000",
                 "device_type": {
                     "manufacturer": {
@@ -165,6 +168,9 @@
                 }
             },
             "R1-Device": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "R1-Device",
                 "device_type": {
                     "manufacturer": {
@@ -193,6 +199,9 @@
                 }
             },
             "R2 {{ ANSIBLE UNSAFE HANDLING TEST }}": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "172.16.180.13",
                 "config_context": {
                     "normal_string": "this is a normal string",
@@ -233,6 +242,9 @@
                 }
             },
             "Test Nexus Child One": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "Test Nexus Child One",
                 "device_type": {
                     "manufacturer": {
@@ -257,6 +269,9 @@
                 }
             },
             "Test Nexus One": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "172.16.180.11",
                 "device_type": {
                     "manufacturer": {
@@ -317,6 +332,9 @@
                 }
             },
             "TestDeviceR1": {
+                "_custom_field_data": {
+                    "my_device_custom_field": null
+                },
                 "ansible_host": "TestDeviceR1",
                 "device_type": {
                     "manufacturer": {
