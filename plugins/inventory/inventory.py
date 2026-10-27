@@ -28,7 +28,9 @@ DOCUMENTATION = """
       required: True
       choices: ['networktocode.nautobot.inventory']
     api_endpoint:
-      description: Endpoint of the Nautobot API
+      description:
+        - Endpoint of the Nautobot API
+        - May be a template, such as a lookup.
       required: True
       env:
         - name: NAUTOBOT_URL
@@ -95,6 +97,7 @@ DOCUMENTATION = """
       description:
         - Nautobot API token to be able to read against Nautobot.
         - This may not be required depending on the Nautobot setup.
+        - May be a template, such as a lookup, so the token need not be stored in the file or the environment.
       env:
         # in order of precedence
         - name: NAUTOBOT_TOKEN
@@ -326,6 +329,13 @@ rename_variables:
     repl: "nautobot_cluster"
   - pattern: "ansible_host"
     repl: "host"
+
+---
+# token and api_endpoint may be templates, rendered when the inventory is parsed:
+# here the token is read from HashiCorp Vault, so it is never stored in a file or the environment.
+plugin: networktocode.nautobot.inventory
+api_endpoint: http://localhost:8000
+token: "{{ lookup('community.hashi_vault.vault_kv2_get', 'nautobot', engine_mount_point='secret').secret.token }}"
 """
 
 import json
@@ -1513,15 +1523,27 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             if "locations" in self.group_by:
                 self._add_location_groups()
 
+    def _get_templated_option(self, option):
+        """Get an option, rendering it first if it is a template (e.g. a lookup)."""
+        value = self.get_option(option)
+        if not isinstance(value, str):
+            return value
+        try:
+            return self.templar.template(value)
+        except Exception as e:
+            # The error may quote values in scope, such as a looked-up secret,
+            # so only its type is reported and the chain is cut.
+            raise AnsibleParserError(f"Could not render the {option} option ({type(e).__name__}).") from None
+
     def parse(self, inventory, loader, path, cache=True):
         super(InventoryModule, self).parse(inventory, loader, path)
         self._read_config_data(path=path)
         self.use_cache = cache
 
         # Nautobot access
-        token = self.get_option("token")
+        token = self._get_templated_option("token")
         # Handle extra "/" from api_endpoint configuration and trim if necessary, see PR#49943
-        self.api_endpoint = self.get_option("api_endpoint").strip("/")
+        self.api_endpoint = self._get_templated_option("api_endpoint").strip("/")
         self.api_version = self.get_option("api_version")
         self.timeout = self.get_option("timeout")
         self.max_uri_length = self.get_option("max_uri_length")
