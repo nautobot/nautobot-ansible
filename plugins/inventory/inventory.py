@@ -1529,7 +1529,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         if not isinstance(value, str):
             return value
         try:
-            return self.templar.template(value)
+            return self.templar.template(mark_trusted(value, _trust_as_template_import))
         except Exception as e:
             # The error may quote values in scope, such as a looked-up secret,
             # so only its type is reported and the chain is cut.

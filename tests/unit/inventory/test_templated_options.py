@@ -11,6 +11,7 @@ import yaml
 from ansible.errors import AnsibleError
 from ansible.inventory.data import InventoryData
 from ansible.parsing.dataloader import DataLoader
+from ansible.plugins import AnsiblePlugin
 from ansible.plugins.loader import init_plugin_loader, inventory_loader
 
 init_plugin_loader()
@@ -71,6 +72,45 @@ def test_token_from_the_environment_still_works(run_parse, monkeypatch):
     plugin = run_parse(api_endpoint="http://localhost:8000")
 
     assert plugin.headers["Authorization"] == "Token token-from-env"
+
+
+@pytest.mark.parametrize(
+    "template, expected",
+    [
+        ("{{ ('0123456789abcdef' * 3)[:40] }}", "0123456789abcdef0123456789abcdef01234567"),
+        ("{{ 'a' * 40 }}", "a" * 40),
+    ],
+)
+def test_templated_token_from_the_environment_is_rendered(run_parse, monkeypatch, template, expected):
+    monkeypatch.setenv("NAUTOBOT_TOKEN", template)
+
+    plugin = run_parse(api_endpoint="http://localhost:8000")
+
+    assert plugin.headers["Authorization"] == f"Token {expected}"
+
+
+def test_templated_api_endpoint_from_the_environment_is_rendered(run_parse, monkeypatch):
+    monkeypatch.setenv("NAUTOBOT_URL", "{{ 'http://nautobot.example.com/' }}")
+
+    plugin = run_parse(token="abc")
+
+    assert plugin.api_endpoint == "http://nautobot.example.com"
+
+
+def test_untrusted_templated_token_is_rendered(run_parse, monkeypatch):
+    # ansible-core 2.19+ only renders strings trusted as templates. Encoding and
+    # decoding drops that trust, as for a value from a source Ansible doesn't trust.
+    get_option = AnsiblePlugin.get_option
+
+    def get_untrusted_option(self, option, hostvars=None):
+        value = get_option(self, option, hostvars)
+        return value.encode().decode() if isinstance(value, str) else value
+
+    monkeypatch.setattr(AnsiblePlugin, "get_option", get_untrusted_option)
+
+    plugin = run_parse(api_endpoint="http://localhost:8000", token="{{ 'a' * 40 }}")
+
+    assert plugin.headers["Authorization"] == f"Token {'a' * 40}"
 
 
 def test_failed_token_template_names_the_option(run_parse):
