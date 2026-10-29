@@ -4,6 +4,12 @@ This document describes all new features and changes in the release. The format 
 
 <!-- towncrier release notes start -->
 
+## [v6.3.1](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.3.1)
+
+### Added
+
+- [#779](https://github.com/nautobot/nautobot-ansible/issues/779) - Added templating of the `token` and `api_endpoint` options to the `inventory` and `gql_inventory` inventory plugins, so they can come from a lookup such as HashiCorp Vault.
+
 ## [v6.3.0](https://github.com/nautobot/nautobot-ansible/releases/tag/v6.3.0)
 
 ### Added
