@@ -1,0 +1,380 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vm_interface
+api_path: /virtualization/interfaces/
+endpoint: interfaces
+header:
+  - '# Copyright: (c) 2019, Benjamin Vergnaud (@bvergnaud)'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: virtualization
+class_name: NautobotVirtualizationModule
+endpoint_constant: NB_VM_INTERFACES
+instance_var: vm_interface
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields:
+  bridge: CONVERT_TO_ID looks up parent_interface and bridge on dcim.interfaces, but these point to virtualization.interfaces. Needs special handling in _find_ids() before it can be added.
+  parent_interface: CONVERT_TO_ID looks up parent_interface and bridge on dcim.interfaces, but these point to virtualization.interfaces. Needs special handling in _find_ids() before it can be added.
+lookup_fields: null
+generated_examples: false
+options:
+  virtual_machine:
+    api_field: virtual_machine
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Name of the virtual machine the interface will be associated with (case-sensitive)
+        - Required if I(state=present) and the interface does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Name of the interface to be created
+        - Required if I(state=present) and the interface does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  enabled:
+    api_field: enabled
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Sets whether interface shows enabled or disabled
+      required: false
+      type: bool
+      version_added: "3.0.0"
+  mtu:
+    api_field: mtu
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The MTU of the interface
+      required: false
+      type: int
+      version_added: "3.0.0"
+  mac_address:
+    api_field: mac_address
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The MAC address of the interface
+      required: false
+      type: str
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the interface
+      required: false
+      type: str
+      version_added: "3.0.0"
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the interface.
+        - Required if I(state=present) and does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  mode:
+    api_field: mode
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The mode of the interface
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  untagged_vlan:
+    api_field: untagged_vlan
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The untagged VLAN to be assigned to interface
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  tagged_vlans:
+    api_field: tagged_vlans
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - A list of tagged VLANS to be assigned to interface. Mode must be set to either C(Tagged) or C(Tagged All)
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the interface
+      required: false
+      type: raw
+      version_added: "5.3.0"
+  vrf:
+    api_field: vrf
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The VRF assigned to the interface
+      required: false
+      type: raw
+      version_added: "5.12.0"
+  ip_addresses:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            ip_address:
+              required: true
+              type: raw
+            is_source:
+              required: false
+              type: bool
+            is_destination:
+              required: false
+              type: bool
+            is_default:
+              required: false
+              type: bool
+            is_preferred:
+              required: false
+              type: bool
+            is_primary:
+              required: false
+              type: bool
+            is_secondary:
+              required: false
+              type: bool
+            is_standby:
+              required: false
+              type: bool
+    documentation:
+      description:
+        - List of IP addresses to associate with this VM interface.
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds associations without removing existing ones.
+            - C(replace) enforces exactly the listed associations, removing any extras.
+            - C(delete) removes the listed associations.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of IP addresses to associate.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            ip_address:
+              description:
+                - The IP address to associate with the VM interface.
+              required: true
+              type: raw
+            is_source:
+              description:
+                - Mark the IP address as a source IP address.
+              required: false
+              type: bool
+            is_destination:
+              description:
+                - Mark the IP address as a destination IP address.
+              required: false
+              type: bool
+            is_default:
+              description:
+                - Mark the IP address as a default IP address.
+              required: false
+              type: bool
+            is_preferred:
+              description:
+                - Mark the IP address as a preferred IP address.
+              required: false
+              type: bool
+            is_primary:
+              description:
+                - Mark the IP address as a primary IP address.
+              required: false
+              type: bool
+            is_secondary:
+              description:
+                - Mark the IP address as a secondary IP address.
+              required: false
+              type: bool
+            is_standby:
+              description:
+                - Mark the IP address as a standby IP address.
+              required: false
+              type: bool
+documentation:
+  module: vm_interface
+  short_description: Creates or removes interfaces from virtual machines in Nautobot
+  description:
+    - Creates or removes interfaces from virtual machines in Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Benjamin Vergnaud (@bvergnaud)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot interface module"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create interface within Nautobot with only required information
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_machine: test100
+          name: GigabitEthernet1
+          state: present
+
+      - name: Delete interface within nautobot
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_machine: test100
+          name: GigabitEthernet1
+          state: absent
+
+      - name: Create interface as a trunk port
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_machine: test100
+          name: GigabitEthernet25
+          enabled: false
+          untagged_vlan:
+            name: Wireless
+            location: "{{ test_location['key'] }}"
+          tagged_vlans:
+            - name: Data
+              location: "{{ test_location['key'] }}"
+            - name: VoIP
+              location: "{{ test_location['key'] }}"
+          mtu: 1600
+          role: Server
+          mode: Tagged
+          state: present
+
+      - name: |
+          Create an interface and update custom_field data point,
+          setting the value to True
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_machine: test100
+          name: GigabitEthernet26
+          enabled: false
+          custom_fields:
+            monitored: true
+
+      - name: Create interface with inline IP address associations
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_machine: test100
+          name: GigabitEthernet27
+          ip_addresses:
+            state: merge
+            objects:
+              - ip_address: 192.168.1.1/24
+                is_source: true
+              - ip_address: 192.168.1.2/24
+                is_destination: true
+              - ip_address: 192.168.1.3/24
+                is_default: true
+          state: present
+
+      - name: Delete interface by id
+        networktocode.nautobot.vm_interface:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  interface:
+    description: Serialized object as created or already existent within Nautobot
+    returned: on creation
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

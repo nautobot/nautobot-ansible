@@ -1,0 +1,160 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: object_metadata
+api_path: /extras/object-metadata/
+endpoint: object_metadata
+header:
+  - '# Copyright: (c) 2022, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_OBJECT_METADATA
+instance_var: object_metadata
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  metadata_type:
+    api_field: metadata_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The name of the metadata type
+        - Required if I(state=present) and the object metadata does not exist yet
+      required: false
+      type: raw
+  assigned_object_type:
+    api_field: assigned_object_type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The app_label.model for the object in the relationship
+        - Required if I(state=present) and the object metadata does not exist yet
+      required: false
+      type: str
+  assigned_object_id:
+    api_field: assigned_object_id
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The UUID of the object in the relationship
+        - Required if I(state=present) and the object metadata does not exist yet
+      required: false
+      type: str
+  value:
+    api_field: value
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The value of the metadata
+        - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
+      required: false
+      type: str
+  contact:
+    api_field: contact
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The contact of the metadata
+        - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
+      required: false
+      type: raw
+  team:
+    api_field: team
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The team of the metadata
+        - Requires one of I(value), I(contact), or I(team) when I(state=present) and the object metadata does not exist yet
+      required: false
+      type: raw
+  scoped_fields:
+    api_field: scoped_fields
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - List of scoped fields, only direct fields on the model
+      required: false
+      type: list
+      elements: str
+documentation:
+  module: object_metadata
+  short_description: Creates or removes object metadata from Nautobot
+  description:
+    - Creates or removes object metadata from Nautobot
+  author:
+    - Network to Code (@networktocode)
+    - Travis Smith (@tsm1th)
+  version_added: "5.5.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: "Test object metadata creation/deletion"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create object metadata
+        networktocode.nautobot.object_metadata:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          metadata_type: "TopSecretInfo"
+          assigned_object_type: dcim.device
+          assigned_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+          value: foobar
+          scoped_fields:
+            - name
+      - name: Delete object metadata
+        networktocode.nautobot.object_metadata:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          metadata_type: "TopSecretInfo"
+          assigned_object_type: dcim.device
+          assigned_object_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+          value: foobar
+          scoped_fields:
+            - name
+          state: absent
+
+      - name: Delete object metadata by id
+        networktocode.nautobot.object_metadata:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  object_metadata:
+    description: Serialized object as created/existent/updated/deleted within Nautobot
+    returned: always
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

@@ -1,0 +1,173 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: tag
+api_path: /extras/tags/
+endpoint: tags
+header:
+  - '# Copyright: (c) 2020, Pavel Korovin (@pkorovin) <p@tristero.se>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_TAGS
+instance_var: tag
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Tag name
+        - Required if I(state=present) and the tag does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  color:
+    api_field: color
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Tag color
+      required: false
+      type: str
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Tag description
+      required: false
+      type: str
+      version_added: "3.0.0"
+  content_types:
+    api_field: content_types
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - Tags content type(s). These match app.endpoint and the endpoint is singular.
+        - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+        - Required if I(state=present) and the tag does not exist yet
+      required: false
+      type: list
+      elements: str
+documentation:
+  module: tag
+  short_description: Creates or removes tags from Nautobot
+  description:
+    - Creates or removes tags from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Pavel Korovin (@pkorovin)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test tags creation/deletion"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create tags
+        networktocode.nautobot.tag:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          api_version: "1.3"
+          name: "{{ item.name }}"
+          description: "{{ item.description }}"
+          content_types:
+            - circuits.circuit
+            - circuits.circuit termination
+            - circuits.provider
+            - circuits.provider network
+            - dcim.cable
+            - dcim.console port
+            - dcim.console server port
+            - dcim.device
+            - dcim.device bay
+            - dcim.device type
+            - dcim.front port
+            - dcim.interface
+            - dcim.inventory item
+            - dcim.power feed
+            - dcim.power outlet
+            - dcim.power panel
+            - dcim.power port
+            - dcim.rack
+            - dcim.rack reservation
+            - dcim.rear port
+            - dcim.virtual chassis
+            - extras.Git repository
+            - extras.job
+            - extras.secret
+            - ipam.aggregate
+            - ipam.IP address
+            - ipam.prefix
+            - ipam.route target
+            - ipam.service
+            - ipam.VLAN
+            - ipam.VRF
+            - tenancy.tenant
+            - virtualization.cluster
+            - virtualization.virtual machine
+            - virtualization.VM interface
+        loop:
+          - { name: mgmt, description: "management" }
+          - { name: tun, description: "tunnel" }
+
+      - name: Delete tags
+        networktocode.nautobot.tag:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "{{ item }}"
+          state: absent
+        loop:
+          - mgmt
+          - tun
+
+      - name: Delete tag by id
+        networktocode.nautobot.tag:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  tags:
+    description: Serialized object as created/existent/updated/deleted within Nautobot
+    returned: always
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

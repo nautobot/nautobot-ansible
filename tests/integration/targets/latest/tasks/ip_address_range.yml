@@ -1,0 +1,101 @@
+---
+##
+##
+### PYNAUTOBOT_IP_ADDRESS_RANGE (generated module)
+##
+##
+- name: "IP ADDRESS RANGE 1: Necessary info creation"
+  networktocode.nautobot.ip_address_range:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Range"
+    start_address: 10.250.0.10
+    end_address: 10.250.0.20
+    namespace: Global
+    status: Active
+    state: present
+  register: test_one
+
+- name: "IP ADDRESS RANGE 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['ip_address_range']['start_address'] == "10.250.0.10"
+      - test_one['ip_address_range']['end_address'] == "10.250.0.20"
+      - test_one['msg'] == "ip_address_range Test Range created"
+
+- name: "IP ADDRESS RANGE 2: Create duplicate"
+  networktocode.nautobot.ip_address_range:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Range"
+    start_address: 10.250.0.10
+    end_address: 10.250.0.20
+    namespace: Global
+    status: Active
+    state: present
+  register: test_two
+
+- name: "IP ADDRESS RANGE 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['ip_address_range']['id'] == test_one['ip_address_range']['id']
+      - test_two['msg'] == "ip_address_range Test Range already exists"
+
+- name: "IP ADDRESS RANGE 3: Update"
+  networktocode.nautobot.ip_address_range:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Range"
+    start_address: 10.250.0.10
+    end_address: 10.250.0.20
+    namespace: Global
+    description: "DHCP pool"
+    state: present
+  register: test_three
+
+- name: "IP ADDRESS RANGE 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['ip_address_range']['description'] == "DHCP pool"
+      - test_three['msg'] == "ip_address_range Test Range updated"
+
+- name: "IP ADDRESS RANGE 4: Delete"
+  networktocode.nautobot.ip_address_range:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    start_address: 10.250.0.10
+    end_address: 10.250.0.20
+    namespace: Global
+    name: "Test Range"
+    state: absent
+  register: test_four
+
+- name: "IP ADDRESS RANGE 4: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "present"
+      - test_four['diff']['after']['state'] == "absent"
+      - test_four['msg'] == "ip_address_range Test Range deleted"
+
+- name: "IP ADDRESS RANGE 5: Delete again"
+  networktocode.nautobot.ip_address_range:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    start_address: 10.250.0.10
+    end_address: 10.250.0.20
+    namespace: Global
+    name: "Test Range"
+    state: absent
+  register: test_five
+
+- name: "IP ADDRESS RANGE 5: ASSERT - Already absent"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['msg'] == "ip_address_range Test Range already absent"

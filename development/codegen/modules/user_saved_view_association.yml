@@ -1,0 +1,114 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: user_saved_view_association
+api_path: /extras/user-saved-view-associations/
+endpoint: user_saved_view_associations
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: user_saved_view_association
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  view_name:
+    api_field: view_name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The view name of the user saved view association
+        - Required if I(state=present) and the user saved view association does not exist yet
+      required: false
+      type: str
+  saved_view:
+    api_field: saved_view
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The saved view of the user saved view association
+        - Required if I(state=present) and the user saved view association does not exist yet
+      required: false
+      type: raw
+  user:
+    api_field: user
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The user of the user saved view association
+        - Required if I(state=present) and the user saved view association does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: user_saved_view_association
+  short_description: Create, update or delete user saved view associations within Nautobot
+  description:
+    - Creates, updates or removes user saved view associations from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create user saved view association within Nautobot with only required information
+        networktocode.nautobot.user_saved_view_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          view_name: Test View Name
+          saved_view: Test Saved View
+          user: Test User
+          state: present
+      - name: Delete user saved view association within Nautobot
+        networktocode.nautobot.user_saved_view_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          user: Test User
+          view_name: Test View Name
+          state: absent
+      - name: Delete user saved view association by id
+        networktocode.nautobot.user_saved_view_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  user_saved_view_association:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - user
+  - view_name

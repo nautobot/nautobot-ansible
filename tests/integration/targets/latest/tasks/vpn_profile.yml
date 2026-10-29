@@ -1,0 +1,87 @@
+---
+##
+##
+### PYNAUTOBOT_VPN_PROFILE (generated module)
+##
+##
+- name: "VPN PROFILE 1: Necessary info creation"
+  networktocode.nautobot.vpn_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VPN Profile"
+    keepalive_enabled: true
+    state: present
+  register: test_one
+
+- name: "VPN PROFILE 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['vpn_profile']['name'] == "Test VPN Profile"
+      - test_one['vpn_profile']['keepalive_enabled'] == true
+      - test_one['msg'] == "vpn_profile Test VPN Profile created"
+
+- name: "VPN PROFILE 2: Create duplicate"
+  networktocode.nautobot.vpn_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VPN Profile"
+    keepalive_enabled: true
+    state: present
+  register: test_two
+
+- name: "VPN PROFILE 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['vpn_profile']['id'] == test_one['vpn_profile']['id']
+      - test_two['msg'] == "vpn_profile Test VPN Profile already exists"
+
+- name: "VPN PROFILE 3: Update"
+  networktocode.nautobot.vpn_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VPN Profile"
+    keepalive_interval: 30
+    tenant: "Test Tenant"
+    state: present
+  register: test_three
+
+- name: "VPN PROFILE 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['vpn_profile']['keepalive_interval'] == 30
+      - test_three['msg'] == "vpn_profile Test VPN Profile updated"
+
+- name: "VPN PROFILE 4: Delete"
+  networktocode.nautobot.vpn_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VPN Profile"
+    state: absent
+  register: test_four
+
+- name: "VPN PROFILE 4: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "present"
+      - test_four['diff']['after']['state'] == "absent"
+      - test_four['msg'] == "vpn_profile Test VPN Profile deleted"
+
+- name: "VPN PROFILE 5: Delete again"
+  networktocode.nautobot.vpn_profile:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test VPN Profile"
+    state: absent
+  register: test_five
+
+- name: "VPN PROFILE 5: ASSERT - Already absent"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['msg'] == "vpn_profile Test VPN Profile already absent"

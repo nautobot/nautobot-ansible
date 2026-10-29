@@ -1,0 +1,113 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: prefix_location
+api_path: /ipam/prefix-location-assignments/
+endpoint: prefix_location_assignments
+header:
+  - '# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_PREFIX_LOCATIONS
+instance_var: prefix_location
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  location_prefix:
+    api_field: prefix
+    argument_spec:
+      required: false
+      type: raw
+      aliases:
+        - prefix
+    documentation:
+      aliases:
+        - prefix
+      description:
+        - The Prefix to associate with the location
+        - Required if I(state=present) and the prefix to location assignment does not exist yet
+      required: false
+      type: raw
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The location the Prefix will be associated to
+        - Required if I(state=present) and the prefix to location assignment does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: prefix_location
+  short_description: Create, update or delete Location assignments to Prefixes within Nautobot
+  description:
+    - Create, update or delete Location assignments to Prefixes within Nautobot
+  deprecated:
+    removed_in: "7.0.0"
+    why: Prefix to location assignments are managed on the I(location) record.
+    alternative: Use M(networktocode.nautobot.location) with I(prefixes).
+  notes:
+    - This module requires Nautobot v2.2+
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Joe Wesch (@joewesch)
+  version_added: "5.11.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Assign Location to Prefix
+        networktocode.nautobot.prefix_location:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          prefix:
+            prefix: "192.0.2.0/24"
+            namespace: Global
+          location:
+            name: My Child Location
+            parent: My Parent Location
+          state: present
+
+      - name: Unassign Location from Prefix
+        networktocode.nautobot.prefix_location:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          prefix: "192.0.2.0/24"
+          location: My Location
+          state: absent
+
+      - name: Delete prefix to location assignment by id
+        networktocode.nautobot.prefix_location:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  prefix_location_assignments:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

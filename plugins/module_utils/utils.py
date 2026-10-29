@@ -18,6 +18,15 @@ from uuid import UUID
 from ansible.module_utils.basic import env_fallback, missing_required_lib
 from ansible.module_utils.common.text.converters import to_text
 from ansible.module_utils.urls import open_url
+from ansible_collections.networktocode.nautobot.plugins.module_utils.generated import (
+    GENERATED_ALLOWED_QUERY_PARAMS,
+    GENERATED_API_APPS_ENDPOINTS,
+    GENERATED_CONVERT_TO_ID,
+    GENERATED_ENDPOINT_CONVERT_KEYS,
+    GENERATED_ENDPOINT_NAME_MAPPING,
+    GENERATED_ENDPOINT_WRITE_ONLY_FIELDS,
+    GENERATED_QUERY_TYPES,
+)
 
 PYNAUTOBOT_IMP_ERR = None
 try:
@@ -622,6 +631,20 @@ ALLOWED_QUERY_PARAMS = {
     "wireless_network": set(["name"]),
 }
 
+# Add the entries for the generated modules (see development/codegen). When both define the same key, the
+# hand-written entry above is kept.
+for _app, _endpoints in GENERATED_API_APPS_ENDPOINTS.items():
+    API_APPS_ENDPOINTS.setdefault(_app, [])
+    API_APPS_ENDPOINTS[_app].extend(_endpoint for _endpoint in _endpoints if _endpoint not in API_APPS_ENDPOINTS[_app])
+for _hand_written, _generated in (
+    (QUERY_TYPES, GENERATED_QUERY_TYPES),
+    (CONVERT_TO_ID, GENERATED_CONVERT_TO_ID),
+    (ENDPOINT_NAME_MAPPING, GENERATED_ENDPOINT_NAME_MAPPING),
+    (ALLOWED_QUERY_PARAMS, GENERATED_ALLOWED_QUERY_PARAMS),
+):
+    for _key, _value in _generated.items():
+        _hand_written.setdefault(_key, _value)
+
 QUERY_PARAMS_IDS = set(
     [
         "circuit",
@@ -1108,9 +1131,14 @@ class NautobotModule:
         :params data (dict): Data dictionary after _find_ids method ran
         """
         temp_dict = dict()
+        # The code generator renames an option when its API field name is already a CONVERT_TO_ID or CONVERT_KEYS
+        # key with a different meaning. This table converts the renamed option back to the API field name.
+        endpoint_keys = GENERATED_ENDPOINT_CONVERT_KEYS.get(self.endpoint, {})
         for key in data:
             if self.endpoint == "power_panels" and key == "rack_group":
                 temp_dict[key] = data[key]
+            elif key in endpoint_keys:
+                temp_dict[endpoint_keys[key]] = data[key]
             elif key in CONVERT_KEYS:
                 new_key = CONVERT_KEYS[key]
                 temp_dict[new_key] = data[key]
@@ -1476,6 +1504,11 @@ class NautobotModule:
             serialized_nb_obj["custom_fields"] = {
                 key: custom_fields[key] for key in shared_keys if custom_fields[key] is not None
             }
+        # The API doesn't return write-only fields, so they can't be compared with the existing object. They're
+        # still sent when another field changes.
+        write_only_fields = GENERATED_ENDPOINT_WRITE_ONLY_FIELDS.get(self.endpoint, [])
+        update_data = data
+        data = {key: value for key, value in data.items() if key not in write_only_fields}
         updated_obj = serialized_nb_obj.copy()
         updated_obj.update(data)
         if serialized_nb_obj.get("tags") and data.get("tags"):
@@ -1500,7 +1533,7 @@ class NautobotModule:
                     self._handle_errors(msg=msg)
 
             if not self.check_mode:
-                self.nb_object.update(data)
+                self.nb_object.update(update_data)
                 updated_obj = self.nb_object.serialize()
 
             diff = self._build_diff(before=data_before, after=data_after)

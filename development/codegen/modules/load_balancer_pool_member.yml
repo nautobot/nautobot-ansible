@@ -1,0 +1,182 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: load_balancer_pool_member
+api_path: /load-balancers/load-balancer-pool-members/
+endpoint: load_balancer_pool_members
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: load_balancers
+class_name: NautobotLoadBalancersModule
+endpoint_constant: null
+instance_var: load_balancer_pool_member
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  label:
+    api_field: label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Optional label for the load balancer pool member.
+      required: false
+      type: str
+  port:
+    api_field: port
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The port of the Load Balancer Pool Member
+        - Required if I(state=present) and the Load Balancer Pool Member does not exist yet
+      required: false
+      type: int
+  ssl_offload:
+    api_field: ssl_offload
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - The ssl offload of the Load Balancer Pool Member
+      required: false
+      type: bool
+  ip_address:
+    api_field: ip_address
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The ip address of the Load Balancer Pool Member
+        - Required if I(state=present) and the Load Balancer Pool Member does not exist yet
+      required: false
+      type: raw
+  load_balancer_pool:
+    api_field: load_balancer_pool
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The load balancer pool of the Load Balancer Pool Member
+        - Required if I(state=present) and the Load Balancer Pool Member does not exist yet
+      required: false
+      type: raw
+  health_check_monitor:
+    api_field: health_check_monitor
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The health check monitor of the Load Balancer Pool Member
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the Load Balancer Pool Member
+      required: false
+      type: raw
+  status:
+    api_field: status
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the Load Balancer Pool Member
+        - Required if I(state=present) and the Load Balancer Pool Member does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: load_balancer_pool_member
+  short_description: Create, update or delete load balancer pool members within Nautobot
+  description:
+    - Creates, updates or removes load balancer pool members from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create Load Balancer Pool Member within Nautobot with only required information
+        networktocode.nautobot.load_balancer_pool_member:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          port: 1
+          ip_address: Test Ip Address
+          load_balancer_pool: Test Load Balancer Pool
+          status: Active
+          state: present
+      - name: Delete Load Balancer Pool Member within Nautobot
+        networktocode.nautobot.load_balancer_pool_member:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          ip_address: Test Ip Address
+          port: 1
+          load_balancer_pool: Test Load Balancer Pool
+          state: absent
+      - name: Delete Load Balancer Pool Member by id
+        networktocode.nautobot.load_balancer_pool_member:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  load_balancer_pool_member:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - ip_address
+  - port
+  - load_balancer_pool

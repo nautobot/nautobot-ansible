@@ -1,0 +1,101 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vrf_prefix_assignment
+api_path: /ipam/vrf-prefix-assignments/
+endpoint: vrf_prefix_assignments
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: null
+instance_var: vrf_prefix_assignment
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  vrf:
+    api_field: vrf
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vrf of the VRF-prefix assignment
+        - Required if I(state=present) and the VRF-prefix assignment does not exist yet
+      required: false
+      type: raw
+  prefix:
+    api_field: prefix
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The prefix of the VRF-prefix assignment
+        - Required if I(state=present) and the VRF-prefix assignment does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: vrf_prefix_assignment
+  short_description: Create, update or delete vrf prefix assignments within Nautobot
+  description:
+    - Creates, updates or removes vrf prefix assignments from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create VRF-prefix assignment within Nautobot with only required information
+        networktocode.nautobot.vrf_prefix_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vrf: Test Vrf
+          prefix: Test Prefix
+          state: present
+      - name: Delete VRF-prefix assignment within Nautobot
+        networktocode.nautobot.vrf_prefix_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vrf: Test Vrf
+          prefix: Test Prefix
+          state: absent
+      - name: Delete VRF-prefix assignment by id
+        networktocode.nautobot.vrf_prefix_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vrf_prefix_assignment:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - vrf
+  - prefix

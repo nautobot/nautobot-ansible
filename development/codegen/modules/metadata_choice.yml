@@ -1,0 +1,109 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: metadata_choice
+api_path: /extras/metadata-choices/
+endpoint: metadata_choices
+header:
+  - '# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_METADATA_CHOICES
+instance_var: metadata_choice
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  metadata_type:
+    api_field: metadata_type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the metadata type
+        - Required if I(state=present) and the metadata choice does not exist yet
+      required: false
+      type: str
+  value:
+    api_field: value
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The value of the metadata choice
+        - Required if I(state=present) and the metadata choice does not exist yet
+      required: false
+      type: str
+  weight:
+    api_field: weight
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Weight of this choice
+      required: false
+      type: int
+documentation:
+  module: metadata_choice
+  short_description: Create, update or delete metadata choices within Nautobot
+  description:
+    - Creates, updates or removes metadata choices from Nautobot
+  deprecated:
+    removed_in: "7.0.0"
+    why: Metadata choices are managed via the I(metadata_type) module.
+    alternative: Use M(networktocode.nautobot.metadata_type) with I(metadata_choices).
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Travis Smith (@tsm1th)
+  version_added: "5.5.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Create a metadata choice
+    networktocode.nautobot.metadata_choice:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      value: "Choice 1"
+      weight: 100
+      metadata_type: "TopSecretInfo"
+      state: present
+
+  - name: Delete a metadata choice
+    networktocode.nautobot.metadata_choice:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      value: "Choice 1"
+      metadata_type: "TopSecretInfo"
+      state: absent
+
+  - name: Delete a metadata choice by id
+    networktocode.nautobot.metadata_choice:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  metadata_choice:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

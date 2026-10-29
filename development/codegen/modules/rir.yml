@@ -1,0 +1,126 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: rir
+api_path: /ipam/rirs/
+endpoint: rirs
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_RIRS
+instance_var: rir
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the RIR
+        - Required if I(state=present) and the RIR does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  is_private:
+    api_field: is_private
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - IP space managed by this RIR is considered private
+      required: false
+      type: bool
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the RIR
+      required: false
+      type: str
+      version_added: "6.2.0"
+documentation:
+  module: rir
+  short_description: Create, update or delete RIRs within Nautobot
+  description:
+    - Creates, updates or removes RIRs from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create RIR within Nautobot with only required information
+        networktocode.nautobot.rir:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test RIR One
+          description: MyDescription
+          state: present
+
+      - name: Update Test RIR One
+        networktocode.nautobot.rir:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test RIR One
+          is_private: true
+          state: present
+
+      - name: Delete RIR within nautobot
+        networktocode.nautobot.rir:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test RIR One
+          state: absent
+
+      - name: Delete RIR by id
+        networktocode.nautobot.rir:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  rir:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

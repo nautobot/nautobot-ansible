@@ -1,0 +1,3 @@
+Added a code generator that writes the modules from the Nautobot REST API and reports API changes that affect existing modules (`invoke codegen`).
+Added modules for the Nautobot 3.2 endpoints that didn't have one, including `cable_type`, `ip_address_range`, `webhook`, and the VPN and load balancer models.
+Added options for new Nautobot 3.2 API fields to existing modules, including `cable_type` on `cable`, and `speed` and `duplex` on `device_interface`.

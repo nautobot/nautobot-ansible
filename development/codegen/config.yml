@@ -1,0 +1,31 @@
+# Settings for the module code generator. See development/codegen/README.md.
+
+# version_added for new modules and options. Defaults to the minor release after the version in galaxy.yml.
+next_version: null
+
+# Modules that aren't generated, with the reason.
+hand_written_modules:
+  graphql_facts: Runs GraphQL queries; doesn't manage a REST API endpoint.
+  graphql_info: Runs GraphQL queries; doesn't manage a REST API endpoint.
+  nautobot_server: Runs nautobot-server commands; doesn't manage a REST API endpoint.
+  plugin: Manages any app endpoint chosen by the user.
+  query_graphql: Runs GraphQL queries; doesn't manage a REST API endpoint.
+
+# API fields never added as module options, on any module, with the reason.
+ignore_api_fields:
+  date_joined: Set by Nautobot when the user is created.
+  front_image: Needs a file upload, which the modules don't support.
+  last_login: Set by Nautobot when the user logs in.
+  local_config_context_data_owner_content_type: Set by Nautobot when a Git repository provides the config context.
+  local_config_context_data_owner_object_id: Set by Nautobot when a Git repository provides the config context.
+  rear_image: Needs a file upload, which the modules don't support.
+
+# Creatable API endpoints that don't get a module, with the reason.
+skip_endpoints:
+  /data-validation/data-compliance/: Compliance results that Nautobot computes, not configuration.
+  /extras/contact-associations/: Managed with the contacts and teams options of each module.
+  /extras/image-attachments/: Needs a file upload, which the modules don't support.
+  /extras/notes/: Managed with the notes option of each module.
+  /users/tokens/: API tokens are per-user secrets; the collection doesn't create them.
+  /wireless/controller-managed-device-group-radio-profile-assignments/: Managed with the radio_profiles option of the controller_managed_device_group module.
+  /wireless/controller-managed-device-group-wireless-network-assignments/: Managed with the wireless_networks option of the controller_managed_device_group module.

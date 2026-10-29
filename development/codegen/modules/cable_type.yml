@@ -1,0 +1,224 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: cable_type
+api_path: /dcim/cable-types/
+endpoint: cable_types
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: null
+instance_var: cable_type
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  mapping:
+    api_field: mapping
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - 'A→B lane mapping as a JSON array of objects with keys: label, a_connector, a_position, b_connector, b_position. If empty, will be auto-populated.'
+      required: false
+      type: list
+      elements: raw
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the cable type
+        - Required if I(state=present) and the cable type does not exist yet
+      required: false
+      type: str
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the cable type
+      required: false
+      type: str
+  part_number:
+    api_field: part_number
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Discrete part number (optional)
+      required: false
+      type: str
+  has_embedded_transceivers:
+    api_field: has_embedded_transceivers
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Indicates that this cable type has transceivers (e.g. SFP) built in.
+      required: false
+      type: bool
+  a_connectors:
+    api_field: a_connectors
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Number of physical connectors on the A side.
+      required: false
+      type: int
+  b_connectors:
+    api_field: b_connectors
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Number of physical connectors on the B side.
+      required: false
+      type: int
+  total_lanes:
+    api_field: total_lanes
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Total number of logical lanes in the breakout, distributed evenly across connectors on each side.
+      required: false
+      type: int
+  is_shuffle:
+    api_field: is_shuffle
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Indicates non-linear (polarity-shuffled) position mapping. Informational only.
+      required: false
+      type: bool
+  strands_per_lane:
+    api_field: strands_per_lane
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Number of physical strands per logical lane (e.g. 1 for copper, 2 for duplex fiber).
+      required: false
+      type: int
+  polarity_method:
+    api_field: polarity_method
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - straight-through
+        - reversed
+        - pair-reversed
+        - other
+    documentation:
+      description:
+        - Fiber polarity method. Informational only.
+      required: false
+      type: str
+      choices: *id001
+  manufacturer:
+    api_field: manufacturer
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The manufacturer of the cable type
+      required: false
+      type: raw
+documentation:
+  module: cable_type
+  short_description: Create, update or delete cable types within Nautobot
+  description:
+    - Creates, updates or removes cable types from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create cable type within Nautobot with only required information
+        networktocode.nautobot.cable_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: present
+      - name: Delete cable type within Nautobot
+        networktocode.nautobot.cable_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete cable type by id
+        networktocode.nautobot.cable_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  cable_type:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

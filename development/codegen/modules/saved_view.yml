@@ -1,0 +1,132 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: saved_view
+api_path: /extras/saved-views/
+endpoint: saved_views
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: saved_view
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of this view
+        - Required if I(state=present) and the saved view does not exist yet
+      required: false
+      type: str
+  view:
+    api_field: view
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the list view that the saved view is derived from, e.g. dcim:device_list
+        - Required if I(state=present) and the saved view does not exist yet
+      required: false
+      type: str
+  config:
+    api_field: config
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Saved Configuration on this view
+      required: false
+      type: raw
+  is_global_default:
+    api_field: is_global_default
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - The is global default of the saved view
+      required: false
+      type: bool
+  is_shared:
+    api_field: is_shared
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - The is shared of the saved view
+      required: false
+      type: bool
+documentation:
+  module: saved_view
+  short_description: Create, update or delete saved views within Nautobot
+  description:
+    - Creates, updates or removes saved views from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create saved view within Nautobot with only required information
+        networktocode.nautobot.saved_view:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          view: Test View
+          state: present
+      - name: Delete saved view within Nautobot
+        networktocode.nautobot.saved_view:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete saved view by id
+        networktocode.nautobot.saved_view:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  saved_view:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name
