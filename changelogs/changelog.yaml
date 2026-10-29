@@ -836,4 +836,5 @@ releases:
   6.3.1:
     changes:
       minor_changes:
-        - (#779) - Added templating of the `token` and `api_endpoint` options to the `inventory` and `gql_inventory` inventory plugins, so they can come from a lookup such as HashiCorp Vault.
+        - (#779) - Added templating of the `token` and `api_endpoint` options to the `inventory` and `gql_inventory` inventory plugins,
+          so they can come from a lookup such as HashiCorp Vault.
