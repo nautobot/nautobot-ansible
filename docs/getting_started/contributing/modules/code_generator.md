@@ -71,7 +71,7 @@ The generator only adds a `CONVERT_TO_ID` entry for a generated option when ever
 
 ## Continuous integration
 
-CI should run the generator tests and `invoke codegen --check` against Nautobot 3.2. The check exits with code 1 when the committed modules don't match what the generator writes, or when the report has errors, and prints the difference. Add this job to `.github/workflows/tests.yml`:
+The `codegen` job in `.github/workflows/tests.yml` runs the generator tests and `invoke codegen --check` against Nautobot 3.2. The check exits with code 1 when the committed modules don't match what the generator writes, or when the report has errors, and prints the difference. The job is:
 
 ```yaml
   codegen:

@@ -8,7 +8,7 @@ import datetime
 import re
 from dataclasses import dataclass, field
 
-# Ansible-test flags option names that look like secrets unless they set no_log.
+# ansible-test reports an error for an option whose name looks like a secret, unless the option sets no_log.
 NO_LOG_NAME = re.compile(r"pass(?!ive)|secret|token|key|psk", re.IGNORECASE)
 SECRET_VALUE_NAME = re.compile(r"password|secret|token|psk|pre_shared", re.IGNORECASE)
 
@@ -376,7 +376,10 @@ class Context:
     report: Report = field(default_factory=Report)
 
     def find_app(self, endpoint_name, generated_apps=None):
-        """Return the app utils.py's `_find_app()` would pick for an endpoint name: the first app that lists it."""
+        """Return the app that `_find_app()` in utils.py would return for an endpoint name.
+
+        That is the first app in API_APPS_ENDPOINTS that lists the endpoint.
+        """
         for app, endpoints in self.hand_tables["API_APPS_ENDPOINTS"].items():
             if endpoint_name in endpoints:
                 return app
@@ -481,8 +484,8 @@ def sync_module(config, endpoint, context, is_new=False):
 def build_generated_tables(configs, context):
     """Build the lookup tables for generated.py from every module's options.
 
-    Entries that already exist in the hand-written tables in utils.py are left out, because the hand-written
-    entries win when utils.py merges the two.
+    Entries that already exist in the hand-written tables in utils.py are left out, because utils.py keeps the
+    hand-written entry when both tables define the same key.
     """
     hand = context.hand_tables
     endpoints_by_model = {endpoint.model: endpoint for endpoint in context.endpoints.values()}
@@ -574,7 +577,8 @@ def build_generated_tables(configs, context):
             if option.get("managed") and api_field and api_field.write_only:
                 endpoint_write_only_fields.setdefault(endpoint.endpoint, []).append(api_field.name)
 
-    # Generated options renamed to avoid a clash are converted back to the API field name, per endpoint.
+    # Map each generated option that was renamed to avoid a name clash back to its API field name. The map is
+    # stored per endpoint.
     endpoint_convert_keys = {}
     for config in configs.values():
         endpoint = context.endpoints.get(config.get("api_path"))

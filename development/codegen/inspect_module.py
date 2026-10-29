@@ -102,7 +102,7 @@ def _instance_statements(main):
 
 
 def _extra_imports(tree):
-    """Return plain `import x` statements other than the standard ones the template always writes."""
+    """Return the module names from every top-level `import x` statement."""
     imports = []
     for node in tree.body:
         if isinstance(node, ast.Import):

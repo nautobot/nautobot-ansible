@@ -126,7 +126,8 @@ def render_module(config, environment=None):
     }
     kwargs = dict(config["ansible_module_kwargs"])
     # Long lists such as required_if read better as a variable, the way the hand-written modules did it.
-    # Each rule is a tuple in AnsibleModule's documentation; YAML can only store it as a list.
+    # AnsibleModule's documentation writes each rule as a tuple, but YAML stores it as a list, so convert each
+    # rule back to a tuple.
     extra_kwargs = {
         name: [tuple(rule) if isinstance(rule, list) else rule for rule in kwargs.pop(name)]
         for name in list(kwargs)

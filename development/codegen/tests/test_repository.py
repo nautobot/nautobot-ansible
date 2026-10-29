@@ -53,7 +53,7 @@ def test_module_documents_its_options(name):
 
 
 def test_generated_lookup_tables_match_the_committed_file():
-    """generated.py is rewritten from the configs; check it imports and contains plain data."""
+    """Check that generated.py runs, defines its tables as dicts, and repeats no hand-written CONVERT_TO_ID key."""
     namespace = {}
     exec(compile(generate.GENERATED_TABLES_PATH.read_text(), "generated.py", "exec"), namespace)  # noqa: S102
     for name in ("API_APPS_ENDPOINTS", "ENDPOINT_CONVERT_KEYS", "ENDPOINT_NAME_MAPPING", "CONVERT_TO_ID"):

@@ -3,7 +3,7 @@
 import re
 from dataclasses import dataclass, field
 
-# Fields every module gets from shared argument specs or that the API manages itself.
+# Fields that every module already gets from the shared argument specs, and fields that the API sets itself.
 COMMON_FIELDS = {
     "computed_fields",
     "created",
@@ -131,7 +131,8 @@ def parse_endpoints(schema, metadata):
     for path, path_item in schema["paths"].items():
         if not re.fullmatch(r"/[^/{}]+/[^/{}]+/", path) or path not in models_by_path:
             continue
-        # Endpoints without POST (such as /extras/jobs/) get no module, but options can still point to them.
+        # Endpoints without POST (such as /extras/jobs/) don't get a module, but they're still parsed because an
+        # option's API field can refer to their model.
         request_schema = _request_schema(schema, path_item) if "post" in path_item else None
         label, model = models_by_path[path]
         app, endpoint_name = path.strip("/").split("/")

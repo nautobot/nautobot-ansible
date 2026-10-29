@@ -388,7 +388,7 @@ def test_generated_lookup_tables_keep_hand_written_entries():
     """utils.py merges the generated tables in, but never replaces an entry written by hand."""
     from ansible_collections.networktocode.nautobot.plugins.module_utils import generated, utils
 
-    # "group" is written by hand as tenant groups; the generator must not change that.
+    # The hand-written CONVERT_TO_ID entry maps "group" to tenant groups. The generated tables must not change that.
     assert utils.CONVERT_TO_ID["group"] == "tenant_groups"
     for table_name in ("CONVERT_TO_ID", "QUERY_TYPES", "ENDPOINT_NAME_MAPPING", "ALLOWED_QUERY_PARAMS"):
         merged = getattr(utils, table_name)

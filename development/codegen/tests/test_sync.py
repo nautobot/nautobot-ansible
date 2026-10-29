@@ -125,7 +125,7 @@ def test_managed_option_follows_the_api_but_keeps_its_description(api, hand_tabl
     config["options"]["cable_type"]["documentation"]["description"] = ["Written by a person"]
     config["options"]["cable_type"]["known_issue"] = "test"
 
-    # The API turns cable_type into a list of cable types.
+    # Change cable_type in the API to a many-to-many field (a list of cable types).
     schema_data, metadata = api
     metadata["models"]["dcim.cable"]["fields"]["cable_type"]["many"] = True
     context = make_context(api, hand_tables, next_version="7.0.0")
@@ -230,7 +230,10 @@ def test_known_issue_turns_the_foreign_key_error_into_a_warning(api, hand_tables
 
 
 def test_foreign_key_in_another_app_with_the_same_endpoint_name_is_an_error(api, hand_tables, cable_config):
-    """`interfaces` exists in dcim and virtualization; utils.py always resolves the first app that lists it."""
+    """`interfaces` exists in dcim and virtualization.
+
+    `_find_app()` in utils.py always returns the first app that lists an endpoint.
+    """
     hand_tables["API_APPS_ENDPOINTS"]["tenancy"].append("statuses")
     hand_tables["API_APPS_ENDPOINTS"] = {
         "tenancy": hand_tables["API_APPS_ENDPOINTS"]["tenancy"],
@@ -326,7 +329,10 @@ def test_lookup_fields_must_be_list_filters(api, hand_tables):
 
 
 def test_foreign_key_lookup_entry_never_reuses_a_module_lookup_key(api, hand_tables, cable_config):
-    """ALLOWED_QUERY_PARAMS["cable_type"] would also be the cable_type module's own lookup."""
+    """The cable_type module uses ALLOWED_QUERY_PARAMS["cable_type"] to find its own objects.
+
+    The cable_type foreign key on cables must not replace that entry.
+    """
     add_cable_type_field(*api)
     context = make_context(api, hand_tables)
     configs = {"cable": sync.sync_module(cable_config, context.endpoints["/dcim/cables/"], context)}
