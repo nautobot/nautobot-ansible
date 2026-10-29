@@ -1,0 +1,142 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: status
+api_path: /extras/statuses/
+endpoint: statuses
+header:
+  - '# Copyright: (c) 2020, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_STATUS
+instance_var: status
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Status name
+        - Required if I(state=present) and the status does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  content_types:
+    api_field: content_types
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - Status content type(s). These match app.endpoint and the endpoint is singular.
+        - e.g. dcim.device, ipam.ipaddress (more can be found in the examples)
+      required: false
+      type: list
+      elements: str
+      version_added: "3.0.0"
+  color:
+    api_field: color
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Status color
+      required: false
+      type: str
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description for the status
+      required: false
+      type: str
+      version_added: "3.0.0"
+documentation:
+  module: status
+  short_description: Creates or removes status from Nautobot
+  description:
+    - Creates or removes status from Nautobot
+  notes:
+    - Status should be defined as a YAML list
+  author:
+    - Network to Code (@networktocode)
+    - Mikhail Yohman (@fragmentedpacket)
+    - Josh VanDeraa (@jvanaderaa)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test status creation/deletion"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create status
+        networktocode.nautobot.status:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "ansible_status"
+          description: "Status if provisioned by Ansible"
+          content_types:
+            - dcim.device
+            - dcim.cable
+            - dcim.powerfeed
+            - dcim.rack
+            - circuits.circuit
+            - virtualization.virtualmachine
+            - ipam.prefix
+            - ipam.ipaddress
+            - ipam.vlan
+          color: 01bea3
+
+      - name: Delete status
+        networktocode.nautobot.status:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "ansible_status"
+          state: absent
+
+      - name: Delete status by id
+        networktocode.nautobot.status:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  statuses:
+    description: Serialized object as created/existent/updated/deleted within Nautobot
+    returned: always
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

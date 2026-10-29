@@ -1,0 +1,238 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: controller
+api_path: /dcim/controllers/
+endpoint: controllers
+header:
+  - '# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_CONTROLLERS
+instance_var: controller
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the controller
+        - Required if I(state=present) and the controller does not exist yet
+      required: false
+      type: str
+  controller_device:
+    api_field: controller_device
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Device that runs the controller software
+      required: false
+      type: str
+  external_integration:
+    api_field: external_integration
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - External connection for the controller, such as Meraki Cloud URL
+      required: false
+      type: str
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Description of the controller
+      required: false
+      type: str
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if I(state=present) and the controller does not exist yet
+      required: false
+      type: raw
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if I(state=present) and the controller does not exist yet
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant that the controller will be assigned to
+      required: false
+      type: raw
+  platform:
+    api_field: platform
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The platform of the controller
+      required: false
+      type: raw
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the controller
+        - Required if I(state=present) and the controller does not exist yet
+      required: false
+      type: raw
+  controller_device_redundancy_group:
+    api_field: controller_device_redundancy_group
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Related device redundancy group the controller will be assigned to
+      required: false
+      type: str
+  capabilities:
+    api_field: capabilities
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - List of capabilities supported by the controller, these capabilities are used to enhance views in Nautobot.
+      required: false
+      type: list
+      elements: str
+      version_added: "6.4.0"
+documentation:
+  module: controller
+  short_description: Create, update or delete controllers within Nautobot
+  description:
+    - Creates, updates or removes controllers from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Josh VanDeraa (@jvanderaa)
+  version_added: "5.3.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create controller within Nautobot with only required information
+        networktocode.nautobot.controller:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "test_controller_2"
+          location: My Location
+          status: "Active"
+          state: present
+
+      - name: "CREATE THE SECOND CONTROLLER"
+        networktocode.nautobot.controller:
+          name: "test_controller_3"
+          url: http://nautobot.local
+          token: thisIsMyToken
+          status: "Active"
+          description: "Description of the controller"
+          location: "Cisco"
+          external_integration: "Cisco Catalyst SD-WAN"
+          role: "Administrative"
+          platform: "Cisco IOS"
+          tenant: "Nautobot Baseball Stadiums"
+          controller_device_redundancy_group: "controller_test"
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+
+      - name: Delete controller within nautobot
+        networktocode.nautobot.controller:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: test_controller_3
+          state: absent
+
+      - name: Delete controller by id
+        networktocode.nautobot.controller:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  controller:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

@@ -1,0 +1,112 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vpn_profile_phase2_policy_assignment
+api_path: /vpn/vpn-profile-phase-2-policy-assignments/
+endpoint: vpn_profile_phase_2_policy_assignments
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: vpn
+class_name: NautobotVpnModule
+endpoint_constant: null
+instance_var: vpn_profile_phase2_policy_assignment
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  weight:
+    api_field: weight
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Higher weights appear later in the list
+      required: false
+      type: int
+  vpn_profile:
+    api_field: vpn_profile
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vpn profile of the vpn profile phase2 policy assignment
+        - Required if I(state=present) and the vpn profile phase2 policy assignment does not exist yet
+      required: false
+      type: raw
+  vpn_phase2_policy:
+    api_field: vpn_phase2_policy
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vpn phase2 policy of the vpn profile phase2 policy assignment
+        - Required if I(state=present) and the vpn profile phase2 policy assignment does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: vpn_profile_phase2_policy_assignment
+  short_description: Create, update or delete vpn profile phase 2 policy assignments within Nautobot
+  description:
+    - Creates, updates or removes vpn profile phase 2 policy assignments from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create vpn profile phase2 policy assignment within Nautobot with only required information
+        networktocode.nautobot.vpn_profile_phase2_policy_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vpn_profile: Test Vpn Profile
+          vpn_phase2_policy: Test Vpn Phase2 Policy
+          state: present
+      - name: Delete vpn profile phase2 policy assignment within Nautobot
+        networktocode.nautobot.vpn_profile_phase2_policy_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vpn_profile: Test Vpn Profile
+          vpn_phase2_policy: Test Vpn Phase2 Policy
+          state: absent
+      - name: Delete vpn profile phase2 policy assignment by id
+        networktocode.nautobot.vpn_profile_phase2_policy_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vpn_profile_phase2_policy_assignment:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - vpn_profile
+  - vpn_phase2_policy

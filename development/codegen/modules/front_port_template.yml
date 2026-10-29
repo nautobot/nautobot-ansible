@@ -1,0 +1,194 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: front_port_template
+api_path: /dcim/front-port-templates/
+endpoint: front_port_templates
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_FRONT_PORT_TEMPLATES
+instance_var: front_port_template
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  device_type:
+    api_field: device_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device type the front port template is attached to
+        - Requires one of I(device_type) or I(module_type) when I(state=present) and the front port template does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the front port template
+        - Required if I(state=present) and the front port template does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The type of the front port template
+        - Required if I(state=present) and the front port template does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  rear_port_template:
+    api_field: rear_port_template
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The rear_port_template the front port template is attached to
+        - Required if I(state=present) and the front port template does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  rear_port_template_position:
+    api_field: rear_port_position
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The position of the rear port template this front port template is connected to
+      required: false
+      type: int
+      version_added: "3.0.0"
+  module_type:
+    api_field: module_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The module type the front port template is attached to
+        - Requires one of I(device_type) or I(module_type) when I(state=present) and the front port template does not exist yet
+      required: false
+      type: raw
+      version_added: "5.4.0"
+  label:
+    api_field: label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Physical label
+      required: false
+      type: str
+      version_added: "6.4.0"
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the front port template
+      required: false
+      type: str
+      version_added: "6.4.0"
+documentation:
+  module: front_port_template
+  short_description: Create, update or delete front port templates within Nautobot
+  description:
+    - Creates, updates or removes front port templates from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create front port template within Nautobot with only required information
+        networktocode.nautobot.front_port_template:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port Template
+          device_type: Test Device Type
+          type: bnc
+          rear_port_template: Test Rear Port Template
+          state: present
+
+      - name: Update front port template with other fields
+        networktocode.nautobot.front_port_template:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port Template
+          device_type: Test Device Type
+          type: bnc
+          rear_port_template: Test Rear Port Template
+          rear_port_template_position: 5
+          state: present
+
+      - name: Delete front port template within nautobot
+        networktocode.nautobot.front_port_template:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port Template
+          device_type: Test Device Type
+          type: bnc
+          rear_port_template: Test Rear Port Template
+          state: absent
+
+      - name: Delete front port template by id
+        networktocode.nautobot.front_port_template:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  front_port_template:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

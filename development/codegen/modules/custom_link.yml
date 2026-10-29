@@ -1,0 +1,184 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: custom_link
+api_path: /extras/custom-links/
+endpoint: custom_links
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: custom_link
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  content_type:
+    api_field: content_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The content type of the custom link
+        - Required if I(state=present) and the custom link does not exist yet
+      required: false
+      type: str
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the custom link
+        - Required if I(state=present) and the custom link does not exist yet
+      required: false
+      type: str
+  text:
+    api_field: text
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Jinja2 template code for link text. Reference the object as <code>{{ obj }}</code> such as <code>{{ obj.platform.name }}</code>. Links which render as empty text will not be displayed.
+        - Required if I(state=present) and the custom link does not exist yet
+      required: false
+      type: str
+  target_url:
+    api_field: target_url
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Jinja2 template code for link URL. Reference the object as <code>{{ obj }}</code> such as <code>{{ obj.platform.name }}</code>.
+        - Required if I(state=present) and the custom link does not exist yet
+      required: false
+      type: str
+  weight:
+    api_field: weight
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The weight of the custom link
+      required: false
+      type: int
+  group_name:
+    api_field: group_name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Links with the same group will appear as a dropdown menu
+      required: false
+      type: str
+  button_class:
+    api_field: button_class
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - default
+        - primary
+        - success
+        - info
+        - warning
+        - danger
+        - link
+    documentation:
+      description:
+        - The class of the first link in a group will be used for the dropdown button
+      required: false
+      type: str
+      choices: *id001
+  new_window:
+    api_field: new_window
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Force link to open in a new window
+        - Required if I(state=present) and the custom link does not exist yet
+      required: false
+      type: bool
+documentation:
+  module: custom_link
+  short_description: Create, update or delete custom links within Nautobot
+  description:
+    - Creates, updates or removes custom links from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create custom link within Nautobot with only required information
+        networktocode.nautobot.custom_link:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          content_type: dcim.device
+          name: Test Name
+          text: Test Text
+          target_url: Test Target Url
+          new_window: true
+          state: present
+      - name: Delete custom link within Nautobot
+        networktocode.nautobot.custom_link:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete custom link by id
+        networktocode.nautobot.custom_link:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  custom_link:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

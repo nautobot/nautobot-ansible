@@ -1,0 +1,230 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vpn_tunnel
+api_path: /vpn/vpn-tunnels/
+endpoint: vpn_tunnels
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: vpn
+class_name: NautobotVpnModule
+endpoint_constant: null
+instance_var: vpn_tunnel
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the VPN Tunnel
+        - Required if I(state=present) and the VPN Tunnel does not exist yet
+      required: false
+      type: str
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the VPN Tunnel
+      required: false
+      type: str
+  tunnel_id:
+    api_field: tunnel_id
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The tunnel id of the VPN Tunnel
+      required: false
+      type: str
+  encapsulation:
+    api_field: encapsulation
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - IPsec-Transport
+        - IPsec-Tunnel
+        - IP-in-IP
+        - GRE
+        - WireGuard
+        - L2TP
+        - PPTP
+        - OpenVPN
+        - EoIP
+    documentation:
+      description:
+        - The encapsulation of the VPN Tunnel
+      required: false
+      type: str
+      choices: *id001
+  vpn_profile:
+    api_field: vpn_profile
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vpn profile of the VPN Tunnel
+      required: false
+      type: raw
+  vpn:
+    api_field: vpn
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - VPN to which this tunnel belongs
+      required: false
+      type: raw
+  role:
+    api_field: role
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the VPN Tunnel
+      required: false
+      type: raw
+  status:
+    api_field: status
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the VPN Tunnel
+        - Required if I(state=present) and the VPN Tunnel does not exist yet
+      required: false
+      type: raw
+  secrets_group:
+    api_field: secrets_group
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+      no_log: false
+    documentation:
+      description:
+        - The secrets group of the VPN Tunnel
+      required: false
+      type: raw
+  endpoint_a:
+    api_field: endpoint_a
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Tunnel termination A
+      required: false
+      type: raw
+  endpoint_z:
+    api_field: endpoint_z
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Tunnel termination Z
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the VPN Tunnel
+      required: false
+      type: raw
+documentation:
+  module: vpn_tunnel
+  short_description: Create, update or delete vpn tunnels within Nautobot
+  description:
+    - Creates, updates or removes vpn tunnels from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create VPN Tunnel within Nautobot with only required information
+        networktocode.nautobot.vpn_tunnel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          status: Active
+          state: present
+      - name: Delete VPN Tunnel within Nautobot
+        networktocode.nautobot.vpn_tunnel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete VPN Tunnel by id
+        networktocode.nautobot.vpn_tunnel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vpn_tunnel:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

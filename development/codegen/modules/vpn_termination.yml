@@ -1,0 +1,128 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vpn_termination
+api_path: /vpn/vpn-terminations/
+endpoint: vpn_terminations
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: vpn
+class_name: NautobotVpnModule
+endpoint_constant: null
+instance_var: vpn_termination
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  vpn:
+    api_field: vpn
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vpn of the VPN Termination
+        - Required if I(state=present) and the VPN Termination does not exist yet
+      required: false
+      type: raw
+  vlan:
+    api_field: vlan
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vlan of the VPN Termination
+      required: false
+      type: raw
+  interface:
+    api_field: interface
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The interface of the VPN Termination
+      required: false
+      type: raw
+  vm_interface:
+    api_field: vm_interface
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vm interface of the VPN Termination
+      required: false
+      type: raw
+    known_issue: CONVERT_TO_ID looks up vm_interface on dcim.interfaces. _find_ids() switches to virtualization.interfaces when the value is a dict that includes virtual_machine, so pass a dict with name and virtual_machine, or an ID.
+documentation:
+  module: vpn_termination
+  short_description: Create, update or delete vpn terminations within Nautobot
+  description:
+    - Creates, updates or removes vpn terminations from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create VPN Termination within Nautobot with only required information
+        networktocode.nautobot.vpn_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vpn: Test Vpn
+          state: present
+      - name: Delete VPN Termination within Nautobot
+        networktocode.nautobot.vpn_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          vpn: Test Vpn
+          state: absent
+      - name: Delete VPN Termination by id
+        networktocode.nautobot.vpn_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vpn_termination:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields: []

@@ -1,0 +1,101 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: device_type_to_software_image_file_mapping
+api_path: /dcim/device-types-to-software-image-files/
+endpoint: device_types_to_software_image_files
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: null
+instance_var: device_type_to_software_image_file_mapping
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  device_type:
+    api_field: device_type
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device type of the device type to software image file mapping
+        - Required if I(state=present) and the device type to software image file mapping does not exist yet
+      required: false
+      type: raw
+  software_image_file:
+    api_field: software_image_file
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The software image file of the device type to software image file mapping
+        - Required if I(state=present) and the device type to software image file mapping does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: device_type_to_software_image_file_mapping
+  short_description: Create, update or delete device types to software image files within Nautobot
+  description:
+    - Creates, updates or removes device types to software image files from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create device type to software image file mapping within Nautobot with only required information
+        networktocode.nautobot.device_type_to_software_image_file_mapping:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          device_type: Test Device Type
+          software_image_file: Test Software Image File
+          state: present
+      - name: Delete device type to software image file mapping within Nautobot
+        networktocode.nautobot.device_type_to_software_image_file_mapping:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          device_type: Test Device Type
+          software_image_file: Test Software Image File
+          state: absent
+      - name: Delete device type to software image file mapping by id
+        networktocode.nautobot.device_type_to_software_image_file_mapping:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  device_type_to_software_image_file_mapping:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - device_type
+  - software_image_file

@@ -1,0 +1,299 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: ip_address
+api_path: /ipam/ip-addresses/
+endpoint: ip_addresses
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_IP_ADDRESSES
+instance_var: ip_address
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+  required_if:
+    - - state
+      - new
+      - - address
+        - parent
+      - true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  state:
+    api_field: null
+    argument_spec:
+      required: false
+      default: present
+      choices:
+        - present
+        - absent
+        - new
+    documentation:
+      description:
+        - |
+          Use C(present), C(new) or C(absent) for adding, force adding or removing.
+          C(present) will check if the IP is already created, and return it if
+          true. C(new) will force to create it anyway (useful for anycasts, for
+          example).
+      choices:
+        - absent
+        - new
+        - present
+      default: present
+      type: str
+  address:
+    api_field: address
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Required if I(state=present) and the IP address does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  parent:
+    api_field: parent
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - |
+          With state C(new), it will force to get the next available IP in
+          this prefix.
+          Required if state is C(present) or C(new) when no address is given.
+          Unused if an address is specified.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant that the device will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the IP address
+        - Required if I(state=present) and does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the IP address
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+      choices:
+        - DHCP
+        - Host
+        - SLAAC
+    documentation:
+      description:
+        - The type of the IP address
+      choices:
+        - DHCP
+        - Host
+        - SLAAC
+      required: false
+      type: str
+      version_added: "5.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the interface
+      required: false
+      type: str
+      version_added: "3.0.0"
+  nat_inside:
+    api_field: nat_inside
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The inside IP address this IP is assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  dns_name:
+    api_field: dns_name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Hostname or FQDN
+      required: false
+      type: str
+      version_added: "3.0.0"
+  namespace:
+    api_field: namespace
+    argument_spec:
+      required: false
+      type: str
+      default: Global
+    documentation:
+      description:
+        - |
+          namespace that IP address is associated with. IPs are unique per namespaces.
+      required: false
+      default: Global
+      type: str
+      version_added: "5.0.0"
+documentation:
+  module: ip_address
+  short_description: Creates or removes IP addresses from Nautobot
+  description:
+    - Creates or removes IP addresses from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+    - Anthony Ruhier (@Anthony25)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot IP address module"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create IP address within Nautobot with only required information
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.10
+          status: active
+          state: present
+      - name: Force to create (even if it already exists) the IP
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.10
+          state: new
+      - name: Create the same IP under another namespace
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.10
+          namespace: MyNewNamespace
+          state: new
+      - name: Get a new available IP inside 192.168.1.0/24
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          parent: 192.168.1.0/24
+          state: new
+      - name: Delete IP address within nautobot
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.10
+          state: absent
+      - name: Create IP address with several specified options in namespace Private
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.20
+          tenant: Test Tenant
+          status: Reserved
+          namespace: Private
+          role: Loopback
+          description: Test description
+          tags:
+            - Schnozzberry
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+          state: present
+      - name: Create IP address and assign a nat_inside IP
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          address: 192.168.1.30
+          nat_inside:
+            address: 192.168.1.20
+      - name: Delete IP address by id
+        networktocode.nautobot.ip_address:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  ip_address:
+    description: Serialized object as created or already existent within Nautobot
+    returned: on creation
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

@@ -1,5 +1,10 @@
 # Updating an Existing Module
 
+!!! note
+    Modules are now generated from the Nautobot REST API. Start with the [Module Code Generator](code_generator.md):
+    it adds new endpoints and new fields for you. Use this page for changes the generator can't make, such as
+    logic in `plugins/module_utils/`.
+
 The main reason for updating an existing module is to either deprecate an option or add new options. We'll discuss the different methods for these options.
 
 ## New Option - Doesn't correlate to different Nautobot models

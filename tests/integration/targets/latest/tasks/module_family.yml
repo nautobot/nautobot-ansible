@@ -1,0 +1,83 @@
+---
+##
+##
+### PYNAUTOBOT_MODULE_FAMILY (generated module)
+##
+##
+- name: "MODULE FAMILY 1: Necessary info creation"
+  networktocode.nautobot.module_family:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Module Family"
+    state: present
+  register: test_one
+
+- name: "MODULE FAMILY 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['module_family']['name'] == "Test Module Family"
+      - test_one['msg'] == "module_family Test Module Family created"
+
+- name: "MODULE FAMILY 2: Create duplicate"
+  networktocode.nautobot.module_family:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Module Family"
+    state: present
+  register: test_two
+
+- name: "MODULE FAMILY 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['module_family']['id'] == test_one['module_family']['id']
+      - test_two['msg'] == "module_family Test Module Family already exists"
+
+- name: "MODULE FAMILY 3: Update"
+  networktocode.nautobot.module_family:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Module Family"
+    description: "Line cards"
+    state: present
+  register: test_three
+
+- name: "MODULE FAMILY 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['module_family']['description'] == "Line cards"
+      - test_three['msg'] == "module_family Test Module Family updated"
+
+- name: "MODULE FAMILY 4: Delete"
+  networktocode.nautobot.module_family:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Module Family"
+    state: absent
+  register: test_four
+
+- name: "MODULE FAMILY 4: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "present"
+      - test_four['diff']['after']['state'] == "absent"
+      - test_four['msg'] == "module_family Test Module Family deleted"
+
+- name: "MODULE FAMILY 5: Delete again"
+  networktocode.nautobot.module_family:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Module Family"
+    state: absent
+  register: test_five
+
+- name: "MODULE FAMILY 5: ASSERT - Already absent"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['msg'] == "module_family Test Module Family already absent"

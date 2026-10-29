@@ -1,0 +1,199 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: device_type
+api_path: /dcim/device-types/
+endpoint: device_types
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_DEVICE_TYPES
+instance_var: device_type
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  manufacturer:
+    api_field: manufacturer
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The manufacturer of the device type
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  model:
+    api_field: model
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The model of the device type
+        - Required if I(state=present) and the device type does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  part_number:
+    api_field: part_number
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The part number of the device type
+      required: false
+      type: str
+      version_added: "3.0.0"
+  u_height:
+    api_field: u_height
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The height of the device type in rack units
+      required: false
+      type: int
+      version_added: "3.0.0"
+  is_full_depth:
+    api_field: is_full_depth
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Whether or not the device consumes both front and rear rack faces
+      required: false
+      type: bool
+      version_added: "3.0.0"
+  subdevice_role:
+    api_field: subdevice_role
+    argument_spec:
+      required: false
+      choices:
+        - Parent
+        - parent
+        - Child
+        - child
+        - parent-child
+      type: str
+    documentation:
+      description:
+        - Whether the device type is parent, child, or neither
+      choices:
+        - Parent
+        - parent
+        - Child
+        - child
+        - parent-child
+      required: false
+      type: str
+      version_added: "3.0.0"
+  comments:
+    api_field: comments
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Comments that may include additional information in regards to the device_type
+      required: false
+      type: str
+      version_added: "3.0.0"
+  device_family:
+    api_field: device_family
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device family of the device type
+      required: false
+      type: raw
+      version_added: "5.16.0"
+documentation:
+  module: device_type
+  short_description: Create, update or delete device types within Nautobot
+  description:
+    - Creates, updates or removes device types from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create device type within Nautobot with only required information
+        networktocode.nautobot.device_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          model: ws-test-3750
+          manufacturer: Test Manufacturer
+          state: present
+
+      - name: Create device type within Nautobot
+        networktocode.nautobot.device_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          model: ws-test-3750
+          manufacturer: Test Manufacturer
+          part_number: ws-3750g-v2
+          u_height: 1
+          is_full_depth: false
+          subdevice_role: parent
+          state: present
+
+      - name: Delete device type within nautobot
+        networktocode.nautobot.device_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          model: ws-test-3750
+          state: absent
+
+      - name: Delete device type by id
+        networktocode.nautobot.device_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  device_type:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

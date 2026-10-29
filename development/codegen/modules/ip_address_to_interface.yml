@@ -1,0 +1,129 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: ip_address_to_interface
+api_path: /ipam/ip-address-to-interface/
+endpoint: ip_address_to_interface
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_IP_ADDRESS_TO_INTERFACE
+instance_var: ip_address
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  ip_address:
+    api_field: ip_address
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - IP address to associate with an interface.
+        - Required if I(state=present) and the IP address to interface association does not exist yet
+      required: false
+      type: raw
+      version_added: "5.0.0"
+  interface:
+    api_field: interface
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Device interface to associate with an IP.
+        - Requires one of I(interface) or I(vm_interface) when I(state=present) and the IP address to interface association does not exist yet
+      required: false
+      type: raw
+      version_added: "5.0.0"
+  vm_interface:
+    api_field: vm_interface
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - VM interface to associate with an IP.
+        - Requires one of I(interface) or I(vm_interface) when I(state=present) and the IP address to interface association does not exist yet
+      required: false
+      type: raw
+      version_added: "5.0.0"
+    known_issue: CONVERT_TO_ID looks up vm_interface on dcim.interfaces. _find_ids() switches to virtualization.interfaces when the value is a dict that includes virtual_machine, so pass a dict with name and virtual_machine, or an ID.
+documentation:
+  module: ip_address_to_interface
+  short_description: Creates or removes IP address to interface association from Nautobot
+  description:
+    - Creates or removes IP address to interface association from Nautobot
+  deprecated:
+    removed_in: "7.0.0"
+    why: IP address to interface mapping is managed on interface modules.
+    alternative: Use M(networktocode.nautobot.device_interface) or M(networktocode.nautobot.vm_interface) with I(ip_addresses).
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+    - Anthony Ruhier (@Anthony25)
+    - Chris Tomkins (@ChrisTomkins25)
+  version_added: "5.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: "Test Nautobot IP address to interface module"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: "Add IP address on GigabitEthernet4 - test100"
+        networktocode.nautobot.ip_address_to_interface:
+          url: "{{ nautobot_url }}"
+          token: "{{ nautobot_token }}"
+          ip_address:
+            address: "10.100.0.1/32"
+            namespace: "Global"
+          interface:
+            name: GigabitEthernet4
+            device: test100
+
+      - name: "Delete IP address on GigabitEthernet4 - test100"
+        networktocode.nautobot.ip_address_to_interface:
+          url: "{{ nautobot_url }}"
+          token: "{{ nautobot_token }}"
+          ip_address:
+            address: "10.100.0.1/32"
+            namespace: "Global"
+          interface:
+            name: GigabitEthernet4
+            device: test100
+          state: absent
+
+      - name: Delete IP address to interface association by id
+        networktocode.nautobot.ip_address_to_interface:
+          url: "{{ nautobot_url }}"
+          token: "{{ nautobot_token }}"
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  ip_address_to_interface:
+    description: Serialized object as created or already existent within Nautobot
+    returned: on creation
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

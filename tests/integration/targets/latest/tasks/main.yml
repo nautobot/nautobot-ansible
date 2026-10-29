@@ -919,3 +919,71 @@
         - graphql_facts
   tags:
     - graphql_facts
+
+# Modules and options added by the code generator (development/codegen) from the Nautobot 3.2 schema.
+- name: "NAUTOBOT 3.2+ TESTS"
+  when:
+    - "nautobot_status['nautobot-version'] is version('3.2.0a0', '>=', version_type='pep440')"
+  block:
+    - name: "PYNAUTOBOT_CABLE_TYPE TESTS"
+      include_tasks:
+        file: "cable_type.yml"
+        apply:
+          tags:
+            - cable_type
+      tags:
+        - cable_type
+
+    - name: "PYNAUTOBOT_MODULE_FAMILY TESTS"
+      include_tasks:
+        file: "module_family.yml"
+        apply:
+          tags:
+            - module_family
+      tags:
+        - module_family
+
+    - name: "PYNAUTOBOT_IP_ADDRESS_RANGE TESTS"
+      include_tasks:
+        file: "ip_address_range.yml"
+        apply:
+          tags:
+            - ip_address_range
+      tags:
+        - ip_address_range
+
+    - name: "PYNAUTOBOT_VPN_PROFILE TESTS"
+      include_tasks:
+        file: "vpn_profile.yml"
+        apply:
+          tags:
+            - vpn_profile
+      tags:
+        - vpn_profile
+
+    - name: "PYNAUTOBOT_HEALTH_CHECK_MONITOR TESTS"
+      include_tasks:
+        file: "health_check_monitor.yml"
+        apply:
+          tags:
+            - health_check_monitor
+      tags:
+        - health_check_monitor
+
+    - name: "PYNAUTOBOT_WEBHOOK TESTS"
+      include_tasks:
+        file: "webhook.yml"
+        apply:
+          tags:
+            - webhook
+      tags:
+        - webhook
+
+    - name: "PYNAUTOBOT_GENERATED_OPTIONS TESTS"
+      include_tasks:
+        file: "generated_options.yml"
+        apply:
+          tags:
+            - generated_options
+      tags:
+        - generated_options

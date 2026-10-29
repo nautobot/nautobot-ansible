@@ -1,0 +1,231 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: metadata_type
+api_path: /extras/metadata-types/
+endpoint: metadata_types
+header:
+  - '# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_METADATA_TYPES
+instance_var: metadata_type
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the metadata type
+        - Required if I(state=present) and the metadata type does not exist yet
+      required: false
+      type: str
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the metdata type
+      required: false
+      type: str
+  data_type:
+    api_field: data_type
+    argument_spec:
+      required: false
+      choices:
+        - text
+        - integer
+        - boolean
+        - date
+        - url
+        - select
+        - multi-select
+        - json
+        - markdown
+        - contact-or-team
+        - datetime
+        - float
+      type: str
+    documentation:
+      description:
+        - Data type of this field
+        - Required if I(state=present) and the metadata type does not exist yet
+      required: false
+      choices:
+        - text
+        - integer
+        - boolean
+        - date
+        - url
+        - select
+        - multi-select
+        - json
+        - markdown
+        - contact-or-team
+        - datetime
+        - float
+      type: str
+  content_types:
+    api_field: content_types
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - Content types that this metadata type should be available for
+        - Required if I(state=present) and the metadata type does not exist yet
+      required: false
+      type: list
+      elements: str
+  metadata_choices:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            value:
+              required: true
+              type: str
+            weight:
+              required: false
+              type: int
+    documentation:
+      description:
+        - List of choices to associate with this metadata type (for select or multi-select data types).
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds choices without removing existing ones.
+            - C(replace) enforces exactly the listed choices, removing any extras.
+            - C(delete) removes the listed choices.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of choices to manage.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            value:
+              description:
+                - The value of the choice.
+              required: true
+              type: str
+            weight:
+              description:
+                - Sort weight for this choice.
+                - Required if the choice does not already exist.
+              required: false
+              type: int
+documentation:
+  module: metadata_type
+  short_description: Create, update or delete metadata types within Nautobot
+  description:
+    - Creates, updates or removes metadata types from Nautobot
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Travis Smith (@tsm1th)
+  version_added: "5.5.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Create a metadata type
+    networktocode.nautobot.metadata_type:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: TopSecretInfo
+      description: The topest secretest info
+      data_type: text
+      content_types:
+        - dcim.device
+      state: present
+
+  - name: Delete a metadata type
+    networktocode.nautobot.metadata_type:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: TopSecretInfo
+      state: absent
+
+  - name: Create a metadata type with inline metadata choice associations
+    networktocode.nautobot.metadata_type:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: TopSecretInfo
+      data_type: text
+      content_types:
+        - dcim.device
+      metadata_choices:
+        state: merge
+        objects:
+          - value: "Choice 1"
+            weight: 100
+          - value: "Choice 2"
+            weight: 200
+      state: present
+
+  - name: Delete a metadata type by id
+    networktocode.nautobot.metadata_type:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  metadata_type:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

@@ -1,6 +1,7 @@
 """Tasks for use with Invoke."""
 
 import os
+import time
 
 from invoke import Collection, Exit
 from invoke import task as invoke_task
@@ -344,6 +345,57 @@ def generate_requirements(context, check=False):
     if check:
         command += " --check"
     context.run(command)
+
+
+@task(
+    help={
+        "check": "Don't write any files; fail if the generated files would change (what CI runs).",
+        "skip_fetch": "Reuse the schema and model metadata already saved in development/codegen/.cache/.",
+        "api_version": "REST API version to read the OpenAPI schema for (default: the nautobot_ver setting).",
+    },
+)
+def codegen(context, check=False, skip_fetch=False, api_version=None):
+    """Generate the modules from the REST API of the Nautobot container started by `invoke start`."""
+    cache_dir = os.path.join(os.path.dirname(__file__), "development", "codegen", ".cache")
+    schema_path = os.path.join(cache_dir, "openapi.json")
+    metadata_path = os.path.join(cache_dir, "model_metadata.txt")
+    if not skip_fetch:
+        os.makedirs(cache_dir, exist_ok=True)
+        # The REST API version is major.minor, while nautobot_ver can be a patch release such as 3.2.8.
+        api_version = api_version or ".".join(str(context.nautobot_ansible.nautobot_ver).split(".")[:2])
+        print("Waiting for the nautobot container to accept commands")
+        for _ in range(60):
+            if docker_compose(context, "exec -T nautobot nautobot-server shell -c 'pass'", hide=True, warn=True).ok:
+                break
+            time.sleep(5)
+        else:
+            raise Exit("The nautobot container isn't running. Start it with `invoke start`.", code=1)
+        print(f"Reading the OpenAPI schema for API version {api_version} from the nautobot container")
+        result = docker_compose(
+            context,
+            f"exec -T nautobot nautobot-server spectacular --format openapi-json --api-version {api_version}",
+            hide="out",
+        )
+        with open(schema_path, "w", encoding="utf-8") as schema_file:
+            schema_file.write(result.stdout)
+        print("Reading model metadata from the nautobot container")
+        dump_script = os.path.join(os.path.dirname(__file__), "development", "codegen", "dump_model_metadata.py")
+        with open(dump_script, encoding="utf-8") as script:
+            result = docker_compose(context, "exec -T nautobot nautobot-server shell", hide="out", in_stream=script)
+        with open(metadata_path, "w", encoding="utf-8") as metadata_file:
+            metadata_file.write(result.stdout)
+    command = f"poetry run python -m development.codegen.generate --schema {schema_path} --metadata {metadata_path}"
+    command += f" --report {os.path.join(cache_dir, 'report.txt')}"
+    if check:
+        command += " --check"
+    context.run(command)
+
+
+@task
+def codegen_tests(context):
+    """Run the tests for the module code generator."""
+    # pytest-pythonpath doesn't load with current pytest versions, so it's disabled for these tests.
+    context.run("poetry run python -m pytest development/codegen/tests -p no:pythonpath -p no:cacheprovider")
 
 
 @task(

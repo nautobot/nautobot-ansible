@@ -1,0 +1,185 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: module
+api_path: /dcim/modules/
+endpoint: modules
+header:
+  - '# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_MODULES
+instance_var: nb_module
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  module_type:
+    api_field: module_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The module type of the module
+        - Required if I(state=present) and the module does not exist yet
+      required: false
+      type: raw
+  serial:
+    api_field: serial
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The serial number of the module
+      required: false
+      type: str
+  asset_tag:
+    api_field: asset_tag
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The asset tag of the module
+      required: false
+      type: str
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the module
+      required: false
+      type: raw
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the module
+        - Required if I(state=present) and the device does not exist yet
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the module
+      required: false
+      type: raw
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The location of the module
+        - Requires one of I(location) or I(parent_module_bay) when I(state=present) and the module does not exist yet
+      required: false
+      type: raw
+  parent_module_bay:
+    api_field: parent_module_bay
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The parent module bay of the module
+        - Requires one of I(location) or I(parent_module_bay) when I(state=present) and the module does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: module
+  short_description: Create, update or delete modules within Nautobot
+  description:
+    - Creates, updates or removes modules from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Travis Smith (@tsm1th)
+  version_added: "5.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Create a module in module bay
+    networktocode.nautobot.module:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      module_type: HooverMaxProModel60
+      parent_module_bay:
+        name: PowerStripTwo
+        parent_device: test100
+      status: Active
+      state: present
+
+  - name: Create a module at location
+    networktocode.nautobot.module:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      module_type: HooverMaxProModel60
+      location:
+        name: "Child Test Location"
+        parent: "Parent Test Location"
+      serial: "654321"
+      asset_tag: "123456"
+      role: Test Module Role
+      status: Active
+      tenant: Test Tenant
+      state: present
+
+  - name: Delete a module
+    networktocode.nautobot.module:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      module_type: HooverMaxProModel60
+      parent_module_bay:
+        name: PowerStripTwo
+        parent_device: test100
+      state: absent
+
+  - name: Delete a module by id
+    networktocode.nautobot.module:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  module:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

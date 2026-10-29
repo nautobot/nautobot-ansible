@@ -357,3 +357,78 @@ def test_validate_certs_invalid():
     with pytest.raises(ValueError) as exc:
         _ = NautobotApiBase(url="https://nautobot.example.com", token="abc123")  # pylint: disable=disallowed-name
     assert "Invalid truthy value" in str(exc.value)
+
+
+def test_convert_identical_keys_uses_generated_endpoint_keys(mock_module, mocker):
+    """A generated option renamed to avoid a clash is sent to the API under its API field name."""
+    mocker.patch(
+        "%s.GENERATED_ENDPOINT_CONVERT_KEYS" % MOCKER_PATCH_PATH.rsplit(".", 1)[0],
+        {NB_DEVICES: {"dynamic_group": "group"}},
+    )
+    data = {"dynamic_group": "00000000-0000-0000-0000-000000000000", "name": "Test Device1"}
+
+    assert mock_module._convert_identical_keys(data) == {
+        "group": "00000000-0000-0000-0000-000000000000",
+        "name": "Test Device1",
+    }
+
+
+def test_convert_identical_keys_ignores_other_endpoints_keys(mock_module, mocker):
+    """Renamed options of one generated endpoint don't affect other endpoints."""
+    mocker.patch(
+        "%s.GENERATED_ENDPOINT_CONVERT_KEYS" % MOCKER_PATCH_PATH.rsplit(".", 1)[0],
+        {"dynamic_group_memberships": {"dynamic_group": "group"}},
+    )
+    data = {"dynamic_group": "Test Group"}
+
+    assert mock_module._convert_identical_keys(data) == {"dynamic_group": "Test Group"}
+
+
+def test_generated_lookup_tables_keep_hand_written_entries():
+    """utils.py merges the generated tables in, but never replaces an entry written by hand."""
+    from ansible_collections.networktocode.nautobot.plugins.module_utils import generated, utils
+
+    # "group" is written by hand as tenant groups; the generator must not change that.
+    assert utils.CONVERT_TO_ID["group"] == "tenant_groups"
+    for table_name in ("CONVERT_TO_ID", "QUERY_TYPES", "ENDPOINT_NAME_MAPPING", "ALLOWED_QUERY_PARAMS"):
+        merged = getattr(utils, table_name)
+        for key, value in getattr(generated, "GENERATED_%s" % table_name).items():
+            assert key in merged, "%s is missing %s" % (table_name, key)
+            assert merged[key] == value, "%s[%s] was written by hand and by the generator" % (table_name, key)
+    for app, endpoints in generated.GENERATED_API_APPS_ENDPOINTS.items():
+        assert set(endpoints) <= set(utils.API_APPS_ENDPOINTS[app])
+    for app, endpoints in utils.API_APPS_ENDPOINTS.items():
+        assert len(endpoints) == len(set(endpoints)), "%s lists an endpoint twice" % app
+
+
+def test_update_object_ignores_generated_write_only_fields(mock_module, obj_mock, mocker):
+    """The API doesn't return write-only fields, so they alone don't make the object look changed."""
+    mocker.patch(
+        "%s.GENERATED_ENDPOINT_WRITE_ONLY_FIELDS" % MOCKER_PATCH_PATH.rsplit(".", 1)[0],
+        {NB_DEVICES: ["namespace"]},
+    )
+    mock_module.nb_object = obj_mock
+    data = dict(obj_mock.serialize(), namespace="00000000-0000-0000-0000-000000000000")
+
+    serialized_object, diff = mock_module._update_object(data)
+
+    obj_mock.update.assert_not_called()
+    assert serialized_object == obj_mock.serialize()
+    assert diff is None
+
+
+def test_update_object_sends_generated_write_only_fields_with_other_changes(
+    mock_module, obj_mock, changed_serialized_obj, on_update_diff, mocker
+):
+    mocker.patch(
+        "%s.GENERATED_ENDPOINT_WRITE_ONLY_FIELDS" % MOCKER_PATCH_PATH.rsplit(".", 1)[0],
+        {NB_DEVICES: ["namespace"]},
+    )
+    mock_module.nb_object = obj_mock
+    data = dict(changed_serialized_obj, namespace="00000000-0000-0000-0000-000000000000")
+
+    serialized_object, diff = mock_module._update_object(data)
+
+    obj_mock.update.assert_called_once_with(data)
+    assert serialized_object == obj_mock.serialize()
+    assert diff == on_update_diff

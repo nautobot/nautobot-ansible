@@ -1,0 +1,192 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: rear_port
+api_path: /dcim/rear-ports/
+endpoint: rear_ports
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_REAR_PORTS
+instance_var: rear_port
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  device:
+    api_field: device
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device the rear port is attached to
+        - Requires one of I(device) or I(module) when I(state=present) and the rear port does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  module:
+    api_field: module
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The attached module
+        - Requires one of I(device) or I(module) when I(state=present) and the rear port does not exist yet
+      required: false
+      type: raw
+      version_added: "5.4.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the rear port
+        - Required if I(state=present) and the rear port does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The type of the rear port
+        - Required if I(state=present) and the rear port does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  positions:
+    api_field: positions
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The number of front ports which may be mapped to each rear port
+      required: false
+      type: int
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Description of the rear port
+      required: false
+      type: str
+      version_added: "3.0.0"
+  label:
+    api_field: label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Physical label
+      required: false
+      type: str
+      version_added: "6.4.0"
+documentation:
+  module: rear_port
+  short_description: Create, update or delete rear ports within Nautobot
+  description:
+    - Creates, updates or removes rear ports from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create rear port within Nautobot with only required information
+        networktocode.nautobot.rear_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Rear Port
+          device: Test Device
+          type: bnc
+          state: present
+
+      - name: Create rear port inside module
+        networktocode.nautobot.rear_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Rear Port
+          module: HooverMaxProModel60
+          type: bnc
+          state: present
+
+      - name: Update rear port with other fields
+        networktocode.nautobot.rear_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Rear Port
+          device: Test Device
+          type: bnc
+          positions: 5
+          description: rear port description
+          state: present
+
+      - name: Delete rear port within nautobot
+        networktocode.nautobot.rear_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Rear Port
+          device: Test Device
+          type: bnc
+          state: absent
+
+      - name: Delete rear port by id
+        networktocode.nautobot.rear_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  rear_port:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

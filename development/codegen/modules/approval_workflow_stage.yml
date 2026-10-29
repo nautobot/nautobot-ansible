@@ -1,0 +1,105 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: approval_workflow_stage
+api_path: /extras/approval-workflow-stages/
+endpoint: approval_workflow_stages
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: approval_workflow_stage
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  approval_workflow:
+    api_field: approval_workflow
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Approval workflow to which this stage belongs.
+        - Required if I(state=present) and the Approval Workflow Stage does not exist yet
+      required: false
+      type: raw
+  approval_workflow_stage_definition:
+    api_field: approval_workflow_stage_definition
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Approval workflow stage definition to which this stage belongs.
+      required: false
+      type: raw
+documentation:
+  module: approval_workflow_stage
+  short_description: Create, update or delete approval workflow stages within Nautobot
+  description:
+    - Creates, updates or removes approval workflow stages from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create Approval Workflow Stage within Nautobot with only required information
+        networktocode.nautobot.approval_workflow_stage:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          approval_workflow: Test Approval Workflow
+          state: present
+      - name: Delete Approval Workflow Stage within Nautobot
+        networktocode.nautobot.approval_workflow_stage:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          approval_workflow: Test Approval Workflow
+          approval_workflow_stage_definition: Test Approval Workflow Stage Definition
+          state: absent
+      - name: Delete Approval Workflow Stage by id
+        networktocode.nautobot.approval_workflow_stage:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  approval_workflow_stage:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - approval_workflow
+  - approval_workflow_stage_definition

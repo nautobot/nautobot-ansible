@@ -1,0 +1,106 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: cluster_type
+api_path: /virtualization/cluster-types/
+endpoint: cluster_types
+header:
+  - '# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: virtualization
+class_name: NautobotVirtualizationModule
+endpoint_constant: NB_CLUSTER_TYPE
+instance_var: cluster_type
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the cluster type
+        - Required if I(state=present) and the cluster type does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the cluster type
+      required: false
+      type: str
+      version_added: "3.0.0"
+documentation:
+  module: cluster_type
+  short_description: Create, update or delete cluster types within Nautobot
+  description:
+    - Creates, updates or removes cluster types from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create cluster type within Nautobot with only required information
+        networktocode.nautobot.cluster_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Cluster Type
+          state: present
+
+      - name: Delete cluster within nautobot
+        networktocode.nautobot.cluster_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Cluster Type
+          state: absent
+
+      - name: Delete cluster type by id
+        networktocode.nautobot.cluster_type:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  cluster_type:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

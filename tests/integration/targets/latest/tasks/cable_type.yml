@@ -1,0 +1,90 @@
+---
+##
+##
+### PYNAUTOBOT_CABLE_TYPE (generated module)
+##
+##
+- name: "CABLE TYPE 1: Necessary info creation"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cable Type"
+    manufacturer: "Test Manufacturer"
+    total_lanes: 4
+    state: present
+  register: test_one
+
+- name: "CABLE TYPE 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['cable_type']['name'] == "Test Cable Type"
+      - test_one['cable_type']['total_lanes'] == 4
+      - test_one['msg'] == "cable_type Test Cable Type created"
+
+- name: "CABLE TYPE 2: Create duplicate"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cable Type"
+    manufacturer: "Test Manufacturer"
+    total_lanes: 4
+    state: present
+  register: test_two
+
+- name: "CABLE TYPE 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['cable_type']['id'] == test_one['cable_type']['id']
+      - test_two['msg'] == "cable_type Test Cable Type already exists"
+
+- name: "CABLE TYPE 3: Update"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cable Type"
+    polarity_method: straight-through
+    description: "Updated"
+    state: present
+  register: test_three
+
+- name: "CABLE TYPE 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['cable_type']['polarity_method'] == "straight-through"
+      - test_three['cable_type']['description'] == "Updated"
+      - test_three['msg'] == "cable_type Test Cable Type updated"
+
+- name: "CABLE TYPE 4: Delete"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cable Type"
+    state: absent
+  register: test_four
+
+- name: "CABLE TYPE 4: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "present"
+      - test_four['diff']['after']['state'] == "absent"
+      - test_four['msg'] == "cable_type Test Cable Type deleted"
+
+- name: "CABLE TYPE 5: Delete again"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Cable Type"
+    state: absent
+  register: test_five
+
+- name: "CABLE TYPE 5: ASSERT - Already absent"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['msg'] == "cable_type Test Cable Type already absent"

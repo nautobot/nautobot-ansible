@@ -1,0 +1,213 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: cable_to_cable_termination
+api_path: /dcim/cables-to-cable-terminations/
+endpoint: cables_to_cable_terminations
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: null
+instance_var: cable_to_cable_termination
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  cable_end:
+    api_field: cable_end
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - A
+        - B
+    documentation:
+      description:
+        - The cable end of the cable to cable termination
+        - Required if I(state=present) and the cable to cable termination does not exist yet
+      required: false
+      type: str
+      choices: *id001
+  connector:
+    api_field: connector
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The connector number on this cable end. Always 1 for standard cables.
+      required: false
+      type: int
+  cable:
+    api_field: cable
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The cable of the cable to cable termination
+        - Required if I(state=present) and the cable to cable termination does not exist yet
+      required: false
+      type: raw
+  circuit_termination:
+    api_field: circuit_termination
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The circuit termination of the cable to cable termination
+      required: false
+      type: raw
+  console_port:
+    api_field: console_port
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The console port of the cable to cable termination
+      required: false
+      type: raw
+  console_server_port:
+    api_field: console_server_port
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The console server port of the cable to cable termination
+      required: false
+      type: raw
+  front_port:
+    api_field: front_port
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The front port of the cable to cable termination
+      required: false
+      type: raw
+  interface:
+    api_field: interface
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The interface of the cable to cable termination
+      required: false
+      type: raw
+  power_feed:
+    api_field: power_feed
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The power feed of the cable to cable termination
+      required: false
+      type: raw
+  power_outlet:
+    api_field: power_outlet
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The power outlet of the cable to cable termination
+      required: false
+      type: raw
+  power_port:
+    api_field: power_port
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The power port of the cable to cable termination
+      required: false
+      type: raw
+  rear_port:
+    api_field: rear_port
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The rear port of the cable to cable termination
+      required: false
+      type: raw
+documentation:
+  module: cable_to_cable_termination
+  short_description: Create, update or delete cables to cable terminations within Nautobot
+  description:
+    - Creates, updates or removes cables to cable terminations from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create cable to cable termination within Nautobot with only required information
+        networktocode.nautobot.cable_to_cable_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          cable_end: A
+          cable: Test Cable
+          state: present
+      - name: Delete cable to cable termination within Nautobot
+        networktocode.nautobot.cable_to_cable_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          cable_end: A
+          cable: Test Cable
+          state: absent
+      - name: Delete cable to cable termination by id
+        networktocode.nautobot.cable_to_cable_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  cable_to_cable_termination:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields: []

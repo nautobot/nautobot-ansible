@@ -1,0 +1,249 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: relationship
+api_path: /extras/relationships/
+endpoint: relationships
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: relationship
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  source_type:
+    api_field: source_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The source object type to which this relationship applies.
+        - Required if I(state=present) and the relationship does not exist yet
+      required: false
+      type: str
+  destination_type:
+    api_field: destination_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The destination object type to which this relationship applies.
+        - Required if I(state=present) and the relationship does not exist yet
+      required: false
+      type: str
+  label:
+    api_field: label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Label of the relationship as displayed to users
+        - Required if I(state=present) and the relationship does not exist yet
+      required: false
+      type: str
+  key:
+    api_field: key
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      no_log: false
+    documentation:
+      description:
+        - Internal relationship key. Please use underscores rather than dashes in this key.
+      required: false
+      type: str
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the relationship
+      required: false
+      type: str
+  type:
+    api_field: type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - one-to-one
+        - symmetric-one-to-one
+        - one-to-many
+        - many-to-many
+        - symmetric-many-to-many
+    documentation:
+      description:
+        - Cardinality of this relationship
+      required: false
+      type: str
+      choices: *id001
+  required_on:
+    api_field: required_on
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id002
+        - source
+        - destination
+    documentation:
+      description:
+        - Objects on the specified side MUST implement this relationship. Not permitted for symmetric relationships.
+      required: false
+      type: str
+      choices: *id002
+  source_label:
+    api_field: source_label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Label for related destination objects, as displayed on the source object.
+      required: false
+      type: str
+  source_hidden:
+    api_field: source_hidden
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Hide this relationship on the source object.
+      required: false
+      type: bool
+  source_filter:
+    api_field: source_filter
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Filterset filter matching the applicable source objects of the selected type
+      required: false
+      type: raw
+  destination_label:
+    api_field: destination_label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Label for related source objects, as displayed on the destination object.
+      required: false
+      type: str
+  destination_hidden:
+    api_field: destination_hidden
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Hide this relationship on the destination object.
+      required: false
+      type: bool
+  destination_filter:
+    api_field: destination_filter
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Filterset filter matching the applicable destination objects of the selected type
+      required: false
+      type: raw
+  advanced_ui:
+    api_field: advanced_ui
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Hide this field from the object's primary information tab. It will appear in the "Advanced" tab instead.
+      required: false
+      type: bool
+documentation:
+  module: relationship
+  short_description: Create, update or delete relationships within Nautobot
+  description:
+    - Creates, updates or removes relationships from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create relationship within Nautobot with only required information
+        networktocode.nautobot.relationship:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          source_type: dcim.device
+          destination_type: dcim.device
+          label: Test Label
+          state: present
+      - name: Delete relationship within Nautobot
+        networktocode.nautobot.relationship:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          key: Test Key
+          state: absent
+      - name: Delete relationship by id
+        networktocode.nautobot.relationship:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  relationship:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - key

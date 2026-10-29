@@ -1,0 +1,380 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: custom_field
+api_path: /extras/custom-fields/
+endpoint: custom_fields
+header:
+  - '# Copyright: (c) 2023, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_CUSTOM_FIELDS
+instance_var: custom_field
+instance_kwargs: {}
+main_docstring: Execute custom field module.
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  label:
+    api_field: label
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Name of the field as displayed to users
+        - Required if I(state=present) and the custom field does not exist yet
+      required: false
+      type: str
+      version_added: "5.1.0"
+  grouping:
+    api_field: grouping
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Human-readable grouping that this custom field belongs to
+      required: false
+      type: str
+      version_added: "5.1.0"
+  key:
+    api_field: key
+    argument_spec:
+      required: false
+      type: str
+      no_log: false
+    documentation:
+      description:
+        - Internal name of this field
+        - Required if I(state=present) and the custom field does not exist yet
+      required: false
+      type: str
+      version_added: "5.1.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      choices:
+        - text
+        - integer
+        - boolean
+        - date
+        - url
+        - select
+        - multi-select
+        - json
+        - markdown
+        - datetime
+      type: str
+    documentation:
+      description:
+        - Data type of this field
+        - Required if I(state=present) and the custom field does not exist yet
+        - I(type=select) and I(type=multi-select) require choices to be defined separately with the I(custom_field_choice) module
+      required: false
+      choices:
+        - text
+        - integer
+        - boolean
+        - date
+        - url
+        - select
+        - multi-select
+        - json
+        - markdown
+        - datetime
+      type: str
+      version_added: "5.1.0"
+  weight:
+    api_field: weight
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Position this field should be displayed in
+      required: false
+      type: int
+      version_added: "5.1.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Description of this field
+        - Also used as the help text when editing models using this custom field
+        - Markdown is supported
+      required: false
+      type: str
+      version_added: "5.1.0"
+  required:
+    api_field: required
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Whether or not a value is required for this field when editing models
+      required: false
+      type: bool
+      version_added: "5.1.0"
+  default:
+    api_field: default
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Default value for this field when editing models
+        - Must be in JSON format
+      required: false
+      type: raw
+      version_added: "5.1.0"
+  filter_logic:
+    api_field: filter_logic
+    argument_spec:
+      required: false
+      choices:
+        - disabled
+        - loose
+        - exact
+      type: str
+    documentation:
+      description:
+        - Filter logic to apply when filtering models based on this field
+        - Only compatible with I(type=text), I(type=url) and I(type=json)
+      required: false
+      type: str
+      choices:
+        - disabled
+        - loose
+        - exact
+      version_added: "5.1.0"
+  advanced_ui:
+    api_field: advanced_ui
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Whether or not to display this field in the advanced tab
+      required: false
+      type: bool
+      version_added: "5.1.0"
+  content_types:
+    api_field: content_types
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - Content types that this field should be available for
+        - Required if I(state=present) and the custom field does not exist yet
+      required: false
+      type: list
+      elements: str
+      version_added: "5.1.0"
+  validation_minimum:
+    api_field: validation_minimum
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Minimum value allowed for this field
+        - Only compatible with I(type=integer)
+      required: false
+      type: int
+      version_added: "5.1.0"
+  validation_maximum:
+    api_field: validation_maximum
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Maximum value allowed for this field
+        - Only compatible with I(type=integer)
+      required: false
+      type: int
+      version_added: "5.1.0"
+  validation_regex:
+    api_field: validation_regex
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Regular expression that this field must match
+        - Only compatible with I(type=text)
+      required: false
+      type: str
+      version_added: "5.1.0"
+  custom_field_choices:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            value:
+              required: true
+              type: str
+            weight:
+              required: false
+              type: int
+    documentation:
+      description:
+        - List of choices to associate with this custom field (for select or multi-select types).
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds choices without removing existing ones.
+            - C(replace) enforces exactly the listed choices, removing any extras.
+            - C(delete) removes the listed choices.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of choices to manage.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            value:
+              description:
+                - The value of the choice.
+              required: true
+              type: str
+            weight:
+              description:
+                - Sort weight for this choice.
+                - Required if the choice does not already exist.
+              required: false
+              type: int
+  scope_filter:
+    api_field: scope_filter
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - A JSON-encoded dictionary of filter parameters defining possible objects that can use this custom field.
+      required: false
+      type: raw
+      version_added: "6.4.0"
+documentation:
+  module: custom_field
+  short_description: Creates or removes custom fields from Nautobot
+  description:
+    - Creates or removes custom fields from Nautobot
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Joe Wesch (@joewesch)
+  requirements:
+    - pynautobot
+  version_added: "5.1.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Create custom field within Nautobot with only required information
+    networktocode.nautobot.custom_field:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      label: My Custom Field
+      key: my_custom_field
+      type: text
+      state: present
+
+  - name: Create custom field within Nautobot with all information
+    networktocode.nautobot.custom_field:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      label: My Custom Field
+      grouping: My Grouping
+      key: my_custom_field
+      type: text
+      weight: 100
+      description: My Description
+      required: true
+      default: My Default
+      filter_logic: loose
+      advanced_ui: true
+      content_types:
+        - dcim.device
+      validation_minimum: 0
+      validation_maximum: 100
+      validation_regex: ^[a-z]+$
+      state: present
+
+  - name: Create custom field with inline choice associations
+    networktocode.nautobot.custom_field:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      label: My Custom Field
+      key: my_custom_field
+      type: select
+      custom_field_choices:
+        state: merge
+        objects:
+          - value: "Choice A"
+            weight: 100
+          - value: "Choice B"
+            weight: 200
+      state: present
+
+  - name: Delete a custom field by id
+    networktocode.nautobot.custom_field:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  custom_field:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

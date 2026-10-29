@@ -1,0 +1,193 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: external_integration
+api_path: /extras/external-integrations/
+endpoint: external_integrations
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: external_integration
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the external integration
+        - Required if I(state=present) and the external integration does not exist yet
+      required: false
+      type: str
+  remote_url:
+    api_field: remote_url
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The remote url of the external integration
+        - Required if I(state=present) and the external integration does not exist yet
+      required: false
+      type: str
+  verify_ssl:
+    api_field: verify_ssl
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Verify SSL certificates when connecting to the remote system
+      required: false
+      type: bool
+  timeout:
+    api_field: timeout
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Number of seconds to wait for a response
+      required: false
+      type: int
+  extra_config:
+    api_field: extra_config
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Optional user-defined JSON data for this integration
+      required: false
+      type: raw
+  http_method:
+    api_field: http_method
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+    documentation:
+      description:
+        - The http method of the external integration
+      required: false
+      type: str
+      choices: *id001
+  headers:
+    api_field: headers
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Headers for the HTTP request
+      required: false
+      type: raw
+  ca_file_path:
+    api_field: ca_file_path
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The ca file path of the external integration
+      required: false
+      type: str
+  secrets_group:
+    api_field: secrets_group
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+      no_log: false
+    documentation:
+      description:
+        - Credentials used for authenticating with the remote system
+      required: false
+      type: raw
+documentation:
+  module: external_integration
+  short_description: Create, update or delete external integrations within Nautobot
+  description:
+    - Creates, updates or removes external integrations from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create external integration within Nautobot with only required information
+        networktocode.nautobot.external_integration:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          remote_url: Test Remote Url
+          state: present
+      - name: Delete external integration within Nautobot
+        networktocode.nautobot.external_integration:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete external integration by id
+        networktocode.nautobot.external_integration:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  external_integration:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name
