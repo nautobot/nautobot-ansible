@@ -1,0 +1,208 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: front_port
+api_path: /dcim/front-ports/
+endpoint: front_ports
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_FRONT_PORTS
+instance_var: front_port
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  device:
+    api_field: device
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device the front port is attached to
+        - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  module:
+    api_field: module
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The attached module
+        - Requires one of I(device) or I(module) when I(state=present) and the front port does not exist yet
+      required: false
+      type: raw
+      version_added: "5.4.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the front port
+        - Required if I(state=present) and the front port does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The type of the front port
+        - Required if I(state=present) and the front port does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  rear_port:
+    api_field: rear_port
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The rear_port the front port is attached to
+        - Required if I(state=present) and the front port does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  rear_port_position:
+    api_field: rear_port_position
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The position of the rear port this front port is connected to
+      required: false
+      type: int
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Description of the front port
+      required: false
+      type: str
+      version_added: "3.0.0"
+  label:
+    api_field: label
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Physical label
+      required: false
+      type: str
+      version_added: "6.4.0"
+documentation:
+  module: front_port
+  short_description: Create, update or delete front ports within Nautobot
+  description:
+    - Creates, updates or removes front ports from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create front port within Nautobot with only required information
+        networktocode.nautobot.front_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port
+          device: Test Device
+          type: bnc
+          rear_port: Test Rear Port
+          state: present
+
+      - name: Create front port inside module
+        networktocode.nautobot.front_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port
+          module: HooverMaxProModel60
+          type: bnc
+          rear_port: Test Rear Port
+          state: present
+
+      - name: Update front port with other fields
+        networktocode.nautobot.front_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port
+          device: Test Device
+          type: bnc
+          rear_port: Test Rear Port
+          rear_port_position: 5
+          description: front port description
+          state: present
+
+      - name: Delete front port within nautobot
+        networktocode.nautobot.front_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Front Port
+          device: Test Device
+          type: bnc
+          rear_port: Test Rear Port
+          state: absent
+
+      - name: Delete front port by id
+        networktocode.nautobot.front_port:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  front_port:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

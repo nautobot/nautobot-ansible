@@ -1,0 +1,313 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: controller_managed_device_group
+api_path: /dcim/controller-managed-device-groups/
+endpoint: controller_managed_device_groups
+header:
+  - '# Copyright: (c) 2024, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_CONTROLLER_MANAGED_DEVICE_GROUPS
+instance_var: controller_group
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the controller managed device groups
+        - Required if I(state=present) and the controller managed device group does not exist yet
+      required: false
+      type: str
+  controller:
+    api_field: controller
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the controller for this group
+        - Required if I(state=present) and the controller managed device group does not exist yet
+      required: false
+      type: str
+  weight:
+    api_field: weight
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - weight of the managed device group
+      required: false
+      type: int
+  parent_cloud_network:
+    api_field: parent
+    argument_spec:
+      required: false
+      type: raw
+      aliases:
+        - parent
+    documentation:
+      aliases:
+        - parent
+      description:
+        - The parent cloud network this network should be child to
+      required: false
+      type: raw
+    known_issue: 'Copied from the cloud_network module: values are looked up as cloud networks, but the API field is the parent controller managed device group. Only IDs work. Fixing it changes the option, so it needs its own PR.'
+  radio_profiles:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            radio_profile:
+              required: true
+              type: raw
+    documentation:
+      description:
+        - List of radio profiles to associate with this controller managed device group.
+      required: false
+      type: dict
+      version_added: "6.3.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds associations without removing existing ones.
+            - C(replace) enforces exactly the listed associations, removing any extras.
+            - C(delete) removes the listed associations.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of radio profiles to associate.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            radio_profile:
+              description:
+                - The radio profile to associate with the controller managed device group.
+              required: true
+              type: raw
+  wireless_networks:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            wireless_network:
+              required: true
+              type: raw
+            vlan:
+              required: false
+              type: raw
+    documentation:
+      description:
+        - List of wireless networks to associate with this controller managed device group.
+      required: false
+      type: dict
+      version_added: "6.3.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds associations without removing existing ones.
+            - C(replace) enforces exactly the listed associations, removing any extras.
+            - C(delete) removes the listed associations.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of wireless networks to associate.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            wireless_network:
+              description:
+                - The wireless network to associate with the controller managed device group.
+              required: true
+              type: raw
+            vlan:
+              description:
+                - Optional VLAN to associate with the wireless network assignment.
+              required: false
+              type: raw
+  capabilities:
+    api_field: capabilities
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - List of capabilities supported by the controller device group, these capabilities are used to enhance views in Nautobot.
+      required: false
+      type: list
+      elements: str
+      version_added: "6.4.0"
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the controller managed device group
+      required: false
+      type: str
+      version_added: "6.4.0"
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the controller managed device group
+      required: false
+      type: raw
+      version_added: "6.4.0"
+documentation:
+  module: controller_managed_device_group
+  short_description: Create, update or delete managed device groups within Nautobot
+  description:
+    - Creates, updates or removes managed device groups from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Sven Winkelmann (@pugnacity)
+  version_added: "5.7.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create controller managed device group within Nautobot with only required information
+        networktocode.nautobot.controller_managed_device_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "group_1"
+          controller: my_controller
+          state: present
+
+      - name: Delete controller managed device group within nautobot
+        networktocode.nautobot.controller_managed_device_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "group_1"
+          controller: test_controller_group_3
+          state: absent
+
+      - name: Delete controller managed device group by id
+        networktocode.nautobot.controller_managed_device_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+
+      - name: Attach radio profiles to a controller managed device group
+        networktocode.nautobot.controller_managed_device_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "group_1"
+          controller: my_controller
+          radio_profiles:
+            state: merge
+            objects:
+              - radio_profile: "Indoor 5GHz"
+              - radio_profile: "Outdoor 2.4GHz"
+          state: present
+
+      - name: Replace wireless networks on a controller managed device group
+        networktocode.nautobot.controller_managed_device_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "group_1"
+          controller: my_controller
+          wireless_networks:
+            state: replace
+            objects:
+              - wireless_network: "Corp"
+                vlan:
+                  name: "My VLAN"
+                  vid: 100
+              - wireless_network: "Guest"
+          state: present
+return: |2
+
+  controller_managed_device_group:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

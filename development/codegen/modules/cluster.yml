@@ -1,0 +1,175 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: cluster
+api_path: /virtualization/clusters/
+endpoint: clusters
+header:
+  - '# Copyright: (c) 2019, Gaelle Mangin (@gmangin)'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: virtualization
+class_name: NautobotVirtualizationModule
+endpoint_constant: NB_CLUSTERS
+instance_var: cluster
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the cluster
+        - Required if I(state=present) and the cluster does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  cluster_type:
+    api_field: cluster_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - type of the cluster. Required if I(state=present) and the cluster does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  cluster_group:
+    api_field: cluster_group
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - group of the cluster
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Cluster location.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Tenant the cluster will be assigned to.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  comments:
+    api_field: comments
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Comments that may include additional information in regards to the cluster
+      required: false
+      type: str
+      version_added: "3.0.0"
+documentation:
+  module: cluster
+  short_description: Create, update or delete clusters within Nautobot
+  description:
+    - Creates, updates or removes clusters from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Gaelle MANGIN (@gmangin)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create cluster within Nautobot with only required information
+        networktocode.nautobot.cluster:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Cluster
+          cluster_type: libvirt
+          state: present
+
+      - name: Delete cluster within nautobot
+        networktocode.nautobot.cluster:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Cluster
+          state: absent
+
+      - name: Create cluster with tags
+        networktocode.nautobot.cluster:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Another Test Cluster
+          cluster_type: libvirt
+          tags:
+            - Schnozzberry
+          state: present
+
+      - name: Update the group and location of an existing cluster
+        networktocode.nautobot.cluster:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Cluster
+          cluster_type: qemu
+          cluster_group: GROUP
+          location:
+            name: My Location
+            parent: Parent Location
+          state: present
+
+      - name: Delete cluster by id
+        networktocode.nautobot.cluster:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  cluster:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

@@ -1,0 +1,247 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: webhook
+api_path: /extras/webhooks/
+endpoint: webhooks
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: webhook
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  content_types:
+    api_field: content_types
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - The object(s) to which this Webhook applies.
+        - Required if I(state=present) and the webhook does not exist yet
+      required: false
+      type: list
+      elements: str
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the webhook
+        - Required if I(state=present) and the webhook does not exist yet
+      required: false
+      type: str
+  type_create:
+    api_field: type_create
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Call this webhook when a matching object is created.
+      required: false
+      type: bool
+  type_update:
+    api_field: type_update
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Call this webhook when a matching object is updated.
+      required: false
+      type: bool
+  type_delete:
+    api_field: type_delete
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Call this webhook when a matching object is deleted.
+      required: false
+      type: bool
+  payload_url:
+    api_field: payload_url
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - A POST will be sent to this URL when the webhook is called.
+        - Required if I(state=present) and the webhook does not exist yet
+      required: false
+      type: str
+  enabled:
+    api_field: enabled
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - The enabled of the webhook
+      required: false
+      type: bool
+  http_method:
+    api_field: http_method
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+    documentation:
+      description:
+        - The http method of the webhook
+      required: false
+      type: str
+      choices: *id001
+  http_content_type:
+    api_field: http_content_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The complete list of official content types is available <a href="https://www.iana.org/assignments/media-types/media-types.xhtml">here</a>.
+      required: false
+      type: str
+  additional_headers:
+    api_field: additional_headers
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - 'User-supplied HTTP headers to be sent with the request in addition to the HTTP content type. Headers should be defined in the format <code>Name: Value</code>. Jinja2 template processing is supported with the same context as the request body (below).'
+      required: false
+      type: str
+  body_template:
+    api_field: body_template
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - 'Jinja2 template for a custom request body. If blank, a JSON object representing the change will be included. Available context data includes: <code>event</code>, <code>model</code>, <code>timestamp</code>, <code>username</code>, <code>request_id</code>, and <code>data</code>.'
+      required: false
+      type: str
+  ssl_verification:
+    api_field: ssl_verification
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Enable SSL certificate verification. Disable with caution!
+      required: false
+      type: bool
+  ca_file_path:
+    api_field: ca_file_path
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The specific CA certificate file to use for SSL verification. Leave blank to use the system defaults.
+      required: false
+      type: str
+  webhook_secret:
+    api_field: secret
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      no_log: true
+    documentation:
+      description:
+        - When provided, the request will include a 'X-Hook-Signature' header containing a HMAC hex digest of the payload body using the secret as the key. The secret is not transmitted in the request.
+      required: false
+      type: str
+documentation:
+  module: webhook
+  short_description: Create, update or delete webhooks within Nautobot
+  description:
+    - Creates, updates or removes webhooks from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create webhook within Nautobot with only required information
+        networktocode.nautobot.webhook:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          content_types: []
+          name: Test Name
+          payload_url: Test Payload Url
+          state: present
+      - name: Delete webhook within Nautobot
+        networktocode.nautobot.webhook:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete webhook by id
+        networktocode.nautobot.webhook:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  webhook:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

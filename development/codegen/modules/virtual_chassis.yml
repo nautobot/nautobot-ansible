@@ -1,0 +1,129 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: virtual_chassis
+api_path: /dcim/virtual-chassis/
+endpoint: virtual_chassis
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_VIRTUAL_CHASSIS
+instance_var: virtual_chassis
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Name of the virtual chassis
+        - Required if I(state=present) and the virtual chassis does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  master:
+    api_field: master
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The master device the virtual chassis is attached to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  domain:
+    api_field: domain
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - domain of the virtual chassis
+      required: false
+      type: str
+      version_added: "3.0.0"
+documentation:
+  module: virtual_chassis
+  short_description: Create, update or delete virtual chassis within Nautobot
+  description:
+    - Creates, updates or removes virtual chassis from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create virtual chassis within Nautobot with only required information
+        networktocode.nautobot.virtual_chassis:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "Virtual Chassis 1"
+          state: present
+
+      - name: Update virtual chassis with other fields
+        networktocode.nautobot.virtual_chassis:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "Virtual Chassis 1"
+          master: Test Device
+          domain: Domain Text
+          state: present
+
+      - name: Delete virtual chassis within nautobot
+        networktocode.nautobot.virtual_chassis:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: "Virtual Chassis 1"
+          state: absent
+
+      - name: Delete virtual chassis by id
+        networktocode.nautobot.virtual_chassis:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  virtual_chassis:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

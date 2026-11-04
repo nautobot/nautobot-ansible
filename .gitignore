@@ -31,3 +31,6 @@ nautobot-ansible.code-workspace
 # Ignore dev docker-compose overrides
 development/*.override.yml
 nautobot.sql
+
+# Schema and model metadata saved by `invoke codegen`
+development/codegen/.cache/

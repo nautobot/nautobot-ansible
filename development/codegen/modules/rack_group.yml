@@ -1,0 +1,137 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: rack_group
+api_path: /dcim/rack-groups/
+endpoint: rack_groups
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_RACK_GROUPS
+instance_var: rack_group
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the rack group
+        - Required if I(state=present) and the rack group does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the rack group
+      required: false
+      type: str
+      version_added: "3.0.0"
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The location the rack group is located in
+        - Required if I(state=present) and the rack group does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  parent_rack_group:
+    api_field: parent
+    argument_spec:
+      required: false
+      type: raw
+      aliases:
+        - parent
+    documentation:
+      aliases:
+        - parent
+      description:
+        - The parent rack-group the rack group will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+documentation:
+  module: rack_group
+  short_description: Create, update or delete racks groups within Nautobot
+  description:
+    - Creates, updates or removes racks groups from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create rack group within Nautobot with only required information
+        networktocode.nautobot.rack_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test rack group
+          location: My Location
+          state: present
+
+      - name: Delete rack group within nautobot
+        networktocode.nautobot.rack_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Rack group
+          location:
+            name: My Location
+            parent: Parent Location
+          state: absent
+
+      - name: Delete rack group by id
+        networktocode.nautobot.rack_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  rack_group:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

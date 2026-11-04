@@ -1,0 +1,213 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: ip_address_range
+api_path: /ipam/ip-address-ranges/
+endpoint: ip_address_ranges
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: null
+instance_var: ip_address_range
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  start_address:
+    api_field: start_address
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The start address of the IP address range
+        - Required if I(state=present) and the IP address range does not exist yet
+      required: false
+      type: str
+  end_address:
+    api_field: end_address
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The end address of the IP address range
+        - Required if I(state=present) and the IP address range does not exist yet
+      required: false
+      type: str
+  namespace:
+    api_field: namespace
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The namespace of the IP address range
+      required: false
+      type: raw
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Name of the IP Address Range
+      required: false
+      type: str
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the IP address range
+      required: false
+      type: str
+  count_as_utilized:
+    api_field: count_as_utilized
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Forces this range to count as fully utilized in prefix utilization calculations.
+      required: false
+      type: bool
+  is_exclusive:
+    api_field: is_exclusive
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Prevent individual IP Address objects from being created within this range.
+      required: false
+      type: bool
+  parent:
+    api_field: parent
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The parent Prefix of this IP Address Range. Auto-resolved from the start/end host.
+      required: false
+      type: raw
+  status:
+    api_field: status
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the IP address range
+        - Required if I(state=present) and the IP address range does not exist yet
+      required: false
+      type: raw
+  role:
+    api_field: role
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the IP address range
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the IP address range
+      required: false
+      type: raw
+documentation:
+  module: ip_address_range
+  short_description: Create, update or delete ip address ranges within Nautobot
+  description:
+    - Creates, updates or removes ip address ranges from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create IP address range within Nautobot with only required information
+        networktocode.nautobot.ip_address_range:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          start_address: Test Start Address
+          end_address: Test End Address
+          status: Active
+          state: present
+      - name: Delete IP address range within Nautobot
+        networktocode.nautobot.ip_address_range:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          start_address: Test Start Address
+          end_address: Test End Address
+          namespace: Test Namespace
+          state: absent
+      - name: Delete IP address range by id
+        networktocode.nautobot.ip_address_range:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  ip_address_range:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - start_address
+  - end_address
+  - namespace

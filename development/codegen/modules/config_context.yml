@@ -1,0 +1,302 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: config_context
+api_path: /extras/config-contexts/
+endpoint: config_contexts
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: config_context
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  owner_content_type:
+    api_field: owner_content_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The owner content type of the config context
+      required: false
+      type: str
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the config context
+        - Required if I(state=present) and the config context does not exist yet
+      required: false
+      type: str
+  owner_object_id:
+    api_field: owner_object_id
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The owner object id of the config context
+      required: false
+      type: str
+  weight:
+    api_field: weight
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The weight of the config context
+      required: false
+      type: int
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the config context
+      required: false
+      type: str
+  is_active:
+    api_field: is_active
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - The is active of the config context
+      required: false
+      type: bool
+  data:
+    api_field: data
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The data of the config context
+        - Required if I(state=present) and the config context does not exist yet
+      required: false
+      type: raw
+  config_context_schema:
+    api_field: config_context_schema
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Optional schema to validate the structure of the data
+      required: false
+      type: raw
+  locations:
+    api_field: locations
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The locations of the config context
+      required: false
+      type: list
+      elements: raw
+  roles:
+    api_field: roles
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The roles of the config context
+      required: false
+      type: list
+      elements: raw
+  device_types:
+    api_field: device_types
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The device types of the config context
+      required: false
+      type: list
+      elements: raw
+  device_redundancy_groups:
+    api_field: device_redundancy_groups
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The device redundancy groups of the config context
+      required: false
+      type: list
+      elements: raw
+  platforms:
+    api_field: platforms
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The platforms of the config context
+      required: false
+      type: list
+      elements: raw
+  cluster_groups:
+    api_field: cluster_groups
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The cluster groups of the config context
+      required: false
+      type: list
+      elements: raw
+  clusters:
+    api_field: clusters
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The clusters of the config context
+      required: false
+      type: list
+      elements: raw
+  tenant_groups:
+    api_field: tenant_groups
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The tenant groups of the config context
+      required: false
+      type: list
+      elements: raw
+  tenants:
+    api_field: tenants
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The tenants of the config context
+      required: false
+      type: list
+      elements: raw
+  device_families:
+    api_field: device_families
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The device families of the config context
+      required: false
+      type: list
+      elements: raw
+documentation:
+  module: config_context
+  short_description: Create, update or delete config contexts within Nautobot
+  description:
+    - Creates, updates or removes config contexts from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create config context within Nautobot with only required information
+        networktocode.nautobot.config_context:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          data: Test Data
+          state: present
+      - name: Delete config context within Nautobot
+        networktocode.nautobot.config_context:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete config context by id
+        networktocode.nautobot.config_context:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  config_context:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

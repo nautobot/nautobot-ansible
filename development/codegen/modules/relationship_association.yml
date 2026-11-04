@@ -1,0 +1,136 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: relationship_association
+api_path: /extras/relationship-associations/
+endpoint: relationship_associations
+header:
+  - '# Copyright: (c) 2022, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: NB_RELATIONSHIP_ASSOCIATIONS
+instance_var: relationship_association
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  relationship:
+    api_field: relationship
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The Relationship UUID to add the association to
+        - Required if I(state=present) and the relationship association does not exist yet
+      required: false
+      type: raw
+  source_type:
+    api_field: source_type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The app_label.model for the source of the relationship
+        - Required if I(state=present) and the relationship association does not exist yet
+      required: false
+      type: str
+  source_id:
+    api_field: source_id
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The UUID of the source of the relationship
+        - Required if I(state=present) and the relationship association does not exist yet
+      required: false
+      type: str
+  destination_type:
+    api_field: destination_type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The app_label.model for the destination of the relationship
+        - Required if I(state=present) and the relationship association does not exist yet
+      required: false
+      type: str
+  destination_id:
+    api_field: destination_id
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The UUID of the destination of the relationship
+        - Required if I(state=present) and the relationship association does not exist yet
+      required: false
+      type: str
+documentation:
+  module: relationship_association
+  short_description: Creates or removes a relationship association from Nautobot
+  description:
+    - Creates or removes a relationship association from Nautobot
+  author:
+    - Network to Code (@networktocode)
+    - Joe Wesch (@joewesch)
+  version_added: "4.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: "Test relationship association creation/deletion"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create relationship association
+        networktocode.nautobot.relationship_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          relationship: 01234567-abcd-0123-abcd-012345678901
+          source_type: dcim.device
+          source_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+          destination_type: ipam.vrf
+          destination_id: 01234567-abcd-0123-abcd-123456789012
+
+      - name: Delete relationship association
+        networktocode.nautobot.relationship_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          relationship: 01234567-abcd-0123-abcd-012345678901
+          source_type: dcim.device
+          source_id: abcdefgh-0123-abcd-0123-abcdefghijkl
+          destination_type: ipam.vrf
+          destination_id: 01234567-abcd-0123-abcd-123456789012
+          state: absent
+
+      - name: Delete relationship association by id
+        networktocode.nautobot.relationship_association:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  relationship_associations:
+    description: Serialized object as created/existent/updated/deleted within Nautobot
+    returned: always
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

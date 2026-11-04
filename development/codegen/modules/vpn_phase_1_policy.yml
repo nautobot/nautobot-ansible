@@ -1,0 +1,221 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vpn_phase_1_policy
+api_path: /vpn/vpn-phase-1-policies/
+endpoint: vpn_phase_1_policies
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: vpn
+class_name: NautobotVpnModule
+endpoint_constant: null
+instance_var: vpn_phase_1_policy
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  encryption_algorithm:
+    api_field: encryption_algorithm
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - The encryption algorithm of the VPN Phase 1 Policy
+      required: false
+      type: list
+      elements: str
+  integrity_algorithm:
+    api_field: integrity_algorithm
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - The integrity algorithm of the VPN Phase 1 Policy
+      required: false
+      type: list
+      elements: str
+  dh_group:
+    api_field: dh_group
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: str
+    documentation:
+      description:
+        - The dh group of the VPN Phase 1 Policy
+      required: false
+      type: list
+      elements: str
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the VPN Phase 1 Policy
+        - Required if I(state=present) and the VPN Phase 1 Policy does not exist yet
+      required: false
+      type: str
+  description:
+    api_field: description
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the VPN Phase 1 Policy
+      required: false
+      type: str
+  ike_version:
+    api_field: ike_version
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - IKEv1
+        - IKEv2
+    documentation:
+      description:
+        - The ike version of the VPN Phase 1 Policy
+      required: false
+      type: str
+      choices: *id001
+  aggressive_mode:
+    api_field: aggressive_mode
+    managed: true
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Only applicable to IKEv1
+      required: false
+      type: bool
+  lifetime_seconds:
+    api_field: lifetime_seconds
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The lifetime seconds of the VPN Phase 1 Policy
+      required: false
+      type: int
+  lifetime_kb:
+    api_field: lifetime_kb
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The lifetime kb of the VPN Phase 1 Policy
+      required: false
+      type: int
+  authentication_method:
+    api_field: authentication_method
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id002
+        - PSK
+        - RSA
+        - ECDSA
+        - Certificate
+    documentation:
+      description:
+        - PSK, RSA, ECDSA, Certificate
+      required: false
+      type: str
+      choices: *id002
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the VPN Phase 1 Policy
+      required: false
+      type: raw
+documentation:
+  module: vpn_phase_1_policy
+  short_description: Create, update or delete vpn phase 1 policies within Nautobot
+  description:
+    - Creates, updates or removes vpn phase 1 policies from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create VPN Phase 1 Policy within Nautobot with only required information
+        networktocode.nautobot.vpn_phase_1_policy:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: present
+      - name: Delete VPN Phase 1 Policy within Nautobot
+        networktocode.nautobot.vpn_phase_1_policy:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete VPN Phase 1 Policy by id
+        networktocode.nautobot.vpn_phase_1_policy:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vpn_phase_1_policy:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

@@ -1,0 +1,220 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: radio_profile
+api_path: /wireless/radio-profiles/
+endpoint: radio_profiles
+header:
+  - '# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: wireless
+class_name: NautobotWirelessModule
+endpoint_constant: NB_WIRELESS_RADIO_PROFILES
+instance_var: radio_profile
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the radio profile
+        - Required if I(state=present) and the radio profile does not exist yet
+      required: false
+      type: str
+  regulatory_domain:
+    api_field: regulatory_domain
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The regulatory domain of the radio profile
+        - Required if I(state=present) and the radio profile does not exist yet
+      required: false
+      type: str
+  channel_width:
+    api_field: channel_width
+    argument_spec:
+      required: false
+      type: list
+      elements: int
+      choices:
+        - 20
+        - 40
+        - 80
+        - 160
+    documentation:
+      description:
+        - The channel width of the radio profile
+      required: false
+      type: list
+      elements: int
+      choices:
+        - 20
+        - 40
+        - 80
+        - 160
+  allowed_channel_list:
+    api_field: allowed_channel_list
+    argument_spec:
+      required: false
+      type: list
+      elements: int
+    documentation:
+      description:
+        - The allowed channel list of the radio profile
+      required: false
+      type: list
+      elements: int
+  frequency:
+    api_field: frequency
+    argument_spec:
+      required: false
+      type: str
+      choices:
+        - 2.4GHz
+        - 5GHz
+        - 6GHz
+    documentation:
+      description:
+        - The frequency of the radio profile
+      required: false
+      type: str
+      choices:
+        - 2.4GHz
+        - 5GHz
+        - 6GHz
+  tx_power_min:
+    api_field: tx_power_min
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The minimum transmit power of the radio profile in dBm
+      required: false
+      type: int
+  tx_power_max:
+    api_field: tx_power_max
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The maximum transmit power of the radio profile in dBm
+      required: false
+      type: int
+  rx_power_min:
+    api_field: rx_power_min
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The minimum receive power of the radio profile in dBm
+      required: false
+      type: int
+  supported_data_rates:
+    api_field: supported_data_rates
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The supported data rates of the radio profile
+      required: false
+      type: list
+      elements: raw
+documentation:
+  module: radio_profile
+  short_description: Manage radio profiles in Nautobot
+  description:
+    - Manage radio profiles in Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Joe Wesch (@joewesch)
+  requirements:
+    - pynautobot
+  version_added: "5.13.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  ---
+  - name: Create a radio profile with required fields
+    networktocode.nautobot.radio_profile:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: "My Radio Profile"
+      regulatory_domain: "US"
+      state: present
+
+  - name: Create a radio profile with all fields
+    networktocode.nautobot.radio_profile:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: "My Radio Profile"
+      regulatory_domain: "US"
+      channel_width: 20
+      allowed_channel_list:
+        - 1
+        - 6
+        - 11
+      frequency: "2.4GHz"
+      tx_power_min: 10
+      tx_power_max: 20
+      rx_power_min: 10
+      supported_data_rates:
+        - standard: "802.11a"
+          rate: 1000000
+          mcs_index: 10
+      state: present
+
+  - name: Delete a radio profile
+    networktocode.nautobot.radio_profile:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: "My Radio Profile"
+      state: absent
+
+  - name: Delete a radio profile by id
+    networktocode.nautobot.radio_profile:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  radio_profile:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating successful operation
+    returned: success
+    type: str

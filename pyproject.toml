@@ -118,6 +118,11 @@ convention = "google"
     "F",
     "S"
 ]
+# Generated lookup tables: option names such as `webhook_secret` aren't passwords.
+"plugins/module_utils/generated.py" = [
+    "S105",
+    "S106"
+]
 
 [tool.towncrier]
 name = "nautobot-ansible"

@@ -1,0 +1,149 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: unique_rule
+api_path: /data-validation/unique-rules/
+endpoint: unique_rules
+header:
+  - '# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: data_validation
+class_name: NautobotDataValidationModule
+endpoint_constant: NB_UNIQUE_RULES
+instance_var: unique_rule
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the unique rule
+        - Required if I(state=present) and the unique rule does not exist yet
+      required: false
+      type: str
+  content_type:
+    api_field: content_type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The content type of the unique rule (e.g., dcim.device, ipam.prefix, etc.)
+        - Required if I(state=present) and the unique rule does not exist yet
+      required: false
+      type: str
+  field:
+    api_field: field
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The field to apply the unique rule to (e.g., name, description, etc.)
+        - Required if I(state=present) and the unique rule does not exist yet
+      required: false
+      type: str
+  enabled:
+    api_field: enabled
+    argument_spec:
+      required: false
+      type: bool
+    documentation:
+      description:
+        - Whether the unique rule is enabled or disabled
+      required: false
+      type: bool
+  error_message:
+    api_field: error_message
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The error message to display if the unique rule is violated
+      required: false
+      type: str
+  max_instances:
+    api_field: max_instances
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The maximum number of unique instances of the field within the content type
+      required: false
+      type: int
+documentation:
+  module: unique_rule
+  short_description: Create, update or delete unique rules in Nautobot
+  description:
+    - Creates, updates or removes unique rules from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Joe Wesch (@joewesch)
+  requirements:
+    - pynautobot
+  version_added: "6.1.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Create a unique rule
+    networktocode.nautobot.unique_rule:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: "My Unique Rule"
+      content_type: "dcim.device"
+      field: "serial"
+      enabled: true
+      error_message: "Asset tag must be unique"
+      max_instances: 2
+      state: present
+
+  - name: Delete a unique rule
+    networktocode.nautobot.unique_rule:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      name: "My Unique Rule"
+      state: absent
+
+  - name: Delete a unique rule by id
+    networktocode.nautobot.unique_rule:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  unique_rule:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

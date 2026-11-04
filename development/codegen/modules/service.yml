@@ -1,0 +1,169 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: service
+api_path: /ipam/services/
+endpoint: services
+header:
+  - '# Copyright: (c) 2019, Kulakov Ilya  (@TawR1024)'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_SERVICES
+instance_var: service
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  device:
+    api_field: device
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Specifies on which device the service is running.
+        - Requires one of I(device) or I(virtual_machine) when I(state=present) and the service does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  virtual_machine:
+    api_field: virtual_machine
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Specifies on which virtual machine the service is running.
+        - Requires one of I(device) or I(virtual_machine) when I(state=present) and the service does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Name of the region to be created.
+        - Required if I(state=present) and the service does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  ports:
+    api_field: ports
+    argument_spec:
+      required: false
+      type: list
+      elements: int
+    documentation:
+      description:
+        - Specifies which ports used by service.
+      type: list
+      elements: int
+      version_added: "3.0.0"
+  protocol:
+    api_field: protocol
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Specifies which protocol used by service.
+        - Required if I(state=present) and the service does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  ip_addresses:
+    api_field: ip_addresses
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Specifies which IPaddresses to associate with service.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Service description.
+      required: false
+      type: str
+      version_added: "3.0.0"
+documentation:
+  module: service
+  short_description: Creates or removes service from Nautobot
+  description:
+    - Creates or removes service from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost).
+    - The module supports C(check_mode).
+  author:
+    - Kulakov Ilya (@TawR1024)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Create service
+    networktocode.nautobot.service:
+      url: url
+      token: token
+      device: Test666
+      name: node-exporter
+      ports:
+        - 9100
+      protocol: TCP
+      ip_addresses:
+        - address: 127.0.0.1
+      tags:
+        - prometheus
+      state: present
+
+  - name: Delete service by name
+    networktocode.nautobot.service:
+      url: url
+      token: token
+      name: node-exporter
+      state: absent
+
+  - name: Delete a service by id
+    networktocode.nautobot.service:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  services:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

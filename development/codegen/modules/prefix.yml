@@ -1,0 +1,356 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: prefix
+api_path: /ipam/prefixes/
+endpoint: prefixes
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: ipam
+class_name: NautobotIpamModule
+endpoint_constant: NB_PREFIXES
+instance_var: prefix
+instance_kwargs:
+  remove_keys:
+    - first_available
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+  required_if:
+    - - first_available
+      - 'yes'
+      - - parent
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  ip_version:
+    api_field: null
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Specifies which address version the prefix prefix belongs to
+      required: false
+      type: int
+      version_added: "5.0.0"
+  prefix:
+    api_field: prefix
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if state is C(present) and first_available is False. Will allocate or free this prefix.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  parent:
+    api_field: parent
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if state is C(present) and first_available is C(yes). Will get a new available prefix in this parent prefix.
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  prefix_length:
+    api_field: null
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - |
+          Required ONLY if state is C(present) and first_available is C(yes).
+          Will get a new available prefix of the given prefix_length in this parent prefix.
+      required: false
+      type: int
+      version_added: "3.0.0"
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The single location the prefix will be associated to
+        - If you want to associate multiple locations, use the C(prefix_location) module
+        - Using this parameter will override the C(api_version) option to C(2.0)
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant that the prefix will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  vlan:
+    api_field: vlan
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The VLAN the prefix will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the prefix
+        - Required if I(state=present) and does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the prefix
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+      choices:
+        - Container
+        - Network
+        - Pool
+    documentation:
+      description:
+        - Prefix type
+      choices:
+        - Container
+        - Network
+        - Pool
+      required: false
+      type: str
+      version_added: "5.0.0"
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The description of the prefix
+      required: false
+      type: str
+      version_added: "3.0.0"
+  namespace:
+    api_field: namespace
+    argument_spec:
+      required: false
+      type: str
+      default: Global
+    documentation:
+      description:
+        - |
+          namespace that IP address is associated with. IPs are unique per namespaces.
+      required: false
+      default: Global
+      type: str
+      version_added: "5.0.0"
+  first_available:
+    api_field: null
+    argument_spec:
+      required: false
+      type: bool
+      default: false
+    documentation:
+      description:
+        - If C(yes) and state C(present), if an parent is given, it will get the first available prefix of the given prefix_length inside the given parent (and namespace, if given). Unused with state C(absent).
+      default: false
+      type: bool
+      version_added: "3.0.0"
+  date_allocated:
+    api_field: date_allocated
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Date this prefix was allocated to an RIR, reserved in IPAM, etc.
+      required: false
+      type: str
+      version_added: "6.4.0"
+  rir:
+    api_field: rir
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Regional Internet Registry responsible for this prefix
+      required: false
+      type: raw
+      version_added: "6.4.0"
+documentation:
+  module: prefix
+  short_description: Creates or removes prefixes from Nautobot
+  description:
+    - Creates or removes prefixes from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+    - Anthony Ruhier (@Anthony25)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot prefix module"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create prefix within Nautobot with only required information
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          prefix: 10.156.0.0/19
+          status: active
+          state: present
+
+      - name: Delete prefix within nautobot
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          prefix: 10.156.0.0/19
+          state: absent
+
+      - name: Create prefix with several specified options
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          ip_version: 4
+          prefix: 10.156.32.0/19
+          location: My Location
+          tenant: Test Tenant
+          vlan:
+            name: Test VLAN
+            location: My Location
+            tenant: Test Tenant
+            vlan_group: Test Vlan Group
+          status: Reserved
+          role: Network of care
+          description: Test description
+          type: Pool
+          tags:
+            - Schnozzberry
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+          state: present
+
+      - name: Get a new /24 inside 10.156.0.0/19 within Nautobot - Parent doesn't exist
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          parent: 10.156.0.0/19
+          prefix_length: 24
+          state: present
+          first_available: true
+
+      - name: Create prefix within Nautobot
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          prefix: 10.156.0.0/19
+          state: present
+
+      - name: Get a new /24 inside 10.156.0.0/19 within Nautobot
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          parent: 10.156.0.0/19
+          prefix_length: 24
+          state: present
+          first_available: true
+
+      - name: Get a new /24 inside 10.157.0.0/19 within Nautobot with additional values
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          parent: 10.157.0.0/19
+          prefix_length: 24
+          location:
+            name: My Location
+            parent: Parent Location
+          state: present
+          first_available: true
+
+      - name: Delete prefix by id
+        networktocode.nautobot.prefix:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  prefix:
+    description: Serialized object as created or already existent within Nautobot
+    returned: on creation
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

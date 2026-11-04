@@ -1,0 +1,98 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: device_cluster_assignment
+api_path: /dcim/device-cluster-assignments/
+endpoint: device_cluster_assignments
+header:
+  - '# Copyright: (c) 2025, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_DEVICE_CLUSTER_ASSIGNMENTS
+instance_var: device_cluster_assignment
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  device:
+    api_field: device
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Device to assign to the cluster
+      required: false
+      type: raw
+  cluster:
+    api_field: cluster
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Cluster to assign the device to
+      required: false
+      type: raw
+documentation:
+  module: device_cluster_assignment
+  short_description: Creates or removes device cluster assignments from Nautobot
+  description:
+    - Creates or removes device cluster assignments from Nautobot
+  deprecated:
+    removed_in: "7.0.0"
+    why: Device cluster assignments are managed on the I(device) record.
+    alternative: Use M(networktocode.nautobot.device) with I(clusters).
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Joe Wesch (@joewesch)
+  requirements:
+    - pynautobot
+  version_added: "6.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Create a device cluster assignment
+    networktocode.nautobot.device_cluster_assignment:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      device: "My Device"
+      cluster: "My Cluster"
+      state: present
+
+  - name: Delete a device cluster assignment
+    networktocode.nautobot.device_cluster_assignment:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      device: "My Device"
+      cluster: "My Cluster"
+      state: absent
+
+  - name: Delete a device cluster assignment by id
+    networktocode.nautobot.device_cluster_assignment:
+      url: http://nautobot.local
+      token: thisIsMyToken
+      id: 00000000-0000-0000-0000-000000000000
+      state: absent
+return: |2
+
+  device_cluster_assignment:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating successful operation
+    returned: success
+    type: str

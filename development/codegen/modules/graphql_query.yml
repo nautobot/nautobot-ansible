@@ -1,0 +1,125 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: graphql_query
+api_path: /extras/graphql-queries/
+endpoint: graphql_queries
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: graphql_query
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  owner_content_type:
+    api_field: owner_content_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The owner content type of the GraphQL query
+      required: false
+      type: str
+  owner_object_id:
+    api_field: owner_object_id
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The owner object id of the GraphQL query
+      required: false
+      type: str
+  name:
+    api_field: name
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the GraphQL query
+        - Required if I(state=present) and the GraphQL query does not exist yet
+      required: false
+      type: str
+  query:
+    api_field: query
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The query of the GraphQL query
+        - Required if I(state=present) and the GraphQL query does not exist yet
+      required: false
+      type: str
+documentation:
+  module: graphql_query
+  short_description: Create, update or delete graphql queries within Nautobot
+  description:
+    - Creates, updates or removes graphql queries from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create GraphQL query within Nautobot with only required information
+        networktocode.nautobot.graphql_query:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          query: Test Query
+          state: present
+      - name: Delete GraphQL query within Nautobot
+        networktocode.nautobot.graphql_query:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Name
+          state: absent
+      - name: Delete GraphQL query by id
+        networktocode.nautobot.graphql_query:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  graphql_query:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - name

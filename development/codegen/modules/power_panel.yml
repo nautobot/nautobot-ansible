@@ -1,0 +1,188 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: power_panel
+api_path: /dcim/power-panels/
+endpoint: power_panels
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_POWER_PANELS
+instance_var: power_panel
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The location the power panel is located in
+        - Required if I(state=present) and the power panel does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  rack_group:
+    api_field: rack_group
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The rack group the power panel is assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the power panel
+        - Required if I(state=present) and the power panel does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  panel_type:
+    api_field: panel_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - utility
+        - generator
+        - switchgear
+        - mdp
+        - ups
+        - transfer-switch
+        - pdu
+        - panelboard
+        - mlc
+        - rpp
+    documentation:
+      description:
+        - The panel type of the power panel
+      required: false
+      type: str
+      choices: *id001
+      version_added: "6.4.0"
+  breaker_position_count:
+    api_field: breaker_position_count
+    managed: true
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Total number of breaker positions in the panel (e.g., 42)
+      required: false
+      type: int
+      version_added: "6.4.0"
+  power_path:
+    api_field: power_path
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id002
+        - a
+        - b
+    documentation:
+      description:
+        - Physical power distribution redundancy path.
+      required: false
+      type: str
+      choices: *id002
+      version_added: "6.4.0"
+documentation:
+  module: power_panel
+  short_description: Create, update or delete power panels within Nautobot
+  description:
+    - Creates, updates or removes power panels from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create power panel within Nautobot with only required information
+        networktocode.nautobot.power_panel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Power Panel
+          location: My Location
+          state: present
+
+      - name: Update power panel with other fields
+        networktocode.nautobot.power_panel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Power Panel
+          location:
+            name: My Location
+            parent: Parent Location
+          rack_group: Test Rack Group
+          state: present
+
+      - name: Delete power panel within nautobot
+        networktocode.nautobot.power_panel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Power Panel
+          location:
+            name: My Location
+            parent: Parent Location
+          state: absent
+
+      - name: Delete power panel by id
+        networktocode.nautobot.power_panel:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  power_panel:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

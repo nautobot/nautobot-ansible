@@ -1,0 +1,149 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: approval_workflow
+api_path: /extras/approval-workflows/
+endpoint: approval_workflows
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: extras
+class_name: NautobotExtrasModule
+endpoint_constant: null
+instance_var: approval_workflow
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  object_under_review_content_type:
+    api_field: object_under_review_content_type
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The object under review content type of the Approval Workflow
+        - Required if I(state=present) and the Approval Workflow does not exist yet
+      required: false
+      type: str
+  object_under_review_object_id:
+    api_field: object_under_review_object_id
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The object under review object id of the Approval Workflow
+        - Required if I(state=present) and the Approval Workflow does not exist yet
+      required: false
+      type: str
+  current_state:
+    api_field: current_state
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+      choices: &id001
+        - Pending
+        - Approved
+        - Denied
+        - Canceled
+        - Comment
+    documentation:
+      description:
+        - 'Current state of the approval workflow. Eligible values are: Pending, Approved, Denied, Canceled.'
+      required: false
+      type: str
+      choices: *id001
+  approval_workflow_definition:
+    api_field: approval_workflow_definition
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Approval workflow definition to which this approval workflow belongs.
+      required: false
+      type: raw
+  user:
+    api_field: user
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The user of the Approval Workflow
+      required: false
+      type: raw
+documentation:
+  module: approval_workflow
+  short_description: Create, update or delete approval workflows within Nautobot
+  description:
+    - Creates, updates or removes approval workflows from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create Approval Workflow within Nautobot with only required information
+        networktocode.nautobot.approval_workflow:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          object_under_review_content_type: dcim.device
+          object_under_review_object_id: Test Object Under Review Object Id
+          state: present
+      - name: Delete Approval Workflow within Nautobot
+        networktocode.nautobot.approval_workflow:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          approval_workflow_definition: Test Approval Workflow Definition
+          object_under_review_content_type: dcim.device
+          object_under_review_object_id: Test Object Under Review Object Id
+          state: absent
+      - name: Delete Approval Workflow by id
+        networktocode.nautobot.approval_workflow:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  approval_workflow:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - approval_workflow_definition
+  - object_under_review_content_type
+  - object_under_review_object_id

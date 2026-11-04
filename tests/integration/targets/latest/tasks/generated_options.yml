@@ -1,0 +1,189 @@
+---
+##
+##
+### Options and choices the code generator added to existing modules
+##
+##
+- name: "GENERATED OPTIONS 1: Interface with speed and duplex"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: Test Nexus One
+    name: Ethernet9/1
+    type: 1000base-t
+    status: Active
+    speed: 1000000
+    duplex: full
+    state: present
+  register: test_one
+
+- name: "GENERATED OPTIONS 1: ASSERT - Interface with speed and duplex"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['interface']['speed'] == 1000000
+      - test_one['interface']['duplex'] == "full"
+
+- name: "GENERATED OPTIONS 2: Interface speed and duplex are idempotent"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: Test Nexus One
+    name: Ethernet9/1
+    type: 1000base-t
+    status: Active
+    speed: 1000000
+    duplex: full
+    state: present
+  register: test_two
+
+- name: "GENERATED OPTIONS 2: ASSERT - Interface speed and duplex are idempotent"
+  assert:
+    that:
+      - not test_two['changed']
+
+- name: "GENERATED OPTIONS 3: Second interface for the cable"
+  networktocode.nautobot.device_interface:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: Test Nexus Child One
+    name: Ethernet9/2
+    type: 1000base-t
+    status: Active
+    state: present
+
+- name: "GENERATED OPTIONS 4: Cable type for a breakout cable"
+  networktocode.nautobot.cable_type:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: Test Generated Cable Type
+    state: present
+  register: cable_type
+
+- name: "GENERATED OPTIONS 5: Cable with cable_type"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet9/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet9/2
+    status: Connected
+    cable_type: Test Generated Cable Type
+    state: present
+  register: test_five
+
+- name: "GENERATED OPTIONS 5: ASSERT - Cable with cable_type"
+  assert:
+    that:
+      - test_five is changed
+      - test_five['cable']['cable_type'] == cable_type['cable_type']['id']
+
+- name: "GENERATED OPTIONS 6: Cable with cable_type is idempotent"
+  networktocode.nautobot.cable:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    termination_a_type: dcim.interface
+    termination_a:
+      device: Test Nexus One
+      name: Ethernet9/1
+    termination_b_type: dcim.interface
+    termination_b:
+      device: Test Nexus Child One
+      name: Ethernet9/2
+    status: Connected
+    cable_type: Test Generated Cable Type
+    state: present
+  register: test_six
+
+- name: "GENERATED OPTIONS 6: ASSERT - Cable with cable_type is idempotent"
+  assert:
+    that:
+      - not test_six['changed']
+
+- name: "GENERATED OPTIONS 7: Console port with label"
+  networktocode.nautobot.console_port:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    device: Test Nexus One
+    name: Generated Console Port
+    label: Generated label
+    state: present
+  register: test_seven
+
+- name: "GENERATED OPTIONS 7: ASSERT - Console port with label"
+  assert:
+    that:
+      - test_seven is changed
+      - test_seven['console_port']['label'] == "Generated label"
+
+- name: "GENERATED OPTIONS 8: Custom field with the datetime type added in Nautobot 3.x"
+  networktocode.nautobot.custom_field:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    label: Generated Datetime Field
+    key: generated_datetime_field
+    type: datetime
+    content_types:
+      - dcim.device
+    state: present
+  register: test_eight
+
+- name: "GENERATED OPTIONS 8: ASSERT - Custom field with the datetime type"
+  assert:
+    that:
+      - test_eight is changed
+      - test_eight['custom_field']['type'] == "datetime"
+
+- name: "GENERATED OPTIONS 9: Clean up"
+  block:
+    - name: "GENERATED OPTIONS 9: Delete custom field"
+      networktocode.nautobot.custom_field:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        label: Generated Datetime Field
+        state: absent
+
+    - name: "GENERATED OPTIONS 9: Delete console port"
+      networktocode.nautobot.console_port:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        device: Test Nexus One
+        name: Generated Console Port
+        state: absent
+
+    - name: "GENERATED OPTIONS 9: Delete cable"
+      networktocode.nautobot.cable:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        termination_a_type: dcim.interface
+        termination_a:
+          device: Test Nexus One
+          name: Ethernet9/1
+        termination_b_type: dcim.interface
+        termination_b:
+          device: Test Nexus Child One
+          name: Ethernet9/2
+        state: absent
+
+    - name: "GENERATED OPTIONS 9: Delete cable type"
+      networktocode.nautobot.cable_type:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        name: Test Generated Cable Type
+        state: absent
+
+    - name: "GENERATED OPTIONS 9: Delete interfaces"
+      networktocode.nautobot.device_interface:
+        url: "{{ nautobot_url }}"
+        token: "{{ nautobot_token }}"
+        device: "{{ item.device }}"
+        name: "{{ item.name }}"
+        state: absent
+      loop:
+        - {device: Test Nexus One, name: Ethernet9/1}
+        - {device: Test Nexus Child One, name: Ethernet9/2}

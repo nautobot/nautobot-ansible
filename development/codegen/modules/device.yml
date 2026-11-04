@@ -1,0 +1,604 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: device
+api_path: /dcim/devices/
+endpoint: devices
+header:
+  - '# Copyright: (c) 2018, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# Copyright: (c) 2018, David Gomez (@amb1s1) <david.gomez@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_DEVICES
+instance_var: device
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports:
+  - uuid
+post_module_code:
+  - |-
+    if module.params["name"] == "":
+            module.params["name"] = str(uuid.uuid4())
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the device
+      required: false
+      type: str
+      version_added: "3.0.0"
+  device_type:
+    api_field: device_type
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if I(state=present) and the device does not exist yet
+        - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  role:
+    api_field: role
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if I(state=present) and the device does not exist yet
+        - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  tenant:
+    api_field: tenant
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant that the device will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  platform:
+    api_field: platform
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The platform of the device
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  serial:
+    api_field: serial
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Serial number of the device
+      required: false
+      type: str
+      version_added: "3.0.0"
+  asset_tag:
+    api_field: asset_tag
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Asset tag that is associated to the device
+      required: false
+      type: str
+      version_added: "3.0.0"
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Required if I(state=present) and the device does not exist yet
+        - Recommended when updating or deleting if not using I(id) or I(name) to aid with identification
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  rack:
+    api_field: rack
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The name of the rack to assign the device to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  position:
+    api_field: position
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The position of the device in the rack defined above
+      required: false
+      type: int
+      version_added: "3.0.0"
+  face:
+    api_field: face
+    argument_spec:
+      required: false
+      type: str
+      choices:
+        - Front
+        - front
+        - Rear
+        - rear
+    documentation:
+      description:
+        - Required if I(rack) is defined
+      choices:
+        - Front
+        - front
+        - Rear
+        - rear
+      required: false
+      type: str
+      version_added: "3.0.0"
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The status of the device
+        - Required if I(state=present) and the device does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  primary_ip4:
+    api_field: primary_ip4
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Primary IPv4 address assigned to the device
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  primary_ip6:
+    api_field: primary_ip6
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Primary IPv6 address assigned to the device
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  virtual_chassis:
+    api_field: virtual_chassis
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Virtual chassis the device will be assigned to
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  vc_position:
+    api_field: vc_position
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Position in the assigned virtual chassis
+      required: false
+      type: int
+      version_added: "3.0.0"
+  vc_priority:
+    api_field: vc_priority
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Priority in the assigned virtual chassis
+      required: false
+      type: int
+      version_added: "3.0.0"
+  comments:
+    api_field: comments
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Comments that may include additional information in regards to the device
+      required: false
+      type: str
+      version_added: "3.0.0"
+  local_config_context_data:
+    api_field: local_config_context_data
+    argument_spec:
+      required: false
+      type: dict
+    documentation:
+      description:
+        - Arbitrary JSON data to define the devices configuration variables.
+      required: false
+      type: dict
+      version_added: "3.0.0"
+  controller_managed_device_group:
+    api_field: controller_managed_device_group
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Device controller_managed_device_group the device will be assigned to
+        - Requires Nautobot C(v2.2) or later
+      required: false
+      type: raw
+      version_added: "5.7.0"
+  device_redundancy_group:
+    api_field: device_redundancy_group
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Device redundancy group the device will be assigned to
+      required: false
+      type: raw
+      version_added: "5.1.0"
+  device_redundancy_group_priority:
+    api_field: device_redundancy_group_priority
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - Priority in the assigned device redundancy group
+      required: false
+      type: int
+      version_added: "5.1.0"
+  secrets_group:
+    api_field: secrets_group
+    argument_spec:
+      required: false
+      type: raw
+      no_log: false
+    documentation:
+      description:
+        - The secrets_group of the device
+      required: false
+      type: raw
+      version_added: "5.12.0"
+  software_version:
+    api_field: software_version
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The software version associated with the device
+      required: false
+      type: raw
+      version_added: "5.13.0"
+  software_image_files:
+    api_field: software_image_files
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Override the software image files associated with the software version for this inventory item
+      required: false
+      type: raw
+      version_added: "5.13.0"
+  vrfs:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            vrf:
+              required: true
+              type: raw
+    documentation:
+      description:
+        - List of VRFs to associate with this device.
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds associations without removing existing ones.
+            - C(replace) enforces exactly the listed associations, removing any extras.
+            - C(delete) removes the listed associations.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of VRFs to associate.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            vrf:
+              description:
+                - The VRF to associate with the device.
+              required: true
+              type: raw
+  clusters:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            cluster:
+              required: true
+              type: raw
+    documentation:
+      description:
+        - List of clusters to associate with this device.
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds associations without removing existing ones.
+            - C(replace) enforces exactly the listed associations, removing any extras.
+            - C(delete) removes the listed associations.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of clusters to associate.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            cluster:
+              description:
+                - The cluster to associate with the device.
+              required: true
+              type: raw
+  local_config_context_schema:
+    api_field: local_config_context_schema
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Optional schema to validate the structure of the data
+      required: false
+      type: raw
+      version_added: "6.4.0"
+  parent_bay:
+    api_field: parent_bay
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The parent bay of the device
+      required: false
+      type: raw
+      version_added: "6.4.0"
+documentation:
+  module: device
+  short_description: Create, update or delete devices within Nautobot
+  description:
+    - Creates, updates or removes devices from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+    - David Gomez (@amb1s1)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create device within Nautobot with name
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Device
+          device_type: C9410R
+          role: Core Switch
+          location: My Location
+          status: active
+          state: present
+
+      - name: Delete device within nautobot with name
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Device
+          state: absent
+
+      - name: Rename device via ID
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
+          name: New Name
+          state: present
+
+      - name: Delete device via ID
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 15b91de1-448d-4ff7-a00e-0a6816e8bf71
+          state: absent
+
+      - name: Create device with tags and contacts
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Another Test Device
+          device_type: C9410R
+          role: Core Switch
+          location:
+            name: My Location
+            parent: Parent Location
+          status: active
+          local_config_context_data:
+            bgp: "65000"
+          tags:
+            - Schnozzberry
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+          state: present
+
+      - name: Create device within Nautobot with secrets_group
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: TopSecretDevice
+          device_type: C9410R
+          role: Core Switch
+          location: My Location
+          secrets_group: "Test Secrets Group"
+          status: active
+          state: present
+
+      - name: Update the rack and position of an existing device
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Device
+          rack: Test Rack
+          position: 10
+          face: Front
+          state: present
+
+      - name: Create device with inline cluster associations
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Device
+          clusters:
+            state: merge
+            objects:
+              - cluster: Test Cluster
+          state: present
+
+      - name: Create device with inline VRF associations
+        networktocode.nautobot.device:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Device
+          vrfs:
+            state: merge
+            objects:
+              - vrf: Test VRF
+          state: present
+return: |2
+
+  device:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

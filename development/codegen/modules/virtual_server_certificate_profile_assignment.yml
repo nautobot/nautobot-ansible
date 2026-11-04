@@ -1,0 +1,101 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: virtual_server_certificate_profile_assignment
+api_path: /load-balancers/virtual-server-certificate-profile-assignments/
+endpoint: virtual_server_certificate_profile_assignments
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: load_balancers
+class_name: NautobotLoadBalancersModule
+endpoint_constant: null
+instance_var: virtual_server_certificate_profile_assignment
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  virtual_server:
+    api_field: virtual_server
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The virtual server of the virtual server certificate profile assignment
+        - Required if I(state=present) and the virtual server certificate profile assignment does not exist yet
+      required: false
+      type: raw
+  certificate_profile:
+    api_field: certificate_profile
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The certificate profile of the virtual server certificate profile assignment
+        - Required if I(state=present) and the virtual server certificate profile assignment does not exist yet
+      required: false
+      type: raw
+documentation:
+  module: virtual_server_certificate_profile_assignment
+  short_description: Create, update or delete virtual server certificate profile assignments within Nautobot
+  description:
+    - Creates, updates or removes virtual server certificate profile assignments from Nautobot.
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create virtual server certificate profile assignment within Nautobot with only required information
+        networktocode.nautobot.virtual_server_certificate_profile_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_server: Test Virtual Server
+          certificate_profile: Test Certificate Profile
+          state: present
+      - name: Delete virtual server certificate profile assignment within Nautobot
+        networktocode.nautobot.virtual_server_certificate_profile_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          virtual_server: Test Virtual Server
+          certificate_profile: Test Certificate Profile
+          state: absent
+      - name: Delete virtual server certificate profile assignment by id
+        networktocode.nautobot.virtual_server_certificate_profile_assignment:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  virtual_server_certificate_profile_assignment:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields:
+  - virtual_server
+  - certificate_profile

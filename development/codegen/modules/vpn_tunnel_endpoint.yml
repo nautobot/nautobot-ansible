@@ -1,0 +1,194 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: vpn_tunnel_endpoint
+api_path: /vpn/vpn-tunnel-endpoints/
+endpoint: vpn_tunnel_endpoints
+header:
+  - '# Copyright: (c) 2026, Network to Code (@networktocode) <info@networktocode.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: vpn
+class_name: NautobotVpnModule
+endpoint_constant: null
+instance_var: vpn_tunnel_endpoint
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+generated_examples: true
+options:
+  source_fqdn:
+    api_field: source_fqdn
+    managed: true
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Mutually Exclusive with Source IP Address
+      required: false
+      type: str
+  device:
+    api_field: device
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The device of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  source_interface:
+    api_field: source_interface
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The source interface of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  source_ipaddress:
+    api_field: source_ipaddress
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - Mutually Exclusive with Source FQDN.
+      required: false
+      type: raw
+  tunnel_interface:
+    api_field: tunnel_interface
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tunnel interface of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  vpn_profile:
+    api_field: vpn_profile
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The vpn profile of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  role:
+    api_field: role
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The role of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  tenant:
+    api_field: tenant
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The tenant of the VPN Tunnel Endpoint
+      required: false
+      type: raw
+  protected_prefixes:
+    api_field: protected_prefixes
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The protected prefixes of the VPN Tunnel Endpoint
+      required: false
+      type: list
+      elements: raw
+  protected_prefixes_dg:
+    api_field: protected_prefixes_dg
+    managed: true
+    argument_spec:
+      required: false
+      type: list
+      elements: raw
+    documentation:
+      description:
+        - The protected prefixes dg of the VPN Tunnel Endpoint
+      required: false
+      type: list
+      elements: raw
+documentation:
+  module: vpn_tunnel_endpoint
+  short_description: Create, update or delete vpn tunnel endpoints within Nautobot
+  description:
+    - Creates, updates or removes vpn tunnel endpoints from Nautobot.
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Network to Code (@networktocode)
+  version_added: "6.4.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: Test Nautobot modules
+    connection: local
+    hosts: localhost
+    gather_facts: false
+    tasks:
+      - name: Create VPN Tunnel Endpoint within Nautobot with only required information
+        networktocode.nautobot.vpn_tunnel_endpoint:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          state: present
+      - name: Delete VPN Tunnel Endpoint within Nautobot
+        networktocode.nautobot.vpn_tunnel_endpoint:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          state: absent
+      - name: Delete VPN Tunnel Endpoint by id
+        networktocode.nautobot.vpn_tunnel_endpoint:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  vpn_tunnel_endpoint:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
+lookup_fields: []

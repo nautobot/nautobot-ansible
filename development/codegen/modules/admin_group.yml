@@ -1,0 +1,87 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: admin_group
+api_path: /users/groups/
+endpoint: groups
+header:
+  - '# Copyright: (c) 2024, Jeff Kala (@jeffkala)'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: users
+class_name: NautobotUsersModule
+endpoint_constant: NB_ADMIN_GROUP
+instance_var: nb_groups
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the group
+        - Required if I(state=present) and the group does not exist yet
+      required: false
+      type: str
+documentation:
+  module: admin_group
+  short_description: Create, update or delete admin groups within Nautobot
+  description:
+    - Creates, updates or removes admin groups from Nautobot
+  notes:
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Jeff Kala (@jeffkala)
+  version_added: "5.3.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create admin group within Nautobot
+        networktocode.nautobot.admin_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: read_only_group
+          state: present
+
+      - name: Delete admin group by name
+        networktocode.nautobot.admin_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: read_only_group
+          state: absent
+
+      - name: Delete admin group by id
+        networktocode.nautobot.admin_group:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  admin_group:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

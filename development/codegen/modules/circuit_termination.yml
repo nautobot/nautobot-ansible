@@ -1,0 +1,231 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: circuit_termination
+api_path: /circuits/circuit-terminations/
+endpoint: circuit_terminations
+header:
+  - '# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: circuits
+class_name: NautobotCircuitsModule
+endpoint_constant: NB_CIRCUIT_TERMINATIONS
+instance_var: circuit_termination
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  circuit:
+    api_field: circuit
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The circuit to assign to circuit termination
+        - Required if I(state=present) and the circuit termination does not exist yet
+      required: false
+      version_added: "3.0.0"
+      type: raw
+  term_side:
+    api_field: term_side
+    argument_spec:
+      required: false
+      choices:
+        - A
+        - Z
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The side of the circuit termination
+        - Required if I(state=present) and the circuit termination does not exist yet
+      choices:
+        - A
+        - Z
+      required: false
+      type: str
+  location:
+    api_field: location
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The location the circuit termination will be assigned to
+      required: false
+      type: raw
+  port_speed:
+    api_field: port_speed
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The speed of the port (Kbps)
+      required: false
+      type: int
+  upstream_speed:
+    api_field: upstream_speed
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The upstream speed of the circuit termination
+      required: false
+      type: int
+  xconnect_id:
+    api_field: xconnect_id
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The cross connect ID of the circuit termination
+      required: false
+      type: str
+  pp_info:
+    api_field: pp_info
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - Patch panel information
+      required: false
+      type: str
+  description:
+    api_field: description
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - Description of the circuit termination
+      required: false
+      type: str
+  provider_network:
+    api_field: provider_network
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      version_added: "4.2.0"
+      description:
+        - Connection to a provider_network type
+      type: raw
+      required: false
+  cloud_network:
+    api_field: cloud_network
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      version_added: "5.4.0"
+      description:
+        - Connection to a cloud_network type
+      type: raw
+      required: false
+documentation:
+  module: circuit_termination
+  short_description: Create, update or delete circuit terminations within Nautobot
+  description:
+    - Creates, updates or removes circuit terminations from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create circuit termination within Nautobot with only required information
+        networktocode.nautobot.circuit_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          circuit: Test Circuit
+          term_side: A
+          location:
+            name: My Location
+            parent: Parent Location
+          port_speed: 10000
+          state: present
+
+      - name: Create circuit termination to Provider Network
+        networktocode.nautobot.circuit_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          circuit: Test Circuit
+          term_side: Z
+          provider_network:
+            name: "Provider A"
+          port_speed: 10000
+          state: present
+
+      - name: Update circuit termination with other fields
+        networktocode.nautobot.circuit_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          circuit: Test Circuit
+          term_side: A
+          upstream_speed: 1000
+          xconnect_id: 10X100
+          pp_info: PP10-24
+          description: "Test description"
+          state: present
+
+      - name: Delete circuit termination within nautobot
+        networktocode.nautobot.circuit_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          circuit: Test Circuit
+          term_side: A
+          state: absent
+
+      - name: Delete circuit termination by id
+        networktocode.nautobot.circuit_termination:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  circuit_termination:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

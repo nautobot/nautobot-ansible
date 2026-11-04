@@ -1,0 +1,276 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: provider
+api_path: /circuits/providers/
+endpoint: providers
+header:
+  - '# Copyright: (c) 2019, Mikhail Yohman (@FragmentedPacket) <mikhail.yohman@gmail.com>'
+  - '# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)'
+utils_module: circuits
+class_name: NautobotCircuitsModule
+endpoint_constant: NB_PROVIDERS
+instance_var: provider
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  name:
+    api_field: name
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The name of the provider
+        - Required if I(state=present) and the provider does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  asn:
+    api_field: asn
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The provider ASN
+      required: false
+      type: int
+      version_added: "3.0.0"
+  account:
+    api_field: account
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The account number of the provider
+      required: false
+      type: str
+      version_added: "3.0.0"
+  portal_url:
+    api_field: portal_url
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The URL of the provider
+      required: false
+      type: str
+      version_added: "3.0.0"
+  noc_contact:
+    api_field: noc_contact
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The NOC contact of the provider
+      required: false
+      type: str
+      version_added: "3.0.0"
+  admin_contact:
+    api_field: admin_contact
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The admin contact of the provider
+      required: false
+      type: str
+      version_added: "3.0.0"
+  comments:
+    api_field: comments
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - Comments related to the provider
+      required: false
+      type: str
+      version_added: "3.0.0"
+  provider_networks:
+    api_field: null
+    argument_spec:
+      required: false
+      type: dict
+      options:
+        state:
+          required: false
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          required: true
+          type: list
+          elements: dict
+          options:
+            name:
+              required: true
+              type: str
+            description:
+              required: false
+              type: str
+            comments:
+              required: false
+              type: str
+    documentation:
+      description:
+        - List of provider networks belonging to this provider.
+      required: false
+      type: dict
+      version_added: "6.2.0"
+      suboptions:
+        state:
+          description:
+            - C(merge) adds provider networks without removing existing ones.
+            - C(replace) enforces exactly the listed provider networks, removing any extras.
+            - C(delete) removes the listed provider networks.
+          required: false
+          type: str
+          default: merge
+          choices:
+            - merge
+            - replace
+            - delete
+        objects:
+          description:
+            - List of provider networks to manage.
+          required: true
+          type: list
+          elements: dict
+          suboptions:
+            name:
+              description:
+                - Name of the provider network.
+              required: true
+              type: str
+            description:
+              description:
+                - Description of the provider network.
+              required: false
+              type: str
+            comments:
+              description:
+                - Comments for the provider network.
+              required: false
+              type: str
+documentation:
+  module: provider
+  short_description: Create, update or delete providers within Nautobot
+  description:
+    - Creates, updates or removes providers from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Mikhail Yohman (@FragmentedPacket)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create provider within Nautobot with only required information
+        networktocode.nautobot.provider:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Provider
+          state: present
+
+      - name: Update provider with other fields
+        networktocode.nautobot.provider:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Provider
+          asn: 65001
+          account: 200129104
+          portal_url: http://provider.net
+          noc_contact: noc@provider.net
+          admin_contact: admin@provider.net
+          comments: "BAD PROVIDER"
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+          state: present
+
+      - name: Create provider with inline provider network associations
+        networktocode.nautobot.provider:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Provider
+          provider_networks:
+            state: merge
+            objects:
+              - name: "Provider Net A"
+          state: present
+
+      - name: Delete provider within nautobot
+        networktocode.nautobot.provider:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          name: Test Provider
+          state: absent
+
+      - name: Delete provider by id
+        networktocode.nautobot.provider:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  provider:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str

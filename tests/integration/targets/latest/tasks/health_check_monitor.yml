@@ -1,0 +1,89 @@
+---
+##
+##
+### PYNAUTOBOT_HEALTH_CHECK_MONITOR (generated module)
+##
+##
+- name: "HEALTH CHECK MONITOR 1: Necessary info creation"
+  networktocode.nautobot.health_check_monitor:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Health Check"
+    health_check_type: http
+    port: 80
+    state: present
+  register: test_one
+
+- name: "HEALTH CHECK MONITOR 1: ASSERT - Necessary info creation"
+  assert:
+    that:
+      - test_one is changed
+      - test_one['diff']['before']['state'] == "absent"
+      - test_one['diff']['after']['state'] == "present"
+      - test_one['health_check_monitor']['name'] == "Test Health Check"
+      - test_one['health_check_monitor']['health_check_type'] == "http"
+      - test_one['health_check_monitor']['port'] == 80
+      - test_one['msg'] == "health_check_monitor Test Health Check created"
+
+- name: "HEALTH CHECK MONITOR 2: Create duplicate"
+  networktocode.nautobot.health_check_monitor:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Health Check"
+    health_check_type: http
+    port: 80
+    state: present
+  register: test_two
+
+- name: "HEALTH CHECK MONITOR 2: ASSERT - Create duplicate"
+  assert:
+    that:
+      - not test_two['changed']
+      - test_two['health_check_monitor']['id'] == test_one['health_check_monitor']['id']
+      - test_two['msg'] == "health_check_monitor Test Health Check already exists"
+
+- name: "HEALTH CHECK MONITOR 3: Update"
+  networktocode.nautobot.health_check_monitor:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Health Check"
+    interval: 15
+    state: present
+  register: test_three
+
+- name: "HEALTH CHECK MONITOR 3: ASSERT - Update"
+  assert:
+    that:
+      - test_three is changed
+      - test_three['health_check_monitor']['interval'] == 15
+      - test_three['msg'] == "health_check_monitor Test Health Check updated"
+
+- name: "HEALTH CHECK MONITOR 4: Delete"
+  networktocode.nautobot.health_check_monitor:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Health Check"
+    state: absent
+  register: test_four
+
+- name: "HEALTH CHECK MONITOR 4: ASSERT - Delete"
+  assert:
+    that:
+      - test_four is changed
+      - test_four['diff']['before']['state'] == "present"
+      - test_four['diff']['after']['state'] == "absent"
+      - test_four['msg'] == "health_check_monitor Test Health Check deleted"
+
+- name: "HEALTH CHECK MONITOR 5: Delete again"
+  networktocode.nautobot.health_check_monitor:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "Test Health Check"
+    state: absent
+  register: test_five
+
+- name: "HEALTH CHECK MONITOR 5: ASSERT - Already absent"
+  assert:
+    that:
+      - not test_five['changed']
+      - test_five['msg'] == "health_check_monitor Test Health Check already absent"

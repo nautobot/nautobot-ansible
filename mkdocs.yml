@@ -117,6 +117,7 @@ nav:
         - Module Architecture: "getting_started/contributing/modules/architecture.md"
         - New Module: "getting_started/contributing/modules/new_module.md"
         - Update Module: "getting_started/contributing/modules/update_module.md"
+        - Module Code Generator: "getting_started/contributing/modules/code_generator.md"
       - Testing Locally: "getting_started/contributing/testing_locally.md"
       - Testing with GitHub Actions: "getting_started/contributing/testing_with_gha.md"
       - Debugging: "getting_started/contributing/debugging.md"

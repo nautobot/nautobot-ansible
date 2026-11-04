@@ -1,5 +1,10 @@
 # Contributing a New Module
 
+!!! note
+    Modules are now generated from the Nautobot REST API. Start with the [Module Code Generator](code_generator.md):
+    it adds new endpoints and new fields for you. Use this page for changes the generator can't make, such as
+    logic in `plugins/module_utils/`.
+
 We'll go through the build a module for Nautobot's new **route-targets** endpoint under the **IPAM** app.
 
 ## Research API Spec to find necessary module arguments

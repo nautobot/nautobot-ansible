@@ -1,0 +1,309 @@
+# Module config for the code generator. The generator reads this file and rewrites it, so keep
+# comments out of it. See development/codegen/README.md.
+module: cable
+api_path: /dcim/cables/
+endpoint: cables
+header:
+  - '# © 2020 Nokia'
+  - '# Licensed under the GNU General Public License v3.0 only'
+  - '# SPDX-License-Identifier: GPL-3.0-only'
+utils_module: dcim
+class_name: NautobotDcimModule
+endpoint_constant: NB_CABLES
+instance_var: cable
+instance_kwargs: {}
+main_docstring: "\n    Main entry point for module execution.\n    "
+shared_specs:
+  - NAUTOBOT_ARG_SPEC
+  - ID_ARG_SPEC
+  - TAGS_ARG_SPEC
+  - CUSTOM_FIELDS_ARG_SPEC
+  - CONTACTS_AND_TEAMS_ARG_SPEC
+  - NOTES_ARG_SPEC
+ansible_module_kwargs:
+  supports_check_mode: true
+extra_imports: []
+post_module_code: []
+ignore_api_fields: {}
+lookup_fields: null
+generated_examples: false
+options:
+  termination_a_type:
+    api_field: termination_a_type
+    argument_spec:
+      required: false
+      choices:
+        - circuits.circuittermination
+        - dcim.consoleport
+        - dcim.consoleserverport
+        - dcim.frontport
+        - dcim.interface
+        - dcim.powerfeed
+        - dcim.poweroutlet
+        - dcim.powerport
+        - dcim.rearport
+      type: str
+    documentation:
+      description:
+        - The type of the termination a
+        - Required if I(state=present) and the cable does not exist yet
+      choices:
+        - circuits.circuittermination
+        - dcim.consoleport
+        - dcim.consoleserverport
+        - dcim.frontport
+        - dcim.interface
+        - dcim.powerfeed
+        - dcim.poweroutlet
+        - dcim.powerport
+        - dcim.rearport
+      required: false
+      type: str
+      version_added: "3.0.0"
+  termination_a:
+    api_field: termination_a_id
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The termination a
+        - Required if I(state=present) and the cable does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  termination_b_type:
+    api_field: termination_b_type
+    argument_spec:
+      required: false
+      choices:
+        - circuits.circuittermination
+        - dcim.consoleport
+        - dcim.consoleserverport
+        - dcim.frontport
+        - dcim.interface
+        - dcim.powerfeed
+        - dcim.poweroutlet
+        - dcim.powerport
+        - dcim.rearport
+      type: str
+    documentation:
+      description:
+        - The type of the termination b
+        - Required if I(state=present) and the cable does not exist yet
+      choices:
+        - circuits.circuittermination
+        - dcim.consoleport
+        - dcim.consoleserverport
+        - dcim.frontport
+        - dcim.interface
+        - dcim.powerfeed
+        - dcim.poweroutlet
+        - dcim.powerport
+        - dcim.rearport
+      required: false
+      type: str
+      version_added: "3.0.0"
+  termination_b:
+    api_field: termination_b_id
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The termination b
+        - Required if I(state=present) and the cable does not exist yet
+      required: false
+      type: raw
+      version_added: "3.0.0"
+  type:
+    api_field: type
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The type of the cable
+      required: false
+      type: str
+      version_added: "3.0.0"
+  status:
+    api_field: status
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The status of the cable
+        - Required if I(state=present) and does not exist yet
+      required: false
+      type: str
+      version_added: "3.0.0"
+  label:
+    api_field: label
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The label of the cable
+      required: false
+      type: str
+      version_added: "3.0.0"
+  color:
+    api_field: color
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      description:
+        - The color of the cable
+      required: false
+      type: str
+      version_added: "3.0.0"
+  length:
+    api_field: length
+    argument_spec:
+      required: false
+      type: int
+    documentation:
+      description:
+        - The length of the cable
+      required: false
+      type: int
+      version_added: "3.0.0"
+  length_unit:
+    api_field: length_unit
+    argument_spec:
+      required: false
+      type: str
+    documentation:
+      version_added: "3.0.0"
+      description:
+        - The unit in which the length of the cable is measured
+      required: false
+      type: str
+  cable_type:
+    api_field: cable_type
+    managed: true
+    argument_spec:
+      required: false
+      type: raw
+    documentation:
+      description:
+        - The cable type defining this cable's lane structure and other properties. May be null for standard point-to-point cables.
+      required: false
+      type: raw
+      version_added: "6.4.0"
+documentation:
+  module: cable
+  short_description: Create, update or delete cables within Nautobot
+  description:
+    - Creates, updates or removes cables from Nautobot
+  notes:
+    - Tags should be defined as a YAML list
+    - This should be ran with connection C(local) and hosts C(localhost)
+  author:
+    - Tobias Groß (@toerb)
+  version_added: "1.0.0"
+  extends_documentation_fragment:
+    - networktocode.nautobot.fragments.base
+    - networktocode.nautobot.fragments.id
+    - networktocode.nautobot.fragments.tags
+    - networktocode.nautobot.fragments.custom_fields
+    - networktocode.nautobot.fragments.contacts_and_teams
+    - networktocode.nautobot.fragments.notes
+examples: |2
+
+  - name: "Test Nautobot modules"
+    connection: local
+    hosts: localhost
+    gather_facts: false
+
+    tasks:
+      - name: Create cable within Nautobot with only required information
+        networktocode.nautobot.cable:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          termination_a_type: dcim.interface
+          termination_a:
+            device: Test Nexus Child One
+            name: Ethernet2/2
+          termination_b_type: dcim.interface
+          termination_b:
+            device: Test Nexus Child One
+            name: Ethernet2/1
+          status: active
+          state: present
+
+      - name: Update cable with other fields
+        networktocode.nautobot.cable:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          termination_a_type: dcim.interface
+          termination_a:
+            device: Test Nexus Child One
+            name: Ethernet2/2
+          termination_b_type: dcim.interface
+          termination_b:
+            device: Test Nexus Child One
+            name: Ethernet2/1
+          type: mmf-om4
+          status: planned
+          label: label123
+          color: abcdef
+          length: 30
+          length_unit: m
+          notes:
+            objects:
+              - note: Example note text
+          contacts:
+            objects:
+              - contact: Jane Doe
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith
+                role: User
+                status: Active
+              - contact:
+                  name: John Smith, Jr.
+                role: User
+                status: Active
+            teams:
+              objects:
+                - team: Network Team
+                  role: Admin
+                  status: Active
+          state: present
+
+      - name: Delete cable within nautobot
+        networktocode.nautobot.cable:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          termination_a_type: dcim.interface
+          termination_a:
+            device: Test Nexus Child One
+            name: Ethernet2/2
+          termination_b_type: dcim.interface
+          termination_b:
+            device: Test Nexus Child One
+            name: Ethernet2/1
+          state: absent
+
+      - name: Delete cable by id
+        networktocode.nautobot.cable:
+          url: http://nautobot.local
+          token: thisIsMyToken
+          id: 00000000-0000-0000-0000-000000000000
+          state: absent
+return: |2
+
+  cable:
+    description: Serialized object as created or already existent within Nautobot
+    returned: success (when I(state=present))
+    type: dict
+  msg:
+    description: Message indicating failure or info about what has been achieved
+    returned: always
+    type: str
