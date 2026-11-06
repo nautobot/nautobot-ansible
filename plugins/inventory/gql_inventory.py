@@ -24,7 +24,9 @@ options:
     required: True
     choices: ["networktocode.nautobot.gql_inventory"]
   api_endpoint:
-    description: Endpoint of the Nautobot API
+    description:
+      - Endpoint of the Nautobot API
+      - May be a template, such as a lookup.
     required: True
     env:
       - name: NAUTOBOT_URL
@@ -48,6 +50,7 @@ options:
     description:
       - Nautobot API token to be able to read against Nautobot.
       - This may not be required depending on the Nautobot setup.
+      - May be a template, such as a lookup, so the token need not be stored in the file or the environment.
     env:
       # in order of precedence
       - name: NAUTOBOT_TOKEN
@@ -242,6 +245,13 @@ query:
 plugin: networktocode.nautobot.gql_inventory
 api_endpoint: http://localhost:8000
 saved_query: "My Saved Query"
+
+---
+# token and api_endpoint may be templates, rendered when the inventory is parsed:
+# here the token is read from HashiCorp Vault, so it is never stored in a file or the environment.
+plugin: networktocode.nautobot.gql_inventory
+api_endpoint: http://localhost:8000
+token: "{{ lookup('community.hashi_vault.vault_kv2_get', 'nautobot', engine_mount_point='secret').secret.token }}"
 """
 
 RETURN = """
@@ -598,6 +608,18 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             # Create groups based on variable values and add the corresponding hosts to it
             self._add_host_to_keyed_groups(self.get_option("keyed_groups"), device, hostname, strict=strict)
 
+    def _get_templated_option(self, option):
+        """Get an option, rendering it first if it is a template (e.g. a lookup)."""
+        value = self.get_option(option)
+        if not isinstance(value, str):
+            return value
+        try:
+            return self.templar.template(mark_trusted(value, _trust_as_template_import))
+        except Exception as e:
+            # The error may quote values in scope, such as a looked-up secret,
+            # so only its type is reported and the chain is cut.
+            raise AnsibleParserError(f"Could not render the {option} option ({type(e).__name__}).") from None
+
     def parse(self, inventory, loader, path, cache=True):
         """Parse the inventory."""
         super(InventoryModule, self).parse(inventory, loader, path)
@@ -605,9 +627,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.use_cache = cache
 
         # Nautobot access
-        token = self.get_option("token")
+        token = self._get_templated_option("token")
         # Handle extra "/" from api_endpoint configuration and trim if necessary, see PR#49943
-        self.api_endpoint = self.get_option("api_endpoint").strip("/")
+        self.api_endpoint = self._get_templated_option("api_endpoint").strip("/")
         self.validate_certs = self.get_option("validate_certs")
         self.timeout = self.get_option("timeout")
         self.headers = {

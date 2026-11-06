@@ -833,3 +833,8 @@ releases:
         - (#738) - Added range option to the `vlan_group` module so that vlan ranges can be associated with vlan groups.
         - (#713) - Changed the `lookup_graphql` lookup to accept the query as either the first positional argument or as a keyword argument.
         - (#679) - Updated the minimum supported Python version to 3.12.
+  6.3.1:
+    changes:
+      minor_changes:
+        - (#779) - Added templating of the `token` and `api_endpoint` options to the `inventory` and `gql_inventory` inventory plugins,
+          so they can come from a lookup such as HashiCorp Vault.
