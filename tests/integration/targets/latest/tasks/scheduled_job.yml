@@ -1,0 +1,274 @@
+---
+##
+##
+### PYNAUTOBOT_SCHEDULED_JOB
+##
+##
+# "Refresh Dynamic Group Caches" is a Nautobot system job: installed and enabled
+# out of the box, not hidden, no sensitive variables, and no required inputs.
+- set_fact:
+    test_job: "Refresh Dynamic Group Caches"
+
+- name: "1 - Schedule a job to run once in the future"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    name: MyFutureScheduledJob
+    interval: future
+    start_time: "2030-01-01T01:00:00.000Z"
+    state: present
+  register: test_create_future
+
+- name: "1 - ASSERT"
+  assert:
+    that:
+      - test_create_future is changed
+      - test_create_future['diff']['before']['state'] == "absent"
+      - test_create_future['diff']['after']['state'] == "present"
+      - test_create_future['scheduled_job']['name'] == "MyFutureScheduledJob"
+      - test_create_future['scheduled_job']['interval'] == "future"
+      - test_create_future['msg'] == "Scheduled job 'MyFutureScheduledJob' created"
+
+- name: "2 - Duplicate"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    name: MyFutureScheduledJob
+    interval: future
+    start_time: "2030-01-01T01:00:00.000Z"
+    state: present
+  register: test_create_idempotent
+
+- name: "2 - ASSERT"
+  assert:
+    that:
+      - not test_create_idempotent['changed']
+      - test_create_idempotent['scheduled_job']['name'] == "MyFutureScheduledJob"
+      - test_create_idempotent['msg'] == "Scheduled job 'MyFutureScheduledJob' already exists"
+
+- name: "3 - Schedule a recurring job with a custom crontab"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    name: MyCrontabScheduledJob
+    interval: custom
+    crontab: "*/15 * * * *"
+    state: present
+  register: test_create_crontab
+
+- name: "3 - ASSERT"
+  assert:
+    that:
+      - test_create_crontab is changed
+      - test_create_crontab['scheduled_job']['name'] == "MyCrontabScheduledJob"
+      - test_create_crontab['scheduled_job']['interval'] == "custom"
+      - test_create_crontab['scheduled_job']['crontab'] == "*/15 * * * *"
+      - test_create_crontab['msg'] == "Scheduled job 'MyCrontabScheduledJob' created"
+
+- name: "4 - Schedule a recurring daily job with job data"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    name: MyDailyScheduledJob
+    interval: daily
+    start_time: "2030-01-01T02:00:00.000Z"
+    data:
+      single_group: null
+    state: present
+  register: test_create_daily
+
+- name: "4 - ASSERT"
+  assert:
+    that:
+      - test_create_daily is changed
+      - test_create_daily['scheduled_job']['name'] == "MyDailyScheduledJob"
+      - test_create_daily['scheduled_job']['interval'] == "daily"
+
+- name: "5 - Create with check_mode"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    name: MyCheckModeScheduledJob
+    interval: daily
+    start_time: "2030-01-01T03:00:00.000Z"
+    state: present
+  check_mode: true
+  register: test_create_check_mode
+
+- name: "5 - ASSERT"
+  assert:
+    that:
+      - test_create_check_mode is changed
+      - test_create_check_mode['msg'] == "Scheduled job 'MyCheckModeScheduledJob' would be created"
+
+- name: "5 - Confirm check_mode did not create the scheduled job"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: MyCheckModeScheduledJob
+    state: absent
+  register: test_check_mode_absent
+
+- name: "5 - ASSERT - Nothing was created"
+  assert:
+    that:
+      - not test_check_mode_absent['changed']
+      - test_check_mode_absent['msg'] == "Scheduled job 'MyCheckModeScheduledJob' already absent"
+
+- name: "6 - Delete a scheduled job by name"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: MyFutureScheduledJob
+    state: absent
+  register: test_delete_by_name
+
+- name: "6 - ASSERT"
+  assert:
+    that:
+      - test_delete_by_name is changed
+      - test_delete_by_name['diff']['before']['state'] == "present"
+      - test_delete_by_name['diff']['after']['state'] == "absent"
+      - test_delete_by_name['msg'] == "Scheduled job 'MyFutureScheduledJob' deleted"
+
+- name: "7 - Delete a scheduled job by name (idempotent)"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: MyFutureScheduledJob
+    state: absent
+  register: test_delete_idempotent
+
+- name: "7 - ASSERT"
+  assert:
+    that:
+      - not test_delete_idempotent['changed']
+      - test_delete_idempotent['msg'] == "Scheduled job 'MyFutureScheduledJob' already absent"
+
+- name: "8 - Delete a scheduled job by id"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    id: "{{ test_create_crontab['scheduled_job']['id'] }}"
+    state: absent
+  register: test_delete_by_id
+
+- name: "8 - ASSERT"
+  assert:
+    that:
+      - test_delete_by_id is changed
+      - test_delete_by_id['msg'] == "Scheduled job 'MyCrontabScheduledJob' deleted"
+
+- name: "9 - Delete with check_mode"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: MyDailyScheduledJob
+    state: absent
+  check_mode: true
+  register: test_delete_check_mode
+
+- name: "9 - ASSERT"
+  assert:
+    that:
+      - test_delete_check_mode is changed
+      - test_delete_check_mode['msg'] == "Scheduled job 'MyDailyScheduledJob' would be deleted"
+
+- name: "10 - Cleanup"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: MyDailyScheduledJob
+    state: absent
+  register: test_cleanup
+
+- name: "10 - ASSERT"
+  assert:
+    that:
+      - test_cleanup is changed
+
+- name: "11 - Run a job immediately"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  register: test_run_now
+
+- name: "11 - ASSERT"
+  assert:
+    that:
+      - test_run_now is changed
+      - test_run_now['job_result']['id'] is defined
+      - test_run_now['job_result']['name'] == test_job
+      - test_run_now['msg'] == "Job 'Refresh Dynamic Group Caches' submitted to run immediately"
+      - "'scheduled_job' not in test_run_now"
+
+- name: "12 - Run a job immediately again (an action, so never idempotent)"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  register: test_run_now_again
+
+- name: "12 - ASSERT - Reports changed and enqueues a separate job result"
+  assert:
+    that:
+      - test_run_now_again is changed
+      - test_run_now_again['job_result']['id'] != test_run_now['job_result']['id']
+
+- name: "13 - Run a job immediately with check_mode"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    state: present
+  check_mode: true
+  register: test_run_now_check_mode
+
+- name: "13 - ASSERT - Nothing is enqueued"
+  assert:
+    that:
+      - test_run_now_check_mode is changed
+      - test_run_now_check_mode['msg'] == "Job 'Refresh Dynamic Group Caches' would be run immediately"
+      - "'job_result' not in test_run_now_check_mode"
+
+- name: "14 - Run a job immediately with job data"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    job: "{{ test_job }}"
+    interval: immediately
+    data:
+      single_group: null
+    state: present
+  register: test_run_now_data
+
+- name: "14 - ASSERT"
+  assert:
+    that:
+      - test_run_now_data is changed
+      - test_run_now_data['job_result']['id'] is defined
+
+- name: "15 - Run immediately does not create a scheduled job"
+  networktocode.nautobot.scheduled_job:
+    url: "{{ nautobot_url }}"
+    token: "{{ nautobot_token }}"
+    name: "{{ test_job }}"
+    state: absent
+  register: test_run_now_no_schedule
+
+- name: "15 - ASSERT"
+  assert:
+    that:
+      - not test_run_now_no_schedule['changed']
+      - "'already absent' in test_run_now_no_schedule['msg']"
