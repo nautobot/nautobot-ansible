@@ -20,10 +20,9 @@ Let's take a look at specifying just the IP address in CIDR notation and see wha
       networktocode.nautobot.ip_address:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          address: "192.168.10.60/24"
-          vrf: "Test VRF"
-          nat_inside: "192.168.100.1/24"
+        address: "192.168.10.60/24"
+        namespace: "Test Namespace"
+        nat_inside: "192.168.100.1/24"
         state: present
 ```
 
@@ -53,12 +52,11 @@ We can see one of the IPs is assigned to the VRF that matches the VRF our new IP
       networktocode.nautobot.ip_address:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          address: "192.168.10.60/24"
-          vrf: "Test VRF"
-          nat_inside:
-            address: "192.168.100.1/24"
-            vrf: "Test VRF"
+        address: "192.168.10.60/24"
+        namespace: "Test Namespace"
+        nat_inside:
+          address: "192.168.100.1/24"
+          namespace: "Test Namespace"
         state: present
 ```
 
@@ -97,10 +95,9 @@ Let's take the same example and delete the IP address that was just created and 
       networktocode.nautobot.ip_address:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          address: "192.168.10.60/24"
-          vrf: "Test VRF"
-          nat_inside: 10
+        address: "192.168.10.60/24"
+        namespace: "Test Namespace"
+        nat_inside: 10
         state: present
 ```
 
@@ -143,10 +140,9 @@ tasks:
     networktocode.nautobot.ip_address:
       url: "http://nautobot.local"
       token: "thisIsMyToken"
-      data:
-        address: "192.168.10.60/24"
-        vrf: "Test VRF"
-        nat_inside: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_filter='address=192.168.100.1/24 vrf=1:1', api_endpoint='http://nautobot.local', token='thisIsMyToken', validate_certs=False, raw_data=True) }}"
+      address: "192.168.10.60/24"
+      namespace: "Test Namespace"
+      nat_inside: "{{ lookup('networktocode.nautobot.lookup', 'ip-addresses', api_filter='address=192.168.100.1/24 vrf=1:1', api_endpoint='http://nautobot.local', token='thisIsMyToken', validate_certs=False, raw_data=True) }}"
       state: present
 ```
 
@@ -180,11 +176,10 @@ tasks:
     networktocode.nautobot.ip_address:
       url: "http://nautobot.local"
       token: "thisIsMyToken"
-      data:
-        address: "192.168.10.60/24"
-        vrf: "Test VRF"
-        nat_inside:
-          id: "{{ query('networktocode.nautobot.lookup', 'ip-addresses', api_filter='address=192.168.100.1/24 vrf=1:1', api_endpoint='http://nautobot.local', token='thisIsMyToken', validate_certs=False, raw_data=True) | map(attribute='id') | first }}"
+      address: "192.168.10.60/24"
+      namespace: "Test Namespace"
+      nat_inside:
+        id: "{{ query('networktocode.nautobot.lookup', 'ip-addresses', api_filter='address=192.168.100.1/24 vrf=1:1', api_endpoint='http://nautobot.local', token='thisIsMyToken', validate_certs=False, raw_data=True) | map(attribute='id') | first }}"
       state: present
 ```
 
@@ -224,8 +219,7 @@ Let's start with another example. We will continue to use [networktocode.nautobo
       networktocode.nautobot.ip_address:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          address: "192.168.100.1/24"
+        address: "192.168.100.1/24"
 ```
 
 ```bash
@@ -258,10 +252,9 @@ We can see that `dns_name` will make a unique search. Now let's go ahead and spe
       networktocode.nautobot.ip_address:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          address: "192.168.100.1/24"
-          dns_name: "docs.nautobot-modules.com"
-          vrf: "Test VRF 2"
+        address: "192.168.100.1/24"
+        dns_name: "docs.nautobot-modules.com"
+        namespace: "Test Namespace 2"
         query_params:
           - address
           - dns_name
