@@ -55,18 +55,16 @@ Now that the ``DOCUMENTATION`` is updated, let's move onto updating the ``EXAMPL
     vrf:
       url: http://nautobot.local
       token: thisIsMyToken
-      data:
-        name: Test VRF
-        rd: "65000:1"
-        tenant: Test Tenant
-        enforce_unique: true
-        import_targets:
-          - "65000:65001"
-        export_targets:
-          - "65000:65001"
-        description: VRF description
-        tags:
-          - Schnozzberry
+      name: Test VRF
+      rd: "65000:1"
+      tenant: Test Tenant
+      import_targets:
+        - "65000:65001"
+      export_targets:
+        - "65000:65001"
+      description: VRF description
+      tags:
+        - Schnozzberry
       state: present
 ```
 
@@ -150,18 +148,16 @@ tests/integration/targets
   networktocode.nautobot.vrf:
     url: http://localhost:32768
     token: 0123456789abcdef0123456789abcdef01234567
-    data:
-      name: "Test VRF One"
-      rd: "65001:1"
-      enforce_unique: False
-      tenant: "Test Tenant"
-      description: Updated description
-      import_targets:
-        - "4000:4000"
-      export_targets:
-        - "5000:5000"
-      tags:
-        - "Schnozzberry"
+    name: "Test VRF One"
+    rd: "65001:1"
+    tenant: "Test Tenant"
+    description: Updated description
+    import_targets:
+      - "4000:4000"
+    export_targets:
+      - "5000:5000"
+    tags:
+      - "Schnozzberry"
     state: present
   register: test_four
 
@@ -170,7 +166,6 @@ tests/integration/targets
     that:
       - test_four is changed
       - test_four['diff']['after']['rd'] == "65001:1"
-      - test_four['diff']['after']['enforce_unique'] == false
       - test_four['diff']['after']['description'] == "Updated description"
       - test_four['diff']['after']['tags'][0] == 4
       - test_four['diff']['after']['import_targets'] | length == 1
@@ -178,7 +173,6 @@ tests/integration/targets
       - test_four['vrf']['name'] == "Test VRF One"
       - test_four['vrf']['tenant'] == 1
       - test_four['vrf']['rd'] == "65001:1"
-      - test_four['vrf']['enforce_unique'] == false
       - test_four['vrf']['description'] == "Updated description"
       - test_four['vrf']['tags'][0] == 4
       - test_four['vrf']['import_targets'] | length == 1

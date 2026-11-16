@@ -162,11 +162,10 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item.name }}"
-          tenant: "Test Tenant"
-          tags:
-            - Schnozzberry
+        name: "{{ item.name }}"
+        tenant: "Test Tenant"
+        tags:
+          - Schnozzberry
       loop:
         - { name: "65000:65001", description: "management" }
         - { name: "65000:65002", description: "tunnel" }
@@ -175,12 +174,11 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item.name }}"
-          tenant: "Test Tenant"
-          description: "{{ item.description }}"
-          tags:
-            - Schnozzberry
+        name: "{{ item.name }}"
+        tenant: "Test Tenant"
+        description: "{{ item.description }}"
+        tags:
+          - Schnozzberry
       loop:
         - { name: "65000:65001", description: "management" }
         - { name: "65000:65002", description: "tunnel" }
@@ -189,8 +187,7 @@ EXAMPLES = r"""
       networktocode.nautobot.route_target:
         url: http://nautobot.local
         token: thisIsMyToken
-        data:
-          name: "{{ item }}"
+        name: "{{ item }}"
         state: absent
       loop:
         - "65000:65001"

@@ -96,11 +96,10 @@ These same fields are required when creating a device via the [device](../../net
       networktocode.nautobot.device:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          name: "Test Device"
-          device_type: "C9410R"
-          role: "Core Switch"
-          location: "{{ location['key'] }}"
+        name: "Test Device"
+        device_type: "C9410R"
+        role: "Core Switch"
+        location: "{{ location['key'] }}"
         state: present
 ```
 
@@ -115,23 +114,21 @@ but that isn't always possible.
   tasks:
     - name: "Configure a device in Nautobot by specifying the ID for the location"
       networktocode.nautobot.device:
-        data:
-          name: "asdf"
-          device_type: "asdf"
-          role: "Router"
-          location: "{{ location['key'] }}"
-          status: "Inventory"
+        name: "asdf"
+        device_type: "asdf"
+        role: "Router"
+        location: "{{ location['key'] }}"
+        status: "Inventory"
         state: present
       vars:
         location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Location\" parent=\"Parent Location\"') }}"
     - name: "Configure a device in Nautobot by specifying dictionary for role"
       networktocode.nautobot.device:
-        data:
-          name: "asdf"
-          device_type: "asdf"
-          role:
-            model: "Router"
-          location: "{{ location['key'] }}"
+        name: "asdf"
+        device_type: "asdf"
+        role:
+          name: "Router"
+        location: "{{ location['key'] }}"
         state: present
       vars:
         location: "{{ lookup('networktocode.nautobot.lookup', 'locations', api_endpoint=nautobot_url, token=nautobot_token, api_filter='name=\"Child Location\" parent=\"Parent Location\"') }}"
@@ -154,9 +151,8 @@ Now that we have created our device (**Test Device**), let's update it by adding
       networktocode.nautobot.device:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          name: "Test Device"
-          serial: "FXS110011"
+        name: "Test Device"
+        serial: "FXS110011"
         state: "present"
 ```
 
@@ -183,8 +179,7 @@ The uniqueness of the device (**name** or user specified **query_params**) and t
       networktocode.nautobot.device:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          name: "Test Device"
+        name: "Test Device"
         state: "absent"
 ```
 
@@ -202,11 +197,10 @@ Tags are now a model within Nautobot and require being resolved like any other m
       networktocode.nautobot.device:
         url: "http://nautobot.local"
         token: "thisIsMyToken"
-        data:
-          name: "Test Device"
-          tags:
-            - name: "My New Tag1"
-            - name: "My New Tag2"
+        name: "Test Device"
+        tags:
+          - name: "My New Tag1"
+          - name: "My New Tag2"
         state: "present"
 ```
 
